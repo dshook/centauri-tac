@@ -8,7 +8,19 @@
     "url": "git+https://github.com/dshook/centauri-tac.git"
   },
   "scripts": {
-    "game": "node ./server/game.js"
+    "game": "node ./server/game.js",
+    "portal": "grunt portal"
+  },
+  "browser": {
+    "angular": "./node_modules/angular/angular.js"
+  },
+  "browserify-shim": {
+    "angular": "angular"
+  },
+  "browserify": {
+    "transform": [
+      "partialify"
+    ]
   },
   "contributors": [
     "Dillon Shook <dshook@alumni.nmt.edu> (http://dillonshook.com)",
@@ -20,7 +32,28 @@
   },
   "homepage": "https://github.com/dshook/centauri-tac#readme",
   "dependencies": {
+    "angular": "^1.4.5",
+    "angular-ui-bootstrap": "^0.13.4",
+    "angular-ui-router": "^0.2.15",
     "babel": "^5.8.23",
+    "bluebird": "^2.9.34",
+    "bootstrap": "^3.3.5",
+    "core-decorators": "^0.2.0",
     "loglevel": "^1.4.0"
+  },
+  "devDependencies": {
+    "aliasify": "^1.7.2",
+    "babelify": "^6.3.0",
+    "browserify": "^11.0.1",
+    "browserify-shim": "^3.8.10",
+    "connect-modrewrite": "^0.8.2",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^4.0.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-less": "^1.0.1",
+    "load-grunt-tasks": "^3.2.0",
+    "partialify": "^3.1.5"
   }
 }
