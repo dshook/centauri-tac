@@ -65,7 +65,20 @@ module.exports = function gruntfile(grunt) {
       index: {
         src: './web/portal/index.html',
         dest: './dist/portal/index.html',
-      }
+      },
+    },
+
+    less: {
+      portal: {
+        src: './web/portal/style.less',
+        dest: './dist/portal/style.bundle.css',
+        options: {
+          paths: ['./node_modules', './lib'],
+          sourceMap: DEBUG,
+          sourceMapFileInline: true,
+          outputSourceFiles: true,
+        },
+      },
     },
 
   });
@@ -77,6 +90,7 @@ module.exports = function gruntfile(grunt) {
     'browserify:vendor',
     'browserify:portal',
     'copy:index',
+    'less:portal',
   ]);
 };
 
