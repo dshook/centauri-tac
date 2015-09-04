@@ -24,3 +24,7 @@ player_win_development_x86.pdb
 .gitconfig
 test.app/
 .DS_Store
+
+# node / web backend
+node_modules
+dist
