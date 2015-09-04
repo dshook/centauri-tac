@@ -7,7 +7,7 @@ export default class WebPortal
 {
   constructor()
   {
-    this.log.info('web portal started');
+    this.log.info('portal web app starting');
   }
 
   async start()
@@ -17,15 +17,9 @@ export default class WebPortal
 
   _bootAngular()
   {
-    this.log.info('document ready, setting up angular app');
-
     // setup application angular module
     app();
-
-    this.log.info('booting angular');
-
     angular.bootstrap(document, ['centauri']);
-
     this.log.info('booted angular');
   }
 }
