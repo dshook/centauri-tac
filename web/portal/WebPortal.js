@@ -5,11 +5,6 @@ import app from './app';
 @loglevel
 export default class WebPortal
 {
-  constructor()
-  {
-    this.log.info('portal web app starting');
-  }
-
   async start()
   {
     angular.element(document).ready(() => this._bootAngular());
@@ -18,8 +13,7 @@ export default class WebPortal
   _bootAngular()
   {
     // setup application angular module
-    app();
-    angular.bootstrap(document, ['centauri']);
+    angular.bootstrap(document, [app.name]);
     this.log.info('booted angular');
   }
 }
