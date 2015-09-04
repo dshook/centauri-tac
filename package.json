@@ -8,7 +8,7 @@
     "url": "git+https://github.com/dshook/centauri-tac.git"
   },
   "scripts": {
-    "game": "node ./server/game/index.js"
+    "game": "node ./server/game.js"
   },
   "contributors": [
     "Dillon Shook <dshook@alumni.nmt.edu> (http://dillonshook.com)",
