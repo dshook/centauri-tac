@@ -1,12 +1,13 @@
-import earf from 'earf';
+import loglevel from 'loglevel-decorator';
 
 /**
- * Hello, EARF
+ * Bootstrap the game server
  */
+@loglevel
 export default class GameServer
 {
   constructor()
   {
-    console.log(`Hello, ${earf}!`);
+    this.log.info('game server started');
   }
 }
