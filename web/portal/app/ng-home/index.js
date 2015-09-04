@@ -10,7 +10,5 @@ export default angular.module('centauri.home', [
     url: '/',
     template: htmlHome,
   });
-})
-
-;
+});
 
