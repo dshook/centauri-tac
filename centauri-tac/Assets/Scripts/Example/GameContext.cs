@@ -1,46 +1,52 @@
 using UnityEngine;
 using System.Collections;
+using Svelto.IoC;
+using Svelto.Ticker;
 
-public class Main : IContextRoot
+//Main is the Application Composition Root.
+//Composition Root is the place where the framework can be initialised.
+
+public class Main:ICompositionRoot
 {
-    public IoC.IContainer container { get; private set; }
-
+    public Svelto.IoC.IContainer container { get; private set; }
+    
     public Main()
     {
         SetupContainer();
         StartGame();
     }
-
+    
     void SetupContainer()
     {
-        container = new IoC.UnityContainer();
-
-        container.Bind<IoC.IMonoBehaviourFactory>().AsSingle<IoC.MonoBehaviourFactory>();
-        container.Bind<IMonsterFactory>().AsSingle<MonsterFactory>();
-        container.Bind<IMonsterSystem>().AsSingle<MonsterSystem>();
-
-        container.Bind<PathController>().AsSingle();
-        container.Bind<MonsterSpawner>().AsSingle();
+        container = new Container();
+        
+        //interface is bound to a specific instance
+        container.Bind<IGameObjectFactory>().AsSingle(new GameObjectFactory(container));
+        //interfaces are bound to specific implementations, the same instance will be used once created
+        container.Bind<IMonsterCounter>().AsSingle<MonsterCountHolder>();
+        container.Bind<IMonsterCountHolder>().AsSingle<MonsterCountHolder>();
+        //once the dependency is requested, a new instance will be created
+        container.Bind<WeaponPresenter>().ToFactory(new MultiProvider<WeaponPresenter>());
+        container.Bind<MonsterPresenter>().ToFactory(new MultiProvider<MonsterPresenter>());
+        container.Bind<MonsterPathFollower>().ToFactory(new MultiProvider<MonsterPathFollower>());
+        //once requested, the same instance will be used
+        container.BindSelf<UnderAttackSystem>();
+        container.BindSelf<PathController>();
     }
-
+    
     void StartGame()
     {
-        MonsterSpawner spawner = container.Build<MonsterSpawner>();
-
-        //tickEngine could be added in the container as well
-        //if needed to other classes!
-        TickEngine tickEngine = new TickEngine();
-
-        tickEngine.Add(spawner);
+        UnityTicker tickEngine = new UnityTicker(); //note this object can be safely garbage collected
+        
+        tickEngine.Add(container.Inject(new MonsterSpawner()));
+        tickEngine.Add(container.Build<UnderAttackSystem>());
     }
 }
 
-//UnityContext must be executed before 
-//anything else that uses the container itself.
-//In order to achieve this, you can use
-//the execution order or the awake/start 
-//functions order
+//A GameObject containing GameContext must be present in the scene
+//All the monobehaviours present in the scene file that need dependencies 
+//injected must be component of GameObjects children of GameContext.
 
-public class GameContext : UnityContext<Main>
+public class GameContext: UnityRoot<Main>
 {
 }

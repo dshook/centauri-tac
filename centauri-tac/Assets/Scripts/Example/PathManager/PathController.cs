@@ -1,15 +1,17 @@
+using System;
 using UnityEngine;
 
 public class PathController
 {
-    public GameObject[] pathDTO { private get; set; }
+    public GameObject[] pathData { private get; set; }
 
     public Vector3 CheckPoint(int index)
     {
-        return pathDTO[index].transform.position;
+        return pathData[index].transform.position;
     }
 
-    public bool IsEndReached(int check) { return check >= pathDTO.Length - 1; }
+    public bool IsEndReached(int check) { return check >= pathData.Length - 1; }
 }
+
 
 

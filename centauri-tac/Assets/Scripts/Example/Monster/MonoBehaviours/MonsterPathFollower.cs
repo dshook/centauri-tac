@@ -1,32 +1,39 @@
 using System;
 using UnityEngine;
+using Svelto.IoC;
 
-public class MonsterPathFollower : MonoBehaviour
+public class MonsterPathFollower
 {
-    [IoC.Inject]
+    int _currentCheckPoint = 0;
+    MonsterPresenter _monster;
+    Transform _transform;
+    [Inject]
     public PathController pathController { set; private get; }
 
-    void Start()
+    public void Start(Transform transform)
     {
-        transform.position = pathController.CheckPoint(currentCheckPoint);
+        _transform = transform;
+        _transform.position = pathController.CheckPoint(_currentCheckPoint);
 
         MoveNext();
     }
 
     void MoveNext()
     {
-        if (pathController.IsEndReached(currentCheckPoint) == false)
+        if (pathController.IsEndReached(_currentCheckPoint) == false)
         {
-
-            currentCheckPoint++;
+            _currentCheckPoint++;
         }
         else
         {
-            GetComponent<Monster>().CommitSuicide();
+            _monster.CommitSuicide(); //in a real project I would have used a command, not directly the presenter
         }
-
     }
 
-    private int currentCheckPoint = 0;
+    public void SetMonster(MonsterPresenter monster)
+    {
+        _monster = monster;
+    }
+
 }
 
