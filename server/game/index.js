@@ -1,4 +1,6 @@
-import GameServer from './GameServer.js';
+process.env.NODE_PATH = './lib';
+require('module').Module._initPaths();
 
-// Boot
+require('babel/register');
+var GameServer = require('./GameServer.js');
 new GameServer();

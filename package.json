@@ -8,8 +8,7 @@
     "url": "git+https://github.com/dshook/centauri-tac.git"
   },
   "scripts": {
-    "game": "NODE_PATH=./lib babel-node ./server/game/index.js",
-    "wingame": "babel-node ./server/game/index.js"
+    "game": "node ./server/game/index.js"
   },
   "contributors": [
     "Dillon Shook <dshook@alumni.nmt.edu> (http://dillonshook.com)",
