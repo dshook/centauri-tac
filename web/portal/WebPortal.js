@@ -24,7 +24,7 @@ export default class WebPortal
 
     this.log.info('booting angular');
 
-    angular.bootstrap(document, ['centauri-tac']);
+    angular.bootstrap(document, ['centauri']);
 
     this.log.info('booted angular');
   }
