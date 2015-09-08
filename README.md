@@ -6,7 +6,6 @@ Tactical Card Game
 
 ### Requirements
 
-* Unity3d
 * NodeJS 0.12.x
 
 ### Setup
