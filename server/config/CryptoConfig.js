@@ -6,6 +6,6 @@ export default class CryptoConfig
     /**
      * Number of rounds (exponential) used during bcrypt
      */
-    this.rounds = 10;
+    this.rounds = 0 | process.env.BCRYPT_ROUNDS || 10;
   }
 }
