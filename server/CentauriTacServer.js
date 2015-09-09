@@ -2,7 +2,7 @@ import loglevel from 'loglevel-decorator';
 import manifest from './manifest.js';
 import {autobind} from 'core-decorators';
 import Application from 'billy';
-import objectPath from 'object-path';
+import ComponentService from './services/ComponentService.js';
 
 /**
  * Application startup for all server components
@@ -23,24 +23,26 @@ export default class CentauriTacServer
    */
   async start()
   {
+    // Add all needed services for components
     this.components.forEach(this._processComponent);
+
+    this.services.forEach(T => this.app.service(T));
+
+    // Component service at bottom of stack
+    this.app.service(ComponentService);
+
+    // add stuff from manifest
+    this.app.service((componentManager) => {
+
+      for (const name of this.components) {
+        const T = manifest[name].TComponent;
+        componentManager.addComponent(name, T);
+      }
+
+    });
 
     // Actually setup the services
     this.log.info('registering services');
-    this.services.forEach(T => this.app.service(T));
-
-    // Set them configs in the last setup step
-    this.app.service(() => {
-      for (const [k, v] of this.configs) {
-        this.log.info(`setting ${k} to ${v}`);
-
-        const [sDep, ...rest] = k.split('.');
-
-        const dep = this.app.make(sDep);
-        objectPath.set(dep, rest, v);
-      }
-    });
-
     this.log.info('booting application');
     await this.app.start();
     this.log.info('application started');
@@ -60,11 +62,5 @@ export default class CentauriTacServer
 
     // Add all needed services
     (entry.services || []).forEach(T => this.services.add(T));
-
-    // Add all configs
-    const eConfigs = entry.configs || {};
-    for (const key in eConfigs) {
-      this.configs.push([key, eConfigs[key]]);
-    }
   }
 }

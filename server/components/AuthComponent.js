@@ -4,15 +4,9 @@ import PlayerAPI from '../api/PlayerAPI.js';
 @loglevel
 export default class AuthComponent
 {
-  constructor(rest, players)
+  async start(http, rest)
   {
-    this.players = players;
-    this.rest = rest;
-  }
-
-  async start()
-  {
-    this.rest.mountController('/player', PlayerAPI);
+    rest.mountController('/player', PlayerAPI);
   }
 }
 

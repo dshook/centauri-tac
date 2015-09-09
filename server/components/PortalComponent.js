@@ -8,19 +8,13 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class PortalComponent
 {
-  constructor(httpServer, httpConfig)
-  {
-    this.httpServer = httpServer;
-    this.httpConfig = httpConfig;
-  }
-
-  async start()
+  async start(server, publicURL)
   {
     const webroot = path.join(__dirname, '../../dist/portal');
 
-    this.httpServer.use('/portal', express.static(webroot));
+    server.use(express.static(webroot));
 
-    this.log.info('public URL for portal: %s/portal', this.httpConfig.publicURL);
+    this.log.info('public URL for portal: %s', publicURL);
     this.log.info('mounted portal webroot from %s', webroot);
   }
 }

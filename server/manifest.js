@@ -17,9 +17,9 @@ export default {
    * View status of the servers
    */
   portal: {
+    TComponent: PortalComponent,
     services: [
       HttpService,
-      PortalComponent,
     ],
   },
 
@@ -27,12 +27,12 @@ export default {
    * Central service registry
    */
   master: {
+    TComponent: MasterComponent,
     services: [
       HttpService,
       PostgresService,
       DatastoreService,
       RESTService,
-      MasterComponent,
     ],
   },
 
@@ -40,13 +40,13 @@ export default {
    * User login / session verification
    */
   auth: {
+    TComponent: AuthComponent,
     services: [
       HttpService,
       PostgresService,
       DatastoreService,
       RESTService,
       HashService,
-      AuthComponent,
     ],
   },
 

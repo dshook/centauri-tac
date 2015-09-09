@@ -7,14 +7,9 @@ import ComponentTypeAPI from '../api/ComponentTypeAPI.js';
 @loglevel
 export default class MasterComponent
 {
-  constructor(rest)
-  {
-    this.rest = rest;
-  }
-
   async start()
   {
-    this.rest.mountController('/component/type', ComponentTypeAPI);
-    this.rest.mountController('/component', ComponentAPI);
+    // this.rest.mountController('/component/type', ComponentTypeAPI);
+    // this.rest.mountController('/component', ComponentAPI);
   }
 }
