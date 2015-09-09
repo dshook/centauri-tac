@@ -1,5 +1,6 @@
 import {HttpError} from 'http-tools';
 import {route} from 'http-tools';
+import Component from 'models/Component';
 
 /**
  * REST API dealing with the Component model
@@ -14,7 +15,26 @@ export default class ComponentAPI
   @route.get('/')
   async getAll()
   {
-    return this.components.all();
+    return await this.components.all();
+  }
+
+  @route.post('/register')
+  async register(params, req)
+  {
+    const {url, name} = req.body;
+    return await this.components.register(url, name);
+  }
+
+  @route.post('/ping/:id')
+  async ping({id})
+  {
+    const component = await this.components.pingById(id);
+
+    if (!component) {
+      throw new HttpError(404, 'component not found');
+    }
+
+    return component;
   }
 
   @route.get('/:id')
@@ -29,17 +49,6 @@ export default class ComponentAPI
     return component;
   }
 
-  @route.get('/ping/:id')
-  async ping({id})
-  {
-    const component = await this.components.pingById(id);
-
-    if (!component) {
-      throw new HttpError(404, 'component not found');
-    }
-
-    return component;
-  }
 }
 
 

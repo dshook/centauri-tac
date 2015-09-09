@@ -63,6 +63,7 @@
     "ng-table": "^0.5.4",
     "nodemon": "^1.4.1",
     "pg": "^4.4.1",
+    "request-promise": "^0.4.3",
     "sql-params": "^1.0.1"
   },
   "devDependencies": {

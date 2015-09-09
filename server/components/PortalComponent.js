@@ -8,7 +8,7 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class PortalComponent
 {
-  async start(server, publicURL)
+  async start(server, rest, publicURL)
   {
     const webroot = path.join(__dirname, '../../dist/portal');
 

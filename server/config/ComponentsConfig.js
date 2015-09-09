@@ -15,5 +15,8 @@ export default class ComponentsConfig
      * String names of all components we want to run
      */
     this.components = components;
+
+    this.masterURL = process.env.MASTER_URL ||
+      'http://localhost:10123/components/master/rest';
   }
 }

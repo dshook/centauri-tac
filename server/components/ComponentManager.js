@@ -3,16 +3,17 @@ import {Router} from 'express';
 import {HttpHarness} from 'http-tools';
 
 /**
- * Handles components
+ * Manage booting up and register runtime components
  */
 @loglevel
 export default class ComponentManager
 {
-  constructor(app, httpServer, httpConfig)
+  constructor(app, httpServer, httpConfig, rpc)
   {
     this.server = httpServer;
     this.config = httpConfig;
     this.app = app;
+    this.rpc = rpc;
 
     this.components = new Map();
   }
@@ -24,6 +25,19 @@ export default class ComponentManager
     }
 
     this.components.set(name, T);
+  }
+
+  /**
+   * POST to master server and ping occasionally
+   */
+  async register(name, url)
+  {
+    this.log.info('registering %s@%s', name, url);
+
+    return await this.rpc.send(
+        'master',
+        'component/register',
+        { name, url });
   }
 
   /**
@@ -50,6 +64,8 @@ export default class ComponentManager
       this.log.info('starting component "%s" at %s', name, publicURL);
       await component.start(router, rest, publicURL);
       this.log.info('started component "%s"', name);
+
+      await this.register(name, publicURL);
     }
   }
 }

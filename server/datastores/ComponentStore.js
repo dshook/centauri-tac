@@ -33,13 +33,19 @@ export default class ComponentStore
   /**
    * Resolve the id of a component type
    */
-  @memoize async getComponentIdFromName(name: String): ?Number
+  @memoize async getTypeIdByName(name: String): ?Number
   {
-    const resp = await this.sql.tquery(Component)(`select id
+    const resp = await this.sql.query(`select id
         from component_types
         where name = @name`, {name});
 
-    return resp.firstOrNull();
+    const result = resp.firstOrNull();
+
+    if (result) {
+      return result.id;
+    }
+
+    return null;
   }
 
   /**
@@ -69,29 +75,34 @@ export default class ComponentStore
   /**
    * Drop in the component
    */
-  async register(component)
+  async register(url, typeName)
   {
-    const existing = await this.getComponent(component.url, component.typeId);
+    const typeId = await this.getTypeIdByName(typeName);
+
+    if (!typeId) {
+      throw new Error('invalid type name ' + typeName);
+    }
+
+    const existing = await this.getComponent(url, typeId);
 
     if (!existing) {
       const resp = await this.sql.tquery(Component)(`
           insert into components (url, component_type_id)
           values (@url, @typeId)
-          returning id`, component);
+          returning *`, {url, typeId});
 
-      const result = resp.firstOrNull();
-      component.id = result.id;
+      const component = resp.firstOrNull();
       this.log.info(`registered new component id=${component.id}`);
-    }
-    else {
-      component.id = existing.id;
 
-      await this.sql.tquery(Component)(`update components
-          set registered = now() where id = @id`, existing);
-
-      this.log.info(`updated component id=${existing.id}`);
+      return component;
     }
 
-    return component;
+    // Update what we have
+    await this.sql.tquery(Component)(`update components
+        set registered = now() where id = @id`, existing);
+
+    this.log.info(`updated component id=${existing.id}`);
+
+    return existing;
   }
 }
