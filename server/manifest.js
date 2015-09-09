@@ -1,7 +1,6 @@
 import HttpService from './services/HttpService.js';
 import PostgresService from './services/PostgresService.js';
 import DatastoreService from './services/DatastoreService.js';
-import RESTService from './services/RESTService.js';
 import HashService from './services/HashService.js';
 
 import MasterComponent from './components/MasterComponent.js';
@@ -32,7 +31,6 @@ export default {
       HttpService,
       PostgresService,
       DatastoreService,
-      RESTService,
     ],
   },
 
@@ -45,7 +43,6 @@ export default {
       HttpService,
       PostgresService,
       DatastoreService,
-      RESTService,
       HashService,
     ],
   },
