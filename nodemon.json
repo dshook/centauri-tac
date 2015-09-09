@@ -1,0 +1,10 @@
+{
+  "ignore": [
+    ".git",
+    "node_modules",
+    "tasks",
+    "web",
+    "centauri-tac",
+    "dist"
+  ]
+}
