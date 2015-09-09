@@ -5,17 +5,10 @@ export default class ComponentsConfig
 {
   constructor()
   {
-    // Pull out what components we want to run from env vars
-    const components = (process.env.COMPONENTS || '')
-      .split(',')
-      .map(x => x.trim())
-      .filter(x => x);
 
     /**
-     * String names of all components we want to run
+     * Master URL to connect to the game network
      */
-    this.components = components;
-
     this.masterURL = process.env.MASTER_URL ||
       'http://localhost:10123/components/master/rest';
   }

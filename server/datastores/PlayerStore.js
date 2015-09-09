@@ -26,6 +26,9 @@ export default class PlayerStore
     this.chash = chash;
   }
 
+  /**
+   * Get a single player
+   */
   async getPlayerByEmail(email): ?Player
   {
     const resp = await this.sql.tquery(Player)(`

@@ -3,7 +3,6 @@
 process.env.NODE_PATH = './lib';
 require('module').Module._initPaths();
 
-
 // TODO: change this based on debug/release mode
 require('loglevel').setLevel(0);
 

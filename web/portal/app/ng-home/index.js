@@ -5,7 +5,7 @@ import 'ng-table';
 
 import htmlHome from './home.html';
 import HomeController from './HomeController.js';
-import ngPortalService from 'ng-portal-service';
+import ngPortalService from '../ng-portal-service';
 
 export default angular.module('centauri.home', [
   uiRouter,

@@ -18,8 +18,24 @@ export default class RPCSession
    */
   async connect()
   {
-    const components = await this.send('master', '');
+    const components = await this.get('master', 'component');
+
     return components;
+  }
+
+  /**
+   * Get data from the RPC endpoint
+   */
+  async get(name, methodName)
+  {
+    this.log.info('getting %s from %s', methodName, name);
+
+    const opt = {
+      uri: this._endpoints.get(name) + '/' + methodName,
+      method: 'GET',
+    };
+
+    return await rp(opt);
   }
 
   /**

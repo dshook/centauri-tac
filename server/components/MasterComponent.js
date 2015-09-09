@@ -1,8 +1,9 @@
-import loglevel from 'loglevel-decorator';
 import ComponentAPI from '../api/ComponentAPI.js';
 import ComponentTypeAPI from '../api/ComponentTypeAPI.js';
 
-@loglevel
+/**
+ * Game server component that maintains the list of all other components
+ */
 export default class MasterComponent
 {
   async start(server, rest)

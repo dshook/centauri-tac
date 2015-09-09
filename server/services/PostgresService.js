@@ -1,5 +1,5 @@
-import PostgresFacade from 'postgres-facade';
 import loglevel from 'loglevel-decorator';
+import PGConnection from 'postgrizzly';
 
 /**
  * An application service that exposes a postgres facade for querying
@@ -15,7 +15,7 @@ export default class PostgresService
       throw new Error('DATABASE_URL must be set');
     }
 
-    this.psql = new PostgresFacade(url);
+    this.psql = new PGConnection(url);
     app.registerInstance('sql', this.psql);
   }
 

@@ -18,11 +18,8 @@ export default class PlayerAPI
     return await this.players.all();
   }
 
-  /**
-   * Willy nilly
-   */
   @route.post('/register')
-  async register(params, req)
+  async register(req)
   {
     const {email, password} = req.body;
 

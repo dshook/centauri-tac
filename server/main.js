@@ -7,5 +7,6 @@ const components = (process.env.COMPONENTS || '')
   .filter(x => x);
 
 
+// boot
 new CentauriTacServer(components).start();
 

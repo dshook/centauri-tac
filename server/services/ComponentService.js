@@ -1,10 +1,12 @@
 import ComponentsConfig from '../config/ComponentsConfig.js';
 import ComponentManager from '../components/ComponentManager.js';
 import RPCSession from '../components/RPCSession.js';
+import loglevel from 'loglevel-decorator';
 
 /**
- * Manage and startup the components
+ * Manage and startup the components and RPC session
  */
+@loglevel
 export default class ComponentService
 {
   constructor(app)
@@ -21,6 +23,10 @@ export default class ComponentService
 
   async start()
   {
-    return await this.manager.startComponents();
+    this.log.info('starting all components');
+    await this.manager.startComponents();
+
+    this.log.info('connecting to RPC session');
+    await this.rpc.connect();
   }
 }

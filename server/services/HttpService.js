@@ -12,13 +12,10 @@ export default class HttpService
   constructor(app)
   {
     this.server = promisifyAll(express());
-
-    this.config = new HttpConfig();
-
-    app.registerInstance('httpConfig', this.config);
     app.registerInstance('httpServer', this.server);
 
-    this.app = app;
+    this.config = new HttpConfig();
+    app.registerInstance('httpConfig', this.config);
   }
 
   /**
@@ -27,6 +24,7 @@ export default class HttpService
   async start()
   {
     await this.server.listenAsync(this.config.port);
+
     this.log.info(`http listening on port ${this.config.port}`);
   }
 }

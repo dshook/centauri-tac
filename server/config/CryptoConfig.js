@@ -1,3 +1,6 @@
+/**
+ * Configuration for any crypo needs
+ */
 export default class CryptoConfig
 {
   constructor()

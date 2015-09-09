@@ -1,6 +1,5 @@
 import {HttpError} from 'http-tools';
 import {route} from 'http-tools';
-import Component from 'models/Component';
 
 /**
  * REST API dealing with the Component model
@@ -19,15 +18,16 @@ export default class ComponentAPI
   }
 
   @route.post('/register')
-  async register(params, req)
+  async register(req)
   {
     const {url, name} = req.body;
     return await this.components.register(url, name);
   }
 
   @route.post('/ping/:id')
-  async ping({id})
+  async ping(req)
   {
+    const {id} = req.params;
     const component = await this.components.pingById(id);
 
     if (!component) {
@@ -38,8 +38,9 @@ export default class ComponentAPI
   }
 
   @route.get('/:id')
-  async get({id})
+  async get(req)
   {
+    const {id} = req.params;
     const component = await this.components.getById(id);
 
     if (!component) {
@@ -48,7 +49,6 @@ export default class ComponentAPI
 
     return component;
   }
-
 }
 
 

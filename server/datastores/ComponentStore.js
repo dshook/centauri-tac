@@ -1,9 +1,10 @@
 import {memoize} from 'core-decorators';
 import Component from 'models/Component';
+import ComponentType from 'models/ComponentType';
 import loglevel from 'loglevel-decorator';
 
 /**
- * Data layer around components
+ * Data layer handling components
  */
 @loglevel
 export default class ComponentStore
@@ -18,38 +19,45 @@ export default class ComponentStore
    */
   async all()
   {
-    const resp = await this.sql.tquery(Component)('select * from components');
+    const sql = `
+        select * from components as c
+        join component_types as t
+          on c.component_type_id = t.id`;
+
+    const resp = await this.sql.tquery(Component, ComponentType)(
+        sql, null, (c, t) => { c.type = t; return c; });
+
     return resp.toArray();
   }
 
+  /**
+   * Get a single component
+   */
   async getById(id)
   {
-    const resp = await this.sql.tquery(Component)(`select * from components
+    const resp = await this.sql.tquery(Component)(`
+        select * from components
         where id = @id`, {id});
 
     return resp.firstOrNull();
   }
 
   /**
-   * Resolve the id of a component type
+   * Resolve the id of a component type from its name
    */
   @memoize async getTypeIdByName(name: String): ?Number
   {
-    const resp = await this.sql.query(`select id
-        from component_types
+    const resp = await this.sql.query(`
+        select id from component_types
         where name = @name`, {name});
 
     const result = resp.firstOrNull();
 
-    if (result) {
-      return result.id;
-    }
-
-    return null;
+    return result ? result.id : null;
   }
 
   /**
-   * Get a component if there already is one
+   * Get a component by its url and type ID if there already is one
    */
   async getComponent(url, typeId): ?Component
   {
@@ -73,7 +81,7 @@ export default class ComponentStore
   }
 
   /**
-   * Drop in the component
+   * Add a component (or update if its already in the registry)
    */
   async register(url, typeName)
   {
@@ -85,6 +93,7 @@ export default class ComponentStore
 
     const existing = await this.getComponent(url, typeId);
 
+    // create brand new component
     if (!existing) {
       const resp = await this.sql.tquery(Component)(`
           insert into components (url, component_type_id)

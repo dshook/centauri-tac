@@ -11,7 +11,7 @@ export default class ComponentTypeAPI
   }
 
   /**
-   * All them types
+   * Dump n chump from DB
    */
   @route.get('/')
   async types()

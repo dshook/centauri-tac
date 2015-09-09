@@ -5,16 +5,19 @@ import Application from 'billy';
 import ComponentService from './services/ComponentService.js';
 
 /**
- * Application startup for all server components
+ * Application entry point
  */
 @loglevel
 export default class CentauriTacServer
 {
+
+  /**
+   * Components is the list of components we actually want to run
+   */
   constructor(components: Array<String>)
   {
     this.components = components;
     this.services = new Set();
-    this.configs = [];
     this.app = new Application();
   }
 
@@ -26,12 +29,14 @@ export default class CentauriTacServer
     // Add all needed services for components
     this.components.forEach(this._processComponent);
 
+    // register all needed services
+    this.log.info('registering services');
     this.services.forEach(T => this.app.service(T));
 
     // Component service at bottom of stack
     this.app.service(ComponentService);
 
-    // add stuff from manifest
+    // add stuff from manifest in an ad-hoc service
     this.app.service((componentManager) => {
 
       for (const name of this.components) {
@@ -41,15 +46,13 @@ export default class CentauriTacServer
 
     });
 
-    // Actually setup the services
-    this.log.info('registering services');
     this.log.info('booting application');
     await this.app.start();
     this.log.info('application started');
   }
 
   /**
-   * Process services and configs for each component we're using
+   * Add services to the set that we need to start
    */
   @autobind _processComponent(c)
   {
