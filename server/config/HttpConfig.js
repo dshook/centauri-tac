@@ -14,6 +14,6 @@ export default class HttpConfig
     /**
      * Public-facing URL
      */
-    this.publicUrl = process.env.PUBLIC_URL || 'http://localhost:' + this.port;
+    this.publicURL = process.env.PUBLIC_URL || 'http://localhost:' + this.port;
   }
 }
