@@ -10,6 +10,12 @@ enum MonsterState
 
 public class MonsterPresenter
 {
+    const float DAMAGE = 0.25f;
+
+    float _energy = 1.0f;
+    float _hitEnergy = 0.0f;
+    MonsterView _view;
+    
     [Inject]
     public UnderAttackSystem attackSystem { set; private get; }
 
@@ -61,10 +67,4 @@ public class MonsterPresenter
 
         _view.Killed();
     }
-
-    const float DAMAGE = 0.25f;
-
-    float _energy = 1.0f;
-    float _hitEnergy = 0.0f;
-    MonsterView _view;
 }

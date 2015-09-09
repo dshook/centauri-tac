@@ -10,6 +10,11 @@ public enum WeaponState
 
 public class WeaponPresenter : IInitialize
 {
+    WeaponState _currentViewState;
+    WeaponView _view;
+    Transform _lockedTarget;
+    Queue<GameObject> _targets;
+
     [Inject]
     public UnderAttackSystem weaponSystem { private get; set; }
     // Use this for initialization
@@ -89,11 +94,4 @@ public class WeaponPresenter : IInitialize
 
         return false;
     }
-
-    WeaponState _currentViewState;
-    WeaponView _view;
-    Transform _lockedTarget;
-    Queue<GameObject> _targets;
-
-
 }

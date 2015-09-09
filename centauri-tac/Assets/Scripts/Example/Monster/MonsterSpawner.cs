@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class MonsterSpawner : ITickable, IInitialize
 {
+    float _frequency;
+    float _timeLapsed;
+    GameObject _monstersRoot;
+
+    static GameObject _originalGO = Resources.Load("Monster") as GameObject;
+    
     [Inject]
     public IGameObjectFactory gameObjectFactory { set; private get; }
     [Inject]
@@ -43,11 +49,5 @@ public class MonsterSpawner : ITickable, IInitialize
     {
         return _originalGO;
     }
-
-    float _frequency;
-    float _timeLapsed;
-    GameObject _monstersRoot;
-
-    static GameObject _originalGO = Resources.Load("Monster") as GameObject;
 }
 

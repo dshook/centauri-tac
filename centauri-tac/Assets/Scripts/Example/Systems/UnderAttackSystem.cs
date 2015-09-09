@@ -5,6 +5,9 @@ using Svelto.IoC;
 
 public class UnderAttackSystem : ITickable, IInitialize
 {
+    List<WeaponPresenter> _freeWeapons;
+    Dictionary<Transform, MonsterPresenter> _monstersDic;
+
     [Inject]
     public IMonsterCountHolder monsterCounter { set; private get; }
 
@@ -86,7 +89,4 @@ public class UnderAttackSystem : ITickable, IInitialize
 
         AddFreeWeapon(weapon);
     }
-
-    List<WeaponPresenter> _freeWeapons;
-    Dictionary<Transform, MonsterPresenter> _monstersDic;
 }
