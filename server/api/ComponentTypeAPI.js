@@ -16,6 +16,7 @@ export default class ComponentTypeAPI
   @route.get('/')
   async types()
   {
-    return [...await this.sql.query(`select * from component_types`)];
+    const resp = await this.sql.query(`select * from component_types`);
+    return resp.toArray();
   }
 }
