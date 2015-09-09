@@ -37,4 +37,30 @@ export default class PlayerAPI
       throw new HttpError(405, err.message);
     }
   }
+
+  @route.post('/auth')
+  async auth(req)
+  {
+    const {email, password} = req.body;
+
+    let player;
+
+    try {
+      player = await this.players.verify(email, password);
+    }
+    catch (err) {
+      if (!(err instanceof PlayerStoreError)) {
+        throw err;
+      }
+
+      throw new HttpError(405, err.message);
+    }
+
+    const token = this.players.generateToken(player);
+
+    return {
+      player,
+      token,
+    };
+  }
 }

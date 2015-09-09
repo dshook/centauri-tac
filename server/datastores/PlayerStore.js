@@ -1,5 +1,6 @@
 import Player from 'models/Player';
 import loglevel from 'loglevel-decorator';
+import jwt from 'jsonwebtoken';
 
 /**
  * Thrown for logic-level exceptions like bad username or password
@@ -66,7 +67,7 @@ export default class PlayerStore
    */
   async verify(email, password): Promise<Player>
   {
-    const player = this.getPlayerByEmail(email);
+    const player = await this.getPlayerByEmail(email);
 
     if (!player) {
       throw new PlayerStoreError('email does not exist');
@@ -77,6 +78,22 @@ export default class PlayerStore
     }
 
     return player;
+  }
+
+  /**
+   * Create a JWT for a player
+   */
+  generateToken(player)
+  {
+    const payload = player.toJSON();
+    const secret = 'lol';
+    const options = {
+      expiresInMinutes: 60 * 24,
+    };
+
+    const token = jwt.sign(payload, secret, options);
+
+    return token;
   }
 
   /**
