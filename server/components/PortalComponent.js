@@ -10,8 +10,15 @@ export default class PortalComponent
 {
   async start(server)
   {
+    // static files
     const webroot = path.join(__dirname, '../../dist/portal');
     server.use(express.static(webroot));
+
+    // redirect everything else to index
+    server.get('*', (req, res) => {
+      res.sendfile(path.join(webroot, '/index.html'));
+    });
+
     this.log.info('mounted portal webroot from %s', webroot);
   }
 }
