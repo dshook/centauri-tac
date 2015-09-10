@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>
+        Component List
+        <small>Registered server components</small>
+      </h2>
+
+      <table
+        class="table table-striped"
+        ng-table>
+        <tr
+          ng-repeat="component in vm.components">
+
+          <td
+            data-title="'id'">
+            <a ui-sref="^.component-detail({ id: component.id })">
+              {{ component.id }}
+            </a>
+          </td>
+
+          <td
+            data-title="'URL'">
+            {{ component.url }}
+          </td>
+
+          <td
+            data-title="'registered'">
+            <span am-time-ago="component.registered"></span>
+          </td>
+
+          <td
+            data-title="'last ping'">
+            <span am-time-ago="component.lastPing"></span>
+          </td>
+
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

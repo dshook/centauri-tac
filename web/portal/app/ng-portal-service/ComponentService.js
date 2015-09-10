@@ -1,5 +1,6 @@
 import Component from 'models/Component';
 
+// TODO: fix this shit
 const base = 'http://localhost:10123/components/master/rest/';
 
 export default class ComponentService
@@ -13,7 +14,6 @@ export default class ComponentService
   {
     const req = this._Component.query({});
     await req.$promise;
-
     return req.map(x => Component.fromJSON(x));
   }
 }

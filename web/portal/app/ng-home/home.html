@@ -1,50 +1,33 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>Centauri Tac Web Portal</h1>
-    </div>
+<div class="jumbotron">
+  <div class="container">
+    <h1>Portal</h1>
+    <p>Backend services management and content tooling for Centauri Tac</p>
   </div>
+</div>
 
+<div class="container">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-4">
       <h2>
-        <i class="fa fa-cubes"></i>
-        Component List
-        <small>Registered server components</small>
+        <i class="fa fa-cogs"></i>
+        Server Management
       </h2>
-
-      <table 
-        class="table table-striped"
-        ng-table>
-        <tr
-          ng-repeat="component in vm.components">
-          
-          <td
-            data-title="'id'">
-            <a ui-sref="^.component-detail({ id: component.id })">
-              {{ component.id }}
-            </a>
-          </td>
-
-          <td
-            data-title="'URL'">
-            {{ component.url }}
-          </td>
-
-          <td
-            data-title="'registered'">
-            <span am-time-ago="component.registered"></span>
-          </td>
-
-          <td
-            data-title="'last ping'">
-            <span am-time-ago="component.lastPing"></span>
-          </td>
-
-        </tr>
-      </table>
+      <p>View and manage the running microservice components of the backend stack</p>
     </div>
     <div class="col-md-4">
+      <h2>
+        <i class="fa fa-flag"></i>
+        Sandbox
+      </h2>
+      <p>Run in-browser prototypes, PoCs, and reference implementations</p>
+    </div>
+    <div class="col-md-4">
+      <h2>
+        <i class="fa fa-object-ungroup"></i>
+        Workbench
+      </h2>
+      <p>Tooling and editors for creating and modifying game content</p>
     </div>
   </div>
+
 </div>

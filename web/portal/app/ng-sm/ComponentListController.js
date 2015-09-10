@@ -1,13 +1,13 @@
 import ngApply from 'ng-apply-decorator';
 
-export default class HomeController
+export default class ComponentListController
 {
   constructor($scope, components)
   {
     this.$scope = $scope;
     this._components = components;
-    this.components = [];
 
+    // Immediately fetch
     this.refresh();
   }
 

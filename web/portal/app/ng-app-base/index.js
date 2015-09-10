@@ -1,22 +1,25 @@
 import angular from 'angular';
-import uiRouter from 'angular-ui-router';
 import htmlAppBase from './app-base.html';
 import htmlNav from './nav.html';
-
 import ngHome from '../ng-home';
+import ngSm from '../ng-sm';
+import ngSandbox from '../ng-sandbox';
 
 /**
  * Root node of the view state graph
  */
 export default angular.module('centauri.app-base', [
-  uiRouter,
 
   // application parts
   ngHome.name,
+  ngSm.name,
+  ngSandbox.name,
 
 ])
 .config(($stateProvider) => {
+
   $stateProvider
+
     .state('app', {
       abstract: true,
       views: {
@@ -27,11 +30,12 @@ export default angular.module('centauri.app-base', [
         },
 
         // mount header in this view
-        'header@app': {
+        'nav@app': {
           template: htmlNav,
         },
       },
     });
+
 });
 
 
