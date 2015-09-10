@@ -1,6 +1,5 @@
 import Player from 'models/Player';
 import loglevel from 'loglevel-decorator';
-import jwt from 'jsonwebtoken';
 
 /**
  * Thrown for logic-level exceptions like bad username or password
@@ -21,10 +20,11 @@ export class PlayerStoreError extends Error
 @loglevel
 export default class PlayerStore
 {
-  constructor(sql, chash)
+  constructor(sql, chash, auth)
   {
     this.sql = sql;
     this.chash = chash;
+    this.auth = auth;
   }
 
   /**
@@ -85,15 +85,7 @@ export default class PlayerStore
    */
   generateToken(player)
   {
-    const payload = player.toJSON();
-    const secret = 'lol';
-    const options = {
-      expiresInMinutes: 60 * 24,
-    };
-
-    const token = jwt.sign(payload, secret, options);
-
-    return token;
+    return this.auth.generateToken(player, ['player']);
   }
 
   /**

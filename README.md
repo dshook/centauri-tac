@@ -82,4 +82,4 @@ Variable | Notes | Example
 `PORT` | Static file and REST endpoint HTTP port | `10123`
 `BCRYPT_ROUNDS` | How many rounds to use for hashing work for passwords | `10`
 `PUBLIC_URL` | Publically-visible URL for all components in this process | `http://localhost:10123`
-
+`AUTH_SECRET` | Secret used to sign API auth tokens | `aReallyDamnGoodSecret`

@@ -19,7 +19,6 @@ export default class RPCSession
   async connect()
   {
     const components = await this.get('master', 'component');
-
     return components;
   }
 

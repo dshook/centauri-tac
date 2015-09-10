@@ -2,6 +2,7 @@ import HttpService from './services/HttpService.js';
 import PostgresService from './services/PostgresService.js';
 import DatastoreService from './services/DatastoreService.js';
 import HashService from './services/HashService.js';
+import AuthTokenService from './services/AuthTokenService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
@@ -31,6 +32,7 @@ export default {
       HttpService,
       PostgresService,
       DatastoreService,
+      AuthTokenService,
     ],
   },
 
@@ -44,6 +46,7 @@ export default {
       PostgresService,
       DatastoreService,
       HashService,
+      AuthTokenService,
     ],
   },
 
