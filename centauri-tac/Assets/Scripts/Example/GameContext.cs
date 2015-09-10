@@ -1,5 +1,3 @@
-using UnityEngine;
-using System.Collections;
 using Svelto.IoC;
 using Svelto.Ticker;
 
@@ -8,7 +6,7 @@ using Svelto.Ticker;
 
 public class Main:ICompositionRoot
 {
-    public Svelto.IoC.IContainer container { get; private set; }
+    public IContainer container { get; private set; }
     
     public Main()
     {

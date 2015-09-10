@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Svelto.IoC;
 
@@ -7,6 +6,7 @@ public class MonsterPathFollower
     int _currentCheckPoint = 0;
     MonsterPresenter _monster;
     Transform _transform;
+
     [Inject]
     public PathController pathController { set; private get; }
 
