@@ -55,6 +55,9 @@ export default class RPCSession
     return await rp(Object.assign(opt, this._getOptions()));
   }
 
+  /**
+   * Default options
+   */
   _getOptions()
   {
     const token = this.auth.generateToken(null, ['component']);
