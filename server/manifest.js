@@ -3,10 +3,20 @@ import PostgresService from './services/PostgresService.js';
 import DatastoreService from './services/DatastoreService.js';
 import HashService from './services/HashService.js';
 import AuthTokenService from './services/AuthTokenService.js';
+import HttpTransportService from './services/HttpTransportService.js';
+import NetClientService from './services/NetClientService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import PortalComponent from './components/PortalComponent.js';
+
+// common things for all backend components
+const common = [
+  HttpService,
+  HttpTransportService,
+  AuthTokenService,
+  NetClientService,
+];
 
 /**
  * Mapping of server components into various configuration and services
@@ -29,10 +39,9 @@ export default {
   master: {
     TComponent: MasterComponent,
     services: [
-      HttpService,
+      ...common,
       PostgresService,
       DatastoreService,
-      AuthTokenService,
     ],
   },
 
@@ -42,11 +51,10 @@ export default {
   auth: {
     TComponent: AuthComponent,
     services: [
-      HttpService,
+      ...common,
       PostgresService,
       DatastoreService,
       HashService,
-      AuthTokenService,
     ],
   },
 

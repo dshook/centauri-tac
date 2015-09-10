@@ -16,6 +16,7 @@ module.exports = function gruntfile(grunt) {
         // fat 3rd party libs packaged externally to speed up build
         vendorLibs: [
           'angular',
+          'angular-cookies',
           'angular-moment',
           'angular-resource',
           'angular-ui-bootstrap',
@@ -28,6 +29,7 @@ module.exports = function gruntfile(grunt) {
           'loglevel',
           'moment',
           'ng-table',
+          'request',
         ],
       },
 

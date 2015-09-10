@@ -8,12 +8,12 @@ import {HttpHarness} from 'http-tools';
 @loglevel
 export default class ComponentManager
 {
-  constructor(app, httpServer, httpConfig, rpc)
+  constructor(app, httpServer, httpConfig, netClient)
   {
     this.server = httpServer;
     this.config = httpConfig;
     this.app = app;
-    this.rpc = rpc;
+    this.net = netClient;
 
     this.components = new Map();
   }
@@ -34,7 +34,7 @@ export default class ComponentManager
   {
     this.log.info('registering %s@%s', name, url);
 
-    return await this.rpc.send(
+    return await this.net.send(
         'master',
         'component/register',
         { name, url });

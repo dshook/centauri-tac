@@ -21,6 +21,7 @@ export default class PlayerAPI
    * Get list of all players
    */
   @route.get('/')
+  @middleware(roles(['admin', 'component']))
   async getAll()
   {
     return await this.players.all();
@@ -33,7 +34,9 @@ export default class PlayerAPI
   @middleware(roles(['player']))
   async getPlayerProfile(req)
   {
-    return req.auth;
+    const email = req.auth.sub;
+    const player = await this.players.getPlayerByEmail(email);
+    return player;
   }
 
   /**
@@ -55,14 +58,14 @@ export default class PlayerAPI
       }
 
       // translate player error into transport error
-      throw new HttpError(405, err.message);
+      throw new HttpError(400, err.message);
     }
   }
 
   /**
    * Get a token for a valid user
    */
-  @route.post('/auth')
+  @route.post('/login')
   async authPlayer(req)
   {
     const {email, password} = req.body;
@@ -77,7 +80,8 @@ export default class PlayerAPI
         throw err;
       }
 
-      throw new HttpError(405, err.message);
+      // Bad email or password
+      throw new HttpError(401, err.message);
     }
 
     const token = this.players.generateToken(player);

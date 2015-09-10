@@ -4,6 +4,8 @@ import htmlNav from './nav.html';
 import ngHome from '../ng-home';
 import ngSm from '../ng-sm';
 import ngSandbox from '../ng-sandbox';
+import authenticator from './authenticator.js';
+import NavController from './NavController.js';
 
 /**
  * Root node of the view state graph
@@ -22,6 +24,11 @@ export default angular.module('centauri.app-base', [
 
     .state('app', {
       abstract: true,
+
+      resolve: {
+        auth: authenticator,
+      },
+
       views: {
 
         // root view for all app- sub views
@@ -32,6 +39,8 @@ export default angular.module('centauri.app-base', [
         // mount header in this view
         'nav@app': {
           template: htmlNav,
+          controller: NavController,
+          controllerAs: 'vm',
         },
       },
     });

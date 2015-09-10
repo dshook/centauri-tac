@@ -29,3 +29,4 @@ test.app/
 node_modules
 dist
 .env
+.eslintrc

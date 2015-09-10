@@ -6,9 +6,16 @@ import angularMoment from 'angular-moment';
 import 'ng-table';
 import ngPageHeader from './ng-page-header';
 import uibs from 'angular-ui-bootstrap';
-import ngPortalService from './ng-portal-service';
+import HttpTransportProvider from './services/HttpTrasnportService.js';
+import NetClientProvider from './services/NetClientProvider.js';
+import ngLogin from './ng-login';
+import packageData from '../../../package.json';
+import ngCookies from 'angular-cookies';
 
 export default angular.module('centauri', [
+
+  // low level stuff
+  ngCookies,
 
   // UI stuff
   uiRouter,
@@ -17,12 +24,13 @@ export default angular.module('centauri', [
   uibs,
   ngPageHeader.name,
 
-  // services
-  ngPortalService.name,
-
   // view node roots
   ngAppBase.name,
+  ngLogin.name,
 
 ])
-.config(config);
+.config(config)
+.value('packageData', packageData)
+.provider('netClient', NetClientProvider)
+.provider('httpTransport', HttpTransportProvider);
 

@@ -39,6 +39,7 @@
   "homepage": "https://github.com/dshook/centauri-tac#readme",
   "dependencies": {
     "angular": "^1.4.5",
+    "angular-cookies": "^1.4.5",
     "angular-moment": "^0.10.3",
     "angular-resource": "^1.4.5",
     "angular-ui-bootstrap": "^0.13.4",
@@ -65,7 +66,7 @@
     "ng-table": "^0.5.4",
     "nodemon": "^1.4.1",
     "pg": "^4.4.1",
-    "request-promise": "^0.4.3",
+    "request": "^2.61.0",
     "sql-params": "^1.0.1"
   },
   "devDependencies": {

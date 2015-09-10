@@ -57,7 +57,7 @@ module.exports = function compile(grunt) {
         require: options.vendorLibs,
 
         browserifyOptions: {
-          debug: options.debug,
+          debug: false,
         },
 
         configure: function config(b) {

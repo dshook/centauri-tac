@@ -70,11 +70,11 @@ export default class PlayerStore
     const player = await this.getPlayerByEmail(email);
 
     if (!player) {
-      throw new PlayerStoreError('email does not exist');
+      throw new PlayerStoreError('Email does not exist');
     }
 
     if (!await this.chash.check(password, player.password)) {
-      throw new PlayerStoreError('incorrect password');
+      throw new PlayerStoreError('Incorrect password');
     }
 
     return player;

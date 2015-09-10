@@ -10,6 +10,6 @@ export default class ComponentsConfig
      * Master URL to connect to the game network
      */
     this.masterURL = process.env.MASTER_URL ||
-      'http://localhost:10123/components/master/rest';
+      'http://localhost:10123/components/master';
   }
 }

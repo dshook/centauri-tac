@@ -57,6 +57,19 @@
 
     </ul>
 
+    <ul class="nav navbar-nav navbar-right">
+      <li dropdown>
+        <a dropdown-toggle role="button">
+          {{ vm.displayName }}
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="" ng-click="vm.logout()">Log out</a></li>
+        </ul>
+      </li>
+    </ul>
+
+
   </div>
 </nav>
 

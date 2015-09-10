@@ -36,7 +36,7 @@ export default class AuthTokenService
     };
 
     const payload = {
-      user,
+      sub: user ? user.email : null,
       roles,
     };
 
