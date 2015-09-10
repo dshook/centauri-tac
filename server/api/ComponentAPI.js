@@ -1,13 +1,19 @@
 import {HttpError} from 'http-tools';
 import {route} from 'http-tools';
+import {middleware} from 'http-tools';
+import authToken from '../middleware/authToken.js';
+import roles from '../middleware/roles.js';
 
 /**
  * REST API dealing with the Component model
  */
+@middleware(authToken())
+@middleware(roles(['component']))
 export default class ComponentAPI
 {
-  constructor(components)
+  constructor(auth, components)
   {
+    this.auth = auth;
     this.components = components;
   }
 

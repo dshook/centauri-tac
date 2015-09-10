@@ -7,8 +7,9 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class RPCSession
 {
-  constructor(componentsConfig)
+  constructor(auth, componentsConfig)
   {
+    this.auth = auth;
     this._endpoints = new Map();
     this._endpoints.set('master', componentsConfig.masterURL);
   }
@@ -34,7 +35,7 @@ export default class RPCSession
       method: 'GET',
     };
 
-    return await rp(opt);
+    return await rp(Object.assign(opt, this._getOptions()));
   }
 
   /**
@@ -51,6 +52,17 @@ export default class RPCSession
       body: data,
     };
 
-    return await rp(opt);
+    return await rp(Object.assign(opt, this._getOptions()));
+  }
+
+  _getOptions()
+  {
+    const token = this.auth.generateToken(null, ['component']);
+
+    return {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    };
   }
 }
