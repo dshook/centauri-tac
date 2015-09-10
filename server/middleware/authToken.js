@@ -3,7 +3,7 @@ import jwt from 'express-jwt';
 /**
  * Use the injected authToken service to verify
  */
-export default function authToken({ required = false })
+export default function authToken({ required = false } = {})
 {
   return function middleware() {
     if (!this.auth) {
