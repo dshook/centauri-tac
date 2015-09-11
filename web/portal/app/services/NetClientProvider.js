@@ -1,7 +1,7 @@
 import NetClient from 'net-client';
 
 // TODO: get rid of this shit
-const MASTER_URL = 'http://localhost:10123/components/master';
+const MASTER_URL = window.location.origin + '/components/master';
 
 export default class NetClientProvider
 {
