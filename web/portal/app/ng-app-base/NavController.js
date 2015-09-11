@@ -10,7 +10,7 @@ export default class NavController
   get displayName()
   {
     if (this.net.connected) {
-      return 'bob';
+      return 'User';
     }
   }
 
