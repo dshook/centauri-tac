@@ -11,6 +11,7 @@ import NetClientProvider from './services/NetClientProvider.js';
 import ngLogin from './ng-login';
 import packageData from '../../../package.json';
 import ngCookies from 'angular-cookies';
+import ngComponent from './ng-component';
 
 export default angular.module('centauri', [
 
@@ -23,6 +24,7 @@ export default angular.module('centauri', [
   angularMoment,
   uibs,
   ngPageHeader.name,
+  ngComponent.name,
 
   // view node roots
   ngAppBase.name,
