@@ -37,6 +37,27 @@ export default class ComponentStore
   }
 
   /**
+   * Get all components that were registered by this master. Will throw if we
+   * dont know the masterID yet
+   */
+  async allOwned()
+  {
+    const sql = `
+        select * from components as c
+        join component_types as t
+          on c.component_type_id = t.id
+        where c.master_component_id = @masterID
+          `;
+
+    const masterID = this.masterID;
+
+    const resp = await this.sql.tquery(Component, ComponentType)(
+        sql, {masterID}, (c, t) => { c.type = t; return c; });
+
+    return resp.toArray();
+  }
+
+  /**
    * Resolve the id of a component type from its name
    */
   @memoize async getTypeIdByName(name: String): ?Number

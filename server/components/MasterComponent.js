@@ -1,6 +1,7 @@
 import ComponentAPI from '../api/ComponentAPI.js';
 import ComponentTypeAPI from '../api/ComponentTypeAPI.js';
 import loglevel from 'loglevel-decorator';
+import MasterAPI from '../api/MasterAPI.js';
 
 /**
  * Game server component that maintains the list of all other components
@@ -17,6 +18,7 @@ export default class MasterComponent
   {
     rest.mountController('/component/type', ComponentTypeAPI);
     rest.mountController('/component', ComponentAPI);
+    rest.mountController('/', MasterAPI);
 
     // Register this master directly into the database
     const component = await this.components.register(publicURL, 'master');

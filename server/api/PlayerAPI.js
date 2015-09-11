@@ -21,7 +21,7 @@ export default class PlayerAPI
    * Get list of all players
    */
   @route.get('/')
-  @middleware(roles(['admin', 'component']))
+  @middleware(roles(['component']))
   async getAll()
   {
     return await this.players.all();
