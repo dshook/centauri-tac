@@ -45,6 +45,7 @@ export default class LoginController
     }
     catch (err) {
       this.error = err.message;
+      return;
     }
     finally {
       this.loggingIn = false;
