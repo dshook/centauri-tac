@@ -1,4 +1,6 @@
-{{ component.id }}
-<a ui-sref="app.sm.component-detail({id: component.id})">
-  <code>{{ component.type.name }}</code>
-</a>
+<span ng-if="component">
+  {{ component.id }}
+  <a ui-sref="app.sm.component-detail({id: component.id})">
+    <code>{{ component.type.name }}</code>
+  </a>
+</span>

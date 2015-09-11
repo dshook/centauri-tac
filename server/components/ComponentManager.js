@@ -2,29 +2,32 @@ import loglevel from 'loglevel-decorator';
 import {Router} from 'express';
 import {HttpHarness} from 'http-tools';
 
+const PING_INTERVAL = 10 * 1000;
+
 /**
  * Manage booting up and register runtime components
  */
 @loglevel
 export default class ComponentManager
 {
-  constructor(app, httpServer, httpConfig, netClient)
+  constructor(app, httpServer, httpConfig, netClient, components)
   {
     this.server = httpServer;
     this.config = httpConfig;
     this.app = app;
     this.net = netClient;
+    this.components = components;
 
-    this.components = new Map();
+    this.registered = new Map();
   }
 
   addComponent(name, T)
   {
-    if (this.components.has(name)) {
+    if (this.registered.has(name)) {
       throw new Error(`duplicate component name ${name}`);
     }
 
-    this.components.set(name, T);
+    this.registered.set(name, T);
   }
 
   /**
@@ -34,10 +37,21 @@ export default class ComponentManager
   {
     this.log.info('registering %s@%s', name, url);
 
-    return await this.net.send(
-        'master',
-        'component/register',
-        { name, url });
+    const component = await this.net.send('master', 'component/register', { name, url });
+
+    if (name !== 'master') {
+
+      this.log.info('setting up ping interval %d for %s', PING_INTERVAL, name);
+
+      // TODO: should we manage this timer to stop it at some point? component
+      // lifecycle currently is for the entire application's lifecycle....
+      setInterval(async () => {
+        await this.net.send('master', 'component/ping', { id: component.id });
+      }, PING_INTERVAL);
+
+    }
+
+    return component;
   }
 
   /**
@@ -45,31 +59,42 @@ export default class ComponentManager
    */
   async startComponents()
   {
-    for (const [name, T] of this.components.entries()) {
-      this.log.info('creating component "%s" via %s', name, T.name);
+    for (const [name, T] of this.registered.entries()) {
+      this.log.info('creating component %s via %s', name, T.name);
       const component = this.app.make(T);
 
-      // every component gets a scoped express server instance, REST endpoint,
-      // as well as the public URL its running under
+      // Determine the URL this component will be visible at
       const prefix = `/components/${name}`;
-      const router = new Router();
       const publicURL = this.config.publicURL + prefix;
 
+      // register this component with the master
+      let entry = null;
+      if (name !== 'master') {
+        this.log.info('registering component %s', name);
+        entry = await this.register(name, publicURL);
+      }
+
+      // base http for the component
+      const router = new Router();
+
+      // show component id in all requests
+      router.use((req, res, next) => {
+        res.set('component-id', entry ? entry.id : this.components.masterID);
+        next();
+      });
+
+      // rest endpoint
       const rRouter = new Router();
       router.use('/rest', rRouter);
       const rest = new HttpHarness(rRouter, U => this.app.make(U));
 
+      // Mount to root of process HTTP server
       this.server.use(prefix, router);
 
-      this.log.info('starting component "%s" at %s', name, publicURL);
+      // Let the component boot up
+      this.log.info('starting component %s at %s', name, publicURL);
       await component.start(router, rest, publicURL);
-      this.log.info('started component "%s"', name);
-
-      // register this component with the master
-      if (name !== 'master') {
-        this.log.info('registering component %n', name);
-        await this.register(name, publicURL);
-      }
+      this.log.info('started component %s', name);
     }
   }
 }

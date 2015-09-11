@@ -9,9 +9,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ComponentStore
 {
-  constructor(sql)
+  constructor(sql, packageData)
   {
     this.sql = sql;
+
+    this.version = packageData.version;
 
     /**
      * Needs to be set so that store operations can link additional components
@@ -23,17 +25,62 @@ export default class ComponentStore
   /**
    * All components
    */
-  async all()
+  async all(owned = false, id = null)
   {
-    const sql = `
-        select * from components as c
-        join component_types as t
-          on c.component_type_id = t.id`;
+    let sql = `
+      select c.*, t.*, m.*,tm.*
+      from components as c
+      join component_types as t
+        on c.component_type_id = t.id
+      left join components as m
+        on c.master_component_id = m.id
+      left join component_types as tm
+        on m.component_type_id = tm.id
+      where c.last_ping >= now() - '1 hour'::interval
+    `;
 
-    const resp = await this.sql.tquery(Component, ComponentType)(
-        sql, null, (c, t) => { c.type = t; return c; });
+    const params = {};
+
+    // just ones for a specific master
+    if (owned) {
+      sql += ' and c.master_component_id = @masterID ';
+      params.masterID = this.masterID;
+    }
+
+    // if we just want a single one
+    if (id !== null) {
+      sql += ' where c.id = @id ';
+      params.id = id;
+    }
+
+    const types = [
+      Component, ComponentType, Component, ComponentType,
+    ];
+
+    const mapping = (c, t, m, tm) => {
+      c.type = t;
+      c.master = m;
+      if (c.master) {
+        c.master.type = tm;
+      }
+      return c;
+    };
+
+    const resp = await this.sql.tquery(...types)(sql, params, mapping);
 
     return resp.toArray();
+  }
+
+  /**
+   * Update ping time by id
+   */
+  async ping(id)
+  {
+    const resp = await this.sql.query(`update components
+        set last_ping = now()
+        where id = @id returning id`, {id});
+
+    return resp.firstOrNull();
   }
 
   /**
@@ -42,19 +89,7 @@ export default class ComponentStore
    */
   async allOwned()
   {
-    const sql = `
-        select * from components as c
-        join component_types as t
-          on c.component_type_id = t.id
-        where c.master_component_id = @masterID
-          `;
-
-    const masterID = this.masterID;
-
-    const resp = await this.sql.tquery(Component, ComponentType)(
-        sql, {masterID}, (c, t) => { c.type = t; return c; });
-
-    return resp.toArray();
+    return this.all(true);
   }
 
   /**
@@ -72,16 +107,12 @@ export default class ComponentStore
   }
 
   /**
-   * Get a component by its url and type ID if there already is one
+   * Get a component by its id
    */
-  async getComponent(url, typeId): ?Component
+  async get(id)
   {
-    const resp = await this.sql.tquery(Component)(`
-        select * from components
-        where url = @url and
-        component_type_id = @typeId`, {url, typeId});
-
-    return resp.firstOrNull();
+    const resp = await this.all(false, id);
+    return resp ? resp[0] : null;
   }
 
   /**
@@ -99,34 +130,20 @@ export default class ComponentStore
       throw new Error('invalid type name ' + typeName);
     }
 
-    const existing = await this.getComponent(url, typeId);
-
     const masterID = this.masterID;
+    const version = this.version;
 
-    // create brand new component
-    if (!existing) {
-      const resp = await this.sql.tquery(Component)(`
-          insert into components
-            (url, component_type_id, master_component_id)
-          values
-            (@url, @typeId, @masterID)
-          returning *`, {url, typeId, masterID});
+    const resp = await this.sql.tquery(Component)(`
+      insert into components
+        (url, component_type_id, master_component_id, version)
+      values
+        (@url, @typeId, @masterID, @version)
+      returning *`, {url, typeId, masterID, version});
 
-      const component = resp.firstOrNull();
-      this.log.info(`registered new component id=${component.id}`);
+    const component = resp.firstOrNull();
 
-      return component;
-    }
+    this.log.info(`registered new component id=${component.id}`);
 
-    // Update what we have
-    await this.sql.tquery(Component)(`
-        update components
-        set registered = now(),
-        master_component_id = @masterID
-        where id = @id`, {...existing, masterID});
-
-    this.log.info(`updated component id=${existing.id}`);
-
-    return existing;
+    return component;
   }
 }

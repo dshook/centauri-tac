@@ -29,10 +29,18 @@ export default class ComponentAPI
    * Master list of all components, only for portal
    */
   @route.get('/')
-  @middleware(roles(['admin']))
+  // @middleware(roles(['admin']))
   async getAll()
   {
     return await this.components.all();
+  }
+
+  @route.get('/:id')
+  @middleware(roles(['admin']))
+  async getComponentById(req)
+  {
+    const {id} = req.params;
+    return await this.components.get(id);
   }
 
   /**
@@ -44,6 +52,17 @@ export default class ComponentAPI
   {
     const {url, name} = req.body;
     return await this.components.register(url, name);
+  }
+
+  /**
+   * Update ping time from component by id
+   */
+  @route.post('/ping')
+  @middleware(roles(['component']))
+  async ping(req)
+  {
+    const {id} = req.body;
+    return await this.components.ping(id);
   }
 }
 

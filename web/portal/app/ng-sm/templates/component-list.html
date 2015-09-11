@@ -1,5 +1,4 @@
 <div
-  ng-class="{loading: vm.loading}"
   class="container-fluid">
   <div class="row">
     <div class="col-md-12">
@@ -12,7 +11,11 @@
         class="table table-striped"
         ng-table>
         <tr
-          ng-repeat="component in vm.components">
+          ng-class="{danger: !component.isActive}"
+          ng-repeat="component in vm.components
+            | orderBy : 'lastPing':true
+            | limitTo : 15
+            ">
 
           <td
             data-title="'component'">
@@ -21,13 +24,18 @@
           </td>
 
           <td
+            data-title="'version'">
+            v{{ component.version }}
+          </td>
+
+          <td
             data-title="'URL'">
             {{ component.url }}
           </td>
 
           <td
-            data-title="'master ID'">
-            {{ component.masterId }}
+            data-title="'master'">
+            <component-link component="component.master"></component-link>
           </td>
 
           <td

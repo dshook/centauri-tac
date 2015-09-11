@@ -1,31 +1,27 @@
 import ngApply from 'ng-apply-decorator';
+import Component from 'models/Component';
+
+const REFRESH_INTERVAL = 5000;
 
 export default class ComponentListController
 {
-  constructor($scope, netClient)
+  constructor($interval, $scope, netClient)
   {
     this.$scope = $scope;
     this.net = netClient;
 
-    this.loading = false;
-
     // Immediately fetch
     this.refresh();
+
+    const t = $interval(() => this.refresh(), REFRESH_INTERVAL);
+    $scope.$on('$destroy', () => $interval.cancel(t));
   }
 
-  refresh()
+  @ngApply async refresh()
   {
-    this.loading = true;
-    this._refresh();
+    const components = await this.net.send('master', 'component');
+
+    this.components = components.map(c => Component.fromJSON(c));
   }
 
-  @ngApply async _refresh()
-  {
-    try {
-      this.components = await this.net.send('master', 'component');
-    }
-    finally {
-      this.loading = false;
-    }
-  }
 }

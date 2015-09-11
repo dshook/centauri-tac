@@ -11,6 +11,7 @@ module.exports = function gruntfile(grunt) {
         // copied into $webroot$/lib-assets/
         libAssets: [
           './node_modules/font-awesome/fonts/**',
+          './node_modules/bootstrap/fonts/**',
         ],
 
         // fat 3rd party libs packaged externally to speed up build
