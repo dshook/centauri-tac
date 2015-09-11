@@ -9,9 +9,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ComponentStore
 {
-  constructor(sql)
+  constructor(sql, packageData)
   {
     this.sql = sql;
+
+    this.version = packageData.version;
 
     /**
      * Needs to be set so that store operations can link additional components
@@ -129,15 +131,16 @@ export default class ComponentStore
     const existing = await this.getComponent(url, typeId);
 
     const masterID = this.masterID;
+    const version = this.version;
 
     // create brand new component
     if (!existing) {
       const resp = await this.sql.tquery(Component)(`
           insert into components
-            (url, component_type_id, master_component_id)
+            (url, component_type_id, master_component_id, version)
           values
             (@url, @typeId, @masterID)
-          returning *`, {url, typeId, masterID});
+          returning *`, {url, typeId, masterID, version});
 
       const component = resp.firstOrNull();
       this.log.info(`registered new component id=${component.id}`);
@@ -149,8 +152,9 @@ export default class ComponentStore
     await this.sql.tquery(Component)(`
         update components
         set registered = now(),
-        master_component_id = @masterID
-        where id = @id`, {...existing, masterID});
+        master_component_id = @masterID,
+        version = @version
+        where id = @id`, {...existing, masterID, version});
 
     this.log.info(`updated component id=${existing.id}`);
 
