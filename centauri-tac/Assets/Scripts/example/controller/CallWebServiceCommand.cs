@@ -4,28 +4,20 @@
 /// for example, if you need to call a web service. The two most important lines
 /// are the Retain() and Release() calls.
 
-using System;
-using System.Collections;
 using UnityEngine;
-using strange.extensions.context.api;
 using strange.extensions.command.impl;
-using strange.extensions.dispatcher.eventdispatcher.api;
+using ctac.services;
 
 namespace strange.examples.signals
 {
 	//Again, we extend Command, not EventCommand
 	public class CallWebServiceCommand : Command
 	{
-		
 		[Inject]
 		public IExampleModel model{get;set;}
 		
 		[Inject]
-		public IExampleService service{get;set;}
-		
-		//We inject the signal instead of using EventDispatcher
-		[Inject]
-		public ScoreChangedSignal scoreChangedSignal{get;set;}
+		public IJsonNetworkService service{get;set;}
 		
 		//Injecting this string just to demonstrate that you can do this with Signals
 		[Inject]
@@ -55,9 +47,6 @@ namespace strange.examples.signals
 			service.fulfillSignal.RemoveListener(onComplete);
 			
 			model.data = url;
-			
-			//Dispatch using a signal
-			scoreChangedSignal.Dispatch(url);
 			
 			Release ();
 		}

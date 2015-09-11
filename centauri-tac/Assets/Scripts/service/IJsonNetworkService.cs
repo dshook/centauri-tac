@@ -1,9 +1,8 @@
-using System;
-using strange.extensions.dispatcher.eventdispatcher.api;
+using ctac.signals;
 
-namespace strange.examples.signals
+namespace ctac.services
 {
-	public interface IExampleService
+	public interface IJsonNetworkService
 	{
 		void Request(string url);
 		//Instead of an EventDispatcher, we put the actual Signals into the Interface

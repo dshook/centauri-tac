@@ -8,19 +8,19 @@ using strange.extensions.dispatcher.eventdispatcher.impl;
 
 namespace strange.examples.signals
 {
-	public class StartCommand : Command
-	{
-		
-		[Inject(ContextKeys.CONTEXT_VIEW)]
-		public GameObject contextView{get;set;}
-		
-		public override void Execute()
-		{
-			GameObject go = new GameObject();
-			go.name = "ExampleView";
-			go.AddComponent<ExampleView>();
-			go.transform.parent = contextView.transform;
-		}
-	}
+    public class StartCommand : Command
+    {
+
+        [Inject(ContextKeys.CONTEXT_VIEW)]
+        public GameObject contextView { get; set; }
+
+        public override void Execute()
+        {
+            //GameObject go = new GameObject();
+            //go.name = "ExampleView";
+            //go.AddComponent<ExampleView>();
+            //go.transform.parent = contextView.transform;
+        }
+    }
 }
 

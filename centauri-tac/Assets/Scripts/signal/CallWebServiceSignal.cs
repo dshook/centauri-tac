@@ -2,10 +2,9 @@
 /// 
 /// string Just some random text to demonstrate a value being Injected into a Command
 
-using System;
 using strange.extensions.signal.impl;
 
-namespace strange.examples.signals
+namespace ctac.signals
 {
 	public class CallWebServiceSignal : Signal<string>
 	{
