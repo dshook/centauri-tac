@@ -68,6 +68,10 @@ export default class ComponentStore
    */
   async register(url, typeName)
   {
+    if (typeName !== 'master' && !this.masterID) {
+      throw new Error('Cannot register components in store without masterID');
+    }
+
     const typeId = await this.getTypeIdByName(typeName);
 
     if (!typeId) {
@@ -76,12 +80,16 @@ export default class ComponentStore
 
     const existing = await this.getComponent(url, typeId);
 
+    const masterID = this.masterID;
+
     // create brand new component
     if (!existing) {
       const resp = await this.sql.tquery(Component)(`
-          insert into components (url, component_type_id)
-          values (@url, @typeId)
-          returning *`, {url, typeId});
+          insert into components
+            (url, component_type_id, master_component_id)
+          values
+            (@url, @typeId, @masterID)
+          returning *`, {url, typeId, masterID});
 
       const component = resp.firstOrNull();
       this.log.info(`registered new component id=${component.id}`);
@@ -90,8 +98,11 @@ export default class ComponentStore
     }
 
     // Update what we have
-    await this.sql.tquery(Component)(`update components
-        set registered = now() where id = @id`, existing);
+    await this.sql.tquery(Component)(`
+        update components
+        set registered = now(),
+        master_component_id = @masterID
+        where id = @id`, {...existing, masterID});
 
     this.log.info(`updated component id=${existing.id}`);
 
