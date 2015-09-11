@@ -36,6 +36,7 @@ export default class ComponentAPI
   }
 
   @route.get('/:id')
+  @middleware(roles(['admin']))
   async getComponentById(req)
   {
     const {id} = req.params;
