@@ -12,6 +12,12 @@ export default class ComponentStore
   constructor(sql)
   {
     this.sql = sql;
+
+    /**
+     * Needs to be set so that store operations can link additional components
+     * to this master
+     */
+    this.masterID = null;
   }
 
   /**
@@ -31,15 +37,24 @@ export default class ComponentStore
   }
 
   /**
-   * Get a single component
+   * Get all components that were registered by this master. Will throw if we
+   * dont know the masterID yet
    */
-  async getById(id)
+  async allOwned()
   {
-    const resp = await this.sql.tquery(Component)(`
-        select * from components
-        where id = @id`, {id});
+    const sql = `
+        select * from components as c
+        join component_types as t
+          on c.component_type_id = t.id
+        where c.master_component_id = @masterID
+          `;
 
-    return resp.firstOrNull();
+    const masterID = this.masterID;
+
+    const resp = await this.sql.tquery(Component, ComponentType)(
+        sql, {masterID}, (c, t) => { c.type = t; return c; });
+
+    return resp.toArray();
   }
 
   /**
@@ -61,21 +76,10 @@ export default class ComponentStore
    */
   async getComponent(url, typeId): ?Component
   {
-    const resp = await this.sql.tquery(Component)(`select * from components
-        where url = @url and component_type_id = @typeId`, {url, typeId});
-
-    return resp.firstOrNull();
-  }
-
-  /**
-   * Update latest ping time
-   */
-  async pingById(id)
-  {
-    const resp = await this.sql.tquery(Component)(`update components
-        set last_ping = now()
-        where id = @id
-        returning *`, {id});
+    const resp = await this.sql.tquery(Component)(`
+        select * from components
+        where url = @url and
+        component_type_id = @typeId`, {url, typeId});
 
     return resp.firstOrNull();
   }
@@ -85,6 +89,10 @@ export default class ComponentStore
    */
   async register(url, typeName)
   {
+    if (typeName !== 'master' && !this.masterID) {
+      throw new Error('Cannot register components in store without masterID');
+    }
+
     const typeId = await this.getTypeIdByName(typeName);
 
     if (!typeId) {
@@ -93,12 +101,16 @@ export default class ComponentStore
 
     const existing = await this.getComponent(url, typeId);
 
+    const masterID = this.masterID;
+
     // create brand new component
     if (!existing) {
       const resp = await this.sql.tquery(Component)(`
-          insert into components (url, component_type_id)
-          values (@url, @typeId)
-          returning *`, {url, typeId});
+          insert into components
+            (url, component_type_id, master_component_id)
+          values
+            (@url, @typeId, @masterID)
+          returning *`, {url, typeId, masterID});
 
       const component = resp.firstOrNull();
       this.log.info(`registered new component id=${component.id}`);
@@ -107,8 +119,11 @@ export default class ComponentStore
     }
 
     // Update what we have
-    await this.sql.tquery(Component)(`update components
-        set registered = now() where id = @id`, existing);
+    await this.sql.tquery(Component)(`
+        update components
+        set registered = now(),
+        master_component_id = @masterID
+        where id = @id`, {...existing, masterID});
 
     this.log.info(`updated component id=${existing.id}`);
 

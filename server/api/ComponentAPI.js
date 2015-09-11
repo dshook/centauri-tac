@@ -1,4 +1,3 @@
-import {HttpError} from 'http-tools';
 import {route} from 'http-tools';
 import {middleware} from 'http-tools';
 import authToken from '../middleware/authToken.js';
@@ -17,9 +16,20 @@ export default class ComponentAPI
   }
 
   /**
-   * Master list of all components
+   * Master list of all components for this master -- used by clients
+   */
+  @route.get('/owned')
+  async getAllOwned()
+  {
+    return await this.components.allOwned();
+  }
+
+  /**
+   * Master list of all components, only for portal
+   * TODO: need to add admin role
    */
   @route.get('/')
+  @middleware(roles(['player']))
   async getAll()
   {
     return await this.components.all();
@@ -34,23 +44,6 @@ export default class ComponentAPI
   {
     const {url, name} = req.body;
     return await this.components.register(url, name);
-  }
-
-  /**
-   * Ping component for keep-alive time
-   */
-  @route.post('/ping/:id')
-  @middleware(roles(['component']))
-  async ping(req)
-  {
-    const {id} = req.params;
-    const component = await this.components.pingById(id);
-
-    if (!component) {
-      throw new HttpError(404, 'component not found');
-    }
-
-    return component;
   }
 }
 
