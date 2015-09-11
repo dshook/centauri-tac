@@ -11,10 +11,11 @@
     "dev": "grunt ct app:portal --dev=true",
     "dev-server": "nodemon ./server",
     "start": "node ./server",
+    "build": "grunt ct app:portal",
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
-    "prestart": "npm run migrate"
+    "prestart": "npm run migrate && npm run build"
   },
   "browser": {
     "angular": "./node_modules/angular/angular.js",
