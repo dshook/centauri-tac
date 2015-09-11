@@ -51,13 +51,11 @@ export default class PlayerAPI
       return await this.players.register(email, password);
     }
     catch (err) {
-
-      // Dont swallow other runtime errors
       if (!(err instanceof PlayerStoreError)) {
         throw err;
       }
 
-      // translate player error into transport error
+      // invalid registration
       throw new HttpError(400, err.message);
     }
   }
@@ -86,7 +84,7 @@ export default class PlayerAPI
 
     const token = this.players.generateToken(player);
 
-    return { player, token };
+    return {player, token};
   }
 }
 
