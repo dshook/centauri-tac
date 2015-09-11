@@ -1,12 +1,9 @@
 /// The only change in StartCommand is that we extend Command, not EventCommand
-
-using System;
 using UnityEngine;
 using strange.extensions.context.api;
 using strange.extensions.command.impl;
-using strange.extensions.dispatcher.eventdispatcher.impl;
 
-namespace strange.examples.signals
+namespace ctac
 {
     public class StartCommand : Command
     {
@@ -14,8 +11,13 @@ namespace strange.examples.signals
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
 
+        [Inject]
+        public StartAuthSignal startAuth { get; set; }
+
         public override void Execute()
         {
+            //var startAuth = (StartAuthSignal)injectionBinder.GetInstance<StartAuthSignal>();
+            startAuth.Dispatch("");
             //GameObject go = new GameObject();
             //go.name = "ExampleView";
             //go.AddComponent<ExampleView>();

@@ -3,8 +3,8 @@
 /// string The URL
 using strange.extensions.signal.impl;
 
-namespace ctac.signals
+namespace ctac
 {
-    public class FulfillWebServiceRequestSignal : Signal<string> { }
+    public class FulfillWebServiceRequestSignal : Signal<string, object> { }
 }
 
