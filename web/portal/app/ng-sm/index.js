@@ -3,6 +3,7 @@ import htmlServerManagement from './templates/server-management.html';
 import htmlComponentList from './templates/component-list.html';
 import ComponentListController from './ComponentListController.js';
 import htmlComponentDetail from './templates/component-detail.html';
+import ComponentDetailController from './ComponentDetailController.js';
 
 /**
  * Server management view node
@@ -28,6 +29,8 @@ export default angular.module('centauri.server-management', [])
       .state('app.sm.component-detail', {
         url: '/components/:id',
         template: htmlComponentDetail,
+        controller: ComponentDetailController,
+        controllerAs: 'vm',
       })
 
       .state('app.sm.status', {

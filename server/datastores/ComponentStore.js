@@ -23,15 +23,45 @@ export default class ComponentStore
   /**
    * All components
    */
-  async all()
+  async all(owned = false, id = null)
   {
-    const sql = `
-        select * from components as c
-        join component_types as t
-          on c.component_type_id = t.id`;
+    let sql = `
+      select c.*, t.*, m.*,tm.*
+      from components as c
+      join component_types as t
+        on c.component_type_id = t.id
+      left join components as m
+        on c.master_component_id = m.id
+      left join component_types as tm
+        on m.component_type_id = tm.id
+    `;
 
-    const resp = await this.sql.tquery(Component, ComponentType)(
-        sql, null, (c, t) => { c.type = t; return c; });
+    const params = {};
+
+    if (owned) {
+      sql += ` where c.master_component_id = @masterID `;
+      params.masterID = this.masterID;
+    }
+
+    if (id !== null) {
+      sql += ` where c.id = @id `;
+      params.id = id;
+    }
+
+    const types = [
+      Component, ComponentType, Component, ComponentType
+    ];
+
+    const mapping = (c, t, m, tm) => {
+      c.type = t;
+      c.master = m;
+      if (c.master) {
+        c.master.type = tm;
+      }
+      return c;
+    };
+
+    const resp = await this.sql.tquery(...types)(sql, params, mapping);
 
     return resp.toArray();
   }
@@ -42,19 +72,7 @@ export default class ComponentStore
    */
   async allOwned()
   {
-    const sql = `
-        select * from components as c
-        join component_types as t
-          on c.component_type_id = t.id
-        where c.master_component_id = @masterID
-          `;
-
-    const masterID = this.masterID;
-
-    const resp = await this.sql.tquery(Component, ComponentType)(
-        sql, {masterID}, (c, t) => { c.type = t; return c; });
-
-    return resp.toArray();
+    return this.all(true);
   }
 
   /**
@@ -69,6 +87,15 @@ export default class ComponentStore
     const result = resp.firstOrNull();
 
     return result ? result.id : null;
+  }
+
+  /**
+   * Get a component by its id
+   */
+  async get(id)
+  {
+    const resp = await this.all(false, id);
+    return resp ? resp[0] : null;
   }
 
   /**

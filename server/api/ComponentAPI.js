@@ -35,6 +35,13 @@ export default class ComponentAPI
     return await this.components.all();
   }
 
+  @route.get('/:id')
+  async getComponentById(req)
+  {
+    const {id} = req.params;
+    return await this.components.get(id);
+  }
+
   /**
    * Register a component with the master, only happens from a component
    */
