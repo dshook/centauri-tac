@@ -65,7 +65,11 @@ export default class ComponentManager
       await component.start(router, rest, publicURL);
       this.log.info('started component "%s"', name);
 
-      await this.register(name, publicURL);
+      // register this component with the master
+      if (name !== 'master') {
+        this.log.info('registering component %n', name);
+        await this.register(name, publicURL);
+      }
     }
   }
 }

@@ -12,6 +12,12 @@ export default class ComponentStore
   constructor(sql)
   {
     this.sql = sql;
+
+    /**
+     * Needs to be set so that store operations can link additional components
+     * to this master
+     */
+    this.masterID = null;
   }
 
   /**
@@ -28,18 +34,6 @@ export default class ComponentStore
         sql, null, (c, t) => { c.type = t; return c; });
 
     return resp.toArray();
-  }
-
-  /**
-   * Get a single component
-   */
-  async getById(id)
-  {
-    const resp = await this.sql.tquery(Component)(`
-        select * from components
-        where id = @id`, {id});
-
-    return resp.firstOrNull();
   }
 
   /**
@@ -61,21 +55,10 @@ export default class ComponentStore
    */
   async getComponent(url, typeId): ?Component
   {
-    const resp = await this.sql.tquery(Component)(`select * from components
-        where url = @url and component_type_id = @typeId`, {url, typeId});
-
-    return resp.firstOrNull();
-  }
-
-  /**
-   * Update latest ping time
-   */
-  async pingById(id)
-  {
-    const resp = await this.sql.tquery(Component)(`update components
-        set last_ping = now()
-        where id = @id
-        returning *`, {id});
+    const resp = await this.sql.tquery(Component)(`
+        select * from components
+        where url = @url and
+        component_type_id = @typeId`, {url, typeId});
 
     return resp.firstOrNull();
   }

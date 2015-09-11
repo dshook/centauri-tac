@@ -1,4 +1,3 @@
-import {HttpError} from 'http-tools';
 import {route} from 'http-tools';
 import {middleware} from 'http-tools';
 import authToken from '../middleware/authToken.js';
@@ -17,7 +16,7 @@ export default class ComponentAPI
   }
 
   /**
-   * Master list of all components
+   * Master list of all components, public endpoint
    */
   @route.get('/')
   async getAll()
@@ -34,23 +33,6 @@ export default class ComponentAPI
   {
     const {url, name} = req.body;
     return await this.components.register(url, name);
-  }
-
-  /**
-   * Ping component for keep-alive time
-   */
-  @route.post('/ping/:id')
-  @middleware(roles(['component']))
-  async ping(req)
-  {
-    const {id} = req.params;
-    const component = await this.components.pingById(id);
-
-    if (!component) {
-      throw new HttpError(404, 'component not found');
-    }
-
-    return component;
   }
 }
 
