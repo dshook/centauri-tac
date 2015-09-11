@@ -18,10 +18,10 @@ export default class PlayerAPI
   }
 
   /**
-   * Get list of all players
+   * Get list of all players (for portal)
    */
   @route.get('/')
-  @middleware(roles(['component']))
+  @middleware(roles(['admin']))
   async getAll()
   {
     return await this.players.all();
@@ -40,7 +40,7 @@ export default class PlayerAPI
   }
 
   /**
-   * Register an email / username
+   * Register an email / username (public)
    */
   @route.post('/register')
   async register(req)
@@ -63,7 +63,7 @@ export default class PlayerAPI
   }
 
   /**
-   * Get a token for a valid user
+   * Get a token for a valid user (public)
    */
   @route.post('/login')
   async authPlayer(req)
@@ -89,3 +89,4 @@ export default class PlayerAPI
     return { player, token };
   }
 }
+

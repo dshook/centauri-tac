@@ -85,7 +85,13 @@ export default class PlayerStore
    */
   generateToken(player)
   {
-    return this.auth.generateToken(player, ['player']);
+    const roles = ['player'];
+
+    if (player.isAdmin) {
+      roles.push('admin');
+    }
+
+    return this.auth.generateToken(player, roles);
   }
 
   /**

@@ -16,7 +16,8 @@ export default class ComponentAPI
   }
 
   /**
-   * Master list of all components for this master -- used by clients
+   * Master list of all components for this master -- used by clients at bootup
+   * so its public
    */
   @route.get('/owned')
   async getAllOwned()
@@ -26,17 +27,16 @@ export default class ComponentAPI
 
   /**
    * Master list of all components, only for portal
-   * TODO: need to add admin role
    */
   @route.get('/')
-  @middleware(roles(['player']))
+  @middleware(roles(['admin']))
   async getAll()
   {
     return await this.components.all();
   }
 
   /**
-   * Register a component with the master
+   * Register a component with the master, only happens from a component
    */
   @route.post('/register')
   @middleware(roles(['component']))
