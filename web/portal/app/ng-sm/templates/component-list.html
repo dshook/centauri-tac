@@ -25,6 +25,13 @@
           </td>
 
           <td
+            data-title="'registered by'">
+            <a ui-sref="^.component-detail({ id: component.masterId })">
+              {{ component.masterId }}
+            </a>
+          </td>
+
+          <td
             data-title="'registered'">
             <span am-time-ago="component.registered"></span>
           </td>
