@@ -7,12 +7,25 @@ export default class ComponentListController
     this.$scope = $scope;
     this.net = netClient;
 
+    this.loading = false;
+
     // Immediately fetch
     this.refresh();
   }
 
-  @ngApply async refresh()
+  refresh()
   {
-    this.components = await this.net.send('master', 'component');
+    this.loading = true;
+    this._refresh();
+  }
+
+  @ngApply async _refresh()
+  {
+    try {
+      this.components = await this.net.send('master', 'component');
+    }
+    finally {
+      this.loading = false;
+    }
   }
 }

@@ -9,49 +9,25 @@
 
     <ul class="nav navbar-nav navbar-left">
 
-      <li dropdown>
+      <li dropdown ng-repeat="menu in vm.menuLeft">
         <a dropdown-toggle role="button">
-          <i class="fa fa-cogs"></i>
-          Server Management <span class="caret"></span>
+          <i class="fa fa-{{ menu.icon }}"></i>
+          {{ menu.title }}
+          <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-          <li><a ui-sref=".sm.component-list">
-              Component List
-          </a></li>
-          <li class="disabled"><a ui-sref=".sm.status">
-              Server Status
-          </a></li>
-          <li class="divider"></li>
-          <li class="disabled"><a ui-sref=".players.create">
-              Create player
-          </a></li>
-          <li class="disabled"><a ui-sref=".players.list">
-              Player List
-          </a></li>
-        </ul>
-      </li>
-
-      <li dropdown>
-        <a dropdown-toggle role="button">
-          <i class="fa fa-flag"></i>
-          Sandbox <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a ui-sref=".sandbox.player-auth">
-              Player Auth
-          </a></li>
-        </ul>
-      </li>
-
-      <li dropdown>
-        <a dropdown-toggle role="button">
-          <i class="fa fa-object-ungroup"></i>
-          Workbench <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-          <li class="disabled"><a ui-sref=".workbench.cards.list">
-              Card List
-          </a></li>
+          <li
+            ng-class="{
+              divider: item.divider,
+              disabled: item.disabled,
+            }"
+            ng-repeat="item in menu.items">
+            <a
+              ng-if="!item.divider"
+              ui-sref="{{ item.sref }}">
+              {{ item.title }}
+            </a>
+          </li>
         </ul>
       </li>
 
