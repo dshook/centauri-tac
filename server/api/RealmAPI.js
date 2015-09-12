@@ -27,7 +27,7 @@ export default class RealmAPI
    * TODO: decorator for C# client REST
    */
   @route.get('/')
-  @route.post('/:realm/components')
+  @route.post('/')
   async availableRealms()
   {
     return await this.components.availableRealms();
