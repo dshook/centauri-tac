@@ -66,9 +66,12 @@ export default class ComponentStore
       from components c
       join component_types t on c.component_type_id = t.id
       where c.realm is not null
+      and c.last_ping >= now() - '10 seconds'::interval
       and t.name = 'auth'`);
 
-    return resp.toArray();
+    const realms = resp.toArray().map(x => { return { name: x.realm }; });
+
+    return realms;
   }
 
   /**
