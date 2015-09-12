@@ -94,7 +94,6 @@
         <input
           ng-change="vm.connect()"
           ng-model="vm.realm"
-          ng-disabled="!vm.net.connected"
           class="form-control"
           placeholder="e.g local">
 
@@ -107,7 +106,6 @@
     <div class ="form-group">
       <div class="btn-group" dropdown>
         <button
-          ng-disabled="!vm.net.connected"
           class="btn btn-default" dropdown-toggle>
           {{ vm.realm }}
           <span class="caret"></span>
@@ -115,7 +113,7 @@
         <ul class="dropdown-menu">
           <li
             ng-repeat="realm in vm.realms">
-            <a href ng-click="vm.realm = realm.name">
+            <a href ng-click="vm.setRealm(realm.name)">
               {{ realm.name }}
             </a>
           </li>

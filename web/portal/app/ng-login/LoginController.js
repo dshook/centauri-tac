@@ -39,6 +39,12 @@ export default class LoginController
     this.connect();
   }
 
+  setRealm(realm)
+  {
+    this.realm = realm;
+    this.connect();
+  }
+
   /**
    * Get realm list
    */
