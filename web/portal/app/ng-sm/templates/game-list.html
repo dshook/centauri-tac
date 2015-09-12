@@ -20,7 +20,16 @@
           <td
             data-title="'hosted on'">
             <span show-realm="true" component="game.gameComponent"></span>
-            </a>
+          </td>
+
+          <td
+            data-title="'players'">
+            {{ game.currentPlayerCount }} / {{ game.maxPlayerCount }}
+          </td>
+
+          <td
+            data-title="'host player'">
+            <span player="game.hostPlayer"></span>
           </td>
 
           <td
