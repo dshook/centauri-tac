@@ -1,6 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import {Router} from 'express';
 import {HttpHarness} from 'http-tools';
+import cors from 'cors';
 
 const PING_INTERVAL = 5 * 1000;
 
@@ -80,6 +81,12 @@ export default class ComponentManager
       // rest endpoint
       const rRouter = new Router();
       router.use('/rest', rRouter);
+      rRouter.use(cors({
+        allowedHeaders: [
+          'content-type',
+          'authorization',
+        ],
+      }));
       const rest = new HttpHarness(rRouter, U => this.app.make(U));
 
       // Mount to root of process HTTP server
