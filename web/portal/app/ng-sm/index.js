@@ -6,6 +6,7 @@ import htmlComponentDetail from './templates/component-detail.html';
 import ComponentDetailController from './ComponentDetailController.js';
 import htmlGameList from './templates/game-list.html';
 import GameListController from './GameListController.js';
+import htmlGamelistComponent from './templates/gamelist-component.html';
 
 /**
  * Server management view node
@@ -40,6 +41,11 @@ export default angular.module('centauri.server-management', [])
         template: htmlComponentDetail,
         controller: ComponentDetailController,
         controllerAs: 'vm',
+      })
+
+      .state('app.sm.component-detail.gamelist', {
+        url: '/gamelist',
+        template: htmlGamelistComponent,
       })
 
       .state('app.sm.status', {
