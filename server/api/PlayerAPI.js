@@ -86,7 +86,7 @@ export default class PlayerAPI
 
     const token = this.players.generateToken(player);
 
-    return {player, token};
+    return {token};
   }
 }
 
