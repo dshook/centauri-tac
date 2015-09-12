@@ -17,12 +17,9 @@ export default class NavController
         title: 'Server Management',
         icon: 'cogs',
         items: [
-          { title: 'Game list', sref: '.sm.game-list' },
-          { divider: true},
           { title: 'Component list', sref: '.sm.component-list' },
-          { divider: true},
+          { title: 'Game list', sref: '.sm.game-list' },
           { title: 'Player list', sref: '.players.list' },
-          { title: 'Create player', sref: '.players.create' },
           { divider: true},
           { title: 'Server status', sref: '.sm.component-list', disabled: true },
         ],
