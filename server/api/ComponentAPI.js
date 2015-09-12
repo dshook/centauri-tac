@@ -26,6 +26,18 @@ export default class ComponentAPI
   }
 
   /**
+   * Single component
+   */
+  @route.get('/:id')
+  @middleware(roles(['admin']))
+  async getComponent(req)
+  {
+    const id = 0 | req.params.id;
+    const all = await this.components.all();
+    return all.find(x => x.id === id) || null;
+  }
+
+  /**
    * Register a component with the master, only happens from a component
    */
   @route.post('/register')
