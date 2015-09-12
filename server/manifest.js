@@ -9,6 +9,7 @@ import NetClientService from './services/NetClientService.js';
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import PortalComponent from './components/PortalComponent.js';
+import GamelistComponent from './components/GamelistComponent.js';
 
 // common things for all backend components
 const common = [
@@ -24,13 +25,22 @@ const common = [
 export default {
 
   /**
+   * Manages game servers
+   */
+  gamelist: {
+    TComponent: GamelistComponent,
+    services: [
+      ...common,
+    ],
+  },
+
+  /**
    * View status of the servers
    */
   portal: {
     TComponent: PortalComponent,
     services: [
       ...common,
-      HttpService,
     ],
   },
 
