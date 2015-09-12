@@ -10,6 +10,15 @@ export default async function authenticator($cookies, $state, netClient)
 {
   _d('attempting to authenticate locally');
 
+  // check login to see if we can update net client
+  const login = $cookies.getObject('login');
+
+  if (login) {
+    netClient.masterURL = login.url;
+    netClient.realm = login.realm;
+    _d('restored master URL and realm from previous session');
+  }
+
   try {
 
     // attempt to connect if we can
