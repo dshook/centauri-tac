@@ -3,6 +3,7 @@ using UnityEngine;
 using strange.extensions.context.api;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -15,14 +16,17 @@ namespace ctac
         public IComponentModel componentModel { get; set; } 
 
         [Inject]
+        public IAuthModel authModel { get; set; }
+
+        [Inject]
         public FulfillWebServiceRequestSignal fulfillSignal { get; set; }
 
         private string componentName;
         private string methodName;
-        private object data;
+        private Dictionary<string, string> data;
         private Type type;
 
-        public void Request(string componentName, string methodName, Type type, object data = null)
+        public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
         {
             this.componentName = componentName;
             this.methodName = methodName;
@@ -36,20 +40,37 @@ namespace ctac
         private IEnumerator MakeRequest()
         {
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
-            WWW www = new WWW(url);
+
+            WWWForm form = null;
+            if (data != null) {
+                form = new WWWForm();
+                foreach (var key in data.Keys) {
+                    form.AddField(key, data[key]);
+                }
+            }
+            if (!string.IsNullOrEmpty(authModel.token)){
+                form.AddField("auth", JsonConvert.SerializeObject(new { bearer = authModel.token }));
+            }
+            WWW www;
+            if (form != null)
+            {
+                www = new WWW(url, form);
+            }
+            else
+            {
+                www = new WWW(url);
+            }
             yield return www;
 
             object ret = null;
             try
             {
                 ret = JsonConvert.DeserializeObject(www.text, type);
-                //ret = new System.Object();
             }
             catch (Exception e)
             {
                 Debug.LogError("Could not deserialize json " + e.Message);
             }
-            //Pass back some fake data via a Signal
             fulfillSignal.Dispatch(url, ret);
         }
     }
