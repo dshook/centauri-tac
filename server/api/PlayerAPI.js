@@ -29,8 +29,10 @@ export default class PlayerAPI
 
   /**
    * Get the current users profile
+   * TODO: decorator for C# client REST
    */
   @route.get('/me')
+  @route.post('/me')
   @middleware(roles(['player']))
   async getPlayerProfile(req)
   {

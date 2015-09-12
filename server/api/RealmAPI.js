@@ -12,8 +12,10 @@ export default class RealmAPI
 
   /**
    * Get all active compoents for a realm
+   * TODO: decorator for C# client REST
    */
   @route.get('/:realm/components')
+  @route.post('/:realm/components')
   async activeComponents(req)
   {
     const {realm} = req.params;
@@ -22,8 +24,10 @@ export default class RealmAPI
 
   /**
    * Realms currently available
+   * TODO: decorator for C# client REST
    */
   @route.get('/')
+  @route.post('/:realm/components')
   async availableRealms()
   {
     return await this.components.availableRealms();
