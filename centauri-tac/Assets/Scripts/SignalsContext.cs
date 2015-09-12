@@ -39,12 +39,14 @@ namespace ctac
         {
             injectionBinder.Bind<IConfigModel>().To<ConfigModel>().ToSingleton();
             injectionBinder.Bind<IAuthModel>().To<AuthModel>().ToSingleton();
+            injectionBinder.Bind<IPlayerModel>().To<PlayerModel>().ToSingleton();
             injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<TryLoginSignal>().To<TryLoginSignal>().ToSingleton();
             injectionBinder.Bind<LoggedInSignal>().To<LoggedInSignal>().ToSingleton();
             injectionBinder.Bind<FailedAuthSignal>().To<FailedAuthSignal>().ToSingleton();
             injectionBinder.Bind<NeedLoginSignal>().To<NeedLoginSignal>().ToSingleton();
+            injectionBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedSignal>().ToSingleton();
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
 
@@ -53,6 +55,7 @@ namespace ctac
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
             commandBinder.Bind<StartConnectSignal>().To<ServerConnnectCommand>();
             commandBinder.Bind<ConnectedSignal>().To<ServerAuthCommand>();
+            commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
 
             injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();
         }

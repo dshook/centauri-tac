@@ -24,6 +24,9 @@ namespace ctac
         public IAuthModel authModel { get; set; }
 
         [Inject]
+        public IPlayerModel playerModel { get; set; }
+
+        [Inject]
         public IJsonNetworkService netService { get; set; }
 
         const string playerTokenKey = "playerToken";
@@ -38,8 +41,7 @@ namespace ctac
             if (!string.IsNullOrEmpty(playerToken))
             {
                 authModel.token = playerToken;
-                netService.fulfillSignal.AddListener(onLoginComplete);
-                netService.Request("auth", "player/me", authModel.GetType());
+                LoggedIn();
             }
             else
             {
@@ -70,15 +72,20 @@ namespace ctac
             else
             {
                 Debug.Log("Authenticated");
-                authModel = data as AuthModel;
+                var newAuth = data as IAuthModel;
+                authModel.token = newAuth.token;
                 PlayerPrefs.SetString(playerTokenKey, authModel.token);
 
-                loginSignal.RemoveListener(setCredentials);
-
-                loggedInSignal.Dispatch(authModel);
+                LoggedIn();
             }
 
             Release();
+        }
+
+        private void LoggedIn()
+        {
+            loginSignal.RemoveListener(setCredentials);
+            loggedInSignal.Dispatch();
         }
     }
 }
