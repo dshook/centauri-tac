@@ -13,6 +13,9 @@ namespace ctac
         public TryLoginSignal loginSignal { get; set; }
 
         [Inject]
+        public FailedAuthSignal failedAuth { get; set; }
+
+        [Inject]
         public LoggedInSignal loggedInSignal { get; set; }
 
         public override void OnRegister()
@@ -20,12 +23,18 @@ namespace ctac
             view.clickSignal.AddListener(onLoginClicked);
             view.init();
 
+            failedAuth.AddListener(OnFailAuth);
             loggedInSignal.AddListener(onLoggedIn);
         }
 
         public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onLoginClicked);
+        }
+
+        public void OnFailAuth()
+        {
+            view.onBadPassword();
         }
 
         private void onLoginClicked()

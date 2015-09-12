@@ -15,6 +15,9 @@ namespace ctac
         public LoggedInSignal loggedInSignal { get; set; }
 
         [Inject]
+        public FailedAuthSignal failedAuth { get; set; }
+
+        [Inject]
         public IAuthModel authModel { get; set; }
 
         [Inject]
@@ -43,6 +46,7 @@ namespace ctac
             if (data == null)
             {
                 Debug.LogError("Failed Authenticate");
+                failedAuth.Dispatch();
             }
             else
             {

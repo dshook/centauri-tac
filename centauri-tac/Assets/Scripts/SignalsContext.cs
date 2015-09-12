@@ -43,6 +43,7 @@ namespace ctac
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<TryLoginSignal>().To<TryLoginSignal>().ToSingleton();
             injectionBinder.Bind<LoggedInSignal>().To<LoggedInSignal>().ToSingleton();
+            injectionBinder.Bind<FailedAuthSignal>().To<FailedAuthSignal>().ToSingleton();
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
 
