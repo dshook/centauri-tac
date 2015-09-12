@@ -32,7 +32,7 @@ export default class ComponentAPI
   @middleware(roles(['component']))
   async register(req)
   {
-    const {url, name, realm} = req.body;
+    const {url, name, realm, version} = req.body;
     return await this.components.register(url, name, realm);
   }
 

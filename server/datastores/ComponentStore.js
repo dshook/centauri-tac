@@ -9,10 +9,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ComponentStore
 {
-  constructor(sql, packageData)
+  constructor(sql, versionData)
   {
     this.sql = sql;
-    this.version = packageData.version;
+    this.version = versionData.semverString;
   }
 
   /**
@@ -104,7 +104,7 @@ export default class ComponentStore
   /**
    * Add a component
    */
-  async register(url, typeName, realm = null)
+  async register(url, typeName, realm = null, version = this.version)
   {
     if (!realm && typeName !== 'master') {
       throw new Error(
@@ -116,8 +116,6 @@ export default class ComponentStore
     if (!typeId) {
       throw new Error('invalid type name ' + typeName);
     }
-
-    const version = this.version;
 
     const resp = await this.sql.tquery(Component)(`
 

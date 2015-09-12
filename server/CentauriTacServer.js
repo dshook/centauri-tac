@@ -4,6 +4,7 @@ import {autobind} from 'core-decorators';
 import Application from 'billy';
 import ComponentService from './services/ComponentService.js';
 import ComponentsConfig from './config/ComponentsConfig.js';
+import gitDescribe from 'git-describe';
 
 /**
  * Application entry point
@@ -28,8 +29,7 @@ export default class CentauriTacServer
   async start()
   {
     this.app.registerInstance('componentsConfig', new ComponentsConfig());
-
-    this.app.registerInstance('packageData', require('../package.json'));
+    this.app.registerInstance('versionData', gitDescribe());
 
     // Add all needed services for components
     this.components.forEach(this._processComponent);
