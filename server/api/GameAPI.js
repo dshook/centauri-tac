@@ -13,6 +13,6 @@ export default class GameAPI
   @route.get('/')
   async getAllGames()
   {
-    return [ ];
+    return await this.games.all();
   }
 }
