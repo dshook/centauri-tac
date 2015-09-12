@@ -44,6 +44,7 @@ namespace ctac
             injectionBinder.Bind<TryLoginSignal>().To<TryLoginSignal>().ToSingleton();
             injectionBinder.Bind<LoggedInSignal>().To<LoggedInSignal>().ToSingleton();
             injectionBinder.Bind<FailedAuthSignal>().To<FailedAuthSignal>().ToSingleton();
+            injectionBinder.Bind<NeedLoginSignal>().To<NeedLoginSignal>().ToSingleton();
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
 

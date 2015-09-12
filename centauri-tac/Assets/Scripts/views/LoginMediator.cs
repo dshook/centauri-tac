@@ -10,6 +10,9 @@ namespace ctac
         public LoginView view { get; set; }
 
         [Inject]
+        public NeedLoginSignal needLoginSignal { get; set; }
+
+        [Inject]
         public TryLoginSignal loginSignal { get; set; }
 
         [Inject]
@@ -21,9 +24,9 @@ namespace ctac
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onLoginClicked);
-            view.init();
 
-            failedAuth.AddListener(OnFailAuth);
+            needLoginSignal.AddListener(onNeedLogin);
+            failedAuth.AddListener(onFailAuth);
             loggedInSignal.AddListener(onLoggedIn);
         }
 
@@ -32,7 +35,7 @@ namespace ctac
             view.clickSignal.RemoveListener(onLoginClicked);
         }
 
-        public void OnFailAuth()
+        public void onFailAuth()
         {
             view.onBadPassword();
         }
@@ -43,10 +46,21 @@ namespace ctac
             loginSignal.Dispatch(view.email.text, view.password.text);
         }
 
+        private void onNeedLogin()
+        {
+            view.enabled = true;
+            view.gameObject.SetActive(true);
+            view.init();
+        }
+
         private void onLoggedIn(IAuthModel auth)
         {
             view.enabled = false;
             view.gameObject.SetActive(false);
+
+            needLoginSignal.RemoveListener(onNeedLogin);
+            failedAuth.RemoveListener(onFailAuth);
+            loggedInSignal.RemoveListener(onLoggedIn);
         }
     }
 }

@@ -4,6 +4,7 @@ using strange.extensions.context.api;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace ctac
 {
@@ -40,26 +41,26 @@ namespace ctac
         private IEnumerator MakeRequest()
         {
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
+            var headers = new Dictionary<string, string>()
+            {
+                {"accept", "application / json"}
+            };
 
-            WWWForm form = null;
+            WWWForm form = new WWWForm();
             if (data != null) {
-                form = new WWWForm();
                 foreach (var key in data.Keys) {
                     form.AddField(key, data[key]);
                 }
             }
-            if (!string.IsNullOrEmpty(authModel.token)){
-                form.AddField("auth", JsonConvert.SerializeObject(new { bearer = authModel.token }));
+            //for whatever reason, you have to add something to the form for it to be considered a POST request
+            //but not having anything doesn't work as a GET request
+            form.AddField("z", "z");
+
+            if (!string.IsNullOrEmpty(authModel.token)) {
+                headers.Add("authorization", "Bearer " + authModel.token );
             }
-            WWW www;
-            if (form != null)
-            {
-                www = new WWW(url, form);
-            }
-            else
-            {
-                www = new WWW(url);
-            }
+
+            WWW www = new WWW(url, form.data, headers);
             yield return www;
 
             object ret = null;

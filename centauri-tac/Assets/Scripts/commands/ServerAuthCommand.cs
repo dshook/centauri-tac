@@ -9,6 +9,9 @@ namespace ctac
     public class ServerAuthCommand : Command
     {
         [Inject]
+        public NeedLoginSignal needLoginSignal { get; set; }
+
+        [Inject]
         public TryLoginSignal loginSignal { get; set; }
 
         [Inject]
@@ -23,10 +26,25 @@ namespace ctac
         [Inject]
         public IJsonNetworkService netService { get; set; }
 
+        const string playerTokenKey = "playerToken";
+
         public override void Execute()
         {
             Retain();
             loginSignal.AddListener(setCredentials);
+
+            //determine if we need to authenticate with the server to fetch a token
+            var playerToken = PlayerPrefs.GetString(playerTokenKey);
+            if (!string.IsNullOrEmpty(playerToken))
+            {
+                authModel.token = playerToken;
+                netService.fulfillSignal.AddListener(onLoginComplete);
+                netService.Request("auth", "player/me", authModel.GetType());
+            }
+            else
+            {
+                needLoginSignal.Dispatch();
+            }
         }
 
         private void setCredentials(string user, string password)
@@ -47,11 +65,15 @@ namespace ctac
             {
                 Debug.LogError("Failed Authenticate");
                 failedAuth.Dispatch();
+                needLoginSignal.Dispatch();
             }
             else
             {
                 Debug.Log("Authenticated");
                 authModel = data as AuthModel;
+                PlayerPrefs.SetString(playerTokenKey, authModel.token);
+
+                loginSignal.RemoveListener(setCredentials);
 
                 loggedInSignal.Dispatch(authModel);
             }
