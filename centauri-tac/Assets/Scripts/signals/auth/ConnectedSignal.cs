@@ -1,7 +1,8 @@
 using strange.extensions.signal.impl;
+using ctac;
 
 namespace ctac.signals
 {
-    public class CallWebServiceSignal : Signal<string> { }
+    public class ConnectedSignal : Signal { }
 }
 

@@ -4,7 +4,6 @@ using strange.extensions.context.impl;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using ctac.signals;
-using strange.examples.signals;
 
 namespace ctac
 {
@@ -42,17 +41,17 @@ namespace ctac
             injectionBinder.Bind<IAuthModel>().To<AuthModel>().ToSingleton();
             injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
+            injectionBinder.Bind<TryLoginSignal>().To<TryLoginSignal>().ToSingleton();
+            injectionBinder.Bind<LoggedInSignal>().To<LoggedInSignal>().ToSingleton();
 
-            mediationBinder.Bind<ExampleView>().To<ExampleMediator>();
+            mediationBinder.Bind<LoginView>().To<LoginMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
-            commandBinder.Bind<StartAuthSignal>().To<StartAuthCommand>();
+            commandBinder.Bind<StartConnectSignal>().To<ServerConnnectCommand>();
+            commandBinder.Bind<ConnectedSignal>().To<ServerAuthCommand>();
 
-            //In MyFirstProject, there's are SCORE_CHANGE and FULFILL_SERVICE_REQUEST Events.
-            //Here we change that to a Signal. The Signal isn't bound to any Command,
-            //so we map it as an injection so a Command can fire it, and a Mediator can receive it
             injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();
         }
     }
