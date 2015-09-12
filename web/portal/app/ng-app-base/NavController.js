@@ -17,6 +17,8 @@ export default class NavController
         title: 'Server Management',
         icon: 'cogs',
         items: [
+          { title: 'Game list', sref: '.sm.game-list' },
+          { divider: true},
           { title: 'Component list', sref: '.sm.component-list' },
           { divider: true},
           { title: 'Player list', sref: '.players.list' },
