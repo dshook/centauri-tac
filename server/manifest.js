@@ -10,6 +10,7 @@ import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import PortalComponent from './components/PortalComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
+import GameComponent from './components/GameComponent.js';
 
 // common things for all backend components
 const common = [
@@ -23,6 +24,16 @@ const common = [
  * Mapping of server components into various configuration and services
  */
 export default {
+
+  /**
+   * Runs game instances
+   */
+  game: {
+    TComponent: GameComponent,
+    services: [
+      ...common,
+    ],
+  },
 
   /**
    * Manages game servers
