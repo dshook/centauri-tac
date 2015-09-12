@@ -7,6 +7,34 @@
         <small>All games across all realms</small>
       </h2>
 
+      <table
+        class="table table-striped"
+        ng-table>
+        <tr ng-repeat="game in vm.games">
+
+          <td
+            data-title="'name'">
+            {{ game.name }}
+          </td>
+
+          <td
+            data-title="'hosted on'">
+            <span show-realm="true" component="game.gameComponent"></span>
+            </a>
+          </td>
+
+          <td
+            data-title="'registered'">
+            <span am-time-ago="game.registered"></span>
+          </td>
+
+          <td
+            data-title="'last ping'">
+            <span am-time-ago="game.lastPing"></span>
+          </td>
+
+        </tr>
+      </table>
 
 
     </div>
