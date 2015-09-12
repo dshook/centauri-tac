@@ -29,7 +29,7 @@ namespace ctac
         {
             if (name == "master")
             {
-                return config.baseUrl + "components/master/rest";
+                return config.baseUrl + "components/master/rest/realm/" + config.realm;
             }
 
             var component = componentList.Where(x => x.type.name == name).FirstOrDefault();

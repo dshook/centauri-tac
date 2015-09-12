@@ -23,7 +23,7 @@ namespace ctac
         {
             Retain();
             netService.fulfillSignal.AddListener(onConnectComplete);
-            netService.Request("master", "component/owned", componentModel.componentList.GetType() );
+            netService.Request("master", "components", componentModel.componentList.GetType() );
 
         }
 
