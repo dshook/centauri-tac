@@ -33,7 +33,7 @@ export default class ComponentAPI
   async register(req)
   {
     const {url, name, realm, version} = req.body;
-    return await this.components.register(url, name, realm);
+    return await this.components.register(url, name, realm, version);
   }
 
   /**

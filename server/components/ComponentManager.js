@@ -11,8 +11,9 @@ const PING_INTERVAL = 5 * 1000;
 @loglevel
 export default class ComponentManager
 {
-  constructor(app, httpServer, httpConfig, netClient, componentsConfig)
+  constructor(app, httpServer, httpConfig, netClient, componentsConfig, packageData)
   {
+    this.version = packageData.version;
     this.server = httpServer;
     this.config = httpConfig;
     this.cConfig = componentsConfig;
@@ -43,9 +44,11 @@ export default class ComponentManager
 
     this.log.info('registering %s component with %s@%s', name, realm, url);
 
+    const version = this.version;
+
     // RPC to register
     const component = await this.net.send(
-        'master', 'component/register', { name, url, realm });
+        'master', 'component/register', { name, url, realm, version });
 
     // Ping master occasionally
     this.log.info('setting up ping interval %d for %s', PING_INTERVAL, name);
