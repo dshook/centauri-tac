@@ -25,6 +25,8 @@ export default class LoginController
     this.masterURL = location.origin + '/components/master';
     this.realm = 'local';
 
+    this.realms = [];
+
     // restore form
     const form = $cookies.getObject('login');
     if (form) {
@@ -35,6 +37,19 @@ export default class LoginController
 
     // connect right away to master
     this.connect();
+  }
+
+  /**
+   * Get realm list
+   */
+  @ngApply async refreshRealms()
+  {
+    if (!this.net.connected) {
+      this.realms = [];
+      return;
+    }
+
+    this.realms = await this.net.send('master', 'realm');
   }
 
   /**
@@ -102,5 +117,7 @@ export default class LoginController
     this.net.masterURL = this.masterURL;
     this.net.realm = this.realm;
     await this.net.connect();
+
+    await this.refreshRealms();
   }
 }

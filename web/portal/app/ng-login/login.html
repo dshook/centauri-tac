@@ -102,6 +102,23 @@
           <i ng-if="!vm.net.ready" class="fa fa-exclamation-circle"></i>
         </span>
     </div>
+
+    <div class ="form-group">
+      <div class="btn-group" dropdown>
+        <button class="btn btn-default" dropdown-toggle>
+          {{ vm.realm }}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li
+            ng-repeat="realm in vm.realms">
+            <a href ng-click="vm.realm = realm.name">
+              {{ realm.name }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 
 
