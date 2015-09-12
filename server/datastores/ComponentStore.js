@@ -57,6 +57,21 @@ export default class ComponentStore
   }
 
   /**
+   * Unique, active realms with at least an auth component
+   */
+  async availableRealms()
+  {
+    const resp = await this.sql.query(`
+      select distinct realm
+      from components c
+      join component_types t on c.component_type_id = t.id
+      where c.realm is not null
+      and t.name = 'auth'`);
+
+    return resp.toArray();
+  }
+
+  /**
    * Update ping time by id
    */
   async ping(id)
@@ -81,17 +96,6 @@ export default class ComponentStore
     const result = resp.firstOrNull();
 
     return result ? result.id : null;
-  }
-
-  /**
-   * Temp name if needed (gaurenteed to be unique in the db)
-   */
-  async getTempRealmName()
-  {
-    const resp = await this.sql.query(`
-        select 'temp' || nextval('temp_realm_seq') as realm`);
-
-    return resp.firstOrNull();
   }
 
   /**

@@ -20,4 +20,13 @@ export default class RealmAPI
     return await this.components.activeInRealm(realm);
   }
 
+  /**
+   * Realms currently available
+   */
+  @route.get('/')
+  async availableRealms()
+  {
+    return await this.components.availableRealms();
+  }
+
 }
