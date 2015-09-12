@@ -16,31 +16,13 @@ export default class ComponentAPI
   }
 
   /**
-   * Master list of all components for this master -- used by clients at bootup
-   * so its public
-   */
-  @route.get('/owned')
-  async getAllOwned()
-  {
-    return await this.components.allOwned();
-  }
-
-  /**
    * Master list of all components, only for portal
    */
   @route.get('/')
-  // @middleware(roles(['admin']))
+  @middleware(roles(['admin']))
   async getAll()
   {
     return await this.components.all();
-  }
-
-  @route.get('/:id')
-  @middleware(roles(['admin']))
-  async getComponentById(req)
-  {
-    const {id} = req.params;
-    return await this.components.get(id);
   }
 
   /**
@@ -50,8 +32,8 @@ export default class ComponentAPI
   @middleware(roles(['component']))
   async register(req)
   {
-    const {url, name} = req.body;
-    return await this.components.register(url, name);
+    const {url, name, realm} = req.body;
+    return await this.components.register(url, name, realm);
   }
 
   /**

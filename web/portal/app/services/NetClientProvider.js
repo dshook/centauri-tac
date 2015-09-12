@@ -12,6 +12,6 @@ export default class NetClientProvider
 
   $get(httpTransport)
   {
-    return new NetClient(MASTER_URL, httpTransport);
+    return new NetClient(MASTER_URL, 'local', httpTransport);
   }
 }

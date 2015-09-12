@@ -11,5 +11,7 @@ export default class ComponentsConfig
      */
     this.masterURL = process.env.MASTER_URL ||
       'http://localhost:10123/components/master';
+
+    this.realm = process.env.REALM || null;
   }
 }

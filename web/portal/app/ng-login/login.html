@@ -34,7 +34,6 @@
             type="password"
             placeholder="password"
             class="form-control"
-            ng-disabled="vm.busy"
             ng-model="vm.password"
             required>
         </div>
@@ -46,7 +45,6 @@
         </div>
 
         <button
-          ng-disabled="vm.busy"
           type="submit"
           class="btn btn-primary">
           {{ vm.loggingIn ? 'Authenticating' : 'Log In' }}
@@ -58,22 +56,26 @@
 
   <div class="panel"
     ng-class="{
-      'panel-success': vm.net.connected,
-      'panel-danger': !vm.net.connected,
+      'panel-success': vm.net.connected && vm.net.ready,
+      'panel-warning': vm.net.connected && !vm.net.ready,
+      'panel-danger': !vm.net.connected && !vm.net.ready,
     }">
     <div class="panel-heading">
-      <h3 class="panel-title">Master Server URL</h3>
+      <h3 class="panel-title">
+        <i class="fa fa-globe"></i>
+        Master Server
+      </h3>
     </div>
     <div class="panel-body">
       <div
         class="form-group has-feedback"
         ng-class="{'has-success': vm.net.connected }"
         >
+        <label>Master URL</label>
         <input
           type="text"
           class="form-control"
           placeholder="e.g http://master-dev.centauri-tac.net"
-          ng-disabled="vm.busy"
           ng-change="vm.connect()"
           ng-model="vm.masterURL"
           required>
@@ -84,6 +86,21 @@
         </span>
 
       </div>
+      <div
+        class="form-group has-feedback"
+        ng-class="{'has-success': vm.net.ready }"
+        >
+        <label>Realm</label>
+        <input
+          ng-change="vm.connect()"
+          ng-model="vm.realm"
+          class="form-control"
+          placeholder="e.g local">
+
+        <span class="form-control-feedback">
+          <i ng-if="vm.net.ready" class="fa fa-check"></i>
+          <i ng-if="!vm.net.ready" class="fa fa-exclamation-circle"></i>
+        </span>
     </div>
   </div>
 

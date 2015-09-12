@@ -23,6 +23,15 @@ export default class LoginController
     this.password = '';
     this.remember = true;
     this.masterURL = location.origin + '/components/master';
+    this.realm = 'local';
+
+    // restore form
+    const form = $cookies.getObject('login');
+    if (form) {
+      this.email = form.email;
+      this.masterURL = form.url;
+      this.realm = form.realm;
+    }
 
     // connect right away to master
     this.connect();
@@ -52,8 +61,16 @@ export default class LoginController
     }
 
     if (this.remember) {
+      // for auth
       this.$cookies.put('auth', this.net.token, {
         expires: moment().add(1, 'year').toDate(),
+      });
+
+      // saved form if it works
+      this.$cookies.putObject('login', {
+        email: this.email,
+        url: this.masterURL,
+        realm: this.realm,
       });
     }
 
@@ -67,7 +84,10 @@ export default class LoginController
    */
   get allowLogin()
   {
-    return !this.loggingIn && this.net.connected && !this.net.token;
+    return !this.loggingIn &&
+      this.net.connected &&
+      !this.net.token &&
+      this.net.ready;
   }
 
   /**
@@ -80,6 +100,7 @@ export default class LoginController
     }
 
     this.net.masterURL = this.masterURL;
+    this.net.realm = this.realm;
     await this.net.connect();
   }
 }

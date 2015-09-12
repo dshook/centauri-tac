@@ -29,6 +29,7 @@ export default {
   portal: {
     TComponent: PortalComponent,
     services: [
+      ...common,
       HttpService,
     ],
   },

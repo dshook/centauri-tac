@@ -7,7 +7,10 @@ export default class NetClientService
 {
   constructor(app, componentsConfig, httpTransport, auth)
   {
-    const net = new NetClient(componentsConfig.masterURL, httpTransport);
+    const net = new NetClient(
+        componentsConfig.masterURL,
+        componentsConfig.realm,
+        httpTransport);
 
     // Create a long-lasting token to use for backend RPC communication
     const token = auth.generateToken(null, ['component'], 60 * 24 * 365);

@@ -12,61 +12,46 @@ export default class ComponentStore
   constructor(sql, packageData)
   {
     this.sql = sql;
-
     this.version = packageData.version;
-
-    /**
-     * Needs to be set so that store operations can link additional components
-     * to this master
-     */
-    this.masterID = null;
   }
 
   /**
-   * All components
+   * All (recently active) components
    */
-  async all(owned = false, id = null)
+  async all()
   {
-    let sql = `
-      select c.*, t.*, m.*,tm.*
+    const sql = `
+      select c.*, t.*
       from components as c
       join component_types as t
         on c.component_type_id = t.id
-      left join components as m
-        on c.master_component_id = m.id
-      left join component_types as tm
-        on m.component_type_id = tm.id
       where c.last_ping >= now() - '1 hour'::interval
     `;
 
-    const params = {};
+    const types = [Component, ComponentType];
 
-    // just ones for a specific master
-    if (owned) {
-      sql += ' and c.master_component_id = @masterID ';
-      params.masterID = this.masterID;
-    }
+    const mapping = (c, t) => { c.type = t; return c; };
 
-    // if we just want a single one
-    if (id !== null) {
-      sql += ' where c.id = @id ';
-      params.id = id;
-    }
+    const resp = await this.sql.tquery(...types)(sql, null, mapping);
 
-    const types = [
-      Component, ComponentType, Component, ComponentType,
-    ];
+    return resp.toArray();
+  }
 
-    const mapping = (c, t, m, tm) => {
-      c.type = t;
-      c.master = m;
-      if (c.master) {
-        c.master.type = tm;
-      }
-      return c;
-    };
+  /**
+   * Get all active components in a specific realm (active in last 30 seconds)
+   */
+  async activeInRealm(realm)
+  {
+    const resp = await this.sql.tquery(Component)(`
 
-    const resp = await this.sql.tquery(...types)(sql, params, mapping);
+      select *
+      from components as c
+      join component_types as t on c.component_type_id = t.id
+      where
+        c.realm = @realm
+        and c.last_ping >= now() - '10 seconds'::interval
+
+    `, {realm}, (c, t) => { c.type = t; return c; });
 
     return resp.toArray();
   }
@@ -76,20 +61,12 @@ export default class ComponentStore
    */
   async ping(id)
   {
-    const resp = await this.sql.query(`update components
+    const resp = await this.sql.query(`
+      update components
         set last_ping = now()
-        where id = @id returning id`, {id});
+      where id = @id returning id`, {id});
 
     return resp.firstOrNull();
-  }
-
-  /**
-   * Get all components that were registered by this master. Will throw if we
-   * dont know the masterID yet
-   */
-  async allOwned()
-  {
-    return this.all(true);
   }
 
   /**
@@ -98,8 +75,8 @@ export default class ComponentStore
   @memoize async getTypeIdByName(name: String): ?Number
   {
     const resp = await this.sql.query(`
-        select id from component_types
-        where name = @name`, {name});
+      select id from component_types
+      where name = @name`, {name});
 
     const result = resp.firstOrNull();
 
@@ -107,21 +84,24 @@ export default class ComponentStore
   }
 
   /**
-   * Get a component by its id
+   * Temp name if needed (gaurenteed to be unique in the db)
    */
-  async get(id)
+  async getTempRealmName()
   {
-    const resp = await this.all(false, id);
-    return resp ? resp[0] : null;
+    const resp = await this.sql.query(`
+        select 'temp' || nextval('temp_realm_seq') as realm`);
+
+    return resp.firstOrNull();
   }
 
   /**
-   * Add a component (or update if its already in the registry)
+   * Add a component
    */
-  async register(url, typeName)
+  async register(url, typeName, realm = null)
   {
-    if (typeName !== 'master' && !this.masterID) {
-      throw new Error('Cannot register components in store without masterID');
+    if (!realm && typeName !== 'master') {
+      throw new Error(
+        'realm must be provided when registering a non-master component');
     }
 
     const typeId = await this.getTypeIdByName(typeName);
@@ -130,20 +110,21 @@ export default class ComponentStore
       throw new Error('invalid type name ' + typeName);
     }
 
-    const masterID = this.masterID;
     const version = this.version;
 
     const resp = await this.sql.tquery(Component)(`
+
       insert into components
-        (url, component_type_id, master_component_id, version)
+        (url, component_type_id, version, realm)
       values
-        (@url, @typeId, @masterID, @version)
-      returning *`, {url, typeId, masterID, version});
+        (@url, @typeId, @version, @realm)
+      returning *
+
+      `, {url, typeId, version, realm});
 
     const component = resp.firstOrNull();
 
     this.log.info(`registered new component id=${component.id}`);
-
     return component;
   }
 }
