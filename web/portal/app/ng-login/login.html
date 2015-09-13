@@ -103,23 +103,6 @@
         </span>
     </div>
 
-    <div class ="form-group">
-      <div class="btn-group" dropdown>
-        <button
-          class="btn btn-default" dropdown-toggle>
-          {{ vm.realm }}
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li
-            ng-repeat="realm in vm.realms">
-            <a href ng-click="vm.setRealm(realm.name)">
-              {{ realm.name }}
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 
 
