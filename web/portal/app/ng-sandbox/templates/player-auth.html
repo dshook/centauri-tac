@@ -80,6 +80,26 @@
         icon="flag"
         title="Games">
 
+        <table class="table table-striped" ng-table>
+          <tr ng-repeat="game in flow.games">
+
+            <td data-title="'name'">
+              <span game="game"></span>
+            </td>
+
+            <td
+              data-title="'hosted on'">
+              <span component="game.gameComponent"></span>
+            </td>
+
+            <td
+              data-title="'host player'">
+              <span player="game.hostPlayer"></span>
+            </td>
+
+          </tr>
+        </table>
+
         <button class="btn btn-default">Fetch game list</button>
         <button class="btn btn-default">Create game</button>
         <button class="btn btn-default">Join empty game</button>

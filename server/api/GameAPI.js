@@ -18,7 +18,7 @@ export default class GameAPI
   }
 
   /**
-   * All active games
+   * All active games on our realm
    */
   @route.get('/')
   @middleware(roles(['player']))

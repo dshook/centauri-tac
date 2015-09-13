@@ -1,5 +1,6 @@
 import NetClient from 'net-client';
 import ngApply from 'ng-apply-decorator';
+import Game from 'models/Game';
 
 class FlowSim
 {
@@ -10,6 +11,8 @@ class FlowSim
 
     this.email = `player${player}@gmail.com`;
     this.password = 'pw';
+
+    this.games = [];
 
     // clone app's net
     this.net = new NetClient(net.masterURL, net.realm, net._transport);
@@ -26,6 +29,15 @@ class FlowSim
   @ngApply async auth()
   {
     await this.net.login(this.email, this.password);
+    await this.fetchGames();
+  }
+
+  @ngApply async fetchGames()
+  {
+    const resp = await this.net.send('gamelist', 'game');
+    const games = resp.map(x => Game.fromJSON(x));
+
+    this.games = games;
   }
 }
 
