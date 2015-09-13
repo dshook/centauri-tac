@@ -12,6 +12,9 @@ export default class HttpService
   constructor(app)
   {
     this.server = promisifyAll(express());
+    this.server.disable('x-powered-by');
+    this.server.disable('etag');
+
     app.registerInstance('httpServer', this.server);
 
     this.config = new HttpConfig();

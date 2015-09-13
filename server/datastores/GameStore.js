@@ -16,7 +16,7 @@ export default class GameStore
   }
 
   /**
-   * Every damn game
+   * Every damn game (or by realm)
    */
   async all(realm = null)
   {
@@ -37,7 +37,7 @@ export default class GameStore
     // TODO: active check here
     if (realm) {
       sql += `
-        where t.realm = @realm
+        where c.realm = @realm
       `;
 
       params.realm = realm;

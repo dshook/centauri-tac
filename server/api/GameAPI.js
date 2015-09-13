@@ -18,19 +18,20 @@ export default class GameAPI
   }
 
   /**
-   * Big list of all games across realms, admin only
+   * All active games
    */
   @route.get('/')
-  @middleware(roles(['admin']))
+  @middleware(roles(['player']))
   async getAllGames()
   {
-    return await this.games.all();
+    return await this.games.all(this.realm);
   }
 
   /**
    * Register a new game (RPC from game component)
    */
   @route.post('/register')
+  @middleware(roles(['component']))
   async registerGame(req)
   {
     const game = Game.fromJSON(req.body);

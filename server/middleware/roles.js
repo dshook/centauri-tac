@@ -12,12 +12,13 @@ export default function rolesMiddleware(roles = [])
       return res.status(403).send('forbidden: user has no roles');
     }
 
+    // if we have ANY of the roles in the array, we're good
     for (const role of roles) {
-      if (!~req.auth.roles.indexOf(role)) {
-        return res.status(405).send('forbidden: user requires role ' + role);
+      if (~req.auth.roles.indexOf(role)) {
+        return next();
       }
     }
 
-    next();
+    res.status(403).send('forbidden: missing role ' + roles.join(' or '));
   };
 }
