@@ -41,6 +41,8 @@ namespace ctac
             injectionBinder.Bind<IAuthModel>().To<AuthModel>().ToSingleton();
             injectionBinder.Bind<IPlayerModel>().To<PlayerModel>().ToSingleton();
             injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
+            injectionBinder.Bind<IMapModel>().To<MapModel>().ToSingleton();
+
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
 

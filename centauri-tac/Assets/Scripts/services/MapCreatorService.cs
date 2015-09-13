@@ -6,7 +6,7 @@ namespace ctac
 {
     public interface IMapCreatorService
     {
-        void CreateMap(IMapModel map);
+        void CreateMap(IMapImportModel map);
     }
 
     public class MapCreatorService : IMapCreatorService
@@ -14,7 +14,10 @@ namespace ctac
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
 
-        public void CreateMap(IMapModel map)
+        [Inject]
+        public IMapModel mapModel { get; set; }
+
+        public void CreateMap(IMapImportModel map)
         {
             var mapTilePrefab = Resources.Load("Tile") as GameObject;
 
@@ -26,10 +29,21 @@ namespace ctac
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
 
+            mapModel.root = goMap;
+            mapModel.name = map.name;
+            mapModel.maxPlayers = map.maxPlayers;
+            mapModel.tiles = new List<Tile>();
+
             foreach (var t in map.tiles)
             {
-                var newTile = GameObject.Instantiate(mapTilePrefab, new Vector3(t.transform.x, t.transform.y, t.transform.z), Quaternion.identity) as GameObject;
+                var newTile = GameObject.Instantiate(
+                    mapTilePrefab, 
+                    new Vector3(t.transform.x, t.transform.y, t.transform.z), 
+                    Quaternion.identity
+                ) as GameObject;
                 newTile.transform.parent = goMap.transform;
+
+                mapModel.tiles.Add(new Tile() { gameObject = newTile });
             }
 
         }

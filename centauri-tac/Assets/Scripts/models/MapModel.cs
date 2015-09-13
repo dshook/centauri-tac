@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ctac
 {
@@ -6,6 +7,7 @@ namespace ctac
     {
         string name { get; set; }
         int maxPlayers { get; set; }
+        GameObject root { get; set; }
         List<Tile> tiles { get; set; }
     }
 
@@ -13,19 +15,13 @@ namespace ctac
     {
         public string name { get; set; }
         public int maxPlayers { get; set; }
+        public GameObject root { get; set; }
         public List<Tile> tiles { get; set; }
     }
 
     public class Tile
     {
-        public TilePosition transform;
-    }
-
-    public class TilePosition
-    {
-        public int x { get; set; }
-        public int y { get; set; }
-        public int z { get; set; }
+        public GameObject gameObject { get; set; }
     }
 }
 

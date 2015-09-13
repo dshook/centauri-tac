@@ -24,7 +24,7 @@ namespace ctac
 
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
-            var defaultMap = JsonConvert.DeserializeObject<MapModel>(mapContents);
+            var defaultMap = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
 
             mapCreator.CreateMap(defaultMap);
         }
