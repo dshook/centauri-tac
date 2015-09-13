@@ -18,8 +18,7 @@ export default class NavController
         icon: 'cogs',
         items: [
           { title: 'Component list', sref: '.sm.component-list' },
-          { title: 'Game list', sref: '.sm.game-list' },
-          { title: 'Player list', sref: '.players.list' },
+          { title: 'Player list', sref: '.players.list', disabled: true},
           { divider: true},
           { title: 'Server status', sref: '.sm.component-list', disabled: true },
         ],
@@ -29,7 +28,7 @@ export default class NavController
         title: 'Sandbox',
         icon: 'flag',
         items: [
-          { title: 'Player auth', sref: '.sandbox.player-auth' },
+          { title: 'Player auth', sref: '.sandbox.player-auth', disabled: true },
         ],
       },
 
