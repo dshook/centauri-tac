@@ -38,6 +38,23 @@ export default class ComponentStore
   }
 
   /**
+   * Get a component by its id
+   */
+  async get(id)
+  {
+    const resp = await this.sql.tquery(Component, ComponentType)(`
+
+      select *
+      from components as c
+      join component_types t on c.component_type_id = t.id
+      where c.id = @id
+
+    `, {id}, (c, t) => { c.type = t; return c; });
+
+    return resp.firstOrNull();
+  }
+
+  /**
    * Get all active components in a specific realm (active in last 30 seconds)
    */
   async activeInRealm(realm)

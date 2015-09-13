@@ -33,8 +33,7 @@ export default class ComponentAPI
   async getComponent(req)
   {
     const id = 0 | req.params.id;
-    const all = await this.components.all();
-    return all.find(x => x.id === id) || null;
+    return this.components.get(id);
   }
 
   /**
