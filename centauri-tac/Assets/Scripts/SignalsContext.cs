@@ -51,8 +51,11 @@ namespace ctac
             injectionBinder.Bind<FailedAuthSignal>().To<FailedAuthSignal>().ToSingleton();
             injectionBinder.Bind<NeedLoginSignal>().To<NeedLoginSignal>().ToSingleton();
             injectionBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedSignal>().ToSingleton();
+            injectionBinder.Bind<MapCreatedSignal>().To<MapCreatedSignal>().ToSingleton();
+            injectionBinder.Bind<TileHoverSignal>().To<TileHoverSignal>().ToSingleton();
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
+            mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.

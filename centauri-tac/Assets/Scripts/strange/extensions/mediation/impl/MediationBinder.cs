@@ -70,7 +70,7 @@ namespace strange.extensions.mediation.impl
 		/// Destroy the provided Mediator
 		protected object DestroyMediator(IMediator mediator)
 		{
-			mediator.OnRemove();
+			mediator.onRemove();
 			return mediator;
 		}
 

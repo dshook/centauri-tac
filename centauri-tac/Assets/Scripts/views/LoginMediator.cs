@@ -30,7 +30,7 @@ namespace ctac
             loggedInSignal.AddListener(onLoggedIn);
         }
 
-        public override void OnRemove()
+        public override void onRemove()
         {
             view.clickSignal.RemoveListener(onLoginClicked);
         }

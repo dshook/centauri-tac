@@ -59,7 +59,7 @@ namespace strange.extensions.mediation.impl
 		 *
 		 * Override and place your cleanup code here
 		 */
-		virtual public void OnRemove()
+		virtual public void onRemove()
 		{
 		}
 	}

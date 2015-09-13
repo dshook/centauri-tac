@@ -1,6 +1,7 @@
 using UnityEngine;
 using strange.extensions.context.api;
 using System.Collections.Generic;
+using ctac.signals;
 
 namespace ctac
 {
@@ -13,6 +14,9 @@ namespace ctac
     {
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
+
+        [Inject]
+        public MapCreatedSignal mapCreated { get; set; }
 
         [Inject]
         public IMapModel mapModel { get; set; }
@@ -28,6 +32,7 @@ namespace ctac
             }
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
+            goMap.AddComponent<TileHighlightView>();
 
             mapModel.root = goMap;
             mapModel.name = map.name;
@@ -46,6 +51,7 @@ namespace ctac
                 mapModel.tiles.Add(new Tile() { gameObject = newTile });
             }
 
+            mapCreated.Dispatch();
         }
 
     }
