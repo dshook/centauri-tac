@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "grunt ct app:portal --dev=true",
-    "dev-server": "nodemon ./server",
+    "dev-server": "npm run migrate && nodemon ./server",
     "start": "node ./server",
     "build": "grunt ct app:portal",
     "create-migration": "db-migrate create --sql-file",
