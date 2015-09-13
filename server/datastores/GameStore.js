@@ -18,19 +18,34 @@ export default class GameStore
   /**
    * Every damn game
    */
-  async all()
+  async all(realm = null)
   {
-    const resp = await this.sql.tquery(Game, Component, ComponentType, Player)(`
+    let sql = `
 
-        select * from games as g
-        join components c
-          on g.game_component_id = c.id
-        join component_types t
-          on c.component_type_id = t.id
-        join players p
-          on g.host_player_id = p.id
+      select * from games as g
+      join components c
+        on g.game_component_id = c.id
+      join component_types t
+        on c.component_type_id = t.id
+      join players p
+        on g.host_player_id = p.id
 
-      `, null,
+    `;
+
+    const params = {};
+
+    // TODO: active check here
+    if (realm) {
+      sql += `
+        where t.realm = @realm
+      `;
+
+      params.realm = realm;
+    }
+
+    const models = [Game, Component, ComponentType, Player];
+
+    const resp = await this.sql.tquery(...models)(sql, params,
       (g, c, t, p) => {
         g.gameComponent = c;
         g.gameComponent.type = t;
@@ -40,6 +55,15 @@ export default class GameStore
 
     return resp.toArray();
   }
+
+  /**
+   * Get active games from a particular realm
+   */
+  async activeFromRealm(realm)
+  {
+    return await this.all(realm);
+  }
+
 
   /**
    * Create a new game entry from a model, updates the id in the model
