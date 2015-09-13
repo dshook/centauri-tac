@@ -74,24 +74,6 @@ export default class ComponentStore
   }
 
   /**
-   * Unique, active realms with at least an auth component
-   */
-  async availableRealms()
-  {
-    const resp = await this.sql.query(`
-      select distinct realm
-      from components c
-      join component_types t on c.component_type_id = t.id
-      where c.realm is not null
-      and c.last_ping >= now() - '10 seconds'::interval
-      and t.name = 'auth'`);
-
-    const realms = resp.toArray().map(x => { return { name: x.realm }; });
-
-    return realms;
-  }
-
-  /**
    * Update ping time by id
    */
   async ping(id)

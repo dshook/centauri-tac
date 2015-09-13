@@ -10,17 +10,18 @@ import Game from 'models/Game';
 @middleware(authToken())
 export default class GameAPI
 {
-  constructor(games, auth)
+  constructor(games, auth, componentsConfig)
   {
     this.auth = auth;
     this.games = games;
+    this.realm = componentsConfig.realm;
   }
 
   /**
    * Big list of all games across realms, admin only
    */
   @route.get('/')
-  // @middleware(roles(['admin']))
+  @middleware(roles(['admin']))
   async getAllGames()
   {
     return await this.games.all();

@@ -18,16 +18,6 @@ export default class PlayerAPI
   }
 
   /**
-   * Get list of all players (for portal)
-   */
-  @route.get('/')
-  @middleware(roles(['admin']))
-  async getAll()
-  {
-    return await this.players.all();
-  }
-
-  /**
    * Get the current users profile
    * TODO: decorator for C# client REST
    */

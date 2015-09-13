@@ -11,7 +11,8 @@ export default class RealmAPI
   }
 
   /**
-   * Get all active compoents for a realm
+   * Get all active compoents for a realm. Primary use of the master controller
+   * is to provide this shit to the clients
    * TODO: decorator for C# client REST
    */
   @route.get('/:realm/components')
@@ -21,16 +22,4 @@ export default class RealmAPI
     const {realm} = req.params;
     return await this.components.activeInRealm(realm);
   }
-
-  /**
-   * Realms currently available
-   * TODO: decorator for C# client REST
-   */
-  @route.get('/')
-  @route.post('/')
-  async availableRealms()
-  {
-    return await this.components.availableRealms();
-  }
-
 }
