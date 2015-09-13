@@ -1,6 +1,6 @@
 {
   "name": "centauri-tac",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Tactical Card Game",
   "main": "./server/index.js",
   "repository": {
