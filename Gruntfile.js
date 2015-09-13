@@ -1,3 +1,5 @@
+require('dotenv').load();
+
 module.exports = function gruntfile(grunt) {
   grunt.loadTasks('tasks');
 
