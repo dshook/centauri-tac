@@ -2,8 +2,9 @@ import ngApply from 'ng-apply-decorator';
 
 export default class ComponentDetailController
 {
-  constructor($scope, netClient, $stateParams)
+  constructor($state, $scope, netClient, $stateParams)
   {
+    this.$state = $state;
     this.$scope = $scope;
     this.net = netClient;
 
@@ -18,5 +19,13 @@ export default class ComponentDetailController
   {
     this.component = await this.net
       .send('master', `component/${this._id}`);
+
+    // show the child template for the type of component w'eve got
+    switch (this.component.type.name) {
+      case 'gamelist':
+        this.$state.go('.gamelist', {component: this.component});
+        break;
+    }
+
   }
 }

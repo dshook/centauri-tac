@@ -2,43 +2,27 @@
   class="container-fluid">
   <div class="row">
     <div class="col-md-12">
+
+      <ol class="breadcrumb">
+        <li><a ui-sref="app.sm.component-list">Component list</a></li>
+        <li>Component detail</li>
+      </ol>
+
       <h2>
-        <span component="vm.component"></span>
+        <span 
+          component="vm.component" 
+          no-link="true"
+          show-realm="true"></span>
+        <small>
+          {{ vm.component.url }}
+        </small>
       </h2>
     </div>
   </div>
 
-  <div class="row">
+  <ui-view>
+    <p>There's nothing to show here</p>
+  </ui-view>
 
-    <div class="col-md-7">
-      <ui-view></ui-view>
-    </div>
-
-    <div class="col-md-5">
-      <dl class="dl-horizontal">
-        <dt>URL</dt>
-        <dd>
-          {{ vm.component.url }}
-        </dd>
-        <dt>version</dt>
-        <dd>
-          <span class="badge">v{{ vm.component.version }}</span>
-        </dd>
-        <dt>realm</dt>
-        <dd>
-          <span realm="vm.component.realm"></span>
-        </dd>
-        <dt>registered</dt>
-        <dd>
-          <span am-time-ago="vm.component.registered"></span>
-        </dd>
-        <dt>last ping</dt>
-        <dd>
-          <span am-time-ago="vm.component.lastPing"></span>
-        </dd>
-      </dl>
-    </div>
-
-  </div>
 </div>
 

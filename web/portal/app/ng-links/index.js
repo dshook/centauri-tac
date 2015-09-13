@@ -12,6 +12,7 @@ export default angular.module('ct.link-directives', [])
       scope: {
         component: '=',
         showRealm: '=',
+        noLink: '=',
       },
     };
   })

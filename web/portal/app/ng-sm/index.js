@@ -4,7 +4,6 @@ import htmlComponentList from './templates/component-list.html';
 import ComponentListController from './ComponentListController.js';
 import htmlComponentDetail from './templates/component-detail.html';
 import ComponentDetailController from './ComponentDetailController.js';
-import htmlGameList from './templates/game-list.html';
 import GameListController from './GameListController.js';
 import htmlGamelistComponent from './templates/gamelist-component.html';
 
@@ -29,13 +28,6 @@ export default angular.module('centauri.server-management', [])
         controllerAs: 'vm',
       })
 
-      .state('app.sm.game-list', {
-        url: '/games',
-        template: htmlGameList,
-        controller: GameListController,
-        controllerAs: 'vm',
-      })
-
       .state('app.sm.component-detail', {
         url: '/components/:id',
         template: htmlComponentDetail,
@@ -44,8 +36,12 @@ export default angular.module('centauri.server-management', [])
       })
 
       .state('app.sm.component-detail.gamelist', {
-        url: '/gamelist',
         template: htmlGamelistComponent,
+        controller: GameListController,
+        controllerAs: 'vm',
+        params: {
+          component: null,
+        },
       })
 
       .state('app.sm.status', {
