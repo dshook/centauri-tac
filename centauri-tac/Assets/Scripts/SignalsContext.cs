@@ -4,6 +4,8 @@ using strange.extensions.context.impl;
 using strange.extensions.command.api;
 using strange.extensions.command.impl;
 using ctac.signals;
+using System;
+using System.Reflection;
 
 namespace ctac
 {
@@ -46,13 +48,14 @@ namespace ctac
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
 
-            injectionBinder.Bind<TryLoginSignal>().To<TryLoginSignal>().ToSingleton();
-            injectionBinder.Bind<LoggedInSignal>().To<LoggedInSignal>().ToSingleton();
-            injectionBinder.Bind<FailedAuthSignal>().To<FailedAuthSignal>().ToSingleton();
-            injectionBinder.Bind<NeedLoginSignal>().To<NeedLoginSignal>().ToSingleton();
-            injectionBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedSignal>().ToSingleton();
-            injectionBinder.Bind<MapCreatedSignal>().To<MapCreatedSignal>().ToSingleton();
-            injectionBinder.Bind<TileHoverSignal>().To<TileHoverSignal>().ToSingleton();
+            //bind up all the singleton signals
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.GetCustomAttributes(typeof(SingletonAttribute), true).Length > 0)
+                {
+                    injectionBinder.Bind(type).To(Activator.CreateInstance(type)).ToSingleton();
+                }
+            }
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
             mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
