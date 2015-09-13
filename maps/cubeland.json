@@ -1,0 +1,122 @@
+{
+	"name": "cubeland",
+	"maxPlayers": 2,
+	"tiles": [
+		{
+			"transform": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			}
+		},
+		{
+			"transform": {
+				"x": 1,
+				"y": 0,
+				"z": 0
+			}
+		},
+		{
+			"transform": {
+				"x": 2,
+				"y": 0,
+				"z": 0
+			}
+		},
+		{
+			"transform": {
+				"x": 3,
+				"y": 0,
+				"z": 0
+			}
+		},
+
+		{
+			"transform": {
+				"x": 0,
+				"y": 0,
+				"z": 1
+			}
+		},
+		{
+			"transform": {
+				"x": 1,
+				"y": 0,
+				"z": 1
+			}
+		},
+		{
+			"transform": {
+				"x": 2,
+				"y": 0,
+				"z": 1
+			}
+		},
+		{
+			"transform": {
+				"x": 3,
+				"y": 0,
+				"z": 1
+			}
+		},
+
+		{
+			"transform": {
+				"x": 0,
+				"y": 0,
+				"z": 2
+			}
+		},
+		{
+			"transform": {
+				"x": 1,
+				"y": 0,
+				"z": 2
+			}
+		},
+		{
+			"transform": {
+				"x": 2,
+				"y": 0,
+				"z": 2
+			}
+		},
+		{
+			"transform": {
+				"x": 3,
+				"y": 0,
+				"z": 2
+			}
+		},
+
+
+		{
+			"transform": {
+				"x": 0,
+				"y": 0,
+				"z": 3
+			}
+		},
+		{
+			"transform": {
+				"x": 1,
+				"y": 0,
+				"z": 3
+			}
+		},
+		{
+			"transform": {
+				"x": 2,
+				"y": 0,
+				"z": 3
+			}
+		},
+		{
+			"transform": {
+				"x": 3,
+				"y": 0,
+				"z": 3
+			}
+		},
+	]	
+}
