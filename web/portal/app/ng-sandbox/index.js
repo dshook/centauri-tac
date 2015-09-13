@@ -21,7 +21,7 @@ export default angular.module('centauri.sandbox', [])
         url: '/player-auth',
         template: htmlPlayerAuth,
         controller: PlayerAuthDemoController,
-        contorllerAs: 'vm',
+        controllerAs: 'vm',
       });
 
   });

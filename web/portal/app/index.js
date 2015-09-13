@@ -12,6 +12,7 @@ import ngLogin from './ng-login';
 import packageData from '../../../package.json';
 import ngCookies from 'angular-cookies';
 import ngLinks from './ng-links';
+import ngTwbsPanels from './ng-twbs-panels';
 
 export default angular.module('centauri', [
 
@@ -25,6 +26,7 @@ export default angular.module('centauri', [
   uibs,
   ngPageHeader.name,
   ngLinks.name,
+  ngTwbsPanels.name,
 
   // view node roots
   ngAppBase.name,

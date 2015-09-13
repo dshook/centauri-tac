@@ -28,7 +28,7 @@ export default class NavController
         title: 'Sandbox',
         icon: 'flag',
         items: [
-          { title: 'Player auth', sref: '.sandbox.player-auth', disabled: true },
+          { title: 'Player auth', sref: '.sandbox.player-auth' },
         ],
       },
 

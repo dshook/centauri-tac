@@ -7,4 +7,88 @@
       </h2>
     </div>
   </div>
+
+  <div class="row">
+
+    <div
+      ng-repeat="flow in vm.flows"
+      class="proto-flow col-sm-{{ 12 / vm.flows.length }}">
+      <h3>Player {{ flow.player }}</h3>
+
+      <panel
+        title="Connect to master"
+        icon="globe"
+        type="primary">
+
+        <div class="clearfix">
+          <div class="pull-left">
+            <button
+              class="btn btn-default"
+              ng-click="flow.connect()">
+              Connect
+            </button>
+
+          </div>
+          <div class="pull-left">
+            <dl>
+              <dt>Master URL</dt>
+              <dd><code>{{ flow.net.masterURL }}</code></dd>
+              <dt>Realm</dt>
+              <dd><code>{{ flow.net.realm }}</code></dd>
+            </dl>
+
+          </div>
+        </div>
+
+        <div ng-if="flow.net.connected">Components:
+          <span ng-repeat="c in flow.net._components">
+            <span component="c"> </span>
+          </span>
+        </div>
+
+      </panel>
+
+      <panel
+        ng-if="flow.net.connected"
+        title="Player Auth"
+        icon="lock"
+        type="success">
+
+        <form class="form-inline">
+
+          <div class="form-group">
+            <label>Email</label>
+            <input ng-model="flow.email" type="email" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input ng-model="flow.password" type="password" class="form-control">
+          </div>
+        </form>
+
+        <button
+          class="btn btn-default"
+          ng-click="flow.auth()">
+          Connect
+        </button>
+
+      </panel>
+
+      <panel
+        ng-if="flow.net.token"
+        icon="flag"
+        title="Games">
+
+        <button class="btn btn-default">Fetch game list</button>
+        <button class="btn btn-default">Create game</button>
+        <button class="btn btn-default">Join empty game</button>
+
+      </panel>
+
+
+    </div>
+
+  </div>
+
 </div>
