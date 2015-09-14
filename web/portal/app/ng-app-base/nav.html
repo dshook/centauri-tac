@@ -40,6 +40,16 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
+
+          <li class="dropdown-header">Current Realm</li>
+          <li><a realm="vm.net.realm"></a></li>
+          <li class="dropdown-header">Current Master URL</li>
+          <li><a>{{ vm.net.masterURL }}</a></li>
+
+          <li class="divider"></i>
+          <li class="disabled"><a>Player Profile</a></li>
+          <li class="divider"></i>
+
           <li><a href="" ng-click="vm.logout()">Log out</a></li>
         </ul>
       </li>

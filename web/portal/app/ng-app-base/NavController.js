@@ -17,10 +17,10 @@ export default class NavController
         title: 'Server Management',
         icon: 'cogs',
         items: [
-          { title: 'Component list', sref: '.sm.component-list' },
-          { title: 'Player list', sref: '.players.list', disabled: true},
+          { title: 'Component List', sref: '.sm.component-list' },
+          { title: 'Player List', sref: '.players.list', disabled: true},
           { divider: true},
-          { title: 'Server status', sref: '.sm.component-list', disabled: true },
+          { title: 'Server Status', sref: '.sm.component-list', disabled: true },
         ],
       },
 
@@ -28,7 +28,7 @@ export default class NavController
         title: 'Sandbox',
         icon: 'flag',
         items: [
-          { title: 'Player auth', sref: '.sandbox.player-auth' },
+          { title: 'Player Network Flow', sref: '.sandbox.player-auth' },
         ],
       },
 
@@ -41,6 +41,11 @@ export default class NavController
       },
 
     ];
+  }
+
+  get masterComponent()
+  {
+    return this.net.getComponentsByType('master')[0];
   }
 
   get displayName()
