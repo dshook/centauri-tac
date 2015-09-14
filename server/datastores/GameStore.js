@@ -3,6 +3,7 @@ import Game from 'models/Game';
 import Component from 'models/Component';
 import ComponentType from 'models/ComponentType';
 import Player from 'models/Player';
+import GameState from 'models/GameState';
 
 /**
  * Data layer for games
@@ -29,6 +30,8 @@ export default class GameStore
         on c.component_type_id = t.id
       join players p
         on g.host_player_id = p.id
+      join game_states s
+        on g.game_state_id = s.id
 
     `;
 
@@ -43,13 +46,14 @@ export default class GameStore
       params.realm = realm;
     }
 
-    const models = [Game, Component, ComponentType, Player];
+    const models = [Game, Component, ComponentType, Player, GameState];
 
     const resp = await this.sql.tquery(...models)(sql, params,
-      (g, c, t, p) => {
+      (g, c, t, p, gs) => {
         g.gameComponent = c;
         g.gameComponent.type = t;
         g.hostPlayer = p;
+        g.state = gs;
         return g;
       });
 
