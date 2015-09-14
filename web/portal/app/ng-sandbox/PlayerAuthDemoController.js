@@ -18,6 +18,8 @@ class FlowSim
 
     this.myGame = null;
 
+    this.playersInGame = null;
+
     const t = $interval(() => this.fetchGames(), 5000);
     $scope.$on('$destroy', () => $interval.cancel(t));
 
@@ -69,6 +71,13 @@ class FlowSim
   {
     const game = this.myGame;
     await this.net.send('gamelist', `game/${game.id}/part`, {});
+    await this.fetchGames();
+  }
+
+  @ngApply async createGame()
+  {
+    const name = `Player ${this.player}'s game`;
+    await this.net.send('gamelist', 'game/create', {name});
     await this.fetchGames();
   }
 }
