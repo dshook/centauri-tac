@@ -11,9 +11,10 @@ import GameState from 'models/GameState';
 @loglevel
 export default class GameStore
 {
-  constructor(sql)
+  constructor(sql, players)
   {
     this.sql = sql;
+    this.players = players;
   }
 
   /**
@@ -23,7 +24,8 @@ export default class GameStore
   {
     let sql = `
 
-      select * from games as g
+      select g.*, c.*, t.*, p.*, s.*, counts.current_player_count
+      from games as g
       join components c
         on g.game_component_id = c.id
       join component_types t
@@ -32,6 +34,10 @@ export default class GameStore
         on g.host_player_id = p.id
       left join game_states s
         on g.game_state_id = s.id
+      join (select game_id, count(*) as current_player_count
+          from game_players
+          group by game_id) as counts
+        on g.id = counts.game_id
 
     `;
 
@@ -49,13 +55,32 @@ export default class GameStore
     const models = [Game, Component, ComponentType, Player, GameState];
 
     const resp = await this.sql.tquery(...models)(sql, params,
-      (g, c, t, p, gs) => {
+      (g, c, t, p, gs, cpc) => {
         g.gameComponent = c;
         g.gameComponent.type = t;
         g.hostPlayer = p;
         g.state = gs;
+        g.currentPlayerCount = 0 | cpc['current_player_count'];
         return g;
       });
+
+    return resp.toArray();
+  }
+
+  /**
+   * Get all players in a game by id
+   */
+  async playersInGame(id)
+  {
+    const resp = await this.sql.tquery(Player)(`
+
+        select p.*
+        from game_players as gp
+        join players p
+          on gp.player_id = p.id
+        where gp.game_id = @id
+
+      `, {id});
 
     return resp.toArray();
   }
@@ -67,7 +92,6 @@ export default class GameStore
   {
     return await this.all(realm);
   }
-
 
   /**
    * Create a new game entry from a model, updates the id in the model

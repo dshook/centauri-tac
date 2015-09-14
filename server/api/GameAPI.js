@@ -27,11 +27,19 @@ export default class GameAPI
     return await this.games.all(this.realm);
   }
 
+  @route.get('/:id/players')
+  @middleware(roles(['player']))
+  async getPlayersInGame(req)
+  {
+    const {id} = req.params;
+    return this.games.playersInGame(id);
+  }
+
   /**
-   * Register a new game (RPC from game component)
+   * Create a game entry for a player as host
    */
-  @route.post('/register')
-  @middleware(roles(['component']))
+  @route.post('/create')
+  @middleware(roles(['player']))
   async registerGame(req)
   {
     const game = Game.fromJSON(req.body);
