@@ -13,7 +13,6 @@ namespace ctac
 
     public class ComponentModel : IComponentModel
     {
-
         [Inject]
         public IConfigModel config { get; set; }
 

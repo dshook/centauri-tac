@@ -6,6 +6,7 @@ using strange.extensions.command.impl;
 using ctac.signals;
 using System;
 using System.Reflection;
+using System.Linq;
 
 namespace ctac
 {
@@ -39,23 +40,29 @@ namespace ctac
 
         protected override void mapBindings()
         {
-            injectionBinder.Bind<IConfigModel>().To<ConfigModel>().ToSingleton();
-            injectionBinder.Bind<IAuthModel>().To<AuthModel>().ToSingleton();
-            injectionBinder.Bind<IPlayerModel>().To<PlayerModel>().ToSingleton();
-            injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
-            injectionBinder.Bind<IMapModel>().To<MapModel>().ToSingleton();
-
-            injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
-            injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
-
             //bind up all the singleton signals
+            //note that this will not inject any types that are bound so these should be plain data classes
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (type.GetCustomAttributes(typeof(SingletonAttribute), true).Length > 0)
                 {
-                    injectionBinder.Bind(type).To(Activator.CreateInstance(type)).ToSingleton();
+                    var interfaceName = "I" + type.Name;
+                    var implementedInterface = type.GetInterfaces().Where(x => x.Name == interfaceName).FirstOrDefault();
+                    if (implementedInterface != null)
+                    {
+                        injectionBinder.Bind(implementedInterface).To(Activator.CreateInstance(type)).ToSingleton();
+                    }
+                    else
+                    {
+                        injectionBinder.Bind(type).To(Activator.CreateInstance(type)).ToSingleton();
+                    }
                 }
             }
+
+            injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
+            injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
+            injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
+
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
             mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();

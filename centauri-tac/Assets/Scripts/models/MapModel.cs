@@ -11,6 +11,7 @@ namespace ctac
         List<Tile> tiles { get; set; }
     }
 
+    [Singleton]
     public class MapModel : IMapModel
     {
         public string name { get; set; }

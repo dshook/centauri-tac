@@ -6,6 +6,7 @@ namespace ctac
         string realm { get; }
     }
 
+    [Singleton]
     public class ConfigModel : IConfigModel
     {
         public string baseUrl { get { return "http://localhost:10123/"; } }

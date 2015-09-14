@@ -5,6 +5,7 @@ namespace ctac
         Player player { get; set; }
     }
 
+    [Singleton]
     public class PlayerModel : IPlayerModel
     {
         public Player player { get; set; }
