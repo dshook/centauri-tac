@@ -35,6 +35,27 @@ export default class GameAPI
     return this.games.playersInGame(id);
   }
 
+  @route.post('/:id/join')
+  @middleware(roles(['player']))
+  async playerJoin(req)
+  {
+    // TODO: other logic
+    const {playerId} = req.body;
+    const gameId = req.params.id;
+    return await this.games.playerJoin(playerId, gameId);
+  }
+
+  @route.post('/:id/part')
+  @middleware(roles(['player']))
+  async playerPart(req)
+  {
+    // TODO: other logic
+    const {playerId} = req.body;
+    const gameId = req.params.id;
+    return await this.games.playerPart(playerId, gameId);
+  }
+
+
   /**
    * Create a game entry for a player as host
    */

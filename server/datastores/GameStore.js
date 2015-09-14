@@ -34,7 +34,7 @@ export default class GameStore
         on g.host_player_id = p.id
       left join game_states s
         on g.game_state_id = s.id
-      join (select game_id, count(*) as current_player_count
+      left join (select game_id, count(*) as current_player_count
           from game_players
           group by game_id) as counts
         on g.id = counts.game_id
@@ -83,6 +83,29 @@ export default class GameStore
       `, {id});
 
     return resp.toArray();
+  }
+
+  /**
+   * Join player to a game, need to make sure they're disconnected elswere
+   */
+  async playerJoin(playerId, gameId)
+  {
+    await this.sql.query(`
+        insert into game_players (player_id, game_id)
+        values (@playerId, @gameId)
+        `, {playerId, gameId});
+  }
+
+  /**
+   * Remove a player from a game
+   */
+  async playerPart(playerId, gameId)
+  {
+    await this.sql.query(`
+        delete from game_players
+        where player_id = @playerId
+        and game_id = @gameId`,
+        {playerId, gameId});
   }
 
   /**
