@@ -2,6 +2,7 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using ctac.signals;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac
 {
@@ -36,15 +37,14 @@ namespace ctac
                     CameraToMouseRay();
                 }
             }
-            //buttonText.color = Color.Lerp(newButtonTextColor, buttonTextColor, 2f * Time.deltaTime);
         }
 
         void CameraToMouseRay()
         {
-            Ray camRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
 
             RaycastHit floorHit;
-            if (Physics.Raycast(camRay, out floorHit, 30f, tileMask))
+            if (Physics.Raycast(camRay, out floorHit, Constants.cameraRaycastDist, tileMask))
             {
                 tileHover.Dispatch(floorHit.collider.gameObject);
             }

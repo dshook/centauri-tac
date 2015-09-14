@@ -32,7 +32,6 @@ namespace ctac
             }
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
-            goMap.AddComponent<TileHighlightView>();
 
             mapModel.root = goMap;
             mapModel.name = map.name;
