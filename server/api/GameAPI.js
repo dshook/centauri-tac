@@ -2,7 +2,6 @@ import {route} from 'http-tools';
 import {middleware} from 'http-tools';
 import authToken from '../middleware/authToken.js';
 import roles from '../middleware/roles.js';
-import Game from 'models/Game';
 
 /**
  * REST API for dealing with Game models
@@ -27,11 +26,20 @@ export default class GameAPI
     return await this.games.all(this.realm);
   }
 
+  /**
+   * Get a players current game (or null)
+   */
   @route.get('/current')
-  async getPlayersCurrentGame()
+  @middleware(roles(['player']))
+  async getPlayersCurrentGame(req)
   {
+    const id = req.auth.sub.id;
+    return await this.games.playersCurrentGame(id);
   }
 
+  /**
+   * Player list of who is currently in a game.
+   */
   @route.get('/:id/players')
   @middleware(roles(['player']))
   async getPlayersInGame(req)
@@ -40,6 +48,9 @@ export default class GameAPI
     return this.games.playersInGame(id);
   }
 
+  /**
+   * Player asking to join game
+   */
   @route.post('/:id/join')
   @middleware(roles(['player']))
   async playerJoin(req)
@@ -52,6 +63,9 @@ export default class GameAPI
     return await this.games.playerJoin(playerId, gameId);
   }
 
+  /**
+   * Player asking to leave game
+   */
   @route.post('/:id/part')
   @middleware(roles(['player']))
   async playerPart(req)
@@ -63,17 +77,4 @@ export default class GameAPI
 
     return await this.games.playerPart(playerId, gameId);
   }
-
-
-  /**
-   * Create a game entry for a player as host
-   */
-  @route.post('/create')
-  @middleware(roles(['player']))
-  async registerGame(req)
-  {
-    const game = Game.fromJSON(req.body);
-    return await this.games.register(game);
-  }
-
 }

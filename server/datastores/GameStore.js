@@ -74,7 +74,7 @@ export default class GameStore
   {
     const resp = await this.sql.tquery(Game)(`
 
-      select *
+      select g.*
       from game_players gp
       join games as g on gp.game_id = g.id
       where gp.player_id = @playerId
