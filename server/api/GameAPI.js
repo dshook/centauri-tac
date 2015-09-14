@@ -9,8 +9,9 @@ import roles from '../middleware/roles.js';
 @middleware(authToken())
 export default class GameAPI
 {
-  constructor(games, auth, componentsConfig)
+  constructor(gamelistComponent, games, auth, componentsConfig)
   {
+    this.gamelistComponent = gamelistComponent;
     this.auth = auth;
     this.games = games;
     this.realm = componentsConfig.realm;
@@ -71,10 +72,28 @@ export default class GameAPI
   async playerPart(req)
   {
     const playerId = req.auth.sub.id;
-    const gameId = req.params.id;
+    // const gameId = req.params.id;
 
     // TODO: interact with the running game
 
-    return await this.games.playerPart(playerId, gameId);
+    return await this.games.playerPart(playerId);
+  }
+
+  /**
+   * Player asking to create game
+   */
+  @route.post('/create')
+  @middleware(roles(['player']))
+  async createGame(req)
+  {
+    const playerId = req.auth.sub.id;
+    const {name} = req.body;
+
+    const componentId = await this.gamelistComponent.getComponentToHostGame();
+
+    // TODO: interact with some services to determine which game server we need
+    // to run on
+
+    return await this.games.create(name, componentId, playerId);
   }
 }

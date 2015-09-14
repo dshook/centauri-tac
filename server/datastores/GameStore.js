@@ -107,7 +107,7 @@ export default class GameStore
    */
   async playerJoin(playerId, gameId)
   {
-    await this.playerPart(playerId, gameId);
+    await this.playerPart(playerId);
 
     await this.sql.query(`
         insert into game_players (player_id, game_id)
@@ -118,13 +118,12 @@ export default class GameStore
   /**
    * Remove a player from a game
    */
-  async playerPart(playerId, gameId)
+  async playerPart(playerId)
   {
     await this.sql.query(`
         delete from game_players
         where player_id = @playerId
-        and game_id = @gameId`,
-        {playerId, gameId});
+        `, {playerId});
   }
 
   /**
@@ -136,24 +135,22 @@ export default class GameStore
   }
 
   /**
-   * Create a new game entry from a model, updates the id in the model
+   * Create an entry for a game
    */
-  async register(game: Game): Promise<Game>
+  async create(name, componentId, hostId)
   {
-    const resp = await this.sql.query(Game)(`
+    const resp = await this.sql.tquery(Game)(`
+        insert into games
+          (name, game_component_id, host_player_id)
+        values
+          (@name, @componentId, @hostId)
+        returning *
+      `, {name, componentId, hostId});
 
-      insert into games
-        (name, game_component_id, host_player_id)
-      values
-        (@name, @componentId, @hostPlayerId)
-      returning id
 
-      `,
-      game);
+    const game = resp.firstOrNull();
 
-    const {id} = resp.firstOrNull();
-
-    game.id = id;
+    await this.playerJoin(hostId, game.id);
 
     return game;
   }
