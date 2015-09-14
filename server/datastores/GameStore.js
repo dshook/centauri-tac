@@ -90,6 +90,8 @@ export default class GameStore
    */
   async playerJoin(playerId, gameId)
   {
+    await this.playerPart(playerId, gameId);
+
     await this.sql.query(`
         insert into game_players (player_id, game_id)
         values (@playerId, @gameId)
