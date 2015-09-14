@@ -28,6 +28,18 @@ export default class PlayerStore
   }
 
   /**
+   * Fetch a player by id
+   */
+  async get(id)
+  {
+    const resp = await this.sql.tquery(Player)(`
+        select * from players
+        where id = @id`, {id});
+
+    return resp.firstOrNull();
+  }
+
+  /**
    * Get a single player
    */
   async getPlayerByEmail(email): ?Player
