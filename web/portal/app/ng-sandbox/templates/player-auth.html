@@ -85,7 +85,7 @@
 
       <panel
         ng-if="flow.net.token"
-        icon="flag"
+        icon="list"
         title="gamelist"
         sub-title="refreshes every 5 seconds">
 
@@ -114,10 +114,22 @@
           </tr>
         </table>
 
-        <button 
+        <button
           ng-click="flow.joinFirstEmptyGame()"
           class="btn btn-default">Join first empty game</button>
         <button class="btn btn-default">Create game</button>
+
+      </panel>
+
+      <panel
+        ng-if="flow.myGame"
+        icon="flag"
+        title="game"
+        >
+
+        <button
+          ng-click="flow.leaveCurrentGame()"
+          class="btn btn-default">Leave</button>
 
       </panel>
 

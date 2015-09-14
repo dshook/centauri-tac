@@ -16,6 +16,8 @@ class FlowSim
 
     this.games = [];
 
+    this.myGame = null;
+
     const t = $interval(() => this.fetchGames(), 5000);
     $scope.$on('$destroy', () => $interval.cancel(t));
 
@@ -46,14 +48,27 @@ class FlowSim
       return;
     }
 
+    await this.getCurrentGame();
     const resp = await this.net.send('gamelist', 'game');
     this.games = resp.map(x => Game.fromJSON(x));
+  }
+
+  @ngApply async getCurrentGame()
+  {
+    this.myGame = await this.net.send('gamelist', 'game/current');
   }
 
   @ngApply async joinFirstEmptyGame()
   {
     const game = this.games[0];
     await this.net.send('gamelist', `game/${game.id}/join`, {});
+    await this.fetchGames();
+  }
+
+  @ngApply async leaveCurrentGame()
+  {
+    const game = this.myGame;
+    await this.net.send('gamelist', `game/${game.id}/part`, {});
     await this.fetchGames();
   }
 }
