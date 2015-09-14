@@ -30,7 +30,7 @@ export default class GameStore
         on c.component_type_id = t.id
       join players p
         on g.host_player_id = p.id
-      join game_states s
+      left join game_states s
         on g.game_state_id = s.id
 
     `;
