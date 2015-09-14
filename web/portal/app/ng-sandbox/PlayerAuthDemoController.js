@@ -12,6 +12,8 @@ class FlowSim
     this.email = `player${player}@gmail.com`;
     this.password = 'pw';
 
+    this.me = null;
+
     this.games = [];
 
     const t = $interval(() => this.fetchGames(), 5000);
@@ -32,6 +34,9 @@ class FlowSim
   @ngApply async auth()
   {
     await this.net.login(this.email, this.password);
+
+    this.me = await this.net.send('auth', 'player/me');
+
     await this.fetchGames();
   }
 
@@ -42,9 +47,14 @@ class FlowSim
     }
 
     const resp = await this.net.send('gamelist', 'game');
-    const games = resp.map(x => Game.fromJSON(x));
+    this.games = resp.map(x => Game.fromJSON(x));
+  }
 
-    this.games = games;
+  @ngApply async joinFirstEmptyGame()
+  {
+    const game = this.games[0];
+    await this.net.send('gamelist', `game/${game.id}/join`, {});
+    await this.fetchGames();
   }
 }
 

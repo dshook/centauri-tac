@@ -76,6 +76,11 @@
 
         </form>
 
+        <div ng-if="flow.me">
+          <hr>
+          logged in as <span player="flow.me"></span>
+        </div>
+
       </panel>
 
       <panel
@@ -109,7 +114,9 @@
           </tr>
         </table>
 
-        <button class="btn btn-default">Join first empty game</button>
+        <button 
+          ng-click="flow.joinFirstEmptyGame()"
+          class="btn btn-default">Join first empty game</button>
         <button class="btn btn-default">Create game</button>
 
       </panel>
