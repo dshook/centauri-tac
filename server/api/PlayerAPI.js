@@ -26,7 +26,7 @@ export default class PlayerAPI
   @middleware(roles(['player']))
   async getPlayerProfile(req)
   {
-    const email = req.auth.sub;
+    const email = req.auth.sub.email;
     const player = await this.players.getPlayerByEmail(email);
     return player;
   }

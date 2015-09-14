@@ -27,6 +27,11 @@ export default class GameAPI
     return await this.games.all(this.realm);
   }
 
+  @route.get('/current')
+  async getPlayersCurrentGame()
+  {
+  }
+
   @route.get('/:id/players')
   @middleware(roles(['player']))
   async getPlayersInGame(req)
@@ -39,9 +44,11 @@ export default class GameAPI
   @middleware(roles(['player']))
   async playerJoin(req)
   {
-    // TODO: other logic
-    const {playerId} = req.body;
+    const playerId = req.auth.sub.id;
     const gameId = req.params.id;
+
+    // TODO: interact with the running game
+
     return await this.games.playerJoin(playerId, gameId);
   }
 
@@ -49,9 +56,11 @@ export default class GameAPI
   @middleware(roles(['player']))
   async playerPart(req)
   {
-    // TODO: other logic
-    const {playerId} = req.body;
+    const playerId = req.auth.sub.id;
     const gameId = req.params.id;
+
+    // TODO: interact with the running game
+
     return await this.games.playerPart(playerId, gameId);
   }
 

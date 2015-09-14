@@ -68,6 +68,23 @@ export default class GameStore
   }
 
   /**
+   * Get a (minimal model) game that the player is currently in
+   */
+  async playersCurrentGame(playerId)
+  {
+    const resp = await this.sql.tquery(Game)(`
+
+      select *
+      from game_players gp
+      join games as g on gp.game_id = g.id
+      where gp.player_id = @playerId
+
+    `, {playerId});
+
+    return resp.firstOrNull();
+  }
+
+  /**
    * Get all players in a game by id
    */
   async playersInGame(id)
