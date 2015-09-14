@@ -4,7 +4,7 @@ import Game from 'models/Game';
 
 class FlowSim
 {
-  constructor(player, net, $scope)
+  constructor(player, net, $scope, $interval)
   {
     this.$scope = $scope;
     this.player = player;
@@ -13,6 +13,9 @@ class FlowSim
     this.password = 'pw';
 
     this.games = [];
+
+    const t = $interval(() => this.fetchGames(), 5000);
+    $scope.$on('$destroy', () => $interval.cancel(t));
 
     // clone app's net
     this.net = new NetClient(net.masterURL, net.realm, net._transport);
@@ -34,6 +37,10 @@ class FlowSim
 
   @ngApply async fetchGames()
   {
+    if (!this.net.token) {
+      return;
+    }
+
     const resp = await this.net.send('gamelist', 'game');
     const games = resp.map(x => Game.fromJSON(x));
 
@@ -46,12 +53,12 @@ class FlowSim
  */
 export default class PlayerAuthDemoController
 {
-  constructor($scope, netClient)
+  constructor($scope, $interval, netClient)
   {
     this.net = netClient;
 
     // Flow for 2 players
-    this.flows = [1, 2].map(x => new FlowSim(x, this.net, $scope));
+    this.flows = [1, 2].map(x => new FlowSim(x, this.net, $scope, $interval));
 
     // autoconnect
     this.flows.forEach(x => x.connect());

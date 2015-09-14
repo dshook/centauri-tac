@@ -16,7 +16,7 @@
       <h3>Player {{ flow.player }}</h3>
 
       <panel
-        title="Connect to master"
+        title="master"
         icon="globe"
         type="primary">
 
@@ -50,7 +50,7 @@
 
       <panel
         ng-if="flow.net.connected"
-        title="Player Auth"
+        title="auth"
         icon="lock"
         type="success">
 
@@ -65,20 +65,24 @@
             <label>Password</label>
             <input ng-model="flow.password" type="password" class="form-control">
           </div>
-        </form>
 
-        <button
-          class="btn btn-default"
-          ng-click="flow.auth()">
-          Connect
-        </button>
+          <div class="form-group">
+            <button
+              class="btn btn-default"
+              ng-click="flow.auth()">
+              Connect
+            </button>
+          </div>
+
+        </form>
 
       </panel>
 
       <panel
         ng-if="flow.net.token"
         icon="flag"
-        title="Games">
+        title="gamelist"
+        sub-title="refreshes every 5 seconds">
 
         <table class="table table-striped" ng-table>
           <tr ng-repeat="game in flow.games">
@@ -97,12 +101,16 @@
               <span player="game.hostPlayer"></span>
             </td>
 
+            <td
+              data-title="'players'">
+              {{ game.currentPlayerCount }} / {{ game.maxPlayerCount }}
+            </td>
+
           </tr>
         </table>
 
-        <button class="btn btn-default">Fetch game list</button>
+        <button class="btn btn-default">Join first empty game</button>
         <button class="btn btn-default">Create game</button>
-        <button class="btn btn-default">Join empty game</button>
 
       </panel>
 
