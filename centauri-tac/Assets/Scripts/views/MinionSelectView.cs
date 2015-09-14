@@ -28,12 +28,14 @@ namespace ctac
             {
                 if (minionHit.collider.gameObject.CompareTag("Minion"))
                 {
+                    somethingSelected = true;
                     minionSelected.Dispatch(minionHit.collider.gameObject);
                 }
             }
             else
             {
                 minionSelected.Dispatch(null);
+                somethingSelected = false;
             }
 
             return false;

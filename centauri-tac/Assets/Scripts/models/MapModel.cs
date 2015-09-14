@@ -8,7 +8,7 @@ namespace ctac
         string name { get; set; }
         int maxPlayers { get; set; }
         GameObject root { get; set; }
-        List<Tile> tiles { get; set; }
+        Dictionary<Vector2, Tile> tiles { get; set; }
     }
 
     [Singleton]
@@ -17,7 +17,7 @@ namespace ctac
         public string name { get; set; }
         public int maxPlayers { get; set; }
         public GameObject root { get; set; }
-        public List<Tile> tiles { get; set; }
+        public Dictionary<Vector2, Tile> tiles { get; set; }
     }
 
     public class Tile

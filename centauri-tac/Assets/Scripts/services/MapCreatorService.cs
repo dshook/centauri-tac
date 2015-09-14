@@ -36,7 +36,7 @@ namespace ctac
             mapModel.root = goMap;
             mapModel.name = map.name;
             mapModel.maxPlayers = map.maxPlayers;
-            mapModel.tiles = new List<Tile>();
+            mapModel.tiles = new Dictionary<Vector2, Tile>();
 
             foreach (var t in map.tiles)
             {
@@ -47,7 +47,7 @@ namespace ctac
                 ) as GameObject;
                 newTile.transform.parent = goMap.transform;
 
-                mapModel.tiles.Add(new Tile() { gameObject = newTile });
+                mapModel.tiles.Add(new Vector2(t.transform.x, t.transform.z), new Tile() { gameObject = newTile });
             }
 
             mapCreated.Dispatch();
