@@ -1,4 +1,3 @@
-import {promisifyAll} from 'bluebird';
 import express from 'express';
 import loglevel from 'loglevel-decorator';
 import HttpConfig from '../config/HttpConfig.js';
@@ -11,7 +10,7 @@ export default class HttpService
 {
   constructor(app)
   {
-    this.server = promisifyAll(express());
+    this.server = express();
     this.server.disable('x-powered-by');
     this.server.disable('etag');
 
@@ -26,8 +25,20 @@ export default class HttpService
    */
   async start()
   {
-    await this.server.listenAsync(this.config.port);
+    const s = this.server;
+    const port = this.config.port;
 
-    this.log.info(`http listening on port ${this.config.port}`);
+    // Gotta do this the old fashioned way due to express's event listener
+    // style
+    return new Promise((res) => {
+
+      s.raw = s.listen(port, () => {
+        this.log.info(`http listening on port ${port}`);
+        res();
+      });
+
+      // never rejects ...
+
+    });
   }
 }

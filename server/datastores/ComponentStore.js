@@ -16,7 +16,7 @@ export default class ComponentStore
   }
 
   /**
-   * All (recently active) components
+   * All active components across all realms
    */
   async all()
   {
@@ -25,7 +25,7 @@ export default class ComponentStore
       from components as c
       join component_types as t
         on c.component_type_id = t.id
-      where c.last_ping >= now() - '1 hour'::interval
+      where c.is_active
     `;
 
     const types = [Component, ComponentType];
@@ -55,9 +55,9 @@ export default class ComponentStore
   }
 
   /**
-   * Get all active components in a specific realm (active in last 30 seconds)
+   * Get active components in a specific realm
    */
-  async activeInRealm(realm)
+  async getActive(realm)
   {
     const resp = await this.sql.tquery(Component)(`
 
@@ -66,24 +66,11 @@ export default class ComponentStore
       join component_types as t on c.component_type_id = t.id
       where
         c.realm = @realm
-        and c.last_ping >= now() - '10 seconds'::interval
+        and c.is_active
 
     `, {realm}, (c, t) => { c.type = t; return c; });
 
     return resp.toArray();
-  }
-
-  /**
-   * Update ping time by id
-   */
-  async ping(id)
-  {
-    const resp = await this.sql.query(`
-      update components
-        set last_ping = now()
-      where id = @id returning id`, {id});
-
-    return resp.firstOrNull();
   }
 
   /**
@@ -92,48 +79,83 @@ export default class ComponentStore
   @memoize async getTypeIdByName(name: String): ?Number
   {
     const resp = await this.sql.query(`
-      select id from component_types
-      where name = @name`, {name});
+      select id from component_types where name = @name`, {name});
 
     const result = resp.firstOrNull();
-
     return result ? result.id : null;
   }
 
   /**
-   * Add a component
+   * Set the active flag on a component
    */
-  async register(url, typeName, realm = null, ver = null)
+  async setActive(id, state = true)
   {
-    if (!realm && typeName !== 'master') {
+    await this.sql.query(`
+      update components set is_active = @state
+      where id = @id`, {id, state});
+
+    this.log.info('set component %s to active=%s', id, state);
+  }
+
+  /**
+   * Update last ping
+   */
+  async ping(id)
+  {
+    await this.sql.query(`
+        update components set last_ping = now()
+        where id = @id`, {id});
+  }
+
+  /**
+   * Cleanup zombie components
+   */
+  async markStaleInactive()
+  {
+    await this.sql.query(`
+        update components set is_active = false
+        where last_ping < now() - '10 seconds'::interval`);
+  }
+
+  /**
+   * Add a component to the registry (side effect of updating local model)
+   */
+  async register(component)
+  {
+    if (!component.realm && component.typeName !== 'master') {
       throw new Error(
         'realm must be provided when registering a non-master component');
     }
 
-    if (!ver && typeName !== 'master') {
-      throw new Error(
-          'version must be provided when registering a non-master component');
+    if (!component.version) {
+      throw new Error('version must be provided when registering component');
     }
 
+    const typeName = component.type.name;
     const typeId = await this.getTypeIdByName(typeName);
-
-    const version = ver || this.version;
 
     if (!typeId) {
       throw new Error('invalid type name ' + typeName);
     }
 
-    const resp = await this.sql.tquery(Component)(`
+    // update local model typeID
+    component.typeId = typeId;
+
+    const resp = await this.sql.query(`
 
       insert into components
-        (url, component_type_id, version, realm)
+        (url, component_type_id, version, realm, is_active)
       values
-        (@url, @typeId, @version, @realm)
-      returning *
+        (@url, @typeId, @version, @realm, @isActive)
+      returning id, registered
 
-      `, {url, typeId, version, realm});
+    `, component);
 
-    const component = resp.firstOrNull();
+    const data = resp.firstOrNull();
+
+    // local model updates
+    component.id = data.id;
+    component.registered = data.registered;
 
     this.log.info(`registered new component id=${component.id}`);
     return component;

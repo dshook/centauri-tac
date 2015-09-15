@@ -9,8 +9,10 @@ import compression from 'compression';
 @loglevel
 export default class PortalComponent
 {
-  async start(server)
+  async start(component)
   {
+    const server = component.httpServer;
+
     // static files
     const webroot = path.join(__dirname, '../../dist/portal');
     server.use(compression());

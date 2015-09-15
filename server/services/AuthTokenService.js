@@ -24,6 +24,15 @@ export default class AuthTokenService
   }
 
   /**
+   * Validate a token and get the decoded response, will throw if its bad
+   */
+  validateToken(token)
+  {
+    const decoded = jwt.verify(token, this.config.secret);
+    return decoded;
+  }
+
+  /**
    * Create a JWT token
    */
   generateToken(
@@ -43,7 +52,7 @@ export default class AuthTokenService
       roles,
     };
 
-    this.log.info('generated token for roles %s', roles.join(','));
+    this.log.info('generated token for roles: %s', roles.join(','));
     return jwt.sign(payload, this.config.secret, options);
   }
 }

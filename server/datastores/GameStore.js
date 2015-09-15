@@ -18,11 +18,15 @@ export default class GameStore
   }
 
   /**
-   * Every damn game (or by realm)
+   * Active games on realm
    */
-  async all(realm = null)
+  async getActive(realm)
   {
-    let sql = `
+    if (!realm) {
+      throw new TypeError('must specify realm');
+    }
+
+    const sql = `
 
       select g.*, c.*, t.*, p.*, s.*, counts.current_player_count
       from games as g
@@ -34,30 +38,26 @@ export default class GameStore
         on g.host_player_id = p.id
       left join game_states s
         on g.game_state_id = s.id
+
+      -- show curent player count
       left join (select game_id, count(*) as current_player_count
           from game_players
           group by game_id) as counts
         on g.id = counts.game_id
 
+      where c.realm = @realm
+      and c.is_active
+
     `;
 
-    const params = {};
-
-    // TODO: active check here
-    if (realm) {
-      sql += `
-        where c.realm = @realm
-      `;
-
-      params.realm = realm;
-    }
+    const params = {realm};
 
     const models = [Game, Component, ComponentType, Player, GameState];
 
     const resp = await this.sql.tquery(...models)(sql, params,
       (g, c, t, p, gs, cpc) => {
-        g.gameComponent = c;
-        g.gameComponent.type = t;
+        g.component = c;
+        g.component.type = t;
         g.hostPlayer = p;
         g.state = gs;
         g.currentPlayerCount = 0 | cpc['current_player_count'];
@@ -72,16 +72,27 @@ export default class GameStore
    */
   async playersCurrentGame(playerId)
   {
-    const resp = await this.sql.tquery(Game)(`
+    const resp = await this.sql.tquery(Game, Component)(`
 
-      select g.*
+      select g.*, c.*
       from game_players gp
       join games as g on gp.game_id = g.id
+      join components as c on g.game_component_id = c.id
       where gp.player_id = @playerId
 
-    `, {playerId});
+    `, {playerId}, (g, c) => { g.component = c; return g; });
 
-    return resp.firstOrNull();
+    const game = resp.firstOrNull();
+
+    // cleanup after stale games / DCs / server restarts
+    if (game && !game.component.isActive) {
+      this.log.info('dropping player %s from stale game %s on %s',
+          playerId, game.id, game.component.id);
+      await this.playerPart(playerId);
+      return null;
+    }
+
+    return game;
   }
 
   /**
@@ -107,6 +118,7 @@ export default class GameStore
    */
   async playerJoin(playerId, gameId)
   {
+    // make sure the player leaves current game first
     await this.playerPart(playerId);
 
     await this.sql.query(`
@@ -127,14 +139,6 @@ export default class GameStore
   }
 
   /**
-   * Get active games from a particular realm
-   */
-  async activeFromRealm(realm)
-  {
-    return await this.all(realm);
-  }
-
-  /**
    * Create an entry for a game
    */
   async create(name, componentId, hostId)
@@ -150,6 +154,7 @@ export default class GameStore
 
     const game = resp.firstOrNull();
 
+    // host always joins
     await this.playerJoin(hostId, game.id);
 
     return game;

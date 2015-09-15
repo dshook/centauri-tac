@@ -35,28 +35,6 @@ export default class ComponentAPI
     const id = 0 | req.params.id;
     return this.components.get(id);
   }
-
-  /**
-   * Register a component with the master, only happens from a component
-   */
-  @route.post('/register')
-  @middleware(roles(['component']))
-  async register(req)
-  {
-    const {url, name, realm, version} = req.body;
-    return await this.components.register(url, name, realm, version);
-  }
-
-  /**
-   * Update ping time from component by id
-   */
-  @route.post('/ping')
-  @middleware(roles(['component']))
-  async ping(req)
-  {
-    const {id} = req.body;
-    return await this.components.ping(id);
-  }
 }
 
 

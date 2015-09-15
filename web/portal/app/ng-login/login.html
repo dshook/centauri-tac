@@ -50,8 +50,15 @@
           {{ vm.loggingIn ? 'Authenticating' : 'Log In' }}
         </button>
       </form>
-
     </div>
+
+    <div class="panel-footer">
+      <i class="fa fa-lock"></i> {{ vm.authState }}
+      <span ng-if="vm.authLatency">
+        ({{ vm.authLatency | number }} ms ping)
+      </span>
+    </div>
+
   </div>
 
   <div class="panel"
@@ -68,9 +75,7 @@
     </div>
     <div class="panel-body">
       <div
-        class="form-group has-feedback"
-        ng-class="{'has-success': vm.net.connected }"
-        >
+        class="form-group has-feedback">
         <label>Master URL</label>
         <input
           type="text"
@@ -84,12 +89,10 @@
           <i ng-if="vm.net.connected" class="fa fa-check"></i>
           <i ng-if="!vm.net.connected" class="fa fa-exclamation-circle"></i>
         </span>
-
       </div>
       <div
         class="form-group has-feedback"
-        ng-class="{'has-success': vm.net.ready }"
-        >
+        ng-class="{'has-success': vm.net.ready }">
         <label>Realm</label>
         <input
           ng-change="vm.connect()"
@@ -101,10 +104,19 @@
           <i ng-if="vm.net.ready" class="fa fa-check"></i>
           <i ng-if="!vm.net.ready" class="fa fa-exclamation-circle"></i>
         </span>
+      </div>
+    </div>
+
+    <div class="panel-footer" ng-if="vm.net.connected">
+      <i class="fa fa-cubes"></i> Found {{ vm.net._components.length }}
+      active components on this realm
+    </div>
+
+    <div class="panel-footer" ng-if="vm.masterError">
+      <i class="fa fa-warning"></i> Error: {{ vm.masterError }}
     </div>
 
   </div>
-
 
 </div>
 

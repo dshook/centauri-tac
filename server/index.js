@@ -1,3 +1,6 @@
+// local overrides for env variables
+require('dotenv').load();
+
 // local lib hack
 // https://gist.github.com/branneman/8048520
 process.env.NODE_PATH = './lib';
@@ -11,9 +14,6 @@ require('babel/register');
 
 // use bluebird instead of native promise
 global.Promise = require('bluebird');
-
-// local overrides for env variables
-require('dotenv').load();
 
 // boot
 require('./main.js');

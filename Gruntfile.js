@@ -28,11 +28,13 @@ module.exports = function gruntfile(grunt) {
           'bluebird',
           'core-decorators',
           'debug',
+          'events',
           'lodash',
           'loglevel',
           'moment',
           'ng-table',
           'request',
+          'ws',
         ],
       },
 

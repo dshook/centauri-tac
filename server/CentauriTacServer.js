@@ -20,6 +20,9 @@ export default class CentauriTacServer
     this.components = components;
     this.services = new Set();
     this.app = new Application();
+
+    process.on('SIGINT', () => this.stop());
+    process.once('SIGUSR2', () => this.onNodemonRefresh());
   }
 
   /**
@@ -54,6 +57,35 @@ export default class CentauriTacServer
     this.log.info('booting application');
     await this.app.start();
     this.log.info('application started');
+  }
+
+  /**
+   * When nodemon restarts dev server
+   */
+  async onNodemonRefresh()
+  {
+    this.log.info('nodemon refresh');
+    try {
+      await this.app.stop();
+    }
+    finally {
+      setTimeout(() => process.kill(process.pid, 'SIGUSR2'), 1000);
+    }
+  }
+
+  /**
+   * Cleanup
+   */
+  async stop()
+  {
+    this.log.info('attempting to gracefully stop app');
+    try {
+      await this.app.stop();
+    }
+    finally {
+      this.log.info('exiting');
+      setTimeout(() => process.exit(), 1000);
+    }
   }
 
   /**

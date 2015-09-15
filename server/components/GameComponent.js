@@ -6,12 +6,7 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GameComponent
 {
-  constructor()
-  {
-
-  }
-
-  async start(server, rest)
+  async start()
   {
 
   }

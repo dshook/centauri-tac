@@ -5,21 +5,20 @@ import {route} from 'http-tools';
  */
 export default class RealmAPI
 {
-  constructor(components)
+  constructor(auth, components)
   {
+    this.auth = auth;
     this.components = components;
   }
 
   /**
-   * Get all active compoents for a realm. Primary use of the master controller
-   * is to provide this shit to the clients
-   * TODO: decorator for C# client REST
+   * Public endpoint. Get all active compoents for a realm. Primary use of the
+   * master controller is to provide this shit to the clients
    */
   @route.get('/:realm/components')
-  @route.post('/:realm/components')
   async activeComponents(req)
   {
     const {realm} = req.params;
-    return await this.components.activeInRealm(realm);
+    return await this.components.getActive(realm);
   }
 }

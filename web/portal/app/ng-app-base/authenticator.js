@@ -36,15 +36,28 @@ export default async function authenticator($cookies, $state, netClient)
         throw new Error();
       }
 
-      netClient.token = token;
+      // attempt to connect auth and verify token
+      await netClient.sendCommand('auth', 'token', token);
+      const {params} = await netClient.recvCommand('login');
+      const {status, message} = params;
+
+      if (status) {
+        _d('login successful!');
+        netClient.token = token;
+      }
+      else {
+        _d('login failed!');
+        throw new Error(message);
+      }
+
     }
 
     // attempt auth call
-    await netClient.send('auth', 'player/me');
+    // await netClient.send('auth', 'player/me');
     _d('verified token... continuing on route');
   }
   catch (err) {
-    _d('couldnt authenticate, throwing back to login');
+    _d('couldnt authenticate(' + err.message + '), throwing back to login');
 
     // if anything fails, go to the login state AFTER the stack frame clears
     setTimeout(() => $state.go('login'));

@@ -1,9 +1,12 @@
 import loglevel from 'loglevel-decorator';
 import {Router} from 'express';
 import {HttpHarness} from 'http-tools';
+import SockHarness from 'sock-harness';
 import cors from 'cors';
-
-const PING_INTERVAL = 5 * 1000;
+import SocketServer from 'socket-server';
+import Component from 'models/Component';
+import {rpc} from 'sock-harness';
+import TokenRPC from '../api/TokenRPC.js';
 
 /**
  * Manage booting up and register runtime components
@@ -11,7 +14,8 @@ const PING_INTERVAL = 5 * 1000;
 @loglevel
 export default class ComponentManager
 {
-  constructor(app, httpServer, httpConfig, netClient, componentsConfig, packageData)
+  constructor(
+      app, httpServer, httpConfig, netClient, componentsConfig, packageData)
   {
     this.version = packageData.version;
     this.server = httpServer;
@@ -19,6 +23,12 @@ export default class ComponentManager
     this.cConfig = componentsConfig;
     this.app = app;
     this.net = netClient;
+
+    this._components = [];
+
+    this.net.bindInstance(this);
+
+    this.pingMaps = new Map();
 
     this.registered = new Map();
   }
@@ -38,25 +48,40 @@ export default class ComponentManager
   /**
    * POST to master server and ping occasionally
    */
-  async register(name, url)
+  async register(component)
   {
-    const realm = this.cConfig.realm;
+    this.log.info('registering %s component with %s@%s',
+        component.type.name, component.realm, component.url);
 
-    this.log.info('registering %s component with %s@%s', name, realm, url);
+    await this.net.sendCommand('master', 'registerComponent', {component});
+  }
 
-    const version = this.version;
+  /**
+   * Cleanup all components in the registry
+   */
+  async shutdown()
+  {
+    this.log.info('going down!');
 
-    // RPC to register
-    const component = await this.net.send(
-        'master', 'component/register', { name, url, realm, version });
+    for (const c of this._components) {
+      await this.net.sendCommand('master', 'markComponentInactive', c.id);
+    }
 
-    // Ping master occasionally
-    this.log.info('setting up ping interval %d for %s', PING_INTERVAL, name);
-    setInterval(async () => {
-      await this.net.send('master', 'component/ping', { id: component.id });
-    }, PING_INTERVAL);
+    this.log.info('deregistered all managed components');
+  }
 
-    return component;
+  /**
+   * Whenever master sends us a new component we're in charge of
+   */
+  @rpc.command('master', 'component')
+  recvComponent(client, {component})
+  {
+    this._components.push(component);
+    this.log.info('now managing %s, %s components total recv from master',
+        component.type.name, this._components.length);
+
+    // setup pings
+    setInterval(() => this.net.sendCommand('master', 'pingComponent', component.id), 5000);
   }
 
   /**
@@ -72,14 +97,14 @@ export default class ComponentManager
       const prefix = `/components/${name}`;
       const publicURL = this.config.publicURL + prefix;
 
-      // register this component with the master (if its not the master)
-      if (name !== 'master') {
-        this.log.info('registering component %s', name);
-        await this.register(name, publicURL);
-      }
-
       // base http for the component
       const router = new Router();
+
+      // socket server
+      const raw = this.server.raw;
+      const wss = new SocketServer(raw, prefix);
+      const sockServer = new SockHarness(wss, U => this.app.make(U));
+      sockServer.addHandler(TokenRPC);
 
       // rest endpoint
       const rRouter = new Router();
@@ -95,9 +120,24 @@ export default class ComponentManager
       // Mount to root of process HTTP server
       this.server.use(prefix, router);
 
+      // build component entry
+      const entry = new Component();
+      entry.httpServer = router;
+      entry.restServer = rest;
+      entry.sockServer = sockServer;
+
+      entry.url = publicURL;
+      entry.type = {name};
+      entry.realm = this.cConfig.realm;
+      entry.version = this.version;
+      entry.typeName = name;
+      entry.isActive = true;
+
+      await this.register(entry);
+
       // Let the component boot up
       this.log.info('starting component %s at %s', name, publicURL);
-      await component.start(router, rest, publicURL);
+      await component.start(entry);
       this.log.info('started component %s', name);
     }
   }

@@ -1,6 +1,7 @@
 import ngApply from 'ng-apply-decorator';
 import {debounce} from 'core-decorators';
 import moment from 'moment';
+import {rpc} from 'sock-harness';
 
 export default class LoginController
 {
@@ -11,12 +12,15 @@ export default class LoginController
     this.$cookies = $cookies;
     this.net = netClient;
 
+    // wire up RPCs
+    netClient.bindInstance(this);
+    $scope.$on('$destroy', () => netClient.unbindInstance(this));
+
     // display data
     this.version = packageData.version;
-
-    // state data
-    this.connecting = false;
+    this.error = null;
     this.loggingIn = false;
+    this.authState = 'Not connected';
 
     // form data
     this.email = '';
@@ -25,88 +29,130 @@ export default class LoginController
     this.masterURL = location.origin + '/components/master';
     this.realm = 'local';
 
-    // restore form
-    const form = $cookies.getObject('login');
-    if (form) {
-      this.email = form.email;
-      this.masterURL = form.url;
-      this.realm = form.realm;
-    }
+    this._restoreForm();
 
     // connect right away to master
     this.connect();
   }
 
-  setRealm(realm)
-  {
-    this.realm = realm;
-    this.connect();
-  }
-
   /**
-   * Attempt to auth
+   * When the user presses the login button
    */
   @ngApply async login()
   {
-    if (!this.allowLogin) {
-      return;
-    }
-
-    this.error = null;
     this.loggingIn = true;
 
+    const email = this.email;
+    const password = this.password;
+
     try {
-      await this.net.login(this.email, this.password);
+
+      this.net.sendCommand('auth', 'login', {email, password});
+
+      // wait for server to respond
+      const {params} = await this.net.recvCommand('login');
+      const {status, message} = params;
+
+      if (!status) {
+        this.error = message;
+      }
+      else {
+        // made it!
+        this.error = null;
+        this._saveToken();
+        this._saveForm();
+        this.$state.go('app.home');
+      }
+
     }
     catch (err) {
       this.error = err.message;
-      return;
     }
     finally {
       this.loggingIn = false;
     }
-
-    if (this.remember) {
-      // for auth
-      this.$cookies.put('auth', this.net.token, {
-        expires: moment().add(1, 'year').toDate(),
-      });
-
-      // saved form if it works
-      this.$cookies.putObject('login', {
-        email: this.email,
-        url: this.masterURL,
-        realm: this.realm,
-      });
-    }
-
-    // made it
-    this.$state.go('app.home');
   }
 
-  /**
-   * used to disable login form when busy with something or not yet connected
-   * to master
-   */
-  get allowLogin()
+  @rpc.connected('auth')
+  @ngApply helloAuth()
   {
-    return !this.loggingIn &&
-      this.net.connected &&
-      !this.net.token &&
-      this.net.ready;
+    this.authState = 'Connected';
+  }
+
+  @rpc.disconnected('auth')
+  @ngApply goodbyeAuth()
+  {
+    this.authState = 'Not connected';
+    this.authLatency = null;
+  }
+
+  @rpc.command('auth', '_latency')
+  @ngApply async lat(client, latency)
+  {
+    this.authLatency = latency;
   }
 
   /**
-   * Connect to master server
+   * Connect to master server and DL lists, called on master setting changes
    */
   @debounce(250) @ngApply async connect()
   {
-    if (this.connecting) {
-      return;
-    }
+    this.masterError = null;
 
     this.net.masterURL = this.masterURL;
     this.net.realm = this.realm;
-    await this.net.connect();
+
+    try {
+      await this.net.connect();
+    }
+    catch (err) {
+      this.masterError = err.message;
+    }
+  }
+
+  get allowLogin()
+  {
+    return !this.loggingIn && this.net.ready;
+  }
+
+  /**
+   * persit login token
+   */
+  _saveToken()
+  {
+    if (!this.net.token) {
+      return;
+    }
+
+    this.$cookies.put('auth', this.net.token, {
+      expires: moment().add(1, 'year').toDate(),
+    });
+  }
+
+  /**
+   * persit form data
+   */
+  _saveForm()
+  {
+    this.$cookies.putObject('login', {
+      email: this.email,
+      url: this.masterURL,
+      realm: this.realm,
+      expires: moment().add(1, 'year').toDate(),
+    });
+  }
+
+  /**
+   * pull in form data
+   */
+  _restoreForm()
+  {
+    // restore form
+    const form = this.$cookies.getObject('login');
+    if (form) {
+      this.email = form.email;
+      this.masterURL = form.url;
+      this.realm = form.realm;
+    }
   }
 }

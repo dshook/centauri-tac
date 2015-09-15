@@ -1,5 +1,5 @@
 import loglevel from 'loglevel-decorator';
-import GameAPI from '../api/GameAPI.js';
+import GamelistRPC from '../api/GamelistRPC.js';
 
 /**
  * Game server component that provides lists of running games
@@ -7,23 +7,10 @@ import GameAPI from '../api/GameAPI.js';
 @loglevel
 export default class GamelistComponent
 {
-  constructor(app)
+  async start(component)
   {
-    // TODO: move the features of this stuff into a game manager type thing
-    app.registerSingleton('gamelistComponent', this);
-  }
+    const sock = component.sockServer;
 
-  async start(server, rest)
-  {
-    rest.mountController('/game', GameAPI);
-  }
-
-  /**
-   * Function that will find a component to host a game on and instruct it to
-   * spin up a new instnace
-   */
-  async getComponentToHostGame()
-  {
-    return 60;
+    sock.addHandler(GamelistRPC);
   }
 }

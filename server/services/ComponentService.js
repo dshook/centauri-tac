@@ -18,4 +18,10 @@ export default class ComponentService
     this.log.info('starting all components');
     await this.manager.startComponents();
   }
+
+  async stop()
+  {
+    await this.manager.shutdown();
+    this.log.info('shut down manager');
+  }
 }

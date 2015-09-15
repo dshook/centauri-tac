@@ -1,8 +1,9 @@
 import ComponentAPI from '../api/ComponentAPI.js';
 import loglevel from 'loglevel-decorator';
 import RealmAPI from '../api/RealmAPI.js';
+import MasterRPC from '../api/MasterRPC.js';
 
-const PING_INTERVAL = 5 * 1000;
+const CLEANUP_INTERVAL = 120 * 1000;
 
 /**
  * Game server component that maintains the list of all other components
@@ -13,19 +14,25 @@ export default class MasterComponent
   constructor(components)
   {
     this.components = components;
+
+    setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
+    this.cleanup();
   }
 
-  async start(server, rest, publicURL)
+  async start(component)
   {
+    const rest = component.restServer;
+    const sock = component.sockServer;
+
     rest.mountController('/component', ComponentAPI);
     rest.mountController('/realm', RealmAPI);
 
-    // Register this master directly into the database with our hardcoded realm
-    const component = await this.components.register(publicURL, 'master');
+    sock.addHandler(MasterRPC);
+  }
 
-    // auto ping
-    setInterval(() => this.components.ping(component.id), PING_INTERVAL);
-
-    this.log.info('master running with component id = %s', component.id);
+  async cleanup()
+  {
+    this.log.info('cleaning up stale components');
+    this.components.markStaleInactive();
   }
 }
