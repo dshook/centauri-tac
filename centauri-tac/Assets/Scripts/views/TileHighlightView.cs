@@ -142,10 +142,13 @@ namespace ctac
             }
 
             moveTiles = tiles;
-            foreach (var tile in tiles)
+            if (tiles != null)
             {
-                var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = moveColor;
+                foreach (var tile in tiles)
+                {
+                    var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    spriteRenderer.color = moveColor;
+                }
             }
         }
     }

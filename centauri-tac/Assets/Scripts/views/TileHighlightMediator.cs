@@ -48,7 +48,7 @@ namespace ctac
                 view.onTileSelected(gameTile.gameObject);
 
                 //find movement
-                var moveTiles = map.GetTilesInRadius(selectedPosition, 1);
+                var moveTiles = map.GetTilesInRadius(selectedPosition, 2);
                 //take out the central one
                 moveTiles.Remove(selectedPosition);
                 view.onMovableTiles(moveTiles);
