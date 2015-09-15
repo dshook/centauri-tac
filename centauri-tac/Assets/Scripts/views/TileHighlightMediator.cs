@@ -18,8 +18,6 @@ namespace ctac
         [Inject]
         public IMapModel map { get; set; }
 
-        private Vector2 selectedPosition = new Vector2();
-
         public override void OnRegister()
         {
             view.tileHover.AddListener(onTileHover);
@@ -33,24 +31,27 @@ namespace ctac
 
         void onTileHover(GameObject newHoverTile)
         {
-            tileHover.Dispatch(newHoverTile);
-            view.onTileHover(newHoverTile);
+            Tile tile = null;
+            if (newHoverTile != null)
+            {
+                tile = map.tiles.Get(newHoverTile.transform.position.ToTileCoordinates());
+            }
+            tileHover.Dispatch(tile);
+            view.onTileHover(tile);
         }
 
         private void onMinionSelected(GameObject selectedMinion)
         {
             if (selectedMinion != null)
             {
-                //lookup the gametile they're on
-                selectedPosition.Set(selectedMinion.transform.position.x, selectedMinion.transform.position.z);
-                var gameTile = map.tiles[selectedPosition];
+                var gameTile = map.tiles.Get(selectedMinion.transform.position.ToTileCoordinates());
 
-                view.onTileSelected(gameTile.gameObject);
+                view.onTileSelected(gameTile);
 
                 //find movement
-                var moveTiles = map.GetTilesInRadius(selectedPosition, 2);
+                var moveTiles = map.GetTilesInRadius(gameTile.position, 1);
                 //take out the central one
-                moveTiles.Remove(selectedPosition);
+                moveTiles.Remove(gameTile.position);
                 view.onMovableTiles(moveTiles);
             }
             else

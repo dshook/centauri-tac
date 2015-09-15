@@ -12,18 +12,14 @@ namespace ctac
         internal Signal<GameObject> tileHover = new Signal<GameObject>();
         internal Signal<GameObject> minionSelected = new Signal<GameObject>();
 
-        GameObject hoveredTile = null;
-        GameObject selectedTile = null;
+        Tile hoveredTile = null;
+        Tile selectedTile = null;
         Dictionary<Vector2, Tile> moveTiles = null;
 
         bool active = false;
         float rayFrequency = 0.1f;
         float timer = 0f;
         int tileMask = 0;
-
-        public Color hoverTint = new Color(.1f, .1f, .1f, .1f);
-        public Color selectColor = new Color(.4f, .9f, .4f);
-        public Color moveColor = new Color(.4f, .4f, .9f);
 
         internal void init()
         {
@@ -65,7 +61,7 @@ namespace ctac
             RaycastHit floorHit;
             if (Physics.Raycast(camRay, out floorHit, Constants.cameraRaycastDist, tileMask))
             {
-                if (selectedTile == null || (selectedTile != null && floorHit.collider.gameObject != selectedTile))
+                if (selectedTile == null || (selectedTile != null && floorHit.collider.gameObject != selectedTile.gameObject))
                 {
                     tileHover.Dispatch(floorHit.collider.gameObject);
                 }
@@ -77,7 +73,7 @@ namespace ctac
         }
 
 
-        bool TestSelection()
+        void TestSelection()
         {
             Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
 
@@ -93,40 +89,33 @@ namespace ctac
             {
                 minionSelected.Dispatch(null);
             }
-
-            return false;
-
         }
 
-        internal void onTileHover(GameObject newTile)
+        internal void onTileHover(Tile newTile)
         {
             if (hoveredTile != null && hoveredTile != selectedTile)
             {
-                var spriteRenderer = hoveredTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = spriteRenderer.color + hoverTint;
+                FlagsHelper.Unset(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);
             }
 
             if (newTile != null && newTile != selectedTile)
             {
                 hoveredTile = newTile;
-                var spriteRenderer = hoveredTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = spriteRenderer.color - hoverTint;
+                FlagsHelper.Set(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);
             }
         }
 
-        internal void onTileSelected(GameObject newTile)
+        internal void onTileSelected(Tile newTile)
         {
             if (selectedTile != null)
             {
-                var spriteRenderer = selectedTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = Color.white;
+                FlagsHelper.Unset(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
             }
 
             selectedTile = newTile;
-            if (newTile != null)
+            if (selectedTile != null)
             {
-                var spriteRenderer = selectedTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = selectColor;
+                FlagsHelper.Set(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
             }
         }
 
@@ -136,8 +125,7 @@ namespace ctac
             {
                 foreach (var tile in moveTiles)
                 {
-                    var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
-                    spriteRenderer.color = Color.white;
+                    FlagsHelper.Unset(ref tile.Value.highlightStatus, TileHighlightStatus.Movable);
                 }
             }
 
@@ -146,8 +134,7 @@ namespace ctac
             {
                 foreach (var tile in tiles)
                 {
-                    var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
-                    spriteRenderer.color = moveColor;
+                    FlagsHelper.Set(ref tile.Value.highlightStatus, TileHighlightStatus.Movable);
                 }
             }
         }

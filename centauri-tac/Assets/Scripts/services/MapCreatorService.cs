@@ -40,14 +40,22 @@ namespace ctac
 
             foreach (var t in map.tiles)
             {
-                var newTile = GameObject.Instantiate(
+                var newTileGO = GameObject.Instantiate(
                     mapTilePrefab, 
                     new Vector3(t.transform.x, t.transform.y, t.transform.z), 
                     Quaternion.identity
                 ) as GameObject;
-                newTile.transform.parent = goMap.transform;
+                newTileGO.transform.parent = goMap.transform;
 
-                mapModel.tiles.Add(new Vector2(t.transform.x, t.transform.z), new Tile() { gameObject = newTile });
+                var position = new Vector2(t.transform.x, t.transform.z);
+                var newTile = new Tile() {
+                        gameObject = newTileGO,
+                        position = position
+                    };
+                mapModel.tiles.Add(position, newTile );
+
+                newTileGO.AddComponent<TileHighlightColor>();
+                newTileGO.GetComponent<TileHighlightColor>().tile = newTile;
             }
 
             mapCreated.Dispatch();

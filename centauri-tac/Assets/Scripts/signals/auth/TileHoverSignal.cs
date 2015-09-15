@@ -4,6 +4,6 @@ using UnityEngine;
 namespace ctac.signals
 {
     [Singleton]
-    public class TileHoverSignal : Signal<GameObject> { }
+    public class TileHoverSignal : Signal<Tile> { }
 }
 

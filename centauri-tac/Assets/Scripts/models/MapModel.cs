@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -91,7 +92,18 @@ namespace ctac
 
     public class Tile
     {
+        public Vector2 position { get; set; }
         public GameObject gameObject { get; set; }
+        public TileHighlightStatus highlightStatus;
+    }
+
+    [Flags]
+    public enum TileHighlightStatus
+    {
+        None = 0,
+        Highlighted = 1,
+        Selected = 2,
+        Movable = 4
     }
 }
 

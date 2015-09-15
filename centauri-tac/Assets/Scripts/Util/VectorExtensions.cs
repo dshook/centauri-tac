@@ -18,5 +18,10 @@ namespace ctac
         {
             return new Vector2(vec.x + xAmt, vec.y + yAmt);
         }
+
+        public static Vector2 ToTileCoordinates(this Vector3 vec)
+        {
+            return new Vector2(vec.x, vec.z);
+        }
     }
 }
