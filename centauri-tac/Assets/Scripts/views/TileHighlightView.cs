@@ -3,6 +3,7 @@ using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using ctac.signals;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -13,14 +14,16 @@ namespace ctac
 
         GameObject hoveredTile = null;
         GameObject selectedTile = null;
+        Dictionary<Vector2, Tile> moveTiles = null;
 
         bool active = false;
         float rayFrequency = 0.1f;
         float timer = 0f;
         int tileMask = 0;
 
-        Color hoverColor = new Color(.9f, .9f, .9f);
-        Color selectColor = new Color(.4f, .9f, .4f);
+        public Color hoverTint = new Color(.1f, .1f, .1f, .1f);
+        public Color selectColor = new Color(.4f, .9f, .4f);
+        public Color moveColor = new Color(.4f, .4f, .9f);
 
         internal void init()
         {
@@ -100,14 +103,14 @@ namespace ctac
             if (hoveredTile != null && hoveredTile != selectedTile)
             {
                 var spriteRenderer = hoveredTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = Color.white;
+                spriteRenderer.color = spriteRenderer.color + hoverTint;
             }
 
             if (newTile != null && newTile != selectedTile)
             {
                 hoveredTile = newTile;
                 var spriteRenderer = hoveredTile.GetComponentInChildren<SpriteRenderer>();
-                spriteRenderer.color = hoverColor;
+                spriteRenderer.color = spriteRenderer.color - hoverTint;
             }
         }
 
@@ -119,11 +122,30 @@ namespace ctac
                 spriteRenderer.color = Color.white;
             }
 
+            selectedTile = newTile;
             if (newTile != null)
             {
-                selectedTile = newTile;
                 var spriteRenderer = selectedTile.GetComponentInChildren<SpriteRenderer>();
                 spriteRenderer.color = selectColor;
+            }
+        }
+
+        internal void onMovableTiles(Dictionary<Vector2, Tile> tiles)
+        {
+            if (moveTiles != null && moveTiles.Count > 0)
+            {
+                foreach (var tile in moveTiles)
+                {
+                    var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    spriteRenderer.color = Color.white;
+                }
+            }
+
+            moveTiles = tiles;
+            foreach (var tile in tiles)
+            {
+                var spriteRenderer = tile.Value.gameObject.GetComponentInChildren<SpriteRenderer>();
+                spriteRenderer.color = moveColor;
             }
         }
     }

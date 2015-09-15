@@ -46,10 +46,17 @@ namespace ctac
                 var gameTile = map.tiles[selectedPosition];
 
                 view.onTileSelected(gameTile.gameObject);
+
+                //find movement
+                var moveTiles = map.GetTilesInRadius(selectedPosition, 1);
+                //take out the central one
+                moveTiles.Remove(selectedPosition);
+                view.onMovableTiles(moveTiles);
             }
             else
             {
                 view.onTileSelected(null);
+                view.onMovableTiles(null);
             }
 
             minionSelected.Dispatch(selectedMinion);
