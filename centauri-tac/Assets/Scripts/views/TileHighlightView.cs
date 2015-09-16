@@ -10,7 +10,6 @@ namespace ctac
     public class TileHighlightView : View
     {
         internal Signal<GameObject> tileHover = new Signal<GameObject>();
-        internal Signal<GameObject> minionSelected = new Signal<GameObject>();
 
         Tile hoveredTile = null;
         Tile selectedTile = null;
@@ -31,17 +30,6 @@ namespace ctac
         {
             if (active)
             {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-                {
-                    TestSelection();
-                }
-
-                //right click et al deselects
-                if (CrossPlatformInputManager.GetButtonDown("Fire2"))
-                {
-                    minionSelected.Dispatch(null);
-                }
-
                 timer += Time.deltaTime;
                 if (timer > rayFrequency)
                 {
@@ -72,24 +60,6 @@ namespace ctac
             }
         }
 
-
-        void TestSelection()
-        {
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-            RaycastHit minionHit;
-            if (Physics.Raycast(camRay, out minionHit, Constants.cameraRaycastDist))
-            {
-                if (minionHit.collider.gameObject.CompareTag("Minion"))
-                {
-                    minionSelected.Dispatch(minionHit.collider.gameObject);
-                }
-            }
-            else
-            {
-                minionSelected.Dispatch(null);
-            }
-        }
 
         internal void onTileHover(Tile newTile)
         {

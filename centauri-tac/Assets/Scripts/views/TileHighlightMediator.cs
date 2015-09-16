@@ -21,7 +21,7 @@ namespace ctac
         public override void OnRegister()
         {
             view.tileHover.AddListener(onTileHover);
-            view.minionSelected.AddListener(onMinionSelected);
+            minionSelected.AddListener(onMinionSelected);
             view.init();
         }
 
@@ -40,11 +40,11 @@ namespace ctac
             view.onTileHover(tile);
         }
 
-        private void onMinionSelected(GameObject selectedMinion)
+        private void onMinionSelected(IMinionModel selectedMinion)
         {
             if (selectedMinion != null)
             {
-                var gameTile = map.tiles.Get(selectedMinion.transform.position.ToTileCoordinates());
+                var gameTile = map.tiles.Get(selectedMinion.gameObject.transform.position.ToTileCoordinates());
 
                 view.onTileSelected(gameTile);
 
@@ -59,8 +59,6 @@ namespace ctac
                 view.onTileSelected(null);
                 view.onMovableTiles(null);
             }
-
-            minionSelected.Dispatch(selectedMinion);
         }
     }
 }

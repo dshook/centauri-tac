@@ -27,6 +27,17 @@ namespace ctac
             var defaultMap = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
 
             mapCreator.CreateMap(defaultMap);
+
+            //add minion view scripts to the existing minions, eventually will be set up from server
+            var minions = GameObject.FindGameObjectsWithTag("Minion");
+            foreach (var minion in minions)
+            {
+                minion.AddComponent<MinionView>();
+                minion.GetComponent<MinionView>().minion = new MinionModel()
+                {
+                    gameObject = minion
+                };
+            }
         }
     }
 }
