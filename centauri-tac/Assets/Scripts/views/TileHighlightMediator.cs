@@ -27,6 +27,7 @@ namespace ctac
 
         public override void onRemove()
         {
+            minionSelected.RemoveListener(onMinionSelected);
         }
 
         void onTileHover(GameObject newHoverTile)

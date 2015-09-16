@@ -32,7 +32,6 @@ namespace ctac
             var minions = GameObject.FindGameObjectsWithTag("Minion");
             foreach (var minion in minions)
             {
-                minion.AddComponent<MinionView>();
                 minion.GetComponent<MinionView>().minion = new MinionModel()
                 {
                     gameObject = minion

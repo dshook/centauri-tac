@@ -63,12 +63,12 @@ namespace ctac
 
         internal void onTileHover(Tile newTile)
         {
-            if (hoveredTile != null && hoveredTile != selectedTile)
+            if (hoveredTile != null)
             {
                 FlagsHelper.Unset(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);
             }
 
-            if (newTile != null && newTile != selectedTile)
+            if (newTile != null)
             {
                 hoveredTile = newTile;
                 FlagsHelper.Set(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);

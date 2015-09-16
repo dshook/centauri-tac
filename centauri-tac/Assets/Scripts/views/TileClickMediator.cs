@@ -29,6 +29,7 @@ namespace ctac
 
         public override void onRemove()
         {
+            minionSelected.RemoveListener(onMinionSelected);
         }
 
         private void onClick(GameObject clickedObject)
@@ -49,6 +50,7 @@ namespace ctac
                     if (FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) && selectedMinion != null)
                     {
                         minionMove.Dispatch(selectedMinion, gameTile);
+                        minionSelected.Dispatch(null);
                     }
                 }
             }

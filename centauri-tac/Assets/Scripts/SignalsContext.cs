@@ -67,6 +67,7 @@ namespace ctac
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
             mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
             mediationBinder.Bind<TileClickView>().To<TileClickMediator>();
+            mediationBinder.Bind<MinionView>().To<MinionMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
