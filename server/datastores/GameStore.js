@@ -167,18 +167,18 @@ export default class GameStore extends EventEmitter
   /**
    * Create an entry for a game
    */
-  async create(name, componentId, hostId)
+  async create(name, componentId, hostId, maxPlayerCount = 2)
   {
     const resp = await this.sql.query(`
 
         insert into games
-          (name, game_component_id, host_player_id)
+          (name, game_component_id, host_player_id, max_player_count)
         values
-          (@name, @componentId, @hostId)
+          (@name, @componentId, @hostId, @maxPlayerCount)
         returning id
 
       `,
-      {name, componentId, hostId});
+      {name, componentId, hostId, maxPlayerCount});
 
     const {id} = resp.firstOrNull();
 
