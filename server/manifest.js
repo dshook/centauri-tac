@@ -5,12 +5,14 @@ import HashService from './services/HashService.js';
 import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
 import NetClientService from './services/NetClientService.js';
+import MessengerService from './services/MessengerService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import PortalComponent from './components/PortalComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
+import DispatchComponent from './components/DispatchComponent.js';
 
 // common things for all backend components
 const common = [
@@ -18,12 +20,23 @@ const common = [
   HttpTransportService,
   AuthTokenService,
   NetClientService,
+  MessengerService,
 ];
 
 /**
  * Mapping of server components into various configuration and services
  */
 export default {
+
+  /**
+   * Runs game instances
+   */
+  dispatch: {
+    TComponent: DispatchComponent,
+    services: [
+      ...common,
+    ],
+  },
 
   /**
    * Runs game instances

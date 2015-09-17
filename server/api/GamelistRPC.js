@@ -1,5 +1,4 @@
 import {rpc} from 'sock-harness';
-import {autobind} from 'core-decorators';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -8,16 +7,14 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GamelistRPC
 {
-  constructor(games, componentsConfig, netClient)
+  constructor(games, componentsConfig, netClient, messenger)
   {
     this.games = games;
     this.realm = componentsConfig.realm;
     this.net = netClient;
+    this.messenger = messenger;
 
     this.clients = new Set();
-
-    this.games.on('game', this._broadcastGame);
-    this.games.on('currentGame', this._broadcastCurrentGame);
   }
 
   /**
@@ -37,46 +34,10 @@ export default class GamelistRPC
   {
     const playerId = auth.sub.id;
 
-    // get an available game server
+    // TODO: Handle this another way, need some sort of manager that will
+    // intelligent get a game instance get an available game server
     const component = await this.net.getComponent('game');
 
     await this.games.create(name, component.id, playerId);
-  }
-
-  /**
-   * Send game update to all connected
-   */
-  @autobind _broadcastGame(game)
-  {
-    for (const c of this.clients) {
-      c.send('game', game);
-    }
-  }
-
-  /**
-   * If a player is conencted, inform them of their current game
-   */
-  @autobind _broadcastCurrentGame({game, playerId})
-  {
-    for (const c of this.clients) {
-      const id = c.auth.sub;
-      if (playerId === id) {
-        c.send('currentGame', game);
-      }
-    }
-  }
-
-  @rpc.connected()
-  hello(client)
-  {
-    this.clients.add(client);
-    this.log.info('%s connected, %s total', client.id, this.clients.size);
-  }
-
-  @rpc.disconnected()
-  bye(client)
-  {
-    this.clients.delete(client);
-    this.log.info('%s disconnected, %s total', client.id, this.clients.size);
   }
 }

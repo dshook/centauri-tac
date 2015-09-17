@@ -5,6 +5,7 @@ import ComponentType from 'models/ComponentType';
 import Player from 'models/Player';
 import GameState from 'models/GameState';
 import {EventEmitter} from 'events';
+import hrtime from 'hrtime-log-decorator';
 
 /**
  * Data layer for games
@@ -12,16 +13,18 @@ import {EventEmitter} from 'events';
 @loglevel
 export default class GameStore extends EventEmitter
 {
-  constructor(sql, players)
+  constructor(sql, players, messenger)
   {
     super();
     this.sql = sql;
     this.players = players;
+    this.messenger = messenger;
   }
 
   /**
    * Active games on realm (or a single one)
    */
+  @hrtime('queried games in %s ms')
   async getActive(realm = null, id = null)
   {
     let sql = `
@@ -71,55 +74,10 @@ export default class GameStore extends EventEmitter
         return g;
       });
 
+    // single
     if (id) {
       return resp.firstOrNull();
     }
-
-    return resp.toArray();
-  }
-
-  /**
-   * Get a (minimal model) game that the player is currently in
-   */
-  async playersCurrentGame(playerId)
-  {
-    const resp = await this.sql.tquery(Game, Component)(`
-
-      select g.*, c.*
-      from game_players gp
-      join games as g on gp.game_id = g.id
-      join components as c on g.game_component_id = c.id
-      where gp.player_id = @playerId
-
-    `, {playerId}, (g, c) => { g.component = c; return g; });
-
-    const game = resp.firstOrNull();
-
-    // cleanup after stale games / DCs / server restarts
-    if (game && !game.component.isActive) {
-      this.log.info('dropping player %s from stale game %s on %s',
-          playerId, game.id, game.component.id);
-      await this.playerPart(playerId);
-      return null;
-    }
-
-    return game;
-  }
-
-  /**
-   * Get all players in a game by id
-   */
-  async playersInGame(id)
-  {
-    const resp = await this.sql.tquery(Player)(`
-
-        select p.*
-        from game_players as gp
-        join players p
-          on gp.player_id = p.id
-        where gp.game_id = @id
-
-      `, {id});
 
     return resp.toArray();
   }
@@ -139,8 +97,7 @@ export default class GameStore extends EventEmitter
 
     const game = await this.getActive(null, gameId);
 
-    this.emit('currentGame', {playerId, game});
-    this.emit('game', game);
+    this.messenger.emit('game', game);
   }
 
   /**
@@ -163,16 +120,14 @@ export default class GameStore extends EventEmitter
 
     const {id} = data;
 
-    const game = null;
-    this.emit('currentGame', {playerId, game});
-
-    // update game info
-    this.emit('game', await this.getActive(null, id));
+    // update status
+    this._broadcastGameUpdate(await this.getActive(null, id));
   }
 
   /**
    * Create an entry for a game
    */
+  @hrtime('created new game in %d ms')
   async create(name, componentId, hostId, maxPlayerCount = 2)
   {
     const resp = await this.sql.query(`
@@ -193,8 +148,16 @@ export default class GameStore extends EventEmitter
 
     // notify new game is out there
     const game = await this.getActive(null, id);
-    this.emit('game', game);
+    this._broadcastGameUpdate(game);
 
     return game;
+  }
+
+  /**
+   * Broadcast game info
+   */
+  async _broadcastGameUpdate(game)
+  {
+    await this.messenger.emit('game', game);
   }
 }
