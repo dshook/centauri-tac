@@ -124,7 +124,7 @@ export default class AuthFlow
    */
   @ngApply async createGame()
   {
-    const name = 'bval game';
+    const name = `Player ${this.player} game`;
     this.net.sendCommand('gamelist', 'create', {name});
   }
 }
