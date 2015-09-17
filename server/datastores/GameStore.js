@@ -4,15 +4,17 @@ import Component from 'models/Component';
 import ComponentType from 'models/ComponentType';
 import Player from 'models/Player';
 import GameState from 'models/GameState';
+import {EventEmitter} from 'events';
 
 /**
  * Data layer for games
  */
 @loglevel
-export default class GameStore
+export default class GameStore extends EventEmitter
 {
   constructor(sql, players)
   {
+    super();
     this.sql = sql;
     this.players = players;
   }
@@ -144,6 +146,7 @@ export default class GameStore
   async create(name, componentId, hostId)
   {
     const resp = await this.sql.tquery(Game)(`
+
         insert into games
           (name, game_component_id, host_player_id)
         values
@@ -156,6 +159,9 @@ export default class GameStore
 
     // host always joins
     await this.playerJoin(hostId, game.id);
+
+    // notify new game is out there
+    this.emit('game', game);
 
     return game;
   }
