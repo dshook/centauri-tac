@@ -94,6 +94,7 @@ export default class AuthFlow
     const g = Game.fromJSON(game);
     const index = this.games.findIndex(x => x.id === game.id);
 
+    // Replace if it's just an update
     if (~index) {
       this.games[index] = g;
       return;
