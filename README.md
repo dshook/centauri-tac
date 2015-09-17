@@ -84,3 +84,4 @@ Variable | Notes | Example
 `PUBLIC_URL` | Publically-visible URL for all components in this process | `http://localhost:10123`
 `AUTH_SECRET` | Secret used to sign API auth tokens | `aReallyDamnGoodSecret`
 `PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
+`PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`

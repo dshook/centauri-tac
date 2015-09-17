@@ -13,11 +13,10 @@ import hrtime from 'hrtime-log-decorator';
 @loglevel
 export default class GameStore extends EventEmitter
 {
-  constructor(sql, players, messenger)
+  constructor(sql, messenger)
   {
     super();
     this.sql = sql;
-    this.players = players;
     this.messenger = messenger;
   }
 
