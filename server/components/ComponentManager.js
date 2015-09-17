@@ -103,6 +103,8 @@ export default class ComponentManager
       // socket server
       const raw = this.server.raw;
       const wss = new SocketServer(raw, prefix);
+      wss.pingInterval = this.cConfig.serverPingInterval;
+      this.log.info('ping interval set to %s', wss.pingInterval);
       const sockServer = new SockHarness(wss, U => this.app.make(U));
       sockServer.addHandler(TokenRPC);
 

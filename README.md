@@ -83,3 +83,4 @@ Variable | Notes | Example
 `BCRYPT_ROUNDS` | How many rounds to use for hashing work for passwords | `10`
 `PUBLIC_URL` | Publically-visible URL for all components in this process | `http://localhost:10123`
 `AUTH_SECRET` | Secret used to sign API auth tokens | `aReallyDamnGoodSecret`
+`PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
