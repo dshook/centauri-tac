@@ -12,7 +12,10 @@ namespace ctac
         public NeedLoginSignal needLoginSignal { get; set; }
 
         [Inject]
-        public TryLoginSignal loginSignal { get; set; }
+        public TryLoginSignal tryLoginSignal { get; set; }
+
+        [Inject]
+        public TokenSignal tokenSignal { get; set; }
 
         [Inject]
         public LoggedInSignal loggedInSignal { get; set; }
@@ -26,15 +29,14 @@ namespace ctac
         [Inject]
         public IPlayerModel playerModel { get; set; }
 
-        [Inject]
-        public IJsonNetworkService netService { get; set; }
+        [Inject(name = InjectKeys.authSocketService)]
+        public ISocketService socketService { get; set; }
 
         const string playerTokenKey = "playerToken";
 
         public override void Execute()
         {
             Retain();
-            loginSignal.AddListener(setCredentials);
 
             //determine if we need to authenticate with the server to fetch a token
             var playerToken = PlayerPrefs.GetString(playerTokenKey);
@@ -42,27 +44,28 @@ namespace ctac
             {
                 authModel.token = playerToken;
                 LoggedIn();
+                Release();
             }
             else
             {
+                tryLoginSignal.AddListener(setCredentials);
+                tokenSignal.AddListener(onLoginComplete);
                 needLoginSignal.Dispatch();
             }
         }
 
         private void setCredentials(string user, string password)
         {
-            netService.fulfillSignal.AddListener(onLoginComplete);
-            netService.Request("auth", "player/login", authModel.GetType(), 
-                new Dictionary<string, string>() {
-                    { "email" , user },
-                    { "password", password }
+            socketService.Request("auth", "login", 
+                new {
+                    email = user,
+                    password = password
                 }
             );
         }
 
-        private void onLoginComplete(string url, object data)
+        private void onLoginComplete(IAuthModel data)
         {
-            netService.fulfillSignal.RemoveListener(onLoginComplete);
             if (data == null)
             {
                 Debug.LogError("Failed Authenticate");
@@ -72,19 +75,20 @@ namespace ctac
             else
             {
                 Debug.Log("Authenticated");
-                var newAuth = data as IAuthModel;
-                authModel.token = newAuth.token;
+                authModel.token = data.token;
                 PlayerPrefs.SetString(playerTokenKey, authModel.token);
 
                 LoggedIn();
+                tokenSignal.RemoveListener(onLoginComplete);
+                tryLoginSignal.RemoveListener(setCredentials);
+                Release();
             }
 
-            Release();
         }
 
         private void LoggedIn()
         {
-            loginSignal.RemoveListener(setCredentials);
+            tryLoginSignal.RemoveListener(setCredentials);
             loggedInSignal.Dispatch();
         }
     }

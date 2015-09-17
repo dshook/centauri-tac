@@ -38,26 +38,26 @@ namespace ctac
         private IEnumerator MakeRequest( string componentName, string methodName, Type type, Dictionary<string, string> data)
         {
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
-            var headers = new Dictionary<string, string>()
-            {
-                {"accept", "application / json"}
-            };
+            //var headers = new Dictionary<string, string>()
+            //{
+            //    {"accept", "application / json"}
+            //};
 
-            WWWForm form = new WWWForm();
-            if (data != null) {
-                foreach (var key in data.Keys) {
-                    form.AddField(key, data[key]);
-                }
-            }
+            //WWWForm form = new WWWForm();
+            //if (data != null) {
+            //    foreach (var key in data.Keys) {
+            //        form.AddField(key, data[key]);
+            //    }
+            //}
             //for whatever reason, you have to add something to the form for it to be considered a POST request
             //but not having anything doesn't work as a GET request
-            form.AddField("z", "z");
+            //form.AddField("z", "z");
 
-            if (!string.IsNullOrEmpty(authModel.token)) {
-                headers.Add("authorization", "Bearer " + authModel.token );
-            }
+            //if (!string.IsNullOrEmpty(authModel.token)) {
+            //    headers.Add("authorization", "Bearer " + authModel.token );
+            //}
 
-            WWW www = new WWW(url, form.data, headers);
+            WWW www = new WWW(url);
             yield return www;
 
             object ret = null;

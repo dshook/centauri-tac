@@ -5,6 +5,6 @@ using strange.extensions.signal.impl;
 
 namespace ctac
 {
-    public class StartConnectSignal : Signal { }
+    public class FetchComponentsSignal : Signal { }
 }
 

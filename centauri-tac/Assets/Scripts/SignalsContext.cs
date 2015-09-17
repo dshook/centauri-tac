@@ -7,6 +7,7 @@ using ctac.signals;
 using System;
 using System.Reflection;
 using System.Linq;
+using strange.extensions.injector.api;
 
 namespace ctac
 {
@@ -40,6 +41,8 @@ namespace ctac
 
         protected override void mapBindings()
         {
+            injectionBinder.Bind<ICrossContextInjectionBinder>().To(injectionBinder);
+
             //bind up all the singleton signals
             //note that this will not inject any types that are bound so these should be plain data classes
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
@@ -61,8 +64,8 @@ namespace ctac
 
             injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
-            injectionBinder.Bind<ISocketService>().Named(InjectKeys.authSocketService).To(new SocketService());
-            injectionBinder.Bind<ISocketService>().Named(InjectKeys.gameSocketService).To(new SocketService());
+            injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton().ToName(InjectKeys.authSocketService);
+            injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton().ToName(InjectKeys.gameSocketService);
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
 
 
@@ -74,8 +77,8 @@ namespace ctac
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
-            commandBinder.Bind<StartConnectSignal>().To<ServerConnnectCommand>();
-            commandBinder.Bind<ConnectedSignal>().To<ServerAuthCommand>();
+            commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
+            commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
             commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
 
             injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();

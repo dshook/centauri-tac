@@ -5,12 +5,16 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using WebSocketSharp;
+using strange.extensions.injector.api;
+using strange.extensions.signal.impl;
 
 namespace ctac
 {
     public interface ISocketService
     {
-        void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null);
+        void Request(string componentName, string methodName, object data = null);
+
+        SocketMessageSignal messageSignal { get; set; }
     }
 
     public class SocketService : ISocketService
@@ -19,10 +23,16 @@ namespace ctac
         public GameObject contextView { get; set; }
 
         [Inject]
+        public ICrossContextInjectionBinder binder { get; set; }
+
+        [Inject]
         public IComponentModel componentModel { get; set; } 
 
         [Inject]
         public IAuthModel authModel { get; set; }
+
+        [Inject]
+        public IServiceTypeMapModel typeMap { get; set; }
 
         [Inject]
         public SocketConnectSignal connectSignal { get; set; }
@@ -36,20 +46,37 @@ namespace ctac
         private WebSocket ws = null;
         private bool connected = false;
 
-        public void Connect(string url)
+        private Signal<string, string, object> needRerequest = new Signal<string, string, object>();
+
+        private void Connect(string componentName)
         {
             MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
-            root.StartCoroutine(SocketConnect(url));
+            root.StartCoroutine(SocketConnect(componentName));
         }
 
-        public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
+        public void Request(string componentName, string methodName, object data = null)
         {
-            MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
-            root.StartCoroutine(MakeRequest(componentName, methodName, type, data));
+            if (connected)
+            {
+                connectSignal.RemoveAllListeners();
+                MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
+                root.StartCoroutine(MakeRequest(componentName, methodName, data));
+            }
+            else
+            {
+                Connect(componentName);
+                connectSignal.AddListener(() => Request(componentName, methodName, data));
+            }
         }
 
-        private IEnumerator SocketConnect(string url)
+        private IEnumerator SocketConnect(string componentName)
         {
+            var url = componentModel.getComponentURL(componentName);
+            if (string.IsNullOrEmpty(url))
+            {
+                Debug.LogError("Could not find url to open socket for component " + componentName);
+                yield return null;
+            }
             ws = new WebSocket(url);
 
             ws.WaitTime = new TimeSpan(0, 0, 5);
@@ -63,7 +90,7 @@ namespace ctac
             yield return null;
         }
 
-        private IEnumerator MakeRequest( string componentName, string methodName, Type type, Dictionary<string, string> data)
+        private IEnumerator MakeRequest(string componentName, string methodName, object data)
         {
             if (!connected)
             {
@@ -71,37 +98,56 @@ namespace ctac
                 yield return null;
             }
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
-            var headers = new Dictionary<string, string>()
-            {
-                {"accept", "application / json"}
-            };
 
-            if (!string.IsNullOrEmpty(authModel.token)) {
-                headers.Add("authorization", "Bearer " + authModel.token );
-            }
+            string message = methodName + " " + JsonConvert.SerializeObject(data);
+            ws.Send(message);
 
             yield return null;
         }
 
         private void onSocketMessage(object sender, MessageEventArgs e)
         {
-            Console.WriteLine("Socket Message: " + e.Data);
+            Debug.Log("Socket Message: " + e.Data);
+            //chop it up and convert to appropriate signal based on header
+            var delimiterIndex = e.Data.IndexOf(' ');
+            string messageType = e.Data.Substring(0, delimiterIndex);
+            string messageData = e.Data.Substring(delimiterIndex + 1);
+
+            var signalType = typeMap.Get(messageType);
+            var signal = binder.GetInstance(signalType) as Signal;
+            if (signal != null)
+            {
+                var signalDataTypes = signal.GetTypes();
+                if (signalDataTypes.Count != 1)
+                {
+                    Debug.LogError("Signal can only have one type of data to dispatch");
+                    return;
+                }
+                var signalDataType = signalDataTypes[0];
+                var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
+                signal.Dispatch(new object[] { deserializedData });
+            }
+            else
+            {
+                Debug.LogError("Could not find signal to dispatch from message type " + messageType);
+            }
+
             messageSignal.Dispatch(e.Data);
         }
 
         private void onSocketError(object sender, ErrorEventArgs e) {
-            Console.WriteLine("Socket Error: " + e.Message);
+            Debug.Log("Socket Error: " + e.Message);
             errorSignal.Dispatch(e.Message);
         }
 
         private void onSocketOpen(object sender, EventArgs e) {
-            Console.WriteLine("Socket Open");
+            Debug.Log("Socket Open");
             connected = true;
             connectSignal.Dispatch();
         }
 
         private void onSocketClose(object sender, CloseEventArgs e) {
-            Console.WriteLine("Socket Close: " + e.Reason);
+            Debug.Log("Socket Close: " + e.Reason);
             connected = false;
             disconnectSignal.Dispatch();
         }

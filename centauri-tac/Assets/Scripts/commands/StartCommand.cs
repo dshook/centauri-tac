@@ -13,7 +13,7 @@ namespace ctac
         public GameObject contextView { get; set; }
 
         [Inject]
-        public StartConnectSignal startConnect { get; set; }
+        public FetchComponentsSignal startConnect { get; set; }
 
         [Inject]
         public IMapCreatorService mapCreator { get; set; }

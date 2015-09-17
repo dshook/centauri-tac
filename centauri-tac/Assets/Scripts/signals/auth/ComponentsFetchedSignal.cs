@@ -3,6 +3,6 @@ using ctac;
 
 namespace ctac.signals
 {
-    public class ConnectedSignal : Signal { }
+    public class ComponentsFetchedSignal : Signal { }
 }
 

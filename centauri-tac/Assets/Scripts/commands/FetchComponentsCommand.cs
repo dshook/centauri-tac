@@ -6,10 +6,10 @@ using ctac.signals;
 
 namespace ctac
 {
-    public class ServerConnnectCommand : Command
+    public class FetchComponentsCommand : Command
     {
         [Inject]
-        public ConnectedSignal connectedSignal { get; set; }
+        public ComponentsFetchedSignal componentsFetchedSignal { get; set; }
 
         [Inject]
         public IJsonNetworkService netService { get; set; }
@@ -36,7 +36,7 @@ namespace ctac
             {
                 Debug.Log("Connected");
                 componentModel.componentList = data as List<Component>;
-                connectedSignal.Dispatch();
+                componentsFetchedSignal.Dispatch();
             }
 
             Release();
