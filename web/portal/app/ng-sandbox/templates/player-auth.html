@@ -95,6 +95,13 @@
         title="gamelist"
         sub-title="available games">
 
+        <button
+          ng-click="flow.joinFirstEmptyGame()"
+          class="btn btn-default">Join first empty game</button>
+        <button
+          ng-click="flow.createGame()"
+          class="btn btn-default">Create game</button>
+
         <table class="table table-striped" ng-table>
           <tr ng-repeat="game in flow.games">
 
@@ -119,13 +126,6 @@
 
           </tr>
         </table>
-
-        <button
-          ng-click="flow.joinFirstEmptyGame()"
-          class="btn btn-default">Join first empty game</button>
-        <button
-          ng-click="flow.createGame()"
-          class="btn btn-default">Create game</button>
 
       </panel>
 
