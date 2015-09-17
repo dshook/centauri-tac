@@ -10,11 +10,6 @@ namespace ctac {
 
         private float moveSpeed = 3f;
 
-        void Start()
-        {
-
-        }
-
         void Update()
         {
             if (destination != null)

@@ -28,23 +28,14 @@ namespace ctac
         [Inject]
         public FulfillWebServiceRequestSignal fulfillSignal { get; set; }
 
-        private string componentName;
-        private string methodName;
-        private Dictionary<string, string> data;
-        private Type type;
 
         public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
         {
-            this.componentName = componentName;
-            this.methodName = methodName;
-            this.data = data;
-            this.type = type;
-
             MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
-            root.StartCoroutine(MakeRequest());
+            root.StartCoroutine(MakeRequest(componentName, methodName, type, data));
         }
 
-        private IEnumerator MakeRequest()
+        private IEnumerator MakeRequest( string componentName, string methodName, Type type, Dictionary<string, string> data)
         {
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
             var headers = new Dictionary<string, string>()
