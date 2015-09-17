@@ -4,7 +4,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float dragSpeed = 2;
+    private float dragSpeed = 0.1f;
     private Vector3 dragOrigin;
     bool dragging = false;
 
@@ -26,7 +26,8 @@ public class CameraMovement : MonoBehaviour
         if (dragging)
         {
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-            Vector3 move = new Vector3(pos.x * -dragSpeed, 0, pos.y * -dragSpeed);
+            Vector3 move = new Vector3(-pos.x * dragSpeed, 0, -pos.y * dragSpeed);
+            move = Quaternion.AngleAxis(Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.up) * move;
 
             transform.Translate(move, Space.World);
         }
