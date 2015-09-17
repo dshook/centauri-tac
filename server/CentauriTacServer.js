@@ -1,6 +1,5 @@
 import loglevel from 'loglevel-decorator';
 import manifest from './manifest.js';
-import {autobind} from 'core-decorators';
 import Application from 'billy';
 import ComponentService from './services/ComponentService.js';
 import ComponentsConfig from './config/ComponentsConfig.js';
@@ -30,15 +29,15 @@ export default class CentauriTacServer
    */
   async start()
   {
+    // meta / component configs
     this.app.registerInstance('componentsConfig', new ComponentsConfig());
-
     this.app.registerInstance('packageData', require('../package.json'));
 
     // Add all needed services for components
-    this.components.forEach(this._processComponent);
+    this.components.forEach(x => this._processComponent(x));
 
     // register all needed services
-    this.log.info('registering services');
+    this.log.info('registering services for components');
     this.services.forEach(T => this.app.service(T));
 
     // Component service at bottom of stack
@@ -64,11 +63,12 @@ export default class CentauriTacServer
    */
   async onNodemonRefresh()
   {
-    this.log.info('nodemon refresh');
+    this.log.info('nodemon refresh triggered');
     try {
       await this.app.stop();
     }
     finally {
+      // wait a while to let cleanup finish
       setTimeout(() => process.kill(process.pid, 'SIGUSR2'), 1000);
     }
   }
@@ -84,6 +84,8 @@ export default class CentauriTacServer
     }
     finally {
       this.log.info('exiting');
+
+      // wait a while to let cleanup finish
       setTimeout(() => process.exit(), 1000);
     }
   }
@@ -91,7 +93,7 @@ export default class CentauriTacServer
   /**
    * Add services to the set that we need to start
    */
-  @autobind _processComponent(c)
+  _processComponent(c)
   {
     this.log.info(`using component ${c}`);
 

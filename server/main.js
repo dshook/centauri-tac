@@ -6,7 +6,6 @@ const components = (process.env.COMPONENTS || '')
   .map(x => x.trim())
   .filter(x => x);
 
-
 // boot
 new CentauriTacServer(components).start();
 

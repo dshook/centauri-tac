@@ -12,7 +12,6 @@ export default class AuthComponent
     const sock = component.sockServer;
 
     rest.mountController('/player', PlayerAPI);
-
     sock.addHandler(AuthRPC);
   }
 }

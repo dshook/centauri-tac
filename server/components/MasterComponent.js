@@ -1,4 +1,3 @@
-import ComponentAPI from '../api/ComponentAPI.js';
 import loglevel from 'loglevel-decorator';
 import RealmAPI from '../api/RealmAPI.js';
 import MasterRPC from '../api/MasterRPC.js';
@@ -24,9 +23,7 @@ export default class MasterComponent
     const rest = component.restServer;
     const sock = component.sockServer;
 
-    rest.mountController('/component', ComponentAPI);
     rest.mountController('/realm', RealmAPI);
-
     sock.addHandler(MasterRPC);
   }
 

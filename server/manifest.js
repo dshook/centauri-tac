@@ -42,6 +42,8 @@ export default {
     TComponent: GamelistComponent,
     services: [
       ...common,
+      PostgresService,
+      DatastoreService,
     ],
   },
 
