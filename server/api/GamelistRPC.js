@@ -17,6 +17,7 @@ export default class GamelistRPC
     this.clients = new Set();
 
     this.games.on('game', this._broadcastGame);
+    this.games.on('currentGame', this._broadcastCurrentGame);
   }
 
   /**
@@ -49,6 +50,19 @@ export default class GamelistRPC
   {
     for (const c of this.clients) {
       c.send('game', game);
+    }
+  }
+
+  /**
+   * If a player is conencted, inform them of their current game
+   */
+  @autobind _broadcastCurrentGame({game, playerId})
+  {
+    for (const c of this.clients) {
+      const id = c.auth.sub;
+      if (playerId === id) {
+        c.send('currentGame', game);
+      }
     }
   }
 

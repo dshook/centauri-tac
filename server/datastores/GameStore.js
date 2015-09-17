@@ -137,7 +137,10 @@ export default class GameStore extends EventEmitter
         values (@playerId, @gameId)
         `, {playerId, gameId});
 
-    this.emit('game', await this.getActive(null, gameId));
+    const game = await this.getActive(null, gameId);
+
+    this.emit('currentGame', {playerId, game});
+    this.emit('game', game);
   }
 
   /**
@@ -159,6 +162,9 @@ export default class GameStore extends EventEmitter
     }
 
     const {id} = data;
+
+    const game = null;
+    this.emit('currentGame', {playerId, game});
 
     // update game info
     this.emit('game', await this.getActive(null, id));
