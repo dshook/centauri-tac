@@ -2,6 +2,7 @@
 {
     public enum InjectKeys
     {
-        defaultTile
+        gameSocketService,
+        authSocketService
     }
 }

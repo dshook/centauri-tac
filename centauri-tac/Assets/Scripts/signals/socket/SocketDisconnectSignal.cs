@@ -5,6 +5,6 @@ using strange.extensions.signal.impl;
 
 namespace ctac
 {
-    public class SocketMessage : Signal<string> { }
+    public class SocketDisconnectSignal : Signal { }
 }
 

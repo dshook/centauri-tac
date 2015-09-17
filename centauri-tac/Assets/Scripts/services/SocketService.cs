@@ -11,8 +11,6 @@ namespace ctac
     public interface ISocketService
     {
         void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null);
-
-        SocketMessage messageSignal { get; }
     }
 
     public class SocketService : ISocketService
@@ -27,12 +25,22 @@ namespace ctac
         public IAuthModel authModel { get; set; }
 
         [Inject]
-        public SocketMessage messageSignal { get; set; }
+        public SocketConnectSignal connectSignal { get; set; }
         [Inject]
-        public SocketError errorSignal { get; set; }
+        public SocketMessageSignal messageSignal { get; set; }
         [Inject]
-        public SocketDisconnect disconnectSignal { get; set; }
+        public SocketErrorSignal errorSignal { get; set; }
+        [Inject]
+        public SocketDisconnectSignal disconnectSignal { get; set; }
 
+        private WebSocket ws = null;
+        private bool connected = false;
+
+        public void Connect(string url)
+        {
+            MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
+            root.StartCoroutine(SocketConnect(url));
+        }
 
         public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
         {
@@ -40,13 +48,28 @@ namespace ctac
             root.StartCoroutine(MakeRequest(componentName, methodName, type, data));
         }
 
-        private IEnumerator Connect()
+        private IEnumerator SocketConnect(string url)
         {
+            ws = new WebSocket(url);
+
+            ws.WaitTime = new TimeSpan(0, 0, 5);
+            ws.OnMessage += onSocketMessage;
+            ws.OnError += onSocketError;
+            ws.OnOpen += onSocketOpen;
+            ws.OnClose += onSocketClose;
+
+            ws.Connect();
+
             yield return null;
         }
 
         private IEnumerator MakeRequest( string componentName, string methodName, Type type, Dictionary<string, string> data)
         {
+            if (!connected)
+            {
+                Debug.LogError("Trying to make a request to disconnected web socket");
+                yield return null;
+            }
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
             var headers = new Dictionary<string, string>()
             {
@@ -55,17 +78,6 @@ namespace ctac
 
             if (!string.IsNullOrEmpty(authModel.token)) {
                 headers.Add("authorization", "Bearer " + authModel.token );
-            }
-
-            using (var ws = new WebSocket("ws://dragonsnest.far/Laputa"))
-            {
-                ws.OnMessage += onSocketMessage;
-                ws.OnError += onSocketError;
-                ws.OnOpen += onSocketOpen;
-                ws.OnClose += onSocketClose;
-
-                ws.Connect();
-                ws.Send("BALUS");
             }
 
             yield return null;
@@ -84,12 +96,13 @@ namespace ctac
 
         private void onSocketOpen(object sender, EventArgs e) {
             Console.WriteLine("Socket Open");
-            
+            connected = true;
+            connectSignal.Dispatch();
         }
 
         private void onSocketClose(object sender, CloseEventArgs e) {
             Console.WriteLine("Socket Close: " + e.Reason);
-
+            connected = false;
             disconnectSignal.Dispatch();
         }
     }

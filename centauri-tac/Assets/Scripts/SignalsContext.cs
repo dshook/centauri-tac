@@ -61,7 +61,8 @@ namespace ctac
 
             injectionBinder.Bind<IComponentModel>().To<ComponentModel>().ToSingleton();
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
-            injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton();
+            injectionBinder.Bind<ISocketService>().Named(InjectKeys.authSocketService).To(new SocketService());
+            injectionBinder.Bind<ISocketService>().Named(InjectKeys.gameSocketService).To(new SocketService());
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
 
 
