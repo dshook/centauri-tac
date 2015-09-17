@@ -128,19 +128,27 @@ export default class ComponentManager
       entry.restServer = rest;
       entry.sockServer = sockServer;
 
-      entry.url = publicURL;
+      entry.httpURL = publicURL;
+      entry.restURL = publicURL + '/rest';
+      entry.wsURL = publicURL
+        .replace(/^http/, 'ws')
+        .replace(/\/rest$/, '');
+
       entry.type = {name};
       entry.realm = this.cConfig.realm;
       entry.version = this.version;
       entry.typeName = name;
       entry.isActive = true;
 
-      await this.register(entry);
-
       // Let the component boot up
       this.log.info('starting component %s at %s', name, publicURL);
       await component.start(entry);
       this.log.info('started component %s', name);
+
+      // master registers itself
+      if (name !== 'master') {
+        await this.register(entry);
+      }
     }
   }
 }

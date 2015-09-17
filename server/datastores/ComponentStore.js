@@ -144,9 +144,11 @@ export default class ComponentStore
     const resp = await this.sql.query(`
 
       insert into components
-        (url, component_type_id, version, realm, is_active)
+        (component_type_id, version, realm, is_active,
+         http_url, rest_url, ws_url)
       values
-        (@url, @typeId, @version, @realm, @isActive)
+        (@typeId, @version, @realm, @isActive,
+         @httpURL, @restURL, @wsURL)
       returning id, registered
 
     `, component);

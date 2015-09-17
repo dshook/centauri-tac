@@ -15,13 +15,17 @@ export default class MasterComponent
     this.components = components;
 
     setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
-    this.cleanup();
   }
 
   async start(component)
   {
     const rest = component.restServer;
     const sock = component.sockServer;
+
+    await this.cleanup();
+
+    // Register ourselves into the DB
+    await this.components.register(component);
 
     rest.mountController('/realm', RealmAPI);
     sock.addHandler(MasterRPC);
@@ -30,6 +34,6 @@ export default class MasterComponent
   async cleanup()
   {
     this.log.info('cleaning up stale components');
-    this.components.markStaleInactive();
+    await this.components.markStaleInactive();
   }
 }
