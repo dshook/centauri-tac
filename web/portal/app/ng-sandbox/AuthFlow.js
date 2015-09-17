@@ -1,5 +1,6 @@
 import ngApply from 'ng-apply-decorator';
 import {rpc} from 'sock-harness';
+import Game from 'models/Game';
 
 /**
  * Example controller that will use the network to connect, authorize, get a
@@ -82,6 +83,23 @@ export default class AuthFlow
   @ngApply async _recvMe(client, profile)
   {
     this.me = profile;
+  }
+
+  /**
+   * Getting games in from the server
+   */
+  @rpc.command('gamelist', 'game')
+  @ngApply _recvGame(client, game)
+  {
+    const g = Game.fromJSON(game);
+    const index = this.games.findIndex(x => x.id === game.id);
+
+    if (~index) {
+      this.games[index] = g;
+      return;
+    }
+
+    this.games.push(g);
   }
 
   /**

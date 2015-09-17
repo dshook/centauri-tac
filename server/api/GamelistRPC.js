@@ -16,9 +16,12 @@ export default class GamelistRPC
    * Send gamelist to a client
    */
   @rpc.command('gamelist')
-  async getGamelist()
+  async getGamelist(client)
   {
-
+    const games = await this.games.getActive(this.realm);
+    for (const g of games) {
+      client.send('game', g);
+    }
   }
 
   @rpc.command('create')
