@@ -105,7 +105,14 @@
         <table class="table table-striped" ng-table>
           <tr ng-repeat="game in flow.games">
 
-            <td data-title="'name'">
+            <td>
+              <a href
+                ng-click="joinGame">
+                join <i class="fa fa-sign-in"></i>
+              </a>
+            </td>
+
+            <td data-title="'game'">
               <span game="game"></span>
             </td>
 
