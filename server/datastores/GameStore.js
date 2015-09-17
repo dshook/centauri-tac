@@ -20,15 +20,11 @@ export default class GameStore extends EventEmitter
   }
 
   /**
-   * Active games on realm
+   * Active games on realm (or a single one)
    */
-  async getActive(realm)
+  async getActive(realm = null, id = null)
   {
-    if (!realm) {
-      throw new TypeError('must specify realm');
-    }
-
-    const sql = `
+    let sql = `
 
       select g.*, c.*, t.*, p.*, s.*, counts.current_player_count
       from games as g
@@ -47,12 +43,21 @@ export default class GameStore extends EventEmitter
           group by game_id) as counts
         on g.id = counts.game_id
 
-      where c.realm = @realm
-      and c.is_active
+      where c.is_active
 
     `;
 
-    const params = {realm};
+    const params = {};
+
+    if (realm !== null) {
+      sql += ' and c.realm = @realm ';
+      params.realm = realm;
+    }
+
+    if (id !== null) {
+      sql += ' and g.id = @id ';
+      params.id = id;
+    }
 
     const models = [Game, Component, ComponentType, Player, GameState];
 
@@ -65,6 +70,10 @@ export default class GameStore extends EventEmitter
         g.currentPlayerCount = 0 | cpc['current_player_count'];
         return g;
       });
+
+    if (id) {
+      return resp.firstOrNull();
+    }
 
     return resp.toArray();
   }
@@ -127,6 +136,8 @@ export default class GameStore extends EventEmitter
         insert into game_players (player_id, game_id)
         values (@playerId, @gameId)
         `, {playerId, gameId});
+
+    this.emit('game', await this.getActive(null, gameId));
   }
 
   /**
@@ -134,10 +145,23 @@ export default class GameStore extends EventEmitter
    */
   async playerPart(playerId)
   {
-    await this.sql.query(`
+    const resp = await this.sql.query(`
         delete from game_players
         where player_id = @playerId
+        returning game_id as id
         `, {playerId});
+
+    const data = resp.firstOrNull();
+
+    // player wasnt yet in a game
+    if (!data) {
+      return;
+    }
+
+    const {id} = data;
+
+    // update game info
+    this.emit('game', await this.getActive(null, id));
   }
 
   /**
@@ -145,22 +169,24 @@ export default class GameStore extends EventEmitter
    */
   async create(name, componentId, hostId)
   {
-    const resp = await this.sql.tquery(Game)(`
+    const resp = await this.sql.query(`
 
         insert into games
           (name, game_component_id, host_player_id)
         values
           (@name, @componentId, @hostId)
-        returning *
-      `, {name, componentId, hostId});
+        returning id
 
+      `,
+      {name, componentId, hostId});
 
-    const game = resp.firstOrNull();
+    const {id} = resp.firstOrNull();
 
     // host always joins
-    await this.playerJoin(hostId, game.id);
+    await this.playerJoin(hostId, id);
 
     // notify new game is out there
+    const game = await this.getActive(null, id);
     this.emit('game', game);
 
     return game;
