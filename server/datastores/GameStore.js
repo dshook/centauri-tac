@@ -120,8 +120,51 @@ export default class GameStore extends EventEmitter
 
     const {id} = data;
 
-    // update status
-    this._broadcastGameUpdate(await this.getActive(null, id));
+    // update status of game if active
+    const game = await this.getActive(null, id);
+
+    // no longer active
+    if (!game) {
+      // TODO: cleanup game?
+      return;
+    }
+
+    // host left?
+    if (game.hostPlayerId === playerId) {
+      if (game.currentPlayerCount === 0) {
+        await this.remove(id);
+        return;
+      }
+
+      await this.assignHost(id);
+      return;
+    }
+
+    // Otherwise just broadcast
+    this._broadcastGameUpdate(game);
+  }
+
+  /**
+   * Will blow up if theres still players in the game!
+   */
+  @hrtime('removed game in %s ms')
+  async remove(id)
+  {
+    const resp = await this.sql.query(`
+        delete from games where id = @id
+        returning id`, {id});
+
+    const data = resp.firstOrNull();
+
+    if (!data || !data.id) {
+      return;
+    }
+  }
+
+  @hrtime('assigned new host in %s ms')
+  async assignHost()
+  {
+
   }
 
   /**
@@ -151,6 +194,14 @@ export default class GameStore extends EventEmitter
     this._broadcastGameUpdate(game);
 
     return game;
+  }
+
+  /**
+   * Game is removed
+   */
+  async _broadcastRemoveGame(gameId)
+  {
+    await this.messenger.emit('game:remove', gameId);
   }
 
   /**

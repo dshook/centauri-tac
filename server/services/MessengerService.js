@@ -1,4 +1,4 @@
-import Messenger from '../components/Messenger.js';
+import Messenger from 'rpc-messenger';
 
 export default class MessengerService
 {

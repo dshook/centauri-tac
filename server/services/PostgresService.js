@@ -15,7 +15,13 @@ export default class PostgresService
       throw new Error('DATABASE_URL must be set');
     }
 
-    this.psql = new PGConnection(url);
+    const useSSL = process.env.PG_USE_SSL !== undefined ?
+      process.env.PG_USE_SSL === 'true'
+      : true;
+
+    this.log.info(`${useSSL ? 'using' : 'not using'} SSL for PG connection`);
+
+    this.psql = new PGConnection(url, useSSL);
     app.registerInstance('sql', this.psql);
   }
 

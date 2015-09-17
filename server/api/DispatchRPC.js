@@ -37,7 +37,7 @@ export default class DispatchRPC
   @rpc.command('subscribe')
   subscribe(client, event)
   {
-    const delegate = data => this._broadcast(client, {event, data});
+    const delegate = data => this._broadcast(client, event, data);
     this.emitter.on(event, delegate);
 
     this.log.info('client %s subscribed to %s', client.id, event);
