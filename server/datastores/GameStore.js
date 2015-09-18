@@ -86,8 +86,12 @@ export default class GameStore extends EventEmitter
    */
   async playerJoin(playerId, gameId)
   {
-    // make sure the player leaves current game first
-    await this.playerPart(playerId);
+    const gId = await this.currentGameId(playerId);
+
+    // if player is already in a game, just barf
+    if (gId) {
+      throw new Error('Player is already in a game');
+    }
 
     await this.sql.query(`
         insert into game_players (player_id, game_id)
@@ -97,6 +101,25 @@ export default class GameStore extends EventEmitter
     const game = await this.getActive(null, gameId);
 
     this.messenger.emit('game', game);
+  }
+
+  /**
+   * Get current game id a player is ine
+   */
+  async currentGameId(playerId)
+  {
+    const resp = await this.sql.query(`
+        select game_id as id from game_players
+        where player_id = @playerId`,
+        {playerId});
+
+    const data = resp.firstOrNull();
+
+    if (!data) {
+      return null;
+    }
+
+    return data.id;
   }
 
   /**

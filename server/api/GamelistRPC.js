@@ -67,18 +67,41 @@ export default class GamelistRPC
     for (const c of this.clients) {
       const id = c.auth.sub;
       if (playerId === id) {
-        c.send('currentGame', game);
+        c.send('game:current', game);
       }
     }
   }
 
   /**
-   * Track connected clients
+   * When a client connects
    */
-  @rpc.connected()
-  hello(client)
+  @rpc.command('_token')
+  async hello(client, params, auth)
   {
     this.clients.add(client);
+
+    const playerId = auth.sub.id;
+
+    // player already in a game?
+    const gId = await this.games.currentGameId(playerId);
+
+    if (!gId) {
+      return;
+    }
+
+    const game = await this.games.getActive(null, gId);
+
+    // if we didnt get one back, means the game is no longer on an active
+    // server instnace (zombie game, so delete it and move on
+    if (!game) {
+      await this.games.playerPart(playerId);
+      this.log.info('kicked player %s from game %s, on an inactive server',
+          playerId, gId);
+      return;
+    }
+
+    // inform player of current game
+    client.send('game:current', game);
   }
 
   /**
