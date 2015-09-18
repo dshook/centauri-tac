@@ -99,6 +99,7 @@
           ng-click="flow.joinFirstEmptyGame()"
           class="btn btn-default">Join first empty game</button>
         <button
+          ng-disabled="flow.currentGame"
           ng-click="flow.createGame()"
           class="btn btn-default">Create game</button>
 
@@ -137,12 +138,12 @@
       </panel>
 
       <panel
-        ng-if="flow.myGame"
+        ng-if="flow.currentGame"
         icon="flag"
         title="game"
         >
 
-        <span game="flow.myGame"></span>
+        <span game="flow.currentGame"></span>
 
         <hr>
 

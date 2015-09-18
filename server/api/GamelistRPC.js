@@ -17,6 +17,7 @@ export default class GamelistRPC
     messenger.bindInstance(this);
 
     setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game'), 500);
+    setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game:current'), 500);
 
     this.clients = new Set();
   }
@@ -65,7 +66,7 @@ export default class GamelistRPC
   _broadcastCurrentGame({game, playerId})
   {
     for (const c of this.clients) {
-      const id = c.auth.sub;
+      const {id} = c.auth.sub;
       if (playerId === id) {
         c.send('game:current', game);
       }

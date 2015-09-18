@@ -100,7 +100,8 @@ export default class GameStore extends EventEmitter
 
     const game = await this.getActive(null, gameId);
 
-    this.messenger.emit('game', game);
+    await this.messenger.emit('game:current', {game, playerId});
+    await this.messenger.emit('game', game);
   }
 
   /**

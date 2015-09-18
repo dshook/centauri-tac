@@ -104,6 +104,15 @@ export default class AuthFlow
   }
 
   /**
+   * Sever tells us our current game
+   */
+  @rpc.command('gamelist', 'game:current')
+  @ngApply _recvCurrentGame(client, game)
+  {
+    this.currentGame = Game.fromJSON(game);
+  }
+
+  /**
    * Join any game with open player spots
    */
   @ngApply async joinFirstEmptyGame()
