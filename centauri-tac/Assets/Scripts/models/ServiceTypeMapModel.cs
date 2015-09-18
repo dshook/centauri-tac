@@ -19,6 +19,8 @@ namespace ctac
         private static Dictionary<string, Type> map = new Dictionary<string, Type>()
         {
             {"login", typeof(LoggedInSignal) },
+            {"_ping", typeof(PingSignal) },
+            {"_latency", typeof(LatencySignal) },
             {"token", typeof(TokenSignal) }
         };
 

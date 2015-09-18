@@ -53,7 +53,7 @@ namespace ctac
             view.init();
         }
 
-        private void onLoggedIn()
+        private void onLoggedIn(ILoginStatusModel status)
         {
             view.enabled = false;
             view.gameObject.SetActive(false);

@@ -43,13 +43,13 @@ namespace ctac
             if (!string.IsNullOrEmpty(playerToken))
             {
                 authModel.token = playerToken;
-                LoggedIn();
+                sendAuthToken();
                 Release();
             }
             else
             {
                 tryLoginSignal.AddListener(setCredentials);
-                tokenSignal.AddListener(onLoginComplete);
+                tokenSignal.AddListener(onTokenComplete);
                 needLoginSignal.Dispatch();
             }
         }
@@ -64,7 +64,12 @@ namespace ctac
             );
         }
 
-        private void onLoginComplete(IAuthModel data)
+        private void sendAuthToken()
+        {
+            socketService.Request("auth", "token", authModel.token );
+        }
+
+        private void onTokenComplete(string token)
         {
             if (data == null)
             {
@@ -75,21 +80,14 @@ namespace ctac
             else
             {
                 Debug.Log("Authenticated");
-                authModel.token = data.token;
+                authModel.token = token;
                 PlayerPrefs.SetString(playerTokenKey, authModel.token);
 
-                LoggedIn();
-                tokenSignal.RemoveListener(onLoginComplete);
+                tokenSignal.RemoveListener(onTokenComplete);
                 tryLoginSignal.RemoveListener(setCredentials);
                 Release();
             }
 
-        }
-
-        private void LoggedIn()
-        {
-            tryLoginSignal.RemoveListener(setCredentials);
-            loggedInSignal.Dispatch();
         }
     }
 }

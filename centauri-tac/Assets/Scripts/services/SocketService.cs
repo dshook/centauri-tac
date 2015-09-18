@@ -42,16 +42,26 @@ namespace ctac
         public SocketErrorSignal errorSignal { get; set; }
         [Inject]
         public SocketDisconnectSignal disconnectSignal { get; set; }
+        [Inject]
+        public SocketReRequestSignal reRequest { get; set; }
 
         private WebSocket ws = null;
         private bool connected = false;
 
-        private Signal<string, string, object> needRerequest = new Signal<string, string, object>();
+        private MonoBehaviour root;
 
-        private void Connect(string componentName)
+        [PostConstruct]
+        public void PostConstruct()
         {
-            MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
-            root.StartCoroutine(SocketConnect(componentName));
+            root = contextView.GetComponent<SignalsRoot>();
+            reRequest.AddListener(Request);
+        }
+
+        private IEnumerator ConnectAndRequest(string componentName, string methodName, object data)
+        {
+            yield return root.StartCoroutine(SocketConnect(componentName));
+           
+            yield return root.StartCoroutine(MakeRequest(componentName, methodName, data));
         }
 
         public void Request(string componentName, string methodName, object data = null)
@@ -59,19 +69,19 @@ namespace ctac
             if (connected)
             {
                 connectSignal.RemoveAllListeners();
-                MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
                 root.StartCoroutine(MakeRequest(componentName, methodName, data));
             }
             else
             {
-                Connect(componentName);
-                connectSignal.AddListener(() => Request(componentName, methodName, data));
+                root.StartCoroutine(ConnectAndRequest(componentName, methodName, data));
+                //Connect(componentName);
+                //connectSignal.AddListener(() => reRequest.Dispatch(componentName, methodName, data));
             }
         }
 
         private IEnumerator SocketConnect(string componentName)
         {
-            var url = componentModel.getComponentURL(componentName);
+            var url = componentModel.getComponentWSURL(componentName);
             if (string.IsNullOrEmpty(url))
             {
                 Debug.LogError("Could not find url to open socket for component " + componentName);
@@ -85,9 +95,14 @@ namespace ctac
             ws.OnOpen += onSocketOpen;
             ws.OnClose += onSocketClose;
 
-            ws.Connect();
-
-            yield return null;
+            ws.ConnectAsync();
+            int i = 0;
+            while (i < 1000)
+            {
+                i++;
+                if (connected) break;
+                yield return null;
+            }
         }
 
         private IEnumerator MakeRequest(string componentName, string methodName, object data)
@@ -97,7 +112,6 @@ namespace ctac
                 Debug.LogError("Trying to make a request to disconnected web socket");
                 yield return null;
             }
-            var url = componentModel.getComponentURL(componentName) + "/" + methodName;
 
             string message = methodName + " " + JsonConvert.SerializeObject(data);
             ws.Send(message);
@@ -114,7 +128,7 @@ namespace ctac
             string messageData = e.Data.Substring(delimiterIndex + 1);
 
             var signalType = typeMap.Get(messageType);
-            var signal = binder.GetInstance(signalType) as Signal;
+            var signal = binder.GetInstance(signalType) as BaseSignal;
             if (signal != null)
             {
                 var signalDataTypes = signal.GetTypes();
@@ -124,6 +138,10 @@ namespace ctac
                     return;
                 }
                 var signalDataType = signalDataTypes[0];
+                if (signalDataType.IsInterface)
+                {
+                    signalDataType = binder.GetInstance(signalDataType).GetType();
+                }
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
                 signal.Dispatch(new object[] { deserializedData });
             }
@@ -136,7 +154,7 @@ namespace ctac
         }
 
         private void onSocketError(object sender, ErrorEventArgs e) {
-            Debug.Log("Socket Error: " + e.Message);
+            Debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message);
             errorSignal.Dispatch(e.Message);
         }
 

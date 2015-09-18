@@ -9,6 +9,7 @@ namespace ctac
     {
         List<Component> componentList { get; set; }
         string getComponentURL(string name);
+        string getComponentWSURL(string name);
     }
 
     public class ComponentModel : IComponentModel
@@ -39,7 +40,19 @@ namespace ctac
             }
 
             // TODO: handle multiple components being registered
-            return component.url + "/rest";
+            return component.httpURL + "/rest";
+        }
+
+        public string getComponentWSURL(string name)
+        {
+            var component = componentList.Where(x => x.type.name == name).FirstOrDefault();
+
+            if (component == null)
+            {
+                throw new Exception("no registered " + name + " components");
+            }
+
+            return component.wsURL;
         }
     }
 
@@ -51,12 +64,16 @@ namespace ctac
 
     public class Component
     {
-        public string url { get; set; }
         public int id { get; set; }
         public int typeId { get; set; }
-        public string registered { get; set; }
-        public object lastPing { get; set; }
         public ComponentType type { get; set; }
+        public string registered { get; set; }
+        public string version { get; set; }
+        public string realm { get; set; }
+        public bool isActive { get; set; }
+        public string httpURL { get; set; }
+        public string restURL { get; set; }
+        public string wsURL { get; set; }
     }
 }
 
