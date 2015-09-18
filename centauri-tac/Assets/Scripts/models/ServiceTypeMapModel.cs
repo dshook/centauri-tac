@@ -8,13 +8,8 @@ namespace ctac
     /// <summary>
     /// Maps string types for messages received through sockets to signal types
     /// </summary>
-    public interface IServiceTypeMapModel
-    {
-        Type Get(string def);
-    }
-
     [Singleton]
-    public class ServiceTypeMapModel : IServiceTypeMapModel
+    public class ServiceTypeMapModel
     {
         private static Dictionary<string, Type> map = new Dictionary<string, Type>()
         {

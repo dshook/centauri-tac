@@ -4,19 +4,8 @@ using UnityEngine;
 
 namespace ctac
 {
-    public interface IMapModel
-    {
-        string name { get; set; }
-        int maxPlayers { get; set; }
-        GameObject root { get; set; }
-        Dictionary<Vector2, Tile> tiles { get; set; }
-
-        Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
-        Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-    }
-
     [Singleton]
-    public class MapModel : IMapModel
+    public class MapModel
     {
         public string name { get; set; }
         public int maxPlayers { get; set; }

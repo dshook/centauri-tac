@@ -16,7 +16,7 @@ namespace ctac
         public MinionSelectedSignal minionSelected { get; set; }
 
         [Inject]
-        public IMapModel map { get; set; }
+        public MapModel map { get; set; }
 
         public override void OnRegister()
         {
@@ -41,7 +41,7 @@ namespace ctac
             view.onTileHover(tile);
         }
 
-        private void onMinionSelected(IMinionModel selectedMinion)
+        private void onMinionSelected(MinionModel selectedMinion)
         {
             if (selectedMinion != null)
             {

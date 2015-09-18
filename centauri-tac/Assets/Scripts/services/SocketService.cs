@@ -26,13 +26,13 @@ namespace ctac
         public ICrossContextInjectionBinder binder { get; set; }
 
         [Inject]
-        public IComponentModel componentModel { get; set; } 
+        public ComponentModel componentModel { get; set; } 
 
         [Inject]
-        public IAuthModel authModel { get; set; }
+        public AuthModel authModel { get; set; }
 
         [Inject]
-        public IServiceTypeMapModel typeMap { get; set; }
+        public ServiceTypeMapModel typeMap { get; set; }
 
         [Inject]
         public SocketConnectSignal connectSignal { get; set; }
@@ -138,10 +138,6 @@ namespace ctac
                     return;
                 }
                 var signalDataType = signalDataTypes[0];
-                if (signalDataType.IsInterface)
-                {
-                    signalDataType = binder.GetInstance(signalDataType).GetType();
-                }
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
                 signal.Dispatch(new object[] { deserializedData });
             }

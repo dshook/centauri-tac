@@ -22,7 +22,7 @@ namespace ctac
             minionMove.RemoveListener(onMinionMove);
         }
 
-        public void onMinionMove(IMinionModel minionMoved, Tile dest)
+        public void onMinionMove(MinionModel minionMoved, Tile dest)
         {
             if (minionMoved != view.minion) return;
 

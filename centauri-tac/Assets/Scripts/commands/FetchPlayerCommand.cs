@@ -11,10 +11,10 @@ namespace ctac
         public PlayerFetchedSignal playerFetchedSignal { get; set; }
 
         [Inject]
-        public IAuthModel authModel { get; set; }
+        public AuthModel authModel { get; set; }
 
         [Inject]
-        public IPlayerModel playerModel { get; set; }
+        public PlayerModel playerModel { get; set; }
 
         [Inject]
         public IJsonNetworkService netService { get; set; }
@@ -36,7 +36,7 @@ namespace ctac
             else
             {
                 Debug.Log("Player Fetched");
-                playerModel = data as IPlayerModel;
+                playerModel = data as PlayerModel;
 
                 playerFetchedSignal.Dispatch();
             }

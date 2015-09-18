@@ -15,7 +15,7 @@ namespace ctac
         public IJsonNetworkService netService { get; set; }
 
         [Inject]
-        public IComponentModel componentModel { get; set; }
+        public ComponentModel componentModel { get; set; }
 
         public override void Execute()
         {

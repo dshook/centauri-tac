@@ -1,12 +1,7 @@
 namespace ctac
 {
-    public interface IPlayerModel
-    {
-        Player player { get; set; }
-    }
-
     [Singleton]
-    public class PlayerModel : IPlayerModel
+    public class PlayerModel
     {
         public Player player { get; set; }
     }

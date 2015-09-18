@@ -4,6 +4,6 @@ using UnityEngine;
 namespace ctac.signals
 {
     [Singleton]
-    public class MinionMoveSignal : Signal<IMinionModel, Tile> { }
+    public class MinionMoveSignal : Signal<MinionModel, Tile> { }
 }
 

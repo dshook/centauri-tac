@@ -5,17 +5,10 @@ using System.Linq;
 namespace ctac
 {
     //Holds the mapping of component to url
-    public interface IComponentModel
-    {
-        List<Component> componentList { get; set; }
-        string getComponentURL(string name);
-        string getComponentWSURL(string name);
-    }
-
-    public class ComponentModel : IComponentModel
+    public class ComponentModel
     {
         [Inject]
-        public IConfigModel config { get; set; }
+        public ConfigModel config { get; set; }
 
         public List<Component> componentList { get; set; }
 

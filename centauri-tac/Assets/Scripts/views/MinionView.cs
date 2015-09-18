@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ctac {
     public class MinionView : View
     {
-        public IMinionModel minion { get; set; }
+        public MinionModel minion { get; set; }
 
         private Vector3? destination = null;
 

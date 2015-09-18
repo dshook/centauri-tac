@@ -7,7 +7,7 @@ namespace ctac
 {
     public interface IMapCreatorService
     {
-        void CreateMap(IMapImportModel map);
+        void CreateMap(MapImportModel map);
     }
 
     public class MapCreatorService : IMapCreatorService
@@ -19,9 +19,9 @@ namespace ctac
         public MapCreatedSignal mapCreated { get; set; }
 
         [Inject]
-        public IMapModel mapModel { get; set; }
+        public MapModel mapModel { get; set; }
 
-        public void CreateMap(IMapImportModel map)
+        public void CreateMap(MapImportModel map)
         {
             var mapTilePrefab = Resources.Load("Tile") as GameObject;
 

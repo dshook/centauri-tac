@@ -2,14 +2,7 @@ using System.Collections.Generic;
 
 namespace ctac
 {
-    public interface IMapImportModel
-    {
-        string name { get; set; }
-        int maxPlayers { get; set; }
-        List<TileImport> tiles { get; set; }
-    }
-
-    public class MapImportModel : IMapImportModel
+    public class MapImportModel
     {
         public string name { get; set; }
         public int maxPlayers { get; set; }

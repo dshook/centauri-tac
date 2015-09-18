@@ -24,10 +24,10 @@ namespace ctac
         public FailedAuthSignal failedAuth { get; set; }
 
         [Inject]
-        public IAuthModel authModel { get; set; }
+        public AuthModel authModel { get; set; }
 
         [Inject]
-        public IPlayerModel playerModel { get; set; }
+        public PlayerModel playerModel { get; set; }
 
         [Inject(name = InjectKeys.authSocketService)]
         public ISocketService socketService { get; set; }
