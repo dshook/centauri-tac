@@ -50,8 +50,8 @@ export default class ComponentManager
    */
   async register(component)
   {
-    this.log.info('registering %s component with %s@%s',
-        component.type.name, component.realm, component.url);
+    this.log.info('registering %s component on %s',
+        component.type.name, component.realm);
 
     await this.net.sendCommand('master', 'registerComponent', {component});
   }
