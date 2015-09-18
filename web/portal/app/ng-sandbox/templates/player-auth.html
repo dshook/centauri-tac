@@ -96,6 +96,7 @@
         sub-title="available games">
 
         <button
+          ng-disabled="flow.currentGame"
           ng-click="flow.joinFirstEmptyGame()"
           class="btn btn-default">Join first empty game</button>
         <button

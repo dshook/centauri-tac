@@ -136,35 +136,34 @@ export default class GameStore extends EventEmitter
 
     const data = resp.firstOrNull();
 
-    // player wasnt yet in a game
+    // player wasnt yet in a game, nothing to do
     if (!data) {
       return;
     }
 
     const {id} = data;
 
-    // update status of game if active
     const game = await this.getActive(null, id);
 
-    // no longer active
+    // no longer active...
     if (!game) {
-      // TODO: cleanup game?
-      return;
+      this.log.info('player was in inactive game...');
     }
 
     // host left?
-    if (game.hostPlayerId === playerId) {
+    else if (game.hostPlayerId === playerId) {
+      this.log.info('host left');
       if (game.currentPlayerCount === 0) {
+        this.log.info('...and was last one');
         await this.remove(id);
-        return;
       }
 
       await this.assignHost(id);
-      return;
     }
 
     // Otherwise just broadcast
-    this._broadcastGameUpdate(game);
+    await this.messenger.emit('game:current', {game: null, playerId});
+    await this.messenger.emit('game', game);
   }
 
   /**
@@ -182,6 +181,8 @@ export default class GameStore extends EventEmitter
     if (!data || !data.id) {
       return;
     }
+
+    this._broadcastRemoveGame(data.id);
   }
 
   @hrtime('assigned new host in %s ms')

@@ -18,6 +18,7 @@ export default class GamelistRPC
 
     setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game'), 500);
     setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game:current'), 500);
+    setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game:remove'), 500);
 
     this.clients = new Set();
   }
@@ -49,6 +50,17 @@ export default class GamelistRPC
   }
 
   /**
+   * Client wants to leave a game
+   */
+  @rpc.command('part')
+  async playerPart(client, params, auth)
+  {
+    const playerId = auth.sub.id;
+
+    await this.games.playerPart(playerId);
+  }
+
+  /**
    * Send game update to all connected
    */
   @dispatch.on('game')
@@ -56,6 +68,17 @@ export default class GamelistRPC
   {
     for (const c of this.clients) {
       c.send('game', game);
+    }
+  }
+
+  /**
+   * Send game remove to all connected
+   */
+  @dispatch.on('game:remove')
+  _broadcastRemoveGame(gameId)
+  {
+    for (const c of this.clients) {
+      c.send('game:remove', gameId);
     }
   }
 

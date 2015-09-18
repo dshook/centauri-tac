@@ -103,6 +103,18 @@ export default class AuthFlow
     this.games.push(g);
   }
 
+  @rpc.command('gamelist', 'game:remove')
+  @ngApply _recvGameRemove(client, gameId)
+  {
+    const index = this.games.findIndex(x => x.id === gameId);
+
+    if (!~index) {
+      return;
+    }
+
+    this.games.splice(index, 1);
+  }
+
   /**
    * Sever tells us our current game
    */
@@ -125,7 +137,7 @@ export default class AuthFlow
    */
   @ngApply async leaveCurrentGame()
   {
-
+    this.net.sendCommand('gamelist', 'part');
   }
 
   /**
