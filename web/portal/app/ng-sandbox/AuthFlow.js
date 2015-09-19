@@ -122,9 +122,18 @@ export default class AuthFlow
    * Sever tells us our current game
    */
   @rpc.command('gamelist', 'game:current')
-  @ngApply _recvCurrentGame(client, game)
+  @ngApply async _recvCurrentGame(client, game)
   {
     this.currentGame = Game.fromJSON(game);
+
+    // If we're in a game, manually add it to our net client so we can talk to
+    // the server. If not, drop it out of the client
+    if (game) {
+      this.net.addComponent(game.component);
+    }
+    else {
+      this.net.removeComponent('game');
+    }
   }
 
   /**
