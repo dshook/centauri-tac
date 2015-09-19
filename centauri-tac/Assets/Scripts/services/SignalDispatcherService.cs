@@ -50,13 +50,6 @@ namespace ctac
             var methodInfo = innerType
                          .GetMethods()
                          .Where(m => m.Name == "Dispatch")
-                         .Select(m => new
-                         {
-                             Method = m,
-                             Params = m.GetParameters(),
-                             Args = m.GetGenericArguments()
-                         })
-                         .Select(x => x.Method)
                          .First();
             methodInfo.Invoke(self, new[] { data });
         }
