@@ -3,6 +3,6 @@ using strange.extensions.signal.impl;
 namespace ctac.signals
 {
     [Singleton]
-    public class PingSignal : Signal<int> { }
+    public class PingSignal : Signal<int, string> { }
 }
 

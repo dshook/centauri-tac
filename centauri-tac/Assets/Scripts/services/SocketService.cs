@@ -48,6 +48,8 @@ namespace ctac
         [Inject]
         public QuitSignal quit { get; set; }
 
+        public string componentName { get; set; }
+
         private WebSocket ws = null;
         private bool connected = false;
 
@@ -61,23 +63,9 @@ namespace ctac
             quit.AddListener(DestroySocketService);
         }
 
-        void DestroySocketService()
-        {
-            if (connected)
-            {
-                ws.Close(CloseStatusCode.Normal, "Client shut down");
-            }
-        }
-
-        private IEnumerator ConnectAndRequest(string componentName, string methodName, object data)
-        {
-            yield return root.StartCoroutine(SocketConnect(componentName));
-           
-            yield return root.StartCoroutine(MakeRequest(methodName, data));
-        }
-
         public void Request(string componentName, string methodName, object data = null)
         {
+            this.componentName = componentName;
             if (connected)
             {
                 connectSignal.RemoveAllListeners();
@@ -87,6 +75,13 @@ namespace ctac
             {
                 root.StartCoroutine(ConnectAndRequest(componentName, methodName, data));
             }
+        }
+
+        private IEnumerator ConnectAndRequest(string componentName, string methodName, object data)
+        {
+            yield return root.StartCoroutine(SocketConnect(componentName));
+           
+            yield return root.StartCoroutine(MakeRequest(methodName, data));
         }
 
         private IEnumerator SocketConnect(string componentName)
@@ -142,7 +137,11 @@ namespace ctac
             if (signal != null)
             {
                 var signalDataTypes = signal.GetTypes();
-                if (signalDataTypes.Count != 1)
+                bool attachMethodName = false;
+                if(signalDataTypes.Count == 2 && signalDataTypes[1] == typeof(string)) {
+                    attachMethodName = true;
+                }
+                else if (signalDataTypes.Count != 1)
                 {
                     Debug.LogError("Signal can only have one type of data to dispatch");
                     return;
@@ -150,11 +149,21 @@ namespace ctac
                 var signalDataType = signalDataTypes[0];
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
 
+                object[] signalData;
+                if (attachMethodName)
+                {
+                    signalData = new object[] { deserializedData, this.componentName };
+                }
+                else
+                {
+                    signalData = new object[] { deserializedData };
+                }
+
                 signalDispatcher.ScheduleSignal(
                     new SignalData() {
                         signal = signal,
                         signalType = signalType,
-                        signalData = deserializedData
+                        signalData = signalData
                     }
                 );
             }
@@ -179,6 +188,14 @@ namespace ctac
             Debug.Log("Socket Close: " + e.Reason);
             connected = false;
             disconnectSignal.Dispatch();
+        }
+
+        void DestroySocketService()
+        {
+            if (connected)
+            {
+                ws.Close(CloseStatusCode.Normal, "Client shut down");
+            }
         }
     }
 }

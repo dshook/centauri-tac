@@ -12,7 +12,7 @@ namespace ctac
     {
         public BaseSignal signal { get; set; }
         public Type signalType { get; set; }
-        public object signalData { get; set; }
+        public object[] signalData { get; set; }
     }
 
     /// <summary>
@@ -45,13 +45,13 @@ namespace ctac
             }
         }
 
-        public void Dispatch(object self, Type innerType, object data)
+        public void Dispatch(object self, Type innerType, object[] data)
         {
             var methodInfo = innerType
                          .GetMethods()
                          .Where(m => m.Name == "Dispatch")
                          .First();
-            methodInfo.Invoke(self, new[] { data });
+            methodInfo.Invoke(self, data );
         }
     }
 }

@@ -86,6 +86,7 @@ namespace ctac
             commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
             commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
+            commandBinder.Bind<PingSignal>().To<PongCommand>();
 
             injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();
         }
