@@ -71,7 +71,7 @@ namespace ctac
 
         private void onTokenComplete(string token)
         {
-            if (data == null)
+            if (string.IsNullOrEmpty(token))
             {
                 Debug.LogError("Failed Authenticate");
                 failedAuth.Dispatch();

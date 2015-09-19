@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using strange.extensions.signal.impl;
 using strange.extensions.mediation.impl;
+using System;
+using System.Linq;
 
 namespace ctac
 {
@@ -9,7 +11,8 @@ namespace ctac
     public class SignalData
     {
         public BaseSignal signal { get; set; }
-        public object[] signalData { get; set; }
+        public Type signalType { get; set; }
+        public object signalData { get; set; }
     }
 
     /// <summary>
@@ -29,7 +32,7 @@ namespace ctac
                 if (queue.Count > 0)
                 {
                     var signalData = queue.Dequeue();
-                    signalData.signal.Dispatch(signalData.signalData);
+                    Dispatch(signalData.signal, signalData.signalType, signalData.signalData);
                 }
             }
         }
@@ -40,6 +43,22 @@ namespace ctac
             {
                 queue.Enqueue(signalData);
             }
+        }
+
+        public void Dispatch(object self, Type innerType, object data)
+        {
+            var methodInfo = innerType
+                         .GetMethods()
+                         .Where(m => m.Name == "Dispatch")
+                         .Select(m => new
+                         {
+                             Method = m,
+                             Params = m.GetParameters(),
+                             Args = m.GetGenericArguments()
+                         })
+                         .Select(x => x.Method)
+                         .First();
+            methodInfo.Invoke(self, new[] { data });
         }
     }
 }

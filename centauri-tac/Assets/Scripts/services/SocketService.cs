@@ -147,7 +147,11 @@ namespace ctac
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
 
                 signalDispatcher.ScheduleSignal(
-                    new SignalData() { signal = signal, signalData = new object[] { deserializedData } }
+                    new SignalData() {
+                        signal = signal,
+                        signalType = signalType,
+                        signalData = deserializedData
+                    }
                 );
             }
             else
