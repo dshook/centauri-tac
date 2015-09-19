@@ -15,7 +15,14 @@ import TokenRPC from '../api/TokenRPC.js';
 export default class ComponentManager
 {
   constructor(
-      app, httpServer, httpConfig, netClient, componentsConfig, packageData)
+      messenger,
+      app,
+      httpServer,
+      httpConfig,
+      netClient,
+      componentsConfig,
+      packageData,
+    )
   {
     this.version = packageData.version;
     this.server = httpServer;
@@ -23,6 +30,7 @@ export default class ComponentManager
     this.cConfig = componentsConfig;
     this.app = app;
     this.net = netClient;
+    this.messenger = messenger;
 
     this._components = [];
 
@@ -31,6 +39,8 @@ export default class ComponentManager
     this.pingMaps = new Map();
 
     this.registered = new Map();
+
+    this.net.on('open', (...a) => this._onConnect(...a));
   }
 
   /**
@@ -54,6 +64,9 @@ export default class ComponentManager
         component.type.name, component.realm);
 
     await this.net.sendCommand('master', 'registerComponent', {component});
+
+    // make sure it worked
+    await this.net.recvCommand('component');
   }
 
   /**
@@ -81,7 +94,9 @@ export default class ComponentManager
         component.type.name, this._components.length);
 
     // setup pings
-    setInterval(() => this.net.sendCommand('master', 'pingComponent', component.id), 5000);
+    // TODO: have this be configurable
+    setInterval(() => this.net.sendCommand(
+          'master', 'pingComponent', component.id), 5000);
   }
 
   /**
@@ -106,6 +121,7 @@ export default class ComponentManager
       wss.pingInterval = this.cConfig.serverPingInterval;
       this.log.info('ping interval set to %s', wss.pingInterval);
       const sockServer = new SockHarness(wss, U => this.app.make(U));
+      sockServer.addPlugin(c => this._onHandler(c));
       sockServer.addHandler(TokenRPC);
 
       // rest endpoint
@@ -149,6 +165,30 @@ export default class ComponentManager
       if (name !== 'master') {
         await this.register(entry);
       }
+    }
+  }
+
+  /**
+   * Whenever we bind an RPC handler that wants to recv events
+   */
+  async _onHandler(instance)
+  {
+    if (!this.messenger.bindInstance(instance)) {
+      // nothing bound
+      return;
+    }
+
+    await this.messenger.subscribe();
+  }
+
+  /**
+   * Whenever the net client connects to a component
+   */
+  async _onConnect({name})
+  {
+    // re-subscribe if needed
+    if (name === 'dispatch') {
+      await this.messenger.subscribe();
     }
   }
 }

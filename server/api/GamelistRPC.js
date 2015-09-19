@@ -8,17 +8,11 @@ import {dispatch} from 'rpc-messenger';
 @loglevel
 export default class GamelistRPC
 {
-  constructor(messenger, games, componentsConfig, netClient)
+  constructor(games, componentsConfig, netClient)
   {
     this.games = games;
     this.realm = componentsConfig.realm;
     this.net = netClient;
-
-    messenger.bindInstance(this);
-
-    setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game'), 500);
-    setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game:current'), 500);
-    setTimeout(() => this.net.sendCommand('dispatch', 'subscribe', 'game:remove'), 500);
 
     this.clients = new Set();
   }
@@ -56,8 +50,17 @@ export default class GamelistRPC
   async playerPart(client, params, auth)
   {
     const playerId = auth.sub.id;
-
     await this.games.playerPart(playerId);
+  }
+
+  /**
+   * Client wants to join a game
+   */
+  @rpc.command('join')
+  async playerJoin(client, {gameId}, auth)
+  {
+    const playerId = auth.sub.id;
+    await this.games.playerJoin(playerId, gameId);
   }
 
   /**

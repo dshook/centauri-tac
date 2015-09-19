@@ -37,6 +37,19 @@ export default class DispatchRPC
   @rpc.command('subscribe')
   subscribe(client, event)
   {
+    // see if this client is already signed up for this shit
+    // TODO: seems a bit brittle if the identity of the sock client changes and
+    // may lead to dupe sent messages? Could check the clients auth object
+    // potentially
+    const existing = this._callbacks
+      .find(x => x.client === client && x.event === event);
+
+    if (existing) {
+      this.log.info('skipping client %s sub to %s, already exists',
+          client.id, event);
+      return;
+    }
+
     const delegate = data => this._broadcast(client, event, data);
     this.emitter.on(event, delegate);
 

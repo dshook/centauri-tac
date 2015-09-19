@@ -54,6 +54,9 @@ export default class AuthFlow
   @ngApply async disconnect()
   {
     await this.net.disconnect();
+    this.me = null;
+    this.games = [];
+    this.currentGame = null;
   }
 
   /**
@@ -125,11 +128,11 @@ export default class AuthFlow
   }
 
   /**
-   * Join any game with open player spots
+   * Join a specific game
    */
-  @ngApply async joinFirstEmptyGame()
+  @ngApply async joinGame(gameId)
   {
-
+    this.net.sendCommand('gamelist', 'join', {gameId});
   }
 
   /**

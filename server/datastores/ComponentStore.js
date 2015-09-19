@@ -59,7 +59,7 @@ export default class ComponentStore
    */
   async getActive(realm)
   {
-    const resp = await this.sql.tquery(Component)(`
+    const resp = await this.sql.tquery(Component, ComponentType)(`
 
       select *
       from components as c

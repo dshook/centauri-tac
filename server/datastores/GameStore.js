@@ -140,30 +140,59 @@ export default class GameStore extends EventEmitter
     if (!data) {
       return;
     }
+    await this.messenger.emit('game:current', {game: null, playerId});
 
     const {id} = data;
-
     const game = await this.getActive(null, id);
 
     // no longer active...
     if (!game) {
-      this.log.info('player was in inactive game...');
+      await this._handleZomieGame(id);
+      return;
+    }
+    else if (game.hostPlayerId === playerId) {
+      await this._handlePlayerWasHostAndLeft(game);
+      return;
     }
 
-    // host left?
-    else if (game.hostPlayerId === playerId) {
-      this.log.info('host left');
-      if (game.currentPlayerCount === 0) {
-        this.log.info('...and was last one');
-        await this.remove(id);
+    // Otherwise just broadcast updated model
+    await this.messenger.emit('game', game);
+  }
+
+  /**
+   * Player is listed as being in a game no longer on a running server
+   */
+  async _handleZomieGame(gameId)
+  {
+    this.log.info('player was in zombie game %s...', gameId);
+    this.log.info('TODO: drop any remaining players and remove game');
+  }
+
+  /**
+   * Player was the host of game but parted it
+   */
+  async _handlePlayerWasHostAndLeft(game)
+  {
+    this.log.info('host left');
+
+    // game was total empty, time to remove it
+    if (game.currentPlayerCount === 0) {
+      this.log.info('...and was last one');
+
+      // and never started by teh game server
+      if (game.state === null) {
+        this.log.info('...and was never started on the server');
+      }
+      else {
+        this.log.info('TODO: cleanup game server');
       }
 
-      await this.assignHost(id);
+      await this.remove(game.id);
+      return;
     }
 
-    // Otherwise just broadcast
-    await this.messenger.emit('game:current', {game: null, playerId});
-    await this.messenger.emit('game', game);
+    // not empty yet
+    await this.assignHost(game.id);
   }
 
   /**
@@ -182,13 +211,74 @@ export default class GameStore extends EventEmitter
       return;
     }
 
-    this._broadcastRemoveGame(data.id);
+    await this.messenger.emit('game:remove', id);
   }
 
+  /**
+   * Give host to another player in a game. Assumes game isnt empty
+   */
   @hrtime('assigned new host in %s ms')
-  async assignHost()
+  async assignHost(gameId)
   {
+    const resp = await this.sql.query(`
+        select player_id as id from game_players
+        where game_id = @gameId
+        `, {gameId});
 
+    const playerId = resp.firstOrNull().id;
+
+    this.log.info('giving player %s host for game %s', playerId, gameId);
+
+    await this.sql.query(`
+        update games set host_player_id = @playerId
+        where id = @gameId
+        `, {playerId, gameId});
+
+    // broadcast updated game info
+    await this.messenger.emit('game', await this.getActive(null, gameId));
+  }
+
+  /**
+   * Remove players from dead games
+   */
+  @hrtime('removed zombie game players in %d ms')
+  async removeZombieGamePlayers()
+  {
+    const resp = await this.sql.query(`
+
+        delete from game_players
+        where game_id in
+          (select g.id from games g
+            join components c
+              on g.game_component_id = c.id
+            where not c.is_active)
+        returning game_id as id
+
+    `);
+
+    this.log.info('cleaned up %s zombie game players', resp.toArray().length);
+  }
+
+  /**
+   * Remove all empty games on dead compnoents
+   */
+  @hrtime('removed zomie games in %d ms')
+  async removeZombieGames()
+  {
+    const resp = await this.sql.query(`
+
+        delete from games
+        where game_component_id in
+          (select id from components c where not c.is_active)
+        and id not in
+          (select distinct game_id as id from game_players)
+        returning id
+
+    `);
+
+    const ids = resp.toArray();
+
+    this.log.info('cleaned up %s empty zombie games', ids.length);
   }
 
   /**
@@ -210,29 +300,13 @@ export default class GameStore extends EventEmitter
 
     const {id} = resp.firstOrNull();
 
-    // host always joins
+    // host always joins (fires event!)
     await this.playerJoin(hostId, id);
 
-    // notify new game is out there
+    // stand up game on server
+    this.log.info('TODO: spin up game instance on game component');
+
     const game = await this.getActive(null, id);
-    this._broadcastGameUpdate(game);
-
     return game;
-  }
-
-  /**
-   * Game is removed
-   */
-  async _broadcastRemoveGame(gameId)
-  {
-    await this.messenger.emit('game:remove', gameId);
-  }
-
-  /**
-   * Broadcast game info
-   */
-  async _broadcastGameUpdate(game)
-  {
-    await this.messenger.emit('game', game);
   }
 }

@@ -97,22 +97,11 @@
 
         <button
           ng-disabled="flow.currentGame"
-          ng-click="flow.joinFirstEmptyGame()"
-          class="btn btn-default">Join first empty game</button>
-        <button
-          ng-disabled="flow.currentGame"
           ng-click="flow.createGame()"
           class="btn btn-default">Create game</button>
 
         <table class="table table-striped" ng-table>
           <tr ng-repeat="game in flow.games">
-
-            <td>
-              <a href
-                ng-click="joinGame">
-                join <i class="fa fa-sign-in"></i>
-              </a>
-            </td>
 
             <td data-title="'game'">
               <span game="game"></span>
@@ -131,6 +120,15 @@
             <td
               data-title="'players'">
               {{ game.currentPlayerCount }} / {{ game.maxPlayerCount }}
+            </td>
+
+            <td>
+              <button
+                class="btn btn-default"
+                ng-disabled="flow.currentGame"
+                ng-click="flow.joinGame(game.id)">
+                join <i class="fa fa-sign-in"></i>
+              </a>
             </td>
 
           </tr>

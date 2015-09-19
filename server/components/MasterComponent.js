@@ -25,7 +25,13 @@ export default class MasterComponent
     await this.cleanup();
 
     // Register ourselves into the DB
-    await this.components.register(component);
+    const {id} = await this.components.register(component);
+
+    this.log.info('self-registered master, id = %s', id);
+
+    // self-ping
+    // TODO: have this be configurable
+    setInterval(() => this.components.ping(id), 5000);
 
     rest.mountController('/realm', RealmAPI);
     sock.addHandler(MasterRPC);
