@@ -73,7 +73,7 @@ namespace ctac
         {
             yield return root.StartCoroutine(SocketConnect(componentName));
            
-            yield return root.StartCoroutine(MakeRequest(componentName, methodName, data));
+            yield return root.StartCoroutine(MakeRequest(methodName, data));
         }
 
         public void Request(string componentName, string methodName, object data = null)
@@ -81,7 +81,7 @@ namespace ctac
             if (connected)
             {
                 connectSignal.RemoveAllListeners();
-                root.StartCoroutine(MakeRequest(componentName, methodName, data));
+                root.StartCoroutine(MakeRequest(methodName, data));
             }
             else
             {
@@ -115,7 +115,7 @@ namespace ctac
             }
         }
 
-        private IEnumerator MakeRequest(string componentName, string methodName, object data)
+        private IEnumerator MakeRequest(string methodName, object data)
         {
             if (!connected)
             {
