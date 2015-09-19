@@ -39,6 +39,7 @@ namespace ctac
             return this;
         }
 
+
         protected override void mapBindings()
         {
             injectionBinder.Bind<ICrossContextInjectionBinder>().To(injectionBinder);
@@ -77,6 +78,7 @@ namespace ctac
             mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
             mediationBinder.Bind<TileClickView>().To<TileClickMediator>();
             mediationBinder.Bind<MinionView>().To<MinionMediator>();
+            mediationBinder.Bind<QuitView>().To<QuitMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.

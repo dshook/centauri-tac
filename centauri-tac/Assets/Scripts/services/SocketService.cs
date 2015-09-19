@@ -45,6 +45,9 @@ namespace ctac
         [Inject]
         public SocketReRequestSignal reRequest { get; set; }
 
+        [Inject]
+        public QuitSignal quit { get; set; }
+
         private WebSocket ws = null;
         private bool connected = false;
 
@@ -55,9 +58,10 @@ namespace ctac
         {
             root = contextView.GetComponent<SignalsRoot>();
             reRequest.AddListener(Request);
+            quit.AddListener(DestroySocketService);
         }
 
-        ~SocketService()
+        void DestroySocketService()
         {
             if (connected)
             {

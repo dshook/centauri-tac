@@ -32,6 +32,4 @@ public class CameraMovement : MonoBehaviour
             transform.Translate(move, Space.World);
         }
     }
-
-
 }
