@@ -6,6 +6,6 @@ using strange.extensions.signal.impl;
 namespace ctac
 {
     [Singleton]
-    public class SocketErrorSignal : Signal<string> { }
+    public class SocketErrorSignal : Signal<string, string> { }
 }
 

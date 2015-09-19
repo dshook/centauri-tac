@@ -9,7 +9,7 @@ namespace ctac
         [Inject]
         public PingSignal ping { get; set; }
 
-        [Inject(name = InjectKeys.authSocketService)]
+        [Inject]
         public ISocketService socket { get; set; }
 
         public override void Execute()

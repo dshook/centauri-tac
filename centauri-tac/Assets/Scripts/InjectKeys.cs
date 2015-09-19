@@ -2,7 +2,5 @@
 {
     public enum InjectKeys
     {
-        gameSocketService,
-        authSocketService
     }
 }

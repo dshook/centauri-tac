@@ -29,7 +29,7 @@ namespace ctac
         [Inject]
         public PlayerModel playerModel { get; set; }
 
-        [Inject(name = InjectKeys.authSocketService)]
+        [Inject]
         public ISocketService socketService { get; set; }
 
         const string playerTokenKey = "playerToken";
