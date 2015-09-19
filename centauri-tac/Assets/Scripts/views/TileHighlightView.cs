@@ -14,6 +14,7 @@ namespace ctac
         Tile hoveredTile = null;
         Tile selectedTile = null;
         Dictionary<Vector2, Tile> moveTiles = null;
+        List<Tile> pathTiles = null;
 
         bool active = false;
         float rayFrequency = 0.1f;
@@ -72,6 +73,26 @@ namespace ctac
             {
                 hoveredTile = newTile;
                 FlagsHelper.Set(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);
+            }
+        }
+
+        internal void onTileMovePath(List<Tile> tiles)
+        {
+            if (pathTiles != null && pathTiles.Count > 0)
+            {
+                foreach (var tile in pathTiles)
+                {
+                    FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.PathFind);
+                }
+            }
+
+            pathTiles = tiles;
+            if (tiles != null)
+            {
+                foreach (var tile in tiles)
+                {
+                    FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.PathFind);
+                }
             }
         }
 

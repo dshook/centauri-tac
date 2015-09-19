@@ -34,7 +34,6 @@ public class CameraMovement : MonoBehaviour
         if (dragging)
         {
             var mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-            var camPosition = transform.position;
             mouseDiff = mousePos - dragOrigin;
 
             //TODO: speed is still not right
