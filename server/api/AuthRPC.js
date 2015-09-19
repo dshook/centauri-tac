@@ -1,6 +1,7 @@
 import {rpc} from 'sock-harness';
 import {PlayerStoreError} from '../datastores/PlayerStore.js';
 import loglevel from 'loglevel-decorator';
+import roles from '../middleware/rpc/roles.js';
 
 /**
  * RPC handler for the auth component
@@ -52,6 +53,7 @@ export default class AuthRPC
    * Send back a players profile
    */
   @rpc.command('me')
+  @rpc.middleware(roles(['player']))
   async profile(client, params, auth)
   {
     if (!auth) {

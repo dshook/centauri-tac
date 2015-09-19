@@ -130,6 +130,7 @@ export default class AuthFlow
     // the server. If not, drop it out of the client
     if (game) {
       this.net.addComponent(game.component);
+      await this.net.sendCommand('game', 'create');
     }
     else {
       this.net.removeComponent('game');

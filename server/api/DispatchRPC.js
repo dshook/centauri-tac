@@ -1,6 +1,7 @@
 import {rpc} from 'sock-harness';
 import {EventEmitter} from 'events';
 import loglevel from 'loglevel-decorator';
+import roles from '../middleware/rpc/roles.js';
 
 @loglevel
 export default class DispatchRPC
@@ -17,6 +18,7 @@ export default class DispatchRPC
    * RPC that will trigger a sending of an event to all listeners
    */
   @rpc.command('broadcast')
+  @rpc.middleware(roles(['component']))
   broadcast(client, {event, data})
   {
     this.log.info('client %s emitting %s', client.id, event);
@@ -24,17 +26,10 @@ export default class DispatchRPC
   }
 
   /**
-   * Actually send the message
-   */
-  _broadcast(client, event, data)
-  {
-    client.send('broadcast', {event, data});
-  }
-
-  /**
    * RPC another component uses to be a listener for events
    */
   @rpc.command('subscribe')
+  @rpc.middleware(roles(['component']))
   subscribe(client, event)
   {
     // see if this client is already signed up for this shit
@@ -50,7 +45,7 @@ export default class DispatchRPC
       return;
     }
 
-    const delegate = data => this._broadcast(client, event, data);
+    const delegate = data => client.send('broadcast', {event, data});
     this.emitter.on(event, delegate);
 
     this.log.info('client %s subscribed to %s', client.id, event);

@@ -1,6 +1,7 @@
 import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
 import {dispatch} from 'rpc-messenger';
+import roles from '../middleware/rpc/roles.js';
 
 /**
  * RPC handler for the gamelist component
@@ -21,6 +22,7 @@ export default class GamelistRPC
    * Client wants the entire gamelist
    */
   @rpc.command('gamelist')
+  @rpc.middleware(roles(['player']))
   async sendGamelist(client)
   {
     const games = await this.games.getActive(this.realm);
@@ -33,6 +35,7 @@ export default class GamelistRPC
    * Client wants to create a game
    */
   @rpc.command('create')
+  @rpc.middleware(roles(['player']))
   async createGame(client, {name}, auth)
   {
     const playerId = auth.sub.id;
@@ -47,6 +50,7 @@ export default class GamelistRPC
    * Client wants to leave a game
    */
   @rpc.command('part')
+  @rpc.middleware(roles(['player']))
   async playerPart(client, params, auth)
   {
     const playerId = auth.sub.id;
@@ -57,6 +61,7 @@ export default class GamelistRPC
    * Client wants to join a game
    */
   @rpc.command('join')
+  @rpc.middleware(roles(['player']))
   async playerJoin(client, {gameId}, auth)
   {
     const playerId = auth.sub.id;
