@@ -4,15 +4,23 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class CameraMovement : MonoBehaviour
 {
-    private float dragSpeed = 0.1f;
     private Vector3 dragOrigin;
+    private Vector3 camOrigin;
+
+    private Vector3 mouseDiff;
+    private Vector3 amountToMove;
+    private Vector3 move;
+
     bool dragging = false;
+    float xSpeed = 10f;
+    float ySpeed = 5f;
 
     void Update()
     {
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
-            dragOrigin = Input.mousePosition;
+            dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            camOrigin = transform.position;
             dragging = true;
             return;
         }
@@ -25,11 +33,16 @@ public class CameraMovement : MonoBehaviour
 
         if (dragging)
         {
-            Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-            Vector3 move = new Vector3(-pos.x * dragSpeed, 0, -pos.y * dragSpeed);
-            move = Quaternion.AngleAxis(Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.up) * move;
+            var mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            var camPosition = transform.position;
+            mouseDiff = mousePos - dragOrigin;
 
-            transform.Translate(move, Space.World);
+            //TODO: speed is still not right
+            amountToMove.Set(-mouseDiff.x * xSpeed, -mouseDiff.y * ySpeed, 0);
+            amountToMove = Camera.main.transform.rotation * amountToMove;
+            move = camOrigin + amountToMove;
+
+            transform.position = Vector3.MoveTowards(transform.position, move, 10.0f);
         }
     }
 }
