@@ -12,6 +12,9 @@ namespace ctac
         [Inject]
         public MinionMoveSignal minionMove { get; set; }
 
+        [Inject]
+        public MapModel map { get; set; }
+
         public override void OnRegister()
         {
             minionMove.AddListener(onMinionMove);
@@ -26,7 +29,10 @@ namespace ctac
         {
             if (minionMoved != view.minion) return;
 
-            view.Move(dest);
+            var startTile = map.tiles.Get(minionMoved.tilePosition);
+            var path = map.FindPath(startTile, dest);
+
+            view.MovePath(path);
         }
 
     }

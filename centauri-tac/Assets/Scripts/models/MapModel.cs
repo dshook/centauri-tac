@@ -121,6 +121,7 @@ namespace ctac
                 current = came_from[current];
                 total_path.Add(current);
             }
+            total_path.Reverse();
             return total_path;
         }
 

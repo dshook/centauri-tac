@@ -57,7 +57,7 @@ namespace ctac
         {
             if (selectedMinion != null)
             {
-                var gameTile = map.tiles.Get(selectedMinion.gameObject.transform.position.ToTileCoordinates());
+                var gameTile = map.tiles.Get(selectedMinion.tilePosition);
                 selectedMinionPosition = gameTile;
 
                 view.onTileSelected(gameTile);
