@@ -3,6 +3,6 @@ using strange.extensions.signal.impl;
 namespace ctac.signals
 {
     [Singleton]
-    public class PlayerFetchedSignal : Signal { }
+    public class PlayerFetchedSignal : Signal<PlayerModel> { }
 }
 

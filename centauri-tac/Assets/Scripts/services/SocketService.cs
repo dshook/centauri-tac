@@ -29,10 +29,10 @@ namespace ctac
         public ComponentModel componentModel { get; set; } 
 
         [Inject]
-        public AuthModel authModel { get; set; }
+        public ServiceTypeMapModel typeMap { get; set; }
 
         [Inject]
-        public ServiceTypeMapModel typeMap { get; set; }
+        public SignalDispatcherService signalDispatcher { get; set; }
 
         [Inject]
         public SocketConnectSignal connectSignal { get; set; }
@@ -57,6 +57,14 @@ namespace ctac
             reRequest.AddListener(Request);
         }
 
+        ~SocketService()
+        {
+            if (connected)
+            {
+                ws.Close(CloseStatusCode.Normal, "Client shut down");
+            }
+        }
+
         private IEnumerator ConnectAndRequest(string componentName, string methodName, object data)
         {
             yield return root.StartCoroutine(SocketConnect(componentName));
@@ -74,8 +82,6 @@ namespace ctac
             else
             {
                 root.StartCoroutine(ConnectAndRequest(componentName, methodName, data));
-                //Connect(componentName);
-                //connectSignal.AddListener(() => reRequest.Dispatch(componentName, methodName, data));
             }
         }
 
@@ -139,14 +145,15 @@ namespace ctac
                 }
                 var signalDataType = signalDataTypes[0];
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
-                signal.Dispatch(new object[] { deserializedData });
+
+                signalDispatcher.ScheduleSignal(
+                    new SignalData() { signal = signal, signalData = new object[] { deserializedData } }
+                );
             }
             else
             {
                 Debug.LogError("Could not find signal to dispatch from message type " + messageType);
             }
-
-            messageSignal.Dispatch(e.Data);
         }
 
         private void onSocketError(object sender, ErrorEventArgs e) {

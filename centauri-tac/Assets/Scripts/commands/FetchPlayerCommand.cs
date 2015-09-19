@@ -16,29 +16,27 @@ namespace ctac
         [Inject]
         public PlayerModel playerModel { get; set; }
 
-        [Inject]
-        public IJsonNetworkService netService { get; set; }
+        [Inject(name = InjectKeys.authSocketService)]
+        public ISocketService socketService { get; set; }
 
         public override void Execute()
         {
             Retain();
-            netService.fulfillSignal.AddListener(onFetchComplete);
-            netService.Request("auth", "player/me", playerModel.GetType());
+            playerFetchedSignal.AddListener(onFetchComplete);
+            socketService.Request("auth", "me");
         }
 
-        private void onFetchComplete(string url, object data)
+        private void onFetchComplete(PlayerModel player)
         {
-            netService.fulfillSignal.RemoveListener(onFetchComplete);
-            if (data == null)
+            playerFetchedSignal.RemoveListener(onFetchComplete);
+            if (player == null)
             {
                 Debug.LogError("Failed Fetching Player");
             }
             else
             {
                 Debug.Log("Player Fetched");
-                playerModel = data as PlayerModel;
-
-                playerFetchedSignal.Dispatch();
+                playerModel = player;
             }
 
             Release();

@@ -62,6 +62,10 @@ namespace ctac
                 }
             }
 
+            //special injection of a direct view since the dispatcher service needs to be a mono behavior
+            var signalDispatch = GameObject.FindObjectOfType<SignalDispatcherService>();
+            injectionBinder.Bind<SignalDispatcherService>().To(signalDispatch).ToSingleton();
+
             injectionBinder.Bind<ComponentModel>().To<ComponentModel>().ToSingleton();
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton().ToName(InjectKeys.authSocketService);
