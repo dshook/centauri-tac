@@ -6,5 +6,6 @@ export default class GameHost
   constructor()
   {
     this.gameId = null;
+    this.clients = [];
   }
 }

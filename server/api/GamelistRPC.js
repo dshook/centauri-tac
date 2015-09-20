@@ -43,7 +43,14 @@ export default class GamelistRPC
     // get an available game server
     const component = await this.net.getComponent('game');
 
-    await this.games.create(name, component.id, playerId);
+    // registers the game
+    const game = await this.games.create(name, component.id, playerId);
+
+    // instantiates game on the game host
+    await this.net.post(component, 'game', game);
+
+    // have host join the game (will fire update events)
+    await this.games.playerJoin(playerId, game.id);
   }
 
   /**

@@ -300,12 +300,6 @@ export default class GameStore extends EventEmitter
 
     const {id} = resp.firstOrNull();
 
-    // host always joins (fires event!)
-    await this.playerJoin(hostId, id);
-
-    // stand up game on server
-    this.log.info('TODO: spin up game instance on game component');
-
     const game = await this.getActive(null, id);
     return game;
   }
