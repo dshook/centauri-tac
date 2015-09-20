@@ -15,6 +15,9 @@ namespace ctac
         public GameObject contextView { get; set; }
 
         [Inject]
+        public ConfigModel config { get; set; }
+
+        [Inject]
         public FetchComponentsSignal startConnect { get; set; }
 
         [Inject]
@@ -25,6 +28,14 @@ namespace ctac
 
         public override void Execute()
         {
+            //override config from settings on disk if needed
+            string configContents = File.ReadAllText("./config.json");
+            if (!string.IsNullOrEmpty(configContents)) {
+                var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
+                diskConfig.CopyProperties(config);
+            }
+
+
             startConnect.Dispatch();
 
             //fetch map from disk, eventually comes from server
