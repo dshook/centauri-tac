@@ -41,7 +41,7 @@ public class CameraMovement : MonoBehaviour
             amountToMove = Camera.main.transform.rotation * amountToMove;
             move = camOrigin + amountToMove;
 
-            transform.position = Vector3.MoveTowards(transform.position, move, 10.0f);
+            transform.position = Vector3.MoveTowards(transform.position, move, 1f);
         }
     }
 }
