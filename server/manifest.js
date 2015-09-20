@@ -6,6 +6,7 @@ import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
 import NetClientService from './services/NetClientService.js';
 import MessengerService from './services/MessengerService.js';
+import GameService from './services/GameService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
@@ -45,6 +46,7 @@ export default {
     TComponent: GameComponent,
     services: [
       ...common,
+      GameService,
     ],
   },
 

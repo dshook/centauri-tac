@@ -5,9 +5,9 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GameRPC
 {
-  constructor()
+  constructor(gameManager)
   {
-
+    this.manager = gameManager;
   }
 
   /**

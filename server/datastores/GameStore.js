@@ -186,8 +186,7 @@ export default class GameStore extends EventEmitter
       }
       else {
         // wipe game instance
-        this.net.post(game.component, 'game/shutdown', {gameId: game.id});
-        this.log.info('TODO: cleanup game server');
+        await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
       }
 
       await this.remove(game.id);

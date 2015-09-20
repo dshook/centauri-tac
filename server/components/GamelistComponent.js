@@ -21,9 +21,7 @@ export default class GamelistComponent
   async start(component)
   {
     const sock = component.sockServer;
-
     await this.cleanup();
-
     sock.addHandler(GamelistRPC);
   }
 

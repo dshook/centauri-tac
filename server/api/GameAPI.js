@@ -3,16 +3,14 @@ import {middleware} from 'http-tools';
 import authToken from '../middleware/authToken.js';
 import roles from '../middleware/roles.js';
 import Game from 'models/Game';
-import loglevel from 'loglevel-decorator';
 
-@loglevel
 @middleware(authToken())
 export default class GameAPI
 {
-  constructor(netClient, auth)
+  constructor(gameManager, auth)
   {
-    this.net = netClient;
     this.auth = auth;
+    this.manager = gameManager;
   }
 
   /**
@@ -23,24 +21,18 @@ export default class GameAPI
   async createGame(req)
   {
     const game = Game.fromJSON(req.body);
-    this.log.info('TODO: instantiate new game %s %s for gamelist',
-        game.id, game.name);
-
-    // inform server our state has changed to staging
-    const gameId = game.id;
-    const stateId = 2;
-    await this.net.sendCommand('gamelist', 'update:state', {gameId, stateId});
+    this.manager.create(game);
   }
 
   /**
-   * Create a new instance of game host
+   * Shutdown a game
    */
-  @route.delete('/shutdown')
+  @route.post('/shutdown')
   @middleware(roles(['component']))
   async shutdown(req)
   {
     const {gameId} = req.body;
-    this.log.info('TODO: shut down game %s for gamelist', gameId);
+    this.manager.shutdown(gameId);
   }
 }
 
