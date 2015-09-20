@@ -4,6 +4,7 @@ using strange.extensions.command.impl;
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using ctac.signals;
 
 namespace ctac
 {

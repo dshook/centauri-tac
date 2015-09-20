@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using WebSocketSharp;
 using strange.extensions.injector.api;
 using strange.extensions.signal.impl;
+using ctac.signals;
 
 namespace ctac
 {
