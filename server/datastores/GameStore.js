@@ -13,10 +13,11 @@ import hrtime from 'hrtime-log-decorator';
 @loglevel
 export default class GameStore extends EventEmitter
 {
-  constructor(sql, messenger)
+  constructor(netClient, sql, messenger)
   {
     super();
     this.sql = sql;
+    this.net = netClient;
     this.messenger = messenger;
   }
 
@@ -184,6 +185,8 @@ export default class GameStore extends EventEmitter
         this.log.info('...and was never started on the server');
       }
       else {
+        // wipe game instance
+        this.net.post(game.component, 'game/shutdown', {gameId: game.id});
         this.log.info('TODO: cleanup game server');
       }
 
@@ -212,6 +215,19 @@ export default class GameStore extends EventEmitter
     }
 
     await this.messenger.emit('game:remove', id);
+  }
+
+  @hrtime('updated game state in %s ms')
+  async setState(gameId, stateId)
+  {
+    await this.sql.query(`
+        update games
+        set game_state_id = @stateId
+        where id = @gameId
+        `, {gameId, stateId});
+
+    // broadcast updated game info
+    await this.messenger.emit('game', await this.getActive(null, gameId));
   }
 
   /**

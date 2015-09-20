@@ -31,6 +31,13 @@ export default class GamelistRPC
     }
   }
 
+  @rpc.command('update:state')
+  @rpc.middleware(roles(['component']))
+  async updateGameModel(client, {gameId, stateId})
+  {
+    await this.games.setState(gameId, stateId);
+  }
+
   /**
    * Client wants to create a game
    */
@@ -117,6 +124,12 @@ export default class GamelistRPC
   @rpc.command('_token')
   async hello(client, params, auth)
   {
+    // if no user, this is a component, and we dont need to track for
+    // broadcasts?
+    if (!auth.sub) {
+      return;
+    }
+
     this.clients.add(client);
 
     const playerId = auth.sub.id;
