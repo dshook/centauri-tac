@@ -3,6 +3,7 @@ using strange.extensions.context.api;
 using strange.extensions.command.impl;
 using System.IO;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -14,6 +15,9 @@ namespace ctac
 
         [Inject]
         public FetchComponentsSignal startConnect { get; set; }
+
+        [Inject]
+        public MinionsModel minionsModel { get; set; }
 
         [Inject]
         public IMapCreatorService mapCreator { get; set; }
@@ -29,14 +33,18 @@ namespace ctac
             mapCreator.CreateMap(defaultMap);
 
             //add minion view scripts to the existing minions, eventually will be set up from server
-            var minions = GameObject.FindGameObjectsWithTag("Minion");
-            foreach (var minion in minions)
+            minionsModel.minions = new List<MinionModel>();
+            var taggedMinions = GameObject.FindGameObjectsWithTag("Minion");
+            foreach (var minion in taggedMinions)
             {
-                minion.GetComponent<MinionView>().minion = new MinionModel()
+                var minionModel = new MinionModel()
                 {
                     gameObject = minion
                 };
-            }
+
+                minion.GetComponent<MinionView>().minion = minionModel;
+                minionsModel.minions.Add(minionModel);
+             }
         }
     }
 }

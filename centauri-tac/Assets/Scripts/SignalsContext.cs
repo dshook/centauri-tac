@@ -78,6 +78,7 @@ namespace ctac
             mediationBinder.Bind<TileClickView>().To<TileClickMediator>();
             mediationBinder.Bind<MinionView>().To<MinionMediator>();
             mediationBinder.Bind<QuitView>().To<QuitMediator>();
+            mediationBinder.Bind<EndTurnView>().To<EndTurnMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
@@ -86,6 +87,7 @@ namespace ctac
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
             commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
+            commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 
             injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();
         }

@@ -33,6 +33,7 @@ namespace ctac
             var path = map.FindPath(startTile, dest);
 
             view.MovePath(path);
+            minionMoved.hasMoved = true;
         }
 
     }

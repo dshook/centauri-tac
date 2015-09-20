@@ -18,7 +18,7 @@ namespace ctac
         [Inject]
         public MapModel map { get; set; }
 
-        private Tile selectedMinionPosition = null;
+        private MinionModel selectedMinion = null;
 
         public override void OnRegister()
         {
@@ -42,9 +42,10 @@ namespace ctac
             tileHover.Dispatch(tile);
             view.onTileHover(tile);
 
-            if (selectedMinionPosition != null && tile != null)
+            if (selectedMinion != null && tile != null && !selectedMinion.hasMoved)
             {
-                var path = map.FindPath(selectedMinionPosition, tile);
+                var gameTile = map.tiles.Get(selectedMinion.tilePosition);
+                var path = map.FindPath(gameTile, tile);
                 view.onTileMovePath(path);
             }
             else
@@ -58,19 +59,22 @@ namespace ctac
             if (selectedMinion != null && !selectedMinion.isMoving)
             {
                 var gameTile = map.tiles.Get(selectedMinion.tilePosition);
-                selectedMinionPosition = gameTile;
+                this.selectedMinion = selectedMinion;
 
                 view.onTileSelected(gameTile);
 
-                //find movement
-                var moveTiles = map.GetTilesInRadius(gameTile.position, 5);
-                //take out the central one
-                moveTiles.Remove(gameTile.position);
-                view.onMovableTiles(moveTiles);
+                if (!selectedMinion.hasMoved)
+                {
+                    //find movement
+                    var moveTiles = map.GetTilesInRadius(gameTile.position, 5);
+                    //take out the central one
+                    moveTiles.Remove(gameTile.position);
+                    view.onMovableTiles(moveTiles);
+                }
             }
             else
             {
-                selectedMinionPosition = null;
+                this.selectedMinion = null;
                 view.onTileSelected(null);
                 view.onMovableTiles(null);
             }
