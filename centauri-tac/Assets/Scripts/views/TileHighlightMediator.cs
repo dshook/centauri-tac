@@ -55,7 +55,7 @@ namespace ctac
 
         private void onMinionSelected(MinionModel selectedMinion)
         {
-            if (selectedMinion != null)
+            if (selectedMinion != null && !selectedMinion.isMoving)
             {
                 var gameTile = map.tiles.Get(selectedMinion.tilePosition);
                 selectedMinionPosition = gameTile;

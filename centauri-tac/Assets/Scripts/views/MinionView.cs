@@ -25,11 +25,13 @@ namespace ctac {
 
             if (destination != null)
             {
+                minion.isMoving = true;
                 transform.position = Vector3.MoveTowards(transform.position, destination.Value, moveSpeed * Time.deltaTime);
                 if (Vector3.Distance(transform.position, destination.Value) < 0.01)
                 {
                     transform.position = destination.Value;
                     destination = null;
+                    minion.isMoving = false;
                 }
             }
 

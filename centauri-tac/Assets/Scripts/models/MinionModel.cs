@@ -7,6 +7,8 @@ namespace ctac
     {
         public GameObject gameObject { get; set; }
 
+        public bool isMoving { get; set; }
+
         public Vector2 tilePosition {
             get
             {
