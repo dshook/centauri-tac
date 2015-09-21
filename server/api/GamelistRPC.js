@@ -9,8 +9,9 @@ import roles from '../middleware/rpc/roles.js';
 @loglevel
 export default class GamelistRPC
 {
-  constructor(games, componentsConfig, netClient)
+  constructor(games, gamelistManager, componentsConfig, netClient)
   {
+    this.manager = gamelistManager;
     this.games = games;
     this.realm = componentsConfig.realm;
     this.net = netClient;
@@ -31,11 +32,14 @@ export default class GamelistRPC
     }
   }
 
+  /**
+   * A game component is informing us of a state change
+   */
   @rpc.command('update:state')
   @rpc.middleware(roles(['component']))
   async updateGameModel(client, {gameId, stateId})
   {
-    await this.games.setState(gameId, stateId);
+    await this.manager.setGameState(gameId, stateId);
   }
 
   /**
@@ -46,18 +50,7 @@ export default class GamelistRPC
   async createGame(client, {name}, auth)
   {
     const playerId = auth.sub.id;
-
-    // get an available game server
-    const component = await this.net.getComponent('game');
-
-    // registers the game
-    const game = await this.games.create(name, component.id, playerId);
-
-    // instantiates game on the game host
-    await this.net.post(component, 'game', game);
-
-    // have host join the game (will fire update events)
-    await this.games.playerJoin(playerId, game.id);
+    await this.manager.createNewGame(name, playerId);
   }
 
   /**
@@ -68,7 +61,7 @@ export default class GamelistRPC
   async playerPart(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.games.playerPart(playerId);
+    await this.manager.playerPart(playerId);
   }
 
   /**
@@ -79,7 +72,7 @@ export default class GamelistRPC
   async playerJoin(client, {gameId}, auth)
   {
     const playerId = auth.sub.id;
-    await this.games.playerJoin(playerId, gameId);
+    await this.manager.playerJoin(playerId, gameId);
   }
 
   /**

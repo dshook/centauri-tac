@@ -7,6 +7,7 @@ import HttpTransportService from './services/HttpTransportService.js';
 import NetClientService from './services/NetClientService.js';
 import MessengerService from './services/MessengerService.js';
 import GameService from './services/GameService.js';
+import GamelistService from './services/GamelistService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
@@ -59,6 +60,7 @@ export default {
       ...common,
       PostgresService,
       DatastoreService,
+      GamelistService,
     ],
   },
 

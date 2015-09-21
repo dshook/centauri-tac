@@ -13,12 +13,10 @@ import hrtime from 'hrtime-log-decorator';
 @loglevel
 export default class GameStore extends EventEmitter
 {
-  constructor(netClient, sql, messenger)
+  constructor(sql)
   {
     super();
     this.sql = sql;
-    this.net = netClient;
-    this.messenger = messenger;
   }
 
   /**
@@ -87,22 +85,10 @@ export default class GameStore extends EventEmitter
    */
   async playerJoin(playerId, gameId)
   {
-    const gId = await this.currentGameId(playerId);
-
-    // if player is already in a game, just barf
-    if (gId) {
-      throw new Error('Player is already in a game');
-    }
-
     await this.sql.query(`
         insert into game_players (player_id, game_id)
         values (@playerId, @gameId)
         `, {playerId, gameId});
-
-    const game = await this.getActive(null, gameId);
-
-    await this.messenger.emit('game:current', {game, playerId});
-    await this.messenger.emit('game', game);
   }
 
   /**
@@ -139,62 +125,10 @@ export default class GameStore extends EventEmitter
 
     // player wasnt yet in a game, nothing to do
     if (!data) {
-      return;
-    }
-    await this.messenger.emit('game:current', {game: null, playerId});
-
-    const {id} = data;
-    const game = await this.getActive(null, id);
-
-    // no longer active...
-    if (!game) {
-      await this._handleZomieGame(id);
-      return;
-    }
-    else if (game.hostPlayerId === playerId) {
-      await this._handlePlayerWasHostAndLeft(game);
-      return;
+      return null;
     }
 
-    // Otherwise just broadcast updated model
-    await this.messenger.emit('game', game);
-  }
-
-  /**
-   * Player is listed as being in a game no longer on a running server
-   */
-  async _handleZomieGame(gameId)
-  {
-    this.log.info('player was in zombie game %s...', gameId);
-    this.log.info('TODO: drop any remaining players and remove game');
-  }
-
-  /**
-   * Player was the host of game but parted it
-   */
-  async _handlePlayerWasHostAndLeft(game)
-  {
-    this.log.info('host left');
-
-    // game was total empty, time to remove it
-    if (game.currentPlayerCount === 0) {
-      this.log.info('...and was last one');
-
-      // and never started by teh game server
-      if (game.state === null) {
-        this.log.info('...and was never started on the server');
-      }
-      else {
-        // wipe game instance
-        await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
-      }
-
-      await this.remove(game.id);
-      return;
-    }
-
-    // not empty yet
-    await this.assignHost(game.id);
+    return data.id;
   }
 
   /**
@@ -212,10 +146,11 @@ export default class GameStore extends EventEmitter
     if (!data || !data.id) {
       return;
     }
-
-    await this.messenger.emit('game:remove', id);
   }
 
+  /**
+   * Change run state of a game
+   */
   @hrtime('updated game state in %s ms')
   async setState(gameId, stateId)
   {
@@ -224,33 +159,33 @@ export default class GameStore extends EventEmitter
         set game_state_id = @stateId
         where id = @gameId
         `, {gameId, stateId});
-
-    // broadcast updated game info
-    await this.messenger.emit('game', await this.getActive(null, gameId));
   }
 
   /**
-   * Give host to another player in a game. Assumes game isnt empty
+   * Get all players currently in a game
    */
-  @hrtime('assigned new host in %s ms')
-  async assignHost(gameId)
+  async playersInGame(gameId)
   {
-    const resp = await this.sql.query(`
-        select player_id as id from game_players
-        where game_id = @gameId
+    const resp = await this.sql.tquery(Player)(`
+        select p.*
+        from game_players gp
+        join players p on gp.player_id = p.id
+        where gp.game_id = @gameId
         `, {gameId});
 
-    const playerId = resp.firstOrNull().id;
+    return resp.toArray();
+  }
 
-    this.log.info('giving player %s host for game %s', playerId, gameId);
-
+  /**
+   * Update the host of a game
+   */
+  async setHost(gameId, playerId)
+  {
     await this.sql.query(`
-        update games set host_player_id = @playerId
+        update games
+        set host_player_id = @playerId
         where id = @gameId
         `, {playerId, gameId});
-
-    // broadcast updated game info
-    await this.messenger.emit('game', await this.getActive(null, gameId));
   }
 
   /**
