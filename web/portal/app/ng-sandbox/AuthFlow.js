@@ -75,6 +75,7 @@ export default class AuthFlow
     // if we logged in, get the game list and our profile
     if (status) {
       await this.net.sendCommand('auth', 'me');
+
       this.games = [];
       await this.net.sendCommand('gamelist', 'gamelist');
     }
@@ -87,6 +88,9 @@ export default class AuthFlow
   @ngApply async _recvMe(client, profile)
   {
     this.me = profile;
+
+    // done talking to auth for now.
+    this.net.removeComponent('auth');
   }
 
   /**
@@ -151,9 +155,10 @@ export default class AuthFlow
   /**
    * Join a specific game
    */
-  @ngApply async joinGame(gameId)
+  @ngApply async joinGame(game)
   {
-    this.net.sendCommand('gamelist', 'join', {gameId});
+    this.net.addComponent(game.component);
+    this.net.sendCommand('game', 'join', game.id);
   }
 
   /**
