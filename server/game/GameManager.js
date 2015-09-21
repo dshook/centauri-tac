@@ -91,9 +91,13 @@ export default class GameManager
 
     this.hosts[index].shutdown();
     this.hosts.splice(index, 1);
-    this.log.info('shutdown %s and removed from hosts list', gameId);
+    this.log.info('shutdown %s and removed from hosts list, %d still running',
+        gameId, this.hosts.length);
   }
 
+  /**
+   * gameId -> host instance
+   */
   _getHost(gameId)
   {
     const index = this.hosts.findIndex(x => x.game.id === gameId);

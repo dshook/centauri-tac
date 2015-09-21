@@ -120,6 +120,11 @@ export default class GamelistManager
       await this.playerPart(p.id);
     }
 
+    // kill the game on the server
+    const game = await this.games.getActive(null, gameId);
+    await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
+
+    // remove from registry
     await this.games.remove(gameId);
 
     // announce
@@ -153,15 +158,6 @@ export default class GamelistManager
     // game was total empty, time to remove it
     if (game.currentPlayerCount === 0) {
       this.log.info('...and was last one');
-
-      // and never started by teh game server
-      if (game.state === null) {
-        this.log.info('...and was never started on the server');
-      }
-      else {
-        // wipe game instance
-        await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
-      }
 
       await this.removeGame(game.id);
       return;
