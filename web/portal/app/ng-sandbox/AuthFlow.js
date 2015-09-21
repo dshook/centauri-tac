@@ -25,7 +25,7 @@ export default class AuthFlow
 
     // Data from server
     this.me = null;
-    this.games = [];
+    this.games = null;
     this.currentGame = null;
 
     // give us our own net client
@@ -55,7 +55,7 @@ export default class AuthFlow
   {
     await this.net.disconnect();
     this.me = null;
-    this.games = [];
+    this.games = null;
     this.currentGame = null;
   }
 
@@ -75,6 +75,7 @@ export default class AuthFlow
     // if we logged in, get the game list and our profile
     if (status) {
       await this.net.sendCommand('auth', 'me');
+      this.games = [];
       await this.net.sendCommand('gamelist', 'gamelist');
     }
   }
@@ -124,12 +125,14 @@ export default class AuthFlow
   @rpc.command('gamelist', 'game:current')
   @ngApply async _recvCurrentGame(client, game)
   {
-    this.currentGame = Game.fromJSON(game);
-
     // If we're in a game, manually add it to our net client so we can talk to
     // the server. If not, drop it out of the client
-    if (game) {
+    if (game && !this.currentGame) {
       this.net.addComponent(game.component);
+
+      // dont need to talk to the gamelist anymore
+      await this.net.removeComponent('gamelist');
+      this.games = null;
 
       await this.net.sendCommand('game', 'join', game.id);
 
@@ -140,6 +143,9 @@ export default class AuthFlow
     else {
       this.net.removeComponent('game');
     }
+
+    // update VM for our current game
+    this.currentGame = Game.fromJSON(game);
   }
 
   /**
@@ -155,7 +161,12 @@ export default class AuthFlow
    */
   @ngApply async leaveCurrentGame()
   {
-    this.net.sendCommand('gamelist', 'part');
+    this.net.sendCommand('game', 'part');
+    this.currentGame = null;
+
+    // reconnect to gamelist and get current games
+    this.games = [];
+    await this.net.sendCommand('gamelist', 'gamelist');
   }
 
   /**
