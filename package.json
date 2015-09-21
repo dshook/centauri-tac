@@ -12,6 +12,7 @@
     "dev-server": "npm run migrate && nodemon ./server",
     "start": "node ./server",
     "build": "grunt ct app:portal",
+    "test": "node tests",
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
@@ -85,6 +86,7 @@
     "present": "0.0.6",
     "request": "^2.61.0",
     "sql-params": "^1.0.1",
+    "tape": "^4.2.0",
     "ws": "^0.8.0"
   }
 }

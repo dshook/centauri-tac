@@ -203,7 +203,6 @@ export default class GameStore extends EventEmitter
   /**
    * Remove players from dead games
    */
-  @hrtime('removed zombie game players in %d ms')
   async removeZombieGamePlayers()
   {
     const resp = await this.sql.query(`
@@ -218,13 +217,16 @@ export default class GameStore extends EventEmitter
 
     `);
 
-    this.log.info('cleaned up %s zombie game players', resp.toArray().length);
+    const count = resp.toArray().length;
+
+    if (count) {
+      this.log.info('cleaned up %s zombie game players', count);
+    }
   }
 
   /**
    * Remove all empty games on dead compnoents
    */
-  @hrtime('removed zomie games in %d ms')
   async removeZombieGames()
   {
     const resp = await this.sql.query(`
@@ -240,7 +242,9 @@ export default class GameStore extends EventEmitter
 
     const ids = resp.toArray();
 
-    this.log.info('cleaned up %s empty zombie games', ids.length);
+    if (ids.length) {
+      this.log.info('cleaned up %s empty zombie games', ids.length);
+    }
   }
 
   /**

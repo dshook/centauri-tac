@@ -1,4 +1,6 @@
 import loglevel from 'loglevel-decorator';
+import EmitterBinder from 'emitter-binder';
+import Player from 'models/Player';
 
 /**
  * Top-level entity for a running game
@@ -19,9 +21,15 @@ export default class GameHost
    */
   addClient(client, playerId)
   {
-    this.log.info('client %s has connected for player %s', client.id, playerId);
+    this.log.info('client %s has connected for player %s on host for game %s',
+        client.id, playerId, this.game.id);
 
-    this.clients.push({client, playerId});
+    // build a new binder for thsi client that will bind all the
+    const binder = new EmitterBinder(client);
+    binder.player = Player.fromClient(client);
+    binder.bindInstance(this.instance);
+
+    this.clients.push({client, playerId, binder});
     client.once('close', () => this._clientClose(client));
   }
 
@@ -30,9 +38,10 @@ export default class GameHost
    */
   dropClient(client, playerId)
   {
-    this.log.info('client %s (player %s) is leaving', client.id, playerId);
+    this.log.info('client %s (player %s) is leaving host for game %s',
+        client.id, playerId, this.game.id);
 
-    // TODO: probably more than this
+    // TODO: inform the game instance?
 
     client.disconnect();
   }
@@ -42,9 +51,14 @@ export default class GameHost
    */
   _clientClose(client)
   {
-    this.log.info('client %s has disconnected', client.id);
     const index = this.clients.findIndex(x => x.client === client);
+    const {binder} = this.clients[index];
+
+    binder.unbindInstance(this.instance);
+
     this.clients.splice(index, 1);
+    this.log.info('client %s has disconnected from host for game %s',
+        client.id, this.game.id);
   }
 
   /**
@@ -53,5 +67,9 @@ export default class GameHost
   async shutdown()
   {
     this.log.info('shutting down GameHost for game %s', this.game.id);
+
+    for (const {client, playerId} of this.clients) {
+      this.dropClient(client, playerId);
+    }
   }
 }

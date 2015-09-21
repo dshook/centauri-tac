@@ -9,12 +9,11 @@ import roles from '../middleware/rpc/roles.js';
 @loglevel
 export default class GamelistRPC
 {
-  constructor(games, gamelistManager, componentsConfig, netClient)
+  constructor(games, gamelistManager, componentsConfig)
   {
     this.manager = gamelistManager;
     this.games = games;
     this.realm = componentsConfig.realm;
-    this.net = netClient;
 
     this.clients = new Set();
   }
@@ -133,15 +132,6 @@ export default class GamelistRPC
     }
 
     const game = await this.games.getActive(null, gId);
-
-    // if we didnt get one back, means the game is no longer on an active
-    // server instnace (zombie game, so delete it and move on
-    if (!game) {
-      await this.games.playerPart(playerId);
-      this.log.info('kicked player %s from game %s, on an inactive server',
-          playerId, gId);
-      return;
-    }
 
     // inform player of current game
     client.send('game:current', game);

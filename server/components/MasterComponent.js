@@ -41,7 +41,6 @@ export default class MasterComponent
    */
   async cleanup()
   {
-    this.log.info('cleaning up stale components');
     await this.components.markStaleInactive();
   }
 }
