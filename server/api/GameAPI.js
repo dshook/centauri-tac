@@ -15,13 +15,14 @@ export default class GameAPI
 
   /**
    * Create a new instance of game host
+   * TODO: send a response back so gamelist knows we booted up OK
    */
   @route.post('/')
   @middleware(roles(['component']))
   async createGame(req)
   {
     const game = Game.fromJSON(req.body);
-    this.manager.create(game);
+    await this.manager.create(game);
   }
 
   /**
@@ -32,7 +33,7 @@ export default class GameAPI
   async shutdown(req)
   {
     const {gameId} = req.body;
-    this.manager.shutdown(gameId);
+    await this.manager.shutdown(gameId);
   }
 }
 

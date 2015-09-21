@@ -85,11 +85,14 @@ export default class GameManager
   {
     const index = this.hosts.findIndex(x => x.game.id === gameId);
 
+    // possible a shutdown message would happen before the game was actually
+    // started, so dont barf over it
     if (!~index) {
-      throw new Error(`could not find game ${gameId}`);
+      this.log.info('game %s isnt running on this component', gameId);
+      return;
     }
 
-    this.hosts[index].shutdown();
+    await this.hosts[index].shutdown();
     this.hosts.splice(index, 1);
     this.log.info('shutdown %s and removed from hosts list, %d still running',
         gameId, this.hosts.length);
