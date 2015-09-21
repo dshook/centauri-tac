@@ -82,7 +82,7 @@ export default class GamelistManager
     }
 
     // insert to DB
-    this.games.playerJoin(playerId, gameId);
+    await this.games.playerJoin(playerId, gameId);
 
     // Fire update events
     const game = await this.games.getActive(null, gameId);
@@ -132,7 +132,7 @@ export default class GamelistManager
 
     await this.games.setHost(gameId, p.id);
 
-    // broadcast updated game info
+    // broadcast updated game info via gamelist
     const game = await this.games.getActive(null, gameId);
     await this.messenger.emit('game', game);
   }
