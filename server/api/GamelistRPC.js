@@ -76,6 +76,16 @@ export default class GamelistRPC
   }
 
   /**
+   * A game component is informing us that a player has parted
+   */
+  @rpc.command('playerParted')
+  @rpc.middleware(roles(['component']))
+  async playerParted(client, {gameId, playerId})
+  {
+    this.manager.playerPart(playerId, gameId);
+  }
+
+  /**
    * Send game update to all connected
    */
   @dispatch.on('game')

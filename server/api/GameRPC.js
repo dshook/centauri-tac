@@ -20,4 +20,15 @@ export default class GameRPC
     const playerId = auth.sub.id;
     this.manager.playerJoin(client, playerId, gameId);
   }
+
+  /**
+   * A player is trying to BOUNCE
+   */
+  @rpc.command('part')
+  @rpc.middleware(roles(['player']))
+  playerPart(client, params, auth)
+  {
+    const playerId = auth.sub.id;
+    this.manager.playerPart(client, playerId);
+  }
 }
