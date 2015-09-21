@@ -25,7 +25,8 @@ export default class GameManager
     this.log.info('player %s joining game %s', playerId, gameId);
     const host = this._getHost(gameId);
 
-    // TODO: confirm with gamelist that this player can join our game
+    // tell gamelist we've a new player
+    this.net.sendCommand('gamelist', 'playerJoined', {gameId, playerId});
 
     // master list
     this.clients.push({client, playerId, gameId});
@@ -40,6 +41,12 @@ export default class GameManager
   async playerPart(client, playerId)
   {
     const index = this.clients.findIndex(x => x.client === client);
+
+    if (!~index) {
+      throw new Error('problem finding client %s player %s in list',
+          client.id, playerId);
+    }
+
     const {gameId} = this.clients[index];
 
     this.log.info('player %s parting game %s', playerId, gameId);

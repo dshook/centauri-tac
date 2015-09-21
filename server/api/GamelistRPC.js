@@ -54,25 +54,13 @@ export default class GamelistRPC
   }
 
   /**
-   * Client wants to leave a game
+   * A game component is informing us that a player has joined
    */
-  @rpc.command('part')
-  @rpc.middleware(roles(['player']))
-  async playerPart(client, params, auth)
+  @rpc.command('playerJoined')
+  @rpc.middleware(roles(['component']))
+  async playerJoined(client, {gameId, playerId})
   {
-    const playerId = auth.sub.id;
-    await this.manager.playerPart(playerId);
-  }
-
-  /**
-   * Client wants to join a game
-   */
-  @rpc.command('join')
-  @rpc.middleware(roles(['player']))
-  async playerJoin(client, {gameId}, auth)
-  {
-    const playerId = auth.sub.id;
-    await this.manager.playerJoin(playerId, gameId);
+    this.manager.playerJoin(playerId, gameId);
   }
 
   /**

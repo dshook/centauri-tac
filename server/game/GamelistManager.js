@@ -37,6 +37,7 @@ export default class GamelistManager
    */
   async playerPart(playerId)
   {
+    this.log.info('dropping player %s from their game', playerId);
     const id = await this.games.playerPart(playerId);
 
     // not in a game, nothing to do
@@ -50,18 +51,20 @@ export default class GamelistManager
 
     // no longer active (zomebie game)
     if (!game) {
-      this.remove(game.id);
+      await this.removeGame(game.id);
       return;
     }
 
     // empty game, kill it
     else if (!game.currentPlayerCount) {
-      this.removeGame(game.id);
+      this.log.info('after %s parted, game is empty', playerId);
+      await this.removeGame(game.id);
+      return;
     }
 
     // host left
     else if (game.hostPlayerId === playerId) {
-      this.assignNewHost(game.id);
+      await this.assignNewHost(game.id);
       return;
     }
 
@@ -76,9 +79,10 @@ export default class GamelistManager
   {
     const currentGameId = await this.games.currentGameId(playerId);
 
-    // if player is already in a game, just barf
-    if (currentGameId) {
-      throw new Error('Player is already in a game');
+    // if player is already in a game, KICK EM OUT
+    if (currentGameId && currentGameId !== gameId) {
+      this.log.info('player %s already in %s, kicking', playerId, gameId);
+      await this.playerPart(playerId);
     }
 
     // insert to DB
@@ -107,6 +111,8 @@ export default class GamelistManager
    */
   async removeGame(gameId)
   {
+    this.log.info('removing game %s', gameId);
+
     const players = await this.games.playersInGame(gameId);
 
     // kick all players
@@ -157,7 +163,7 @@ export default class GamelistManager
         await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
       }
 
-      await this.remove(game.id);
+      await this.removeGame(game.id);
       return;
     }
 

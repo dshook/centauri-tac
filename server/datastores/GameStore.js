@@ -85,6 +85,18 @@ export default class GameStore extends EventEmitter
    */
   async playerJoin(playerId, gameId)
   {
+    const resp = await this.sql.query(`
+        select game_id as id
+        from game_players
+        where player_id = @playerId
+        and game_id = @gameId
+        `, {playerId, gameId});
+
+    if (resp.firstOrNull()) {
+      this.log.info('player %s already in game %s, not adding', playerId, gameId);
+      return;
+    }
+
     await this.sql.query(`
         insert into game_players (player_id, game_id)
         values (@playerId, @gameId)
