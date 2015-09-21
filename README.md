@@ -60,6 +60,12 @@ Run a single migration down (step back 1 migration):
 $ npm run migrate-down
 ```
 
+Run all tests
+
+```
+$ npm test
+```
+
 ### Components
 
 A server is composed of one of more components that provide various
