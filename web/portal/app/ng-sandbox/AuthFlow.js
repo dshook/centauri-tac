@@ -130,7 +130,12 @@ export default class AuthFlow
     // the server. If not, drop it out of the client
     if (game) {
       this.net.addComponent(game.component);
+
       await this.net.sendCommand('game', 'join', game.id);
+
+      // TODO: actually talk to the game. At this point though we are connected
+      // to the instance that has been spun up and is running a
+      // GameHost/GameInstance pair
     }
     else {
       this.net.removeComponent('game');
