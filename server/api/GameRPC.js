@@ -18,7 +18,6 @@ export default class GameRPC
   playerJoin(client, gameId, auth)
   {
     const playerId = auth.sub.id;
-    this.log.info('player %s is joining game %s', playerId, gameId);
-    this.log.info('TODO: add player to GameHost and update gamelist');
+    this.manager.playerJoin(client, playerId, gameId);
   }
 }
