@@ -105,13 +105,4 @@ export default class PlayerStore
 
     return this.auth.generateToken(player, roles);
   }
-
-  /**
-   * Obviously needs paging here
-   */
-  async all(): Promise<Array<Player>>
-  {
-    const resp = await this.sql.tquery(Player)('select * from players');
-    return resp.toArray();
-  }
 }

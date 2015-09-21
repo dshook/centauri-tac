@@ -13,7 +13,6 @@ export default class MasterComponent
   constructor(components)
   {
     this.components = components;
-
     setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
   }
 
@@ -37,6 +36,9 @@ export default class MasterComponent
     sock.addHandler(MasterRPC);
   }
 
+  /**
+   * Remove zombie components
+   */
   async cleanup()
   {
     this.log.info('cleaning up stale components');
