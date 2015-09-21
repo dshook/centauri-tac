@@ -11,10 +11,7 @@ namespace ctac
         public PlayerFetchedSignal playerFetchedSignal { get; set; }
 
         [Inject]
-        public AuthModel authModel { get; set; }
-
-        [Inject]
-        public PlayerModel playerModel { get; set; }
+        public PlayersModel playersModel { get; set; }
 
         [Inject]
         public ISocketService socketService { get; set; }
@@ -23,10 +20,11 @@ namespace ctac
         {
             Retain();
             playerFetchedSignal.AddListener(onFetchComplete);
-            socketService.Request("auth", "me");
+            SocketKey loggedInKey = ((object[])data)[1] as SocketKey;
+            socketService.Request(loggedInKey.clientId, "auth", "me");
         }
 
-        private void onFetchComplete(PlayerModel player)
+        private void onFetchComplete(PlayerModel player, SocketKey key)
         {
             playerFetchedSignal.RemoveListener(onFetchComplete);
             if (player == null)
@@ -36,7 +34,16 @@ namespace ctac
             else
             {
                 Debug.Log("Player Fetched");
-                playerModel = player;
+                var playerModel = playersModel.GetByClientId(key.clientId);
+                //kinda nasty save of the couple properties that need to be saved on the original player model
+                //that won't be coming across the wire
+                var clientId = playerModel.clientId;
+                var token = playerModel.token;
+                player.CopyProperties(playerModel);
+
+                playerModel.clientId = clientId;
+                playerModel.token = token;
+                //playersModel.players.Add(player);
             }
 
             Release();

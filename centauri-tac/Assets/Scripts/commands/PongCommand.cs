@@ -16,9 +16,9 @@ namespace ctac
         {
             var dataArray = (object[])data;
             var id = (int)dataArray[0];
-            string componentName = (string)dataArray[1];
+            var key  = dataArray[1] as SocketKey;
             //TODO: make sure the pong is sent back on the right socket
-            socket.Request(componentName, "_pong", id);
+            socket.Request(key.clientId, key.componentName, "_pong", id);
         }
     }
 }

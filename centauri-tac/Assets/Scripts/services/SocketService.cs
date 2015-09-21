@@ -13,9 +13,39 @@ namespace ctac
 {
     public interface ISocketService
     {
-        void Request(string componentName, string methodName, object data = null);
+        void Request(SocketKey key, string methodName, object data = null);
+        void Request(Guid clientId, string componentName, string methodName, object data = null);
 
         SocketMessageSignal messageSignal { get; set; }
+    }
+
+    public class SocketKey
+    {
+        public Guid clientId { get; private set; }
+        public string componentName { get; private set; }
+
+        public SocketKey(Guid clientId, string componentName)
+        {
+            this.clientId = clientId;
+            this.componentName = componentName;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Client:{0} component:{1}", clientId, componentName);
+        }
+
+        public override int GetHashCode()
+        {
+            return clientId.GetHashCode() | componentName.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var key = obj as SocketKey;
+            if(key == null) return false;
+            return this.clientId == key.clientId && this.componentName == key.componentName;
+        }
     }
 
     public class SocketService : ISocketService
@@ -48,7 +78,7 @@ namespace ctac
         [Inject]
         public QuitSignal quit { get; set; }
 
-        private Dictionary< string, WebSocket> sockets = new Dictionary<string, WebSocket>();
+        private Dictionary<SocketKey, WebSocket> sockets = new Dictionary<SocketKey, WebSocket>();
 
         private MonoBehaviour root;
 
@@ -59,43 +89,48 @@ namespace ctac
             quit.AddListener(DestroySocketService);
         }
 
-        public void Request(string componentName, string methodName, object data = null)
+        public void Request(Guid clientId, string componentName, string methodName, object data = null)
         {
-            var ws = sockets.Get(componentName);
+            Request(new SocketKey(clientId, componentName), methodName, data);
+        }
+
+        public void Request(SocketKey key, string methodName, object data = null)
+        {
+            var ws = sockets.Get(key);
             if (ws != null)
             {
                 connectSignal.RemoveAllListeners();
-                root.StartCoroutine(MakeRequest(componentName, methodName, data));
+                root.StartCoroutine(MakeRequest(key, methodName, data));
             }
             else
             {
-                root.StartCoroutine(ConnectAndRequest(componentName, methodName, data));
+                root.StartCoroutine(ConnectAndRequest(key, methodName, data));
             }
         }
 
-        private IEnumerator ConnectAndRequest(string componentName, string methodName, object data)
+        private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data)
         {
-            yield return root.StartCoroutine(SocketConnect(componentName));
+            yield return root.StartCoroutine(SocketConnect(key));
            
-            yield return root.StartCoroutine(MakeRequest(componentName, methodName, data));
+            yield return root.StartCoroutine(MakeRequest(key, methodName, data));
         }
 
-        private IEnumerator SocketConnect(string componentName)
+        private IEnumerator SocketConnect(SocketKey key)
         {
-            var url = componentModel.getComponentWSURL(componentName);
+            var url = componentModel.getComponentWSURL(key.componentName);
             if (string.IsNullOrEmpty(url))
             {
-                Debug.LogError("Could not find url to open socket for component " + componentName);
+                Debug.LogError("Could not find url to open socket for component " + key.componentName);
                 yield return null;
             }
             var ws = new WebSocket(url);
-            sockets[componentName] = ws;
+            sockets[key] = ws;
 
             ws.WaitTime = new TimeSpan(0, 0, 5);
-            ws.OnMessage += (o, e) => onSocketMessage(componentName, o, e);
-            ws.OnError += (o, e) => onSocketError(componentName, o, e);
-            ws.OnOpen += (o, e) => onSocketOpen(componentName, o, e);
-            ws.OnClose += (o, e) => onSocketClose(componentName, o, e);
+            ws.OnMessage += (o, e) => onSocketMessage(key, o, e);
+            ws.OnError += (o, e) => onSocketError(key, o, e);
+            ws.OnOpen += (o, e) => onSocketOpen(key, o, e);
+            ws.OnClose += (o, e) => onSocketClose(key, o, e);
 
             ws.ConnectAsync();
             int i = 0;
@@ -107,9 +142,9 @@ namespace ctac
             }
         }
 
-        private IEnumerator MakeRequest(string componentName, string methodName, object data)
+        private IEnumerator MakeRequest(SocketKey key, string methodName, object data)
         {
-            var ws = sockets.Get(componentName);
+            var ws = sockets.Get(key);
             if (ws.ReadyState != WebSocketState.Open)
             {
                 Debug.LogError("Trying to make a request to disconnected web socket");
@@ -122,9 +157,9 @@ namespace ctac
             yield return null;
         }
 
-        private void onSocketMessage(string componentName, object sender, MessageEventArgs e)
+        private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            Debug.Log(componentName + " Message: " + e.Data);
+            Debug.Log(key.clientId + " " + key.componentName + " Msg: " + e.Data);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
@@ -135,9 +170,9 @@ namespace ctac
             if (signal != null)
             {
                 var signalDataTypes = signal.GetTypes();
-                bool attachMethodName = false;
-                if(signalDataTypes.Count == 2 && signalDataTypes[1] == typeof(string)) {
-                    attachMethodName = true;
+                bool attachKey = false;
+                if(signalDataTypes.Count == 2 && signalDataTypes[1] == typeof(SocketKey)) {
+                    attachKey = true;
                 }
                 else if (signalDataTypes.Count != 1)
                 {
@@ -148,9 +183,9 @@ namespace ctac
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
 
                 object[] signalData;
-                if (attachMethodName)
+                if (attachKey)
                 {
-                    signalData = new object[] { deserializedData, componentName };
+                    signalData = new object[] { deserializedData, key };
                 }
                 else
                 {
@@ -171,19 +206,19 @@ namespace ctac
             }
         }
 
-        private void onSocketError(string componentName, object sender, ErrorEventArgs e) {
+        private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
             Debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message);
-            errorSignal.Dispatch(componentName, e.Message);
+            errorSignal.Dispatch(key, e.Message);
         }
 
-        private void onSocketOpen(string componentName, object sender, EventArgs e) {
+        private void onSocketOpen(SocketKey key, object sender, EventArgs e) {
             Debug.Log("Socket Open");
-            connectSignal.Dispatch(componentName);
+            connectSignal.Dispatch(key);
         }
 
-        private void onSocketClose(string componentName, object sender, CloseEventArgs e) {
+        private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
             Debug.Log("Socket Close: " + e.Reason);
-            disconnectSignal.Dispatch(componentName);
+            disconnectSignal.Dispatch(key);
         }
 
         void DestroySocketService()

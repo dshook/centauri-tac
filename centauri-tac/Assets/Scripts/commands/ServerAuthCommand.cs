@@ -3,6 +3,7 @@ using UnityEngine;
 using strange.extensions.command.impl;
 using System.Collections.Generic;
 using ctac.signals;
+using System;
 
 namespace ctac
 {
@@ -18,16 +19,10 @@ namespace ctac
         public TokenSignal tokenSignal { get; set; }
 
         [Inject]
-        public LoggedInSignal loggedInSignal { get; set; }
-
-        [Inject]
         public FailedAuthSignal failedAuth { get; set; }
 
         [Inject]
-        public AuthModel authModel { get; set; }
-
-        [Inject]
-        public PlayerModel playerModel { get; set; }
+        public PlayersModel playersModel { get; set; }
 
         [Inject]
         public ISocketService socketService { get; set; }
@@ -42,8 +37,13 @@ namespace ctac
             var playerToken = PlayerPrefs.GetString(playerTokenKey);
             if (!string.IsNullOrEmpty(playerToken))
             {
-                authModel.token = playerToken;
-                sendAuthToken();
+                var newPlayer = new PlayerModel()
+                {
+                    clientId = Guid.NewGuid(),
+                    token = playerToken
+                };
+                playersModel.players.Add(newPlayer);
+                sendAuthToken(newPlayer);
                 Release();
             }
             else
@@ -56,7 +56,7 @@ namespace ctac
 
         private void setCredentials(string user, string password)
         {
-            socketService.Request("auth", "login", 
+            socketService.Request(Guid.NewGuid(), "auth", "login", 
                 new {
                     email = user,
                     password = password
@@ -64,12 +64,12 @@ namespace ctac
             );
         }
 
-        private void sendAuthToken()
+        private void sendAuthToken(PlayerModel playerModel)
         {
-            socketService.Request("auth", "token", authModel.token );
+            socketService.Request(playerModel.clientId, "auth", "token", playerModel.token );
         }
 
-        private void onTokenComplete(string token)
+        private void onTokenComplete(string token, SocketKey key)
         {
             if (string.IsNullOrEmpty(token))
             {
@@ -80,8 +80,16 @@ namespace ctac
             else
             {
                 Debug.Log("Authenticated");
-                authModel.token = token;
-                PlayerPrefs.SetString(playerTokenKey, authModel.token);
+                var player = playersModel.GetByClientId(key.clientId);
+                if (player == null)
+                {
+                    playersModel.players.Add(new PlayerModel()
+                    {
+                        clientId = key.clientId,
+                        token = token
+                    });
+                }
+                PlayerPrefs.SetString(playerTokenKey, token);
 
                 tokenSignal.RemoveListener(onTokenComplete);
                 tryLoginSignal.RemoveListener(setCredentials);

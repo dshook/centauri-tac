@@ -53,7 +53,7 @@ namespace ctac
             view.init();
         }
 
-        private void onLoggedIn(LoginStatusModel status)
+        private void onLoggedIn(LoginStatusModel status, SocketKey key)
         {
             view.enabled = false;
             view.gameObject.SetActive(false);

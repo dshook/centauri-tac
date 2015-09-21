@@ -13,19 +13,16 @@ namespace ctac.signals
     public class FailedAuthSignal : Signal { }
 
     [Singleton]
-    public class TokenSignal : Signal<string> { }
+    public class TokenSignal : Signal<string, SocketKey> { }
 
     [Singleton]
-    public class PlayerFetchedSignal : Signal<PlayerModel> { }
-
-    [Singleton]
-    public class PingSignal : Signal<int, string> { }
+    public class PlayerFetchedSignal : Signal<PlayerModel, SocketKey> { }
 
     [Singleton]
     public class NeedLoginSignal : Signal { }
 
     [Singleton]
-    public class LoggedInSignal : Signal<LoginStatusModel> { }
+    public class LoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
     public class LatencySignal : Signal<decimal> { }
