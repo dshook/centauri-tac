@@ -1,5 +1,5 @@
 import loglevel from 'loglevel-decorator';
-import {command} from './gameDecorators.js';
+import game from './gameDecorators.js';
 
 /**
  * The damn game
@@ -7,14 +7,33 @@ import {command} from './gameDecorators.js';
 @loglevel
 export default class GameInstance
 {
-  @command('chat')
+  @game.playerCommand('chat')
   recvChat(player, message)
   {
     this.log.info('%s: %s', player.email, message);
+  }
 
-    for (const p in this.players) {
-      const name = p.email;
-      player.client.sendCommand('chat', {name, message});
-    }
+  @game.playerJoined()
+  joined(player)
+  {
+    this.log.info('player %s joined', player.id);
+  }
+
+  @game.playerParting()
+  parting(player)
+  {
+    this.log.info('player %s parting', player.id);
+  }
+
+  @game.playerConnected()
+  connected(player)
+  {
+    this.log.info('player %s connected', player.id);
+  }
+
+  @game.playerDisconnected()
+  disconnected(player)
+  {
+    this.log.info('player %s disconnected', player.id);
   }
 }
