@@ -42,6 +42,7 @@ namespace ctac
 
         protected override void mapBindings()
         {
+            injectionBinder.Bind<IDebugService>().To<UnityDebugService>().ToSingleton();
             injectionBinder.Bind<ICrossContextInjectionBinder>().To(injectionBinder);
 
             //bind up all the singleton signals
@@ -88,7 +89,7 @@ namespace ctac
             commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
             commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<TokenSignal>().To<TokenCommand>();
-            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>();
+            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<FetchGamelistCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 

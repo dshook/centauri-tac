@@ -17,6 +17,9 @@ namespace ctac
         [Inject]
         public ComponentModel componentModel { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
+
         public override void Execute()
         {
             Retain();
@@ -30,11 +33,11 @@ namespace ctac
             netService.fulfillSignal.RemoveListener(onConnectComplete);
             if (data == null)
             {
-                Debug.LogError("Failed to Connect");
+                debug.LogError("Failed to Connect");
             }
             else
             {
-                Debug.Log("Connected");
+                debug.Log("Connected");
                 componentModel.componentList = data as List<Component>;
                 componentsFetchedSignal.Dispatch();
             }

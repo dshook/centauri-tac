@@ -26,6 +26,8 @@ namespace ctac
         [Inject]
         public FulfillWebServiceRequestSignal fulfillSignal { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
 
         public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
         {
@@ -47,7 +49,7 @@ namespace ctac
             }
             catch (Exception e)
             {
-                Debug.LogError("Could not deserialize json " + e.Message);
+                debug.LogError("Could not deserialize json " + e.Message);
             }
             fulfillSignal.Dispatch(url, ret);
         }

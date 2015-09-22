@@ -1,5 +1,3 @@
-/// The only change in StartCommand is that we extend Command, not EventCommand
-using UnityEngine;
 using strange.extensions.command.impl;
 
 namespace ctac
@@ -11,6 +9,9 @@ namespace ctac
 
         [Inject]
         public ISocketService socketService { get; set; }
+
+        [Inject]
+        public IDebugService debug { get; set; }
 
         public override void Execute()
         {
@@ -24,11 +25,11 @@ namespace ctac
         {
             if (player == null)
             {
-                Debug.LogError("Failed Fetching Player");
+                debug.LogError("Failed Fetching Player");
             }
             else
             {
-                Debug.Log("Player Fetched");
+                debug.Log("Player Fetched");
                 var playerModel = playersModel.GetByClientId(key.clientId);
                 //kinda nasty save of the couple properties that need to be saved on the original player model
                 //that won't be coming across the wire

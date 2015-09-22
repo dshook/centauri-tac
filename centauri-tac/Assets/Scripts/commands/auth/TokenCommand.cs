@@ -19,6 +19,10 @@ namespace ctac
         [Inject]
         public PlayersModel playersModel { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
+
+
         public override void Execute()
         {
             var dataArray = (object[])data;
@@ -32,13 +36,13 @@ namespace ctac
         {
             if (string.IsNullOrEmpty(token))
             {
-                Debug.LogError("Failed Authenticate");
+                debug.LogError("Failed Authenticate");
                 failedAuth.Dispatch();
                 needLoginSignal.Dispatch();
             }
             else
             {
-                Debug.Log("Authenticated");
+                debug.Log("Authenticated");
                 var player = playersModel.GetByClientId(key.clientId);
                 if (player == null)
                 {

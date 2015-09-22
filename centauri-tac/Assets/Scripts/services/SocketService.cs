@@ -19,39 +19,13 @@ namespace ctac
         SocketMessageSignal messageSignal { get; set; }
     }
 
-    public class SocketKey
-    {
-        public Guid clientId { get; private set; }
-        public string componentName { get; private set; }
-
-        public SocketKey(Guid clientId, string componentName)
-        {
-            this.clientId = clientId;
-            this.componentName = componentName;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("Client:{0} component:{1}", clientId, componentName);
-        }
-
-        public override int GetHashCode()
-        {
-            return clientId.GetHashCode() | componentName.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            var key = obj as SocketKey;
-            if(key == null) return false;
-            return this.clientId == key.clientId && this.componentName == key.componentName;
-        }
-    }
-
     public class SocketService : ISocketService
     {
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
+
+        [Inject]
+        public IDebugService debug { get; set; }
 
         [Inject]
         public ICrossContextInjectionBinder binder { get; set; }
@@ -120,7 +94,7 @@ namespace ctac
             var url = componentModel.getComponentWSURL(key.componentName);
             if (string.IsNullOrEmpty(url))
             {
-                Debug.LogError("Could not find url to open socket for component " + key.componentName);
+                debug.LogError("Could not find url to open socket for component " + key.componentName);
                 yield return null;
             }
             var ws = new WebSocket(url);
@@ -147,7 +121,7 @@ namespace ctac
             var ws = sockets.Get(key);
             if (ws.ReadyState != WebSocketState.Open)
             {
-                Debug.LogError("Trying to make a request to disconnected web socket");
+                debug.LogError("Trying to make a request to disconnected web socket");
                 yield return null;
             }
 
@@ -159,7 +133,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            Debug.Log(key.clientId + " " + key.componentName + " Msg: " + e.Data);
+            debug.Log(key.clientId + " " + key.componentName + " Msg: " + e.Data);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
@@ -176,7 +150,7 @@ namespace ctac
                 }
                 else if (signalDataTypes.Count != 1)
                 {
-                    Debug.LogError("Signal can only have one type of data to dispatch");
+                    debug.LogError("Signal can only have one type of data to dispatch");
                     return;
                 }
                 var signalDataType = signalDataTypes[0];
@@ -202,22 +176,22 @@ namespace ctac
             }
             else
             {
-                Debug.LogError("Could not find signal to dispatch from message type " + messageType);
+                debug.LogError("Could not find signal to dispatch from message type " + messageType);
             }
         }
 
         private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
-            Debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message);
+            debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message);
             errorSignal.Dispatch(key, e.Message);
         }
 
         private void onSocketOpen(SocketKey key, object sender, EventArgs e) {
-            Debug.Log("Socket Open");
+            debug.Log("Socket Open");
             connectSignal.Dispatch(key);
         }
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
-            Debug.Log("Socket Close: " + e.Reason);
+            debug.Log("Socket Close: " + e.Reason);
             disconnectSignal.Dispatch(key);
         }
 

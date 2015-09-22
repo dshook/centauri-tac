@@ -10,7 +10,6 @@ namespace ctac
 
         void OnApplicationQuit()
         {
-            Debug.Log("quitting time");
             quit.Dispatch();
         }
 

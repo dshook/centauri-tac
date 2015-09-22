@@ -19,13 +19,16 @@ namespace ctac
         [Inject]
         public ISocketService socket { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
+
         public override void Execute()
         {
             foreach (var minion in minionsModel.minions)
             {
                 minion.hasMoved = false;
             }
-            Debug.Log("Turn Ended");
+            debug.Log("Turn Ended");
             turnEnded.Dispatch();
         }
     }
