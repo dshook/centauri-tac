@@ -18,7 +18,10 @@ namespace ctac
 
         public override void Execute()
         {
-            socketService.Request(loggedInKey.clientId, "auth", "me");
+            if (loggedInKey.componentName == "auth")
+            {
+                socketService.Request(loggedInKey.clientId, "auth", "me");
+            }
         }
     }
 }
