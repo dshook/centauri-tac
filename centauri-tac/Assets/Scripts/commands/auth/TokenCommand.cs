@@ -22,13 +22,14 @@ namespace ctac
         [Inject]
         public IDebugService debug { get; set; }
 
+        [Inject]
+        public string token { get; set; }
+
+        [Inject]
+        public SocketKey key { get; set; }
 
         public override void Execute()
         {
-            var dataArray = (object[])data;
-            var token = (string)dataArray[0];
-            var key  = dataArray[1] as SocketKey;
-
             onTokenComplete(token, key);
         }
 

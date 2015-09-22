@@ -11,12 +11,14 @@ namespace ctac
         [Inject]
         public GamelistModel gamelist { get; set; }
 
+        [Inject]
+        public GamelistGameModel game { get; set; }
+
+        [Inject]
+        public SocketKey socketKey { get; set; }
+
         public override void Execute()
         {
-            var dataArray = (object[])data;
-            var game = dataArray[0] as GamelistGameModel;
-            var socketKey = dataArray[1] as SocketKey;
-
             updateGamelist(game, socketKey);
         }
 

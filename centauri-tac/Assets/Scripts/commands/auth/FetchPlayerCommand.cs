@@ -13,9 +13,11 @@ namespace ctac
         [Inject]
         public ISocketService socketService { get; set; }
 
+        [Inject]
+        public SocketKey loggedInKey { get; set; }
+
         public override void Execute()
         {
-            SocketKey loggedInKey = ((object[])data)[1] as SocketKey;
             socketService.Request(loggedInKey.clientId, "auth", "me");
         }
     }

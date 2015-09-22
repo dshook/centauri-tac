@@ -13,11 +13,14 @@ namespace ctac
         [Inject]
         public IDebugService debug { get; set; }
 
+        [Inject]
+        public PlayerModel player { get; set; }
+
+        [Inject]
+        public SocketKey key { get; set; }
+
         public override void Execute()
         {
-            var objectData = ((object[])data);
-            var player = objectData[0] as PlayerModel;
-            var key = objectData[1] as SocketKey;
             onFetchComplete(player, key);
         }
 

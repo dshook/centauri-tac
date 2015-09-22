@@ -9,11 +9,11 @@ namespace ctac
         [Inject]
         public ISocketService socket { get; set; }
 
+        [Inject]
+        public Credentials creds { get; set; }
+
         public override void Execute()
         {
-            var dataArray = (object[])data;
-            var creds = dataArray[0] as Credentials;
-
             login(creds.username, creds.password);
         }
 
