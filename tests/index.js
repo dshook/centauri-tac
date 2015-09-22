@@ -17,3 +17,4 @@ global.Promise = require('bluebird');
 
 // require all tests
 require('../lib/emitter-binder/EmitterBinder.spec.js');
+require('../lib/emitter-binder/AggregateBinder.spec.js');

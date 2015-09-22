@@ -1,17 +1,22 @@
 import loglevel from 'loglevel-decorator';
-import game from './gameDecorators.js';
 import {on} from 'emitter-binder';
 
 /**
- * The damn game
+ * Demo / Chat
  */
 @loglevel
-export default class GameInstance
+export default class ChatDemo
 {
-  @game.playerCommand('chat')
-  recvChat(player, message)
+  @on('playerCommand', x => x === 'chat')
+  recvChat(command, message, player)
   {
     this.log.info('%s: %s', player.email, message);
+  }
+
+  @on('latency')
+  recvLatency(val, client)
+  {
+    this.log.info('client %s has latency %s', client.id, val);
   }
 
   @on('playerJoined')
@@ -38,3 +43,4 @@ export default class GameInstance
     this.log.info('player %s disconnected', player.id);
   }
 }
+
