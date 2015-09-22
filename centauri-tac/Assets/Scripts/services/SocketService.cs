@@ -133,7 +133,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            debug.Log(key.clientId + " " + key.componentName + " Msg: " + e.Data);
+            debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
@@ -186,12 +186,12 @@ namespace ctac
         }
 
         private void onSocketOpen(SocketKey key, object sender, EventArgs e) {
-            debug.Log("Socket Open");
+            debug.Log("Socket Open For " + key.clientId.ToShort() + " " + key.componentName);
             connectSignal.Dispatch(key);
         }
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
-            debug.Log("Socket Close: " + e.Reason);
+            debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason);
             disconnectSignal.Dispatch(key);
         }
 
