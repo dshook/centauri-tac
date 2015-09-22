@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import game from './gameDecorators.js';
+import {on} from 'emitter-binder';
 
 /**
  * The damn game
@@ -13,25 +14,25 @@ export default class GameInstance
     this.log.info('%s: %s', player.email, message);
   }
 
-  @game.playerJoined()
+  @on('playerJoined')
   joined(player)
   {
     this.log.info('player %s joined', player.id);
   }
 
-  @game.playerParting()
+  @on('playerParting')
   parting(player)
   {
     this.log.info('player %s parting', player.id);
   }
 
-  @game.playerConnected()
+  @on('playerConnected')
   connected(player)
   {
     this.log.info('player %s connected', player.id);
   }
 
-  @game.playerDisconnected()
+  @on('playerDisconnected')
   disconnected(player)
   {
     this.log.info('player %s disconnected', player.id);
