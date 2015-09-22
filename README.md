@@ -1,4 +1,5 @@
-# centauri-tac
+# centauri-tac 
+[![Build Status](https://travis-ci.org/dshook/centauri-tac.svg?branch=master)](https://travis-ci.org/dshook/centauri-tac)
 
 Tactical Card Game
 
