@@ -92,3 +92,22 @@ Variable | Notes | Example
 `AUTH_SECRET` | Secret used to sign API auth tokens | `aReallyDamnGoodSecret`
 `PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
 `PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`
+
+
+The Unity client uses a `config.json` file in the centauri-tac folder. Example:
+```json
+{
+    "baseUrl": "http://localhost:10123/",
+    "realm": "dev",
+    "players": [
+        {
+            "username": "player1@gmail.com",
+            "password": "pw"
+        },
+        {
+            "username": "player2@gmail.com",
+            "password": "pw"
+        }
+    ]
+}
+```
