@@ -7,7 +7,7 @@ namespace ctac.signals
     public class FetchComponentsSignal : Signal { }
 
     [Singleton]
-    public class TryLoginSignal : Signal<string, string> { }
+    public class TryLoginSignal : Signal<Credentials> { }
 
     [Singleton]
     public class FailedAuthSignal : Signal { }

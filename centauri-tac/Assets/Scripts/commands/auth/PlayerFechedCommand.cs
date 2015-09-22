@@ -1,15 +1,11 @@
 /// The only change in StartCommand is that we extend Command, not EventCommand
 using UnityEngine;
 using strange.extensions.command.impl;
-using ctac.signals;
 
 namespace ctac
 {
-    public class FetchPlayerCommand : Command
+    public class PlayerFetchedCommand : Command
     {
-        [Inject]
-        public PlayerFetchedSignal playerFetchedSignal { get; set; }
-
         [Inject]
         public PlayersModel playersModel { get; set; }
 
@@ -18,15 +14,14 @@ namespace ctac
 
         public override void Execute()
         {
-            Retain();
-            playerFetchedSignal.AddListener(onFetchComplete);
-            SocketKey loggedInKey = ((object[])data)[1] as SocketKey;
-            socketService.Request(loggedInKey.clientId, "auth", "me");
+            var objectData = ((object[])data);
+            var player = objectData[0] as PlayerModel;
+            var key = objectData[1] as SocketKey;
+            onFetchComplete(player, key);
         }
 
         private void onFetchComplete(PlayerModel player, SocketKey key)
         {
-            playerFetchedSignal.RemoveListener(onFetchComplete);
             if (player == null)
             {
                 Debug.LogError("Failed Fetching Player");
@@ -43,10 +38,7 @@ namespace ctac
 
                 playerModel.clientId = clientId;
                 playerModel.token = token;
-                //playersModel.players.Add(player);
             }
-
-            Release();
         }
     }
 }

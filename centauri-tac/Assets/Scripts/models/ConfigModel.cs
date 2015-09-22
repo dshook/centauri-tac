@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ctac
 {
     [Singleton]
@@ -6,8 +8,7 @@ namespace ctac
         public string baseUrl { get; set; }
         public string realm { get; set; }
 
-        public string opponentUser { get; set; }
-        public string opponentPw { get; set; }
+        public List<Credentials> players { get; set; }
     }
 }
 

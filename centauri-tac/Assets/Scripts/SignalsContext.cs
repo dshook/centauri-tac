@@ -85,11 +85,13 @@ namespace ctac
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
             commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
+            commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
             commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
+            commandBinder.Bind<TokenSignal>().To<TokenCommand>();
+            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 
-            injectionBinder.Bind<FulfillWebServiceRequestSignal>().ToSingleton();
         }
     }
 }

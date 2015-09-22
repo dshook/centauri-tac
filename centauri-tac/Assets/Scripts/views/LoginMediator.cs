@@ -43,7 +43,7 @@ namespace ctac
         private void onLoginClicked()
         {
             Debug.Log("Login");
-            loginSignal.Dispatch(view.email.text, view.password.text);
+            loginSignal.Dispatch(new Credentials() { username = view.email.text, password = view.password.text });
         }
 
         private void onNeedLogin()

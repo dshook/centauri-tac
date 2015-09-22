@@ -35,7 +35,6 @@ namespace ctac
                 diskConfig.CopyProperties(config);
             }
 
-
             fetchComponents.Dispatch();
 
             //fetch map from disk, eventually comes from server
