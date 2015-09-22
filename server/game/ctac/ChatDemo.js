@@ -7,10 +7,19 @@ import {on} from 'emitter-binder';
 @loglevel
 export default class ChatDemo
 {
+  constructor(players)
+  {
+    this.players = players;
+  }
+
   @on('playerCommand', x => x === 'chat')
   recvChat(command, message, player)
   {
-    this.log.info('%s: %s', player.email, message);
+    for (const {client} of this.players) {
+      if (client) {
+        client.send('chat', {player, message});
+      }
+    }
   }
 
   @on('latency')
