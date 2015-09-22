@@ -131,25 +131,12 @@ export default class AuthFlow
   {
     // If we're in a game, manually add it to our net client so we can talk to
     // the server. If not, drop it out of the client
-    if (game && !this.currentGame) {
-      this.net.addComponent(game.component);
-
-      // dont need to talk to the gamelist anymore
-      await this.net.removeComponent('gamelist');
-      this.games = null;
-
-      await this.net.sendCommand('game', 'join', game.id);
-
-      // TODO: actually talk to the game. At this point though we are connected
-      // to the instance that has been spun up and is running a
-      // GameHost/GameInstance pair
+    if (!this.currentGame) {
+      await this.joinGame(game);
     }
-    else {
-      this.net.removeComponent('game');
+    else if (!game) {
+      await this.net.removeComponent('game');
     }
-
-    // update VM for our current game
-    this.currentGame = Game.fromJSON(game);
   }
 
   /**
@@ -157,8 +144,21 @@ export default class AuthFlow
    */
   @ngApply async joinGame(game)
   {
-    this.net.addComponent(game.component);
-    this.net.sendCommand('game', 'join', game.id);
+    // dont need to talk to the gamelist anymore
+    await this.net.removeComponent('gamelist');
+    this.games = null;
+
+    // update VM for our current game
+    this.currentGame = Game.fromJSON(game);
+
+    await this.net.addComponent(game.component);
+    await this.net.sendCommand('game', 'join', game.id);
+
+    // TODO: actually talk to the game. At this point though we are connected
+    // to the instance that has been spun up and is running a
+    // GameHost/GameInstance pair
+
+    await this.net.sendCommand('game', 'chat', 'hello, world!');
   }
 
   /**
