@@ -1,9 +1,31 @@
-# centauri-tac 
-[![Build Status](https://travis-ci.org/dshook/centauri-tac.svg?branch=master)](https://travis-ci.org/dshook/centauri-tac)
-
+# centauri-tac
 Tactical Card Game
 
+## Game Client
+
+### Config
+
+The Unity client uses a `config.json` file in the centauri-tac folder. Example:
+```json
+{
+    "baseUrl": "http://localhost:10123/",
+    "realm": "dev",
+    "players": [
+        {
+            "username": "player1@gmail.com",
+            "password": "pw"
+        },
+        {
+            "username": "player2@gmail.com",
+            "password": "pw"
+        }
+    ]
+}
+```
+
 ## Backend and Tooling
+[![Build Status](https://travis-ci.org/dshook/centauri-tac.svg?branch=master)](https://travis-ci.org/dshook/centauri-tac)
+
 
 ### Requirements
 
@@ -73,7 +95,10 @@ A server is composed of one of more components that provide various
 functionality:
 
 * `master` Central service locator
+* `dispatch` Relays events around components
 * `auth` Player login and authentication service
+* `gamelist` Master game registry
+* `game` Hosts running game instances
 * `portal` Frontend application to manage backend services
 * `workbench` Server app to run locally to enable game content management via
   the portal
@@ -93,21 +118,3 @@ Variable | Notes | Example
 `PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
 `PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`
 
-
-The Unity client uses a `config.json` file in the centauri-tac folder. Example:
-```json
-{
-    "baseUrl": "http://localhost:10123/",
-    "realm": "dev",
-    "players": [
-        {
-            "username": "player1@gmail.com",
-            "password": "pw"
-        },
-        {
-            "username": "player2@gmail.com",
-            "password": "pw"
-        }
-    ]
-}
-```
