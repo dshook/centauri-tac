@@ -26,7 +26,7 @@ export default class GameManager
     const host = this._getHost(gameId);
 
     // tell gamelist we've a new player
-    this.net.sendCommand('gamelist', 'playerJoined', {gameId, playerId});
+    await this.net.sendCommand('gamelist', 'playerJoined', {gameId, playerId});
 
     // master list
     this.clients.push({client, playerId, gameId});
@@ -58,7 +58,7 @@ export default class GameManager
     // remove from master list
     this.clients.splice(index, 1);
 
-    this.net.sendCommand('gamelist', 'playerParted', {gameId, playerId});
+    await this.net.sendCommand('gamelist', 'playerParted', {gameId, playerId});
   }
 
   /**
