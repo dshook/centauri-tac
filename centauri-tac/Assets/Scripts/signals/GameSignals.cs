@@ -1,5 +1,4 @@
 using strange.extensions.signal.impl;
-using UnityEngine;
 
 namespace ctac.signals
 {

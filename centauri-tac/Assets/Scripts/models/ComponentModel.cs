@@ -53,6 +53,10 @@ namespace ctac
     {
         public int id { get; set; }
         public string name { get; set; }
+        public bool showInClient { get; set; }
+        public bool enableREST { get; set; }
+        public bool enableHTTP { get; set; }
+        public bool enableWS { get; set; }
     }
 
     public class Component
