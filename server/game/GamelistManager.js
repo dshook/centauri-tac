@@ -149,6 +149,21 @@ export default class GamelistManager
   }
 
   /**
+   * Broadcast the current game for a certain player
+   */
+  async broadcastCurrentGame(playerId)
+  {
+    const gameId = await this.games.currentGameId(playerId);
+
+    let game = null;
+    if (gameId) {
+      game = await this.games.getActive(null, gameId);
+    }
+
+    await this.messenger.emit('game:current', {game, playerId});
+  }
+
+  /**
    * Player was the host of game but parted it
    */
   async _handleHostLeft(game)

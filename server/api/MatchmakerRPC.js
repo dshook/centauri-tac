@@ -2,6 +2,7 @@ import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
 import roles from '../middleware/rpc/roles.js';
 import {autobind} from 'core-decorators';
+import {dispatch} from 'rpc-messenger';
 
 /**
  * RPC handler for the matchmaker component
@@ -30,6 +31,22 @@ export default class MatchmakerRPC
   }
 
   /**
+   * If a player is queued here but there's a current game elsewhere (like if
+   * the gamelsit responsed with info or they somehow join another game), drop
+   * them from the queue and inform them
+   */
+  @dispatch.on('game:current')
+  _broadcastCurrentGame({game, playerId})
+  {
+    if (!game || !this.matchmaker.queue.has(playerId)) {
+      return;
+    }
+
+    this.matchmaker.dequeuePlayer(playerId);
+    this._currentGame({game, playerId});
+  }
+
+  /**
    * When a client connects
    */
   @rpc.command('_token')
@@ -49,11 +66,20 @@ export default class MatchmakerRPC
   }
 
   /**
-   * Match maker gives us a match!
+   * Match maker gives us a match, inform the player
    */
   @autobind _currentGame({playerId, game})
   {
     this.log.info('player %s goes to game %s', playerId, game.id);
+
+    const client = [...this.clients.values()]
+      .find(x => x.auth.sub.id === playerId);
+
+    if (!client) {
+      throw new Error('could not resolve client from playerId!');
+    }
+
+    client.send('game:current', game);
   }
 
   @autobind _status(status)

@@ -20,21 +20,12 @@ export default class Matchmaker extends EventEmitter
    */
   async queuePlayer(playerId)
   {
-    this.queue.add(playerId);
+    // see if player is already in a game
+    await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
 
+    this.queue.add(playerId);
     this.log.info('player %s queueing, %s now in queue',
         playerId, this.queue.size);
-
-    // see if player is already in a game
-    await this.net.sendCommand('gamelist', 'currentGameFor', playerId);
-
-    // const {game} = await this.net
-    //   .recvCommand('currentGameFor', x => x.playerId === playerId);
-
-    // if (game) {
-    //   this.log.info('player %s already in game %s', playerId, game.id);
-    //   this.emit('game:current', {playerId, game});
-    // }
 
     this._emitStatus();
   }
