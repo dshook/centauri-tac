@@ -12,7 +12,7 @@ export default class Matchmaker extends EventEmitter
     super();
 
     this.net = netClient;
-    this.queue = new Set();
+    this.queue = [];
   }
 
   /**
@@ -20,14 +20,21 @@ export default class Matchmaker extends EventEmitter
    */
   async queuePlayer(playerId)
   {
+    if (this.queue.find(x => x === playerId)) {
+      this.log.info('not adding player %s, already in the queue');
+      return;
+    }
+
     // see if player is already in a game
     await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
 
-    this.queue.add(playerId);
+    this.queue.push(playerId);
     this.log.info('player %s queueing, %s now in queue',
-        playerId, this.queue.size);
+        playerId, this.queue.length);
 
     this._emitStatus();
+
+    this._processQueue();
   }
 
   /**
@@ -35,11 +42,35 @@ export default class Matchmaker extends EventEmitter
    */
   dequeuePlayer(playerId)
   {
-    this.queue.delete(playerId);
+    const index = this.queue.findIndex(x => x === playerId);
+
+    if (!~index) {
+      this.log.info('player %s not in queue, not dequeueing', playerId);
+      return;
+    }
+
+    this.queue.splice(index, 1);
     this.log.info('player %s dequeued, %s now in queue',
-        playerId, this.queue.size);
+        playerId, this.queue.length);
 
     this._emitStatus();
+  }
+
+  /**
+   * Check to see if we have a player
+   */
+  inQueue(playerId)
+  {
+    const index = this.queue.findIndex(x => x === playerId);
+    return index !== -1;
+  }
+
+  /**
+   * Let's match em
+   */
+  _processQueue()
+  {
+
   }
 
   /**
@@ -48,7 +79,7 @@ export default class Matchmaker extends EventEmitter
   _emitStatus()
   {
     this.emit('status', {
-      queuedPlayers: this.queue.size,
+      queuedPlayers: this.queue.length,
     });
   }
 }

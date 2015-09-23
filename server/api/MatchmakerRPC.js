@@ -38,7 +38,7 @@ export default class MatchmakerRPC
   @dispatch.on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
-    if (!game || !this.matchmaker.queue.has(playerId)) {
+    if (!game || !this.matchmaker.inQueue(playerId)) {
       return;
     }
 
