@@ -12,8 +12,6 @@ export default class MatchmakerRPC
   constructor(matchmaker)
   {
     this.matchmaker = matchmaker;
-    this.matchmaker.on('status', this._status);
-
     this.clients = new Set();
   }
 
