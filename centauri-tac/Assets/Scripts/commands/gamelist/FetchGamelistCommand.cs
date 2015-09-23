@@ -11,13 +11,11 @@ namespace ctac
         public ISocketService socketService { get; set; }
 
         [Inject]
-        public PlayerModel player { get; set; }
-
-        [Inject]
         public SocketKey key { get; set; }
 
         public override void Execute()
         {
+            var player = playersModel.GetByClientId(key.clientId);
             onFetchComplete(player, key);
         }
 

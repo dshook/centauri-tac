@@ -1,7 +1,4 @@
-/// The only change in StartCommand is that we extend Command, not EventCommand
-using UnityEngine;
 using strange.extensions.command.impl;
-using ctac.signals;
 
 namespace ctac
 {

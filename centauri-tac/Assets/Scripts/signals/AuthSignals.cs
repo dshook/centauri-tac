@@ -24,6 +24,9 @@ namespace ctac.signals
     public class LoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
+    public class AuthLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
+
+    [Singleton]
     public class LatencySignal : Signal<decimal> { }
 
 

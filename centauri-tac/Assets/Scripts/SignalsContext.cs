@@ -84,13 +84,19 @@ namespace ctac
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
+
             commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
+
             commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
-            commandBinder.Bind<LoggedInSignal>().To<FetchPlayerCommand>();
+            commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
+            commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<TokenSignal>().To<TokenCommand>();
-            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<FetchGamelistCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
+            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthGamelistCommand>();
+
+            commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
+
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 
         }

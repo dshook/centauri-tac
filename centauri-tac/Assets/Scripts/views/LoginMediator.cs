@@ -19,7 +19,7 @@ namespace ctac
         public FailedAuthSignal failedAuth { get; set; }
 
         [Inject]
-        public LoggedInSignal loggedInSignal { get; set; }
+        public AuthLoggedInSignal loggedInSignal { get; set; }
 
         public override void OnRegister()
         {
