@@ -12,18 +12,21 @@ export default class MatchmakerRPC
   constructor(matchmaker)
   {
     this.matchmaker = matchmaker;
-
     this.matchmaker.on('game:current', this._currentGame);
+    this.matchmaker.on('status', this._status);
 
     this.clients = new Set();
   }
 
+  /**
+   * Drop a player into the queue
+   */
   @rpc.command('queue')
   @rpc.middleware(roles(['player']))
   async queuePlayer(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.matchmaker.queue(playerId);
+    await this.matchmaker.queuePlayer(playerId);
   }
 
   /**
@@ -38,6 +41,11 @@ export default class MatchmakerRPC
     }
 
     this.clients.add(client);
+
+    // drop player when they DC
+    const playerId = auth.sub.id;
+    client.once('close', () => this.matchmaker.dequeuePlayer(playerId));
+    client.once('close', () => this.clients.delete(client));
   }
 
   /**
@@ -46,5 +54,12 @@ export default class MatchmakerRPC
   @autobind _currentGame({playerId, game})
   {
     this.log.info('player %s goes to game %s', playerId, game.id);
+  }
+
+  @autobind _status(status)
+  {
+    for (const c of this.clients) {
+      c.send('status', status);
+    }
   }
 }

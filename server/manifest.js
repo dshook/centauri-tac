@@ -15,7 +15,7 @@ import PortalComponent from './components/PortalComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import DispatchComponent from './components/DispatchComponent.js';
-import MatchmakerComponent from './components/MasterComponent.js';
+import MatchmakerComponent from './components/MatchmakerComponent.js';
 
 // common things for all backend components
 const common = [
