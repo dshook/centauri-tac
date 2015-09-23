@@ -1,7 +1,6 @@
 import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
 import roles from '../middleware/rpc/roles.js';
-import {autobind} from 'core-decorators';
 import {dispatch} from 'rpc-messenger';
 
 /**
@@ -13,7 +12,6 @@ export default class MatchmakerRPC
   constructor(matchmaker)
   {
     this.matchmaker = matchmaker;
-    this.matchmaker.on('game:current', this._currentGame);
     this.matchmaker.on('status', this._status);
 
     this.clients = new Set();
@@ -70,23 +68,10 @@ export default class MatchmakerRPC
   }
 
   /**
-   * Match maker gives us a match, inform the player
+   * broadcast status
    */
-  @autobind _currentGame({playerId, game})
-  {
-    this.log.info('player %s goes to game %s', playerId, game.id);
-
-    const client = [...this.clients.values()]
-      .find(x => x.auth.sub.id === playerId);
-
-    if (!client) {
-      throw new Error('could not resolve client from playerId!');
-    }
-
-    client.send('game:current', game);
-  }
-
-  @autobind _status(status)
+  @dispatch.on('matchmaker:status')
+  _status(status)
   {
     for (const c of this.clients) {
       c.send('status', status);

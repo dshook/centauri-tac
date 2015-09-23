@@ -1,16 +1,14 @@
-import EventEmitter from 'events';
 import loglevel from 'loglevel-decorator';
 
 /**
  * Handle automatch stuff
  */
 @loglevel
-export default class Matchmaker extends EventEmitter
+export default class Matchmaker
 {
-  constructor(netClient)
+  constructor(messenger, netClient)
   {
-    super();
-
+    this.messenger = messenger;
     this.net = netClient;
     this.queue = [];
   }
@@ -91,7 +89,7 @@ export default class Matchmaker extends EventEmitter
    */
   _emitStatus()
   {
-    this.emit('status', {
+    this.messenger.emit('matchmaker:status', {
       queuedPlayers: this.queue.length,
     });
   }
