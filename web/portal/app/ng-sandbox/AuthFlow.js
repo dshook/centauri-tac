@@ -19,6 +19,8 @@ export default class AuthFlow
     this.$scope = $scope;
     this.player = player;
 
+    this.automatch = true;
+
     // Form state for auth
     this.email = `player${player}@gmail.com`;
     this.password = 'pw';
@@ -27,6 +29,7 @@ export default class AuthFlow
     this.me = null;
     this.games = null;
     this.currentGame = null;
+    this.mmStatus = null;
 
     // give us our own net client
     this.net = net.clone();
@@ -57,6 +60,7 @@ export default class AuthFlow
     this.me = null;
     this.games = null;
     this.currentGame = null;
+    this.mmStatus = null;
   }
 
   /**
@@ -76,8 +80,13 @@ export default class AuthFlow
     if (status) {
       await this.net.sendCommand('auth', 'me');
 
-      this.games = [];
-      await this.net.sendCommand('gamelist', 'gamelist');
+      if (!this.automatch) {
+        this.games = [];
+        await this.net.sendCommand('gamelist', 'gamelist');
+      }
+      else {
+        await this.net.sendCommand('matchmaker', 'queue');
+      }
     }
   }
 
@@ -91,6 +100,15 @@ export default class AuthFlow
 
     // done talking to auth for now.
     this.net.removeComponent('auth');
+  }
+
+  /**
+   * Server sends in MM status
+   */
+  @rpc.command('matchmaker', 'status')
+  @ngApply _recvMatchmakerStatus(client, status)
+  {
+    this.mmStatus = status;
   }
 
   /**

@@ -137,6 +137,21 @@
       </panel>
 
       <panel
+        icon="fire"
+        type="info"
+        ng-if="flow.mmStatus"
+        title="matchmaker"
+      >
+
+        <h4>
+        There are currently
+        <span class="label label-success">{{ flow.mmStatus.queuedPlayers }}</span>
+        players in automatch.
+        </h4>
+
+      </panel>
+
+      <panel
         ng-if="flow.currentGame"
         icon="flag"
         title="game"
