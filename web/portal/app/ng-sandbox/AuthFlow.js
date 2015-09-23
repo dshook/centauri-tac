@@ -145,6 +145,7 @@ export default class AuthFlow
    * Sever tells us our current game
    */
   @rpc.command('gamelist', 'game:current')
+  @rpc.command('matchmaker', 'game:current')
   @ngApply async _recvCurrentGame(client, game)
   {
     // If we're in a game, manually add it to our net client so we can talk to
@@ -162,9 +163,11 @@ export default class AuthFlow
    */
   @ngApply async joinGame(game)
   {
-    // dont need to talk to the gamelist anymore
+    // dont need to talk to the gamelist or matchmaker anymore
     await this.net.removeComponent('gamelist');
+    await this.net.removeComponent('matchmaker');
     this.games = null;
+    this.mmStatus = null;
 
     // update VM for our current game
     this.currentGame = Game.fromJSON(game);
@@ -187,9 +190,14 @@ export default class AuthFlow
     this.net.sendCommand('game', 'part');
     this.currentGame = null;
 
-    // reconnect to gamelist and get current games
-    this.games = [];
-    await this.net.sendCommand('gamelist', 'gamelist');
+    // reconnect to gamelist/mm and get current games
+    if (this.automatch) {
+      await this.net.sendCommand('matchmaker', 'queue');
+    }
+    else {
+      this.games = [];
+      await this.net.sendCommand('gamelist', 'gamelist');
+    }
   }
 
   /**

@@ -15,6 +15,12 @@
       class="clearfix proto-flow col-sm-{{ 12 / vm.flows.length }}">
       <h3>
         Player {{ flow.player }}
+        <small>
+          <input
+            ng-model="flow.automatch"
+            type="checkbox">
+            automatch
+        </small>
       </h3>
 
       <panel
