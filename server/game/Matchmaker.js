@@ -15,6 +15,9 @@ export default class Matchmaker
     this.messenger = messenger;
     this.net = netClient;
 
+    // TODO: need to do something better LMBO
+    setInterval(() => this._processQueue(), 250);
+
     this.queue = [];
   }
 
@@ -37,8 +40,6 @@ export default class Matchmaker
         playerId, this.queue.length);
 
     await this._emitStatus();
-
-    await this._processQueue();
   }
 
   /**
@@ -81,7 +82,6 @@ export default class Matchmaker
 
     this.log.info('player %s confirmed for queue', playerId);
     entry.status = READY;
-    await this._processQueue();
   }
 
   /**
@@ -89,6 +89,10 @@ export default class Matchmaker
    */
   async _processQueue()
   {
+    if (this.queue.length < 2) {
+      return;
+    }
+
     const ready = this.queue.filter(x => x.status === READY);
 
     if (ready.length < 2) {
