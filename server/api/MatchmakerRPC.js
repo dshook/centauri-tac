@@ -32,10 +32,13 @@ export default class MatchmakerRPC
    * them from the queue and inform them
    */
   @dispatch.on('game:current')
-  _broadcastCurrentGame({game, playerId})
+  async _broadcastCurrentGame({game, playerId})
   {
     if (game) {
-      this.matchmaker.dequeuePlayer(playerId);
+      await this.matchmaker.dequeuePlayer(playerId);
+    }
+    else {
+      await this.matchmaker.confirmQueue(playerId);
     }
 
     for (const c of this.clients) {

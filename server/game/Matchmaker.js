@@ -1,4 +1,8 @@
 import loglevel from 'loglevel-decorator';
+import _ from 'lodash';
+
+const WAITING = 1;
+const READY = 2;
 
 /**
  * Handle automatch stuff
@@ -10,6 +14,7 @@ export default class Matchmaker
   {
     this.messenger = messenger;
     this.net = netClient;
+
     this.queue = [];
   }
 
@@ -23,27 +28,27 @@ export default class Matchmaker
       return;
     }
 
-    // see if player is already in a game
+    // see if player is already in a game -- until we know that they aren't
+    // they're just "waiting"
     await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
 
-    this.queue.push(playerId);
-    this.log.info('player %s queueing, %s now in queue',
+    this.queue.push({playerId, status: WAITING});
+    this.log.info('player %s waiting, %s in queue',
         playerId, this.queue.length);
 
-    this._emitStatus();
+    await this._emitStatus();
 
-    this._processQueue();
+    await this._processQueue();
   }
 
   /**
    * Drop em
    */
-  dequeuePlayer(playerId)
+  async dequeuePlayer(playerId)
   {
-    const index = this.queue.findIndex(x => x === playerId);
+    const index = this.queue.findIndex(x => x.playerId === playerId);
 
     if (!~index) {
-      this.log.info('player %s not in queue, not dequeueing', playerId);
       return;
     }
 
@@ -51,7 +56,7 @@ export default class Matchmaker
     this.log.info('player %s dequeued, %s now in queue',
         playerId, this.queue.length);
 
-    this._emitStatus();
+    await this._emitStatus();
   }
 
   /**
@@ -59,8 +64,24 @@ export default class Matchmaker
    */
   inQueue(playerId)
   {
-    const index = this.queue.findIndex(x => x === playerId);
+    const index = this.queue.findIndex(x => x.playerId === playerId);
     return index !== -1;
+  }
+
+  /**
+   * Allowed
+   */
+  async confirmQueue(playerId)
+  {
+    const entry = this.queue.find(x => x.playerId === playerId);
+
+    if (!entry) {
+      return;
+    }
+
+    this.log.info('player %s confirmed for queue', playerId);
+    entry.status = READY;
+    await this._processQueue();
   }
 
   /**
@@ -68,28 +89,36 @@ export default class Matchmaker
    */
   async _processQueue()
   {
-    if (this.queue.length < 2) {
+    const ready = this.queue.filter(x => x.status === READY);
+
+    if (ready.length < 2) {
+      this.log.info('not enough ready players to process queue yet');
       return;
     }
 
-    // immediately remove the players
-    const pid1 = this.queue.shift();
-    const pid2 = this.queue.shift();
-    this._emitStatus();
+    const [pid1, pid2] = ready.map(x => x.playerId);
+    const playerIds = [pid1, pid2];
 
+    // remove from original queue
+    _.remove(this.queue, x => playerIds.some(id => id === x.playerId));
+    this.log.info('removed %s from queue, now %s left',
+        playerIds.length, this.queue.length);
+    await this._emitStatus();
 
     // boom
     const name = '(automatch)';
-    const playerIds = [pid1, pid2];
+
+    this.log.info('match found! creating game for %s', playerIds.join(','));
+
     await this.net.sendCommand('gamelist', 'createFor', {name, playerIds});
   }
 
   /**
    * info son
    */
-  _emitStatus()
+  async _emitStatus()
   {
-    this.messenger.emit('matchmaker:status', {
+    await this.messenger.emit('matchmaker:status', {
       queuedPlayers: this.queue.length,
     });
   }

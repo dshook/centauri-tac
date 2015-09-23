@@ -105,15 +105,23 @@
         <button
           ng-disabled="flow.currentGame"
           ng-click="flow.createGame()"
-          class="btn btn-default">Create game</button>
+          class="btn btn-default">Create Game</button>
+
+        <button
+          ng-disabled="flow.currentGame"
+          ng-click="flow.joinAutomatch()"
+          class="btn btn-default">Join Automatch</button>
 
         <table class="table table-striped" ng-table>
           <tr ng-repeat="game in flow.games">
 
             <td data-title="'game'">
-              <span game="game"></span>
+              <span game="game"></span><br>
+              on: <span component="game.component"></span><br>
+              host: <span player="game.hostPlayer"></span>
             </td>
 
+            <!--
             <td
               data-title="'hosted on'">
               <span component="game.component"></span>
@@ -123,6 +131,7 @@
               data-title="'host player'">
               <span player="game.hostPlayer"></span>
             </td>
+            -->
 
             <td
               data-title="'players'">
@@ -155,6 +164,12 @@
         <span class="label label-success">{{ flow.mmStatus.queuedPlayers }}</span>
         players in automatch.
         </h4>
+
+        <button
+          class="btn btn-danger"
+          ng-click="flow.cancelAutomatch()">
+          Cancel
+        </button>
 
       </panel>
 

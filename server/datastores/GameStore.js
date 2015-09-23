@@ -4,18 +4,16 @@ import Component from 'models/Component';
 import ComponentType from 'models/ComponentType';
 import Player from 'models/Player';
 import GameState from 'models/GameState';
-import {EventEmitter} from 'events';
 import hrtime from 'hrtime-log-decorator';
 
 /**
  * Data layer for games
  */
 @loglevel
-export default class GameStore extends EventEmitter
+export default class GameStore
 {
   constructor(sql)
   {
-    super();
     this.sql = sql;
   }
 

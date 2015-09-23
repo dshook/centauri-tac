@@ -85,7 +85,7 @@ export default class AuthFlow
         await this.net.sendCommand('gamelist', 'gamelist');
       }
       else {
-        await this.net.sendCommand('matchmaker', 'queue');
+        await this.joinAutomatch();
       }
     }
   }
@@ -192,7 +192,7 @@ export default class AuthFlow
 
     // reconnect to gamelist/mm and get current games
     if (this.automatch) {
-      await this.net.sendCommand('matchmaker', 'queue');
+      await this.joinAutomatch();
     }
     else {
       this.games = [];
@@ -207,5 +207,20 @@ export default class AuthFlow
   {
     const name = `Player ${this.player} game`;
     this.net.sendCommand('gamelist', 'create', {name});
+  }
+
+  @ngApply async joinAutomatch()
+  {
+    this.games = null;
+    this.mmStatus = null;
+    await this.net.sendCommand('matchmaker', 'queue');
+  }
+
+  @ngApply async cancelAutomatch()
+  {
+    await this.net.removeComponent('matchmaker');
+    this.mmStatus = null;
+    this.games = [];
+    await this.net.sendCommand('gamelist', 'gamelist');
   }
 }

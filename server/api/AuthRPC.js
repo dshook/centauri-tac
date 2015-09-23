@@ -56,11 +56,6 @@ export default class AuthRPC
   @rpc.middleware(roles(['player']))
   async profile(client, params, auth)
   {
-    if (!auth) {
-      // TODO: error handling
-      return;
-    }
-
     const {id} = auth.sub;
     client.send('me', await this.players.get(id));
   }
