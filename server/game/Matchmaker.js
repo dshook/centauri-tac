@@ -16,7 +16,7 @@ export default class Matchmaker
     this.net = netClient;
 
     // TODO: need to do something better LMBO
-    setInterval(() => this._processQueue(), 250);
+    setInterval(() => this._processQueue(), 1000);
 
     this.queue = [];
   }
@@ -97,6 +97,13 @@ export default class Matchmaker
 
     if (ready.length < 2) {
       this.log.info('not enough ready players to process queue yet');
+
+      // TODO: this is always horrible fuck
+      const waiting = this.queue.filter(x => x.status === WAITING);
+      for (const {playerId} in waiting) {
+        await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
+      }
+
       return;
     }
 
