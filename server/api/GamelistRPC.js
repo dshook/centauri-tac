@@ -65,19 +65,18 @@ export default class GamelistRPC
   /**
    * Another component on the mesh wants to know a player's current game
    */
-  @rpc.command('currentGame')
+  @rpc.command('currentGameFor')
   @rpc.middleware(roles(['component']))
   async getCurrentGame(client, playerId)
   {
     const gameId = await this.games.currentGameId(playerId);
 
     let game = null;
-
     if (gameId) {
       game = await this.games.games.getActive(null, gameId);
     }
 
-    await client.send('game:current', game);
+    await client.send('currentGameFor', {game, playerId});
   }
 
   /**
