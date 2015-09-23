@@ -32,7 +32,7 @@ namespace ctac
         {
             if (buttonText.text == "End Turn")
             {
-                buttonText.text = "Enemies Turn";
+                buttonText.text = "Enemy Turn";
             }
             else
             {
