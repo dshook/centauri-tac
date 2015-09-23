@@ -1,10 +1,8 @@
 using strange.extensions.command.impl;
-using System;
-using System.Linq;
 
 namespace ctac
 {
-    public class GamelistGameCommand : Command
+    public class GamelistAuthGameCommand : Command
     {
         [Inject]
         public ISocketService socket { get; set; }
@@ -13,7 +11,7 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         [Inject]
-        public ComponentModel components { get; set; }
+        public PlayersModel playersModel { get; set; }
 
         [Inject]
         public GamelistModel gamelist { get; set; }
@@ -26,13 +24,13 @@ namespace ctac
 
         public override void Execute()
         {
+            //update the game list so once we're authed we can find and join it
+            game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
-            debug.Log(socketKey.clientId.ToShort() + " gamelist " + gamelist.GamesToString(socketKey.clientId));
+            debug.Log(socketKey.clientId.ToShort() + " current game " + game.id);
 
-            if (!components.componentList.Any(x => x.typeId == game.component.typeId))
-            {
-                components.componentList.Add(game.component);
-            }
+            var player = playersModel.GetByClientId(socketKey.clientId);
+            socket.Request(socketKey.clientId, "game", "token", player.token);
         }
     }
 }

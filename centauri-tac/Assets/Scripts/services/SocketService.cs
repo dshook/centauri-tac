@@ -70,6 +70,10 @@ namespace ctac
 
         public void Request(SocketKey key, string methodName, object data = null)
         {
+            if (key == null)
+            {
+                debug.LogError("Cannot make request with a null SocketKey");
+            }
             var ws = sockets.Get(key);
             if (ws != null)
             {
@@ -133,7 +137,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
+            //debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);

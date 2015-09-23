@@ -34,7 +34,7 @@ namespace ctac
         override public IContext Start()
         {
             base.Start();
-            StartSignal startSignal = (StartSignal)injectionBinder.GetInstance<StartSignal>();
+            var startSignal = injectionBinder.GetInstance<StartSignal>();
             startSignal.Dispatch();
             return this;
         }
@@ -96,6 +96,10 @@ namespace ctac
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthGamelistCommand>();
 
             commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
+            commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();
+            commandBinder.Bind<GamelistGameSignal>().To<GamelistGameCommand>();
+            commandBinder.Bind<GamelistCurrentGameSignal>().To<GamelistAuthGameCommand>();
+            commandBinder.Bind<GameLoggedInSignal>().To<GamelistJoinGameCommand>();
 
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 

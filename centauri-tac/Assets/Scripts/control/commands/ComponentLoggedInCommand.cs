@@ -15,6 +15,9 @@ namespace ctac
         public GamelistLoggedInSignal gamelistLoggedIn { get; set; }
 
         [Inject]
+        public GameLoggedInSignal gameLoggedIn { get; set; }
+
+        [Inject]
         public LoginStatusModel status { get; set; }
 
         [Inject]
@@ -28,6 +31,9 @@ namespace ctac
                     break;
                 case "gamelist":
                     gamelistLoggedIn.Dispatch(status, loggedInKey);
+                    break;
+                case "game":
+                    gameLoggedIn.Dispatch(status, loggedInKey);
                     break;
             }
         }
