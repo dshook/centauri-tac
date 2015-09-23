@@ -100,6 +100,7 @@ functionality:
 * `gamelist` Master game registry
 * `game` Hosts running game instances
 * `portal` Frontend application to manage backend services
+* `matchmaker` Automatch queue
 * `workbench` Server app to run locally to enable game content management via
   the portal
 

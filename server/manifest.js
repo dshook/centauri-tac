@@ -15,6 +15,7 @@ import PortalComponent from './components/PortalComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import DispatchComponent from './components/DispatchComponent.js';
+import MatchmakerComponent from './components/MasterComponent.js';
 
 // common things for all backend components
 const common = [
@@ -29,6 +30,13 @@ const common = [
  * Mapping of server components into various configuration and services
  */
 export default {
+
+  matchmaker: {
+    TComponent: MatchmakerComponent,
+    services: [
+      ...common,
+    ],
+  },
 
   /**
    * Runs game instances
