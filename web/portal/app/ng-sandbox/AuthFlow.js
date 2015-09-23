@@ -150,7 +150,7 @@ export default class AuthFlow
   {
     // If we're in a game, manually add it to our net client so we can talk to
     // the server. If not, drop it out of the client
-    if (!this.currentGame) {
+    if (!this.currentGame && game) {
       await this.joinGame(game);
     }
     else if (!game) {
