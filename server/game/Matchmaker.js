@@ -68,9 +68,25 @@ export default class Matchmaker extends EventEmitter
   /**
    * Let's match em
    */
-  _processQueue()
+  async _processQueue()
   {
+    if (this.queue.length < 2) {
+      return;
+    }
 
+    // immediately remove the players
+    const pid1 = this.queue.shift();
+    const pid2 = this.queue.shift();
+    this._emitStatus();
+
+    // get an available game server
+    const component = await this.net.getComponent('game');
+
+    this.log.info('using component %s to host game', component.id);
+
+    const name = '(automatch)';
+    const playerIds = [pid1, pid2];
+    await this.net.sendCommand('gamelist', 'createFor', {name, playerIds});
   }
 
   /**

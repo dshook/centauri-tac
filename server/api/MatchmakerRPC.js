@@ -38,12 +38,16 @@ export default class MatchmakerRPC
   @dispatch.on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
-    if (!game || !this.matchmaker.inQueue(playerId)) {
-      return;
+    if (game) {
+      this.matchmaker.dequeuePlayer(playerId);
     }
 
-    this.matchmaker.dequeuePlayer(playerId);
-    this._currentGame({game, playerId});
+    for (const c of this.clients) {
+      const {id} = c.auth.sub;
+      if (playerId === id) {
+        c.send('game:current', game);
+      }
+    }
   }
 
   /**

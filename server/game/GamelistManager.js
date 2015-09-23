@@ -30,6 +30,8 @@ export default class GamelistManager
 
     // have host join the game (will fire update events)
     await this.playerJoin(playerId, game.id);
+
+    return game;
   }
 
   /**

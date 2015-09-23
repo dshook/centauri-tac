@@ -53,6 +53,22 @@ export default class GamelistRPC
   }
 
   /**
+   * Component is building a game for a set of players
+   */
+  @rpc.command('createFor')
+  @rpc.middleware(roles(['component']))
+  async createGameFor(client, {name, playerIds})
+  {
+    const [host, ...others] = playerIds;
+
+    const game = await this.manager.createNewGame(name, host);
+
+    for (const id of others) {
+      await this.manager.playerJoin(id, game.id);
+    }
+  }
+
+  /**
    * A game component is informing us that a player has joined
    */
   @rpc.command('playerJoined')
