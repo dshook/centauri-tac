@@ -40,8 +40,6 @@ export default class DispatchRPC
       .find(x => x.client === client && x.event === event);
 
     if (existing) {
-      this.log.info('skipping client %s sub to %s, already exists',
-          client.id, event);
       return;
     }
 
