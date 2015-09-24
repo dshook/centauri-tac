@@ -79,16 +79,6 @@ export default class GamelistRPC
   }
 
   /**
-   * Another component on the mesh wants to know a player's current game
-   */
-  @rpc.command('getCurrentGame')
-  @rpc.middleware(roles(['component']))
-  async getCurrentGame(client, playerId)
-  {
-    await this.manager.broadcastCurrentGame(playerId);
-  }
-
-  /**
    * A game component is informing us that a player has parted
    */
   @rpc.command('playerParted')

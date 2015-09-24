@@ -15,7 +15,6 @@ export default class Matchmaker
     this.messenger = messenger;
     this.net = netClient;
 
-    // TODO: need to do something better LMBO
     setInterval(() => this._processQueue(), 1000);
 
     this.queue = [];
@@ -31,13 +30,25 @@ export default class Matchmaker
       return;
     }
 
-    // see if player is already in a game -- until we know that they aren't
-    // they're just "waiting"
-    await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
+    // add as waiting status
+    const entry = {playerId, status: WAITING};
+    this.queue.push(entry);
+    this.log.info('player %s waiting, %s in queue', playerId, this.queue.length);
+    await this._emitStatus();
 
-    this.queue.push({playerId, status: WAITING});
-    this.log.info('player %s waiting, %s in queue',
-        playerId, this.queue.length);
+    const {game} = await this.net.post(
+        'gamelist', 'game/currentGame', {playerId});
+
+    // if the player's already in a game, send it on but them boot em put
+    if (!game) {
+      entry.status = READY;
+    }
+    else {
+      _.remove(this.queue, x => x === entry);
+      this.log.info('player %s already in game %s, removing from queue',
+          playerId, game.id);
+      this.messenger.emit('game:current', {playerId, game});
+    }
 
     await this._emitStatus();
   }
@@ -54,9 +65,7 @@ export default class Matchmaker
     }
 
     this.queue.splice(index, 1);
-    this.log.info('player %s dequeued, %s now in queue',
-        playerId, this.queue.length);
-
+    this.log.info('player %s dropped, %s in queue', playerId, this.queue.length);
     await this._emitStatus();
   }
 
@@ -75,6 +84,15 @@ export default class Matchmaker
     entry.status = READY;
   }
 
+  async __processQueue()
+  {
+    if (this.queue.length < 2) {
+      return;
+    }
+
+    // attempt to get game status for players wait
+  }
+
   /**
    * Let's match em
    */
@@ -88,13 +106,6 @@ export default class Matchmaker
 
     if (ready.length < 2) {
       this.log.info('not enough ready players to process queue yet');
-
-      // TODO: this is always horrible fuck
-      const waiting = this.queue.filter(x => x.status === WAITING);
-      for (const {playerId} in waiting) {
-        await this.net.sendCommand('gamelist', 'getCurrentGame', playerId);
-      }
-
       return;
     }
 
@@ -109,9 +120,7 @@ export default class Matchmaker
 
     // boom
     const name = '(automatch)';
-
     this.log.info('match found! creating game for %s', playerIds.join(','));
-
     await this.net.sendCommand('gamelist', 'createFor', {name, playerIds});
   }
 

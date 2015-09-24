@@ -153,7 +153,7 @@ export default class GamelistManager
   /**
    * Broadcast the current game for a certain player
    */
-  async broadcastCurrentGame(playerId)
+  async getCurrentGame(playerId)
   {
     const gameId = await this.games.currentGameId(playerId);
 
@@ -162,7 +162,7 @@ export default class GamelistManager
       game = await this.games.getActive(null, gameId);
     }
 
-    await this.messenger.emit('game:current', {game, playerId});
+    return game;
   }
 
   /**

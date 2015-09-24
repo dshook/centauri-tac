@@ -27,29 +27,6 @@ export default class MatchmakerRPC
   }
 
   /**
-   * If a player is queued here but there's a current game elsewhere (like if
-   * the gamelsit responsed with info or they somehow join another game), drop
-   * them from the queue and inform them
-   */
-  @dispatch.on('game:current')
-  async _broadcastCurrentGame({game, playerId})
-  {
-    if (game) {
-      await this.matchmaker.dequeuePlayer(playerId);
-    }
-    else {
-      await this.matchmaker.confirmQueue(playerId);
-    }
-
-    for (const c of this.clients) {
-      const {id} = c.auth.sub;
-      if (playerId === id) {
-        c.send('game:current', game);
-      }
-    }
-  }
-
-  /**
    * When a client connects
    */
   @rpc.command('_token')
@@ -66,6 +43,20 @@ export default class MatchmakerRPC
     const playerId = auth.sub.id;
     client.once('close', () => this.matchmaker.dequeuePlayer(playerId));
     client.once('close', () => this.clients.delete(client));
+  }
+
+  /**
+   * If a player is conencted, inform them of their current game
+   */
+  @dispatch.on('game:current')
+  _broadcastCurrentGame({game, playerId})
+  {
+    for (const c of this.clients) {
+      const {id} = c.auth.sub;
+      if (playerId === id) {
+        c.send('game:current', game);
+      }
+    }
   }
 
   /**

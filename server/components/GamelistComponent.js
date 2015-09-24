@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import GamelistRPC from '../api/GamelistRPC.js';
+import GamelistAPI from '../api/GamelistAPI.js';
 
 const CLEANUP_INTERVAL = 120 * 1000;
 
@@ -21,8 +22,11 @@ export default class GamelistComponent
   async start(component)
   {
     const sock = component.sockServer;
+    const rest = component.restServer;
+
     await this.cleanup();
     sock.addHandler(GamelistRPC);
+    rest.mountController('/game', GamelistAPI);
   }
 
   /**
