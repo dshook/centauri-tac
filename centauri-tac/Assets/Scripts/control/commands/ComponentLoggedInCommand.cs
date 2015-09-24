@@ -18,6 +18,9 @@ namespace ctac
         public GameLoggedInSignal gameLoggedIn { get; set; }
 
         [Inject]
+        public MatchmakerLoggedInSignal matchmakerLoggedIn { get; set; }
+
+        [Inject]
         public LoginStatusModel status { get; set; }
 
         [Inject]
@@ -34,6 +37,9 @@ namespace ctac
                     break;
                 case "game":
                     gameLoggedIn.Dispatch(status, loggedInKey);
+                    break;
+                case "matchmaker":
+                    matchmakerLoggedIn.Dispatch(status, loggedInKey);
                     break;
             }
         }

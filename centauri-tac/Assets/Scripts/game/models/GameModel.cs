@@ -1,6 +1,6 @@
 ﻿namespace ctac
 {
-    public class GamelistGameModel
+    public class GameModel
     {
         public bool isCurrent { get; set; }
 

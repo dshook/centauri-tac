@@ -13,8 +13,8 @@ namespace ctac
 {
     public interface ISocketService
     {
-        void Request(SocketKey key, string methodName, object data = null);
-        void Request(Guid clientId, string componentName, string methodName, object data = null);
+        void Request(SocketKey key, string methodName, object data = null, string url = null);
+        void Request(Guid clientId, string componentName, string methodName, object data = null, string url = null);
 
         SocketMessageSignal messageSignal { get; set; }
     }
@@ -63,12 +63,12 @@ namespace ctac
             quit.AddListener(DestroySocketService);
         }
 
-        public void Request(Guid clientId, string componentName, string methodName, object data = null)
+        public void Request(Guid clientId, string componentName, string methodName, object data = null, string url = null)
         {
-            Request(new SocketKey(clientId, componentName), methodName, data);
+            Request(new SocketKey(clientId, componentName), methodName, data, url);
         }
 
-        public void Request(SocketKey key, string methodName, object data = null)
+        public void Request(SocketKey key, string methodName, object data = null, string url = null)
         {
             if (key == null)
             {
@@ -82,20 +82,28 @@ namespace ctac
             }
             else
             {
-                root.StartCoroutine(ConnectAndRequest(key, methodName, data));
+                root.StartCoroutine(ConnectAndRequest(key, methodName, data, url));
             }
         }
 
-        private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data)
+        private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data, string overrideUrl)
         {
-            yield return root.StartCoroutine(SocketConnect(key));
+            yield return root.StartCoroutine(SocketConnect(key, overrideUrl));
            
             yield return root.StartCoroutine(MakeRequest(key, methodName, data));
         }
 
-        private IEnumerator SocketConnect(SocketKey key)
+        private IEnumerator SocketConnect(SocketKey key, string overrideUrl = null)
         {
-            var url = componentModel.getComponentWSURL(key.componentName);
+            string url;
+            if (!string.IsNullOrEmpty(overrideUrl))
+            {
+                url = overrideUrl;
+            }
+            else
+            {
+                url = componentModel.getComponentWSURL(key.componentName);
+            }
             if (string.IsNullOrEmpty(url))
             {
                 debug.LogError("Could not find url to open socket for component " + key.componentName);

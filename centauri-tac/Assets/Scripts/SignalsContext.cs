@@ -93,13 +93,16 @@ namespace ctac
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<TokenSignal>().To<TokenCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
-            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthGamelistCommand>();
+            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthMatchmakerCommand>();
 
             commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
             commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();
             commandBinder.Bind<GamelistGameSignal>().To<GamelistGameCommand>();
-            commandBinder.Bind<GamelistCurrentGameSignal>().To<GamelistAuthGameCommand>();
-            commandBinder.Bind<GameLoggedInSignal>().To<GamelistJoinGameCommand>();
+
+            commandBinder.Bind<MatchmakerLoggedInSignal>().To<MatchmakerQueueCommand>();
+
+            commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
+            commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
 
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 

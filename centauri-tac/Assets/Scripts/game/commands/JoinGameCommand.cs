@@ -1,11 +1,10 @@
 using ctac.signals;
 using strange.extensions.command.impl;
-using System;
 using System.Linq;
 
 namespace ctac
 {
-    public class GamelistJoinGameCommand : Command
+    public class JoinGameCommand : Command
     {
         [Inject]
         public ISocketService socket { get; set; }
@@ -26,8 +25,7 @@ namespace ctac
             if (gameToJoin != null)
             {
                 debug.Log(socketKey.clientId.ToShort() + " joining game " + gameToJoin.id);
-                socket.Request(socketKey.clientId, "game", "join", gameToJoin.id);
-                gameToJoin.isCurrent = false;
+                socket.Request(socketKey, "join", gameToJoin.id, gameToJoin.component.wsURL);
             }
         }
     }

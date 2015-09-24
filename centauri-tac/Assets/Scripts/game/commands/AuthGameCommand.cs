@@ -2,7 +2,7 @@ using strange.extensions.command.impl;
 
 namespace ctac
 {
-    public class GamelistAuthGameCommand : Command
+    public class AuthGameCommand : Command
     {
         [Inject]
         public ISocketService socket { get; set; }
@@ -17,7 +17,7 @@ namespace ctac
         public GamelistModel gamelist { get; set; }
 
         [Inject]
-        public GamelistGameModel game { get; set; }
+        public GameModel game { get; set; }
 
         [Inject]
         public SocketKey socketKey { get; set; }
@@ -30,7 +30,7 @@ namespace ctac
             debug.Log(socketKey.clientId.ToShort() + " current game " + game.id);
 
             var player = playersModel.GetByClientId(socketKey.clientId);
-            socket.Request(socketKey.clientId, "game", "token", player.token);
+            socket.Request(socketKey.clientId, "game", "token", player.token, game.component.wsURL);
         }
     }
 }

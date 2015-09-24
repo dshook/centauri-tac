@@ -19,7 +19,8 @@ namespace ctac
             {"_ping", typeof(PingSignal) },
             {"_latency", typeof(LatencySignal) },
             {"game", typeof(GamelistGameSignal) },
-            {"game:current", typeof(GamelistCurrentGameSignal) },
+            {"game:current", typeof(CurrentGameSignal) },
+            {"status", typeof(MatchmakerStatusSignal) },
         };
 
         public Type Get(string def)

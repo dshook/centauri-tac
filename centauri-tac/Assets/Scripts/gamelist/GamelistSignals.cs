@@ -6,12 +6,6 @@ namespace ctac.signals
     public class GamelistLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
-    public class GamelistGameSignal : Signal<GamelistGameModel, SocketKey> { }
-
-    [Singleton]
-    public class GamelistCurrentGameSignal : Signal<GamelistGameModel, SocketKey> { }
-
-    [Singleton]
-    public class GameLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
+    public class GamelistGameSignal : Signal<GameModel, SocketKey> { }
 }
 
