@@ -80,6 +80,7 @@ namespace ctac
             mediationBinder.Bind<MinionView>().To<MinionMediator>();
             mediationBinder.Bind<QuitView>().To<QuitMediator>();
             mediationBinder.Bind<EndTurnView>().To<EndTurnMediator>();
+            mediationBinder.Bind<LeaveGameView>().To<LeaveGameMediator>();
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
@@ -103,6 +104,8 @@ namespace ctac
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
             commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
+            commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
+            commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
 
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();
 

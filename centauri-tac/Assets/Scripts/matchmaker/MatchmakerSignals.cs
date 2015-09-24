@@ -6,7 +6,7 @@ namespace ctac.signals
     public class MatchmakerLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
-    public class MatchmakerCurrentGameSignal : Signal<GameModel, SocketKey> { }
+    public class MatchmakerCurrentGameSignal : Signal<GameMetaModel, SocketKey> { }
 
     [Singleton]
     public class MatchmakerStatusSignal : Signal<MatchmakerStatusModel, SocketKey> { }

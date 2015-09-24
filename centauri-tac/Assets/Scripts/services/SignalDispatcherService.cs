@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using strange.extensions.signal.impl;
 using strange.extensions.mediation.impl;
 using System;

@@ -176,6 +176,12 @@ namespace ctac
                 var signalDataType = signalDataTypes[0];
                 var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
 
+                if (deserializedData == null)
+                {
+                    debug.LogWarning("Null data for " + messageType);
+                    return;
+                }
+
                 object[] signalData;
                 if (attachKey)
                 {
@@ -201,7 +207,7 @@ namespace ctac
         }
 
         private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
-            debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message);
+            debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message + "\n" + e.Exception.StackTrace);
             errorSignal.Dispatch(key, e.Message);
         }
 

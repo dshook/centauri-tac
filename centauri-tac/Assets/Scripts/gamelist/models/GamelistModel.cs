@@ -8,14 +8,14 @@ namespace ctac
     public class GamelistModel
     {
         //gamelist per client
-        public Dictionary<Guid, List<GameModel>> games = new Dictionary<Guid, List<GameModel>>();
+        public Dictionary<Guid, List<GameMetaModel>> games = new Dictionary<Guid, List<GameMetaModel>>();
 
-        public void AddOrUpdateGame(Guid clientId, GameModel game)
+        public void AddOrUpdateGame(Guid clientId, GameMetaModel game)
         {
             var existingGames = games.Get(clientId);
             if (existingGames == null)
             {
-                existingGames = new List<GameModel>();
+                existingGames = new List<GameMetaModel>();
                 games[clientId] = existingGames;
             }
 

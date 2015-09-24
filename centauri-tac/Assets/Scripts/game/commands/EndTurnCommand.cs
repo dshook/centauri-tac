@@ -17,6 +17,9 @@ namespace ctac
         public MinionsModel minionsModel { get; set; }
 
         [Inject]
+        public GameTurnModel turnModel { get; set; }
+
+        [Inject]
         public ISocketService socket { get; set; }
 
         [Inject]

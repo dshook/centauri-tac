@@ -42,6 +42,8 @@ namespace ctac
 
                 playerModel.clientId = clientId;
                 playerModel.token = token;
+
+                socketService.Disconnect(key.clientId, "auth");
             }
         }
     }

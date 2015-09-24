@@ -17,7 +17,7 @@ namespace ctac
         public GamelistModel gamelist { get; set; }
 
         [Inject]
-        public GameModel game { get; set; }
+        public GameMetaModel game { get; set; }
 
         [Inject]
         public SocketKey socketKey { get; set; }
@@ -28,7 +28,7 @@ namespace ctac
             {
                 return;
             }
-            socket.Disconnect(socketKey);
+            socket.Disconnect(socketKey.clientId, "matchmaker");
             //update the game list so once we're authed we can find and join it
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);

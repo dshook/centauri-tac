@@ -19,7 +19,7 @@ namespace ctac
         public GamelistModel gamelist { get; set; }
 
         [Inject]
-        public GameModel game { get; set; }
+        public GameMetaModel game { get; set; }
 
         [Inject]
         public SocketKey socketKey { get; set; }
