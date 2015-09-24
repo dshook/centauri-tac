@@ -94,7 +94,16 @@ export default class GameManager
       return;
     }
 
-    await this.hosts[index].shutdown();
+    const host = this.hosts[index];
+
+    // remove all players
+    this.log.info('removing all players');
+    for (const player of [...host.players]) {
+      this.playerPart(player.client, player.id);
+    }
+
+    await host.shutdown();
+
     this.hosts.splice(index, 1);
     this.log.info('shutdown %s and removed from hosts list, %d still running',
         gameId, this.hosts.length);
