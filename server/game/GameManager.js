@@ -7,11 +7,10 @@ import GameHost from './GameHost.js';
 @loglevel
 export default class GameManager
 {
-  constructor(netClient, gameModules)
+  constructor(netClient)
   {
     this.hosts = [];
     this.net = netClient;
-    this.modules = gameModules;
 
     // all {client, playerId, gameId} across all games
     this.clients = [];
@@ -68,7 +67,7 @@ export default class GameManager
   {
     this.log.info('creating new game %s %s', game.id, game.name);
 
-    const host = new GameHost(game, this.modules);
+    const host = new GameHost(game, this.net);
     await host.startInstance();
     this.hosts.push(host);
 

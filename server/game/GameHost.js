@@ -4,6 +4,8 @@ import {AggregateBinder} from 'emitter-binder';
 import {EventEmitter} from 'events';
 import {on} from 'emitter-binder';
 import Application from 'billy';
+import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
+import HostManager from '../game/HostManager.js';
 
 /**
  * Top-level entity for a running game
@@ -11,13 +13,13 @@ import Application from 'billy';
 @loglevel
 export default class GameHost extends EventEmitter
 {
-  constructor(game, modules)
+  constructor(game, net)
   {
     super();
 
     this.log.info('created new GameHost for game %s', game.id);
     this.game = game;
-    this.modules = modules;
+    this.net = net;
 
     // Relay emitted events to instance
     this.binder = new AggregateBinder();
@@ -36,38 +38,22 @@ export default class GameHost extends EventEmitter
   {
     const app = new Application();
 
-    this.log.info('booting up game modues for game %s', this.game.id);
+    this.log.info('booting up game stack for game %s', this.game.id);
 
     // injectables
     app.registerInstance('players', this.players);
     app.registerInstance('binder', this.binder);
     app.registerInstance('game', this.game);
 
-    // TODO: all of this logic could be replaced if billy had a binding/plugin
-    // method that would have a chance to interact with instantiated services
-    app.service(async () => {
+    const manager = new HostManager(app, this.binder, this.game, this.net);
+    app.registerInstance('host', manager);
 
-      const modules = [];
-
-      for (const key in this.modules) {
-        const T = this.modules[key];
-        this.log.info('creating game module %s via %s', key, T.name);
-        const m = app.make(T);
-        this.binder.bindInstance(m);
-        modules.push(m);
-      }
-
-      for (const m of modules) {
-        if (typeof m.start === 'function') {
-          this.log.info('starting game module %s for game %s',
-              m.constructor.name, this.game.id);
-          await m.start();
-        }
-      }
-
-    });
+    // TODO: add game services
 
     await app.start();
+
+    // TODO: generalize this
+    manager.addController(CentauriTacGame);
   }
 
   /**
@@ -188,6 +174,7 @@ export default class GameHost extends EventEmitter
   async shutdown()
   {
     this.log.info('shutting down GameHost for game %s', this.game.id);
+    this.emit('shutdown');
 
     // TODO: drop all players, trigger something in gamehost
   }
