@@ -159,6 +159,19 @@ export default class GameStore
   }
 
   /**
+   * Allow join flag
+   */
+  @hrtime('set allow join in %s ms')
+  async setAllowJoin(gameId, allowJoin = true)
+  {
+    await this.sql.query(`
+        update games
+        set allow_join = @allowJoin
+        where id = @gameId
+        `, {gameId, allowJoin});
+  }
+
+  /**
    * Change run state of a game
    */
   @hrtime('updated game state in %s ms')

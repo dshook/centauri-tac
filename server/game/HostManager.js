@@ -36,6 +36,18 @@ export default class HostManager extends EventEmitter
   }
 
   /**
+   * Toggle allow join
+   */
+  async setAllowJoin(allowJoin = true)
+  {
+    this.log.info('setting game allow join to %s', allowJoin);
+
+    const gameId = this.game.id;
+    await this.net.sendCommand(
+        'gamelist', 'update:allowJoin', {gameId, allowJoin});
+  }
+
+  /**
    * Bootup, inject, and bind to the client emitters
    */
   async addController(T)

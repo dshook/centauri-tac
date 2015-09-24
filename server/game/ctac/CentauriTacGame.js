@@ -18,11 +18,12 @@ export default class CentauriTacGame
    * Auto-start game when 2 people have joined
    */
   @on('playerJoined')
-  joined()
+  async joined()
   {
     if (this.players.length === 2) {
       this.log.info('starting game!');
-      this.host.setGameState(3);
+      await this.host.setGameState(3);
+      await this.host.setAllowJoin(false);
       return;
     }
 

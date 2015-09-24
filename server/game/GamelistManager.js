@@ -109,6 +109,18 @@ export default class GamelistManager
   }
 
   /**
+   * Change the allow join flag of a game
+   */
+  async setAllowJoin(gameId, allow = true)
+  {
+    await this.games.setAllowJoin(gameId, allow);
+
+    // broadcast updated game info
+    const game = await this.games.getActive(null, gameId);
+    await this.messenger.emit('game', game);
+  }
+
+  /**
    * Drop a game out
    */
   async removeGame(gameId)

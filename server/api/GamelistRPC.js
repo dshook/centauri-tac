@@ -36,9 +36,19 @@ export default class GamelistRPC
    */
   @rpc.command('update:state')
   @rpc.middleware(roles(['component']))
-  async updateGameModel(client, {gameId, stateId})
+  async updateState(client, {gameId, stateId})
   {
     await this.manager.setGameState(gameId, stateId);
+  }
+
+  /**
+   * A game component is switching the allow join param
+   */
+  @rpc.command('update:allowJoin')
+  @rpc.middleware(roles(['component']))
+  async updateAllowJoin(client, {gameId, allowJoin})
+  {
+    await this.manager.setAllowJoin(gameId, allowJoin);
   }
 
   /**
