@@ -11,7 +11,7 @@ export default class PlayerAuthDemoController
     this.flows = [];
 
     // Flow for 2 players
-    for (const p of [1, 2]) {
+    for (const p of [1, 2, 3, 4]) {
       const flow = new AuthFlow($scope, p, this.net);
       this.flows.push(flow);
 
