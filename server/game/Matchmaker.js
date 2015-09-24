@@ -61,15 +61,6 @@ export default class Matchmaker
   }
 
   /**
-   * Check to see if we have a player
-   */
-  inQueue(playerId)
-  {
-    const index = this.queue.findIndex(x => x.playerId === playerId);
-    return index !== -1;
-  }
-
-  /**
    * Allowed
    */
   async confirmQueue(playerId)
