@@ -52,7 +52,7 @@ export default class MatchmakerRPC
   _broadcastCurrentGame({game, playerId})
   {
     if (game) {
-      this.matchmaker.dequeue(playerId);
+      this.matchmaker.dequeuePlayer(playerId);
     }
 
     for (const c of this.clients) {
