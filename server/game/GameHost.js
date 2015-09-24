@@ -7,6 +7,10 @@ import Application from 'billy';
 import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
 import HostManager from '../game/HostManager.js';
 
+// TODO: in configs
+import ActionQueueService from './ctac/services/ActionQueueService.js';
+import TurnService from './ctac/services/TurnService.js';
+
 /**
  * Top-level entity for a running game
  */
@@ -48,11 +52,13 @@ export default class GameHost extends EventEmitter
     const manager = new HostManager(app, this.binder, this.game, this.net);
     app.registerInstance('host', manager);
 
-    // TODO: add game services
+    // TODO: pull this out to configs
+    app.service(ActionQueueService);
+    app.service(TurnService);
 
     await app.start();
 
-    // TODO: generalize this
+    // TODO: pull this out to configs
     manager.addController(CentauriTacGame);
   }
 
@@ -87,6 +93,12 @@ export default class GameHost extends EventEmitter
 
     let player = this.players.find(x => x.id === playerId);
 
+    // add the client to the binder so it sends events to all listeners
+    this.binder.addEmitter(client);
+
+    // Events with the connection is broken
+    client.once('close', () => this._clientClose(player));
+
     if (player) {
       this.log.info('player %s has reconnected!', player.id);
       player.client = client;
@@ -105,11 +117,6 @@ export default class GameHost extends EventEmitter
       await this._broadcastCommand('player:join', player);
     }
 
-    // add the client to the binder so it sends events to all listeners
-    this.binder.addEmitter(client);
-
-    // Events with the connection is broken
-    client.once('close', () => this._clientClose(player));
   }
 
   /**

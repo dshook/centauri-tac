@@ -224,4 +224,9 @@ export default class AuthFlow
     this.games = [];
     await this.net.sendCommand('gamelist', 'gamelist');
   }
+
+  @ngApply async endTurn()
+  {
+    await this.net.sendCommand('game', 'endTurn');
+  }
 }
