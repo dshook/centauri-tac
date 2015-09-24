@@ -1,5 +1,5 @@
 import GameManager from '../game/GameManager.js';
-import ChatDemo from '../game/ctac/ChatDemo.js';
+import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
 
 /**
  * Manage running games
@@ -11,7 +11,7 @@ export default class GameService
     // All of the services booted up for each new game
     app.registerInstance('gameModules', {
 
-      chat: ChatDemo,
+      ctact: CentauriTacGame,
 
     });
 
