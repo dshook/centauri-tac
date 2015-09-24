@@ -51,6 +51,10 @@ export default class MatchmakerRPC
   @dispatch.on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
+    if (game) {
+      this.matchmaker.dequeue(playerId);
+    }
+
     for (const c of this.clients) {
       const {id} = c.auth.sub;
       if (playerId === id) {

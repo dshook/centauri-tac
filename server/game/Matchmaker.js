@@ -70,30 +70,6 @@ export default class Matchmaker
   }
 
   /**
-   * Allowed
-   */
-  async confirmQueue(playerId)
-  {
-    const entry = this.queue.find(x => x.playerId === playerId);
-
-    if (!entry) {
-      return;
-    }
-
-    this.log.info('player %s confirmed for queue', playerId);
-    entry.status = READY;
-  }
-
-  async __processQueue()
-  {
-    if (this.queue.length < 2) {
-      return;
-    }
-
-    // attempt to get game status for players wait
-  }
-
-  /**
    * Let's match em
    */
   async _processQueue()
