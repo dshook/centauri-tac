@@ -57,6 +57,16 @@ export default class GameHost extends EventEmitter
   }
 
   /**
+   * Determine if we should let a player join this game
+   */
+  async canPlayerJoin(client, playerId)
+  {
+    const inGame = !!this.players.find(x => x.id === playerId);
+
+    return inGame || this.game.allowJoin;
+  }
+
+  /**
    * Re-emit command with player object instead of client so handlers have
    * access to the player
    */

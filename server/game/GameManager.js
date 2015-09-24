@@ -21,8 +21,13 @@ export default class GameManager
    */
   async playerJoin(client, playerId, gameId)
   {
-    this.log.info('player %s joining game %s', playerId, gameId);
     const host = this._getHost(gameId);
+
+    if (!(await host.canPlayerJoin(client, playerId))) {
+      throw new Error('cannot join when allowJoin is false');
+    }
+
+    this.log.info('player %s joining game %s', playerId, gameId);
 
     // tell gamelist we've a new player
     await this.net.sendCommand('gamelist', 'playerJoined', {gameId, playerId});

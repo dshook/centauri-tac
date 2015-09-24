@@ -29,6 +29,8 @@ export default class HostManager extends EventEmitter
   {
     this.log.info('setting game state to %s', stateId);
 
+    this.game.stateId = stateId;
+
     const gameId = this.game.id;
     await this.net.sendCommand('gamelist', 'update:state', {gameId, stateId});
 
@@ -42,9 +44,13 @@ export default class HostManager extends EventEmitter
   {
     this.log.info('setting game allow join to %s', allowJoin);
 
+    this.game.allowJoin = allowJoin;
+
     const gameId = this.game.id;
     await this.net.sendCommand(
         'gamelist', 'update:allowJoin', {gameId, allowJoin});
+
+    this.emit('gameAllowJoin', allowJoin);
   }
 
   /**
