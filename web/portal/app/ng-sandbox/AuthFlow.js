@@ -178,8 +178,6 @@ export default class AuthFlow
     // TODO: actually talk to the game. At this point though we are connected
     // to the instance that has been spun up and is running a
     // GameHost/GameInstance pair
-
-    await this.net.sendCommand('game', 'chat', 'hello, world!');
   }
 
   /**
