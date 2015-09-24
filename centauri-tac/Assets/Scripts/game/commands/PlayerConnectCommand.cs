@@ -1,4 +1,3 @@
-using ctac.signals;
 using strange.extensions.command.impl;
 using System;
 using System.Linq;
@@ -7,6 +6,9 @@ namespace ctac
 {
     public class PlayerConnectCommand : Command
     {
+        [Inject]
+        public IDebugService debug { get; set; }
+
         [Inject]
         public PlayersModel players { get; set; }
 
@@ -39,6 +41,9 @@ namespace ctac
                     registered = playerConnected.registered
                 });
             }
+
+            debug.Log("Game Players " + gamePlayers.players.Count);
+
         }
     }
 }

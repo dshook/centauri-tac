@@ -140,7 +140,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            //debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
+            debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
@@ -160,6 +160,7 @@ namespace ctac
             catch
             {
                 debug.LogError("Could not get get instance of signal for " + messageType);
+                return;
             }
             if (signal != null)
             {

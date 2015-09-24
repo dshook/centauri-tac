@@ -1,6 +1,7 @@
 using strange.extensions.command.impl;
 using ctac.signals;
 using UnityEngine;
+using System.Linq;
 
 namespace ctac
 {
@@ -20,6 +21,9 @@ namespace ctac
         public GameTurnModel turnModel { get; set; }
 
         [Inject]
+        public GamePlayersModel gamePlayers { get; set; }
+
+        [Inject]
         public ISocketService socket { get; set; }
 
         [Inject]
@@ -31,6 +35,11 @@ namespace ctac
             {
                 minion.hasMoved = false;
             }
+            //hacktastic till turn comes from server
+            turnModel.currentTurnClientId = gamePlayers
+                .players
+                .Where(x => x.clientId != turnModel.currentTurnClientId)
+                .Select(x => x.clientId).FirstOrDefault();
             debug.Log("Turn Ended");
             turnEnded.Dispatch();
         }
