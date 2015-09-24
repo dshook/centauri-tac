@@ -137,7 +137,7 @@
             <td>
               <button
                 class="btn btn-default"
-                ng-disabled="flow.currentGame"
+                ng-disabled="flow.currentGame || !game.allowJoin"
                 ng-click="flow.joinGame(game)">
                 join <i class="fa fa-sign-in"></i>
               </a>
@@ -184,6 +184,9 @@
             <button
               ng-click="flow.leaveCurrentGame()"
               class="btn btn-default">Leave</button>
+            <button
+              ng-click="flow.endTurn()"
+              class="btn btn-default">End Turn</button>
           </div>
         </form>
 
