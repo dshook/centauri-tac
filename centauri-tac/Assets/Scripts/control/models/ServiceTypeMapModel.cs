@@ -20,8 +20,10 @@ namespace ctac
             {"_latency", typeof(LatencySignal) },
             {"game", typeof(GamelistGameSignal) },
             {"game:current", typeof(CurrentGameSignal) },
-            {"player:connect", typeof(PlayerConnectedSignal) },
+            {"player:connect", typeof(PlayerConnectSignal) },
             {"player:join", typeof(PlayerJoinedSignal) },
+            {"player:part", typeof(PlayerPartSignal) },
+            {"player:disconnect", typeof(PlayerDisconnectSignal) },
             {"status", typeof(MatchmakerStatusSignal) },
         };
 

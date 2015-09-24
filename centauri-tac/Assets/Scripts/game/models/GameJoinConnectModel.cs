@@ -4,7 +4,7 @@
     {
         public string email { get; set; }
         public int id { get; set; }
-        public object registered { get; set; }
+        public string registered { get; set; }
         public bool isAdmin { get; set; }
     }
 }

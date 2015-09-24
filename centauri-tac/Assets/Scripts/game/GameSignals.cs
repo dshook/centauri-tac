@@ -10,10 +10,16 @@ namespace ctac.signals
     public class GameLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
-    public class PlayerConnectedSignal : Signal<GameJoinConnectModel, SocketKey> { }
+    public class PlayerConnectSignal : Signal<GameJoinConnectModel, SocketKey> { }
 
     [Singleton]
     public class PlayerJoinedSignal : Signal<GameJoinConnectModel, SocketKey> { }
+
+    [Singleton]
+    public class PlayerPartSignal : Signal<GameJoinConnectModel, SocketKey> { }
+
+    [Singleton]
+    public class PlayerDisconnectSignal : Signal<GameJoinConnectModel, SocketKey> { }
 
     [Singleton]
     public class LeaveGameSignal : Signal<SocketKey> { }

@@ -13,8 +13,8 @@ namespace ctac
 {
     public interface ISocketService
     {
-        void Request(SocketKey key, string methodName, object data = null, string url = null);
-        void Request(Guid clientId, string componentName, string methodName, object data = null, string url = null);
+        void Request(SocketKey key, string methodName, object data = null);
+        void Request(Guid clientId, string componentName, string methodName, object data = null);
 
         void Disconnect(SocketKey key);
         void Disconnect(Guid clientId, string componentName);
@@ -66,12 +66,12 @@ namespace ctac
             quit.AddListener(DestroySocketService);
         }
 
-        public void Request(Guid clientId, string componentName, string methodName, object data = null, string url = null)
+        public void Request(Guid clientId, string componentName, string methodName, object data = null)
         {
-            Request(new SocketKey(clientId, componentName), methodName, data, url);
+            Request(new SocketKey(clientId, componentName), methodName, data);
         }
 
-        public void Request(SocketKey key, string methodName, object data = null, string url = null)
+        public void Request(SocketKey key, string methodName, object data = null)
         {
             if (key == null)
             {
@@ -85,28 +85,20 @@ namespace ctac
             }
             else
             {
-                root.StartCoroutine(ConnectAndRequest(key, methodName, data, url));
+                root.StartCoroutine(ConnectAndRequest(key, methodName, data));
             }
         }
 
-        private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data, string overrideUrl)
+        private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data)
         {
-            yield return root.StartCoroutine(SocketConnect(key, overrideUrl));
+            yield return root.StartCoroutine(SocketConnect(key));
            
             yield return root.StartCoroutine(MakeRequest(key, methodName, data));
         }
 
-        private IEnumerator SocketConnect(SocketKey key, string overrideUrl = null)
+        private IEnumerator SocketConnect(SocketKey key)
         {
-            string url;
-            if (!string.IsNullOrEmpty(overrideUrl))
-            {
-                url = overrideUrl;
-            }
-            else
-            {
-                url = componentModel.getComponentWSURL(key.componentName);
-            }
+            var url = componentModel.getComponentWSURL(key.componentName);
             if (string.IsNullOrEmpty(url))
             {
                 debug.LogError("Could not find url to open socket for component " + key.componentName);
@@ -160,7 +152,15 @@ namespace ctac
                 debug.LogWarning("No message type for " + messageType);
                 return;
             }
-            var signal = binder.GetInstance(signalType) as BaseSignal;
+            BaseSignal signal = null;
+            try
+            {
+                signal = binder.GetInstance(signalType) as BaseSignal;
+            }
+            catch
+            {
+                debug.LogError("Could not get get instance of signal for " + messageType);
+            }
             if (signal != null)
             {
                 var signalDataTypes = signal.GetTypes();

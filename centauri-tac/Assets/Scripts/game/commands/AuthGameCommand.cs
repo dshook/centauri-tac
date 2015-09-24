@@ -11,6 +11,9 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         [Inject]
+        public ComponentModel components { get; set; }
+
+        [Inject]
         public PlayersModel playersModel { get; set; }
 
         [Inject]
@@ -34,8 +37,11 @@ namespace ctac
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
             debug.Log(socketKey.clientId.ToShort() + " current game " + game.id);
 
+            //add game to list of components for use
+            components.componentList.Add(game.component);
+
             var player = playersModel.GetByClientId(socketKey.clientId);
-            socket.Request(socketKey.clientId, "game", "token", player.token, game.component.wsURL);
+            socket.Request(socketKey.clientId, "game", "token", player.token);
         }
     }
 }

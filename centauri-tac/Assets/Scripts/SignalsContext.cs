@@ -105,6 +105,8 @@ namespace ctac
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
             commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
             commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
+            commandBinder.Bind<PlayerConnectSignal>().To<PlayerConnectCommand>();
+            commandBinder.Bind<PlayerPartSignal>().To<PlayerPartCommand>();
             commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
 
             commandBinder.Bind<EndTurnSignal>().To<EndTurnCommand>();

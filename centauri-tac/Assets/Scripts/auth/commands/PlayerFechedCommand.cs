@@ -42,6 +42,7 @@ namespace ctac
 
                 playerModel.clientId = clientId;
                 playerModel.token = token;
+                playerModel.isLocal = true;
 
                 socketService.Disconnect(key.clientId, "auth");
             }

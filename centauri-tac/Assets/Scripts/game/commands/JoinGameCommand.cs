@@ -25,7 +25,7 @@ namespace ctac
             if (gameToJoin != null)
             {
                 debug.Log(socketKey.clientId.ToShort() + " joining game " + gameToJoin.id);
-                socket.Request(socketKey, "join", gameToJoin.id, gameToJoin.component.wsURL);
+                socket.Request(socketKey, "join", gameToJoin.id);
             }
         }
     }
