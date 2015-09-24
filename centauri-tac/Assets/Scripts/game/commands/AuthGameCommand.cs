@@ -24,6 +24,11 @@ namespace ctac
 
         public override void Execute()
         {
+            if (game == null)
+            {
+                return;
+            }
+            socket.Disconnect(socketKey);
             //update the game list so once we're authed we can find and join it
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);

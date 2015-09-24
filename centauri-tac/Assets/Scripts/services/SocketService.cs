@@ -16,6 +16,9 @@ namespace ctac
         void Request(SocketKey key, string methodName, object data = null, string url = null);
         void Request(Guid clientId, string componentName, string methodName, object data = null, string url = null);
 
+        void Disconnect(SocketKey key);
+        void Disconnect(Guid clientId, string componentName);
+
         SocketMessageSignal messageSignal { get; set; }
     }
 
@@ -152,6 +155,11 @@ namespace ctac
             string messageData = e.Data.Substring(delimiterIndex + 1);
 
             var signalType = typeMap.Get(messageType);
+            if (signalType == null)
+            {
+                debug.LogWarning("No message type for " + messageType);
+                return;
+            }
             var signal = binder.GetInstance(signalType) as BaseSignal;
             if (signal != null)
             {
@@ -205,6 +213,23 @@ namespace ctac
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
             debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason);
             disconnectSignal.Dispatch(key);
+        }
+
+        public void Disconnect(Guid clientId, string componentName)
+        {
+            Disconnect(new SocketKey(clientId, componentName));
+        }
+
+        public void Disconnect(SocketKey key)
+        {
+            var ws = sockets.Get(key);
+            if (ws == null)
+            {
+                debug.LogWarning("Trying to disconnect from disconnected socket");
+            }
+
+            ws.Close(CloseStatusCode.Normal, "Requested Disconnect");
+            sockets.Remove(key);
         }
 
         void DestroySocketService()
