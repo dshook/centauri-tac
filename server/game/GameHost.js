@@ -67,8 +67,7 @@ export default class GameHost extends EventEmitter
    */
   async canPlayerJoin(client, playerId)
   {
-    const inGame = !!this.players.find(x => x.id === playerId);
-
+    const inGame = this.players.some(x => x.id === playerId);
     return inGame || this.game.allowJoin;
   }
 
@@ -96,8 +95,17 @@ export default class GameHost extends EventEmitter
     // add the client to the binder so it sends events to all listeners
     this.binder.addEmitter(client);
 
+    // hello
+    client.send('join');
+
     // Events with the connection is broken
     client.once('close', () => this._clientClose(player));
+
+    // send all current players to the client
+    for (const p of this.players) {
+      client.send('player:connect', p);
+      client.send('player:join', p);
+    }
 
     if (player) {
       this.log.info('player %s has reconnected!', player.id);
@@ -135,6 +143,9 @@ export default class GameHost extends EventEmitter
 
     this.emit('playerParting', player);
     await this._broadcastCommand('player:part', player);
+
+    // hello
+    client.send('part');
 
     // clear out on purpose
     this.binder.removeEmitter(player.client);

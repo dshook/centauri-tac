@@ -1,6 +1,7 @@
 import ngApply from 'ng-apply-decorator';
 import {rpc} from 'sock-harness';
 import Game from 'models/Game';
+import GameFlow from './GameFlow.js';
 
 /**
  * Example controller that will use the network to connect, authorize, get a
@@ -38,6 +39,9 @@ export default class AuthFlow
 
     // refresh UI whenever a command comes back on the sock (lol angalang)
     this.net.on('command', () => $scope.$apply());
+
+    // ref game implementation
+    this.gameFlow = new GameFlow(this.$scope, this.net);
   }
 
   /**
@@ -117,6 +121,10 @@ export default class AuthFlow
   @rpc.command('gamelist', 'game')
   @ngApply _recvGame(client, game)
   {
+    if (!this.games) {
+      return;
+    }
+
     const g = Game.fromJSON(game);
     const index = this.games.findIndex(x => x.id === game.id);
 
@@ -178,9 +186,8 @@ export default class AuthFlow
     await this.net.addComponent(game.component);
     await this.net.sendCommand('game', 'join', game.id);
 
-    // TODO: actually talk to the game. At this point though we are connected
-    // to the instance that has been spun up and is running a
-    // GameHost/GameInstance pair
+    // game ref impementation
+    this.gameFlow.reset();
   }
 
   /**
@@ -190,6 +197,7 @@ export default class AuthFlow
   {
     this.net.sendCommand('game', 'part');
     this.currentGame = null;
+    this.gameFlow.reset();
 
     // reconnect to gamelist/mm and get current games
     if (this.automatch) {
@@ -225,8 +233,4 @@ export default class AuthFlow
     await this.net.sendCommand('gamelist', 'gamelist');
   }
 
-  @ngApply async endTurn()
-  {
-    await this.net.sendCommand('game', 'endTurn');
-  }
 }

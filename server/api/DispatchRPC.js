@@ -37,7 +37,7 @@ export default class DispatchRPC
     // may lead to dupe sent messages? Could check the clients auth object
     // potentially
     const existing = this._callbacks
-      .find(x => x.client === client && x.event === event);
+      .some(x => x.client === client && x.event === event);
 
     if (existing) {
       return;

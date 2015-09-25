@@ -3,7 +3,8 @@ import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 
 /**
- * Deals with handling turn stuff and processing the action queue
+ * Deals with handling turn stuff and processing the action queue. "low level"
+ * game actions
  */
 @loglevel
 export default class GameController
@@ -15,16 +16,23 @@ export default class GameController
   }
 
   /**
-   * Send current state of the queue to the players when the game starts
-   * (basically the first turn and anyhting else inited)
+   * Catch a client up if they need actions
    */
-  async start()
+  @on('playerCommand', x => x === 'getActionsSince')
+  async getActionsSince(command, actionId, player)
   {
-    for (const player of this.players.filter(x => x.client)) {
-      for (const action of this.queue.iterateCompletedSince()) {
-        this._sendAction(player, action);
-      }
+    this.log.info('player %s catching up on actions since %s',
+        player.id, actionId);
+
+    const actions = this.queue.iterateCompletedSince(actionId);
+
+    player.client.send('actionHistoryStart');
+
+    for (const action of actions) {
+      this._sendAction(player, action);
     }
+
+    player.client.send('actionHistoryComplete');
   }
 
   /**

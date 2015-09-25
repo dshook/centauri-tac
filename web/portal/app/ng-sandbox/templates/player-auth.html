@@ -177,6 +177,14 @@
 
         <span game="flow.currentGame"></span>
 
+        <p>
+          <span
+            ng-class="{strikethrough: !player.connected}"
+            ng-repeat="player in flow.gameFlow.players"
+            player="player">
+
+          </span>
+
         <hr>
 
         <form>
@@ -185,10 +193,14 @@
               ng-click="flow.leaveCurrentGame()"
               class="btn btn-default">Leave</button>
             <button
-              ng-click="flow.endTurn()"
+              ng-disabled="flow.gameFlow.currentPlayerId !== flow.me.id"
+              ng-click="flow.gameFlow.endTurn()"
               class="btn btn-default">End Turn</button>
           </div>
         </form>
+
+        <p>Current turn: {{ flow.gameFlow.currentTurn }}</p>
+
 
       </panel>
 

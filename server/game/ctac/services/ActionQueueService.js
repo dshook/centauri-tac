@@ -1,7 +1,7 @@
 import ActionQueue from 'action-queue';
 
 /**
- * Expose teh action queue and setup all the processors
+ * Expose teh action queue
  */
 export default class ActionQueueService
 {

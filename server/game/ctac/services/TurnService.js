@@ -3,7 +3,7 @@ import loglevel from 'loglevel-decorator';
 import TurnProcessor from '../processors/TurnProcessor.js';
 
 /**
- * Expose the turn and start / stop the timers
+ * Expose the turn model and add the processor to the action pipeline
  */
 @loglevel
 export default class TurnService
