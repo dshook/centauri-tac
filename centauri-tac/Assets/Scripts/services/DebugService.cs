@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 using UnityEngine;
 using System.IO;
 using ctac.signals;
+using Newtonsoft.Json.Converters;
 
 namespace ctac
 {
     public interface IDebugService
     {
         void Log(object message, SocketKey key = null);
+        void LogNet(object message, SocketKey key = null);
         void LogWarning(object message, SocketKey key = null);
         void LogError(object message, SocketKey key = null);
     }
@@ -27,39 +29,48 @@ namespace ctac
             quit.AddListener(Dump);
         }
 
- 
+        public void Log(object message, ErrorLevel level, SocketKey key = null)
+        {
+            entries.Add(new LogEntry()
+            {
+                timestamp = DateTime.Now,
+                level = level,
+                key = key,
+                message = MsgFmt(message)
+            });
+
+            switch (level)
+            {
+                case ErrorLevel.Info:
+                    Debug.Log(KeyFmt(key) + message);
+                    break;
+                case ErrorLevel.Warning:
+                    Debug.LogWarning(KeyFmt(key) + message);
+                    break;
+                case ErrorLevel.Error:
+                    Debug.LogError(KeyFmt(key) + message);
+                    break;
+            }
+
+        }
+
         public void Log(object message, SocketKey key = null)
         {
-            entries.Add(new LogEntry()
-            {
-                timestamp = DateTime.Now,
-                level = ErrorLevel.info,
-                key = key,
-                message = MsgFmt(message)
-            });
-            Debug.Log(KeyFmt(key) + message);
+            Log(message, ErrorLevel.Info, key);
         }
+
+        public void LogNet(object message, SocketKey key = null)
+        {
+            Log(message, ErrorLevel.Net, key);
+        }
+
         public void LogWarning(object message, SocketKey key = null)
         {
-            entries.Add(new LogEntry()
-            {
-                timestamp = DateTime.Now,
-                level = ErrorLevel.warning,
-                key = key,
-                message = MsgFmt(message)
-            });
-            Debug.LogWarning(KeyFmt(key) + message);
+            Log(message, ErrorLevel.Warning, key);
         }
         public void LogError(object message, SocketKey key = null)
         {
-            entries.Add(new LogEntry()
-            {
-                timestamp = DateTime.Now,
-                level = ErrorLevel.error,
-                key = key,
-                message = MsgFmt(message)
-            });
-            Debug.LogError(KeyFmt(key) + message);
+            Log(message, ErrorLevel.Error, key);
         }
 
         //when you just gotta go
@@ -88,16 +99,19 @@ namespace ctac
     class LogEntry
     {
         public DateTime timestamp { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ErrorLevel level { get; set; }
         public SocketKey key { get; set; }
         public object message { get; set; }
     }
 
-    internal enum ErrorLevel
+    public enum ErrorLevel
     {
-        info,
-        warning,
-        error
+        Net,
+        Info,
+        Warning,
+        Error
+        
     }
 }
 

@@ -28,11 +28,11 @@ namespace ctac
         {
             if (player == null)
             {
-                debug.LogError("Failed Fetching Player");
+                debug.LogError("Failed Fetching Player", key);
             }
             else
             {
-                debug.Log("Player Fetched");
+                debug.Log("Player Fetched", key);
                 var playerModel = playersModel.GetByClientId(key.clientId);
                 //kinda nasty save of the couple properties that need to be saved on the original player model
                 //that won't be coming across the wire

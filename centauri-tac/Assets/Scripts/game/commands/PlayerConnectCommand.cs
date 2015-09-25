@@ -42,7 +42,7 @@ namespace ctac
                 });
             }
 
-            debug.Log("Game Players " + gamePlayers.players.Count);
+            debug.Log("Game Players " + gamePlayers.players.Count, socketKey);
 
         }
     }

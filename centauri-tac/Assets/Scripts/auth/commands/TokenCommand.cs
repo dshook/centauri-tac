@@ -37,13 +37,13 @@ namespace ctac
         {
             if (string.IsNullOrEmpty(token))
             {
-                debug.LogError("Failed Authenticate");
+                debug.LogError("Failed Authenticate", key);
                 failedAuth.Dispatch();
                 needLoginSignal.Dispatch();
             }
             else
             {
-                debug.Log("Authenticated");
+                debug.Log("Authenticated", key);
                 var player = playersModel.GetByClientId(key.clientId);
                 if (player == null)
                 {

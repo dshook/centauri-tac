@@ -35,7 +35,7 @@ namespace ctac
             //update the game list so once we're authed we can find and join it
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
-            debug.Log(socketKey.clientId.ToShort() + " current game " + game.id);
+            debug.Log("Current game " + game.id, socketKey);
 
             //add game to list of components for use
             components.componentList.Add(game.component);

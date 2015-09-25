@@ -18,7 +18,7 @@ namespace ctac
 
         public override void Execute()
         {
-            debug.Log("Game Started");
+            debug.Log("Game Started", socketKey);
             
             gameTurn.currentTurnClientId = socketKey.clientId;
         }

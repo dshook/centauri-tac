@@ -24,7 +24,7 @@ namespace ctac
             var gameToJoin = myGames.FirstOrDefault(x => x.isCurrent);
             if (gameToJoin != null)
             {
-                debug.Log(socketKey.clientId.ToShort() + " joining game " + gameToJoin.id);
+                debug.Log("Joining game " + gameToJoin.id, socketKey);
                 socket.Request(socketKey, "join", gameToJoin.id);
             }
         }

@@ -33,7 +33,7 @@ namespace ctac
             netService.fulfillSignal.RemoveListener(onConnectComplete);
             if (data == null)
             {
-                debug.LogError("Failed to Connect");
+                debug.LogError("Failed to connect to master component");
             }
             else
             {

@@ -101,7 +101,7 @@ namespace ctac
             var url = componentModel.getComponentWSURL(key.componentName);
             if (string.IsNullOrEmpty(url))
             {
-                debug.LogError("Could not find url to open socket for component " + key.componentName);
+                debug.LogError("Could not find url to open socket for component " + key.componentName, key);
                 yield return null;
             }
             var ws = new WebSocket(url);
@@ -128,7 +128,7 @@ namespace ctac
             var ws = sockets.Get(key);
             if (ws.ReadyState != WebSocketState.Open)
             {
-                debug.LogError("Trying to make a request to disconnected web socket");
+                debug.LogError("Trying to make a request to disconnected web socket", key);
                 yield return null;
             }
 
@@ -140,7 +140,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            debug.Log(key.clientId.ToShort() + " " + key.componentName + " Msg: " + e.Data);
+            debug.LogNet("Msg: " + e.Data, key);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
@@ -149,7 +149,7 @@ namespace ctac
             var signalType = typeMap.Get(messageType);
             if (signalType == null)
             {
-                debug.LogWarning("No message type for " + messageType);
+                debug.LogWarning("No message type for " + messageType, key);
                 return;
             }
             BaseSignal signal = null;
@@ -159,7 +159,7 @@ namespace ctac
             }
             catch
             {
-                debug.LogError("Could not get get instance of signal for " + messageType);
+                debug.LogError("Could not get get instance of signal for " + messageType, key);
                 return;
             }
             if (signal != null)
@@ -171,7 +171,7 @@ namespace ctac
                 }
                 else if (signalDataTypes.Count != 1)
                 {
-                    debug.LogError("Signal can only have one type of data to dispatch");
+                    debug.LogError("Signal can only have one type of data to dispatch", key);
                     return;
                 }
                 var signalDataType = signalDataTypes[0];
@@ -179,7 +179,7 @@ namespace ctac
 
                 if (deserializedData == null)
                 {
-                    debug.LogWarning("Null data for " + messageType);
+                    debug.LogWarning("Null data for " + messageType, key);
                     return;
                 }
 
@@ -203,22 +203,22 @@ namespace ctac
             }
             else
             {
-                debug.LogError("Could not find signal to dispatch from message type " + messageType);
+                debug.LogError("Could not find signal to dispatch from message type " + messageType, key);
             }
         }
 
         private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
-            debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message + "\n" + e.Exception.StackTrace);
+            debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message + "\n" + e.Exception.StackTrace, key);
             errorSignal.Dispatch(key, e.Message);
         }
 
         private void onSocketOpen(SocketKey key, object sender, EventArgs e) {
-            debug.Log("Socket Open For " + key.clientId.ToShort() + " " + key.componentName);
+            debug.Log("Socket Open For " + key.clientId.ToShort() + " " + key.componentName, key);
             connectSignal.Dispatch(key);
         }
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
-            debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason);
+            debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason, key);
             disconnectSignal.Dispatch(key);
         }
 
@@ -232,7 +232,7 @@ namespace ctac
             var ws = sockets.Get(key);
             if (ws == null)
             {
-                debug.LogWarning("Trying to disconnect from disconnected socket");
+                debug.LogWarning("Trying to disconnect from disconnected socket", key);
             }
 
             ws.Close(CloseStatusCode.Normal, "Requested Disconnect");

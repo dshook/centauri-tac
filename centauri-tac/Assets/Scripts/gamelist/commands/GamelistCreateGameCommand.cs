@@ -19,7 +19,7 @@ namespace ctac
 
         public override void Execute()
         {
-            debug.Log(socketKey.clientId.ToShort() + " creating game");
+            debug.Log("Creating game", socketKey);
             socket.Request(socketKey, "create", new
             {
                 name = socketKey.clientId
