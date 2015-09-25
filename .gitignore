@@ -31,3 +31,5 @@ dist
 .env
 .eslintrc
 centauri-tac/config.json
+client_log.json
+npm-debug.log

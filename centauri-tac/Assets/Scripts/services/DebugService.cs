@@ -1,43 +1,103 @@
+using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
+using System.IO;
+using ctac.signals;
 
 namespace ctac
 {
     public interface IDebugService
     {
-        void Log(object message);
-        void LogFormat(string format, params object[] args);
-        void LogError(object message);
-        void LogErrorFormat(string format, params object[] args);
-        void LogWarning(object message);
-        void LogWarningFormat(string format, params object[] args);
+        void Log(object message, SocketKey key = null);
+        void LogWarning(object message, SocketKey key = null);
+        void LogError(object message, SocketKey key = null);
     }
 
     public class UnityDebugService : IDebugService
     {
-        public void Log(object message)
+        [Inject]
+        public QuitSignal quit { get; set; }
+
+        private List<LogEntry> entries = new List<LogEntry>();
+
+        [PostConstruct]
+        public void PostConstruct()
         {
-            Debug.Log(message);
+            quit.AddListener(Dump);
         }
-        public void LogFormat(string format, params object[] args)
+
+ 
+        public void Log(object message, SocketKey key = null)
         {
-            Debug.LogFormat(format, args);
+            entries.Add(new LogEntry()
+            {
+                timestamp = DateTime.Now,
+                level = ErrorLevel.info,
+                key = key,
+                message = MsgFmt(message)
+            });
+            Debug.Log(KeyFmt(key) + message);
         }
-        public void LogError(object message)
+        public void LogWarning(object message, SocketKey key = null)
         {
-            Debug.LogError(message);
+            entries.Add(new LogEntry()
+            {
+                timestamp = DateTime.Now,
+                level = ErrorLevel.warning,
+                key = key,
+                message = MsgFmt(message)
+            });
+            Debug.LogWarning(KeyFmt(key) + message);
         }
-        public void LogErrorFormat(string format, params object[] args)
+        public void LogError(object message, SocketKey key = null)
         {
-            Debug.LogErrorFormat(format, args);
+            entries.Add(new LogEntry()
+            {
+                timestamp = DateTime.Now,
+                level = ErrorLevel.error,
+                key = key,
+                message = MsgFmt(message)
+            });
+            Debug.LogError(KeyFmt(key) + message);
         }
-        public void LogWarning(object message)
+
+        //when you just gotta go
+        public void Dump()
         {
-            Debug.LogWarning(message);
+            string path = "../client_log.json";
+            File.WriteAllText(path, JsonConvert.SerializeObject(entries));
         }
-        public void LogWarningFormat(string format, params object[] args)
+
+        private string KeyFmt(SocketKey key)
         {
-            Debug.LogWarningFormat(format, args);
-        }           
+            if(key == null) return "";
+            return key.clientId.ToShort() + " " + key.componentName + " ";
+        }
+
+        private string MsgFmt(object message)
+        {
+            if((message as string) != null)
+            {
+                return (string) message;
+            }
+            return JsonConvert.SerializeObject(message);
+        }
+    }
+
+    class LogEntry
+    {
+        public DateTime timestamp { get; set; }
+        public ErrorLevel level { get; set; }
+        public SocketKey key { get; set; }
+        public object message { get; set; }
+    }
+
+    internal enum ErrorLevel
+    {
+        info,
+        warning,
+        error
     }
 }
 
