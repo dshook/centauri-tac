@@ -13,9 +13,15 @@ export default class ClientLogController
     this.$cookies = $cookies;
 
     this.log = [];
+    this.filter = {};
 
     // Immediately fetch
-    this.refresh();
+    var firstRefresh = this.refresh();
+
+    firstRefresh.then(() =>
+      //init filter to be all on
+      this.logFilterOptions.forEach(x => this.filter[x] = true)
+    );
 
     const t = $interval(() => this.refresh(), REFRESH_INTERVAL);
     $scope.$on('$destroy', () => $interval.cancel(t));
@@ -24,11 +30,7 @@ export default class ClientLogController
 
   get filteredLog()
   {
-    if (!this.logFilter) {
-      return this.log;
-    }
-
-    return this.log.filter(x => x.level === this.logFilter);
+    return this.log.filter(x => this.filter[x.level] );
   }
 
   get logFilterOptions()
@@ -40,20 +42,20 @@ export default class ClientLogController
     );
   }
 
-  setRealmFilter(filter)
+  toggleFilter(level)
   {
-    this.logFilter = filter;
-
-    if (!filter) {
-      this.$cookies.remove('logFilter');
+    if (!this.filter[level]) {
+      this.filter[level] = true;
     }
     else {
-      this.$cookies.put('logFilter', filter);
+      this.filter[level] = false;
     }
   }
 
   buttonClass(level){
-    return 'btn btn-' + this.levelClass(level);    
+    return 'btn' +
+      (this.filter[level] ? ' active' : '' ) + 
+      ' btn-' + this.levelClass(level);    
   }
 
   levelClass(level){

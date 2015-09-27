@@ -12,20 +12,17 @@
         <div class="form-group">
           <label>
             <i class="fa fa-globe"></i> Filter
-          </label><br>
-          <div ng-repeat="option in vm.logFilterOptions">
-            <button class="{{ vm.buttonClass(option) }}" ng-click="vm.setRealmFilter(option)">
-              <span realm="option"></span>
-            </button>
-          </div>
-          <button class="btn" ng-click="vm.setRealmFilter(null)">(clear filter)</button>
+          </label>
+          <button 
+            ng-repeat="option in vm.logFilterOptions" 
+            class="{{ vm.buttonClass(option) }}" 
+            ng-click="vm.toggleFilter(option)">
+            {{option}}
+          </button>
         </div>
-
+        <span class="pull-right"> {{ vm.filteredLog.length || 0 }} filtered / {{ vm.log.length }} total </span>
       </div>
 
-      <h4>
-        {{ vm.filteredLog.length || 0 }} filtered / {{ vm.log.length }} total
-      </h4>
 
       <table
         class="table table-striped"
