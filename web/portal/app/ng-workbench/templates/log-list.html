@@ -20,46 +20,48 @@
             {{option}}
           </button>
         </div>
-        <span class="pull-right"> {{ vm.filteredLog.length || 0 }} filtered / {{ vm.log.length }} total </span>
       </div>
 
 
-      <table
-        class="table table-striped"
-        ng-table>
-        <tr
-          ng-class="{danger: false}"
-          ng-repeat="component in vm.filteredLog
-            | orderBy : 'timestamp'
-            ">
+      <div class="container-fluid">
+        <div class="row">
+          <div
+            ng-repeat="(logKey, logGroup) in vm.filteredLog"
+            class="col-md-4">
+            <h3>{{logKey}}</h3>
+            <table
+              class="table table-striped table-limitsize"
+              ng-table>
+              <tr
+                ng-repeat="log in logGroup
+                  | orderBy : 'timestamp'
+                  ">
 
-          <td
-            data-title="'Timestamp'">
-            <span>{{ component.timestamp.format("HH:mm:ss.SSS") }}</span>
-          </td>
+                <td
+                  data-title="'Timestamp'">
+                  <span>{{ log.timestamp.format("HH:mm:ss.SSS") }}</span>
+                </td>
 
-          <td
-            data-title="'Level'">
-            <span class="badge">{{ component.level }}</span>
-          </td>
+                <td
+                  data-title="'Level'">
+                  <span class="badge">{{ log.level }}</span>
+                </td>
 
-          <td
-            data-title="'Client'">
-            <span ng-if="component.key">{{ component.key.clientId  }}</span>
-          </td>
+                <td
+                  data-title="'Component'">
+                  <span ng-if="log.key">{{ log.key.componentName  }}</span>
+                </td>
 
-          <td
-            data-title="'Component'">
-            <span ng-if="component.key">{{ component.key.componentName  }}</span>
-          </td>
+                <td
+                  data-title="'Message'">
+                  {{ log.message }}
+                </td>
 
-          <td
-            data-title="'Message'">
-            {{ component.message }}
-          </td>
-
-        </tr>
-      </table>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

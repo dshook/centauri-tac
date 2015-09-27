@@ -23,14 +23,28 @@ export default class ClientLogController
       this.logFilterOptions.forEach(x => this.filter[x] = true)
     );
 
-    const t = $interval(() => this.refresh(), REFRESH_INTERVAL);
-    $scope.$on('$destroy', () => $interval.cancel(t));
+    //const t = $interval(() => this.refresh(), REFRESH_INTERVAL);
+    //$scope.$on('$destroy', () => $interval.cancel(t));
+
+    this.filterDirty = true;
+    this._filteredLog = null;
 
   }
 
   get filteredLog()
   {
-    return this.log.filter(x => this.filter[x.level] );
+    if(this.filterDirty){
+      this._filteredLog = this.filterLog();
+    }
+    return this._filteredLog;
+  }
+
+  filterLog(){
+    this.filterDirty = false;    
+    return _.groupBy( 
+      this.log.filter(x => this.filter[x.level] ),
+      (x) => x.key ? x.key.clientId : ''
+    );
   }
 
   get logFilterOptions()
@@ -50,6 +64,7 @@ export default class ClientLogController
     else {
       this.filter[level] = false;
     }
+    this.filterDirty = true;
   }
 
   buttonClass(level){
@@ -79,5 +94,6 @@ export default class ClientLogController
     const log = await this.transport.get('clientlog', 'read');
 
     this.log = log.map(c => ClientLog.fromJSON(c));
+    this.filterDirty = true;
   }
 }
