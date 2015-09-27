@@ -9,32 +9,22 @@
 
       <div class="table-filters form-inline">
 
-        <div
-           dropdown
-          class="form-group">
+        <div class="form-group">
           <label>
             <i class="fa fa-globe"></i> Filter
           </label><br>
-          <button class="btn btn-default" dropdown-toggle>
-            <span ng-if="vm.realmFilter">{{ vm.realmFilter }}</span>
-            <span ng-if="!vm.realmFilter">(no filter)</span>
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" >
-            <li ng-repeat="option in vm.logFilterOptions">
-              <a href ng-click="vm.setRealmFilter(option)">
-                <span realm="option"></span>
-              </a>
-            </li>
-            <li class="divider"></li>
-            <li><a href ng-click="vm.setRealmFilter(null)">(clear filter)</a></li>
-          </ul>
+          <div ng-repeat="option in vm.logFilterOptions">
+            <button class="{{ vm.buttonClass(option) }}" ng-click="vm.setRealmFilter(option)">
+              <span realm="option"></span>
+            </button>
+          </div>
+          <button class="btn" ng-click="vm.setRealmFilter(null)">(clear filter)</button>
         </div>
 
       </div>
 
       <h4>
-        {{ vm.filteredComponents.length || 0 }} filtered / {{ vm.log.length }} total
+        {{ vm.filteredLog.length || 0 }} filtered / {{ vm.log.length }} total
       </h4>
 
       <table
@@ -42,7 +32,7 @@
         ng-table>
         <tr
           ng-class="{danger: false}"
-          ng-repeat="component in vm.filteredComponents
+          ng-repeat="component in vm.filteredLog
             | orderBy : 'timestamp'
             ">
 

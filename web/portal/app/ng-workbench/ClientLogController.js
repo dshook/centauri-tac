@@ -2,7 +2,7 @@ import ngApply from 'ng-apply-decorator';
 import ClientLog from 'models/ClientLog';
 import _ from 'lodash';
 
-const REFRESH_INTERVAL = 5000;
+const REFRESH_INTERVAL = 10000;
 
 export default class ClientLogController
 {
@@ -22,7 +22,7 @@ export default class ClientLogController
 
   }
 
-  get filteredComponents()
+  get filteredLog()
   {
     if (!this.logFilter) {
       return this.log;
@@ -33,9 +33,11 @@ export default class ClientLogController
 
   get logFilterOptions()
   {
-    return _.unique(this.log
+    return _.unique(
+        this.log
         .filter(x => x.level)
-        .map(x => x.level));
+        .map(x => x.level)
+    );
   }
 
   setRealmFilter(filter)
@@ -48,6 +50,26 @@ export default class ClientLogController
     else {
       this.$cookies.put('logFilter', filter);
     }
+  }
+
+  buttonClass(level){
+    return 'btn btn-' + this.levelClass(level);    
+  }
+
+  levelClass(level){
+    level = level.toLowerCase();
+    switch(level){
+      case 'info':
+      case 'warning':
+        return level;
+      case 'net':
+        return 'primary'
+      case 'error':
+        return 'danger'
+      default:
+        return '';      
+    }
+
   }
 
   @ngApply async refresh()
