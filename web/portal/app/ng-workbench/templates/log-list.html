@@ -25,41 +25,55 @@
 
       <div class="container-fluid">
         <div class="row">
-          <div
-            ng-repeat="(logKey, logGroup) in vm.filteredLog"
-            class="col-md-4">
-            <h3>{{logKey}}</h3>
-            <table
-              class="table table-striped table-limitsize"
-              ng-table>
-              <tr
-                ng-repeat="log in logGroup
-                  | orderBy : 'timestamp'
-                  ">
-
-                <td
-                  data-title="'Timestamp'">
-                  <span>{{ log.timestamp.format("HH:mm:ss.SSS") }}</span>
-                </td>
-
-                <td
-                  data-title="'Level'">
-                  <span class="label label-{{vm.levelClass(log.level)}}">{{ log.level }}</span>
-                </td>
-
-                <td
-                  data-title="'Component'">
-                  <span ng-if="log.key">{{ log.key.componentName  }}</span>
-                </td>
-
-                <td
-                  data-title="'Message'" class="limit">
-                  {{ log.message }}
-                </td>
-
+          <table class="table table-striped table-limitsize" >
+            <thead>
+              <tr>
+                  <th ng-repeat="(logKey, logGroup) in vm.filteredLog" colspan="4">
+                   {{ logKey }}
+                  </th> 
               </tr>
-            </table>
-          </div>
+              <tr>
+                <th ng-if="0" ng-repeat-start="(logKey, logGroup) in vm.filteredLog"></th>
+                  <th>Timestamp</th>
+                  <th>Level</th>
+                  <th>Component</th>
+                  <th class="column-edge">Message</th>
+                <th ng-if="0" ng-repeat-end></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="logRow in vm.filteredLog.General ">
+                <td ng-if="0" 
+                  ng-repeat-start="(logKey, logGroup) in vm.filteredLog"
+                ></td>
+                  <td
+                    ng-init="log = logGroup[$parent.$index]"
+                    data-title="'Timestamp'"
+                  >
+                    <span ng-if="log.level">
+                      {{ log.timestamp.format("HH:mm:ss.SSS") }}
+                    </span>
+                  </td>
+
+                  <td
+                    data-title="'Level'">
+                    <span class="label label-{{vm.levelClass(log.level)}}">{{ log.level }}</span>
+                  </td>
+
+                  <td
+                    data-title="'Component'">
+                    <span ng-if="log.key">{{ log.key.componentName  }}</span>
+                  </td>
+
+                  <td
+                    data-title="'Message'" class="limit column-edge">
+                    {{ log.message }}
+                  </td>
+
+                <td ng-if="0" ng-repeat-end></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

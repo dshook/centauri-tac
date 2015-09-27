@@ -73,6 +73,11 @@ export default class ClientLogController
       }
     }
 
+    //order the groups
+    for(let logKey in groupedLogs){
+      groupedLogs[logKey] = _.sortBy(groupedLogs[logKey], x => x.timestamp);
+    }
+
     return groupedLogs;
   }
 
