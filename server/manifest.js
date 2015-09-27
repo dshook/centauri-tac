@@ -16,6 +16,7 @@ import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import DispatchComponent from './components/DispatchComponent.js';
 import MatchmakerComponent from './components/MatchmakerComponent.js';
+import ClientlogComponent from './components/ClientlogComponent.js';
 
 // common things for all backend components
 const common = [
@@ -33,6 +34,13 @@ export default {
 
   matchmaker: {
     TComponent: MatchmakerComponent,
+    services: [
+      ...common,
+    ],
+  },
+
+  clientlog: {
+    TComponent: ClientlogComponent,
     services: [
       ...common,
     ],

@@ -103,6 +103,7 @@ functionality:
 * `matchmaker` Automatch queue
 * `workbench` Server app to run locally to enable game content management via
   the portal
+* `clientlog` Server app to monitor log files and serve them up
 
 ### Environment Variables
 
@@ -118,4 +119,5 @@ Variable | Notes | Example
 `AUTH_SECRET` | Secret used to sign API auth tokens | `aReallyDamnGoodSecret`
 `PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
 `PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`
+`CLIENT_LOG` | Where to find the client log file to serve up | `./client_log.json`
 
