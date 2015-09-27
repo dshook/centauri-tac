@@ -43,7 +43,7 @@ export default class ClientLogController
     this.filterDirty = false;    
     return _.groupBy( 
       this.log.filter(x => this.filter[x.level] ),
-      (x) => x.key ? x.key.clientId : ''
+      (x) => x.key ? x.key.clientId : 'General'
     );
   }
 
