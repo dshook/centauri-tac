@@ -4,6 +4,7 @@ import htmlNav from './nav.html';
 import ngHome from '../ng-home';
 import ngSm from '../ng-sm';
 import ngSandbox from '../ng-sandbox';
+import ngWorkbench from '../ng-workbench';
 import authenticator from './authenticator.js';
 import NavController from './NavController.js';
 
@@ -16,6 +17,7 @@ export default angular.module('centauri.app-base', [
   ngHome.name,
   ngSm.name,
   ngSandbox.name,
+  ngWorkbench.name,
 
 ])
 .config(($stateProvider) => {

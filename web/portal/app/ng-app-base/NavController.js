@@ -36,6 +36,7 @@ export default class NavController
         title: 'Workbench',
         icon: 'object-ungroup',
         items: [
+          { title: 'Error Log', sref: '.workbench.client-log'},
           { title: 'Card list', sref: '.workbench.cards.list', disabled: true },
         ],
       },
