@@ -41,10 +41,39 @@ export default class ClientLogController
 
   filterLog(){
     this.filterDirty = false;    
-    return _.groupBy( 
+    var groupedLogs = _.groupBy( 
       this.log.filter(x => this.filter[x.level] ),
       (x) => x.key ? x.key.clientId : 'General'
     );
+
+    //"fill out" all the groups of logs based on timestamps 
+    //so they can be displayed as one table
+    for(let logKey in groupedLogs){
+      for(let l = 0; l < groupedLogs[logKey].length; l++){
+        let log = groupedLogs[logKey][l];
+        let timestamp = log.timestamp;
+        let numAtTimestamp = _.filter(
+          groupedLogs[logKey], x => x.timestamp.isSame(timestamp)
+        ).length;
+
+        //iterate over the other groups to fill in
+        for(let otherLogsKey in groupedLogs){
+          if(otherLogsKey == logKey) continue;
+
+          let othersAtTimestamp = _.filter(
+            groupedLogs[otherLogsKey], x => x.timestamp.isSame(timestamp)
+          ).length;
+
+          for(let a = 0; a < (numAtTimestamp - othersAtTimestamp); a++){
+            let newCL = new ClientLog();
+            newCL.timestamp = timestamp;
+            groupedLogs[otherLogsKey].push(newCL);
+          }
+        }
+      }
+    }
+
+    return groupedLogs;
   }
 
   get logFilterOptions()
@@ -68,12 +97,14 @@ export default class ClientLogController
   }
 
   buttonClass(level){
+    if(!level) return '';
     return 'btn' +
       (this.filter[level] ? ' active' : '' ) + 
       ' btn-' + this.levelClass(level);    
   }
 
   levelClass(level){
+    if(!level) return '';
     level = level.toLowerCase();
     switch(level){
       case 'info':

@@ -33,7 +33,9 @@
               class="table table-striped table-limitsize"
               ng-table>
               <tr
-                ng-repeat="log in logGroup">
+                ng-repeat="log in logGroup
+                  | orderBy : 'timestamp'
+                  ">
 
                 <td
                   data-title="'Timestamp'">
