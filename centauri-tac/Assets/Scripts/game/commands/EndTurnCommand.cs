@@ -24,6 +24,9 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
+        public GamePassTurnModel gamePassModel { get; set; }
+
+        [Inject]
         public ISocketService socket { get; set; }
 
         [Inject]
@@ -35,11 +38,8 @@ namespace ctac
             {
                 minion.hasMoved = false;
             }
-            //hacktastic till turn comes from server
-            turnModel.currentTurnClientId = gamePlayers
-                .players
-                .Where(x => x.clientId != turnModel.currentTurnClientId)
-                .Select(x => x.clientId).FirstOrDefault();
+            turnModel.currentTurn = gamePassModel.id;
+            turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             debug.Log("Turn Ended");
             turnEnded.Dispatch();
         }

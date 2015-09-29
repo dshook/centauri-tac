@@ -13,6 +13,12 @@ namespace ctac
         public EndTurnSignal endTurnSignal { get; set; }
 
         [Inject]
+        public ISocketService socket { get; set; }
+
+        [Inject]
+        public GameTurnModel gameTurn { get; set; }
+
+        [Inject]
         public TurnEndedSignal turnEnded { get; set; }
 
         public override void OnRegister()
@@ -30,6 +36,7 @@ namespace ctac
 
         private void onTurnClicked()
         {
+            socket.Request(gameTurn.currentTurnClientId, "game", "endTurn");
             endTurnSignal.Dispatch();
         }
 

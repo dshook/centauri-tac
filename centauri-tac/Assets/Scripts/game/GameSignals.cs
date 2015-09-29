@@ -31,15 +31,22 @@ namespace ctac.signals
     public class MapCreatedSignal : Signal { }
 
     [Singleton]
-    public class TurnEndedSignal : Signal { }
-
-    [Singleton]
     public class MinionSelectedSignal : Signal<MinionModel> { }
 
     [Singleton]
     public class MinionMoveSignal : Signal<MinionModel, Tile> { }
 
     [Singleton]
+    public class ServerQueueProcessStart : Signal<int> { }
+
+    [Singleton]
+    public class ServerQueueProcessEnd : Signal<int> { }
+
+    [Singleton]
     public class EndTurnSignal : Signal { }
+    [Singleton]
+    public class ActionPassTurnSignal : Signal<GamePassTurnModel> { }
+    [Singleton]
+    public class TurnEndedSignal : Signal { }
 }
 

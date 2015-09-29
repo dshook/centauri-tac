@@ -18,12 +18,19 @@ namespace ctac
             {"token", typeof(TokenSignal) },
             {"_ping", typeof(PingSignal) },
             {"_latency", typeof(LatencySignal) },
+
+            {"qps", typeof(ServerQueueProcessStart) },
+            {"qpc", typeof(ServerQueueProcessEnd) },
             {"game", typeof(GamelistGameSignal) },
             {"game:current", typeof(CurrentGameSignal) },
+            {"action:PassTurn", typeof(ActionPassTurnSignal) },
+
+
             {"player:connect", typeof(PlayerConnectSignal) },
             {"player:join", typeof(PlayerJoinedSignal) },
             {"player:part", typeof(PlayerPartSignal) },
             {"player:disconnect", typeof(PlayerDisconnectSignal) },
+
             {"status", typeof(MatchmakerStatusSignal) },
         };
 
