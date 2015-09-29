@@ -27,12 +27,12 @@ namespace ctac
             if (player != null)
             {
                 //this must be a local player so just grab them
-                gamePlayers.players.Add(player);
+                gamePlayers.AddOrUpdate(player);
             }
             else
             {
                 //remote players need a new player obj created
-                gamePlayers.players.Add(new PlayerModel()
+                gamePlayers.AddOrUpdate(new PlayerModel()
                 {
                     clientId = Guid.NewGuid(),
                     isLocal = false,
@@ -42,7 +42,7 @@ namespace ctac
                 });
             }
 
-            debug.Log("Game Players " + gamePlayers.players.Count, socketKey);
+            debug.Log("Player Joined " + playerConnected.email + " Total Players " + gamePlayers.players.Count, socketKey);
 
         }
     }

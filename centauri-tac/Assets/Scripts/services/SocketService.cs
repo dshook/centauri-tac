@@ -63,7 +63,7 @@ namespace ctac
         public void PostConstruct()
         {
             root = contextView.GetComponent<SignalsRoot>();
-            quit.AddListener(DestroySocketService);
+            quit.AddListener(DestroySockets);
         }
 
         public void Request(Guid clientId, string componentName, string methodName, object data = null)
@@ -239,7 +239,7 @@ namespace ctac
             sockets.Remove(key);
         }
 
-        void DestroySocketService()
+        void DestroySockets()
         {
             foreach (var ws in sockets)
             {

@@ -1,4 +1,5 @@
 using strange.extensions.command.impl;
+using UnityEngine;
 
 namespace ctac
 {
@@ -10,9 +11,18 @@ namespace ctac
         [Inject]
         public SocketKey socketKey { get; set; }
 
+        [Inject]
+        public GamePlayersModel gamePlayers { get; set; }
+
         public override void Execute()
         {
-            socket.Request(socketKey, "part");
+            foreach (var player in gamePlayers.players)
+            {
+                socket.Request(player.clientId, "game", "part");
+            }
+
+            Application.Quit();
+            UnityEditor.EditorApplication.isPlaying = false;
         }
     }
 }

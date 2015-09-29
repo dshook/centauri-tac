@@ -1,4 +1,3 @@
-using ctac.signals;
 using strange.extensions.command.impl;
 using System.Linq;
 

@@ -16,5 +16,18 @@ namespace ctac
         {
             return players.Where(x => x.clientId == clientId).FirstOrDefault();
         }
+
+        public void AddOrUpdate(PlayerModel player)
+        {
+            var existing = players.FirstOrDefault(x => x.id == player.id);
+            if (existing == null)
+            {
+                players.Add(player);
+            }
+            else
+            {
+                player.CopyProperties(existing);
+            }
+        }
     }
 }
