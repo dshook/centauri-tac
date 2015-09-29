@@ -11,7 +11,7 @@ namespace ctac
     public interface IDebugService
     {
         void Log(object message, SocketKey key = null);
-        void LogNet(object message, SocketKey key = null);
+        void Log(object message, ErrorLevel level, SocketKey key = null);
         void LogWarning(object message, SocketKey key = null);
         void LogError(object message, SocketKey key = null);
     }
@@ -59,11 +59,6 @@ namespace ctac
             Log(message, ErrorLevel.Info, key);
         }
 
-        public void LogNet(object message, SocketKey key = null)
-        {
-            Log(message, ErrorLevel.Net, key);
-        }
-
         public void LogWarning(object message, SocketKey key = null)
         {
             Log(message, ErrorLevel.Warning, key);
@@ -107,7 +102,8 @@ namespace ctac
 
     public enum ErrorLevel
     {
-        Net,
+        NetSend,
+        NetRecv,
         Info,
         Warning,
         Error

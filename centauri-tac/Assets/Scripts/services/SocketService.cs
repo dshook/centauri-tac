@@ -133,6 +133,7 @@ namespace ctac
             }
 
             string message = methodName + " " + JsonConvert.SerializeObject(data);
+            debug.Log("Send: " + message, ErrorLevel.NetSend, key);
             ws.Send(message);
 
             yield return null;
@@ -140,7 +141,7 @@ namespace ctac
 
         private void onSocketMessage(SocketKey key, object sender, MessageEventArgs e)
         {
-            debug.LogNet("Msg: " + e.Data, key);
+            debug.Log("Msg: " + e.Data, ErrorLevel.NetRecv, key);
             //chop it up and convert to appropriate signal based on header
             var delimiterIndex = e.Data.IndexOf(' ');
             string messageType = e.Data.Substring(0, delimiterIndex);
