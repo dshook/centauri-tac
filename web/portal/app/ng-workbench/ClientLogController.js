@@ -41,10 +41,28 @@ export default class ClientLogController
 
   filterLog(){
     this.filterDirty = false;    
+    var catchAll = 'General';
+
     var groupedLogs = _.groupBy( 
       this.log.filter(x => this.filter[x.level] ),
-      (x) => x.key ? x.key.clientId : 'General'
+      (x) => x.key ? x.key.clientId : catchAll
     );
+
+    //ensure the default catch all group that may have been filtered out
+    if(!groupedLogs[catchAll]){
+      groupedLogs[catchAll] = [];
+    } 
+    //nasty ass add to new object so object properties will be sorted
+    var tmp = {};
+    var groupedLogKeys = Object.keys(groupedLogs).sort();
+
+    tmp[catchAll] = groupedLogs[catchAll];
+    for(let logKey of groupedLogKeys){
+      if(logKey == catchAll) continue;
+
+      tmp[logKey] = groupedLogs[logKey];
+    }
+    groupedLogs = tmp;
 
     //"fill out" all the groups of logs based on timestamps 
     //so they can be displayed as one table
