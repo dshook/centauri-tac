@@ -9,10 +9,7 @@
 
       <div class="table-filters form-inline">
 
-        <div class="form-group">
-          <label>
-            <i class="fa fa-globe"></i> Filter
-          </label>
+        <div class=" btn-toolbar">
           <button 
             ng-repeat="option in vm.logFilterOptions" 
             class="{{ vm.buttonClass(option) }}" 
@@ -57,7 +54,7 @@
 
                   <td
                     data-title="'Level'">
-                    <span class="label label-{{vm.levelClass(log.level)}}">{{ log.level }}</span>
+                    <span class="{{vm.labelClass(log.level)}}">{{ log.level }}</span>
                   </td>
 
                   <td

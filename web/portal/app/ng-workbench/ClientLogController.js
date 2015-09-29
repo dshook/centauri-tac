@@ -126,6 +126,12 @@ export default class ClientLogController
       ' btn-' + this.levelClass(level);    
   }
 
+  labelClass(level){
+    if(!level) return 'label';
+    return 'label ' +
+      (this.levelClass(level) ? ' label-' + this.levelClass(level) : '');
+  }
+
   levelClass(level){
     if(!level) return '';
     level = level.toLowerCase();
@@ -133,7 +139,8 @@ export default class ClientLogController
       case 'info':
       case 'warning':
         return level;
-      case 'net':
+      case 'netsend':
+      case 'netrecv':
         return 'primary'
       case 'error':
         return 'danger'
