@@ -158,9 +158,9 @@ namespace ctac
             {
                 signal = binder.GetInstance(signalType) as BaseSignal;
             }
-            catch
+            catch(Exception ex)
             {
-                debug.LogError("Could not get get instance of signal for " + messageType, key);
+                debug.LogError("Could not get get instance of signal for " + messageType + " " + signalType + " " + ex.ToString(), key);
                 return;
             }
             if (signal != null)
