@@ -5,8 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using WebSocketSharp;
-using strange.extensions.injector.api;
-using strange.extensions.signal.impl;
 using ctac.signals;
 
 namespace ctac
@@ -31,13 +29,7 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         [Inject]
-        public ICrossContextInjectionBinder binder { get; set; }
-
-        [Inject]
         public ComponentModel componentModel { get; set; } 
-
-        [Inject]
-        public ServiceTypeMapModel typeMap { get; set; }
 
         [Inject]
         public SignalDispatcherService signalDispatcher { get; set; }
@@ -147,65 +139,14 @@ namespace ctac
             string messageType = e.Data.Substring(0, delimiterIndex);
             string messageData = e.Data.Substring(delimiterIndex + 1);
 
-            var signalType = typeMap.Get(messageType);
-            if (signalType == null)
-            {
-                debug.LogWarning("No message type for " + messageType, key);
-                return;
-            }
-            BaseSignal signal = null;
-            try
-            {
-                signal = binder.GetInstance(signalType) as BaseSignal;
-            }
-            catch(Exception ex)
-            {
-                debug.LogError("Could not get get instance of signal for " + messageType + " " + signalType + " " + ex.ToString(), key);
-                return;
-            }
-            if (signal != null)
-            {
-                var signalDataTypes = signal.GetTypes();
-                bool attachKey = false;
-                if(signalDataTypes.Count == 2 && signalDataTypes[1] == typeof(SocketKey)) {
-                    attachKey = true;
+            signalDispatcher.ScheduleSignal(
+                new SignalData() {
+                    messageType = messageType,
+                    messageData = messageData,
+                    key = key
                 }
-                else if (signalDataTypes.Count != 1)
-                {
-                    debug.LogError("Signal can only have one type of data to dispatch", key);
-                    return;
-                }
-                var signalDataType = signalDataTypes[0];
-                var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
+            );
 
-                if (deserializedData == null)
-                {
-                    debug.LogWarning("Null data for " + messageType, key);
-                    return;
-                }
-
-                object[] signalData;
-                if (attachKey)
-                {
-                    signalData = new object[] { deserializedData, key };
-                }
-                else
-                {
-                    signalData = new object[] { deserializedData };
-                }
-
-                signalDispatcher.ScheduleSignal(
-                    new SignalData() {
-                        signal = signal,
-                        signalType = signalType,
-                        signalData = signalData
-                    }
-                );
-            }
-            else
-            {
-                debug.LogError("Could not find signal to dispatch from message type " + messageType, key);
-            }
         }
 
         private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
