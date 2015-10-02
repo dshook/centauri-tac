@@ -20,7 +20,7 @@ namespace ctac
         {
             if (active)
             {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+                if (CrossPlatformInputManager.GetButtonDown("Fire1") || CrossPlatformInputManager.GetButtonUp("Fire1"))
                 {
                     TestSelection();
                 }

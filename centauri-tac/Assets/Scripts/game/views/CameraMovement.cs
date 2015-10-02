@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
+using ctac;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -19,10 +19,20 @@ public class CameraMovement : MonoBehaviour
     {
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
-            dragOrigin = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-            camOrigin = transform.position;
-            dragging = true;
-            return;
+            //test click position to see if we hit the ground
+            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
+
+            RaycastHit objectHit;
+            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
+            {
+                if (objectHit.collider.gameObject.CompareTag("Tile"))
+                {
+                    dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+                    camOrigin = transform.position;
+                    dragging = true;
+                    return;
+                }
+            }
         }
 
         if (CrossPlatformInputManager.GetButtonUp("Fire1"))
@@ -33,7 +43,7 @@ public class CameraMovement : MonoBehaviour
 
         if (dragging)
         {
-            var mousePos = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+            var mousePos = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
             mouseDiff = mousePos - dragOrigin;
 
             //TODO: speed is still not right
