@@ -50,7 +50,9 @@ namespace ctac
             {
                 var minionModel = new MinionModel()
                 {
-                    gameObject = minion
+                    gameObject = minion,
+                    health = Random.Range(1, 10),
+                    attack = Random.Range(1, 10)
                 };
 
                 minion.GetComponent<MinionView>().minion = minionModel;

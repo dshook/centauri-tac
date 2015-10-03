@@ -12,6 +12,15 @@ namespace ctac {
 
         private float moveSpeed = 3f;
 
+        private TextMesh attackText;
+        private TextMesh healthText;
+
+        protected override void Start()
+        {
+            attackText = minion.gameObject.transform.FindChild("Attack").GetComponent<TextMesh>();
+            healthText = minion.gameObject.transform.FindChild("Health").GetComponent<TextMesh>();
+        }
+
         void Update()
         {
             if (path != null && path.Count > 0)
@@ -33,6 +42,12 @@ namespace ctac {
                     destination = null;
                     minion.isMoving = false;
                 }
+            }
+
+            if (attackText != null && healthText != null)
+            {
+                attackText.text = minion.attack.ToString();
+                healthText.text = minion.health.ToString();
             }
 
         }

@@ -19,5 +19,8 @@ namespace ctac
                 return gameObject.transform.position.ToTileCoordinates();
             }
         }
+
+        public int attack { get; set; }
+        public int health { get; set; }
     }
 }
