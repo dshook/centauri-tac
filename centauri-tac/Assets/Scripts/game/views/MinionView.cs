@@ -1,5 +1,6 @@
 ﻿using strange.extensions.mediation.impl;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace ctac {
@@ -12,13 +13,13 @@ namespace ctac {
 
         private float moveSpeed = 3f;
 
-        private TextMesh attackText;
-        private TextMesh healthText;
+        private TextMeshPro attackText;
+        private TextMeshPro healthText;
 
         protected override void Start()
         {
-            attackText = minion.gameObject.transform.FindChild("Attack").GetComponent<TextMesh>();
-            healthText = minion.gameObject.transform.FindChild("Health").GetComponent<TextMesh>();
+            attackText = minion.gameObject.transform.FindChild("Attack").GetComponent<TextMeshPro>();
+            healthText = minion.gameObject.transform.FindChild("Health").GetComponent<TextMeshPro>();
         }
 
         void Update()
