@@ -32,6 +32,9 @@ export default class CentauriTacGame
       // update game info
       await this.host.setGameState(3);
       await this.host.setAllowJoin(false);
+      
+      // bootup the main controller
+      await this.host.addController(GameController);
 
       // start first turn with random player
       const startingId = _.sample(this.players).id;
@@ -43,8 +46,6 @@ export default class CentauriTacGame
 
       await this.queue.processUntilDone();
 
-      // bootup the main controller
-      await this.host.addController(GameController);
       return;
     }
 
