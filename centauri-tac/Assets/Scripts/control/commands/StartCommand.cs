@@ -43,21 +43,13 @@ namespace ctac
 
             mapCreator.CreateMap(defaultMap);
 
-            //add minion view scripts to the existing minions, eventually will be set up from server
+            //remove any minions on the board for a clean slate
             minionsModel.minions = new List<MinionModel>();
             var taggedMinions = GameObject.FindGameObjectsWithTag("Minion");
             foreach (var minion in taggedMinions)
             {
-                var minionModel = new MinionModel()
-                {
-                    gameObject = minion,
-                    health = Random.Range(1, 10),
-                    attack = Random.Range(1, 10)
-                };
-
-                minion.GetComponent<MinionView>().minion = minionModel;
-                minionsModel.minions.Add(minionModel);
-             }
+                GameObject.Destroy(minion);
+            }
         }
     }
 }

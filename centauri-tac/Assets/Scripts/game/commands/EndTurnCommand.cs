@@ -27,9 +27,6 @@ namespace ctac
         public GamePassTurnModel gamePassModel { get; set; }
 
         [Inject]
-        public ISocketService socket { get; set; }
-
-        [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()

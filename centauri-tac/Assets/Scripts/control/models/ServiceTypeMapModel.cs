@@ -24,6 +24,7 @@ namespace ctac
             {"game", typeof(GamelistGameSignal) },
             {"game:current", typeof(CurrentGameSignal) },
             {"action:PassTurn", typeof(ActionPassTurnSignal) },
+            {"action:SpawnPiece", typeof(ActionSpawnPieceSignal) },
 
 
             {"player:connect", typeof(PlayerConnectSignal) },
