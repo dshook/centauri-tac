@@ -2,6 +2,8 @@ import {on} from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
 import GameController from './controllers/GameController.js';
 import PassTurn from './actions/PassTurn.js';
+import SpawnPiece from './actions/SpawnPiece.js';
+import Position from './models/Position.js';
 import _ from 'lodash';
 
 /**
@@ -34,6 +36,11 @@ export default class CentauriTacGame
       // start first turn with random player
       const startingId = _.sample(this.players).id;
       this.queue.push(new PassTurn(startingId));
+
+      // spawn hero game pieces
+      this.queue.push(new SpawnPiece(this.players[0].id, 1, new Position(0, 0, 0)));
+      this.queue.push(new SpawnPiece(this.players[1].id, 2, new Position(2, 0, 2)));
+
       await this.queue.processUntilDone();
 
       // bootup the main controller
