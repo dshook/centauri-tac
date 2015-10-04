@@ -141,9 +141,9 @@ export default class ClientLogController
         return level;
       case 'netsend':
       case 'netrecv':
-        return 'primary'
+        return 'primary';
       case 'error':
-        return 'danger'
+        return 'danger';
       default:
         return '';      
     }

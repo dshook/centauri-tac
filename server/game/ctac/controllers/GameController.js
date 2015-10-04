@@ -1,6 +1,7 @@
 import {on} from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
+import MovePiece from '../actions/MovePiece.js';
 
 /**
  * Deals with handling turn stuff and processing the action queue. "low level"
@@ -54,6 +55,17 @@ export default class GameController
     }
 
     const action = new PassTurn(id, player.id);
+    this.queue.push(action);
+    this.queue.processUntilDone();
+  }
+
+  /**
+   * Move a piece 
+   */
+  @on('playerCommand', x => x === 'move')
+  movePiece(command, pieceId, route)
+  {
+    const action = new MovePiece(pieceId, route);
     this.queue.push(action);
     this.queue.processUntilDone();
   }
