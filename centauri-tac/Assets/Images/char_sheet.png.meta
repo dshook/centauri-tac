@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e926dadc3090bc0429836bf2169b4a82
-timeCreated: 1441855850
+timeCreated: 1444000281
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -150,17 +150,17 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_1
       rect:
         serializedVersion: 2
         x: 24
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
@@ -170,7 +170,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
@@ -180,117 +180,117 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 72
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_4
       rect:
         serializedVersion: 2
         x: 96
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_5
       rect:
         serializedVersion: 2
         x: 120
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_6
       rect:
         serializedVersion: 2
         x: 144
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_7
       rect:
         serializedVersion: 2
         x: 168
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_8
       rect:
         serializedVersion: 2
         x: 192
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_9
       rect:
         serializedVersion: 2
         x: 216
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_10
       rect:
         serializedVersion: 2
         x: 240
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_11
       rect:
         serializedVersion: 2
         x: 264
-        y: 224
+        y: 225
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_12
       rect:
         serializedVersion: 2
         x: 0
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_13
       rect:
         serializedVersion: 2
         x: 24
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_14
       rect:
         serializedVersion: 2
         x: 48
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
@@ -300,7 +300,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 72
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
@@ -310,127 +310,127 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 96
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_17
       rect:
         serializedVersion: 2
         x: 120
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_18
       rect:
         serializedVersion: 2
         x: 144
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_19
       rect:
         serializedVersion: 2
         x: 168
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_20
       rect:
         serializedVersion: 2
         x: 192
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_21
       rect:
         serializedVersion: 2
         x: 216
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_22
       rect:
         serializedVersion: 2
         x: 240
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_23
       rect:
         serializedVersion: 2
         x: 264
-        y: 192
+        y: 193
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_24
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_25
       rect:
         serializedVersion: 2
         x: 24
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_26
       rect:
         serializedVersion: 2
         x: 48
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_27
       rect:
         serializedVersion: 2
         x: 72
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_28
       rect:
         serializedVersion: 2
         x: 96
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
@@ -440,671 +440,671 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 120
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_30
       rect:
         serializedVersion: 2
         x: 144
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_31
       rect:
         serializedVersion: 2
         x: 168
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_32
       rect:
         serializedVersion: 2
         x: 192
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_33
       rect:
         serializedVersion: 2
         x: 216
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_34
       rect:
         serializedVersion: 2
         x: 240
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_35
       rect:
         serializedVersion: 2
         x: 264
-        y: 160
+        y: 161
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_36
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_37
       rect:
         serializedVersion: 2
         x: 24
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_38
       rect:
         serializedVersion: 2
         x: 48
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_39
       rect:
         serializedVersion: 2
         x: 72
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_40
       rect:
         serializedVersion: 2
         x: 96
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_41
       rect:
         serializedVersion: 2
         x: 120
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_42
       rect:
         serializedVersion: 2
         x: 144
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_43
       rect:
         serializedVersion: 2
         x: 168
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_44
       rect:
         serializedVersion: 2
         x: 192
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_45
       rect:
         serializedVersion: 2
         x: 216
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_46
       rect:
         serializedVersion: 2
         x: 240
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_47
       rect:
         serializedVersion: 2
         x: 264
-        y: 128
+        y: 129
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_48
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_49
       rect:
         serializedVersion: 2
         x: 24
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_50
       rect:
         serializedVersion: 2
         x: 48
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_51
       rect:
         serializedVersion: 2
         x: 72
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_52
       rect:
         serializedVersion: 2
         x: 96
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_53
       rect:
         serializedVersion: 2
         x: 120
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_54
       rect:
         serializedVersion: 2
         x: 144
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_55
       rect:
         serializedVersion: 2
         x: 168
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_56
       rect:
         serializedVersion: 2
         x: 192
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_57
       rect:
         serializedVersion: 2
         x: 216
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_58
       rect:
         serializedVersion: 2
         x: 240
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_59
       rect:
         serializedVersion: 2
         x: 264
-        y: 96
+        y: 97
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_60
       rect:
         serializedVersion: 2
         x: 0
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_61
       rect:
         serializedVersion: 2
         x: 24
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_62
       rect:
         serializedVersion: 2
         x: 48
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_63
       rect:
         serializedVersion: 2
         x: 72
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_64
       rect:
         serializedVersion: 2
         x: 96
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_65
       rect:
         serializedVersion: 2
         x: 120
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_66
       rect:
         serializedVersion: 2
         x: 144
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_67
       rect:
         serializedVersion: 2
         x: 168
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_68
       rect:
         serializedVersion: 2
         x: 192
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_69
       rect:
         serializedVersion: 2
         x: 216
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_70
       rect:
         serializedVersion: 2
         x: 240
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_71
       rect:
         serializedVersion: 2
         x: 264
-        y: 64
+        y: 65
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_72
       rect:
         serializedVersion: 2
         x: 0
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_73
       rect:
         serializedVersion: 2
         x: 24
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_74
       rect:
         serializedVersion: 2
         x: 48
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_75
       rect:
         serializedVersion: 2
         x: 72
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_76
       rect:
         serializedVersion: 2
         x: 96
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_77
       rect:
         serializedVersion: 2
         x: 120
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_78
       rect:
         serializedVersion: 2
         x: 144
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_79
       rect:
         serializedVersion: 2
         x: 168
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_80
       rect:
         serializedVersion: 2
         x: 192
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_81
       rect:
         serializedVersion: 2
         x: 216
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_82
       rect:
         serializedVersion: 2
         x: 240
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_83
       rect:
         serializedVersion: 2
         x: 264
-        y: 32
+        y: 33
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_84
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_85
       rect:
         serializedVersion: 2
         x: 24
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_86
       rect:
         serializedVersion: 2
         x: 48
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_87
       rect:
         serializedVersion: 2
         x: 72
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_88
       rect:
         serializedVersion: 2
         x: 96
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_89
       rect:
         serializedVersion: 2
         x: 120
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_90
       rect:
         serializedVersion: 2
         x: 144
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_91
       rect:
         serializedVersion: 2
         x: 168
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_92
       rect:
         serializedVersion: 2
         x: 192
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_93
       rect:
         serializedVersion: 2
         x: 216
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_94
       rect:
         serializedVersion: 2
         x: 240
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: char_sheet_95
       rect:
         serializedVersion: 2
         x: 264
-        y: 0
+        y: 1
         width: 24
         height: 32
       alignment: 7
-      pivot: {x: 0, y: 0}
+      pivot: {x: .5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
