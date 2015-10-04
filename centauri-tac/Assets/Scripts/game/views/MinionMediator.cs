@@ -1,4 +1,3 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
 

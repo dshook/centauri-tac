@@ -3,11 +3,14 @@ using ctac.signals;
 using UnityEngine;
 using System.Linq;
 using System;
+using strange.extensions.context.api;
 
 namespace ctac
 {
     public class SpawnPieceCommand : Command
     {
+        [Inject(ContextKeys.CONTEXT_VIEW)]
+        public GameObject contextView { get; set; }
 
         [Inject]
         public SpawnPieceModel spawnedPiece { get; set; }
@@ -50,6 +53,7 @@ namespace ctac
                 spawnedPiece.position.Vector3,
                 Quaternion.identity
             ) as GameObject;
+            newMinion.transform.parent = contextView.transform;
 
             //set up display
             try
@@ -76,10 +80,12 @@ namespace ctac
                 attack = UnityEngine.Random.Range(1, 10)
             };
 
+            newMinion.AddComponent<MinionView>();
             newMinion.GetComponent<MinionView>().minion = minionModel;
+
             minionsModel.minions.Add(minionModel);
 
-            debug.Log(string.Format("Spawned minion {0} for player {1}", spawnedPiece.pieceResourceId, spawnedPiece.playerId));
+            debug.Log(string.Format("Spawned minion {0} for player {1}", spawnedPiece.pieceResourceId, spawnedPiece.playerId), socketKey);
         }
     }
 }
