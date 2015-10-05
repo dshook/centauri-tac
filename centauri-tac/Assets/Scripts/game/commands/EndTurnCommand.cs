@@ -31,12 +31,20 @@ namespace ctac
 
         public override void Execute()
         {
+            turnModel.currentTurn = gamePassModel.id;
+            turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             foreach (var minion in minionsModel.minions)
             {
                 minion.hasMoved = false;
+                if (minion.playerId == gamePassModel.to)
+                {
+                    minion.currentPlayerHasControl = true;
+                }
+                else
+                {
+                    minion.currentPlayerHasControl = false;
+                }
             }
-            turnModel.currentTurn = gamePassModel.id;
-            turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             debug.Log("Turn Ended");
             turnEnded.Dispatch();
         }

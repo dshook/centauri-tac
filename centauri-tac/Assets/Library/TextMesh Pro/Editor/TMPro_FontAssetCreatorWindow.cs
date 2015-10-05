@@ -24,7 +24,7 @@ namespace TMPro.EditorUtilities
 #if UNITY_5_1
             window.titleContent = new GUIContent("Asset Creator");
 #else
-            window.title = "Asset Creator";
+            window.titleContent.text = "Asset Creator";
 #endif
             window.Focus();
         }

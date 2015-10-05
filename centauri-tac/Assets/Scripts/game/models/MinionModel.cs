@@ -11,6 +11,8 @@ namespace ctac
 
         public GameObject gameObject { get; set; }
 
+        public bool currentPlayerHasControl { get; set; }
+
         public bool isMoving { get; set; }
 
         public bool hasMoved { get; set; }

@@ -39,7 +39,10 @@ namespace ctac
                 if (clickedObject.CompareTag("Minion"))
                 {
                     var minionView = clickedObject.GetComponent<MinionView>();
-                    minionSelected.Dispatch(minionView.minion);
+                    if (minionView.minion.currentPlayerHasControl)
+                    {
+                        minionSelected.Dispatch(minionView.minion);
+                    }
                     return;
                 }
 

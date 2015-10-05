@@ -16,10 +16,18 @@ namespace ctac {
         private TextMeshPro attackText;
         private TextMeshPro healthText;
 
+        private SpriteRenderer spriteRenderer;
+        private Material spriteDefault;
+        private Material moveOutline;
+
         protected override void Start()
         {
             attackText = minion.gameObject.transform.FindChild("Attack").GetComponent<TextMeshPro>();
             healthText = minion.gameObject.transform.FindChild("Health").GetComponent<TextMeshPro>();
+
+            spriteRenderer = minion.gameObject.GetComponentInChildren<SpriteRenderer>();
+            spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
+            moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
         }
 
         void Update()
@@ -49,6 +57,15 @@ namespace ctac {
             {
                 attackText.text = minion.attack.ToString();
                 healthText.text = minion.health.ToString();
+            }
+
+            if (minion.currentPlayerHasControl && !minion.hasMoved)
+            {
+                spriteRenderer.material = moveOutline;
+            }
+            else
+            {
+                spriteRenderer.material = spriteDefault;
             }
 
         }

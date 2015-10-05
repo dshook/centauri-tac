@@ -25,6 +25,9 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
+        public GameTurnModel turnModel { get; set; }
+
+            [Inject]
         public IDebugService debug { get; set; }
 
         private GameObject _minionPrefab { get; set; }
@@ -71,10 +74,13 @@ namespace ctac
                 debug.LogError("Could not load resources for id " + spawnedPiece.pieceResourceId + " " + ex.ToString(), socketKey);
             }
 
+            var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
+
             var minionModel = new MinionModel()
             {
                 id = spawnedPiece.id,
                 playerId = spawnedPiece.playerId,
+                currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newMinion,
                 health = UnityEngine.Random.Range(1, 10),
                 attack = UnityEngine.Random.Range(1, 10)
