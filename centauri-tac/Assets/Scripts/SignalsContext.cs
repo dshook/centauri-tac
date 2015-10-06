@@ -72,6 +72,7 @@ namespace ctac
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton();
             injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton();
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
+            injectionBinder.Bind<IMapService>().To<MapService>().ToSingleton();
 
 
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
