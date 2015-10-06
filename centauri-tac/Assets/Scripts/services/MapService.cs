@@ -94,7 +94,8 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                foreach (var neighborDict in GetNeighbors(current.position)) {
+                var neighbors = GetNeighbors(current.position);
+                foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
                         continue;
@@ -151,10 +152,15 @@ namespace ctac
 
             foreach (var currentDirection in toCheck)
             {
-                bool hasKey = mapModel.tiles.TryGetValue(currentDirection, out next);
-                if (hasKey)
+                //check it's not off the map
+                next = mapModel.tiles.Get(currentDirection);
+                if (next != null)
                 {
-                    ret.Add(currentDirection, next);
+                    //next check if there's an enemy occupying the space
+                    if (!minions.minions.Any(x => !x.currentPlayerHasControl && x.tilePosition == currentDirection))
+                    {
+                        ret.Add(currentDirection, next);
+                    }
                 }
             }
 
