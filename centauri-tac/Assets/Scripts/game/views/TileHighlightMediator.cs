@@ -69,7 +69,7 @@ namespace ctac
                 if (!selectedMinion.hasMoved)
                 {
                     //find movement
-                    var moveTiles = mapService.GetTilesInRadius(gameTile.position, 5);
+                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedMinion.moveDist);
                     //take out the central one
                     moveTiles.Remove(gameTile.position);
                     view.onMovableTiles(moveTiles);

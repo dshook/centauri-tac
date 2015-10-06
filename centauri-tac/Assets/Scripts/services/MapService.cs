@@ -7,9 +7,11 @@ namespace ctac
     public interface IMapService
     {
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
+        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
         List<Tile> FindPath(Tile start, Tile end, int maxDist);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center);
     }
 
     public class MapService : IMapService
@@ -22,8 +24,8 @@ namespace ctac
 
         public Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance)
         {
-            if (distance <= 0) return new Dictionary<Vector2, Tile>();
             var ret = new Dictionary<Vector2, Tile>();
+            if (distance <= 0) return ret;
             var frontier = new List<Vector2>();
 
             frontier.Add(center);
@@ -57,6 +59,52 @@ namespace ctac
             return ret;
         }
 
+        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance)
+        {
+            var ret = new Dictionary<Vector2, Tile>();
+            if (distance <= 0) return ret;
+            var frontier = new List<Vector2>();
+
+            var g_score = new Dictionary<Vector2, int>();
+            g_score[center] = 0;    // Cost from start along best known path.
+
+            frontier.Add(center);
+
+            while (frontier.Count > 0)
+            {
+                var current = frontier[0];
+                frontier.RemoveAt(0);
+
+                if (g_score[current] > distance)
+                {
+                    continue;
+                }
+
+                if (!ret.ContainsKey(current))
+                {
+                    ret.Add(current, mapModel.tiles[current]);
+                }
+
+                var neighbors = GetMovableNeighbors(current);
+                foreach (var neighbor in neighbors)
+                {
+                    //add the neighbor to explore if it's not already being returned 
+                    //or in the queue or too far away
+                    if (
+                        !ret.ContainsKey(neighbor.Key) 
+                        && !frontier.Contains(neighbor.Key)
+                        && TileDistance(neighbor.Key, center) <= distance
+                    )
+                    {
+                        g_score[neighbor.Key] = g_score[current] + 1;
+                        frontier.Add(neighbor.Key);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
 
         public int TileDistance(Vector2 a, Vector2 b)
         {
@@ -72,7 +120,7 @@ namespace ctac
             var closedset = new List<Tile>();
 
             // The set of tentative nodes to be evaluated, initially containing the start node
-            var openset = new List<Tile>(){ start };    
+            var openset = new List<Tile>(){ start };
 
             // The map of navigated nodes.
             var came_from = new Dictionary<Tile, Tile>();
@@ -94,7 +142,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetNeighbors(current.position);
+                var neighbors = GetMovableNeighbors(current.position);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -163,15 +211,19 @@ namespace ctac
                 next = mapModel.tiles.Get(currentDirection);
                 if (next != null)
                 {
-                    //next check if there's an enemy occupying the space
-                    if (!minions.minions.Any(x => !x.currentPlayerHasControl && x.tilePosition == currentDirection))
-                    {
-                        ret.Add(currentDirection, next);
-                    }
+                    ret.Add(currentDirection, next);
                 }
             }
-
             return ret;
+        }
+
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center)
+        {
+            var ret = GetNeighbors(center);
+
+            return ret
+                .Where(t => !minions.minions.Any(x => !x.currentPlayerHasControl && x.tilePosition == t.Key))
+                .ToDictionary(k => k.Key, v => v.Value);
         }
 
     }
