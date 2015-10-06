@@ -48,7 +48,7 @@ namespace ctac
             if (selectedMinion != null && tile != null && !selectedMinion.hasMoved)
             {
                 var gameTile = map.tiles.Get(selectedMinion.tilePosition);
-                var path = mapService.FindPath(gameTile, tile);
+                var path = mapService.FindPath(gameTile, tile, selectedMinion.moveDist);
                 view.onTileMovePath(path);
             }
             else

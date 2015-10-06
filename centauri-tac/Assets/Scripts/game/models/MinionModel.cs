@@ -26,6 +26,8 @@ namespace ctac
             }
         }
 
+        public int moveDist { get; set; }
+
         public int attack { get; set; }
         public int health { get; set; }
     }

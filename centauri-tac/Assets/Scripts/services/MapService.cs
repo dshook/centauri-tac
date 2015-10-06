@@ -8,7 +8,7 @@ namespace ctac
     {
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
-        List<Tile> FindPath(Tile start, Tile end);
+        List<Tile> FindPath(Tile start, Tile end, int maxDist);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
     }
 
@@ -63,7 +63,7 @@ namespace ctac
             return (int)(Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y));
         }
 
-        public List<Tile> FindPath(Tile start, Tile end)
+        public List<Tile> FindPath(Tile start, Tile end, int maxDist)
         {
             var ret = new List<Tile>();
             if(start == end) return ret;
@@ -103,7 +103,14 @@ namespace ctac
 
                     var tentative_g_score = getValueOrMax(g_score,current) + TileDistance(current.position, neighbor.position);
 
+
                     if (!openset.Contains(neighbor) || tentative_g_score < getValueOrMax(g_score,neighbor)) {
+                        //check for max dist along path
+                        if (tentative_g_score > maxDist)
+                        {
+                            continue;
+                        }
+
                         came_from[neighbor] = current;
                         g_score[neighbor] = tentative_g_score;
                         f_score[neighbor] = getValueOrMax(g_score,neighbor) + TileDistance(neighbor.position, end.position);

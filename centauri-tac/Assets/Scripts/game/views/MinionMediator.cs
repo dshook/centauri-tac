@@ -32,7 +32,7 @@ namespace ctac
             if (minionMoved != view.minion) return;
 
             var startTile = map.tiles.Get(minionMoved.tilePosition);
-            var path = mapService.FindPath(startTile, dest);
+            var path = mapService.FindPath(startTile, dest, minionMoved.moveDist);
 
             view.MovePath(path);
             minionMoved.hasMoved = true;
