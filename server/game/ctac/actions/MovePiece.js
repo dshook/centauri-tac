@@ -1,11 +1,12 @@
+import Position from '../models/Position.js';
 /**
- * Action that attemps to move a game piece along a route
+ * Action that attemps to move a game piece one step
  */
 export default class MovePiece
 {
-  constructor(pieceId, route)
+  constructor(pieceId, to)
   {
     this.pieceId = pieceId;
-    this.route = route;
+    this.to = new Position(to.x, to.y, to.z);
   }
 }

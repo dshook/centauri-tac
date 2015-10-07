@@ -27,7 +27,7 @@ namespace ctac
         [Inject]
         public GameTurnModel turnModel { get; set; }
 
-            [Inject]
+        [Inject]
         public IDebugService debug { get; set; }
 
         private GameObject _minionPrefab { get; set; }

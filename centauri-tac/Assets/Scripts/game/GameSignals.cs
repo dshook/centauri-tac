@@ -51,5 +51,8 @@ namespace ctac.signals
 
     [Singleton]
     public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
+
+    [Singleton]
+    public class MovePieceSignal : Signal<MovePieceModel, SocketKey> { }
 }
 
