@@ -23,5 +23,10 @@ namespace ctac
                 return new Vector3(x, y, z);
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format("({0}, {1:0.00}, {2})", x, y, z);
+        }
     }
 }
