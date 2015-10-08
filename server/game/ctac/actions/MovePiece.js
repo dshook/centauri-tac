@@ -6,6 +6,7 @@ export default class MovePiece
 {
   constructor(pieceId, to)
   {
+    this.id = null;
     this.pieceId = pieceId;
     this.to = new Position(to.x, to.y, to.z);
   }

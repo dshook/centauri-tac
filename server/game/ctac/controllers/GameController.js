@@ -63,13 +63,17 @@ export default class GameController
    * Move a piece 
    */
   @on('playerCommand', x => x === 'move')
-  movePiece(command, pieceId, route)
+  movePiece(command, data)
   {
-    for (let step of route) {
-      const action = new MovePiece(pieceId, step);
-      this.queue.push(action);
+    let {pieceId, route} = data;
+
+    if(route){
+      for (let step of route) {
+        const action = new MovePiece(pieceId, step);
+        this.queue.push(action);
+      }
+      this.queue.processUntilDone();
     }
-    this.queue.processUntilDone();
   }
 
   /**

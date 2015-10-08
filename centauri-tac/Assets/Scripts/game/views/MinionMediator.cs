@@ -1,5 +1,6 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using System.Linq;
 
 namespace ctac
 {
@@ -9,7 +10,10 @@ namespace ctac
         public MinionView view { get; set; }
 
         [Inject]
-        public MinionMoveSignal minionMove { get; set; }
+        public MoveMinionSignal moveMinion { get; set; }
+
+        [Inject]
+        public MinionMovedSignal minionMove { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
@@ -17,25 +21,42 @@ namespace ctac
         [Inject]
         public IMapService mapService { get; set; }
 
+        [Inject]
+        public GameTurnModel gameTurn { get; set; }
+
+        [Inject]
+        public ISocketService socket { get; set; }
+
         public override void OnRegister()
         {
-            minionMove.AddListener(onMinionMove);
+            moveMinion.AddListener(onRequestMove);
+            minionMove.AddListener(onMove);
         }
 
         public override void onRemove()
         {
-            minionMove.RemoveListener(onMinionMove);
+            moveMinion.RemoveListener(onRequestMove);
+            minionMove.RemoveListener(onMove);
         }
 
-        public void onMinionMove(MinionModel minionMoved, Tile dest)
+        public void onRequestMove(MinionModel minionMoved, Tile dest)
         {
             if (minionMoved != view.minion) return;
 
             var startTile = map.tiles.Get(minionMoved.tilePosition);
             var path = mapService.FindPath(startTile, dest, minionMoved.moveDist);
+            //format for server
+            var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();
+            socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = view.minion.id, route = serverPath });
 
-            view.MovePath(path);
             minionMoved.hasMoved = true;
+        }
+
+        public void onMove(MinionModel minionMoved, Tile dest)
+        {
+            if (minionMoved != view.minion) return;
+
+            view.AddToPath(dest);
         }
 
     }

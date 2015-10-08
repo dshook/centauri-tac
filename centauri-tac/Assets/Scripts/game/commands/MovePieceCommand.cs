@@ -22,19 +22,22 @@ namespace ctac
         public MovePieceModel movePiece { get; set; }
 
         [Inject]
-        public MinionMoveSignal minionMove { get; set; }
+        public MinionMovedSignal minionMove { get; set; }
+
+        [Inject]
+        public ActionsProcessedModel processedActions { get; set; }
 
         [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
         {
-            //check to see if this piece has already been moved by another player
-            //wrong atm
-            if (minionsModel.minions.Any(x => x.id == movePiece.pieceId))
+            //check to see if this action has already been processed by another player
+            if (processedActions.processedActions.Any(x => x == movePiece.id))
             {
                 return;
             }
+            processedActions.processedActions.Add(movePiece.id);
 
             var minion = minionsModel.minions.FirstOrDefault(x => x.id == movePiece.pieceId);
             var tile = map.tiles[movePiece.to.Vector3.ToTileCoordinates()];

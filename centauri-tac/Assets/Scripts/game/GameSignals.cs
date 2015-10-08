@@ -34,7 +34,11 @@ namespace ctac.signals
     public class MinionSelectedSignal : Signal<MinionModel> { }
 
     [Singleton]
-    public class MinionMoveSignal : Signal<MinionModel, Tile> { }
+    public class MoveMinionSignal : Signal<MinionModel, Tile> { }
+    [Singleton]
+    public class ActionMovePieceSignal : Signal<MovePieceModel, SocketKey> { }
+    [Singleton]
+    public class MinionMovedSignal : Signal<MinionModel, Tile> { }
 
     [Singleton]
     public class ServerQueueProcessStart : Signal<int> { }
@@ -51,8 +55,5 @@ namespace ctac.signals
 
     [Singleton]
     public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
-
-    [Singleton]
-    public class MovePieceSignal : Signal<MovePieceModel, SocketKey> { }
 }
 

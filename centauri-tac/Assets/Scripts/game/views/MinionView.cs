@@ -8,7 +8,7 @@ namespace ctac {
     {
         public MinionModel minion { get; set; }
 
-        private List<Tile> path;
+        private List<Tile> path = new List<Tile>();
         private Vector3? destination = null;
 
         private float moveSpeed = 3f;
@@ -70,9 +70,9 @@ namespace ctac {
 
         }
 
-        public void MovePath(List<Tile> path)
+        public void AddToPath(Tile tile)
         {
-            this.path = path;
+            this.path.Add(tile);
         }
     }
 }

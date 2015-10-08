@@ -13,7 +13,7 @@ namespace ctac
         public MinionSelectedSignal minionSelected { get; set; }
 
         [Inject]
-        public MinionMoveSignal minionMove { get; set; }
+        public MoveMinionSignal moveMinion { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
@@ -52,7 +52,7 @@ namespace ctac
 
                     if (FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) && selectedMinion != null)
                     {
-                        minionMove.Dispatch(selectedMinion, gameTile);
+                        moveMinion.Dispatch(selectedMinion, gameTile);
                         minionSelected.Dispatch(null);
                     }
                 }
