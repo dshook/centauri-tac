@@ -82,8 +82,10 @@ namespace ctac
                 playerId = spawnedPiece.playerId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newMinion,
-                health = UnityEngine.Random.Range(1, 10),
-                attack = UnityEngine.Random.Range(1, 10),
+                attack = spawnedPiece.attack,
+                health = spawnedPiece.health,
+                originalAttack = spawnedPiece.attack,
+                originalHealth = spawnedPiece.health,
                 moveDist = 5
             };
 

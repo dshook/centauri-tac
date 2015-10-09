@@ -10,46 +10,21 @@ namespace ctac
         public MinionView view { get; set; }
 
         [Inject]
-        public MoveMinionSignal moveMinion { get; set; }
+        public MinionMovedSignal minionMoved { get; set; }
 
         [Inject]
-        public MinionMovedSignal minionMove { get; set; }
-
-        [Inject]
-        public MapModel map { get; set; }
-
-        [Inject]
-        public IMapService mapService { get; set; }
-
-        [Inject]
-        public GameTurnModel gameTurn { get; set; }
-
-        [Inject]
-        public ISocketService socket { get; set; }
+        public MinionAttackedSignal minionAttacked { get; set; }
 
         public override void OnRegister()
         {
-            moveMinion.AddListener(onRequestMove);
-            minionMove.AddListener(onMove);
+            minionMoved.AddListener(onMove);
+            minionAttacked.AddListener(onAttacked);
         }
 
         public override void onRemove()
         {
-            moveMinion.RemoveListener(onRequestMove);
-            minionMove.RemoveListener(onMove);
-        }
-
-        public void onRequestMove(MinionModel minionMoved, Tile dest)
-        {
-            if (minionMoved != view.minion) return;
-
-            var startTile = map.tiles.Get(minionMoved.tilePosition);
-            var path = mapService.FindPath(startTile, dest, minionMoved.moveDist);
-            //format for server
-            var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();
-            socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = view.minion.id, route = serverPath });
-
-            minionMoved.hasMoved = true;
+            minionMoved.RemoveListener(onMove);
+            minionAttacked.RemoveListener(onAttacked);
         }
 
         public void onMove(MinionModel minionMoved, Tile dest)
@@ -57,6 +32,23 @@ namespace ctac
             if (minionMoved != view.minion) return;
 
             view.AddToPath(dest);
+        }
+
+        public void onAttacked(AttackPieceModel attackPiece)
+        {
+            if (attackPiece.attackingPieceId == view.minion.id)
+            {
+                view.minion.health = attackPiece.attackerNewHp;
+            }
+            else if (attackPiece.targetPieceId == view.minion.id)
+            {
+                view.minion.health = attackPiece.targetNewHp;
+            }
+
+            if (view.minion.health < 0)
+            {
+                Destroy(view.minion.gameObject);
+            }
         }
 
     }

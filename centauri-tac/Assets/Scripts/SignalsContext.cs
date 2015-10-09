@@ -112,7 +112,11 @@ namespace ctac
 
             commandBinder.Bind<ActionPassTurnSignal>().To<EndTurnCommand>();
             commandBinder.Bind<ActionSpawnPieceSignal>().To<SpawnPieceCommand>();
-            commandBinder.Bind<ActionMovePieceSignal>().To<MovePieceCommand>();
+
+            commandBinder.Bind<MoveMinionSignal>().To<MovePieceCommand>();
+            commandBinder.Bind<ActionMovePieceSignal>().To<PieceMovedCommand>();
+
+            commandBinder.Bind<AttackMinionSignal>().To<AttackPieceCommand>();
 
         }
     }

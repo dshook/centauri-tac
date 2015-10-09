@@ -11,6 +11,8 @@ import HostManager from '../game/HostManager.js';
 import ActionQueueService from './ctac/services/ActionQueueService.js';
 import TurnService from './ctac/services/TurnService.js';
 import SpawnService from './ctac/services/SpawnService.js';
+import MoveService from './ctac/services/MoveService.js';
+import AttackService from './ctac/services/AttackService.js';
 
 /**
  * Top-level entity for a running game
@@ -57,6 +59,8 @@ export default class GameHost extends EventEmitter
     app.service(ActionQueueService);
     app.service(TurnService);
     app.service(SpawnService);
+    app.service(MoveService);
+    app.service(AttackService);
 
     await app.start();
 

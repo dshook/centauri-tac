@@ -13,6 +13,9 @@ namespace ctac
         public MinionSelectedSignal minionSelected { get; set; }
 
         [Inject]
+        public AttackMinionSignal attackMinion { get; set; }
+
+        [Inject]
         public MoveMinionSignal moveMinion { get; set; }
 
         [Inject]
@@ -42,6 +45,17 @@ namespace ctac
                     if (minionView.minion.currentPlayerHasControl)
                     {
                         minionSelected.Dispatch(minionView.minion);
+                    }
+                    else
+                    {
+                        if (selectedMinion != null)
+                        {
+                            attackMinion.Dispatch(new AttackPieceModel()
+                            {
+                                attackingPieceId = selectedMinion.id,
+                                targetPieceId = minionView.minion.id
+                            });
+                        }
                     }
                     return;
                 }

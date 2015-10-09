@@ -8,6 +8,8 @@ export default class GamePiece
     this.resourceId = null;
     this.playerId = null;
     this.position = new Position();
+    this.attack = null;
+    this.health = null;
   }
 
 }

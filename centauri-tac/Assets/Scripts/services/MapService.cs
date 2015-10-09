@@ -11,7 +11,7 @@ namespace ctac
         int TileDistance(Vector2 a, Vector2 b);
         List<Tile> FindPath(Tile start, Tile end, int maxDist);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null);
     }
 
     public class MapService : IMapService
@@ -142,7 +142,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetMovableNeighbors(current.position);
+                var neighbors = GetMovableNeighbors(current.position, end);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -217,13 +217,22 @@ namespace ctac
             return ret;
         }
 
-        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center)
+        /// <summary>
+        /// Find neighboring tiles that aren't occupied by enemies,
+        /// but always include the dest tile for attacking if it's passed
+        /// </summary>
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null)
         {
             var ret = GetNeighbors(center);
 
             return ret
-                .Where(t => !minions.minions.Any(x => !x.currentPlayerHasControl && x.tilePosition == t.Key))
-                .ToDictionary(k => k.Key, v => v.Value);
+                .Where(t => 
+                    !minions.minions.Any(m => 
+                        (dest == null || dest.position != m.tilePosition ) 
+                        && !m.currentPlayerHasControl 
+                        && m.tilePosition == t.Key
+                    )
+                ).ToDictionary(k => k.Key, v => v.Value);
         }
 
     }

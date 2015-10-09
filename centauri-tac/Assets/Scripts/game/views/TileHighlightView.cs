@@ -13,6 +13,7 @@ namespace ctac
 
         Tile hoveredTile = null;
         Tile selectedTile = null;
+        Tile attackTile = null;
         Dictionary<Vector2, Tile> moveTiles = null;
         List<Tile> pathTiles = null;
 
@@ -127,6 +128,20 @@ namespace ctac
                 {
                     FlagsHelper.Set(ref tile.Value.highlightStatus, TileHighlightStatus.Movable);
                 }
+            }
+        }
+
+        internal void onAttackTile(Tile newTile)
+        {
+            if (attackTile != null)
+            {
+                FlagsHelper.Unset(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
+            }
+
+            attackTile = newTile;
+            if (attackTile != null)
+            {
+                FlagsHelper.Set(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
             }
         }
     }

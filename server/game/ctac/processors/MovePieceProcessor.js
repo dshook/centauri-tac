@@ -1,5 +1,5 @@
 import GamePiece from '../models/GamePiece.js';
-import MovePiece from '../actions/MovePiece.js.js';
+import MovePiece from '../actions/MovePiece.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -8,10 +8,9 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class MovePieceProcessor
 {
-  constructor(pieceState, players)
+  constructor(pieceState)
   {
     this.pieceState = pieceState;
-    this.players = players;
   }
 
   /**
@@ -24,7 +23,13 @@ export default class MovePieceProcessor
     }
 
     //TODO: validate against board state and all that jazz
-    var piece = this.pieceState.pieces.filter(x => x.id == action.pieceId);
+    var piece = this.pieceState.pieces.filter(x => x.id == action.pieceId)[0];
+    if(!piece){
+      this.log.info('Could not find piece %s to move %j', action.pieceId, this.pieceState);
+      queue.cancel(action);
+      return;
+    }
+
     var currentPosition = piece.position;
     piece.position = action.to;
 

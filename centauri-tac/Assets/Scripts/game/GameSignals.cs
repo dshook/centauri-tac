@@ -41,6 +41,13 @@ namespace ctac.signals
     public class MinionMovedSignal : Signal<MinionModel, Tile> { }
 
     [Singleton]
+    public class AttackMinionSignal : Signal<AttackPieceModel> { }
+    [Singleton]
+    public class ActionAttackPieceSignal : Signal<AttackPieceModel, SocketKey> { }
+    [Singleton]
+    public class MinionAttackedSignal : Signal<AttackPieceModel> { }
+
+    [Singleton]
     public class ServerQueueProcessStart : Signal<int> { }
 
     [Singleton]

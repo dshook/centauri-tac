@@ -1,6 +1,7 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using System.Linq;
 
 namespace ctac
 {
@@ -17,6 +18,9 @@ namespace ctac
 
         [Inject]
         public MapModel map { get; set; }
+
+        [Inject]
+        public MinionsModel pieces { get; set; }
 
         [Inject]
         public IMapService mapService { get; set; }
@@ -50,10 +54,20 @@ namespace ctac
                 var gameTile = map.tiles.Get(selectedMinion.tilePosition);
                 var path = mapService.FindPath(gameTile, tile, selectedMinion.moveDist);
                 view.onTileMovePath(path);
+
+                if (pieces.minions.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl))
+                {
+                    view.onAttackTile(tile);
+                }
+                else
+                {
+                    view.onAttackTile(null);
+                }
             }
             else
             {
                 view.onTileMovePath(null);
+                view.onAttackTile(null);
             }
         }
 

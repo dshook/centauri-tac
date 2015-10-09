@@ -67,6 +67,6 @@ export default class CentauriTacGame
   @on('playerCommand')
   logger(command, data, player)
   {
-    this.log.info('%s -> %s: %s', player.email, command, data);
+    this.log.info('%s -> %s: %j', player.email, command, data);
   }
 }

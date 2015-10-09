@@ -26,6 +26,7 @@ namespace ctac
             {"action:PassTurn", typeof(ActionPassTurnSignal) },
             {"action:SpawnPiece", typeof(ActionSpawnPieceSignal) },
             {"action:MovePiece", typeof(ActionMovePieceSignal) },
+            {"action:AttackPiece", typeof(ActionAttackPieceSignal) },
 
 
             {"player:connect", typeof(PlayerConnectSignal) },

@@ -2,6 +2,7 @@ import {on} from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 import MovePiece from '../actions/MovePiece.js';
+import AttackPiece from '../actions/AttackPiece.js';
 
 /**
  * Deals with handling turn stuff and processing the action queue. "low level"
@@ -74,6 +75,21 @@ export default class GameController
       }
       this.queue.processUntilDone();
     }
+  }
+
+  @on('playerCommand', x => x === 'moveattack')
+  moveAttackPiece(command, data)
+  {
+    let {attackingPieceId, targetPieceId, route} = data;
+
+    if(route){
+      for (let step of route) {
+        this.queue.push(new MovePiece(attackingPieceId, step));
+      }
+    }
+    this.queue.push(new AttackPiece(attackingPieceId, targetPieceId));
+
+    this.queue.processUntilDone();
   }
 
   /**

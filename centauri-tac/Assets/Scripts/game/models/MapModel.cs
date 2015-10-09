@@ -28,7 +28,8 @@ namespace ctac
         Highlighted = 1,
         Selected = 2,
         Movable = 4,
-        PathFind = 8
+        PathFind = 8,
+        Attack = 16
     }
 }
 
