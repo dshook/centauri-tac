@@ -117,6 +117,7 @@ namespace ctac
             commandBinder.Bind<ActionMovePieceSignal>().To<PieceMovedCommand>();
 
             commandBinder.Bind<AttackMinionSignal>().To<AttackPieceCommand>();
+            commandBinder.Bind<ActionAttackPieceSignal>().To<PieceAttackedCommand>();
 
         }
     }

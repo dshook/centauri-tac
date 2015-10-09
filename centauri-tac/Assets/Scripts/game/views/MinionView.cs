@@ -53,11 +53,8 @@ namespace ctac {
                 }
             }
 
-            if (attackText != null && healthText != null)
-            {
-                attackText.text = minion.attack.ToString();
-                healthText.text = minion.health.ToString();
-            }
+            UpdateText(attackText, minion.attack, minion.originalAttack);
+            UpdateText(healthText, minion.health, minion.originalHealth);
 
             if (minion.currentPlayerHasControl && !minion.hasMoved)
             {
@@ -68,6 +65,25 @@ namespace ctac {
                 spriteRenderer.material = spriteDefault;
             }
 
+        }
+
+        private void UpdateText(TextMeshPro text, int current, int original)
+        {
+            if(text == null) return;
+
+            text.text = current.ToString();
+            if (current > original)
+            {
+                text.color = Color.green;
+            }
+            else if (current < original)
+            {
+                text.color = Color.red;
+            }
+            else
+            {
+                text.color = Color.white;
+            }
         }
 
         public void AddToPath(Tile tile)

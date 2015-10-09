@@ -78,7 +78,7 @@ namespace ctac
 
             var minionModel = new MinionModel()
             {
-                id = spawnedPiece.id,
+                id = spawnedPiece.pieceId,
                 playerId = spawnedPiece.playerId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newMinion,

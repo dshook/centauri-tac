@@ -35,6 +35,9 @@ export default class AttackPieceProcessor
     action.attackerNewHp = attacker.health - target.attack;
     action.targetNewHp = target.health - attacker.attack;
 
+    attacker.health = action.attackerNewHp;
+    target.health = action.targetNewHp;
+
     this.log.info('piece %s (%s/%s) attacked %s (%s/%s)',
       attacker.id, attacker.attack, attacker.health,
       target.id, target.attack, target.health);

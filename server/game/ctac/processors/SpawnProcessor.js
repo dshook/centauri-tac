@@ -33,7 +33,7 @@ export default class SpawnProcessor
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
     newPiece.resourceId = action.pieceResourceId;
-    newPiece.attack = Random.Range(1, 10);
+    newPiece.attack = Random.Range(1, 4);
     newPiece.health = Random.Range(1, 10);
 
     action.attack = newPiece.attack;

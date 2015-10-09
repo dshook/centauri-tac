@@ -55,6 +55,7 @@ namespace ctac
                                 attackingPieceId = selectedMinion.id,
                                 targetPieceId = minionView.minion.id
                             });
+                            minionSelected.Dispatch(null);
                         }
                     }
                     return;
