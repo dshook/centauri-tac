@@ -8,8 +8,8 @@ namespace ctac {
     {
         public MinionModel minion { get; set; }
 
-        private List<IAnimate> animations = new List<IAnimate>();
-
+        public GameObject attackGO;
+        public GameObject healthGO;
         public TextMeshPro attackText;
         public TextMeshPro healthText;
 
@@ -19,8 +19,10 @@ namespace ctac {
 
         protected override void Start()
         {
-            attackText = minion.gameObject.transform.FindChild("Attack").GetComponent<TextMeshPro>();
-            healthText = minion.gameObject.transform.FindChild("Health").GetComponent<TextMeshPro>();
+            attackGO = minion.gameObject.transform.FindChild("Attack").gameObject;
+            healthGO = minion.gameObject.transform.FindChild("Health").gameObject;
+            attackText = attackGO.GetComponent<TextMeshPro>();
+            healthText = healthGO.GetComponent<TextMeshPro>();
 
             spriteRenderer = minion.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
@@ -29,16 +31,6 @@ namespace ctac {
 
         void Update()
         {
-            if (animations.Count > 0)
-            {
-                var anim = animations[0];
-                anim.Update();
-                if (anim.Complete)
-                {
-                    animations.RemoveAt(0);
-                }
-            }
-
             if (minion.currentPlayerHasControl && !minion.hasMoved)
             {
                 spriteRenderer.material = moveOutline;
@@ -48,17 +40,6 @@ namespace ctac {
                 spriteRenderer.material = spriteDefault;
             }
 
-        }
-
-        public void AddAnim(IAnimate anim)
-        {
-            this.animations.Add(anim);
-        }
-
-        public interface IAnimate
-        {
-            void Update();
-            bool Complete { get; }
         }
 
         public class MoveAnim : IAnimate
@@ -84,15 +65,18 @@ namespace ctac {
         {
             public bool Complete { get; set; }
 
+            public GameObject textGO { get; set; }
             public TextMeshPro text { get; set; }
             public int current { get; set; }
             public int original { get; set; }
+            private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
 
             public void Update()
             {
                 if(text == null) return;
 
                 text.text = current.ToString();
+                iTweenExtensions.PunchScale(textGO, punchSize, 1.5f, 0);
                 if (current > original)
                 {
                     text.color = Color.green;

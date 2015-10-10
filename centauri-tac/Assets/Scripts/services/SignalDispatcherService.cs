@@ -33,8 +33,6 @@ namespace ctac
         [Inject]
         public ICrossContextInjectionBinder binder { get; set; }
 
-
-        // Update is called once per frame
         void Update()
         {
             lock (_queueLock)

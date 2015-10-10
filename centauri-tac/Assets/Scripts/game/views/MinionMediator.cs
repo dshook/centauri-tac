@@ -15,6 +15,9 @@ namespace ctac
         [Inject]
         public MinionAttackedSignal minionAttacked { get; set; }
 
+        [Inject]
+        public AnimationQueueModel animationQueue { get; set; }
+
         public override void OnRegister()
         {
             minionMoved.AddListener(onMove);
@@ -31,7 +34,7 @@ namespace ctac
         {
             if (minionMoved != view.minion) return;
 
-            view.AddAnim(
+            animationQueue.Add(
                 new MinionView.MoveAnim()
                 {
                     minion = view.minion.gameObject,
@@ -51,10 +54,11 @@ namespace ctac
                 view.minion.health = attackPiece.targetNewHp;
             }
 
-            view.AddAnim(
+            animationQueue.Add(
                 new MinionView.UpdateTextAnim()
                 {
                     text = view.healthText,
+                    textGO = view.healthGO,
                     current = view.minion.health,
                     original = view.minion.originalHealth
                 }
@@ -62,7 +66,7 @@ namespace ctac
 
             if (view.minion.health <= 0)
             {
-                view.AddAnim(
+                animationQueue.Add(
                     new MinionView.DieAnim()
                     {
                         minion = view.minion.gameObject
