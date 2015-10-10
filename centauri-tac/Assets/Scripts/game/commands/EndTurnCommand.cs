@@ -27,10 +27,20 @@ namespace ctac
         public GamePassTurnModel gamePassModel { get; set; }
 
         [Inject]
+        public ActionsProcessedModel processedActions { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
         {
+            //check to see if this action has already been processed by another player
+            if (processedActions.processedActions.Any(x => x == gamePassModel.id))
+            {
+                return;
+            }
+            processedActions.processedActions.Add(gamePassModel.id);
+
             turnModel.currentTurn = gamePassModel.id;
             turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             foreach (var minion in minionsModel.minions)

@@ -36,7 +36,7 @@ namespace ctac
         [Inject]
         public AnimationQueueModel animations { get; set; }
 
-            private GameObject _minionPrefab { get; set; }
+        private GameObject _minionPrefab { get; set; }
         private GameObject minionPrefab
         {
             get
