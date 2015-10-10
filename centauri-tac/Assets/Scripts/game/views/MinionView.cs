@@ -11,7 +11,7 @@ namespace ctac {
         private List<Tile> path = new List<Tile>();
         private Vector3? destination = null;
 
-        private float moveSpeed = 3f;
+        private float moveSpeed = 1f;
 
         private TextMeshPro attackText;
         private TextMeshPro healthText;
@@ -44,7 +44,7 @@ namespace ctac {
             if (destination != null)
             {
                 minion.isMoving = true;
-                transform.position = Vector3.MoveTowards(transform.position, destination.Value, moveSpeed * Time.deltaTime);
+                iTweenExtensions.MoveTo(minion.gameObject, destination.Value, moveSpeed, 0, EaseType.linear);
                 if (Vector3.Distance(transform.position, destination.Value) < 0.01)
                 {
                     transform.position = destination.Value;
