@@ -21,13 +21,13 @@ namespace TMPro.EditorUtilities
         private Vector3[] m_Rect_handlePoints = new Vector3[4];
         private Vector3[] m_Margin_handlePoints = new Vector3[4];
 
-        private Vector2 m_anchorPosition;
+        //private Vector2 m_anchorPosition;
 
-        private Vector3 m_mousePreviousPOS;
-        private Vector2 m_previousStartPOS;
+        //private Vector3 m_mousePreviousPOS;
+        //private Vector2 m_previousStartPOS;
         //private int m_mouseDragFlag = 0;
 
-        private static Transform m_visualHelper;
+        //private static Transform m_visualHelper;
 
 
         void OnEnable()
@@ -101,10 +101,10 @@ namespace TMPro.EditorUtilities
 
         void OnSceneGUI()
         {
-            if (Tools.current == Tool.Rect)
-                Tools.hidden = true; // Hide Rect tool
-            else
-                Tools.hidden = false;
+            //if (Tools.current == Tool.Rect)
+            //    Tools.hidden = true; // Hide Rect tool
+            //else
+            //    Tools.hidden = false;
 
             Event evt = Event.current;
 

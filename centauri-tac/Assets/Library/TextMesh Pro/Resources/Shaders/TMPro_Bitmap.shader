@@ -1,4 +1,4 @@
-// Copyright (C) 2014 Stephan Schaem - All Rights Reserved
+// Copyright (C) 2014 - 2015 Stephan Schaem & Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
 
@@ -11,7 +11,7 @@ Properties {
 
 	_VertexOffsetX	("Vertex OffsetX", float) = 0
 	_VertexOffsetY	("Vertex OffsetY", float) = 0
-	_MaskCoord		("Mask Coords", vector) = (0,0,100000,100000)
+	_ClipRect		("Mask Coords", vector) = (0,0,100000,100000)
 	_MaskSoftnessX	("Mask SoftnessX", float) = 0
 	_MaskSoftnessY	("Mask SoftnessY", float) = 0
 }
@@ -58,7 +58,7 @@ SubShader {
 
 		uniform float		_VertexOffsetX;
 		uniform float		_VertexOffsetY;
-		uniform float4		_MaskCoord;
+		uniform float4		_ClipRect;
 		uniform float		_MaskSoftnessX;
 		uniform float		_MaskSoftnessY;
 
@@ -83,7 +83,7 @@ SubShader {
 			float2 pixelSize = vPosition.w;
 			pixelSize /= float2(_ScreenParams.x * UNITY_MATRIX_P[0][0], _ScreenParams.y * UNITY_MATRIX_P[1][1]);
 		    //pixelSize /= float2(_ScaleX, _ScaleY) * mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy);
-			o.mask = float4(vert.xy-_MaskCoord.xy, .5/pixelSize.xy);
+			o.mask = float4(vert.xy - _ClipRect.xy, .5/pixelSize.xy);
 		#endif
 			return o;
 		}
@@ -94,13 +94,13 @@ SubShader {
 			c.a *= tex2D(_MainTex, i.texcoord0).a;
 
 		#if MASK_HARD
-			float2 m = 1-saturate((abs(i.mask.xy)-_MaskCoord.zw)*i.mask.zw);
+			float2 m = 1-saturate((abs(i.mask.xy) - _ClipRect.zw)*i.mask.zw);
 			c.a *= m.x*m.y;
 		#endif
 
 		#if MASK_SOFT
 			float2 s = half2(_MaskSoftnessX, _MaskSoftnessY)*i.mask.zw;
-			float2 m = 1-saturate(((abs(i.mask.xy)-_MaskCoord.zw)*i.mask.zw+s) / (1+s));
+			float2 m = 1-saturate(((abs(i.mask.xy) - _ClipRect.zw) * i.mask.zw + s) / (1 + s));
 			m *= m;
 			c.a *= m.x*m.y;
 		#endif

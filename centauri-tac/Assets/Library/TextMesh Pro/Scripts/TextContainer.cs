@@ -148,12 +148,12 @@ namespace TMPro
                 // Handling of Legacy lineLength property
                 if (m_textMeshPro != null && m_textMeshPro.lineLength != 72)
                 {
-                    Debug.LogWarning("Converting from using anchor and lineLength properties to Text Container.");
+                    Debug.LogWarning("Converting from using anchor and lineLength properties to Text Container.", this);
                     m_isDefaultHeight = true;
                     int anchor = (int)m_textMeshPro.anchor;
                     m_anchorPosition = (TextContainerAnchors)anchor;
                     m_pivot = GetPivot(m_anchorPosition);
-                    m_rect.width = m_textMeshPro.lineLength;          
+                    m_rect.width = m_textMeshPro.lineLength;
                 }
                 else
                 {

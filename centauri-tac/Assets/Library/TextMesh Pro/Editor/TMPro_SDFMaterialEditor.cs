@@ -10,7 +10,7 @@ using System.Linq;
 using TMPro;
 using TMPro.EditorUtilities;
 
-
+#pragma warning disable 0414 // Disabled warning until improved masking is implemented.
 
 public class TMPro_SDFMaterialEditor : MaterialEditor
 {
@@ -44,7 +44,7 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
 
     private enum ShaderTypes { None, Bitmap, SDF };
     //private ShaderTypes m_shaderType = ShaderTypes.None;
-    private TextMeshProFont m_fontAsset;
+    //private TextMeshProFont m_fontAsset;
 
 
     // Face Properties
@@ -121,10 +121,13 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
     private MaterialProperty m_scaleY;
 
     private MaterialProperty m_PerspectiveFilter;
-    
+
+    private MaterialProperty m_useClipRect;
     private MaterialProperty m_vertexOffsetX;
     private MaterialProperty m_vertexOffsetY;
-    private MaterialProperty m_maskCoord;
+    //private MaterialProperty m_maskID;
+    private MaterialProperty m_maskTex;
+    private MaterialProperty m_clipRect;
     private MaterialProperty m_maskSoftnessX;
     private MaterialProperty m_maskSoftnessY;
 
@@ -132,6 +135,8 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
     private MaterialProperty m_stencilID;
     private MaterialProperty m_stencilOp;
     private MaterialProperty m_stencilComp;
+    private MaterialProperty m_stencilReadMask;
+    private MaterialProperty m_stencilWriteMask;
      
     //private MaterialProperty m_weightNormal;
     //private MaterialProperty m_weightBold;
@@ -147,24 +152,23 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
 
     // Private Fields
     private enum Bevel_Types { OuterBevel = 0, InnerBevel = 1 };
-    private enum Mask_Type { MaskOff = 0, MaskHard = 1, MaskSoft = 2 };
 
     private string[] m_bevelOptions = { "Outer Bevel", "Inner Bevel", "--" };
     private int m_bevelSelection;
-    private Mask_Type m_mask;
+    private MaskingTypes m_mask;
 
     private enum Underlay_Types { Normal = 0, Inner = 1};
     private Underlay_Types m_underlaySelection = Underlay_Types.Normal;
 
     private string[] m_Keywords;
 
-    private Vector3 m_matrixRotation;
+    //private Vector3 m_matrixRotation;
 
     private bool isRatiosEnabled;
     private bool isBevelEnabled;
     private bool isGlowEnabled;
-    private bool isBumpEnabled;
-    private bool isEnvEnabled;
+    //private bool isBumpEnabled;
+    //private bool isEnvEnabled;
     private bool isUnderlayEnabled;
     private bool havePropertiesChanged = false;
 
@@ -237,8 +241,6 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
         // Control visibility of material inspector
         if (!m_foldout.editorPanel) return;
 
-        ReadMaterialProperties();
-
         Material targetMaterial = target as Material;
 
         // If multiple materials have been selected and are not using the same shader, we simply return.
@@ -255,6 +257,7 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
             }
         }
 
+        ReadMaterialProperties();
 
         if (!targetMaterial.HasProperty(ShaderUtilities.ID_GradientScale))
         {
@@ -287,9 +290,11 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
             isUnderlayEnabled = false;
 
 
-        if (m_Keywords.Contains("MASK_HARD")) m_mask = Mask_Type.MaskHard;
-        else if (m_Keywords.Contains("MASK_SOFT")) m_mask = Mask_Type.MaskSoft;
-        else m_mask = Mask_Type.MaskOff;
+        if (m_Keywords.Contains("MASK_HARD")) m_mask = MaskingTypes.MaskHard;
+        else if (m_Keywords.Contains("MASK_SOFT")) m_mask = MaskingTypes.MaskSoft;
+        else m_mask = MaskingTypes.MaskOff;
+
+        //m_mask = (MaskingTypes)m_maskID.floatValue;
 
 
         if (m_shaderFlags.hasMixedValue)
@@ -540,29 +545,44 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
                 if (EditorGUI.EndChangeCheck()) havePropertiesChanged = true;
 
                 // Mask
-                if (targetMaterial.HasProperty("_MaskCoord"))
+                if (targetMaterial.HasProperty("_ClipRect"))
                 {
                     GUILayout.Space(15);
-                    m_mask = (Mask_Type)EditorGUILayout.EnumPopup("Mask", m_mask);
-                    if (GUI.changed)
-                    {
-                        havePropertiesChanged = true;
-                        SetMaskKeywords(m_mask); 
-                    }
 
-                    
-                    if (m_mask != Mask_Type.MaskOff)
-                    {
-                        EditorGUI.BeginChangeCheck();
+                    // HANDLE 2D Rect Mask
+                    //if (m_useClipRect.floatValue != 0)
+                    //{
+                    //    EditorGUI.BeginChangeCheck();
 
-                        Draw2DBoundsProperty(m_maskCoord, "Mask Bounds");
-                        DrawFloatProperty(m_maskSoftnessX, "Softness X");
-                        DrawFloatProperty(m_maskSoftnessY, "Softness Y");
+                    //    DrawFloatProperty(m_maskSoftnessX, "Softness X");
+                    //    DrawFloatProperty(m_maskSoftnessY, "Softness Y");
 
-                        if (EditorGUI.EndChangeCheck()) havePropertiesChanged = true;
-                            
-                       
-                    }
+                    //    if (EditorGUI.EndChangeCheck()) havePropertiesChanged = true;
+                    //}
+                    //else
+                    //{
+                        m_mask = (MaskingTypes)EditorGUILayout.EnumPopup("Mask", m_mask);
+                        if (GUI.changed)
+                        {
+                            havePropertiesChanged = true;
+                            //SetMaskID(m_mask);
+
+                            // TODO Add check for _UseClipRect
+                            SetMaskKeywords(m_mask);
+                        }
+
+                        if (m_mask != MaskingTypes.MaskOff)
+                        {
+                            EditorGUI.BeginChangeCheck();
+
+                            Draw2DBoundsProperty(m_clipRect, "Mask Bounds");
+                            DrawFloatProperty(m_maskSoftnessX, "Softness X");
+                            DrawFloatProperty(m_maskSoftnessY, "Softness Y");
+
+                            //DrawTextureProperty(m_maskTex, "Mask Texture");
+                            if (EditorGUI.EndChangeCheck()) havePropertiesChanged = true;
+                        }
+                    //}
                     
                     GUILayout.Space(15);
                 }
@@ -574,7 +594,9 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
                 {
                     FloatProperty(m_stencilID, "Stencil ID");
                     FloatProperty(m_stencilComp, "Stencil Comp");
-                    FloatProperty(m_stencilOp, "Stencil Op");
+                    //FloatProperty(m_stencilOp, "Stencil Op");
+                    //FloatProperty(m_stencilReadMask, "Read Mask");
+                    //FloatProperty(m_stencilWriteMask, "Write Mask");
                 }
                 
                 GUILayout.Space(20);
@@ -948,7 +970,7 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
         GUI.Label(pos0, label);
         EditorGUIUtility.labelWidth = 30;
 
-        float width = (pos0.width - 15) / 5;      
+        float width = (pos0.width - 15) / 5;
         pos0.x += old_LabelWidth - 30;
         
         Vector4 vec = property.vectorValue;
@@ -1024,8 +1046,8 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
                     default:
                         mat.DisableKeyword(keyword);
                         break;
-                }                                   
-            }             
+                }
+            }
         }
     }
 
@@ -1050,7 +1072,73 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
     }
 
 
-    private void SetMaskKeywords(Mask_Type mask)
+    private void SetMaskID(MaskingTypes id)
+    {
+        for (int i = 0; i < targets.Length; i++)
+        {
+            Material mat = targets[i] as Material;
+
+            switch (id)
+            {
+                case MaskingTypes.MaskHard:
+                    //mat.EnableKeyword("MASK_HARD");
+                    //mat.DisableKeyword("MASK_SOFT");
+                    //mat.DisableKeyword("MASK_TEX");
+
+                    mat.SetFloat("_MaskID", (int)id);
+                    
+                    //if (m_textMeshPro != null)
+                    //    m_textMeshPro.maskType = MaskingTypes.MaskHard;
+                    //else if (m_textMeshProUGUI != null)
+                    //m_textMeshProUGUI.maskType = MaskingTypes.MaskHard;
+
+                    break;
+                case MaskingTypes.MaskSoft:
+                    //mat.EnableKeyword("MASK_SOFT");
+                    //mat.DisableKeyword("MASK_HARD");
+                    //mat.DisableKeyword("MASK_TEX");
+
+                    mat.SetFloat("_MaskID", (int)id);
+                    
+                    //if (m_textMeshPro != null)
+                    //    m_textMeshPro.maskType = MaskingTypes.MaskSoft;
+                    //else if (m_textMeshProUGUI != null)
+                    //    m_textMeshProUGUI.maskType = MaskingTypes.MaskSoft;
+
+                    break;
+                //case MaskingTypes.MaskTex:
+                    //mat.EnableKeyword("MASK_TEX");
+                    //mat.DisableKeyword("MASK_SOFT");
+                    //mat.DisableKeyword("MASK_HARD");
+
+                    //mat.SetFloat("_MaskID", (int)id);
+
+                    //if (m_textMeshPro != null)
+                    //    m_textMeshPro.maskType = MaskingTypes.MaskSoft;
+                    //else if (m_textMeshProUGUI != null)
+                    //    m_textMeshProUGUI.maskType = MaskingTypes.MaskSoft;
+
+                    //break;
+                case MaskingTypes.MaskOff:
+                    //mat.DisableKeyword("MASK_HARD");
+                    //mat.DisableKeyword("MASK_SOFT");
+                    //mat.DisableKeyword("MASK_TEX");
+
+                    mat.SetFloat("_MaskID", (int)id);
+
+                    //if (m_textMeshPro != null)
+                    //    m_textMeshPro.maskType = MaskingTypes.MaskOff;
+                    //else if (m_textMeshProUGUI != null)
+                    //    m_textMeshProUGUI.maskType = MaskingTypes.MaskOff;
+
+                    break;
+            }
+        }
+
+    }
+
+
+    private void SetMaskKeywords(MaskingTypes mask)
     {
         for (int i = 0; i < targets.Length; i++)
         {
@@ -1058,21 +1146,21 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
 
             switch (mask)
             {
-                case Mask_Type.MaskHard:
+                case MaskingTypes.MaskHard:
                     mat.EnableKeyword("MASK_HARD");
                     mat.DisableKeyword("MASK_SOFT");
-                    //mat.DisableKeyword("MASK_OFF");
-                    
+                    //mat.DisableKeyword("MASK_TEX");
+
                     //if (m_textMeshPro != null)
                     //    m_textMeshPro.maskType = MaskingTypes.MaskHard;
                     //else if (m_textMeshProUGUI != null)
-                        //m_textMeshProUGUI.maskType = MaskingTypes.MaskHard;
-                    
-                        break;
-                case Mask_Type.MaskSoft:
+                    //m_textMeshProUGUI.maskType = MaskingTypes.MaskHard;
+
+                    break;
+                case MaskingTypes.MaskSoft:
                     mat.EnableKeyword("MASK_SOFT");
                     mat.DisableKeyword("MASK_HARD");
-                    //mat.DisableKeyword("MASK_OFF");
+                    //mat.DisableKeyword("MASK_TEX");
 
                     //if (m_textMeshPro != null)
                     //    m_textMeshPro.maskType = MaskingTypes.MaskSoft;
@@ -1080,10 +1168,16 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
                     //    m_textMeshProUGUI.maskType = MaskingTypes.MaskSoft;
 
                     break;
-                case Mask_Type.MaskOff:
-                    //mat.EnableKeyword("MASK_OFF");
+                //case MaskingTypes.MaskTex:
+                //    mat.EnableKeyword("MASK_TEX");
+                //    mat.DisableKeyword("MASK_SOFT");
+                //    mat.DisableKeyword("MASK_HARD");
+
+                //    break;
+                case MaskingTypes.MaskOff:
                     mat.DisableKeyword("MASK_HARD");
                     mat.DisableKeyword("MASK_SOFT");
+                    //mat.DisableKeyword("MASK_TEX");
 
                     //if (m_textMeshPro != null)
                     //    m_textMeshPro.maskType = MaskingTypes.MaskOff;
@@ -1185,7 +1279,10 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
 
         m_vertexOffsetX = GetMaterialProperty(target_Materials, "_VertexOffsetX");
         m_vertexOffsetY = GetMaterialProperty(target_Materials, "_VertexOffsetY");
-        m_maskCoord = GetMaterialProperty(target_Materials, "_MaskCoord");
+        m_useClipRect = GetMaterialProperty(target_Materials, "_UseClipRect");
+        //m_maskID = GetMaterialProperty(target_Materials, "_MaskID");
+        m_maskTex = GetMaterialProperty(target_Materials, "_MaskTex");
+        m_clipRect = GetMaterialProperty(target_Materials, "_ClipRect");
         m_maskSoftnessX = GetMaterialProperty(target_Materials, "_MaskSoftnessX");
         m_maskSoftnessY = GetMaterialProperty(target_Materials, "_MaskSoftnessY");
 
@@ -1193,6 +1290,8 @@ public class TMPro_SDFMaterialEditor : MaterialEditor
         m_stencilID = GetMaterialProperty(target_Materials, "_Stencil");
         m_stencilComp = GetMaterialProperty(target_Materials, "_StencilComp");
         m_stencilOp = GetMaterialProperty(target_Materials, "_StencilOp");
+        m_stencilReadMask = GetMaterialProperty(target_Materials, "_StencilReadMask");
+        m_stencilWriteMask = GetMaterialProperty(target_Materials, "_StencilWriteMask");
 
         
         //m_weightNormal = GetMaterialProperty(target_Materials, "_WeightNormal");

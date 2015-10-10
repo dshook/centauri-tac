@@ -103,11 +103,11 @@ namespace TMPro.EditorUtilities
         //private SerializedProperty maskOffsetMode_prop;
         //private SerializedProperty maskSoftness_prop;
 
-        private SerializedProperty vertexOffset_prop;
+        //private SerializedProperty vertexOffset_prop;
 
 
-        private int m_sortingLayerID;
-        private int m_sortingOrder;
+        //private int m_sortingLayerID;
+        //private int m_sortingOrder;
 
 
         private bool havePropertiesChanged = false;
@@ -117,13 +117,13 @@ namespace TMPro.EditorUtilities
         //private Transform m_transform;
 
         private Renderer m_renderer;
-        private int m_currentMaterialID;
-        private int m_previousMaterialID;
+        //private int m_currentMaterialID;
+        //private int m_previousMaterialID;
         //private Material m_currentMaterial;
         //private TMPro_UpdateManager m_updateManager;
 
         //private Vector3[] handlePoints = new Vector3[4]; // { new Vector3(-10, -10, 0), new Vector3(-10, 10, 0), new Vector3(10, 10, 0), new Vector3(10, -10, 0) };
-        private float prev_lineLenght;
+        //private float prev_lineLenght;
 
 
 
@@ -178,7 +178,7 @@ namespace TMPro.EditorUtilities
             isOrthographic_prop = serializedObject.FindProperty("m_isOrthographic");
             //isOverlay_prop = serializedObject.FindProperty("m_isOverlay");
 
-            havePropertiesChanged_prop = serializedObject.FindProperty("havePropertiesChanged");
+            havePropertiesChanged_prop = serializedObject.FindProperty("m_havePropertiesChanged");
             inputSource_prop = serializedObject.FindProperty("m_inputSource");
             isInputPasingRequired_prop = serializedObject.FindProperty("isInputParsingRequired");
             //isAffectingWordWrapping_prop = serializedObject.FindProperty("isAffectingWordWrapping");

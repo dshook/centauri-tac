@@ -13,7 +13,7 @@ namespace TMPro.Examples
 
         public Font TheFont;
 
-        private TextMeshProFloatingText floatingText_Script;
+        //private TextMeshProFloatingText floatingText_Script;
 
         void Awake()
         {

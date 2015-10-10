@@ -29,11 +29,14 @@ namespace TMPro
             if (Instance == null)
             {
                 // Load settings from TMP_Settings file
-                TMP_Settings settings = Resources.Load("TMP_Settings") as TMP_Settings;
+                TMP_Settings settings = Resources.Load("TMP Settings") as TMP_Settings;
+                if (settings == null) return;
+
                 if (settings.styleSheet != null)
                     Instance = settings.styleSheet;
                 else
-                    Instance = Resources.Load("TMP_DefaultStyleSheet") as TMP_StyleSheet;
+                    Instance = Resources.Load("Style Sheets/TMP Default Style Sheet") as TMP_StyleSheet;
+
 
                 if (!m_isDictionaryLoaded) Instance.LoadStyleDictionary();
             }
@@ -50,11 +53,11 @@ namespace TMPro
             if (Instance == null)
             {
                 // Load settings from TMP_Settings file
-                TMP_Settings settings = Resources.Load("TMP_Settings") as TMP_Settings;
-                if (settings.styleSheet != null)
+                TMP_Settings settings = Resources.Load("TMP Settings") as TMP_Settings;
+                if (settings != null && settings.styleSheet != null)
                     Instance = settings.styleSheet;
                 else
-                    Instance = Resources.Load("TMP_DefaultStyleSheet") as TMP_StyleSheet;
+                    Instance = Resources.Load("Style Sheets/TMP Default Style Sheet") as TMP_StyleSheet;
             }
 
             return Instance;

@@ -9,12 +9,12 @@ namespace TMPro.Examples
     {
 
         private TextMeshPro m_textMeshPro;
-        private TextContainer m_textContainer;
-        private TextMeshProFont m_FontAsset;
+        //private TextContainer m_textContainer;
+        //private TextMeshProFont m_FontAsset;
 
         private const string label = "The <#0050FF>count is: </color>{0:2}";
         private float m_frame;
-        private char[] m_chars;
+        //private char[] m_chars;
 
 
         void Start()
@@ -24,8 +24,8 @@ namespace TMPro.Examples
             //m_textContainer = GetComponent<TextContainer>();
 
             // Load the Font Asset to be used.
-            m_FontAsset = Resources.Load("Fonts & Materials/ARIAL SDF", typeof(TextMeshProFont)) as TextMeshProFont;
-            m_textMeshPro.font = m_FontAsset;
+            //m_FontAsset = Resources.Load("Fonts & Materials/ARIAL SDF", typeof(TextMeshProFont)) as TextMeshProFont;
+            //m_textMeshPro.font = m_FontAsset;
 
             // Assign Material to TextMesh Pro Component
             //m_textMeshPro.fontSharedMaterial = Resources.Load("Fonts & Materials/ARIAL SDF Bevel", typeof(Material)) as Material;

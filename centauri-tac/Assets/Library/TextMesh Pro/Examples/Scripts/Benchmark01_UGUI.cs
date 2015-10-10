@@ -27,8 +27,8 @@ namespace TMPro.Examples
         //private const string label01 = "TextMesh <#0050FF>Pro!</color>  The count is: {0}";
         //private const string label02 = "Text Mesh<color=#0050FF>        The count is: </color>";
 
-        private string m_string;
-        private int m_frame;
+        //private string m_string;
+        //private int m_frame;
 
         private Material m_material01;
         private Material m_material02;

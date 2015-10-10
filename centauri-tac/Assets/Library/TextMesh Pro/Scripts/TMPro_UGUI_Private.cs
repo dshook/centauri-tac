@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 #pragma warning disable 0414 // Disabled a few warnings related to serialized variables not used in this script but used in the editor.
-
+#pragma warning disable 0618 // Disabled warning due to SetVertices being deprecated until new release with SetMesh() is available.
 
 namespace TMPro
 {  
@@ -132,7 +132,9 @@ namespace TMPro
         private bool isInputParsingRequired = false; // Used to determine if the input text needs to be re-parsed.
 
         [SerializeField]
-        private bool havePropertiesChanged;  // Used to track when properties of the text object have changed.
+        private bool m_havePropertiesChanged;  // Used to track when properties of the text object have changed.
+
+        //private bool m_hasChanged; // Used to track when the text object has been regenerated.
 
         [SerializeField]
         private bool hasFontAssetChanged = false; // Used to track when font properties have changed.
@@ -186,10 +188,9 @@ namespace TMPro
 
         private float m_baselineOffset; // Used for superscript and subscript.
         private float m_padding = 0; // Holds the amount of padding required to display the mesh correctly as a result of dilation, outline thickness, softness and similar material properties.
-        private Vector4 m_alignmentPadding; // Holds the amount of padding required to account for Outline Width and Dilation with regards to text alignment.
         private bool m_isUsingBold = false; // Used to ensure GetPadding & Ratios take into consideration bold characters.
 
-        private Vector2 k_InfinityVector = new Vector2(Mathf.Infinity, Mathf.Infinity);
+        private Vector2 k_InfinityVector = new Vector2(1000000, 1000000);
 
         private bool m_isFirstAllocation; // Flag to determine if this is the first allocation of the buffers.
         private int m_max_characters = 8; // Determines the initial allocation and size of the character array / buffer.
@@ -232,15 +233,7 @@ namespace TMPro
         //private ILayoutController m_layoutController;
 
         // Mesh Declaration
-        [SerializeField]
-        private UIVertex[] m_uiVertices;
-        //private Vector3[] m_vertices;
-        //private Vector3[] m_normals;
-        //private Vector4[] m_tangents;
-        //private Vector2[] m_uvs;
-        //private Vector2[] m_uv2s;
-        //private Color32[] m_vertColors;
-        //private int[] m_triangles;
+        private Mesh m_mesh;
         private Bounds m_bounds;
 
         //private Camera m_sceneCamera;
@@ -280,12 +273,12 @@ namespace TMPro
         //private GameObject[] subObjects = new GameObject[17];
 
         //[SerializeField]
-        private List<Material> m_sharedMaterials = new List<Material>(16);
-        private int m_selectedFontAsset;
+        //private List<Material> m_sharedMaterials = new List<Material>(16);
+        //private int m_selectedFontAsset;
 
         // MASKING RELATED PROPERTIES
         private bool m_isMaskingEnabled;
-        private bool m_isStencilUpdateRequired;
+        //private bool m_isStencilUpdateRequired;
 
         [SerializeField]
         private Material m_baseMaterial;
@@ -383,7 +376,7 @@ namespace TMPro
         protected override void Awake()
         {
             //base.Awake();
-            //Debug.Log("***** Awake() *****");     
+            //Debug.Log("***** Awake() *****");
 
             m_isAwake = true;
             // Cache Reference to the Canvas
@@ -401,7 +394,14 @@ namespace TMPro
             if (m_uiRenderer == null) 
                 m_uiRenderer = gameObject.AddComponent<CanvasRenderer> ();
 
-            //m_uiRenderer.hideFlags = HideFlags.HideInInspector;
+            if (m_mesh == null)
+            {
+                //Debug.Log("Creating new mesh.");
+                m_mesh = new Mesh();
+                m_mesh.hideFlags = HideFlags.HideAndDontSave;
+
+                //m_mesh.bounds = new Bounds(transform.position, new Vector3(1000, 1000, 0));
+            }
 
             // Cache reference to Mask Component if one is present
             //m_stencilID = MaterialManager.GetStencilID(gameObject);
@@ -417,20 +417,16 @@ namespace TMPro
             // Allocate our initial buffers.
             m_char_buffer = new int[m_max_characters];
             m_cached_GlyphInfo = new GlyphInfo();
-            m_uiVertices = new UIVertex[0]; // 
             m_isFirstAllocation = true;
 
             m_textInfo = new TMP_TextInfo();
-            //m_textInfo.meshInfo.meshArrays = new UIVertex[17][];
-
-            // TODO : Add support for in-line sprites and other fonts.
-            //m_fontAssetArray = new TextMeshProFont[16];
+            m_textInfo.meshInfo.mesh = m_mesh;
 
 
             // Check if we have a font asset assigned. Return if we don't because no one likes to see purple squares on screen.
             if (m_fontAsset == null)
             {
-                Debug.LogWarning("Please assign a Font Asset to this " + transform.name + " gameobject.");
+                Debug.LogWarning("Please assign a Font Asset to this " + transform.name + " gameobject.", this);
                 return;
             }
 
@@ -440,7 +436,7 @@ namespace TMPro
 
             //// Set flags to ensure our text is parsed and text re-drawn.
             isInputParsingRequired = true;
-            havePropertiesChanged = true;
+            m_havePropertiesChanged = true;
             m_rectTransformDimensionsChanged = true;
 
             ForceMeshUpdate(); // Added to force OnWillRenderObject() to be called in case object is not visible so we get initial bounds for the mesh.
@@ -458,12 +454,6 @@ namespace TMPro
                 //Debug.Log("Registering for Events.");
 #if UNITY_EDITOR
                 // Register Callbacks for various events.
-                //TMPro_EventManager.MATERIAL_PROPERTY_EVENT += ON_MATERIAL_PROPERTY_CHANGED;
-                //TMPro_EventManager.FONT_PROPERTY_EVENT += ON_FONT_PROPERTY_CHANGED;
-                //TMPro_EventManager.TEXTMESHPRO_UGUI_PROPERTY_EVENT += ON_TEXTMESHPRO_UGUI_PROPERTY_CHANGED;
-                //TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT += ON_DRAG_AND_DROP_MATERIAL;
-                //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT += ON_TEXT_STYLE_CHANGED;
-
                 TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Add(ON_MATERIAL_PROPERTY_CHANGED);
                 TMPro_EventManager.FONT_PROPERTY_EVENT.Add(ON_FONT_PROPERTY_CHANGED);
                 TMPro_EventManager.TEXTMESHPRO_UGUI_PROPERTY_EVENT.Add(ON_TEXTMESHPRO_UGUI_PROPERTY_CHANGED);
@@ -484,23 +474,25 @@ namespace TMPro
             // Re-assign the Material to the Canvas Renderer
             if (m_uiRenderer.GetMaterial() == null)
             {
+                // Use Instanced material if one exists otherwise use shared material or base material if needed.
                 if (m_sharedMaterial != null)
                 {
-                    m_uiRenderer.SetMaterial(m_sharedMaterial, null);
+                    m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
                 }
                 else
                 {
                     // We likely had a masking material assigned
                     m_isNewBaseMaterial = true;
                     fontSharedMaterial = m_baseMaterial;
-                    ParentMaskStateChanged();
+                    RecalculateMasking();
                 }
 
-                havePropertiesChanged = true;
+                m_havePropertiesChanged = true;
                 m_rectTransformDimensionsChanged = true;
             }
 
             LayoutRebuilder.MarkLayoutForRebuild(m_rectTransform);
+            RecalculateClipping();
         }
 
 
@@ -511,10 +503,11 @@ namespace TMPro
 
             // UnRegister Graphic Component
             GraphicRegistry.UnregisterGraphicForCanvas(this.canvas, this);
-           
+
             m_uiRenderer.Clear();  // Might not want to clear since it wipes the Material in addition to the mesh geometry.
 
             LayoutRebuilder.MarkLayoutForRebuild(m_rectTransform);
+            RecalculateClipping();
         }
 
 
@@ -522,7 +515,10 @@ namespace TMPro
         {
             //base.OnDestroy();
             //Debug.Log("***** OnDestroy() *****");
-            
+
+            // UnRegister Graphic Component
+            GraphicRegistry.UnregisterGraphicForCanvas(this.canvas, this);
+
             if (m_maskingMaterial != null)
             {
                 //Debug.Log("Trying to release Masking Material [" + m_maskingMaterial.name + "] with ID " + m_maskingMaterial.GetInstanceID());
@@ -536,12 +532,6 @@ namespace TMPro
 
 #if UNITY_EDITOR
             // Unregister the event this object was listening to
-            //TMPro_EventManager.MATERIAL_PROPERTY_EVENT -= ON_MATERIAL_PROPERTY_CHANGED;
-            //TMPro_EventManager.FONT_PROPERTY_EVENT -= ON_FONT_PROPERTY_CHANGED;
-            //TMPro_EventManager.TEXTMESHPRO_UGUI_PROPERTY_EVENT -= ON_TEXTMESHPRO_UGUI_PROPERTY_CHANGED;
-            //TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT -= ON_DRAG_AND_DROP_MATERIAL;
-            //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT -= ON_TEXT_STYLE_CHANGED;
-
             TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Remove(ON_MATERIAL_PROPERTY_CHANGED);
             TMPro_EventManager.FONT_PROPERTY_EVENT.Remove(ON_FONT_PROPERTY_CHANGED);
             TMPro_EventManager.TEXTMESHPRO_UGUI_PROPERTY_EVENT.Remove(ON_TEXTMESHPRO_UGUI_PROPERTY_CHANGED);
@@ -557,13 +547,15 @@ namespace TMPro
         protected override void OnTransformParentChanged()
         {
             //Debug.Log("***** OnTransformParentChanged *****");
-            // Check the Stencil ID        
+            // Check the Stencil ID
             int currentID = m_stencilID;
             m_stencilID = MaterialManager.GetStencilID(gameObject);
             if (currentID != m_stencilID)
-                ParentMaskStateChanged();
+                RecalculateMasking();
 
+            RecalculateClipping();
             LayoutRebuilder.MarkLayoutForRebuild(m_rectTransform);
+            m_havePropertiesChanged = true;
         }
 
 
@@ -573,7 +565,7 @@ namespace TMPro
             //base.Reset();
             //Debug.Log("***** Reset() *****"); //has been called.");
             isInputParsingRequired = true;
-            havePropertiesChanged = true;
+            m_havePropertiesChanged = true;
         }
 
 
@@ -596,12 +588,12 @@ namespace TMPro
                 hasFontAssetChanged = false;
             }
             font = m_fontAsset;
-            
+
             text = m_text;
-                  
+
             fontSharedMaterial = m_sharedMaterial;
             //checkPaddingRequired = true;
-                
+
             margin = m_margin; // Getting called on assembly reloads.
 
             LayoutRebuilder.MarkLayoutForRebuild(m_rectTransform);
@@ -639,17 +631,17 @@ namespace TMPro
             {
                 if (m_fontAsset != null)
                 {
-                    m_uiRenderer.SetMaterial(m_fontAsset.material, null);
+                    m_uiRenderer.SetMaterial(m_fontAsset.material, m_sharedMaterial.mainTexture);
                     //Debug.LogWarning("No Material was assigned to " + name + ". " + m_fontAsset.material.name + " was assigned.");
                 }
                 else
-                    Debug.LogWarning("No Font Asset assigned to " + name + ". Please assign a Font Asset.");
+                    Debug.LogWarning("No Font Asset assigned to " + name + ". Please assign a Font Asset.", this);
             }
-           
-          
+
+
             if (m_uiRenderer.GetMaterial() != m_sharedMaterial && m_fontAsset == null) //    || m_renderer.sharedMaterials.Contains(mat))
             {
-                Debug.Log("ON_MATERIAL_PROPERTY_CHANGED Called on Target ID: " + GetInstanceID() + ". Previous Material:" + m_sharedMaterial + "  New Material:" + m_uiRenderer.GetMaterial()); // on Object ID:" + GetInstanceID() + ". m_sharedMaterial: " + m_sharedMaterial.name + "  m_renderer.sharedMaterial: " + m_renderer.sharedMaterial.name);         
+                //Debug.Log("ON_MATERIAL_PROPERTY_CHANGED Called on Target ID: " + GetInstanceID() + ". Previous Material:" + m_sharedMaterial + "  New Material:" + m_uiRenderer.GetMaterial()); // on Object ID:" + GetInstanceID() + ". m_sharedMaterial: " + m_sharedMaterial.name + "  m_renderer.sharedMaterial: " + m_renderer.sharedMaterial.name);         
                 m_sharedMaterial = m_uiRenderer.GetMaterial();
             }
 
@@ -697,8 +689,8 @@ namespace TMPro
             //          ". Masking Material is " + m_maskingMaterial.name + " with ID " + m_maskingMaterial.GetInstanceID());
 
             m_padding = ShaderUtilities.GetPadding(m_uiRenderer.GetMaterial(), m_enableExtraPadding, m_isUsingBold);
-            m_alignmentPadding = ShaderUtilities.GetFontExtent(m_uiRenderer.GetMaterial());
-            havePropertiesChanged = true;
+            //m_alignmentPadding = ShaderUtilities.GetFontExtent(m_uiRenderer.GetMaterial());
+            m_havePropertiesChanged = true;
             /* ScheduleUpdate(); */
         }
 
@@ -709,7 +701,7 @@ namespace TMPro
             if (font == m_fontAsset)
             {
                 //Debug.Log("ON_FONT_PROPERTY_CHANGED event received.");
-                havePropertiesChanged = true;
+                m_havePropertiesChanged = true;
                 hasFontAssetChanged = true;
                 /* ScheduleUpdate(); */
             }
@@ -724,7 +716,7 @@ namespace TMPro
             if (obj == this)
             {
                 //Debug.Log("Undo / Redo Event Received by Object ID:" + GetInstanceID());
-                havePropertiesChanged = true;
+                m_havePropertiesChanged = true;
                 isInputParsingRequired = true;
                 /* ScheduleUpdate(); */
             }
@@ -734,7 +726,7 @@ namespace TMPro
         // Event received when Text Styles are changed.
         void ON_TEXT_STYLE_CHANGED(bool isChanged)
         {
-            havePropertiesChanged = true;
+            m_havePropertiesChanged = true;
         }
 #endif
 
@@ -748,15 +740,15 @@ namespace TMPro
             if (m_fontAsset == null)
             {
                 // Load TMP_Settings
-                TMP_Settings settings = Resources.Load("TMP_Settings") as TMP_Settings;
-                if (settings.fontAsset != null)
+                TMP_Settings settings = Resources.Load("TMP Settings") as TMP_Settings;
+                if (settings != null && settings.fontAsset != null)
                     m_fontAsset = settings.fontAsset;
                 else
                     m_fontAsset = Resources.Load("Fonts & Materials/ARIAL SDF", typeof(TextMeshProFont)) as TextMeshProFont;
 
                 if (m_fontAsset == null)
                 {
-                    Debug.LogWarning("The ARIAL SDF Font Asset was not found. There is no Font Asset assigned to " + gameObject.name + ".");
+                    Debug.LogWarning("The ARIAL SDF Font Asset was not found. There is no Font Asset assigned to " + gameObject.name + ".", this);
                     return;
                 }
 
@@ -799,7 +791,7 @@ namespace TMPro
 
             // Check & Assign Underline Character for use with the Underline tag.
             if (!m_fontAsset.characterDictionary.TryGetValue(95, out m_cached_Underline_GlyphInfo)) //95
-                Debug.LogWarning("Underscore character wasn't found in the current Font Asset. No characters assigned for Underline.");
+                Debug.LogWarning("Underscore character wasn't found in the current Font Asset. No characters assigned for Underline.", this);
 
             
             m_stencilID = MaterialManager.GetStencilID(gameObject);
@@ -828,14 +820,14 @@ namespace TMPro
 
             m_isNewBaseMaterial = false;
             
-            m_sharedMaterials.Add(m_sharedMaterial);
+            //m_sharedMaterials.Add(m_sharedMaterial);
             SetShaderDepth(); // Set ZTestMode based on Canvas RenderMode.
 
             if (m_uiRenderer == null) m_uiRenderer = GetComponent<CanvasRenderer>();
 
-            m_uiRenderer.SetMaterial(m_sharedMaterial, null);
+            m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
             m_padding = ShaderUtilities.GetPadding(m_sharedMaterial, m_enableExtraPadding, m_isUsingBold);
-            m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
+            //m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
         }
 
 
@@ -875,15 +867,15 @@ namespace TMPro
             if (m_fontMaterial == null)
             {
                 m_fontMaterial = CreateMaterialInstance(m_sharedMaterial);
-                m_uiRenderer.SetMaterial(m_fontMaterial, null);
+                m_uiRenderer.SetMaterial(m_fontMaterial, m_sharedMaterial.mainTexture);
             }
 
             m_sharedMaterial = m_fontMaterial;
-            if (m_sharedMaterial.HasProperty(ShaderUtilities.ID_MaskCoord))
+            if (m_sharedMaterial.HasProperty(ShaderUtilities.ID_ClipRect))
             {
-                m_sharedMaterial.EnableKeyword("MASK_SOFT");
-                m_sharedMaterial.DisableKeyword("MASK_HARD");
-                //m_sharedMaterial.DisableKeyword("MASK_OFF")
+                m_sharedMaterial.EnableKeyword(ShaderUtilities.Keyword_MASK_SOFT);
+                m_sharedMaterial.DisableKeyword(ShaderUtilities.Keyword_MASK_HARD);
+                m_sharedMaterial.DisableKeyword(ShaderUtilities.Keyword_MASK_TEX);
 
                 UpdateMask(); // Update Masking Coordinates
             }
@@ -920,7 +912,7 @@ namespace TMPro
                 else
                     m_sharedMaterial = m_baseMaterial;
                            
-                m_uiRenderer.SetMaterial(m_sharedMaterial, null);
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
 
                 DestroyImmediate(m_fontMaterial);
             }
@@ -960,6 +952,8 @@ namespace TMPro
         // Update & recompute Mask offset
         void UpdateMask()
         {
+            Debug.Log("Updating Mask...");
+
             if (m_rectTransform != null)
             {
                 //Material mat = m_uiRenderer.GetMaterial();
@@ -993,7 +987,7 @@ namespace TMPro
 
                 //Rect rect = new Rect(0, 0, m_rectTransform.rect.width + margin.x + margin.z, m_rectTransform.rect.height + margin.y + margin.w);
                 //int softness = (int)m_sharedMaterial.GetFloat(ShaderUtilities.ID_MaskSoftnessX) / 2;
-                m_sharedMaterial.SetVector(ShaderUtilities.ID_MaskCoord, mask);
+                m_sharedMaterial.SetVector(ShaderUtilities.ID_ClipRect, mask);
             }
         }
 
@@ -1028,15 +1022,15 @@ namespace TMPro
             
             if (m_stencilID > 0)
                 m_fontMaterial = MaterialManager.SetStencil(m_fontMaterial, m_stencilID);
-                
-                           
+
+
             m_sharedMaterial = m_fontMaterial;
             SetShaderDepth(); // Set ZTestMode based on Canvas RenderMode.
             
-            m_uiRenderer.SetMaterial(m_sharedMaterial, null);
+            m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
                    
             m_padding = ShaderUtilities.GetPadding(m_sharedMaterial, m_enableExtraPadding, m_isUsingBold);
-            m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
+            //m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
         }
 
 
@@ -1084,9 +1078,9 @@ namespace TMPro
             m_sharedMaterial = mat;
             SetShaderDepth(); // Set ZTestMode based on Canvas RenderMode.
             
-            m_uiRenderer.SetMaterial(m_sharedMaterial, null);                     
+            m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
             m_padding = ShaderUtilities.GetPadding(m_sharedMaterial, m_enableExtraPadding, m_isUsingBold);
-            m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
+            //m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
 
             //Debug.Log("New Material [" + mat.name + "] with ID " + mat.GetInstanceID() + " has been assigned. Base Material is [" + m_baseMaterial.name + "] with ID " + m_baseMaterial.GetInstanceID());
             
@@ -1122,55 +1116,62 @@ namespace TMPro
         // This function will create an instance of the Font Material.
         void SetOutlineThickness(float thickness)
         {
-            // Check if we need to create an instance of the material
-            if (m_fontMaterial == null)
+            // Use material instance if one exists. Otherwise, create a new instance of the shared material.
+            if (m_fontMaterial != null && m_sharedMaterial.GetInstanceID() != m_fontMaterial.GetInstanceID())
+            {
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
+            }
+            else if(m_fontMaterial == null)
             {
                 m_fontMaterial = CreateMaterialInstance(m_sharedMaterial);
-                m_uiRenderer.SetMaterial(m_fontMaterial, null);
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
             }
 
-            // Check to make sure we still have a Material assigned to the CanvasRenderer
-            //if (m_uiRenderer.GetMaterial() == null)
-            //    m_uiRenderer.SetMaterial(m_fontMaterial, null);
-                       
             thickness = Mathf.Clamp01(thickness);
-            m_uiRenderer.GetMaterial().SetFloat(ShaderUtilities.ID_OutlineWidth, thickness);
+            m_sharedMaterial.SetFloat(ShaderUtilities.ID_OutlineWidth, thickness);
+            m_padding = ShaderUtilities.GetPadding(m_sharedMaterial, m_enableExtraPadding, m_isUsingBold);
         }
 
 
         // This function will create an instance of the Font Material.
         void SetFaceColor(Color32 color)
-        {           
-            // Check if we need to create an instance of the material
-            if (m_fontMaterial == null)
+        {
+            // Use material instance if one exists. Otherwise, create a new instance of the shared material.
+            if (m_fontMaterial != null && m_sharedMaterial.GetInstanceID() != m_fontMaterial.GetInstanceID())
+            {
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
+            }
+            else if (m_fontMaterial == null)
             {
                 m_fontMaterial = CreateMaterialInstance(m_sharedMaterial);
-                m_uiRenderer.SetMaterial(m_fontMaterial, null);
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
             }
-            
-            // Check to make sure we still have a Material assigned to the CanvasRenderer
-            //if (m_uiRenderer.GetMaterial() == null)
-            //    m_uiRenderer.SetMaterial(m_fontMaterial, null);
 
-            m_uiRenderer.GetMaterial().SetColor(ShaderUtilities.ID_FaceColor, color);
+            m_sharedMaterial.SetColor(ShaderUtilities.ID_FaceColor, color);
         }
 
 
         // This function will create an instance of the Font Material.
         void SetOutlineColor(Color32 color)
         {
-            // Check if we need to create an instance of the material
-            if (m_fontMaterial == null)
+            // Use material instance if one exists. Otherwise, create a new instance of the shared material.
+            if (m_fontMaterial != null && m_sharedMaterial.GetInstanceID() != m_fontMaterial.GetInstanceID())
+            {
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
+            }
+            else if (m_fontMaterial == null)
             {
                 m_fontMaterial = CreateMaterialInstance(m_sharedMaterial);
-                m_uiRenderer.SetMaterial(m_fontMaterial, null);
+                m_sharedMaterial = m_fontMaterial;
+                m_uiRenderer.SetMaterial(m_sharedMaterial, m_sharedMaterial.mainTexture);
             }
 
-            // Check to make sure we still have a Material assigned to the CanvasRenderer
-            //if (m_uiRenderer.GetMaterial() == null)
-            //    m_uiRenderer.SetMaterial(m_fontMaterial, null);
-
-            m_uiRenderer.GetMaterial().SetColor(ShaderUtilities.ID_OutlineColor, color);
+            m_sharedMaterial.SetColor(ShaderUtilities.ID_OutlineColor, color);
         }
 
 
@@ -1182,8 +1183,6 @@ namespace TMPro
             
             mat.hideFlags = HideFlags.DontSave;
             mat.name += " (Instance)";
-            //m_uiRenderer.SetMaterial(mat, null);
-            //m_fontMaterial = mat;
 
             return mat;
         }
@@ -1192,7 +1191,7 @@ namespace TMPro
         // Sets the Render Queue and Ztest mode 
         void SetShaderDepth()
         {
-            if (m_canvas == null)
+            if (m_canvas == null || m_sharedMaterial == null)
                 return;
             
             if (m_canvas.renderMode == RenderMode.ScreenSpaceOverlay || m_isOverlay)
@@ -1237,26 +1236,9 @@ namespace TMPro
         // Function to allocate the necessary buffers to render the text. This function is called whenever the buffer size needs to be increased.
         void SetMeshArrays(int size)
         {
-            // Should add a check to make sure we don't try to create a mesh that contains more than 65535 vertices.
+            m_textInfo.meshInfo.ResizeMeshInfo(size);
 
-            int sizeX4 = size * 4;
-
-            m_uiVertices = new UIVertex[sizeX4];
-
-            // Setup Triangle Structure 
-            for (int i = 0; i < size; i++)
-            {
-                int index_X4 = i * 4;
-
-                m_uiVertices[0 + index_X4].position = Vector3.zero;
-                m_uiVertices[1 + index_X4].position = Vector3.zero;
-                m_uiVertices[2 + index_X4].position = Vector3.zero;
-                m_uiVertices[3 + index_X4].position = Vector3.zero;
-            }
-
-            //Debug.Log("Size:" + size + "  Vertices:" + m_vertices.Length + "  Triangles:" + m_triangles.Length + " Mesh - Vertices:" + m_mesh.vertices.Length + "  Triangles:" + m_mesh.triangles.Length);
-
-            m_uiRenderer.SetVertices(m_uiVertices, sizeX4);
+            m_uiRenderer.SetMesh(m_textInfo.meshInfo.mesh);
         }
 
 
@@ -1344,10 +1326,26 @@ namespace TMPro
 
             for (int i = 0; i < text.Length; i++)
             {
-                if (m_parseCtrlCharacters && text[i] == 92 && i < text.Length - 1)
+                if (m_parseCtrlCharacters && text[i] == 92 && text.Length > i + 1)
                 {
                     switch ((int)text[i + 1])
                     {
+                        case 85: // \U00000000 for UTF-32 Unicode
+                            if (text.Length > i + 9)
+                            {
+                                chars[index] = GetUTF32(i + 2);
+                                i += 9;
+                                index += 1;
+                                continue;
+                            }
+                            break;
+                        case 92: // \ escape
+                            if (text.Length <= i + 2) break;
+                            chars[index] = text[i + 1];
+                            chars[index + 1] = text[i + 2];
+                            i += 2;
+                            index += 2;
+                            continue;
                         case 110: // \n LineFeed
                             chars[index] = (char)10;
                             i += 1;
@@ -1363,16 +1361,25 @@ namespace TMPro
                             i += 1;
                             index += 1;
                             continue;
-                        case 117: // \u0000 for Unicode
-						                if (text.Length > i + 5)
-						                {
-							                   chars[index] = (char)GetUnicodeHex(i + 2);
-							                   i += 5;
-							                   index += 1;
-							                   continue;
-						                }
-						                break;
+                        case 117: // \u0000 for UTF-16 Unicode
+                            if (text.Length > i + 5)
+                            {
+                                chars[index] = (char)GetUTF16(i + 2);
+                                i += 5;
+                                index += 1;
+                                continue;
+                            }
+                            break;
                     }
+                }
+
+                // Handle UTF-32 in the input text (string).
+                if (char.IsHighSurrogate(text[i]) && char.IsLowSurrogate(text[i + 1]))
+                {
+                    chars[index] = char.ConvertToUtf32(text[i], text[i + 1]);
+                    i += 1;
+                    index += 1;
+                    continue;
                 }
 
                 chars[index] = text[i];
@@ -1400,26 +1407,13 @@ namespace TMPro
 
             for (int i = 0; i < m_charArray_Length; i++)
             {
-                if (m_parseCtrlCharacters && charArray[i] == 92 && i < m_charArray_Length - 1)
+                // Handle UTF-32 in the input text (string).
+                if (char.IsHighSurrogate(charArray[i]) && char.IsLowSurrogate(charArray[i + 1]))
                 {
-                    switch ((int)charArray[i + 1])
-                    {
-                        case 110: // \n LineFeed
-                            charBuffer[index] = 10;
-                            i += 1;
-                            index += 1;
-                            continue;
-                        case 114: // \r LineFeed
-                            charBuffer[index] = 13;
-                            i += 1;
-                            index += 1;
-                            continue;
-                        case 116: // \t Tab
-                            charBuffer[index] = 9;
-                            i += 1;
-                            index += 1;
-                            continue;
-                    }
+                    charBuffer[index] = char.ConvertToUtf32(charArray[i], charArray[i + 1]);
+                    i += 1;
+                    index += 1;
+                    continue;
                 }
 
                 charBuffer[index] = charArray[i];
@@ -1442,6 +1436,7 @@ namespace TMPro
             int totalCount = 0;
             int tagEnd = 0;
             m_isUsingBold = false;
+            m_isParsingText = false;
 
             m_VisibleCharacters.Clear();
 
@@ -1471,7 +1466,7 @@ namespace TMPro
                 m_VisibleCharacters.Add((char)c);  
                 totalCount += 1;
             }
-                   
+
             return totalCount;
         }
 
@@ -1488,6 +1483,7 @@ namespace TMPro
             int tagEnd = 0;
             int spriteCount = 0;
             m_isUsingBold = false;
+            m_isParsingText = false;
             m_isSprite = false;
             m_fontIndex = 0;
 
@@ -1543,14 +1539,15 @@ namespace TMPro
                               
 
             if (m_textInfo.characterInfo == null || totalCount > m_textInfo.characterInfo.Length)
-            {                
-                m_textInfo.characterInfo = new TMP_CharacterInfo[totalCount > 1024 ? totalCount + 256 : Mathf.NextPowerOfTwo(totalCount)];              
+            {
+                m_textInfo.characterInfo = new TMP_CharacterInfo[totalCount > 1024 ? totalCount + 256 : Mathf.NextPowerOfTwo(totalCount)];
             }
 
             // Make sure our Mesh Buffer Allocations can hold these new Quads.
-            if (m_uiVertices == null) m_uiVertices = new UIVertex[0];
-            if (visibleCount * 4 > m_uiVertices.Length)
-            {              
+
+            if (m_textInfo.meshInfo.vertices == null) m_textInfo.meshInfo = new TMP_MeshInfo(m_mesh, visibleCount);
+            if (visibleCount * 4 > m_textInfo.meshInfo.vertices.Length)
+            {
                 // If this is the first allocation, we allocated exactly the number of Quads we need. Otherwise, we allocated more since this text object is dynamic.
                 if (m_isFirstAllocation)
                 {
@@ -1659,7 +1656,7 @@ namespace TMPro
 
         protected override void OnDidApplyAnimationProperties()
         {           
-            havePropertiesChanged = true;
+            m_havePropertiesChanged = true;
             //Debug.Log("Animation Properties have changed.");
         }
 
@@ -1692,7 +1689,7 @@ namespace TMPro
             if (m_isRebuildingLayout)
                 m_isLayoutDirty = true;
             else
-                havePropertiesChanged = true;
+                m_havePropertiesChanged = true;
         } 
 
         
@@ -1738,7 +1735,7 @@ namespace TMPro
                     m_marginsHaveChanged = false;
                     m_isCalculateSizeRequired = true;
 
-                    havePropertiesChanged = true;
+                    m_havePropertiesChanged = true;
                 }
 
                 // Update Mask
@@ -1755,17 +1752,17 @@ namespace TMPro
                 if (currentLossyScale != m_previousLossyScale)
                 {
                     // Update UV2 Scale - only if we don't have to regenerate the text object.
-                    if (havePropertiesChanged == false && m_previousLossyScale.z != 0 && m_text != string.Empty)
+                    if (m_havePropertiesChanged == false && m_previousLossyScale.z != 0 && m_text != string.Empty)
                         UpdateSDFScale(m_previousLossyScale.z, currentLossyScale.z);
                     else
-                        havePropertiesChanged = true;
+                        m_havePropertiesChanged = true;
 
                     m_previousLossyScale = currentLossyScale;
                 } 
             }
 
 
-            if (havePropertiesChanged || m_fontAsset.propertiesChanged || m_isLayoutDirty)
+            if (m_havePropertiesChanged || m_fontAsset.propertiesChanged || m_isLayoutDirty)
             {
                 //Debug.Log("Properties have changed!"); // Assigned Material is:" + m_sharedMaterial); // New Text is: " + m_text + ".");
                 
@@ -1788,13 +1785,6 @@ namespace TMPro
                     m_fontAsset.propertiesChanged = false;
                 }
 
-                
-                //if (m_isMaskingEnabled)
-                //{
-                //    UpdateMask();
-                //}
-                
-
                 // Re-parse the text if the input has changed.
                 if (isInputParsingRequired || m_isTextTruncated)
                     ParseInputText();
@@ -1816,7 +1806,7 @@ namespace TMPro
                 m_isLayoutDirty = false;
 
                 GenerateTextMesh();
-                havePropertiesChanged = false;
+                m_havePropertiesChanged = false;
             }
         }
 
@@ -1846,12 +1836,19 @@ namespace TMPro
             if (m_char_buffer == null || m_char_buffer.Length == 0 || m_char_buffer[0] == (char)0)
             {
                 //Debug.Log("Early Out! No Text has been set.");
-                if (m_uiVertices != null)
+                //Vector3[] vertices = m_textInfo.meshInfo.vertices;
+
+                m_uiRenderer.SetMesh(null);
+
+                if (m_inlineGraphics != null) m_inlineGraphics.ClearUIVertex();
+                
+                /*
+                if (vertices != null)
                 {
-                    //m_uiRenderer.Clear();
-                    m_uiRenderer.SetVertices(m_uiVertices, 0);
-                    if (m_inlineGraphics != null) m_inlineGraphics.ClearUIVertex();
+                    Array.Clear(vertices, 0, vertices.Length);
+                    m_textInfo.meshInfo.mesh.vertices = vertices; 
                 }
+                */
 
                 m_preferredWidth = 0;
                 m_preferredHeight = 0;
@@ -1891,7 +1888,7 @@ namespace TMPro
             {
                 checkPaddingRequired = false;
                 m_padding = ShaderUtilities.GetPadding(m_uiRenderer.GetMaterial(), m_enableExtraPadding, m_isUsingBold);
-                m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
+                //m_alignmentPadding = ShaderUtilities.GetFontExtent(m_sharedMaterial);
                 m_isMaskingEnabled = ShaderUtilities.IsMaskingEnabled(m_sharedMaterial);
             }
 
@@ -2126,14 +2123,14 @@ namespace TMPro
                             m_currentFontAsset.characterDictionary.TryGetValue(88, out m_cached_GlyphInfo);
                             if (m_cached_GlyphInfo != null)
                             {
-                                Debug.LogWarning("Character with ASCII value of " + charCode + " was not found in the Font Asset Glyph Table.");
+                                Debug.LogWarning("Character with ASCII value of " + charCode + " was not found in the Font Asset Glyph Table.", this);
                                 // Replace the missing character by X (if it is found)
                                 charCode = 88;
                                 isMissingCharacter = true;
                             }
                             else
                             {  // At this point the character isn't in the Dictionary, the replacement X isn't either so ...
-                                Debug.LogWarning("Character with ASCII value of " + charCode + " was not found in the Font Asset Glyph Table.");
+                                Debug.LogWarning("Character with ASCII value of " + charCode + " was not found in the Font Asset Glyph Table.", this);
                                 continue;
                             }
                         }
@@ -2232,11 +2229,11 @@ namespace TMPro
 
 
                 // Compute MaxAscender & MaxDescender which is used for AutoScaling & other type layout options
-                float ascender = (m_fontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_fontScale + m_baselineOffset;
+                float ascender = m_fontAsset.fontInfo.Ascender * m_fontScale + m_baselineOffset;
                 if ((charCode == 10 || charCode == 13) && m_characterCount > m_firstVisibleCharacterOfLine)
-                    ascender = m_alignmentPadding.y * m_fontScale + m_baselineOffset;
+                    ascender = m_baselineOffset;
 
-                float descender = (m_fontAsset.fontInfo.Descender + m_alignmentPadding.w) * m_fontScale - m_lineOffset + m_baselineOffset;
+                float descender = m_fontAsset.fontInfo.Descender * m_fontScale - m_lineOffset + m_baselineOffset;
 
                 // Check if Sprite exceeds the Ascender and Descender of the font and if so make the adjustment.
                 if (m_isSprite)
@@ -2351,13 +2348,13 @@ namespace TMPro
 
 
                             // Calculate lineAscender & make sure if last character is superscript or subscript that we check that as well.
-                            float lineAscender = (m_fontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_maxFontScale - m_lineOffset;
-                            float lineAscender2 = (m_fontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_fontScale - m_lineOffset + m_baselineOffset;
+                            float lineAscender = m_fontAsset.fontInfo.Ascender * m_maxFontScale - m_lineOffset;
+                            float lineAscender2 = m_fontAsset.fontInfo.Ascender * m_fontScale - m_lineOffset + m_baselineOffset;
                             lineAscender = lineAscender > lineAscender2 ? lineAscender : lineAscender2;
 
                             // Calculate lineDescender & make sure if last character is superscript or subscript that we check that as well.
-                            float lineDescender = (m_fontAsset.fontInfo.Descender + m_alignmentPadding.w) * m_maxFontScale - m_lineOffset;
-                            float lineDescender2 = (m_fontAsset.fontInfo.Descender + m_alignmentPadding.w) * m_fontScale - m_lineOffset + m_baselineOffset;
+                            float lineDescender = m_fontAsset.fontInfo.Descender * m_maxFontScale - m_lineOffset;
+                            float lineDescender2 = m_fontAsset.fontInfo.Descender * m_fontScale - m_lineOffset + m_baselineOffset;
                             lineDescender = lineDescender < lineDescender2 ? lineDescender : lineDescender2;
 
                             // Update maxDescender and maxVisibleDescender
@@ -2567,7 +2564,7 @@ namespace TMPro
 
                 // Check if text Exceeds the vertical bounds of the margin area.
                 #region Check Vertical Bounds & Auto-Sizing
-                if (m_maxAscender - descender + (m_alignmentPadding.w * 2 * m_fontScale) > marginHeight + 0.0001f)
+                if (m_maxAscender - descender > marginHeight + 0.0001f)
                 {
                     //Debug.Log((m_maxAscender - descender + (m_alignmentPadding.w * 2 * m_fontScale)).ToString("f6") + "  " + marginHeight.ToString("f6"));
                     //Debug.Log("Character [" + (char)charCode + "] at Index: " + m_characterCount + " has exceeded the Height of the text container. Max Ascender: " + m_maxAscender + "  Max Descender: " + m_maxDescender + "  Margin Height: " + marginHeight + " Bottom Left: " + bottom_left.y);                                              
@@ -2735,7 +2732,7 @@ namespace TMPro
                 #region Carriage Return
                 if (charCode == 13)
                 {
-                    m_maxXAdvance = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance + (m_alignmentPadding.z * m_fontScale));
+                    m_maxXAdvance = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance);
                     m_renderedWidth = 0;
                     m_xAdvance = 0 + tag_Indent;
                 }
@@ -2758,13 +2755,13 @@ namespace TMPro
                     m_isNewPage = false;
 
                     // Calculate lineAscender & make sure if last character is superscript or subscript that we check that as well.
-                    float lineAscender = (m_fontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_maxFontScale - m_lineOffset;
-                    float lineAscender2 = (m_fontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_fontScale - m_lineOffset + m_baselineOffset;
+                    float lineAscender = m_fontAsset.fontInfo.Ascender * m_maxFontScale - m_lineOffset;
+                    float lineAscender2 = m_fontAsset.fontInfo.Ascender * m_fontScale - m_lineOffset + m_baselineOffset;
                     lineAscender = lineAscender > lineAscender2 ? lineAscender : lineAscender2;
 
                     // Calculate lineDescender & make sure if last character is superscript or subscript that we check that as well.
-                    float lineDescender = (m_fontAsset.fontInfo.Descender + m_alignmentPadding.w) * m_maxFontScale - m_lineOffset;
-                    float lineDescender2 = (m_fontAsset.fontInfo.Descender + m_alignmentPadding.w) * m_fontScale - m_lineOffset + m_baselineOffset;
+                    float lineDescender = m_fontAsset.fontInfo.Descender * m_maxFontScale - m_lineOffset;
+                    float lineDescender2 = m_fontAsset.fontInfo.Descender * m_fontScale - m_lineOffset + m_baselineOffset;
                     lineDescender = lineDescender < lineDescender2 ? lineDescender : lineDescender2;
 
                     // Update maxDescender and maxVisibleDescender
@@ -2793,11 +2790,11 @@ namespace TMPro
                     // Store PreferredWidth paying attention to linefeed and last character of text.
                     if (charCode == 10 && m_characterCount != totalCharacterCount - 1)
                     {
-                        m_maxXAdvance = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance + (m_alignmentPadding.z * m_fontScale));
+                        m_maxXAdvance = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance);
                         m_renderedWidth = 0;
                     }
                     else
-                        m_renderedWidth = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance + (m_alignmentPadding.z * m_fontScale));
+                        m_renderedWidth = Mathf.Max(m_maxXAdvance, m_renderedWidth + m_xAdvance);
                
                     m_renderedHeight = m_maxAscender - m_maxDescender;
 
@@ -2847,8 +2844,8 @@ namespace TMPro
 
                 // Store Rectangle positions for each Character and Mesh Extents.
                 #region Save CharacterInfo for the current character.
-                m_textInfo.characterInfo[m_characterCount].topLine = m_textInfo.characterInfo[m_characterCount].baseLine + (m_currentFontAsset.fontInfo.Ascender + m_alignmentPadding.y) * m_fontScale; // Ascender
-                m_textInfo.characterInfo[m_characterCount].bottomLine = m_textInfo.characterInfo[m_characterCount].baseLine + (m_currentFontAsset.fontInfo.Descender - m_alignmentPadding.w) * m_fontScale; // Descender
+                m_textInfo.characterInfo[m_characterCount].topLine = m_textInfo.characterInfo[m_characterCount].baseLine + m_currentFontAsset.fontInfo.Ascender * m_fontScale; // Ascender
+                m_textInfo.characterInfo[m_characterCount].bottomLine = m_textInfo.characterInfo[m_characterCount].baseLine + m_currentFontAsset.fontInfo.Descender * m_fontScale; // Descender
                 m_textInfo.characterInfo[m_characterCount].padding = padding * m_fontScale;
                 m_textInfo.characterInfo[m_characterCount].aspectRatio = m_cached_GlyphInfo.width / m_cached_GlyphInfo.height;
                 //m_textInfo.characterInfo[m_characterCount].scale = m_fontScale;
@@ -2894,7 +2891,7 @@ namespace TMPro
                         m_isCharacterWrappingEnabled = false;
                         isFirstWord = false;
                     }
-                    else if (charCode > 0x4e00 && charCode < 0x9fff || m_fontAsset.lineBreakingInfo.leadingCharacters.ContainsKey(charCode) || m_fontAsset.lineBreakingInfo.followingCharacters.ContainsKey(charCode))
+                    else if (charCode > 0x2e80 && charCode < 0x9fff || m_fontAsset.lineBreakingInfo.leadingCharacters.ContainsKey(charCode) || m_fontAsset.lineBreakingInfo.followingCharacters.ContainsKey(charCode))
                     {
                         if (m_characterCount < totalCharacterCount - 1
                                 && m_fontAsset.lineBreakingInfo.leadingCharacters.ContainsKey(charCode) == false
@@ -2946,17 +2943,22 @@ namespace TMPro
             // If there are no visible characters... no need to continue
             if (m_visibleCharacterCount == 0 && m_visibleSpriteCount == 0)
             {
-                if (m_uiVertices != null)
-                {
-                    m_uiRenderer.SetVertices(m_uiVertices, 0);
-                }
+                m_uiRenderer.SetMesh(null);
+
+                //Vector3[] vertices = m_textInfo.meshInfo.vertices;
+
+                //if (vertices != null)
+                //{
+                //    Array.Clear(vertices, 0, vertices.Length);
+                //    m_mesh.vertices = vertices;
+                //}
                 return;
             }
 
 
             int last_vert_index = m_visibleCharacterCount * 4;
             // Partial clear of the vertices array to mark unused vertices as degenerate.
-            Array.Clear(m_uiVertices, last_vert_index, m_uiVertices.Length - last_vert_index);
+            Array.Clear(m_textInfo.meshInfo.vertices, last_vert_index, m_textInfo.meshInfo.vertices.Length - last_vert_index);
             // Do we want to clear the sprite array?
 
             // Handle Text Alignment
@@ -3630,41 +3632,26 @@ namespace TMPro
             m_textInfo.wordCount = wordCount != 0 && m_characterCount > 0 ? (short)wordCount : (short)1;
             m_textInfo.pageCount = m_pageNumber + 1;
 
-            // Need to store UI Vertex
-            m_textInfo.meshInfo.uiVertices = m_uiVertices;
-
-            //if (m_textInfo.meshInfo.meshArrays == null)
-            //    m_textInfo.meshInfo.meshArrays = new UIVertex[16][];
-            
-            //m_textInfo.meshInfo.meshArrays[0] = m_uiVertices;
-            //if (m_spriteCount > 0 && m_inlineGraphics != null) m_textInfo.meshInfo.meshArrays[17] = m_inlineGraphics.uiVertex;
-            
-
 
             // If Advanced Layout Component is present, don't upload the mesh.
             if (m_renderMode == TextRenderFlags.Render) // m_isAdvanceLayoutComponentPresent == false || m_advancedLayoutComponent.isEnabled == false)
             {
                 //Debug.Log("Uploading Mesh normally.");
-                // Upload Mesh Data 
-                m_uiRenderer.SetVertices(m_uiVertices, vert_index_X4 + underlineSegmentCount * 12);
-                //m_uiRenderer.SetVertices(m_textInfo.meshInfo.meshArrays[0], m_meshAllocCount[0]);
 
-                //for (int i = 0; i < subObjects.Length; i++ )
-                //{
-                //    if (subObjects[i] != null)
-                //    {
-                //        subObjects[i].GetComponent<CanvasRenderer>().SetVertices(m_textInfo.meshInfo.meshArrays[i], m_meshAllocCount[i]);
-                //        Material mat = Resources.Load("Fonts & Materials/ARIAL SDF - Drop Shadow", typeof(Material)) as Material;
-                //        subObjects[i].GetComponent<CanvasRenderer>().SetMaterial(mat, null);
-                //    }
-                //}
+                // Upload Mesh Data
+                m_mesh.vertices = m_textInfo.meshInfo.vertices;
+                m_mesh.uv = m_textInfo.meshInfo.uvs0;
+                m_mesh.uv2 = m_textInfo.meshInfo.uvs2;
+                m_mesh.colors32 = m_textInfo.meshInfo.colors32;
+
+                m_mesh.RecalculateBounds(); // Replace by manual bound calculation to improve performance.
+
+                m_uiRenderer.SetMesh(m_mesh);
 
 
                 if (m_inlineGraphics != null)
                     m_inlineGraphics.DrawSprite(m_inlineGraphics.uiVertex, m_visibleSpriteCount);
 
-
-                //m_maskOffset = new Vector4(m_mesh.bounds.center.x, m_mesh.bounds.center.y, m_mesh.bounds.size.x, m_mesh.bounds.size.y);
             }
 
             // Compute Bounds for the mesh. Manual computation is more efficient then using Mesh.recalcualteBounds.
@@ -3704,13 +3691,16 @@ namespace TMPro
             //Debug.Log("Done rendering text. Character Count is " + m_textInfo.characterCount);
             //Debug.Log("Done rendering text. Preferred Width:" + m_preferredWidth + "  Preferred Height:" + m_preferredHeight);
 
+            // Event indicating the text has been regenerated.
+            TMPro_EventManager.ON_TEXT_CHANGED(this);
+
             //Debug.Log(m_minWidth);
             //Profiler.EndSample();
             //m_StopWatch.Stop();
             //Debug.Log("Done Rendering Text.");
 
             //Debug.Log("TimeElapsed is:" + (m_StopWatch.ElapsedTicks / 10000f).ToString("f4"));
-            //m_StopWatch.Reset();     
+            //m_StopWatch.Reset();
         }
 
 
@@ -3851,54 +3841,34 @@ namespace TMPro
             //int meshIndex = m_textInfo.characterInfo[index].meshIndex;
             //int index2 = m_meshAllocCount[meshIndex];
             TMP_CharacterInfo[] characterInfoArray = m_textInfo.characterInfo;
-            //m_textInfo.characterInfo[i].uiVertices = m_uiVertices;
             m_textInfo.characterInfo[i].vertexIndex = (short)(index_X4);
 
-            // Setup Vertices for Characters or Sprites
-            UIVertex bottomLeft = new UIVertex();
-            bottomLeft.position = characterInfoArray[i].vertex_BL.position;
-            bottomLeft.uv0 = characterInfoArray[i].vertex_BL.uv;
-            bottomLeft.uv1 = characterInfoArray[i].vertex_BL.uv2;
-            bottomLeft.color = characterInfoArray[i].vertex_BL.color;
-            bottomLeft.normal = characterInfoArray[i].vertex_BL.normal;
-            bottomLeft.tangent = characterInfoArray[i].vertex_BL.tangent;
-            m_uiVertices[0 + index_X4] = bottomLeft;
-            //m_textInfo.meshInfo.meshArrays[meshIndex][index2 + 0] = bottomLeft;
-            
+            // Setup Vertices for Characters
+            m_textInfo.meshInfo.vertices[0 + index_X4] = characterInfoArray[i].vertex_BL.position;
+            m_textInfo.meshInfo.vertices[1 + index_X4] = characterInfoArray[i].vertex_TL.position;
+            m_textInfo.meshInfo.vertices[2 + index_X4] = characterInfoArray[i].vertex_TR.position;
+            m_textInfo.meshInfo.vertices[3 + index_X4] = characterInfoArray[i].vertex_BR.position;
 
-            UIVertex topLeft = new UIVertex();
-            topLeft.position = characterInfoArray[i].vertex_TL.position;
-            topLeft.uv0 = characterInfoArray[i].vertex_TL.uv;
-            topLeft.uv1 = characterInfoArray[i].vertex_TL.uv2;
-            topLeft.color = characterInfoArray[i].vertex_TL.color;
-            topLeft.normal = characterInfoArray[i].vertex_TL.normal;
-            topLeft.tangent = characterInfoArray[i].vertex_TL.tangent;
-            m_uiVertices[1 + index_X4] = topLeft;
-            //m_textInfo.meshInfo.meshArrays[meshIndex][index2 + 1] = topLeft;
-            
 
-            UIVertex topRight = new UIVertex();
-            topRight.position = characterInfoArray[i].vertex_TR.position;
-            topRight.uv0 = characterInfoArray[i].vertex_TR.uv;
-            topRight.uv1 = characterInfoArray[i].vertex_TR.uv2;
-            topRight.color = characterInfoArray[i].vertex_TR.color;
-            topRight.normal = characterInfoArray[i].vertex_TR.normal;
-            topRight.tangent = characterInfoArray[i].vertex_TR.tangent;
-            m_uiVertices[2 + index_X4] = topRight;
-            //m_textInfo.meshInfo.meshArrays[meshIndex][index2 + 2] = topRight;
-            
+            // Setup UVS0
+            m_textInfo.meshInfo.uvs0[0 + index_X4] = characterInfoArray[i].vertex_BL.uv;
+            m_textInfo.meshInfo.uvs0[1 + index_X4] = characterInfoArray[i].vertex_TL.uv;
+            m_textInfo.meshInfo.uvs0[2 + index_X4] = characterInfoArray[i].vertex_TR.uv;
+            m_textInfo.meshInfo.uvs0[3 + index_X4] = characterInfoArray[i].vertex_BR.uv;
 
-            UIVertex bottomRight = new UIVertex();
-            bottomRight.position = characterInfoArray[i].vertex_BR.position;
-            bottomRight.uv0 = characterInfoArray[i].vertex_BR.uv;
-            bottomRight.uv1 = characterInfoArray[i].vertex_BR.uv2;
-            bottomRight.color = characterInfoArray[i].vertex_BR.color;
-            bottomRight.normal = characterInfoArray[i].vertex_BR.normal;
-            bottomRight.tangent = characterInfoArray[i].vertex_BR.tangent;
-            m_uiVertices[3 + index_X4] = bottomRight;
-            //m_textInfo.meshInfo.meshArrays[meshIndex][index2 + 3] = bottomRight;
 
-            //m_meshAllocCount[meshIndex] += 4;
+            // Setup UVS2
+            m_textInfo.meshInfo.uvs2[0 + index_X4] = characterInfoArray[i].vertex_BL.uv2;
+            m_textInfo.meshInfo.uvs2[1 + index_X4] = characterInfoArray[i].vertex_TL.uv2;
+            m_textInfo.meshInfo.uvs2[2 + index_X4] = characterInfoArray[i].vertex_TR.uv2;
+            m_textInfo.meshInfo.uvs2[3 + index_X4] = characterInfoArray[i].vertex_BR.uv2;
+
+
+            // setup Vertex Colors
+            m_textInfo.meshInfo.colors32[0 + index_X4] = characterInfoArray[i].vertex_BL.color;
+            m_textInfo.meshInfo.colors32[1 + index_X4] = characterInfoArray[i].vertex_TL.color;
+            m_textInfo.meshInfo.colors32[2 + index_X4] = characterInfoArray[i].vertex_TR.color;
+            m_textInfo.meshInfo.colors32[3 + index_X4] = characterInfoArray[i].vertex_BR.color;
         }
 
 
@@ -3943,16 +3913,16 @@ namespace TMPro
         {
             if (m_cached_Underline_GlyphInfo == null)
             {
-                Debug.LogWarning("Unable to add underline since the Font Asset doesn't contain the underline character.");
+                Debug.LogWarning("Unable to add underline since the Font Asset doesn't contain the underline character.", this);
                 return;
             }
 
             int verticesCount = index + 12;
             // Check to make sure our current mesh buffer allocations can hold these new Quads.
-            if (verticesCount > m_uiVertices.Length)
+            if (verticesCount > m_textInfo.meshInfo.vertices.Length)
             {
                 // Resize Mesh Buffers
-                ResizeMeshBuffers(verticesCount / 4 + 12);
+                m_textInfo.meshInfo.ResizeMeshInfo(verticesCount / 4);
             }
 
             // Adjust the position of the underline based on the lowest character. This matters for subscript character.
@@ -3969,24 +3939,31 @@ namespace TMPro
             float startPadding = m_padding * startScale / maxScale;
             float endPadding = m_padding * endScale / maxScale;
 
-            float underlineThickness = m_cached_Underline_GlyphInfo.height; // m_fontAsset.FontInfo.UnderlineThickness;
+            float underlineThickness = m_cached_Underline_GlyphInfo.height;
+
+            // VERTICES
+            Vector3[] vertices = m_textInfo.meshInfo.vertices;
+            
             // Front Part of the Underline
-            m_uiVertices[index + 0].position = start + new Vector3(0, 0 - (underlineThickness + m_padding) * maxScale, 0); // BL
-            m_uiVertices[index + 1].position = start + new Vector3(0, m_padding * maxScale, 0); // TL
-            m_uiVertices[index + 2].position = m_uiVertices[index + 1].position + new Vector3(segmentWidth, 0, 0); // TR
-            m_uiVertices[index + 3].position = m_uiVertices[index + 0].position + new Vector3(segmentWidth, 0, 0); // BR
+            vertices[index + 0] = start + new Vector3(0, 0 - (underlineThickness + m_padding) * maxScale, 0); // BL
+            vertices[index + 1] = start + new Vector3(0, m_padding * maxScale, 0); // TL
+            vertices[index + 2] = vertices[index + 1] + new Vector3(segmentWidth, 0, 0); // TR
+            vertices[index + 3] = vertices[index + 0] + new Vector3(segmentWidth, 0, 0); // BR
 
             // Middle Part of the Underline
-            m_uiVertices[index + 4].position = m_uiVertices[index + 3].position; // BL
-            m_uiVertices[index + 5].position = m_uiVertices[index + 2].position; // TL
-            m_uiVertices[index + 6].position = end + new Vector3(-segmentWidth, m_padding * maxScale, 0);  // TR
-            m_uiVertices[index + 7].position = end + new Vector3(-segmentWidth, -(underlineThickness + m_padding) * maxScale, 0); // BR
+            vertices[index + 4] = vertices[index + 3]; // BL
+            vertices[index + 5] = vertices[index + 2]; // TL
+            vertices[index + 6] = end + new Vector3(-segmentWidth, m_padding * maxScale, 0);  // TR
+            vertices[index + 7] = end + new Vector3(-segmentWidth, -(underlineThickness + m_padding) * maxScale, 0); // BR
 
             // End Part of the Underline
-            m_uiVertices[index + 8].position = m_uiVertices[index + 7].position; // BL
-            m_uiVertices[index + 9].position = m_uiVertices[index + 6].position; // TL
-            m_uiVertices[index + 10].position = end + new Vector3(0, m_padding * maxScale, 0); // TR
-            m_uiVertices[index + 11].position = end + new Vector3(0, -(underlineThickness + m_padding) * maxScale, 0); // BR
+            vertices[index + 8] = vertices[index + 7]; // BL
+            vertices[index + 9] = vertices[index + 6]; // TL
+            vertices[index + 10] = end + new Vector3(0, m_padding * maxScale, 0); // TR
+            vertices[index + 11] = end + new Vector3(0, -(underlineThickness + m_padding) * maxScale, 0); // BR
+
+
+            // UVS
 
             // Calculate UV required to setup the 3 Quads for the Underline.
             Vector2 uv0 = new Vector2((m_cached_Underline_GlyphInfo.x - startPadding) / m_fontAsset.fontInfo.AtlasWidth, 1 - (m_cached_Underline_GlyphInfo.y + m_padding + m_cached_Underline_GlyphInfo.height) / m_fontAsset.fontInfo.AtlasHeight);  // bottom left
@@ -3998,107 +3975,78 @@ namespace TMPro
             Vector2 uv6 = new Vector2((m_cached_Underline_GlyphInfo.x + endPadding + m_cached_Underline_GlyphInfo.width) / m_fontAsset.fontInfo.AtlasWidth, uv1.y); // End Part - Bottom Right
             Vector2 uv7 = new Vector2(uv6.x, uv0.y); // End Part - Top Right
 
+            Vector2[] uvs0 = m_textInfo.meshInfo.uvs0;
+
             // Left Part of the Underline
-            m_uiVertices[0 + index].uv0 = uv0; // BL
-            m_uiVertices[1 + index].uv0 = uv1; // TL   
-            m_uiVertices[2 + index].uv0 = uv2; // TR   
-            m_uiVertices[3 + index].uv0 = uv3; // BR
+            uvs0[0 + index] = uv0; // BL
+            uvs0[1 + index] = uv1; // TL
+            uvs0[2 + index] = uv2; // TR
+            uvs0[3 + index] = uv3; // BR
 
             // Middle Part of the Underline
-            m_uiVertices[4 + index].uv0 = new Vector2(uv2.x - uv2.x * 0.001f, uv0.y);
-            m_uiVertices[5 + index].uv0 = new Vector2(uv2.x - uv2.x * 0.001f, uv1.y);
-            m_uiVertices[6 + index].uv0 = new Vector2(uv2.x + uv2.x * 0.001f, uv1.y);
-            m_uiVertices[7 + index].uv0 = new Vector2(uv2.x + uv2.x * 0.001f, uv0.y);
+            uvs0[4 + index] = new Vector2(uv2.x - uv2.x * 0.001f, uv0.y);
+            uvs0[5 + index] = new Vector2(uv2.x - uv2.x * 0.001f, uv1.y);
+            uvs0[6 + index] = new Vector2(uv2.x + uv2.x * 0.001f, uv1.y);
+            uvs0[7 + index] = new Vector2(uv2.x + uv2.x * 0.001f, uv0.y);
 
             // Right Part of the Underline
-            m_uiVertices[8 + index].uv0 = uv5;
-            m_uiVertices[9 + index].uv0 = uv4;
-            m_uiVertices[10 + index].uv0 = uv6;
-            m_uiVertices[11 + index].uv0 = uv7;
+            uvs0[8 + index] = uv5;
+            uvs0[9 + index] = uv4;
+            uvs0[10 + index] = uv6;
+            uvs0[11 + index] = uv7;
 
-          
+
             // UV1 contains Face / Border UV layout.
             float min_UvX = 0;
-            float max_UvX = (m_uiVertices[index + 2].position.x - start.x) / (end.x - start.x);
+            float max_UvX = (vertices[index + 2].x - start.x) / (end.x - start.x);
 
             //Calculate the xScale or how much the UV's are getting stretched on the X axis for the middle section of the underline.
             float xScale = maxScale * m_rectTransform.lossyScale.z; // *m_canvas.planeDistance / 100;
             float xScale2 = xScale;
 
-            m_uiVertices[0 + index].uv1 = PackUV(0, 0, xScale);
-            m_uiVertices[1 + index].uv1 = PackUV(0, 1, xScale);
-            m_uiVertices[2 + index].uv1 = PackUV(max_UvX, 1, xScale);
-            m_uiVertices[3 + index].uv1 = PackUV(max_UvX, 0, xScale);
+            Vector2[] uvs2 = m_textInfo.meshInfo.uvs2;
 
-            min_UvX = (m_uiVertices[index + 4].position.x - start.x) / (end.x - start.x);
-            max_UvX = (m_uiVertices[index + 6].position.x - start.x) / (end.x - start.x);
+            uvs2[0 + index] = PackUV(0, 0, xScale);
+            uvs2[1 + index] = PackUV(0, 1, xScale);
+            uvs2[2 + index] = PackUV(max_UvX, 1, xScale);
+            uvs2[3 + index] = PackUV(max_UvX, 0, xScale);
 
-            m_uiVertices[4 + index].uv1 = PackUV(min_UvX, 0, xScale2);
-            m_uiVertices[5 + index].uv1 = PackUV(min_UvX, 1, xScale2);
-            m_uiVertices[6 + index].uv1 = PackUV(max_UvX, 1, xScale2);
-            m_uiVertices[7 + index].uv1 = PackUV(max_UvX, 0, xScale2);
+            min_UvX = (vertices[index + 4].x - start.x) / (end.x - start.x);
+            max_UvX = (vertices[index + 6].x - start.x) / (end.x - start.x);
 
-            min_UvX = (m_uiVertices[index + 8].position.x - start.x) / (end.x - start.x);
-            max_UvX = (m_uiVertices[index + 6].position.x - start.x) / (end.x - start.x);
+            uvs2[4 + index] = PackUV(min_UvX, 0, xScale2);
+            uvs2[5 + index] = PackUV(min_UvX, 1, xScale2);
+            uvs2[6 + index] = PackUV(max_UvX, 1, xScale2);
+            uvs2[7 + index] = PackUV(max_UvX, 0, xScale2);
 
-            m_uiVertices[8 + index].uv1 = PackUV(min_UvX, 0, xScale);
-            m_uiVertices[9 + index].uv1 = PackUV(min_UvX, 1, xScale);
-            m_uiVertices[10 + index].uv1 = PackUV(1, 1, xScale);
-            m_uiVertices[11 + index].uv1 = PackUV(1, 0, xScale);
+            min_UvX = (vertices[index + 8].x - start.x) / (end.x - start.x);
+            max_UvX = (vertices[index + 6].x - start.x) / (end.x - start.x);
+
+            uvs2[8 + index] = PackUV(min_UvX, 0, xScale);
+            uvs2[9 + index] = PackUV(min_UvX, 1, xScale);
+            uvs2[10 + index] = PackUV(1, 1, xScale);
+            uvs2[11 + index] = PackUV(1, 0, xScale);
 
 
             //underlineColor.a /= 2; // Since bold is encoded in the alpha, we need to adjust this.
+
+            Color32[] colors = m_textInfo.meshInfo.colors32;
             // Set Underline Color
-            m_uiVertices[0 + index].color = underlineColor;
-            m_uiVertices[1 + index].color = underlineColor;
-            m_uiVertices[2 + index].color = underlineColor;
-            m_uiVertices[3 + index].color = underlineColor;
+            colors[0 + index] = underlineColor;
+            colors[1 + index] = underlineColor;
+            colors[2 + index] = underlineColor;
+            colors[3 + index] = underlineColor;
 
-            m_uiVertices[4 + index].color = underlineColor;
-            m_uiVertices[5 + index].color = underlineColor;
-            m_uiVertices[6 + index].color = underlineColor;
-            m_uiVertices[7 + index].color = underlineColor;
+            colors[4 + index] = underlineColor;
+            colors[5 + index] = underlineColor;
+            colors[6 + index] = underlineColor;
+            colors[7 + index] = underlineColor;
 
-            m_uiVertices[8 + index].color = underlineColor;
-            m_uiVertices[9 + index].color = underlineColor;
-            m_uiVertices[10 + index].color = underlineColor;
-            m_uiVertices[11 + index].color = underlineColor;
+            colors[8 + index] = underlineColor;
+            colors[9 + index] = underlineColor;
+            colors[10 + index] = underlineColor;
+            colors[11 + index] = underlineColor;
 
-            // Set Normals and Tangents 
-            #region Setup Normals & Tangents
-            Vector3 normal = new Vector3(0, 0, -1);
-            m_uiVertices[0 + index].normal = normal;
-            m_uiVertices[1 + index].normal = normal;
-            m_uiVertices[2 + index].normal = normal;
-            m_uiVertices[3 + index].normal = normal;
-
-            m_uiVertices[4 + index].normal = normal;
-            m_uiVertices[5 + index].normal = normal;
-            m_uiVertices[6 + index].normal = normal;
-            m_uiVertices[7 + index].normal = normal;
-
-            m_uiVertices[8 + index].normal = normal;
-            m_uiVertices[9 + index].normal = normal;
-            m_uiVertices[10 + index].normal = normal;
-            m_uiVertices[11 + index].normal = normal;
-
-            // Tangents
-            Vector4 tangent = new Vector4(-1, 0, 0, 1);
-            m_uiVertices[0 + index].tangent = tangent;
-            m_uiVertices[1 + index].tangent = tangent;
-            m_uiVertices[2 + index].tangent = tangent;
-            m_uiVertices[3 + index].tangent = tangent;
-
-            m_uiVertices[4 + index].tangent = tangent;
-            m_uiVertices[5 + index].tangent = tangent;
-            m_uiVertices[6 + index].tangent = tangent;
-            m_uiVertices[7 + index].tangent = tangent;
-
-            m_uiVertices[8 + index].tangent = tangent;
-            m_uiVertices[9 + index].tangent = tangent;
-            m_uiVertices[10 + index].tangent = tangent;
-            m_uiVertices[11 + index].tangent = tangent;
-            #endregion end Normals & Tangents
 
             index += 12;
         }
@@ -4109,46 +4057,16 @@ namespace TMPro
         /// </summary>
         void UpdateSDFScale(float prevScale, float newScale)
         {
-            for (int i = 0; i < m_uiVertices.Length; i++)
+            Vector2[] uvs2 = m_textInfo.meshInfo.uvs2;
+
+            for (int i = 0; i < uvs2.Length; i++)
             {
-                m_uiVertices[i].uv1.y = (m_uiVertices[i].uv1.y / prevScale) * newScale; 
+                uvs2[i].y = (uvs2[i].y / prevScale) * newScale; 
             }
 
-            m_uiRenderer.SetVertices(m_uiVertices, m_uiVertices.Length);
+            m_mesh.uv2 = uvs2;
+            m_uiRenderer.SetMesh(m_mesh);
         }
-
-
-        /// <summary>
-        /// Function to Resize the Mesh Buffers
-        /// </summary>
-        /// <param name="size"></param>
-        void ResizeMeshBuffers(int size)
-        {
-            int sizeX4 = size * 4;
-            //int sizeX6 = size * 6;
-            //int previousSize = m_uiVertices.Length / 4;
-
-            //Debug.Log("Resizing Mesh Buffers from " + previousSize + " to " + size + ".");
-
-            Array.Resize(ref m_uiVertices, sizeX4);
-            
-            //for (int i = previousSize; i < size; i++)
-            //{
-            //    int index_X4 = i * 4;
-            //    //int index_X6 = i * 6;
-
-            //    m_uiVertices[0 + index_X4].normal = new Vector3(0, 0, -1);
-            //    m_uiVertices[1 + index_X4].normal = new Vector3(0, 0, -1);
-            //    m_uiVertices[2 + index_X4].normal = new Vector3(0, 0, -1);
-            //    m_uiVertices[3 + index_X4].normal = new Vector3(0, 0, -1);
-
-            //    m_uiVertices[0 + index_X4].tangent = new Vector4(-1, 0, 0, 1);
-            //    m_uiVertices[1 + index_X4].tangent = new Vector4(-1, 0, 0, 1);
-            //    m_uiVertices[2 + index_X4].tangent = new Vector4(-1, 0, 0, 1);
-            //    m_uiVertices[3 + index_X4].tangent = new Vector4(-1, 0, 0, 1);
-            //}
-        }
-
 
 
         // Function to offset vertices position to account for line spacing changes.
@@ -4185,9 +4103,11 @@ namespace TMPro
             state.total_CharacterCount = count;
             state.visible_CharacterCount = m_visibleCharacterCount;
             state.firstCharacterIndex = m_firstCharacterOfLine;
+            state.visible_SpriteCount = m_visibleSpriteCount;
+            state.visible_LinkCount = m_textInfo.linkCount;
             state.firstVisibleCharacterIndex = m_firstVisibleCharacterOfLine;
             state.lastVisibleCharIndex = m_lastVisibleCharacterOfLine;
-            state.visible_SpriteCount = m_visibleSpriteCount;
+            
             state.xAdvance = m_xAdvance;
             state.maxAscender = m_maxAscender;
             state.maxDescender = m_maxDescender;
@@ -4226,6 +4146,7 @@ namespace TMPro
             m_characterCount = state.total_CharacterCount + 1;
             m_visibleCharacterCount = state.visible_CharacterCount;
             m_visibleSpriteCount = state.visible_SpriteCount;
+            m_textInfo.linkCount = state.visible_LinkCount;
             m_firstCharacterOfLine = state.firstCharacterIndex;
             m_firstVisibleCharacterOfLine = state.firstVisibleCharacterIndex;
             m_lastVisibleCharacterOfLine = state.lastVisibleCharIndex;
@@ -4316,12 +4237,32 @@ namespace TMPro
         /// </summary>
         /// <returns>The Unicode hex.</returns>
         /// <param name="i">The index.</param>
-        int GetUnicodeHex(int i)
+        int GetUTF16(int i)
         {
-            int unicode = HexToInt(text[i]) * 4096;
-            unicode += HexToInt(text[i + 1]) * 256;
-            unicode += HexToInt(text[i + 2]) * 16;
-            unicode += HexToInt(text[i + 3]);
+            int unicode = HexToInt (text [i]) * 4096;
+            unicode += HexToInt (text [i + 1]) * 256;
+            unicode += HexToInt (text [i + 2]) * 16;
+            unicode += HexToInt (text [i + 3]);
+            return unicode;
+        }
+
+
+        /// <summary>
+        /// Convert UTF-32 Hex to Char
+        /// </summary>
+        /// <returns>The Unicode hex.</returns>
+        /// <param name="i">The index.</param>
+        int GetUTF32(int i)
+        {
+            int unicode = 0;
+            unicode += HexToInt(text[i]) * 268435456;
+            unicode += HexToInt(text[i + 1]) * 16777216;
+            unicode += HexToInt(text[i + 2]) * 1048576;
+            unicode += HexToInt(text[i + 3]) * 65536;
+            unicode += HexToInt(text[i + 4]) * 4096;
+            unicode += HexToInt(text[i + 5]) * 256;
+            unicode += HexToInt(text[i + 6]) * 16;
+            unicode += HexToInt(text[i + 7]);
             return unicode;
         }
 
@@ -5052,12 +4993,19 @@ namespace TMPro
                         tag_LineIndent = 0;
                         return true;
                     case 2246877: // <sprite=x>
+                        if (m_inlineGraphics == null) m_inlineGraphics = GetComponent<InlineGraphicManager>() ?? gameObject.AddComponent<InlineGraphicManager>();
+
                         if (char.IsDigit(m_htmlTag[7]))
-                            m_spriteIndex = (int)ConvertToFloat(m_htmlTag, numSequenceStart, numSequenceEnd, numSequenceDecimalPos);
+                        {
+                            int index = (int)ConvertToFloat(m_htmlTag, numSequenceStart, numSequenceEnd, numSequenceDecimalPos);
+                            m_spriteIndex = m_inlineGraphics.GetSpriteIndexByIndex(index);
+                            if (m_spriteIndex == -1)
+                                return false;
+                        }
                         else
                         {
                             // Get sprite index by looking it up by name.
-                            m_spriteIndex = m_inlineGraphics.GetSpriteIndex(attribute_1.hashCode);
+                            m_spriteIndex = m_inlineGraphics.GetSpriteIndexByHashCode(attribute_1.hashCode);
                             if (m_spriteIndex == -1)
                                 return false;
                             //Debug.Log("Sprite name is: \"" + new string(m_htmlTag, attribute_1.startIndex, attribute_1.length) + "\" with HashCode: " + attribute_1.hashCode);

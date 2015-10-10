@@ -20,8 +20,8 @@ namespace TMPro.Examples
         private const string label01 = "The <#0050FF>count is: </color>{0}";
         private const string label02 = "The <color=#0050FF>count is: </color>";
 
-        private string m_string;
-        private int m_frame;
+        //private string m_string;
+        //private int m_frame;
 
         private Material m_material01;
         private Material m_material02;
@@ -83,7 +83,7 @@ namespace TMPro.Examples
                 m_textMesh.fontSize = 48;
                 m_textMesh.anchor = TextAnchor.MiddleCenter;
 
-                //m_textMesh.color = new Color32(255, 255, 0, 255);    
+                //m_textMesh.color = new Color32(255, 255, 0, 255);
             }
 
 

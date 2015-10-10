@@ -49,11 +49,13 @@ namespace TMPro.Examples
             {
                 case objectType.TextMeshPro:
                     TMP_TextInfo textInfo = m_TextMeshPro.textInfo;
-                    ObjectStats = "Characters: " + textInfo.characterCount + "   Words: " + textInfo.wordCount + "   Links: " + textInfo.linkCount + "   Lines: " + textInfo.lineCount + "   Spaces: " + textInfo.spaceCount;
+                    ObjectStats = "Characters: " + textInfo.characterCount + "   Words: " + textInfo.wordCount + "   Spaces: " + textInfo.spaceCount + "   Sprites: " + textInfo.spriteCount + "   Links: " + textInfo.linkCount
+                                + "\nLines: " + textInfo.lineCount + "   Pages: " + textInfo.pageCount;
                     break;
                 case objectType.TextMeshProUI:
                     textInfo = m_TextMeshProUI.textInfo;
-                    ObjectStats = "Characters: " + textInfo.characterCount + "   Words: " + textInfo.wordCount + "   Links: " + textInfo.linkCount + "   Lines: " + textInfo.lineCount + "   Spaces: " + textInfo.spaceCount;
+                    ObjectStats = "Characters: " + textInfo.characterCount + "   Words: " + textInfo.wordCount + "   Spaces: " + textInfo.spaceCount + "   Sprites: " + textInfo.spriteCount + "   Links: " + textInfo.linkCount
+                                + "\nLines: " + textInfo.lineCount + "   Pages: " + textInfo.pageCount;
                     break;
             }
 

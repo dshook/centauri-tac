@@ -24,7 +24,7 @@ namespace TMPro.EditorUtilities
             public static bool materialEditor = true;
         }
 
-        private static int m_eventID;
+        //private static int m_eventID;
 
         private static string[] uiStateLabel = new string[] { "\t- <i>Click to expand</i> -", "\t- <i>Click to collapse</i> -" };
 
@@ -96,11 +96,13 @@ namespace TMPro.EditorUtilities
 
         //private SerializedProperty isMaskUpdateRequired_prop;
         //private SerializedProperty mask_prop;
-        private SerializedProperty maskOffset_prop;
+        //private SerializedProperty maskOffset_prop;
         //private SerializedProperty maskOffsetMode_prop;
         //private SerializedProperty maskSoftness_prop;
 
-        private SerializedProperty vertexOffset_prop;
+        //private SerializedProperty vertexOffset_prop;
+
+        private SerializedProperty raycastTarget_prop;
 
 
         //private SerializedProperty sortingLayerID_prop;
@@ -118,16 +120,16 @@ namespace TMPro.EditorUtilities
         private Rect m_inspectorStartRegion;
         private Rect m_inspectorEndRegion;
 
-        private bool m_isMultiSelection;
-        private bool m_isMixSelectionTypes;
+        //private bool m_isMultiSelection;
+        //private bool m_isMixSelectionTypes;
 
         //private TMPro_UpdateManager m_updateManager;
 
         private Vector3[] m_rectCorners = new Vector3[4];
         private Vector3[] handlePoints = new Vector3[4]; // { new Vector3(-10, -10, 0), new Vector3(-10, 10, 0), new Vector3(10, 10, 0), new Vector3(10, -10, 0) };
-        private float prev_lineLenght;
+        //private float prev_lineLenght;
 
-        private bool m_isUndoSet;
+        //private bool m_isUndoSet;
 
         public void OnEnable()
         {
@@ -182,20 +184,21 @@ namespace TMPro.EditorUtilities
  
             //isOrthographic_prop = serializedObject.FindProperty("m_isOrthographic");
 
-            havePropertiesChanged_prop = serializedObject.FindProperty("havePropertiesChanged");
+            havePropertiesChanged_prop = serializedObject.FindProperty("m_havePropertiesChanged");
             inputSource_prop = serializedObject.FindProperty("m_inputSource");
             isInputPasingRequired_prop = serializedObject.FindProperty("isInputParsingRequired");
             //isCalculateSizeRequired_prop = serializedObject.FindProperty("m_isCalculateSizeRequired");
             enableExtraPadding_prop = serializedObject.FindProperty("m_enableExtraPadding");
             isRichText_prop = serializedObject.FindProperty("m_isRichText");
             checkPaddingRequired_prop = serializedObject.FindProperty("checkPaddingRequired");
+            raycastTarget_prop = serializedObject.FindProperty("m_RaycastTarget");
 
 
             margin_prop = serializedObject.FindProperty("m_margin");
             
             //isMaskUpdateRequired_prop = serializedObject.FindProperty("isMaskUpdateRequired");
             //mask_prop = serializedObject.FindProperty("m_mask");
-            maskOffset_prop= serializedObject.FindProperty("m_maskOffset");
+            //maskOffset_prop= serializedObject.FindProperty("m_maskOffset");
             //maskOffsetMode_prop = serializedObject.FindProperty("m_maskOffsetMode");
             //maskSoftness_prop = serializedObject.FindProperty("m_maskSoftness");
             //vertexOffset_prop = serializedObject.FindProperty("m_vertexOffset");
@@ -574,7 +577,7 @@ namespace TMPro.EditorUtilities
 
                 EditorGUI.BeginChangeCheck();
                 DrawMaginProperty(margin_prop, "Margins");
-                DrawMaginProperty(maskOffset_prop, "Mask Offset");
+                //DrawMaginProperty(maskOffset_prop, "Mask Offset");
 
                 //EditorGUILayout.BeginHorizontal();
                 //EditorGUILayout.PropertyField(sortingLayerID_prop);
@@ -582,8 +585,12 @@ namespace TMPro.EditorUtilities
 
                 //EditorGUILayout.EndHorizontal();
 
-                //EditorGUILayout.PropertyField(isOrthographic_prop, new GUIContent("Orthographic Mode?"));
+
+                EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.PropertyField(isRichText_prop, new GUIContent("Enable Rich Text?"));
+                EditorGUILayout.PropertyField(raycastTarget_prop, new GUIContent("Raycast Target?"));
+                EditorGUILayout.EndHorizontal();
+
                 //EditorGUILayout.PropertyField(textRectangle_prop, true);
 
                 if (EditorGUI.EndChangeCheck())
@@ -679,7 +686,7 @@ namespace TMPro.EditorUtilities
                         if (!mat || mat == m_uiRenderer.GetMaterial() || mat.GetTexture(ShaderUtilities.ID_MainTex).GetInstanceID() != m_textMeshProScript.font.atlas.GetInstanceID())
                         {
                             if (mat && mat.GetTexture(ShaderUtilities.ID_MainTex).GetInstanceID() != m_textMeshProScript.font.atlas.GetInstanceID())
-                                Debug.LogWarning("Drag-n-Drop Material [" + mat.name + "]'s Atlas does not match the assigned Font Asset [" + m_textMeshProScript.font.name + "]'s Atlas.");
+                                Debug.LogWarning("Drag-n-Drop Material [" + mat.name + "]'s Atlas does not match the assigned Font Asset [" + m_textMeshProScript.font.name + "]'s Atlas.", this);
                             break;
                         }
                         
@@ -924,7 +931,7 @@ namespace TMPro.EditorUtilities
                 //m_isMultiSelection = true;
                 for (int i = 0; i < objects.Length; i++)
                 {
-                    if (objects[i].GetType() != typeof(TextMeshProUGUI))
+					if (((GameObject)objects[i]).GetComponent<TextMeshProUGUI>() == null)
                         return true;
                 }
             }

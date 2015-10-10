@@ -29,12 +29,20 @@ Material:
         second: .150000006
       data:
         first:
-          name: _OutlineWidth
-        second: .150000006
+          name: _UnderlayOffsetX
+        second: 1
       data:
         first:
-          name: _OutlineSoftness
+          name: _UnderlayOffsetY
+        second: -1
+      data:
+        first:
+          name: _UnderlayDilate
         second: 0
+      data:
+        first:
+          name: _UnderlaySoftness
+        second: .291999996
       data:
         first:
           name: _WeightNormal
@@ -45,28 +53,12 @@ Material:
         second: .75
       data:
         first:
-          name: _ShaderFlags
+          name: _OutlineWidth
+        second: .150000006
+      data:
+        first:
+          name: _OutlineSoftness
         second: 0
-      data:
-        first:
-          name: _ScaleRatioA
-        second: .833333313
-      data:
-        first:
-          name: _ScaleRatioB
-        second: 1
-      data:
-        first:
-          name: _ScaleRatioC
-        second: .548245609
-      data:
-        first:
-          name: _TextureWidth
-        second: 1024
-      data:
-        first:
-          name: _TextureHeight
-        second: 1024
       data:
         first:
           name: _GradientScale
@@ -85,28 +77,12 @@ Material:
         second: .875
       data:
         first:
-          name: _VertexOffsetX
-        second: 0
+          name: _TextureWidth
+        second: 1024
       data:
         first:
-          name: _VertexOffsetY
-        second: 0
-      data:
-        first:
-          name: _UnderlayOffsetX
-        second: 1
-      data:
-        first:
-          name: _UnderlayOffsetY
-        second: -1
-      data:
-        first:
-          name: _UnderlayDilate
-        second: 0
-      data:
-        first:
-          name: _UnderlaySoftness
-        second: .291999996
+          name: _TextureHeight
+        second: 1024
       data:
         first:
           name: _MaskID
@@ -119,19 +95,47 @@ Material:
         first:
           name: _MaskSoftnessY
         second: 0
+      data:
+        first:
+          name: _VertexOffsetX
+        second: 0
+      data:
+        first:
+          name: _VertexOffsetY
+        second: 0
+      data:
+        first:
+          name: _ShaderFlags
+        second: 0
+      data:
+        first:
+          name: _ScaleRatioA
+        second: .833333313
+      data:
+        first:
+          name: _ScaleRatioB
+        second: 1
+      data:
+        first:
+          name: _ScaleRatioC
+        second: .548245609
     m_Colors:
+      data:
+        first:
+          name: _ClipRect
+        second: {r: 0, g: 0, b: 100000, a: 100000}
       data:
         first:
           name: _FaceColor
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
-          name: _OutlineColor
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
           name: _UnderlayColor
         second: {r: 0, g: 0, b: 0, a: .5}
+      data:
+        first:
+          name: _OutlineColor
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _MaskCoord

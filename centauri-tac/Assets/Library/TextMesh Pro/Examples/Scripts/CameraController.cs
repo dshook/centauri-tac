@@ -43,7 +43,7 @@ namespace TMPro.Examples
         private float mouseWheel;
 
         // Controls for Touches on Mobile devices
-        private float prev_ZoomDelta;
+        //private float prev_ZoomDelta;
 
 
         private const string event_SmoothingValue = "Slider - Smoothing Value";

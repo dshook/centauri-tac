@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.IO;
 
@@ -21,11 +22,7 @@ namespace TMPro.EditorUtilities
         public static void ShowFontAtlasCreatorWindow()
         {
             var window = GetWindow<TMPro_FontAssetCreatorWindow>();
-#if UNITY_5_1
             window.titleContent = new GUIContent("Asset Creator");
-#else
-            window.titleContent.text = "Asset Creator";
-#endif
             window.Focus();
         }
 
@@ -33,7 +30,7 @@ namespace TMPro.EditorUtilities
         private int FontSizingOption_Selection = 0;
         private string[] FontResolutionLabels = { "16","32", "64", "128", "256", "512", "1024", "2048", "4096", "8192" };
         private int[] FontAtlasResolutions = { 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192 };
-        private string[] FontCharacterSets = { "ASCII", "Extended ASCII", "ASCII Lowercase", "ASCII Uppercase", "Numbers + Symbols", "Custom Range", "Custom Characters", "Characters from File" }; //, "Unicode" };
+        private string[] FontCharacterSets = { "ASCII", "Extended ASCII", "ASCII Lowercase", "ASCII Uppercase", "Numbers + Symbols", "Custom Range", "Unicode Range (Hex)", "Custom Characters", "Characters from File" };
         private enum FontPackingModes { Fast = 0, Optimum = 4 };
         private FontPackingModes m_fontPackingSelection = 0;
 
@@ -55,7 +52,7 @@ namespace TMPro.EditorUtilities
         //private GUIStyle Section_Label;
 
 
-        private Thread MainThread;
+        //private Thread MainThread;
         private Color[] Output;
         private bool isDistanceMapReady = false;
         private bool isRepaintNeeded = false;
@@ -92,8 +89,8 @@ namespace TMPro.EditorUtilities
         private int[] m_kerningSet;
 
         // Image Down Sampling Fields
-        private Texture2D sdf_Atlas;
-        private int downscale;
+        //private Texture2D sdf_Atlas;
+        //private int downscale;
 
         //private Object prev_Selection;
 
@@ -250,7 +247,11 @@ namespace TMPro.EditorUtilities
         }
 
 
-
+        /// <summary>
+        /// Method which returns the character corresponding to a decimal value.
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <returns></returns>
         int[] ParseNumberSequence(string sequence)
         {
             List<int> unicode_list = new List<int>();
@@ -282,6 +283,43 @@ namespace TMPro.EditorUtilities
         }
 
 
+        /// <summary>
+        /// Method which returns the character (decimal value) from a hex sequence.
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <returns></returns>
+        int[] ParseHexNumberSequence(string sequence)
+        {
+            List<int> unicode_list = new List<int>();
+            string[] sequences = sequence.Split(',');
+
+            foreach (string seq in sequences)
+            {
+                string[] s1 = seq.Split('-');
+
+                if (s1.Length == 1)
+                    try
+                    {
+                        unicode_list.Add(int.Parse(s1[0], NumberStyles.AllowHexSpecifier));
+                    }
+                    catch
+                    {
+                        Debug.Log("No characters selected or invalid format.");
+                    }
+                else
+                {
+                    for (int j = int.Parse(s1[0], NumberStyles.AllowHexSpecifier); j < int.Parse(s1[1], NumberStyles.AllowHexSpecifier) + 1; j++)
+                    {
+                        unicode_list.Add(j);
+                    }
+                }
+            }
+
+            return unicode_list.ToArray();
+        }
+
+
+
         void DrawControls()
         {
             GUILayout.BeginVertical();
@@ -297,7 +335,7 @@ namespace TMPro.EditorUtilities
             // FONT SIZING
             if (FontSizingOption_Selection == 0)
             {
-                FontSizingOption_Selection = EditorGUILayout.Popup("Font Size", FontSizingOption_Selection, FontSizingOptions, GUILayout.Width(290));            
+                FontSizingOption_Selection = EditorGUILayout.Popup("Font Size", FontSizingOption_Selection, FontSizingOptions, GUILayout.Width(290));
             }
             else
             {
@@ -349,7 +387,7 @@ namespace TMPro.EditorUtilities
                     break;
 
                 case 1: // EXTENDED ASCII
-                    characterSequence = "32 - 126, 160 - 255, 8210 - 8226, 8230, 8240, 8242 - 8244, 8249 - 8250, 8252, 8254, 8260, 8286";
+                    characterSequence = "32 - 126, 160 - 255, 8210 - 8226, 8230, 8240, 8242 - 8244, 8249 - 8250, 8252, 8254, 8260, 8286, 8364";
                     break;
 
                 case 2: // Lowercase
@@ -366,7 +404,7 @@ namespace TMPro.EditorUtilities
 
                 case 5: // Custom Range
                     GUILayout.BeginHorizontal(GUILayout.Width(290));
-                    GUILayout.Label("Custom Range", GUILayout.Width(116));
+                    GUILayout.Label("Custom Range (Dec)", GUILayout.Width(116));
 
                     // Filter out unwanted characters.
                     char chr = Event.current.character;
@@ -379,7 +417,23 @@ namespace TMPro.EditorUtilities
                     GUILayout.EndHorizontal();
                     break;
 
-                case 6: // Custom Characters
+                case 6: // Unicode HEX Range
+                    GUILayout.BeginHorizontal(GUILayout.Width(290));
+                    GUILayout.Label("Unicode Range (Hex)", GUILayout.Width(116));
+
+                    // Filter out unwanted characters.
+                    chr = Event.current.character;
+                    if ((chr < '0' || chr > '9') && (chr < 'a' || chr > 'f') && (chr < 'A' || chr > 'F') && (chr < ',' || chr > '-'))
+                    {
+                        Event.current.character = '\0';
+                    }
+                    characterSequence = EditorGUILayout.TextArea(characterSequence, TMP_UIStyleManager.TextAreaBoxWindow, GUILayout.Height(32), GUILayout.MaxWidth(170));
+
+                    GUILayout.EndHorizontal();
+                    break;
+
+
+                case 7: // Custom Characters
                     GUILayout.BeginHorizontal(GUILayout.Width(290));
 
                     GUILayout.Label("Custom Characters", GUILayout.Width(116));
@@ -387,7 +441,7 @@ namespace TMPro.EditorUtilities
                     GUILayout.EndHorizontal();
                     break;
 
-                case 7: // Character List from File
+                case 8: // Character List from File
                     characterList = EditorGUILayout.ObjectField("Character File", characterList, typeof(TextAsset), false, GUILayout.Width(290)) as TextAsset;
                     if (characterList != null)
                     {
@@ -463,7 +517,7 @@ namespace TMPro.EditorUtilities
                     if (error_Code == 0)
                     {
                         int[] character_Set = null;
-                        if (font_CharacterSet_Selection == 6 || font_CharacterSet_Selection == 7)
+                        if (font_CharacterSet_Selection == 7 || font_CharacterSet_Selection == 8)
                         {
                             List<int> char_List = new List<int>();
                             
@@ -479,6 +533,10 @@ namespace TMPro.EditorUtilities
                             }
 
                             character_Set = char_List.ToArray();
+                        }
+                        else if (font_CharacterSet_Selection == 6)
+                        {
+                            character_Set = ParseHexNumberSequence(characterSequence);
                         }
                         else
                         {

@@ -71,8 +71,10 @@ Properties {
 
 	_VertexOffsetX		("Vertex OffsetX", float) = 0
 	_VertexOffsetY		("Vertex OffsetY", float) = 0
-	_MaskID				("Mask ID", float) = 0
-	_MaskCoord			("Mask Coords", vector) = (0,0,0,0)
+	
+	//_UseClipRect		("Enabled Clip Rect", float) = 0
+	//_MaskID				("Mask ID", float) = 0
+	_ClipRect("Mask Coords", vector) = (0,0,100000,100000)
 	_MaskSoftnessX		("Mask SoftnessX", float) = 0
 	_MaskSoftnessY		("Mask SoftnessY", float) = 0
 
@@ -109,7 +111,7 @@ SubShader {
 	Fog { Mode Off }
 	Ztest [_ZTestMode]
 	Blend One OneMinusSrcAlpha
-	//ColorMask [_ColorMask]	
+	//ColorMask [_ColorMask]
 
 	Pass {
 		CGPROGRAM
@@ -126,6 +128,8 @@ SubShader {
 		#include "UnityCG.cginc"
 		#include "TMPro_Properties.cginc"
 		#include "TMPro.cginc"
+
+		bool	_UseClipRect;
 
 		struct vertex_t {
 			float4	vertex			: POSITION;
@@ -202,14 +206,16 @@ SubShader {
 
 			pixel_t output = {
 				vPosition,
-				faceColor, outlineColor, input.color.a,
+				faceColor,
+				outlineColor,
+				input.color.a,
 				float4(input.texcoord0, UnpackUV(input.texcoord1.x)),
 				float4(alphaClip, scale, bias, weight),
-				float4(vert.xy-_MaskCoord.xy, .5/pixelSize.xy),
+				float4(vert.xy, 0.5 / pixelSize.xy),
 				mul((float3x3)_EnvMatrix, _WorldSpaceCameraPos.xyz - mul(_Object2World, vert).xyz),
 			#if (UNDERLAY_ON || UNDERLAY_INNER)
 				float4(input.texcoord0 + bOffset, bScale, bBias),
-        underlayColor,
+				underlayColor,
 			#endif
 			};
 
@@ -219,6 +225,7 @@ SubShader {
 		fixed4 PixShader(pixel_t input) : COLOR
 		{
 			float c = tex2D(_MainTex, input.texcoords.xy).a;
+		
 		#ifndef UNDERLAY_ON
 			clip(c - input.param.x);
 		#endif
@@ -276,14 +283,25 @@ SubShader {
 			//faceColor.a *= glowColor.a; // Required for Alpha when using Render Textures
 		#endif
 
+			half2 clipSize = (_ClipRect.zw - _ClipRect.xy) * 0.5;
+			half2 clipCenter = _ClipRect.xy + clipSize;
+
+		if (_UseClipRect)
+		{
+			half2 s = half2(_MaskSoftnessX, _MaskSoftnessY) * input.mask.zw;
+			half2 m = 1 - saturate(((abs(input.mask.xy - clipCenter) - clipSize) * input.mask.zw + s) / (1 + s));
+			m *= m;
+			faceColor *= m.x * m.y;
+		}
+
 		#if MASK_HARD
-			float2 m = 1-saturate((abs(input.mask.xy)-_MaskCoord.zw)*input.mask.zw);
+			float2 m = 1 - saturate((abs(input.mask.xy - clipCenter) - clipSize) * input.mask.zw);
 			faceColor *= m.x*m.y;
 		#endif
 
 		#if MASK_SOFT
 			float2 s = half2(_MaskSoftnessX, _MaskSoftnessY)*input.mask.zw;
-			float2 m = 1-saturate(((abs(input.mask.xy)-_MaskCoord.zw)*input.mask.zw+s) / (1+s));
+			float2 m = 1-saturate(((abs(input.mask.xy - clipCenter) - clipSize) * input.mask.zw + s) / (1 + s));
 			m *= m;
 			faceColor *= m.x*m.y;
 		#endif

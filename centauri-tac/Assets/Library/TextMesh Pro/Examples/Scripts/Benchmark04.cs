@@ -15,7 +15,7 @@ namespace TMPro.Examples
         public int Steps = 4;
 
         private Transform m_Transform;
-        private TextMeshProFloatingText floatingText_Script;
+        //private TextMeshProFloatingText floatingText_Script;
         //public Material material;
 
 

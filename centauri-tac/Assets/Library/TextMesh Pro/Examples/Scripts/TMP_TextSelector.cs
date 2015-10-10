@@ -5,6 +5,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+#pragma warning disable 0618 // Disabled warning due to SetVertices being deprecated until new release with SetMesh() is available.
+
 namespace TMPro.Examples
 {
 
@@ -18,8 +20,8 @@ namespace TMPro.Examples
         private const string k_WordText = "Word Index: <#ffff00>";
 
 
-        private Transform m_WordLabelObject;
-        private TextMeshProUGUI m_WordLabel_TMP_Component;
+        //private Transform m_WordLabelObject;
+        //private TextMeshProUGUI m_WordLabel_TMP_Component;
 
         private TextMeshProUGUI m_TextMeshPro;
         //private RectTransform m_RectTransform;
@@ -71,17 +73,26 @@ namespace TMPro.Examples
 
                     int vertexIndex = m_TextMeshPro.textInfo.characterInfo[charIndex].vertexIndex;
 
-                    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+                    //UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+                    Color32[] vertexColors = m_TextMeshPro.textInfo.meshInfo.colors32;
 
-                    uiVertices[vertexIndex + 0].color = c;
-                    uiVertices[vertexIndex + 1].color = c;
-                    uiVertices[vertexIndex + 2].color = c;
-                    uiVertices[vertexIndex + 3].color = c;
+                    vertexColors[vertexIndex + 0] = c;
+                    vertexColors[vertexIndex + 1] = c;
+                    vertexColors[vertexIndex + 2] = c;
+                    vertexColors[vertexIndex + 3] = c;
 
                     if (m_TextMeshPro.textInfo.characterInfo[charIndex].type == TMP_CharacterType.Character)
-                        m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+                    {
+                        Mesh mesh = m_TextMeshPro.textInfo.meshInfo.mesh;
+                        mesh.colors32 = vertexColors;
+
+                        m_TextMeshPro.canvasRenderer.SetMesh(mesh);
+                    }
                     else if (m_TextMeshPro.textInfo.characterInfo[charIndex].type == TMP_CharacterType.Sprite)
-                        m_TextMeshPro.inlineGraphicManager.inlineGraphic.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+                    {
+                        // TODO Fix for Sprites
+                        //m_TextMeshPro.inlineGraphicManager.inlineGraphic.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+                    }
 
                 }
                 #endregion
@@ -96,23 +107,26 @@ namespace TMPro.Examples
                 {
                     TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[m_selectedWord];
 
-                    // Get a reference to the uiVertices array.
-                    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+                    // Get a reference to the vertex color
+                    Color32[] vertexColors = m_TextMeshPro.textInfo.meshInfo.colors32;
 
                     // Iterate through each of the characters of the word.
                     for (int i = 0; i < wInfo.characterCount; i++)
                     {
                         int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
 
-                        Color32 c = uiVertices[vertexIndex + 0].color.Tint(1.33333f);
+                        Color32 c = vertexColors[vertexIndex + 0].Tint(1.33333f);
 
-                        uiVertices[vertexIndex + 0].color = c;
-                        uiVertices[vertexIndex + 1].color = c;
-                        uiVertices[vertexIndex + 2].color = c;
-                        uiVertices[vertexIndex + 3].color = c;
+                        vertexColors[vertexIndex + 0] = c;
+                        vertexColors[vertexIndex + 1] = c;
+                        vertexColors[vertexIndex + 2] = c;
+                        vertexColors[vertexIndex + 3] = c;
                     }
 
-                    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+                    Mesh mesh = m_TextMeshPro.textInfo.meshInfo.mesh;
+                    mesh.colors32 = vertexColors;
+
+                    m_TextMeshPro.canvasRenderer.SetMesh(mesh);
 
                     m_selectedWord = -1;
                 }
@@ -125,23 +139,26 @@ namespace TMPro.Examples
 
                     TMP_WordInfo wInfo = m_TextMeshPro.textInfo.wordInfo[wordIndex];
 
-                    // Get a reference to the uiVertices array.
-                    UIVertex[] uiVertices = m_TextMeshPro.textInfo.meshInfo.uiVertices;
+                    // Get a reference to the vertex color
+                    Color32[] vertexColors = m_TextMeshPro.textInfo.meshInfo.colors32;
 
                     // Iterate through each of the characters of the word.
                     for (int i = 0; i < wInfo.characterCount; i++)
                     {
                         int vertexIndex = m_TextMeshPro.textInfo.characterInfo[wInfo.firstCharacterIndex + i].vertexIndex;
 
-                        Color32 c = uiVertices[vertexIndex + 0].color.Tint(0.75f);
+                        Color32 c = vertexColors[vertexIndex + 0].Tint(0.75f);
 
-                        uiVertices[vertexIndex + 0].color = c;
-                        uiVertices[vertexIndex + 1].color = c;
-                        uiVertices[vertexIndex + 2].color = c;
-                        uiVertices[vertexIndex + 3].color = c;
+                        vertexColors[vertexIndex + 0] = c;
+                        vertexColors[vertexIndex + 1] = c;
+                        vertexColors[vertexIndex + 2] = c;
+                        vertexColors[vertexIndex + 3] = c;
                     }
 
-                    m_TextMeshPro.canvasRenderer.SetVertices(uiVertices, uiVertices.Length);
+                    Mesh mesh = m_TextMeshPro.textInfo.meshInfo.mesh;
+                    mesh.colors32 = vertexColors;
+
+                    m_TextMeshPro.canvasRenderer.SetMesh(mesh);
                 }
                 #endregion
 

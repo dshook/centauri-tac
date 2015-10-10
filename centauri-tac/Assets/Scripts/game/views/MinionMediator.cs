@@ -45,7 +45,7 @@ namespace ctac
                 view.minion.health = attackPiece.targetNewHp;
             }
 
-            if (view.minion.health < 0)
+            if (view.minion.health <= 0)
             {
                 Destroy(view.minion.gameObject);
             }

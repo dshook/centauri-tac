@@ -55,6 +55,7 @@ namespace TMPro
         private KerningTable m_kerningInfo;
 
         [SerializeField]
+        #pragma warning disable 0169 // Property is used to create an empty Kerning Pair in the editor.
         private KerningPair m_kerningPair;  // Used for creating a new kerning pair in Editor Panel.
 
 
@@ -226,14 +227,15 @@ namespace TMPro
                 temp_charInfo.id = 10;
                 temp_charInfo.x = 0; // m_characterDictionary[32].x;
                 temp_charInfo.y = 0; // m_characterDictionary[32].y;
-                temp_charInfo.width = 0; // m_characterDictionary[32].width;
-                temp_charInfo.height = 0; // m_characterDictionary[32].height;
+                temp_charInfo.width = 10; // m_characterDictionary[32].width;
+                temp_charInfo.height = m_characterDictionary[32].height;
                 temp_charInfo.xOffset = 0; // m_characterDictionary[32].xOffset;
-                temp_charInfo.yOffset = 0; // m_characterDictionary[32].yOffset;
+                temp_charInfo.yOffset = m_characterDictionary[32].yOffset;
                 temp_charInfo.xAdvance = 0;
                 m_characterDictionary.Add(10, temp_charInfo);
 
-                m_characterDictionary.Add(13, temp_charInfo);
+                if (!m_characterDictionary.ContainsKey(13))
+                    m_characterDictionary.Add(13, temp_charInfo);
             }
 
             // Add Tab Character to Dictionary. Tab is Tab Size * Space Character Width.

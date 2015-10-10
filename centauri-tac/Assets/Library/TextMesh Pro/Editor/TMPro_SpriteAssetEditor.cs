@@ -87,7 +87,7 @@ namespace TMPro.EditorUtilities
             if (UI_PanelState.spriteInfoPanel)
             {
                 int arraySize = m_spriteInfoList_prop.arraySize;
-                int itemsPerPage = (Screen.height - 283) / 80;
+                int itemsPerPage = (Screen.height - 292) / 80;
 
                 if (arraySize > 0)
                 {
@@ -130,8 +130,10 @@ namespace TMPro.EditorUtilities
                     m_page += 1 * shiftMultiplier;
 
                 // Clamp page range
-                m_page = Mathf.Clamp(m_page, 0, arraySize / itemsPerPage);
-
+                if (itemsPerPage > 0)
+                    m_page = Mathf.Clamp(m_page, 0, arraySize / itemsPerPage);
+                else
+                    m_page = 0;
 
                 // Global Settings
                 
@@ -169,8 +171,7 @@ namespace TMPro.EditorUtilities
             }
 
             //Rect rect = EditorGUILayout.GetControlRect(false, 20);
-            
-           
+
 
             
             if (serializedObject.ApplyModifiedProperties() || evt_cmd == k_UndoRedo || isAssetDirty)

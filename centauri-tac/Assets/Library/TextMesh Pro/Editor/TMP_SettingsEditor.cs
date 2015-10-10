@@ -21,7 +21,7 @@ namespace TMPro.EditorUtilities
         //}
 
         //private string[] uiStateLabel = new string[] { "<i>(Click to expand)</i>", "<i>(Click to collapse)</i>" };
-        private GUIStyle _Label;
+        //private GUIStyle _Label;
 
 
         private SerializedProperty prop_FontAsset;
