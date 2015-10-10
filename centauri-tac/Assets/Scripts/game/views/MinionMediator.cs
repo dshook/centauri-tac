@@ -18,6 +18,9 @@ namespace ctac
         [Inject]
         public AnimationQueueModel animationQueue { get; set; }
 
+        [Inject]
+        public PieceDiedSignal pieceDied { get; set; }
+
         public override void OnRegister()
         {
             minionMoved.AddListener(onMove);
@@ -69,7 +72,8 @@ namespace ctac
                 animationQueue.Add(
                     new MinionView.DieAnim()
                     {
-                        minion = view.minion.gameObject
+                        minion = view.minion,
+                        pieceDied = pieceDied
                     }
                 );
             }

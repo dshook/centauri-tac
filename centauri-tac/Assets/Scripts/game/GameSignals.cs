@@ -2,7 +2,6 @@ using strange.extensions.signal.impl;
 
 namespace ctac.signals
 {
-
     [Singleton]
     public class CurrentGameSignal : Signal<GameMetaModel, SocketKey> { }
 
@@ -62,5 +61,9 @@ namespace ctac.signals
 
     [Singleton]
     public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
+
+    [Singleton]
+    public class PieceDiedSignal : Signal<MinionModel> { }
+
 }
 

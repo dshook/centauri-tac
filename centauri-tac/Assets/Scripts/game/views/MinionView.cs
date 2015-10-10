@@ -1,4 +1,5 @@
-﻿using strange.extensions.mediation.impl;
+﻿using ctac.signals;
+using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -27,6 +28,9 @@ namespace ctac {
             spriteRenderer = minion.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
+
+            attackText.text = minion.attack.ToString();
+            healthText.text = minion.health.ToString();
         }
 
         void Update()
@@ -97,15 +101,17 @@ namespace ctac {
         {
             public bool Complete { get; set; }
 
-            public GameObject minion { get; set; }
+            public PieceDiedSignal pieceDied { get; set; }
+            public MinionModel minion { get; set; }
 
             public void Update()
             {
-                iTweenExtensions.ScaleTo(minion, Vector3.zero, 1.5f, 0, EaseType.easeInOutBounce);
-                if (minion.transform.localScale.x < 0.01f)
+                iTweenExtensions.ScaleTo(minion.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInOutBounce);
+                if (minion.gameObject.transform.localScale.x < 0.01f)
                 {
-                    minion.transform.localScale = Vector3.zero;
+                    minion.gameObject.transform.localScale = Vector3.zero;
                     Complete = true;
+                    pieceDied.Dispatch(minion);
                 }
             }
         }

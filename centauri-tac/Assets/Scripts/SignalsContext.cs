@@ -110,6 +110,8 @@ namespace ctac
             commandBinder.Bind<PlayerPartSignal>().To<PlayerPartCommand>();
             commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
 
+            commandBinder.Bind<PieceDiedSignal>().To<PieceDiedCommand>();
+
             commandBinder.Bind<ActionPassTurnSignal>().To<EndTurnCommand>();
             commandBinder.Bind<ActionSpawnPieceSignal>().To<SpawnPieceCommand>();
 

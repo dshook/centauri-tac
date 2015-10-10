@@ -31,10 +31,10 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         [Inject]
-        public ActionsProcessedModel processedActions
-        {
-            get; set;
-        }
+        public ActionsProcessedModel processedActions { get; set; }
+        
+        [Inject]
+        public AnimationQueueModel animations { get; set; }
 
             private GameObject _minionPrefab { get; set; }
         private GameObject minionPrefab
@@ -97,8 +97,8 @@ namespace ctac
                 moveDist = 5
             };
 
-            newMinion.AddComponent<MinionView>();
-            newMinion.GetComponent<MinionView>().minion = minionModel;
+            var minionView = newMinion.AddComponent<MinionView>();
+            minionView.minion = minionModel;
 
             minionsModel.minions.Add(minionModel);
 
