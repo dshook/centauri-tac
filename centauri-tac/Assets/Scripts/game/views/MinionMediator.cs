@@ -31,7 +31,13 @@ namespace ctac
         {
             if (minionMoved != view.minion) return;
 
-            view.AddToPath(dest);
+            view.AddAnim(
+                new MinionView.MoveAnim()
+                {
+                    minion = view.minion.gameObject,
+                    destination = dest.gameObject.transform.position
+                }
+            );
         }
 
         public void onAttacked(AttackPieceModel attackPiece)
@@ -45,9 +51,23 @@ namespace ctac
                 view.minion.health = attackPiece.targetNewHp;
             }
 
+            view.AddAnim(
+                new MinionView.UpdateTextAnim()
+                {
+                    text = view.healthText,
+                    current = view.minion.health,
+                    original = view.minion.originalHealth
+                }
+            );
+
             if (view.minion.health <= 0)
             {
-                Destroy(view.minion.gameObject);
+                view.AddAnim(
+                    new MinionView.DieAnim()
+                    {
+                        minion = view.minion.gameObject
+                    }
+                );
             }
         }
 

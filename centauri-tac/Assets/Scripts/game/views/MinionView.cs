@@ -8,13 +8,10 @@ namespace ctac {
     {
         public MinionModel minion { get; set; }
 
-        private List<Tile> path = new List<Tile>();
-        private Vector3? destination = null;
+        private List<IAnimate> animations = new List<IAnimate>();
 
-        private float moveSpeed = 0.4f;
-
-        private TextMeshPro attackText;
-        private TextMeshPro healthText;
+        public TextMeshPro attackText;
+        public TextMeshPro healthText;
 
         private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
@@ -32,29 +29,15 @@ namespace ctac {
 
         void Update()
         {
-            if (path != null && path.Count > 0)
+            if (animations.Count > 0)
             {
-                if (destination == null)
+                var anim = animations[0];
+                anim.Update();
+                if (anim.Complete)
                 {
-                    destination = path[0].gameObject.transform.position;
-                    path.RemoveAt(0);
+                    animations.RemoveAt(0);
                 }
             }
-
-            if (destination != null)
-            {
-                minion.isMoving = true;
-                iTweenExtensions.MoveTo(minion.gameObject, destination.Value, moveSpeed, 0, EaseType.linear);
-                if (Vector3.Distance(transform.position, destination.Value) < 0.01)
-                {
-                    transform.position = destination.Value;
-                    destination = null;
-                    minion.isMoving = false;
-                }
-            }
-
-            UpdateText(attackText, minion.attack, minion.originalAttack);
-            UpdateText(healthText, minion.health, minion.originalHealth);
 
             if (minion.currentPlayerHasControl && !minion.hasMoved)
             {
@@ -67,28 +50,80 @@ namespace ctac {
 
         }
 
-        private void UpdateText(TextMeshPro text, int current, int original)
+        public void AddAnim(IAnimate anim)
         {
-            if(text == null) return;
+            this.animations.Add(anim);
+        }
 
-            text.text = current.ToString();
-            if (current > original)
+        public interface IAnimate
+        {
+            void Update();
+            bool Complete { get; }
+        }
+
+        public class MoveAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+
+            public GameObject minion { get; set; }
+            public Vector3 destination { get; set; }
+            private float moveSpeed = 0.4f;
+
+            public void Update()
             {
-                text.color = Color.green;
-            }
-            else if (current < original)
-            {
-                text.color = Color.red;
-            }
-            else
-            {
-                text.color = Color.white;
+                iTweenExtensions.MoveTo(minion.gameObject, destination, moveSpeed, 0, EaseType.linear);
+                if (Vector3.Distance(minion.transform.position, destination) < 0.01)
+                {
+                    minion.transform.position = destination;
+                    Complete = true;
+                }
             }
         }
 
-        public void AddToPath(Tile tile)
+        public class UpdateTextAnim : IAnimate
         {
-            this.path.Add(tile);
+            public bool Complete { get; set; }
+
+            public TextMeshPro text { get; set; }
+            public int current { get; set; }
+            public int original { get; set; }
+
+            public void Update()
+            {
+                if(text == null) return;
+
+                text.text = current.ToString();
+                if (current > original)
+                {
+                    text.color = Color.green;
+                }
+                else if (current < original)
+                {
+                    text.color = Color.red;
+                }
+                else
+                {
+                    text.color = Color.white;
+                }
+                Complete = true;
+            }
+        }
+
+        public class DieAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+
+            public GameObject minion { get; set; }
+
+            public void Update()
+            {
+                iTweenExtensions.ScaleTo(minion, Vector3.zero, 1.5f, 0, EaseType.easeInOutBounce);
+                if (minion.transform.localScale.x < 0.01f)
+                {
+                    minion.transform.localScale = Vector3.zero;
+                    Complete = true;
+                }
+            }
         }
     }
 }
