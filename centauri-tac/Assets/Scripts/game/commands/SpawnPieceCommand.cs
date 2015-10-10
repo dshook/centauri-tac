@@ -30,7 +30,13 @@ namespace ctac
         [Inject]
         public IDebugService debug { get; set; }
 
-        private GameObject _minionPrefab { get; set; }
+        [Inject]
+        public ActionsProcessedModel processedActions
+        {
+            get; set;
+        }
+
+            private GameObject _minionPrefab { get; set; }
         private GameObject minionPrefab
         {
             get
@@ -45,11 +51,13 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this piece has already been spawned by another player
-            if (minionsModel.minions.Any(x => x.id == spawnedPiece.id))
+            //check to see if this action has already been processed by another player
+            if (processedActions.processedActions.Any(x => x == spawnedPiece.id))
             {
                 return;
             }
+            processedActions.processedActions.Add(spawnedPiece.id);
+
 
             var newMinion = GameObject.Instantiate(
                 minionPrefab, 

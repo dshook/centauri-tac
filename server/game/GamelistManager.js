@@ -25,6 +25,12 @@ export default class GamelistManager
     // registers the game
     const game = await this.games.create(name, component.id, playerId);
 
+    if(game == null){
+      this.log.info('Could not create game for %s component: %s player: %s'
+        ,name, component.id, playerId);
+      return null;
+    }
+
     // instantiates game on the game host
     await this.net.post(component, 'game', game);
 

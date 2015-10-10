@@ -11,7 +11,7 @@ namespace ctac {
         private List<Tile> path = new List<Tile>();
         private Vector3? destination = null;
 
-        private float moveSpeed = 1f;
+        private float moveSpeed = 0.4f;
 
         private TextMeshPro attackText;
         private TextMeshPro healthText;
