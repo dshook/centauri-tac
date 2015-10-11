@@ -97,6 +97,14 @@ export default class ComponentStore
     this.log.info('set component %s to active=%s', id, state);
   }
 
+  async delete(id)
+  {
+    await this.sql.query(`
+      delete components where id = @id`, {id});
+
+    this.log.info('deleted component %s', id);
+  }
+
   /**
    * Update last ping
    */

@@ -32,7 +32,7 @@ export default class MasterRPC
   async markInactive(client, id)
   {
     this.log.info('setting %s to inactive', id);
-    await this.components.setActive(id, false);
+    await this.components.delete(id, false);
   }
 
   /**
