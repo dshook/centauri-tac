@@ -76,14 +76,22 @@ namespace ctac
             injectionBinder.Bind<IMapService>().To<MapService>().ToSingleton();
 
 
-            //bind views
-            mediationBinder.Bind<LoginView>().To<LoginMediator>();
-            mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
-            mediationBinder.Bind<TileClickView>().To<TileClickMediator>();
-            mediationBinder.Bind<MinionView>().To<MinionMediator>();
-            mediationBinder.Bind<QuitView>().To<QuitMediator>();
-            mediationBinder.Bind<EndTurnView>().To<EndTurnMediator>();
-            mediationBinder.Bind<LeaveGameView>().To<LeaveGameMediator>();
+            //bind views to mediators
+            foreach (Type type in assemblyTypes.Where(x => x.Name.EndsWith("View")))
+            {
+                if(type.IsInterface) continue;
+                if (type.GetCustomAttributes(typeof(ManualMapSignalAttribute), true).Length > 0)
+                {
+                    continue;
+                }
+
+                var mediatorName = type.Name.Replace("View", "Mediator");
+                var mediatorType = assemblyTypes.Where(x => x.Name == mediatorName).FirstOrDefault();
+                if (mediatorType != null)
+                {
+                    mediationBinder.Bind(type).To(mediatorType);
+                }
+            }
 
             //bind signals to commands
             foreach (Type type in assemblyTypes.Where(x => x.Name.EndsWith("Signal")))
