@@ -15,6 +15,7 @@ namespace ctac.signals
     public class TokenSignal : Signal<string, SocketKey> { }
 
     [Singleton]
+    [ManualMapSignal]
     public class PlayerFetchedSignal : Signal<PlayerModel, SocketKey> { }
 
     [Singleton]

@@ -47,7 +47,8 @@ namespace ctac
 
             //bind up all the singleton signals
             //note that this will not inject any types that are bound so these should be plain data classes
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (Type type in assemblyTypes)
             {
                 if (type.GetCustomAttributes(typeof(SingletonAttribute), true).Length > 0)
                 {
@@ -75,6 +76,7 @@ namespace ctac
             injectionBinder.Bind<IMapService>().To<MapService>().ToSingleton();
 
 
+            //bind views
             mediationBinder.Bind<LoginView>().To<LoginMediator>();
             mediationBinder.Bind<TileHighlightView>().To<TileHighlightMediator>();
             mediationBinder.Bind<TileClickView>().To<TileClickMediator>();
@@ -83,34 +85,52 @@ namespace ctac
             mediationBinder.Bind<EndTurnView>().To<EndTurnMediator>();
             mediationBinder.Bind<LeaveGameView>().To<LeaveGameMediator>();
 
+            //bind signals to commands
+            foreach (Type type in assemblyTypes.Where(x => x.Name.EndsWith("Signal")))
+            {
+                if(type.IsInterface) continue;
+                if (type.GetCustomAttributes(typeof(ManualMapSignalAttribute), true).Length > 0)
+                {
+                    continue;
+                }
+
+                var commandName = type.Name.Replace("Signal", "Command");
+                var commandType = assemblyTypes.Where(x => x.Name == commandName).FirstOrDefault();
+                if (commandType != null)
+                {
+                    commandBinder.Bind(type).To(commandType);
+                }
+            }
+
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
+
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
 
-            commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
+            //commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
 
-            commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
+            //commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
-            commandBinder.Bind<TokenSignal>().To<TokenCommand>();
+            //commandBinder.Bind<TokenSignal>().To<TokenCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthMatchmakerCommand>();
 
             commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
             commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();
-            commandBinder.Bind<GamelistGameSignal>().To<GamelistGameCommand>();
+            //commandBinder.Bind<GamelistGameSignal>().To<GamelistGameCommand>();
 
             commandBinder.Bind<MatchmakerLoggedInSignal>().To<MatchmakerQueueCommand>();
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
             commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
             commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
-            commandBinder.Bind<PlayerConnectSignal>().To<PlayerConnectCommand>();
-            commandBinder.Bind<PlayerPartSignal>().To<PlayerPartCommand>();
-            commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
+            //commandBinder.Bind<PlayerConnectSignal>().To<PlayerConnectCommand>();
+            //commandBinder.Bind<PlayerPartSignal>().To<PlayerPartCommand>();
+            //commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
 
-            commandBinder.Bind<PieceDiedSignal>().To<PieceDiedCommand>();
+            //commandBinder.Bind<PieceDiedSignal>().To<PieceDiedCommand>();
 
             commandBinder.Bind<ActionPassTurnSignal>().To<EndTurnCommand>();
             commandBinder.Bind<ActionSpawnPieceSignal>().To<SpawnPieceCommand>();

@@ -36,9 +36,6 @@ namespace ctac
             }
             processedActions.processedActions.Add(attackedPiece.id);
 
-            var attacker = minions.Minion(attackedPiece.attackingPieceId);
-            var target = minions.Minion(attackedPiece.targetPieceId);
-
             minionAttacked.Dispatch(attackedPiece);
 
             debug.Log( string.Format("Piece {0} Attacked {1}", attackedPiece.attackingPieceId, attackedPiece.targetPieceId) , socketKey );
