@@ -13,10 +13,10 @@ namespace ctac
         public MinionSelectedSignal minionSelected { get; set; }
 
         [Inject]
-        public AttackMinionSignal attackMinion { get; set; }
+        public AttackPieceSignal attackMinion { get; set; }
 
         [Inject]
-        public MoveMinionSignal moveMinion { get; set; }
+        public MovePieceSignal moveMinion { get; set; }
 
         [Inject]
         public MapModel map { get; set; }

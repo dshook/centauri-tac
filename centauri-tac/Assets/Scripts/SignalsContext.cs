@@ -104,42 +104,23 @@ namespace ctac
 
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
-
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
 
-            //commandBinder.Bind<FetchComponentsSignal>().To<FetchComponentsCommand>();
             commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
 
-            //commandBinder.Bind<TryLoginSignal>().To<TryLoginCommand>();
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
-            //commandBinder.Bind<TokenSignal>().To<TokenCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthMatchmakerCommand>();
 
             commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
             commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();
-            //commandBinder.Bind<GamelistGameSignal>().To<GamelistGameCommand>();
 
             commandBinder.Bind<MatchmakerLoggedInSignal>().To<MatchmakerQueueCommand>();
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
             commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
             commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
-            //commandBinder.Bind<PlayerConnectSignal>().To<PlayerConnectCommand>();
-            //commandBinder.Bind<PlayerPartSignal>().To<PlayerPartCommand>();
-            //commandBinder.Bind<LeaveGameSignal>().To<LeaveGameCommand>();
-
-            //commandBinder.Bind<PieceDiedSignal>().To<PieceDiedCommand>();
-
-            commandBinder.Bind<ActionPassTurnSignal>().To<EndTurnCommand>();
-            commandBinder.Bind<ActionSpawnPieceSignal>().To<SpawnPieceCommand>();
-
-            commandBinder.Bind<MoveMinionSignal>().To<MovePieceCommand>();
-            commandBinder.Bind<ActionMovePieceSignal>().To<PieceMovedCommand>();
-
-            commandBinder.Bind<AttackMinionSignal>().To<AttackPieceCommand>();
-            commandBinder.Bind<ActionAttackPieceSignal>().To<PieceAttackedCommand>();
 
         }
     }

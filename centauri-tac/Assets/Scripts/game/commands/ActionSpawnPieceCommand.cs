@@ -7,7 +7,7 @@ using strange.extensions.context.api;
 
 namespace ctac
 {
-    public class SpawnPieceCommand : Command
+    public class ActionSpawnPieceCommand : Command
     {
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }

@@ -23,10 +23,10 @@ namespace ctac
             {"qpc", typeof(ServerQueueProcessEnd) },
             {"game", typeof(GamelistGameSignal) },
             {"game:current", typeof(CurrentGameSignal) },
-            {"action:PassTurn", typeof(ActionPassTurnSignal) },
+            {"action:PassTurn", typeof(ActionEndTurnSignal) },
             {"action:SpawnPiece", typeof(ActionSpawnPieceSignal) },
-            {"action:MovePiece", typeof(ActionMovePieceSignal) },
-            {"action:AttackPiece", typeof(ActionAttackPieceSignal) },
+            {"action:MovePiece", typeof(ActionPieceMovedSignal) },
+            {"action:AttackPiece", typeof(ActionPieceAttackedSignal) },
 
 
             {"player:connect", typeof(PlayerConnectSignal) },

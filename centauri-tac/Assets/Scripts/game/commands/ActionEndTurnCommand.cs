@@ -1,11 +1,10 @@
 using strange.extensions.command.impl;
 using ctac.signals;
-using UnityEngine;
 using System.Linq;
 
 namespace ctac
 {
-    public class EndTurnCommand : Command
+    public class ActionEndTurnCommand : Command
     {
 
         [Inject]

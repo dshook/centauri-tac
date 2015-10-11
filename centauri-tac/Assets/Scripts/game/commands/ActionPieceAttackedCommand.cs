@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    public class PieceAttackedCommand : Command
+    public class ActionPieceAttackedCommand : Command
     {
         [Inject]
         public SocketKey socketKey { get; set; }
@@ -14,12 +14,6 @@ namespace ctac
 
         [Inject]
         public MinionAttackedSignal minionAttacked { get; set; }
-
-        [Inject]
-        public MinionsModel minions { get; set; }
-
-        [Inject]
-        public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
