@@ -11,7 +11,7 @@ namespace ctac
         public AttackPieceModel attackModel { get; set; }
 
         [Inject]
-        public MinionsModel pieces { get; set; }
+        public PiecesModel pieces { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
@@ -29,9 +29,9 @@ namespace ctac
         public override void Execute()
         {
             //attack is a combination of move to target and then attack 
-            var attacker = pieces.Minion(attackModel.attackingPieceId);
+            var attacker = pieces.Piece(attackModel.attackingPieceId);
             var startTile = map.tiles.Get(attacker.tilePosition);
-            var destTile = map.tiles.Get(pieces.Minion(attackModel.targetPieceId).tilePosition);
+            var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
             var path = mapService.FindPath(startTile, destTile, attacker.moveDist);
             List<PositionModel> serverPath = null;
             if (path.Count > 1)

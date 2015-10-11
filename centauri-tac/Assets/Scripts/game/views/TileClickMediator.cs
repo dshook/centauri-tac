@@ -10,52 +10,52 @@ namespace ctac
         public TileClickView view { get; set; }
 
         [Inject]
-        public MinionSelectedSignal minionSelected { get; set; }
+        public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject]
-        public AttackPieceSignal attackMinion { get; set; }
+        public AttackPieceSignal attackPiece { get; set; }
 
         [Inject]
-        public MovePieceSignal moveMinion { get; set; }
+        public MovePieceSignal movePiece { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
 
         public override void OnRegister()
         {
-            minionSelected.AddListener(onMinionSelected);
+            pieceSelected.AddListener(onPieceSelected);
             view.clickSignal.AddListener(onClick);
             view.init();
         }
 
-        private MinionModel selectedMinion = null;
+        private PieceModel selectedPiece = null;
 
         public override void onRemove()
         {
-            minionSelected.RemoveListener(onMinionSelected);
+            pieceSelected.RemoveListener(onPieceSelected);
         }
 
         private void onClick(GameObject clickedObject)
         {
             if (clickedObject != null)
             {
-                if (clickedObject.CompareTag("Minion"))
+                if (clickedObject.CompareTag("Piece"))
                 {
-                    var minionView = clickedObject.GetComponent<MinionView>();
-                    if (minionView.minion.currentPlayerHasControl)
+                    var pieceView = clickedObject.GetComponent<PieceView>();
+                    if (pieceView.piece.currentPlayerHasControl)
                     {
-                        minionSelected.Dispatch(minionView.minion);
+                        pieceSelected.Dispatch(pieceView.piece);
                     }
                     else
                     {
-                        if (selectedMinion != null)
+                        if (selectedPiece != null)
                         {
-                            attackMinion.Dispatch(new AttackPieceModel()
+                            attackPiece.Dispatch(new AttackPieceModel()
                             {
-                                attackingPieceId = selectedMinion.id,
-                                targetPieceId = minionView.minion.id
+                                attackingPieceId = selectedPiece.id,
+                                targetPieceId = pieceView.piece.id
                             });
-                            minionSelected.Dispatch(null);
+                            pieceSelected.Dispatch(null);
                         }
                     }
                     return;
@@ -65,23 +65,23 @@ namespace ctac
                 {
                     var gameTile = map.tiles.Get(clickedObject.transform.position.ToTileCoordinates());
 
-                    if (FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) && selectedMinion != null)
+                    if (FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) && selectedPiece != null)
                     {
-                        moveMinion.Dispatch(selectedMinion, gameTile);
-                        minionSelected.Dispatch(null);
+                        movePiece.Dispatch(selectedPiece, gameTile);
+                        pieceSelected.Dispatch(null);
                     }
                 }
             }
             else
             {
-                minionSelected.Dispatch(null);
+                pieceSelected.Dispatch(null);
             }
 
         }
 
-        private void onMinionSelected(MinionModel minionSelected)
+        private void onPieceSelected(PieceModel pieceSelected)
         {
-            selectedMinion = minionSelected;
+            selectedPiece = pieceSelected;
         }
     }
 }

@@ -8,17 +8,17 @@ namespace ctac
     public class PieceDiedCommand : Command
     {
         [Inject]
-        public MinionModel pieceDied { get; set; }
+        public PieceModel pieceDied { get; set; }
 
         [Inject]
-        public MinionsModel minionsModel { get; set; }
+        public PiecesModel piecesModel { get; set; }
 
         [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
         {
-            minionsModel.minions.Remove(pieceDied);
+            piecesModel.Pieces.Remove(pieceDied);
             GameObject.Destroy(pieceDied.gameObject, 0.1f);
         }
     }

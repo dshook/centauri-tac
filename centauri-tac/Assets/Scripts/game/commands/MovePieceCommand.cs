@@ -6,7 +6,7 @@ namespace ctac
     public class MovePieceCommand : Command
     {
         [Inject]
-        public MinionModel minionMoved { get; set; }
+        public PieceModel pieceMoved { get; set; }
 
         [Inject]
         public Tile dest { get; set; }
@@ -27,13 +27,13 @@ namespace ctac
         public override void Execute()
         {
 
-            var startTile = map.tiles.Get(minionMoved.tilePosition);
-            var path = mapService.FindPath(startTile, dest, minionMoved.moveDist);
+            var startTile = map.tiles.Get(pieceMoved.tilePosition);
+            var path = mapService.FindPath(startTile, dest, pieceMoved.moveDist);
             //format for server
             var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();
-            socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = minionMoved.id, route = serverPath });
+            socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = pieceMoved.id, route = serverPath });
 
-            minionMoved.hasMoved = true;
+            pieceMoved.hasMoved = true;
         }
     }
 }

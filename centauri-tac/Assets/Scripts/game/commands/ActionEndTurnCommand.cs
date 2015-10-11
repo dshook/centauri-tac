@@ -14,7 +14,7 @@ namespace ctac
         public TurnEndedSignal turnEnded { get; set; }
 
         [Inject]
-        public MinionsModel minionsModel { get; set; }
+        public PiecesModel piecesModel { get; set; }
 
         [Inject]
         public GameTurnModel turnModel { get; set; }
@@ -42,16 +42,16 @@ namespace ctac
 
             turnModel.currentTurn = gamePassModel.id;
             turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
-            foreach (var minion in minionsModel.minions)
+            foreach (var piece in piecesModel.Pieces)
             {
-                minion.hasMoved = false;
-                if (minion.playerId == gamePassModel.to)
+                piece.hasMoved = false;
+                if (piece.playerId == gamePassModel.to)
                 {
-                    minion.currentPlayerHasControl = true;
+                    piece.currentPlayerHasControl = true;
                 }
                 else
                 {
-                    minion.currentPlayerHasControl = false;
+                    piece.currentPlayerHasControl = false;
                 }
             }
             debug.Log("Turn Ended");

@@ -14,29 +14,29 @@ namespace ctac
         public TileHoverSignal tileHover { get; set; }
 
         [Inject]
-        public MinionSelectedSignal minionSelected { get; set; }
+        public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
 
         [Inject]
-        public MinionsModel pieces { get; set; }
+        public PiecesModel pieces { get; set; }
 
         [Inject]
         public IMapService mapService { get; set; }
 
-        private MinionModel selectedMinion = null;
+        private PieceModel selectedPiece = null;
 
         public override void OnRegister()
         {
             view.tileHover.AddListener(onTileHover);
-            minionSelected.AddListener(onMinionSelected);
+            pieceSelected.AddListener(onPieceSelected);
             view.init();
         }
 
         public override void onRemove()
         {
-            minionSelected.RemoveListener(onMinionSelected);
+            pieceSelected.RemoveListener(onPieceSelected);
         }
 
         void onTileHover(GameObject newHoverTile)
@@ -49,13 +49,13 @@ namespace ctac
             tileHover.Dispatch(tile);
             view.onTileHover(tile);
 
-            if (selectedMinion != null && tile != null && !selectedMinion.hasMoved)
+            if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
             {
-                var gameTile = map.tiles.Get(selectedMinion.tilePosition);
-                var path = mapService.FindPath(gameTile, tile, selectedMinion.moveDist);
+                var gameTile = map.tiles.Get(selectedPiece.tilePosition);
+                var path = mapService.FindPath(gameTile, tile, selectedPiece.moveDist);
                 view.onTileMovePath(path);
 
-                if (pieces.minions.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl))
+                if (pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl))
                 {
                     view.onAttackTile(tile);
                 }
@@ -71,19 +71,19 @@ namespace ctac
             }
         }
 
-        private void onMinionSelected(MinionModel selectedMinion)
+        private void onPieceSelected(PieceModel selectedPiece)
         {
-            if (selectedMinion != null && !selectedMinion.isMoving)
+            if (selectedPiece != null && !selectedPiece.isMoving)
             {
-                var gameTile = map.tiles.Get(selectedMinion.tilePosition);
-                this.selectedMinion = selectedMinion;
+                var gameTile = map.tiles.Get(selectedPiece.tilePosition);
+                this.selectedPiece = selectedPiece;
 
                 view.onTileSelected(gameTile);
 
-                if (!selectedMinion.hasMoved)
+                if (!selectedPiece.hasMoved)
                 {
                     //find movement
-                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedMinion.moveDist);
+                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.moveDist);
                     //take out the central one
                     moveTiles.Remove(gameTile.position);
                     view.onMovableTiles(moveTiles);
@@ -91,7 +91,7 @@ namespace ctac
             }
             else
             {
-                this.selectedMinion = null;
+                this.selectedPiece = null;
                 view.onTileSelected(null);
                 view.onMovableTiles(null);
             }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ctac
 {
-    public class MinionModel
+    public class PieceModel
     {
         public int id { get; set; }
 

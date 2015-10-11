@@ -10,7 +10,7 @@ namespace ctac
         public SocketKey socketKey { get; set; }
 
         [Inject]
-        public MinionsModel minionsModel { get; set; }
+        public PiecesModel piecesModel { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
@@ -19,7 +19,7 @@ namespace ctac
         public MovePieceModel movePiece { get; set; }
 
         [Inject]
-        public MinionMovedSignal minionMove { get; set; }
+        public PieceMovedSignal pieceMove { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
@@ -36,12 +36,12 @@ namespace ctac
             }
             processedActions.processedActions.Add(movePiece.id);
 
-            var minion = minionsModel.minions.FirstOrDefault(x => x.id == movePiece.pieceId);
+            var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == movePiece.pieceId);
             var tile = map.tiles[movePiece.to.Vector3.ToTileCoordinates()];
 
-            minionMove.Dispatch(minion, tile);
+            pieceMove.Dispatch(piece, tile);
 
-            debug.Log( string.Format("Moved minion {0} to {1}", movePiece.pieceId, movePiece.to) , socketKey );
+            debug.Log( string.Format("Moved piece {0} to {1}", movePiece.pieceId, movePiece.to) , socketKey );
         }
     }
 }

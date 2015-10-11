@@ -5,9 +5,9 @@ using TMPro;
 using UnityEngine;
 
 namespace ctac {
-    public class MinionView : View
+    public class PieceView : View
     {
-        public MinionModel minion { get; set; }
+        public PieceModel piece { get; set; }
 
         public GameObject attackGO;
         public GameObject healthGO;
@@ -20,22 +20,22 @@ namespace ctac {
 
         protected override void Start()
         {
-            attackGO = minion.gameObject.transform.FindChild("Attack").gameObject;
-            healthGO = minion.gameObject.transform.FindChild("Health").gameObject;
+            attackGO = piece.gameObject.transform.FindChild("Attack").gameObject;
+            healthGO = piece.gameObject.transform.FindChild("Health").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
 
-            spriteRenderer = minion.gameObject.GetComponentInChildren<SpriteRenderer>();
+            spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
 
-            attackText.text = minion.attack.ToString();
-            healthText.text = minion.health.ToString();
+            attackText.text = piece.attack.ToString();
+            healthText.text = piece.health.ToString();
         }
 
         void Update()
         {
-            if (minion.currentPlayerHasControl && !minion.hasMoved)
+            if (piece.currentPlayerHasControl && !piece.hasMoved)
             {
                 spriteRenderer.material = moveOutline;
             }
@@ -51,16 +51,16 @@ namespace ctac {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
 
-            public GameObject minion { get; set; }
+            public GameObject piece { get; set; }
             public Vector3 destination { get; set; }
             private float moveSpeed = 0.3f;
 
             public void Update()
             {
-                iTweenExtensions.MoveTo(minion.gameObject, destination, moveSpeed, 0, EaseType.linear);
-                if (Vector3.Distance(minion.transform.position, destination) < 0.01)
+                iTweenExtensions.MoveTo(piece.gameObject, destination, moveSpeed, 0, EaseType.linear);
+                if (Vector3.Distance(piece.transform.position, destination) < 0.01)
                 {
-                    minion.transform.position = destination;
+                    piece.transform.position = destination;
                     Complete = true;
                 }
             }
@@ -71,8 +71,8 @@ namespace ctac {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
 
-            public MinionAttackedAnimationSignal attackFinished { get; set; }
-            public MinionModel minion { get; set; }
+            public PieceAttackedAnimationSignal attackFinished { get; set; }
+            public PieceModel piece { get; set; }
             public GameObject textGO { get; set; }
             public TextMeshPro text { get; set; }
             public int current { get; set; }
@@ -98,7 +98,7 @@ namespace ctac {
                     text.color = Color.white;
                 }
                 Complete = true;
-                attackFinished.Dispatch(minion);
+                attackFinished.Dispatch(piece);
             }
         }
 
@@ -108,16 +108,16 @@ namespace ctac {
             public bool Async { get { return true; } }
 
             public PieceDiedSignal pieceDied { get; set; }
-            public MinionModel minion { get; set; }
+            public PieceModel piece { get; set; }
 
             public void Update()
             {
-                iTweenExtensions.ScaleTo(minion.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
-                if (minion.gameObject.transform.localScale.x < 0.01f)
+                iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
+                if (piece.gameObject.transform.localScale.x < 0.01f)
                 {
-                    minion.gameObject.transform.localScale = Vector3.zero;
+                    piece.gameObject.transform.localScale = Vector3.zero;
                     Complete = true;
-                    pieceDied.Dispatch(minion);
+                    pieceDied.Dispatch(piece);
                 }
             }
         }

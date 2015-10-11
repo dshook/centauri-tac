@@ -19,7 +19,7 @@ namespace ctac
         public SocketKey socketKey { get; set; }
 
         [Inject]
-        public MinionsModel minionsModel { get; set; }
+        public PiecesModel piecesModel { get; set; }
 
         [Inject]
         public GamePlayersModel gamePlayers { get; set; }
@@ -36,16 +36,16 @@ namespace ctac
         [Inject]
         public AnimationQueueModel animations { get; set; }
 
-        private GameObject _minionPrefab { get; set; }
-        private GameObject minionPrefab
+        private GameObject _piecePrefab { get; set; }
+        private GameObject piecePrefab
         {
             get
             {
-                if (_minionPrefab == null)
+                if (_piecePrefab == null)
                 {
-                    _minionPrefab = Resources.Load("Minion") as GameObject;
+                    _piecePrefab = Resources.Load("Piece") as GameObject;
                 }
-                return _minionPrefab;
+                return _piecePrefab;
             }
         }
 
@@ -59,21 +59,20 @@ namespace ctac
             processedActions.processedActions.Add(spawnedPiece.id);
 
 
-            var newMinion = GameObject.Instantiate(
-                minionPrefab, 
+            var newPiece = GameObject.Instantiate(
+                piecePrefab, 
                 spawnedPiece.position.Vector3,
                 Quaternion.identity
             ) as GameObject;
-            newMinion.transform.parent = contextView.transform;
+            newPiece.transform.parent = contextView.transform;
 
             //set up display
             try
             {
                 //TODO: caching for loading resources might be a good idea
-                //var idleAnimation = Resources.Load("Minions/" + spawnedPiece.pieceResourceId + "/Idle") as Animation;
-                var animationController = Resources.Load("Minions/" + spawnedPiece.pieceResourceId + "/Unit") as RuntimeAnimatorController;
+                var animationController = Resources.Load("Pieces/" + spawnedPiece.pieceResourceId + "/Unit") as RuntimeAnimatorController;
 
-                var animator = newMinion.GetComponentInChildren<Animator>();
+                var animator = newPiece.GetComponentInChildren<Animator>();
                 animator.runtimeAnimatorController = animationController;
 
             }
@@ -84,12 +83,12 @@ namespace ctac
 
             var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
 
-            var minionModel = new MinionModel()
+            var pieceModel = new PieceModel()
             {
                 id = spawnedPiece.pieceId,
                 playerId = spawnedPiece.playerId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
-                gameObject = newMinion,
+                gameObject = newPiece,
                 attack = spawnedPiece.attack,
                 health = spawnedPiece.health,
                 originalAttack = spawnedPiece.attack,
@@ -97,12 +96,12 @@ namespace ctac
                 moveDist = 5
             };
 
-            var minionView = newMinion.AddComponent<MinionView>();
-            minionView.minion = minionModel;
+            var pieceView = newPiece.AddComponent<PieceView>();
+            pieceView.piece = pieceModel;
 
-            minionsModel.minions.Add(minionModel);
+            piecesModel.Pieces.Add(pieceModel);
 
-            debug.Log(string.Format("Spawned minion {0} for player {1}", spawnedPiece.pieceResourceId, spawnedPiece.playerId), socketKey);
+            debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.pieceResourceId, spawnedPiece.playerId), socketKey);
         }
     }
 }

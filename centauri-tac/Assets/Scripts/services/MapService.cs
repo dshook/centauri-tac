@@ -17,7 +17,7 @@ namespace ctac
     public class MapService : IMapService
     {
         [Inject]
-        public MinionsModel minions { get; set; }
+        public PiecesModel pieces { get; set; }
 
         [Inject]
         public MapModel mapModel { get; set; }
@@ -227,7 +227,7 @@ namespace ctac
 
             return ret
                 .Where(t => 
-                    !minions.minions.Any(m => 
+                    !pieces.Pieces.Any(m => 
                         (dest == null || dest.position != m.tilePosition ) 
                         && !m.currentPlayerHasControl 
                         && m.tilePosition == t.Key

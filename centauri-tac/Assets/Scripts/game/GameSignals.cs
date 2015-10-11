@@ -30,23 +30,23 @@ namespace ctac.signals
     public class MapCreatedSignal : Signal { }
 
     [Singleton]
-    public class MinionSelectedSignal : Signal<MinionModel> { }
+    public class PieceSelectedSignal : Signal<PieceModel> { }
 
     [Singleton]
-    public class MovePieceSignal : Signal<MinionModel, Tile> { }
+    public class MovePieceSignal : Signal<PieceModel, Tile> { }
     [Singleton]
     public class ActionPieceMovedSignal : Signal<MovePieceModel, SocketKey> { }
     [Singleton]
-    public class MinionMovedSignal : Signal<MinionModel, Tile> { }
+    public class PieceMovedSignal : Signal<PieceModel, Tile> { }
 
     [Singleton]
     public class AttackPieceSignal : Signal<AttackPieceModel> { }
     [Singleton]
     public class ActionPieceAttackedSignal : Signal<AttackPieceModel, SocketKey> { }
     [Singleton]
-    public class MinionAttackedSignal : Signal<AttackPieceModel> { }
+    public class PieceAttackedSignal : Signal<AttackPieceModel> { }
     [Singleton]
-    public class MinionAttackedAnimationSignal : Signal<MinionModel> { }
+    public class PieceAttackedAnimationSignal : Signal<PieceModel> { }
 
     [Singleton]
     public class ServerQueueProcessStart : Signal<int> { }
@@ -65,7 +65,7 @@ namespace ctac.signals
     public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
 
     [Singleton]
-    public class PieceDiedSignal : Signal<MinionModel> { }
+    public class PieceDiedSignal : Signal<PieceModel> { }
 
 }
 

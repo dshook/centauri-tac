@@ -13,7 +13,7 @@ namespace ctac
         public AttackPieceModel attackedPiece { get; set; }
 
         [Inject]
-        public MinionAttackedSignal minionAttacked { get; set; }
+        public PieceAttackedSignal pieceAttacked { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
@@ -30,7 +30,7 @@ namespace ctac
             }
             processedActions.processedActions.Add(attackedPiece.id);
 
-            minionAttacked.Dispatch(attackedPiece);
+            pieceAttacked.Dispatch(attackedPiece);
 
             debug.Log( string.Format("Piece {0} Attacked {1}", attackedPiece.attackingPieceId, attackedPiece.targetPieceId) , socketKey );
         }

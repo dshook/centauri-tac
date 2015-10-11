@@ -21,7 +21,7 @@ namespace ctac
         public FetchComponentsSignal fetchComponents { get; set; }
 
         [Inject]
-        public MinionsModel minionsModel { get; set; }
+        public PiecesModel piecesModel { get; set; }
 
         [Inject]
         public IMapCreatorService mapCreator { get; set; }
@@ -44,11 +44,11 @@ namespace ctac
             mapCreator.CreateMap(defaultMap);
 
             //remove any minions on the board for a clean slate
-            minionsModel.minions = new List<MinionModel>();
-            var taggedMinions = GameObject.FindGameObjectsWithTag("Minion");
-            foreach (var minion in taggedMinions)
+            piecesModel.Pieces = new List<PieceModel>();
+            var taggedPieces = GameObject.FindGameObjectsWithTag("Piece");
+            foreach (var piece in taggedPieces)
             {
-                GameObject.Destroy(minion);
+                GameObject.Destroy(piece);
             }
         }
     }
