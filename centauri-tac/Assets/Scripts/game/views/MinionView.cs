@@ -49,10 +49,11 @@ namespace ctac {
         public class MoveAnim : IAnimate
         {
             public bool Complete { get; set; }
+            public bool Async { get { return false; } }
 
             public GameObject minion { get; set; }
             public Vector3 destination { get; set; }
-            private float moveSpeed = 0.4f;
+            private float moveSpeed = 0.3f;
 
             public void Update()
             {
@@ -68,7 +69,10 @@ namespace ctac {
         public class UpdateTextAnim : IAnimate
         {
             public bool Complete { get; set; }
+            public bool Async { get { return true; } }
 
+            public MinionAttackedAnimationSignal attackFinished { get; set; }
+            public MinionModel minion { get; set; }
             public GameObject textGO { get; set; }
             public TextMeshPro text { get; set; }
             public int current { get; set; }
@@ -94,19 +98,21 @@ namespace ctac {
                     text.color = Color.white;
                 }
                 Complete = true;
+                attackFinished.Dispatch(minion);
             }
         }
 
         public class DieAnim : IAnimate
         {
             public bool Complete { get; set; }
+            public bool Async { get { return true; } }
 
             public PieceDiedSignal pieceDied { get; set; }
             public MinionModel minion { get; set; }
 
             public void Update()
             {
-                iTweenExtensions.ScaleTo(minion.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInOutBounce);
+                iTweenExtensions.ScaleTo(minion.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
                 if (minion.gameObject.transform.localScale.x < 0.01f)
                 {
                     minion.gameObject.transform.localScale = Vector3.zero;

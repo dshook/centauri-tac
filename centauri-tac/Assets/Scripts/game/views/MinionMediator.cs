@@ -19,18 +19,23 @@ namespace ctac
         public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
+        public MinionAttackedAnimationSignal minionAttackedAnim { get; set; }
+
+        [Inject]
         public PieceDiedSignal pieceDied { get; set; }
 
         public override void OnRegister()
         {
             minionMoved.AddListener(onMove);
             minionAttacked.AddListener(onAttacked);
+            minionAttackedAnim.AddListener(onAttackFinished);
         }
 
         public override void onRemove()
         {
             minionMoved.RemoveListener(onMove);
             minionAttacked.RemoveListener(onAttacked);
+            minionAttackedAnim.RemoveListener(onAttackFinished);
         }
 
         public void onMove(MinionModel minionMoved, Tile dest)
@@ -63,16 +68,24 @@ namespace ctac
                     text = view.healthText,
                     textGO = view.healthGO,
                     current = view.minion.health,
-                    original = view.minion.originalHealth
+                    original = view.minion.originalHealth,
+                    attackFinished = minionAttackedAnim,
+                    minion = view.minion
                 }
             );
 
-            if (view.minion.health <= 0)
+        }
+
+        private void onAttackFinished(MinionModel minionModel)
+        {
+            if(minionModel != view.minion) return;
+
+            if (minionModel.health <= 0)
             {
                 animationQueue.Add(
                     new MinionView.DieAnim()
                     {
-                        minion = view.minion,
+                        minion = minionModel,
                         pieceDied = pieceDied
                     }
                 );

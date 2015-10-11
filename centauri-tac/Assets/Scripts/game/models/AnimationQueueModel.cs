@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace ctac
 {
@@ -7,12 +6,14 @@ namespace ctac
     {
         void Update();
         bool Complete { get; }
+        bool Async { get; }
     }
 
     [Singleton]
     public class AnimationQueueModel
     {
         private List<IAnimate> animations = new List<IAnimate>();
+        private List<IAnimate> runningAnimations = new List<IAnimate>();
 
         public void Add(IAnimate animation)
         {
@@ -23,13 +24,32 @@ namespace ctac
         {
             if (animations.Count > 0)
             {
-                var anim = animations[0];
-                anim.Update();
-                if (anim.Complete)
+                IAnimate anim;
+                do
                 {
-                    animations.RemoveAt(0);
+                    anim = animations[0];
+                    if (anim.Async)
+                    {
+                        animations.RemoveAt(0);
+                        runningAnimations.Add(anim);
+                    }
+                } while(anim.Async && animations.Count > 0);
+
+                if (!anim.Async)
+                {
+                    anim.Update();
+                    if (anim.Complete)
+                    {
+                        animations.RemoveAt(0);
+                    }
                 }
             }
+
+            foreach (var asyncAnim in runningAnimations)
+            {
+                asyncAnim.Update();
+            }
+            runningAnimations.RemoveAll(x => x.Complete);
         }
     }
 }

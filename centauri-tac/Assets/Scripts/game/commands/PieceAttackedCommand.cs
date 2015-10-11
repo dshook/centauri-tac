@@ -16,6 +16,12 @@ namespace ctac
         public MinionAttackedSignal minionAttacked { get; set; }
 
         [Inject]
+        public MinionsModel minions { get; set; }
+
+        [Inject]
+        public AnimationQueueModel animationQueue { get; set; }
+
+        [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
         [Inject]
@@ -29,6 +35,9 @@ namespace ctac
                 return;
             }
             processedActions.processedActions.Add(attackedPiece.id);
+
+            var attacker = minions.Minion(attackedPiece.attackingPieceId);
+            var target = minions.Minion(attackedPiece.targetPieceId);
 
             minionAttacked.Dispatch(attackedPiece);
 
