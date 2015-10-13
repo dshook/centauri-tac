@@ -220,6 +220,7 @@ namespace ctac
         /// <summary>
         /// Find neighboring tiles that aren't occupied by enemies,
         /// but always include the dest tile for attacking if it's passed
+        /// but also make sure not to land on a tile with an occupant if attacking
         /// </summary>
         public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null)
         {
@@ -227,7 +228,9 @@ namespace ctac
 
             return ret
                 .Where(t => 
-                    !pieces.Pieces.Any(m => 
+                    //this clause makes sure not to consider tiles that would be where the moving pieces lands when it attacks
+                    (dest == null || dest.position == t.Key || (TileDistance(t.Key, dest.position) > 1 || !pieces.Pieces.Any(p => p.tilePosition == t.Key) ) )
+                    && !pieces.Pieces.Any(m => 
                         (dest == null || dest.position != m.tilePosition ) 
                         && !m.currentPlayerHasControl 
                         && m.tilePosition == t.Key
