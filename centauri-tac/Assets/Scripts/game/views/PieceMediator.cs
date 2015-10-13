@@ -61,17 +61,20 @@ namespace ctac
                 view.piece.health = attackPiece.targetNewHp;
             }
 
-            animationQueue.Add(
-                new PieceView.UpdateTextAnim()
-                {
-                    text = view.healthText,
-                    textGO = view.healthGO,
-                    current = view.piece.health,
-                    original = view.piece.originalHealth,
-                    attackFinished = pieceAttackedAnim,
-                    piece = view.piece
-                }
-            );
+            if (attackPiece.attackingPieceId == view.piece.id || attackPiece.targetPieceId == view.piece.id)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateTextAnim()
+                    {
+                        text = view.healthText,
+                        textGO = view.healthGO,
+                        current = view.piece.health,
+                        original = view.piece.originalHealth,
+                        attackFinished = pieceAttackedAnim,
+                        piece = view.piece
+                    }
+                );
+            }
 
         }
 

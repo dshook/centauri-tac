@@ -42,7 +42,9 @@ export default class CentauriTacGame
 
       // spawn hero game pieces
       this.queue.push(new SpawnPiece(this.players[0].id, 1, new Position(0, 0, 0)));
+      this.queue.push(new SpawnPiece(this.players[0].id, 1, new Position(1, 0, 0)));
       this.queue.push(new SpawnPiece(this.players[1].id, 2, new Position(2, 0, 2)));
+      this.queue.push(new SpawnPiece(this.players[1].id, 2, new Position(0, 0, 2)));
 
       await this.queue.processUntilDone();
 
