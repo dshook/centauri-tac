@@ -13,6 +13,7 @@ export default class ComponentStore
   {
     this.sql = sql;
     this.version = packageData.version;
+    this.purge();
   }
 
   /**
@@ -103,6 +104,14 @@ export default class ComponentStore
       delete components where id = @id`, {id});
 
     this.log.info('deleted component %s', id);
+  }
+
+  async purge()
+  {
+    //TODO: needs to be cleaned up and a find a better solution for restarting the server 
+    await this.sql.query(`delete from game_players; delete from games;delete from components;`);
+
+    this.log.info('purged db');
   }
 
   /**
