@@ -40,11 +40,12 @@ export default class CentauriTacGame
       const startingId = _.sample(this.players).id;
       this.queue.push(new PassTurn(startingId));
 
-      // spawn hero game pieces
-      this.queue.push(new SpawnPiece(this.players[0].id, 1, new Position(0, 0, 0)));
-      this.queue.push(new SpawnPiece(this.players[0].id, 1, new Position(1, 0, 0)));
-      this.queue.push(new SpawnPiece(this.players[1].id, 2, new Position(2, 0, 2)));
-      this.queue.push(new SpawnPiece(this.players[1].id, 2, new Position(0, 0, 2)));
+      // spawn game pieces
+      for(let i = 0; i < 2; i++){
+        for(let j = 0; j < 4; j++){
+          this.queue.push(new SpawnPiece(this.players[i].id, i+1, new Position(j * 2, 0, i * 2)));
+        }
+      }
 
       await this.queue.processUntilDone();
 
