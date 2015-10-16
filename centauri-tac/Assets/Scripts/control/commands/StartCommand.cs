@@ -26,6 +26,9 @@ namespace ctac
         [Inject]
         public IMapCreatorService mapCreator { get; set; }
 
+        [Inject]
+        public CardsModel cards { get; set; }
+
         public override void Execute()
         {
             //override config from settings on disk if needed
@@ -50,6 +53,27 @@ namespace ctac
             {
                 GameObject.Destroy(piece);
             }
+
+            //give each player some cards, also should come from server ofc
+            cards.Cards = new List<CardModel>()
+            {
+                new CardModel() {
+                    id = 1,
+                    playerId = 1,
+                    name = "Dude",
+                    description = "I do stuff, sometimes",
+                    attack = 1,
+                    health = 2
+                },
+                new CardModel() {
+                    id = 2,
+                    playerId = 2,
+                    name = "Dudette",
+                    description = "I always do something",
+                    attack = 7,
+                    health = 7
+                },
+            };
         }
     }
 }
