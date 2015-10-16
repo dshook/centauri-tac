@@ -1,7 +1,10 @@
-﻿namespace ctac
+﻿using UnityEngine;
+
+namespace ctac
 {
     public class CardModel
     {
+        public GameObject gameObject { get; set; }
         public int id { get; set; }
         public int playerId { get; set; }
 

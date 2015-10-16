@@ -638,6 +638,13 @@ public static class iTweenExtensions
 	public static void MoveFrom(this GameObject go,Vector3 position,float time,float delay,EaseType easeType,LoopType loopType){
 		iTween.MoveFrom(go,iTween.Hash("position",position,"time",time,"delay",delay,"easeType",easeType.ToString(),"looptype",loopType.ToString()));
 	}
+
+	public static void MoveToLocal(this GameObject go,Vector3 position,float time,float delay){
+		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"isLocal", true));
+	}
+	public static void MoveToLocal(this GameObject go,Vector3 position,float time,float delay,EaseType easeType){
+		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"easeType",easeType.ToString(),"isLocal", true));
+	}
 	
 	/// <summary>
 	/// Changes a GameObject's position over time to a supplied destination.

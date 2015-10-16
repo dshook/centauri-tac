@@ -55,6 +55,13 @@ namespace ctac
             }
 
             //give each player some cards, also should come from server ofc
+            var taggedCards = GameObject.FindGameObjectsWithTag("Card");
+            foreach (var card in taggedCards)
+            {
+                GameObject.Destroy(card);
+            }
+            var cardPrefab = Resources.Load("Card") as GameObject;
+            var cardParent = contextView.transform.FindChild("cardCanvas");
             cards.Cards = new List<CardModel>()
             {
                 new CardModel() {
@@ -74,6 +81,21 @@ namespace ctac
                     health = 7
                 },
             };
+            foreach (var card in cards.Cards)
+            {
+                var newCard = GameObject.Instantiate(
+                    cardPrefab, 
+                    Vector3.zero,
+                    Quaternion.identity
+                ) as GameObject;
+                newCard.transform.SetParent(cardParent.transform);
+                newCard.transform.localPosition = Vector3.zero;
+                newCard.transform.localScale = Vector3.one;
+
+                card.gameObject = newCard;
+                var pieceView = newCard.AddComponent<CardView>();
+                pieceView.card = card;
+            }
         }
     }
 }
