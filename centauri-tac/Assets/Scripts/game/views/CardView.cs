@@ -37,6 +37,5 @@ namespace ctac {
         void Update()
         {
         }
-
     }
 }
