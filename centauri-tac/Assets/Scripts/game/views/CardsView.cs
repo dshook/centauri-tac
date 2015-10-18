@@ -19,7 +19,7 @@ namespace ctac {
 
         protected override void Start()
         {
-            baseCardOffset = new Vector3(0, -253f, 0);
+            baseCardOffset = new Vector3(0, -54f, 0);
             cardPositionOffset = new Vector3(60, 0, -1);
 
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
@@ -36,6 +36,7 @@ namespace ctac {
             for(int c = 0; c < cards.Cards.Count; c++) 
             {
                 var card = cards.Cards[c];
+                var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 dest = baseCardOffset + (cardPositionOffset * c);
                 if (selectedCard != null)
                 {
@@ -53,11 +54,10 @@ namespace ctac {
                         );
 
                         card.gameObject.transform.localPosition = dest;
-                        //iTweenExtensions.MoveUpdateLocal(card.gameObject, dest, 0f);
                         continue;
                     }
                 }
-                iTweenExtensions.MoveToLocal(card.gameObject, dest, 1.0f, 0);
+                rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
             }
         }
 

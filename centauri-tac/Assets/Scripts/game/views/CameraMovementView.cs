@@ -21,6 +21,9 @@ namespace ctac
 
         void Update()
         {
+            var s_baseOrthographicSize = Screen.height / 96.0f / 2.0f;
+            Camera.main.orthographicSize = s_baseOrthographicSize;
+
             if (cardSelected)
             {
                 dragging = false;
