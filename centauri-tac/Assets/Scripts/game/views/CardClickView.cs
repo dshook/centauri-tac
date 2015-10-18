@@ -2,20 +2,23 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Linq;
 
 namespace ctac
 {
-    public class TileClickView : View
+    public class CardClickView : View
     {
         internal Signal<GameObject> clickSignal = new Signal<GameObject>();
 
         bool active = false;
+        private Camera cardCamera;
 
+        Ray camRay;
         internal void init()
         {
             active = true;
+            cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
         }
-
         void Update()
         {
             if (active)
@@ -30,12 +33,18 @@ namespace ctac
                 {
                     clickSignal.Dispatch(null);
                 }
+
+                //if (camRay.origin != null)
+                //{
+                //    Debug.DrawLine(camRay.origin, Quaternion.Euler(camRay.direction) * camRay.origin * Constants.cameraRaycastDist, Color.red, 10f);
+                //}
             }
         }
 
         void TestSelection()
         {
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
+            var viewportPoint = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+            camRay = cardCamera.ViewportPointToRay(viewportPoint);
 
             RaycastHit objectHit;
             if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))

@@ -4,10 +4,10 @@ using ctac.signals;
 
 namespace ctac
 {
-    public class TileClickMediator : Mediator
+    public class ClickMediator : Mediator
     {
         [Inject]
-        public TileClickView view { get; set; }
+        public ClickView view { get; set; }
 
         [Inject]
         public PieceSelectedSignal pieceSelected { get; set; }
