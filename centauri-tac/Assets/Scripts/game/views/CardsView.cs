@@ -12,8 +12,10 @@ namespace ctac {
 
         private Vector3 baseCardOffset;
         private Vector3 cardPositionOffset;
+        private Vector3 dest;
 
         private Camera cardCamera;
+        private RectTransform CanvasRect;
 
         protected override void Start()
         {
@@ -21,6 +23,7 @@ namespace ctac {
             cardPositionOffset = new Vector3(60, 0, -1);
 
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
+            CanvasRect = GameObject.Find("cardCanvas").GetComponent<RectTransform>();
         }
 
         public void init(CardsModel cards)
@@ -33,12 +36,24 @@ namespace ctac {
             for(int c = 0; c < cards.Cards.Count; c++) 
             {
                 var card = cards.Cards[c];
-                Vector3 dest = baseCardOffset + (cardPositionOffset * c);
+                dest = baseCardOffset + (cardPositionOffset * c);
                 if (selectedCard != null)
                 {
                     if (card == selectedCard)
                     {
-                        dest = cardCamera.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
+                        var mouseViewport = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+
+                        //calculate the position of the UI element
+                        //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
+
+                        dest.Set(
+                            ((mouseViewport.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
+                            ((mouseViewport.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)),
+                            selectedCard.gameObject.transform.localPosition.z
+                        );
+
+                        iTweenExtensions.MoveUpdateLocal(card.gameObject, dest, 0f);
+                        continue;
                     }
                 }
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, 1.0f, 0);

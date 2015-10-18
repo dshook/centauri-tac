@@ -652,10 +652,10 @@ public static class iTweenExtensions
 	/// A <see cref="System.Single"/>
 	/// </param>
 	public static void MoveToLocal(this GameObject go,Vector3 position,float time,float delay){
-		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"isLocal", true));
+		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"islocal", true));
 	}
 	public static void MoveToLocal(this GameObject go,Vector3 position,float time,float delay,EaseType easeType){
-		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"easeType",easeType.ToString(),"isLocal", true));
+		iTween.MoveTo(go,iTween.Hash("position",position,"time",time,"delay",delay,"easeType",easeType.ToString(),"islocal", true));
 	}
 	
 	/// <summary>
@@ -849,6 +849,10 @@ public static class iTweenExtensions
 	/// </param>
 	public static void MoveUpdate(this GameObject go,Vector3 position,float time){
 		iTween.MoveUpdate(go,position,time);
+	}
+
+	public static void MoveUpdateLocal(this GameObject go,Vector3 position,float time){
+		iTween.MoveUpdate(go, iTween.Hash("position", position, "time", time, "islocal", true));
 	}
 	
 	/// <summary>
