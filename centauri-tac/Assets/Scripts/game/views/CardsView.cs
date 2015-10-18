@@ -52,7 +52,8 @@ namespace ctac {
                             selectedCard.gameObject.transform.localPosition.z
                         );
 
-                        iTweenExtensions.MoveUpdateLocal(card.gameObject, dest, 0f);
+                        card.gameObject.transform.localPosition = dest;
+                        //iTweenExtensions.MoveUpdateLocal(card.gameObject, dest, 0f);
                         continue;
                     }
                 }

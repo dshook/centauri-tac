@@ -23,13 +23,13 @@ namespace ctac
         {
             if (active)
             {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1") || CrossPlatformInputManager.GetButtonUp("Fire1"))
+                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
                     TestSelection();
                 }
 
                 //right click et al deselects
-                if (CrossPlatformInputManager.GetButtonDown("Fire2"))
+                if (CrossPlatformInputManager.GetButtonDown("Fire2") || CrossPlatformInputManager.GetButtonUp("Fire1"))
                 {
                     clickSignal.Dispatch(null);
                 }

@@ -37,7 +37,6 @@ namespace ctac
             {
                 cardSelected.Dispatch(null);
             }
-
         }
     }
 }
