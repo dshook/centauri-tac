@@ -24,6 +24,11 @@ namespace ctac
             return new Vector2(vec.x, vec.z);
         }
 
+        public static PositionModel ToPositionModel(this Vector2 position)
+        {
+            return new PositionModel(position);
+        }
+
         public static Vector3 SetX(this Vector3 vec, float value)
         {
             vec.Set(value, vec.y, vec.z);

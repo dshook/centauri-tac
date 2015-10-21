@@ -46,6 +46,10 @@ namespace ctac {
                             card.gameObject.transform.localPosition = dragPos;
                             continue;
                         }
+                        else
+                        {
+                            dest = dest.SetY(dest.y + 40f);
+                        }
                     }
                 }
                 rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
