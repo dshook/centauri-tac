@@ -1,6 +1,7 @@
 using strange.extensions.command.impl;
 using System.Linq;
 using System.Collections.Generic;
+using ctac.signals;
 
 namespace ctac
 {
@@ -8,6 +9,9 @@ namespace ctac
     {
         [Inject]
         public CardModel cardActivated { get; set; }
+
+        [Inject]
+        public DestroyCardSignal destroyCard { get; set; }
 
         [Inject]
         public Tile tilePlayedAt { get; set; }
@@ -23,6 +27,7 @@ namespace ctac
             socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
                 new { cardID = cardActivated.id, tile = tilePlayedAt.position.ToPositionModel() }
             );
+            destroyCard.Dispatch(cardActivated);
         }
     }
 }

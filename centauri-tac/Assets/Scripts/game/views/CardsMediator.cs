@@ -14,16 +14,29 @@ namespace ctac
         [Inject]
         public CardSelectedSignal cardSelected { get; set; }
 
+        [Inject]
+        public AnimationQueueModel animationQueue { get; set; }
+
+        [Inject]
+        public DestroyCardSignal destroyCard { get; set; }
+
+        [Inject]
+        public CardDestroyedSignal cardDestroyed { get; set; }
+
         public override void OnRegister()
         {
             view.init(cards);
             cardSelected.AddListener(onCardSelected);
+            destroyCard.AddListener(onDestroyCard);
+            cardDestroyed.AddListener(onCardDestroyed);
         }
 
         public override void onRemove()
         {
             base.onRemove();
             cardSelected.RemoveListener(onCardSelected);
+            destroyCard.RemoveListener(onDestroyCard);
+            cardDestroyed.RemoveListener(onCardDestroyed);
         }
 
         private void onCardSelected(CardModel card)
@@ -31,6 +44,19 @@ namespace ctac
             view.onCardSelected(card);
         }
 
+        private void onDestroyCard(CardModel card)
+        {
+            animationQueue.Add(new CardsView.CardDestroyedAnim()
+            {
+                card = card,
+                cardDestroyed = cardDestroyed
+            });
+        }
+
+        private void onCardDestroyed(CardModel card)
+        {
+            cards.Cards.Remove(card);
+        }
     }
 }
 

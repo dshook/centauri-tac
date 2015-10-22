@@ -1,4 +1,5 @@
-﻿using strange.extensions.mediation.impl;
+﻿using ctac.signals;
+using strange.extensions.mediation.impl;
 using System.Linq;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -72,6 +73,26 @@ namespace ctac {
         internal void onCardSelected(CardModel card)
         {
             selectedCard = card;
+        }
+
+        public class CardDestroyedAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+
+            public CardDestroyedSignal cardDestroyed { get; set; }
+            public CardModel card { get; set; }
+
+            public void Update()
+            {
+                iTweenExtensions.ScaleTo(card.gameObject, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
+                if (card.gameObject.transform.localScale.x < 0.01f)
+                {
+                    card.gameObject.transform.localScale = Vector3.zero;
+                    Complete = true;
+                    cardDestroyed.Dispatch(card);
+                }
+            }
         }
 
     }
