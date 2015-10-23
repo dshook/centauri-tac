@@ -25,7 +25,7 @@ namespace ctac
         public override void Execute()
         {
             socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
-                new { cardID = cardActivated.id, tile = tilePlayedAt.position.ToPositionModel() }
+                new { playerId = cardActivated.playerId, cardID = cardActivated.id, position = tilePlayedAt.position.ToPositionModel() }
             );
             destroyCard.Dispatch(cardActivated);
         }

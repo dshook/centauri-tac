@@ -24,10 +24,10 @@ namespace ctac
         public PiecesModel piecesModel { get; set; }
 
         [Inject]
-        public IMapCreatorService mapCreator { get; set; }
+        public CardsModel cards { get; set; }
 
         [Inject]
-        public CardsModel cards { get; set; }
+        public IMapCreatorService mapCreator { get; set; }
 
         public override void Execute()
         {
@@ -55,46 +55,12 @@ namespace ctac
             }
 
             //give each player some cards, also should come from server ofc
+
+            cards.Cards = new List<CardModel>();
             var taggedCards = GameObject.FindGameObjectsWithTag("Card");
             foreach (var card in taggedCards)
             {
                 GameObject.Destroy(card);
-            }
-            var cardPrefab = Resources.Load("Card") as GameObject;
-            var cardParent = contextView.transform.FindChild("cardCanvas");
-            cards.Cards = new List<CardModel>()
-            {
-                new CardModel() {
-                    id = 1,
-                    playerId = 1,
-                    name = "Dude",
-                    description = "I do stuff, sometimes",
-                    attack = 1,
-                    health = 2
-                },
-                new CardModel() {
-                    id = 2,
-                    playerId = 2,
-                    name = "Dudette",
-                    description = "I always do something",
-                    attack = 7,
-                    health = 7
-                },
-            };
-            foreach (var card in cards.Cards)
-            {
-                var newCard = GameObject.Instantiate(
-                    cardPrefab, 
-                    Vector3.zero,
-                    Quaternion.identity
-                ) as GameObject;
-                newCard.transform.SetParent(cardParent.transform);
-                newCard.transform.localPosition = Vector3.zero;
-                newCard.transform.localScale = Vector3.one;
-
-                card.gameObject = newCard;
-                var pieceView = newCard.AddComponent<CardView>();
-                pieceView.card = card;
             }
         }
     }

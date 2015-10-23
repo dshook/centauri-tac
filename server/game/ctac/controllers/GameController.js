@@ -3,6 +3,7 @@ import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 import MovePiece from '../actions/MovePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
+import ActivateCard from '../actions/ActivateCard.js';
 
 /**
  * Deals with handling turn stuff and processing the action queue. "low level"
@@ -88,6 +89,16 @@ export default class GameController
       }
     }
     this.queue.push(new AttackPiece(attackingPieceId, targetPieceId));
+
+    this.queue.processUntilDone();
+  }
+
+  @on('playerCommand', x => x === 'activatecard')
+  activateCard(command, data)
+  {
+    let {playerId, cardId, position} = data;
+
+    this.queue.push(new ActivateCard(playerId, cardId, position));
 
     this.queue.processUntilDone();
   }

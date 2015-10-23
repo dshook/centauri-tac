@@ -41,6 +41,7 @@ namespace ctac
             processedActions.processedActions.Add(gamePassModel.id);
 
             turnModel.currentTurn = gamePassModel.id;
+            turnModel.currentPlayerId = gamePassModel.to;
             turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             foreach (var piece in piecesModel.Pieces)
             {

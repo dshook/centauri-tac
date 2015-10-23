@@ -1,5 +1,6 @@
 ﻿using ctac.signals;
 using strange.extensions.mediation.impl;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -7,7 +8,8 @@ using UnityStandardAssets.CrossPlatformInput;
 namespace ctac {
     public class CardsView : View
     {
-        private CardsModel cards { get; set; }
+        //should only be the current players cards
+        private List<CardModel> cards { get; set; }
 
         private CardModel selectedCard { get; set; }
 
@@ -25,16 +27,18 @@ namespace ctac {
             CanvasRect = GameObject.Find("cardCanvas").GetComponent<RectTransform>();
         }
 
-        public void init(CardsModel cards)
+        public void init(List<CardModel> cards)
         {
             this.cards = cards;
         }
 
         void Update()
         {
-            for(int c = 0; c < cards.Cards.Count; c++) 
+            if(cards == null) return;
+
+            for(int c = 0; c < cards.Count; c++) 
             {
-                var card = cards.Cards[c];
+                var card = cards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 dest = baseCardOffset + (cardPositionOffset * c);
                 if (selectedCard != null)

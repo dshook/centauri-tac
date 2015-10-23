@@ -35,6 +35,8 @@ namespace ctac {
 
         void Update()
         {
+            if(piece == null) return;
+
             if (piece.currentPlayerHasControl && !piece.hasMoved)
             {
                 spriteRenderer.material = moveOutline;

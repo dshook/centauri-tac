@@ -1,5 +1,7 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ctac
 {
@@ -23,12 +25,19 @@ namespace ctac
         [Inject]
         public CardDestroyedSignal cardDestroyed { get; set; }
 
+        [Inject]
+        public TurnEndedSignal turnEnded { get; set; }
+
+        [Inject]
+        public GameTurnModel gameTurn { get; set; }
+
         public override void OnRegister()
         {
-            view.init(cards);
+            view.init(CurrentPlayerCards());
             cardSelected.AddListener(onCardSelected);
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
+            turnEnded.AddListener(onTurnEnded);
         }
 
         public override void onRemove()
@@ -37,6 +46,7 @@ namespace ctac
             cardSelected.RemoveListener(onCardSelected);
             destroyCard.RemoveListener(onDestroyCard);
             cardDestroyed.RemoveListener(onCardDestroyed);
+            turnEnded.RemoveListener(onTurnEnded);
         }
 
         private void onCardSelected(CardModel card)
@@ -56,6 +66,18 @@ namespace ctac
         private void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
+        }
+
+        private void onTurnEnded()
+        {
+            view.init(CurrentPlayerCards());
+        }
+
+        private List<CardModel> CurrentPlayerCards()
+        {
+            if(cards == null || cards.Cards == null) return new List<CardModel>();
+            //return cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+            return cards.Cards;
         }
     }
 }
