@@ -33,7 +33,7 @@ namespace ctac
 
         public override void OnRegister()
         {
-            view.init(CurrentPlayerCards());
+            view.init(GetCurrentPlayerCards());
             cardSelected.AddListener(onCardSelected);
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
@@ -70,14 +70,27 @@ namespace ctac
 
         private void onTurnEnded()
         {
-            view.init(CurrentPlayerCards());
+            view.init(GetCurrentPlayerCards());
         }
 
-        private List<CardModel> CurrentPlayerCards()
+        private List<CardModel> GetCurrentPlayerCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
-            //return cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
-            return cards.Cards;
+            //hide non player cards
+            var nonPlayerCards = cards.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
+            foreach (var card in nonPlayerCards)
+            {
+                card.gameObject.SetActive(false);
+            }
+
+            //enable player cards
+            var playerCards = cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+            foreach (var card in playerCards)
+            {
+                card.gameObject.SetActive(true);
+            }
+
+            return playerCards;
         }
     }
 }
