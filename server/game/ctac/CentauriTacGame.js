@@ -3,6 +3,7 @@ import loglevel from 'loglevel-decorator';
 import GameController from './controllers/GameController.js';
 import PassTurn from './actions/PassTurn.js';
 import SpawnPiece from './actions/SpawnPiece.js';
+import DrawCard from './actions/DrawCard.js';
 import Position from './models/Position.js';
 import _ from 'lodash';
 
@@ -12,12 +13,15 @@ import _ from 'lodash';
 @loglevel
 export default class CentauriTacGame
 {
-  constructor(queue, players, binder, host)
+  constructor(queue, players, binder, host, cardDirectory, decks, hands)
   {
     this.players = players;
     this.binder = binder;
     this.host = host;
     this.queue = queue;
+    this.cardDirectory = cardDirectory;
+    this.decks = decks;
+    this.hands = hands;
   }
 
   /**
@@ -36,9 +40,27 @@ export default class CentauriTacGame
       // bootup the main controller
       await this.host.addController(GameController);
 
-      // start first turn with random player
-      const startingId = _.sample(this.players).id;
-      this.queue.push(new PassTurn(startingId));
+      //give players some cards and init decks and hands
+      let deckCards = 30;
+      let cardIds = Object.keys(this.cardDirectory);
+
+      for(let p = 0; p < this.players.length; p++){
+        this.decks[this.players[p].id] = [];
+        this.hands[this.players[p].id] = [];
+        let deck = this.decks[this.players[p].id];
+        for(let c = 0; c < deckCards; c++){
+          let randCardId = _.sample(cardIds);
+          deck.push( this.cardDirectory[randCardId]);
+        }
+      }
+
+      //then draw some
+      let startingCards = 3;
+      for(let p = 0; p < this.players.length; p++){
+        for(let c = 0; c < startingCards; c++){
+          this.queue.push(new DrawCard(this.players[p].id));
+        }
+      }
 
       // spawn game pieces
       for(let i = 0; i < 2; i++){
@@ -46,6 +68,10 @@ export default class CentauriTacGame
           this.queue.push(new SpawnPiece(this.players[i].id, i+1, new Position(j * 2, 0, i * 2)));
         }
       }
+
+      // start first turn with random player
+      const startingId = _.sample(this.players).id;
+      this.queue.push(new PassTurn(startingId));
 
       await this.queue.processUntilDone();
 
