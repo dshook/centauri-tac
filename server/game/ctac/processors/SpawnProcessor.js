@@ -10,10 +10,11 @@ import _ from 'lodash';
 @loglevel
 export default class SpawnProcessor
 {
-  constructor(pieceState, players)
+  constructor(pieceState, players, cardDirectory)
   {
     this.pieceState = pieceState;
     this.players = players;
+    this.cardDirectory = cardDirectory;
   }
 
   /**
@@ -27,14 +28,16 @@ export default class SpawnProcessor
     let nextId = this.pieceState.pieces.length == 0 ? 1 :
        _.max(this.pieceState.pieces, x => x.id).id + 1;
 
+    let cardPlayed = this.cardDirectory[action.pieceResourceId];
+
     //TODO: validate against board state and all that jazz
     var newPiece = new GamePiece();
     newPiece.id = nextId;
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
     newPiece.resourceId = action.pieceResourceId;
-    newPiece.attack = Random.Range(1, 4);
-    newPiece.health = Random.Range(1, 10);
+    newPiece.attack = cardPlayed.attack;
+    newPiece.health = cardPlayed.health;
 
     action.attack = newPiece.attack;
     action.health = newPiece.health;

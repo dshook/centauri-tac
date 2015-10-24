@@ -4,7 +4,7 @@ import requireDir from 'require-dir';
 
 
 /**
- * Expose the turn model and add the processor to the action pipeline
+ * Expose the cards and activate card processor
  */
 @loglevel
 export default class CardService
