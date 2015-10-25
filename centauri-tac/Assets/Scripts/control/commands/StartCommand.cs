@@ -27,6 +27,9 @@ namespace ctac
         public CardsModel cards { get; set; }
 
         [Inject]
+        public CardDirectory cardDirectory { get; set; }
+
+        [Inject]
         public IMapCreatorService mapCreator { get; set; }
 
         public override void Execute()
@@ -43,6 +46,14 @@ namespace ctac
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
             var defaultMap = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
+
+            //fetch all cards from disk
+            foreach (string file in Directory.GetFiles("../cards", "*.json"))
+            {
+                string cardText = File.ReadAllText(file);
+                var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
+                cardDirectory.directory.Add(cardTemplate);
+            }
 
             mapCreator.CreateMap(defaultMap);
 
