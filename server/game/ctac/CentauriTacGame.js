@@ -4,6 +4,7 @@ import GameController from './controllers/GameController.js';
 import PassTurn from './actions/PassTurn.js';
 import SpawnPiece from './actions/SpawnPiece.js';
 import DrawCard from './actions/DrawCard.js';
+import SpawnDeck from './actions/SpawnDeck.js';
 import Position from './models/Position.js';
 import _ from 'lodash';
 
@@ -41,22 +42,11 @@ export default class CentauriTacGame
       await this.host.addController(GameController);
 
       //give players some cards and init decks and hands
-      let deckCards = 30;
-      let cardIds = Object.keys(this.cardDirectory);
-
+      let startingCards = 3;
       for(let p = 0; p < this.players.length; p++){
         this.decks[this.players[p].id] = [];
         this.hands[this.players[p].id] = [];
-        let deck = this.decks[this.players[p].id];
-        for(let c = 0; c < deckCards; c++){
-          let randCardId = _.sample(cardIds);
-          deck.push( this.cardDirectory[randCardId]);
-        }
-      }
-
-      //then draw some
-      let startingCards = 3;
-      for(let p = 0; p < this.players.length; p++){
+        this.queue.push(new SpawnDeck(this.players[p].id));
         for(let c = 0; c < startingCards; c++){
           this.queue.push(new DrawCard(this.players[p].id));
         }

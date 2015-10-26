@@ -28,6 +28,7 @@ namespace ctac
             {"action:MovePiece", typeof(ActionPieceMovedSignal) },
             {"action:AttackPiece", typeof(ActionPieceAttackedSignal) },
             {"action:DrawCard", typeof(ActionDrawCardSignal) },
+            {"action:SpawnDeck", typeof(ActionSpawnDeckSignal) },
 
 
             {"player:connect", typeof(PlayerConnectSignal) },

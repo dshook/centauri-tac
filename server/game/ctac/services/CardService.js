@@ -1,6 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
+import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
 import requireDir from 'require-dir';
 
 
@@ -29,6 +30,7 @@ export default class CardService
     var decks = {};
     app.registerInstance('decks', decks);
 
+    queue.addProcessor(SpawnDeckProcessor);
     queue.addProcessor(ActivateCardProcessor);
     queue.addProcessor(CardDrawProcessor);
   }

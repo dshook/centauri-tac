@@ -70,6 +70,9 @@ namespace ctac.signals
     [Singleton]
     public class ActionDrawCardSignal : Signal<DrawCardModel, SocketKey> { }
     [Singleton]
+    public class ActionSpawnDeckSignal : Signal<SpawnDeckModel, SocketKey> { }
+
+    [Singleton]
     public class CardSelectedSignal : Signal<CardModel> { }
     [Singleton]
     public class ActivateCardSignal : Signal<CardModel, Tile> { }

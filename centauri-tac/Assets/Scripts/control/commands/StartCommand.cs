@@ -27,6 +27,9 @@ namespace ctac
         public CardsModel cards { get; set; }
 
         [Inject]
+        public DecksModel decks { get; set; }
+
+        [Inject]
         public CardDirectory cardDirectory { get; set; }
 
         [Inject]
@@ -65,9 +68,9 @@ namespace ctac
                 GameObject.Destroy(piece);
             }
 
-            //give each player some cards, also should come from server ofc
-
+            //clean up scene cards, init lists.  Need better place for init
             cards.Cards = new List<CardModel>();
+            decks.Cards = new List<CardModel>();
             var taggedCards = GameObject.FindGameObjectsWithTag("Card");
             foreach (var card in taggedCards)
             {
