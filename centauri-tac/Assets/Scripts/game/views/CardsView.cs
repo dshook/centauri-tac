@@ -40,7 +40,7 @@ namespace ctac {
             {
                 var card = cards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
-                dest = baseCardOffset + (cardPositionOffset * c);
+                dest = baseCardOffset - ((cards.Count / 2) * cardPositionOffset) + (cardPositionOffset * c);
                 if (selectedCard != null)
                 {
                     if (card == selectedCard)

@@ -28,6 +28,8 @@ namespace ctac
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
+        private Vector3 cardWidthAndPad = new Vector3(160, 0, 0);
+
         public override void Execute()
         {
             //check to see if this action has already been processed by another player
@@ -50,7 +52,8 @@ namespace ctac
                     health = cardTemplate.health
                 };
 
-            cards.Cards.Add(newCardModel );
+            var playerCards = cards.Cards.Where(x => x.playerId == cardDraw.playerId).Count();
+            cards.Cards.Add(newCardModel);
 
             var newCard = GameObject.Instantiate(
                 cardPrefab,
@@ -58,7 +61,7 @@ namespace ctac
                 Quaternion.identity
             ) as GameObject;
             newCard.transform.SetParent(cardParent.transform);
-            newCard.transform.localPosition = Vector3.zero;
+            newCard.transform.localPosition = Vector3.zero - (2 * cardWidthAndPad) + (playerCards * cardWidthAndPad);
             newCard.transform.localScale = Vector3.one;
 
             newCardModel.gameObject = newCard;
