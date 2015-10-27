@@ -19,6 +19,8 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
+        private List<int> playersInitted = new List<int>();
+
         public override void OnRegister()
         {
             view.init(GetCurrentPlayerCards());
@@ -33,7 +35,13 @@ namespace ctac
 
         private void onTurnEnded()
         {
-            view.init(GetCurrentPlayerCards());
+            var cards = GetCurrentPlayerCards();
+            var player = gameTurn.currentPlayerId;
+            if (!playersInitted.Contains(player))
+            {
+                view.init(cards);
+                playersInitted.Add(player);
+            }
         }
 
         private List<CardModel> GetCurrentPlayerCards()

@@ -37,6 +37,7 @@ namespace ctac
             {
                 return;
             }
+            processedActions.processedActions.Add(cardDraw.id);
 
             var cardPrefab = Resources.Load("Card") as GameObject;
             var cardParent = contextView.transform.FindChild("cardCanvas");

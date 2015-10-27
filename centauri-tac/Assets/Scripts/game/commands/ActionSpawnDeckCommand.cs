@@ -60,7 +60,7 @@ namespace ctac
                     spawnPosition,
                     Quaternion.identity
                 ) as GameObject;
-                newPiece.transform.parent = DeckGO.transform;
+                newPiece.transform.SetParent(DeckGO.transform, false);
 
                 var cardModel = new CardModel()
                 {
