@@ -22,6 +22,9 @@ namespace ctac
         public DecksModel decks { get; set; }
 
         [Inject]
+        public DeckSpawnedSignal deckSpawned { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         [Inject]
@@ -61,6 +64,7 @@ namespace ctac
                     Quaternion.identity
                 ) as GameObject;
                 newPiece.transform.SetParent(DeckGO.transform, false);
+                newPiece.name = "Player " + spawnDeck.playerId + " Card " + c;
 
                 var cardModel = new CardModel()
                 {
@@ -71,6 +75,7 @@ namespace ctac
                 decks.Cards.Add(cardModel);
             }
 
+            deckSpawned.Dispatch(spawnDeck);
             debug.Log(string.Format("Spawned deck for player {0}", spawnDeck.playerId), socketKey);
         }
     }

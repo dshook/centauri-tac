@@ -15,6 +15,7 @@ namespace ctac {
 
         private Vector3 baseCardOffset = new Vector3(0, -54f, 0);
         private Vector3 cardPositionOffset = new Vector3(60, 0, -1);
+        private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private const float maxCardHeight = 20f;
         private Vector3 dest;
 
@@ -57,6 +58,9 @@ namespace ctac {
                         }
                     }
                 }
+                rectTransform.anchorMax = anchorPosition;
+                rectTransform.anchorMin = anchorPosition;
+                rectTransform.pivot = anchorPosition;
                 rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
             }
         }
@@ -95,6 +99,29 @@ namespace ctac {
                     card.gameObject.transform.localScale = Vector3.zero;
                     Complete = true;
                     cardDestroyed.Dispatch(card);
+                }
+            }
+        }
+
+        public class DrawCardAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+
+            public CardDrawShownSignal cardDrawn { get; set; }
+            public CardModel card { get; set; }
+
+            private float animTime = 1.0f;
+
+            public void Update()
+            {
+                iTweenExtensions.MoveToLocal(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutExpo);
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutExpo);
+                if (Vector3.Distance(card.gameObject.transform.localPosition, Vector3.zero) < 0.01f)
+                {
+                    card.gameObject.transform.localPosition = Vector3.zero;
+                    Complete = true;
+                    cardDrawn.Dispatch(card);
                 }
             }
         }

@@ -41,12 +41,20 @@ export default class CentauriTacGame
       // bootup the main controller
       await this.host.addController(GameController);
 
-      //give players some cards and init decks and hands
-      let startingCards = 3;
+      //spawn both player decks and init hands
       for(let p = 0; p < this.players.length; p++){
         this.decks[this.players[p].id] = [];
         this.hands[this.players[p].id] = [];
         this.queue.push(new SpawnDeck(this.players[p].id));
+      }
+
+      // start first turn with random player
+      const startingId = _.sample(this.players).id;
+      this.queue.push(new PassTurn(startingId));
+
+      //draw initial cards
+      let startingCards = 3;
+      for(let p = 0; p < this.players.length; p++){
         for(let c = 0; c < startingCards; c++){
           this.queue.push(new DrawCard(this.players[p].id));
         }
@@ -59,9 +67,6 @@ export default class CentauriTacGame
         }
       }
 
-      // start first turn with random player
-      const startingId = _.sample(this.players).id;
-      this.queue.push(new PassTurn(startingId));
 
       await this.queue.processUntilDone();
 

@@ -29,6 +29,12 @@ namespace ctac
         public TurnEndedSignal turnEnded { get; set; }
 
         [Inject]
+        public CardDrawnSignal cardDrawn { get; set; }
+
+        [Inject]
+        public CardDrawShownSignal cardDrawShown { get; set; }
+
+        [Inject]
         public GameTurnModel gameTurn { get; set; }
 
         public override void OnRegister()
@@ -37,6 +43,8 @@ namespace ctac
             cardSelected.AddListener(onCardSelected);
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
+            cardDrawn.AddListener(onCardDrawn);
+            cardDrawShown.AddListener(onCardDrawnShown);
             turnEnded.AddListener(onTurnEnded);
         }
 
@@ -46,6 +54,8 @@ namespace ctac
             cardSelected.RemoveListener(onCardSelected);
             destroyCard.RemoveListener(onDestroyCard);
             cardDestroyed.RemoveListener(onCardDestroyed);
+            cardDrawn.RemoveListener(onCardDrawn);
+            cardDrawShown.RemoveListener(onCardDrawnShown);
             turnEnded.RemoveListener(onTurnEnded);
         }
 
@@ -66,6 +76,21 @@ namespace ctac
         private void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
+        }
+
+        private void onCardDrawn(CardModel card)
+        {
+            if(card.playerId != gameTurn.currentPlayerId) return;
+            animationQueue.Add(new CardsView.DrawCardAnim()
+            {
+                card = card,
+                cardDrawn = cardDrawShown
+            });
+        }
+
+        private void onCardDrawnShown(CardModel card)
+        {
+            view.init(GetCurrentPlayerCards());
         }
 
         private void onTurnEnded()

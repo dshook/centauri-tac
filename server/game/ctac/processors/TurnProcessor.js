@@ -1,4 +1,5 @@
 import PassTurn from '../actions/PassTurn.js';
+import DrawCard from '../actions/DrawCard.js';
 
 /**
  * Handle the PassTurn action
@@ -33,6 +34,7 @@ export default class TurnProcessor
 
     // do it
     this.turnState.passTurnTo(action.to);
+    queue.push(new DrawCard(action.to));
     queue.complete(action);
   }
 }
