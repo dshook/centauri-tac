@@ -1,0 +1,8 @@
+{
+	"id": 6,
+	"name": "Peace Officer",
+	"text": "Units in a cross get -2 attack",
+	"description": "Everyone calm down!",
+	"attack": 6,
+	"health": 5
+}
