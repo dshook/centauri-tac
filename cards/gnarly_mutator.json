@@ -1,0 +1,7 @@
+{
+	"id": 2,
+	"name": "Gnarly Mutator",
+	"description": "Black hat, yellow hat, what's the diff",
+	"attack": 5,
+	"health": 5
+}
