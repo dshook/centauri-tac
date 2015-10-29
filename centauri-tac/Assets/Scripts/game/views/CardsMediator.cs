@@ -37,8 +37,6 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
-        private List<CardModel> handCards = new List<CardModel>();
-
         public override void OnRegister()
         {
             view.init(GetCurrentPlayerCards());

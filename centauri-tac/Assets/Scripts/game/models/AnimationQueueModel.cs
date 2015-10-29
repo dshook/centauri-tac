@@ -7,6 +7,7 @@ namespace ctac
         void Update();
         bool Complete { get; }
         bool Async { get; }
+        float? postDelay { get; }
     }
 
     [Singleton]
@@ -15,13 +16,20 @@ namespace ctac
         private List<IAnimate> animations = new List<IAnimate>();
         private List<IAnimate> runningAnimations = new List<IAnimate>();
 
+        private float delayAccumulator = 0f;
+
         public void Add(IAnimate animation)
         {
             animations.Add(animation);
         }
 
-        public void Update()
+        public void Update(float deltaTime)
         {
+            if (delayAccumulator > 0)
+            {
+                delayAccumulator -= deltaTime;
+                return;
+            }
             if (animations.Count > 0)
             {
                 IAnimate anim;
@@ -40,6 +48,7 @@ namespace ctac
                     anim.Update();
                     if (anim.Complete)
                     {
+                        if(anim.postDelay.HasValue) delayAccumulator = anim.postDelay.Value;
                         animations.RemoveAt(0);
                     }
                 }

@@ -52,6 +52,7 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
+            public float? postDelay { get { return null; } }
 
             public GameObject piece { get; set; }
             public Vector3 destination { get; set; }
@@ -72,6 +73,7 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
 
             public PieceAttackedAnimationSignal attackFinished { get; set; }
             public PieceModel piece { get; set; }
@@ -108,6 +110,7 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
 
             public PieceDiedSignal pieceDied { get; set; }
             public PieceModel piece { get; set; }

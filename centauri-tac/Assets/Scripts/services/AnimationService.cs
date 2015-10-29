@@ -1,4 +1,5 @@
 ﻿using strange.extensions.mediation.impl;
+using UnityEngine;
 
 namespace ctac
 {
@@ -9,7 +10,7 @@ namespace ctac
 
         void Update()
         {
-            animationQueue.Update();
+            animationQueue.Update(Time.deltaTime);
         }
     }
 }
