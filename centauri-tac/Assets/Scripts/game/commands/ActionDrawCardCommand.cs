@@ -21,9 +21,6 @@ namespace ctac
         public CardDrawnSignal cardDrawn { get; set; }
 
         [Inject]
-        public CardsModel cards { get; set; }
-
-        [Inject]
         public CardDirectory cardDirectory { get; set; }
 
         [Inject]
@@ -55,8 +52,6 @@ namespace ctac
                     attack = cardTemplate.attack,
                     health = cardTemplate.health
                 };
-
-            cards.Cards.Add(newCardModel);
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))
             {

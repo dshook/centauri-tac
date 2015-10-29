@@ -37,6 +37,8 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
+        private List<CardModel> handCards = new List<CardModel>();
+
         public override void OnRegister()
         {
             view.init(GetCurrentPlayerCards());
@@ -80,7 +82,13 @@ namespace ctac
 
         private void onCardDrawn(CardModel card)
         {
-            if(card.playerId != gameTurn.currentPlayerId) return;
+            //skip animation for non active players
+            if (card.playerId != gameTurn.currentPlayerId)
+            {
+                cards.Cards.Add(card);
+                return;
+            }
+
             animationQueue.Add(new CardsView.DrawCardAnim()
             {
                 card = card,
@@ -90,6 +98,7 @@ namespace ctac
 
         private void onCardDrawnShown(CardModel card)
         {
+            cards.Cards.Add(card);
             view.init(GetCurrentPlayerCards());
         }
 

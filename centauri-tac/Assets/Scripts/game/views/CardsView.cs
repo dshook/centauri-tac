@@ -41,6 +41,7 @@ namespace ctac {
             {
                 var card = cards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
+                rectTransform.rotation = Quaternion.Euler(Vector3.zero);
                 dest = baseCardOffset - ((cards.Count / 2) * cardPositionOffset) + (cardPositionOffset * c);
                 if (selectedCard != null)
                 {
@@ -115,8 +116,8 @@ namespace ctac {
 
             public void Update()
             {
-                iTweenExtensions.MoveToLocal(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutExpo);
-                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutExpo);
+                iTweenExtensions.MoveToLocal(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
                 if (Vector3.Distance(card.gameObject.transform.localPosition, Vector3.zero) < 0.01f)
                 {
                     card.gameObject.transform.localPosition = Vector3.zero;
