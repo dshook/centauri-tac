@@ -26,6 +26,11 @@ namespace ctac {
         {
             if (tile != null)
             {
+                if (tile.position.x == 1 && tile.position.y == 1)
+                {
+                    var renderer = tile.gameObject.GetComponentInChildren<SpriteRenderer>();
+                    renderer.material.SetColor("_RimColor", Color.red);
+                }
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
                 {
                     tint = hoverTint;
