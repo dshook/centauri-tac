@@ -28,18 +28,17 @@ namespace ctac {
             {
                 if (tile.position.x == 1 && tile.position.y == 1)
                 {
-                    var renderer = tile.gameObject.GetComponentInChildren<SpriteRenderer>();
-                    renderer.material.SetColor("_RimColor", Color.red);
+                    spriteRenderer.material.SetColor("_RimColor", Color.red);
                 }
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
                 {
                     tint = hoverTint;
-                    spriteRenderer.color = Color.white - tint;
+                    spriteRenderer.material.SetColor("_HighlightColor", Color.white - tint);
                 }
                 else if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
                 {
                     tint = pathFindTint;
-                    spriteRenderer.color = Color.white - tint;
+                    spriteRenderer.material.SetColor("_HighlightColor", Color.white - tint);
                 }
                 else
                 {
@@ -48,21 +47,21 @@ namespace ctac {
 
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))
                 {
-                    spriteRenderer.color = attackColor - tint;
+                    spriteRenderer.material.SetColor("_HighlightColor", attackColor - tint);
                 }
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected))
                 {
-                    spriteRenderer.color = selectColor - tint;
+                    spriteRenderer.material.SetColor("_HighlightColor", selectColor - tint);
                 }
 
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
                 {
-                    spriteRenderer.color = moveColor - tint;
+                    spriteRenderer.material.SetColor("_HighlightColor", moveColor - tint);
                 }
 
                 if (tile.highlightStatus == TileHighlightStatus.None)
                 {
-                    spriteRenderer.color = Color.white;
+                    spriteRenderer.material.SetColor("_HighlightColor", Color.white);
                 }
             }
         }
