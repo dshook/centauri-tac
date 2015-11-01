@@ -37,7 +37,7 @@ namespace ctac.signals
     [Singleton]
     public class ActionPieceMovedSignal : Signal<MovePieceModel, SocketKey> { }
     [Singleton]
-    public class PieceMovedSignal : Signal<PieceModel, Tile> { }
+    public class PieceMovedSignal : Signal<PieceMovedModel> { }
 
     [Singleton]
     public class AttackPieceSignal : Signal<AttackPieceModel> { }
@@ -63,6 +63,8 @@ namespace ctac.signals
 
     [Singleton]
     public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
+    [Singleton]
+    public class PieceSpawnedSignal : Signal<PieceModel> { }
 
     [Singleton]
     public class PieceDiedSignal : Signal<PieceModel> { }

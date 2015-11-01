@@ -12,6 +12,14 @@ namespace ctac
         public int maxPlayers { get; set; }
         public GameObject root { get; set; }
         public Dictionary<Vector2, Tile> tiles { get; set; }
+
+        public List<Tile> tileList
+        {
+            get
+            {
+                return tiles.Select(x => x.Value).ToList();
+            }
+        }
     }
 
     public class Tile

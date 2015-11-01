@@ -37,15 +37,15 @@ namespace ctac
             pieceAttackedAnim.RemoveListener(onAttackFinished);
         }
 
-        public void onMove(PieceModel pieceMoved, Tile dest)
+        public void onMove(PieceMovedModel pieceMoved)
         {
-            if (pieceMoved != view.piece) return;
+            if (pieceMoved.piece != view.piece) return;
 
             animationQueue.Add(
                 new PieceView.MoveAnim()
                 {
                     piece = view.piece.gameObject,
-                    destination = dest.gameObject.transform.position
+                    destination = pieceMoved.to.gameObject.transform.position
                 }
             );
         }

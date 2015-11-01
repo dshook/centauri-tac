@@ -12,11 +12,7 @@
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
-        Tags{
-            "LightMode" = "Always" 
-            "Queue" = "Overlay"
-            "RenderType" = "Opaque"
-        }
+
         Pass
         {
             CGPROGRAM
@@ -28,6 +24,7 @@
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
+            #include "UnityCG.cginc"
 
             struct Frag
             {
@@ -57,7 +54,7 @@
                    + i.uv.y * i.uv.y;
                 if( dist <= _BorderWidth ){
                     float vig = _RimFalloff * (1/dist);
-                    col = lerp(col, _RimColor, vig);
+                    col = col * (_RimColor * vig);
                 }
 
                 return col * _HighlightColor;

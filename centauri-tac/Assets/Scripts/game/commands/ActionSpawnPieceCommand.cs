@@ -16,6 +16,9 @@ namespace ctac
         public SpawnPieceModel spawnedPiece { get; set; }
 
         [Inject]
+        public PieceSpawnedSignal pieceSpawned { get; set; }
+
+        [Inject]
         public SocketKey socketKey { get; set; }
 
         [Inject]
@@ -101,6 +104,7 @@ namespace ctac
 
             piecesModel.Pieces.Add(pieceModel);
 
+            pieceSpawned.Dispatch(pieceModel);
             debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.pieceResourceId, spawnedPiece.playerId), socketKey);
         }
     }
