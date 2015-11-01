@@ -12,15 +12,17 @@
     {
         // No culling or depth
         Cull Off ZWrite Off ZTest Always
-
+        Tags{
+            "LightMode" = "Always" 
+            "Queue" = "Overlay"
+            "RenderType" = "Opaque"
+        }
         Pass
         {
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
             
-            #include "UnityCG.cginc"
-
             struct Vertex
             {
                 float4 vertex : POSITION;
@@ -31,7 +33,6 @@
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
-                fixed4 color: VERTEXCOLOR;
             };
 
             Frag vert (Vertex v)
