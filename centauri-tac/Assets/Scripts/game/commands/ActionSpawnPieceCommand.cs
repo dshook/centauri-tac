@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using System;
 using strange.extensions.context.api;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -32,6 +33,9 @@ namespace ctac
 
         [Inject]
         public IDebugService debug { get; set; }
+
+        [Inject]
+        public IResourceLoaderService resourceLoader { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
@@ -72,8 +76,7 @@ namespace ctac
             //set up display
             try
             {
-                //TODO: caching for loading resources might be a good idea
-                var animationController = Resources.Load("Pieces/" + spawnedPiece.pieceResourceId + "/Unit") as RuntimeAnimatorController;
+                var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.pieceResourceId);
 
                 var animator = newPiece.GetComponentInChildren<Animator>();
                 animator.runtimeAnimatorController = animationController;
