@@ -38,6 +38,8 @@ namespace ctac.signals
     public class ActionPieceMovedSignal : Signal<MovePieceModel, SocketKey> { }
     [Singleton]
     public class PieceMovedSignal : Signal<PieceMovedModel> { }
+    [Singleton]
+    public class PieceFinishedMovingSignal : Signal<PieceModel> { }
 
     [Singleton]
     public class AttackPieceSignal : Signal<AttackPieceModel> { }
@@ -50,7 +52,6 @@ namespace ctac.signals
 
     [Singleton]
     public class ServerQueueProcessStart : Signal<int> { }
-
     [Singleton]
     public class ServerQueueProcessEnd : Signal<int> { }
 

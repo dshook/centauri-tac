@@ -21,6 +21,8 @@ namespace ctac
 
         [Inject]
         public PieceMovedSignal pieceMoved { get; set; }
+        [Inject]
+        public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
 
         [Inject]
         public TurnEndedSignal turnEnded { get; set; }
@@ -32,7 +34,8 @@ namespace ctac
         {
             pieceSpawned.AddListener(onPieceSpawned);
             pieceMoved.AddListener(onPieceMoved);
-            turnEnded.AddListener(onTurnEnded);
+            pieceFinishedMoving.AddListener(onPieceFinishedMoving);
+            turnEnded.AddListener(resetTiles);
             pieceDied.AddListener(onPieceDied);
             view.init();
         }
@@ -41,7 +44,8 @@ namespace ctac
         {
             pieceSpawned.RemoveListener(onPieceSpawned);
             pieceMoved.RemoveListener(onPieceMoved);
-            turnEnded.RemoveListener(onTurnEnded);
+            pieceFinishedMoving.RemoveListener(onPieceFinishedMoving);
+            turnEnded.RemoveListener(resetTiles);
             pieceDied.RemoveListener(onPieceDied);
         }
 
@@ -57,21 +61,17 @@ namespace ctac
             }
         }
 
-        private void onPieceMoved(PieceMovedModel pieceModel)
+        private void onPieceMoved(PieceMovedModel pieceMoved)
         {
-            view.ClearTile(pieceModel.from);
-
-            if (pieceModel.piece.currentPlayerHasControl)
-            {
-                view.SetFriendly(pieceModel.to);
-            }
-            else
-            {
-                view.SetEnemy(pieceModel.to);
-            }
+            view.ClearTile(map.tiles[pieceMoved.piece.tilePosition]);
         }
 
-        private void onTurnEnded()
+        private void onPieceFinishedMoving(PieceModel piece)
+        {
+            resetTiles();
+        }
+
+        private void resetTiles()
         {
             view.ClearTiles(map.tileList);
 

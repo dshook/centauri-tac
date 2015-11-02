@@ -21,6 +21,9 @@ namespace ctac
         public PieceAttackedAnimationSignal pieceAttackedAnim { get; set; }
 
         [Inject]
+        public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
+
+        [Inject]
         public PieceDiedSignal pieceDied { get; set; }
 
         public override void OnRegister()
@@ -44,8 +47,9 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.MoveAnim()
                 {
-                    piece = view.piece.gameObject,
-                    destination = pieceMoved.to.gameObject.transform.position
+                    piece = view.piece,
+                    destination = pieceMoved.to.gameObject.transform.position,
+                    finishedMoving = pieceFinishedMoving
                 }
             );
         }

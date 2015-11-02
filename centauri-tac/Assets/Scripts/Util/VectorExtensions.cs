@@ -21,7 +21,7 @@ namespace ctac
 
         public static Vector2 ToTileCoordinates(this Vector3 vec)
         {
-            return new Vector2(vec.x, vec.z);
+            return new Vector2((int)vec.x, (int)vec.z);
         }
 
         public static PositionModel ToPositionModel(this Vector2 position)

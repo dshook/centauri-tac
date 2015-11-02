@@ -33,6 +33,12 @@ namespace ctac
             var startTile = map.tiles.Get(attacker.tilePosition);
             var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
             var path = mapService.FindPath(startTile, destTile, attacker.moveDist);
+
+            if (path == null)
+            {
+                //noop if can't find a path to attack to 
+                return;
+            }
             List<PositionModel> serverPath = null;
             if (path.Count > 1)
             {

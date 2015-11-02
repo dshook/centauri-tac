@@ -54,17 +54,19 @@ namespace ctac {
             public bool Async { get { return false; } }
             public float? postDelay { get { return null; } }
 
-            public GameObject piece { get; set; }
+            public PieceModel piece { get; set; }
+            public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
             private float moveSpeed = 0.3f;
 
             public void Update()
             {
                 iTweenExtensions.MoveTo(piece.gameObject, destination, moveSpeed, 0, EaseType.linear);
-                if (Vector3.Distance(piece.transform.position, destination) < 0.01)
+                if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
                 {
-                    piece.transform.position = destination;
+                    piece.gameObject.transform.position = destination;
                     Complete = true;
+                    finishedMoving.Dispatch(piece);
                 }
             }
         }

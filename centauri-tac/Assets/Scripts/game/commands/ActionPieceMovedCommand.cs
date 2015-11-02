@@ -37,13 +37,11 @@ namespace ctac
             processedActions.processedActions.Add(movePiece.id);
 
             var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == movePiece.pieceId);
-            var fromTile = map.tiles[piece.tilePosition];
             var toTile = map.tiles[movePiece.to.Vector3.ToTileCoordinates()];
 
             pieceMove.Dispatch(new PieceMovedModel()
             {
                 piece = piece,
-                from = fromTile,
                 to = toTile
             });
 
