@@ -35,11 +35,15 @@ namespace ctac
         [Inject]
         public IMapCreatorService mapCreator { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
+
         public override void Execute()
         {
             //override config from settings on disk if needed
             string configContents = File.ReadAllText("./config.json");
             if (!string.IsNullOrEmpty(configContents)) {
+                debug.Log("Reading Config File");
                 var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
                 diskConfig.CopyProperties(config);
             }
@@ -49,14 +53,18 @@ namespace ctac
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
             var defaultMap = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
+            debug.Log("Loaded Map");
 
             //fetch all cards from disk
+            int numberOfCards = 0;
             foreach (string file in Directory.GetFiles("../cards", "*.json"))
             {
                 string cardText = File.ReadAllText(file);
                 var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
                 cardDirectory.directory.Add(cardTemplate);
+                numberOfCards++;
             }
+            debug.Log("Loaded " + numberOfCards + " cards");
 
             mapCreator.CreateMap(defaultMap);
 

@@ -32,7 +32,7 @@ namespace ctac
 
         public override void Execute()
         {
-#if DEBUG
+//#if DEBUG
             //authenticate players from config if needed
             if (config.players.Count > 0)
             {
@@ -42,7 +42,7 @@ namespace ctac
                 }
                 return;
             }
-#endif
+//#endif
             //determine if we need to authenticate with the server to fetch a token
             var playerToken = PlayerPrefs.GetString(CtacConst.playerToken);
             if (!string.IsNullOrEmpty(playerToken))
