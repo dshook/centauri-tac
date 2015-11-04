@@ -2,6 +2,7 @@
 	"id": 2,
 	"name": "Gnarly Mutator",
 	"description": "Black hat, yellow hat, what's the diff",
+	"cost": 4,
 	"attack": 5,
 	"health": 5
 }

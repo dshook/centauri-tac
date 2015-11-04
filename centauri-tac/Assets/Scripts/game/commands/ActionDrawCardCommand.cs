@@ -49,6 +49,7 @@ namespace ctac
                     playerId = cardDraw.playerId,
                     name = cardTemplate.name,
                     description = cardTemplate.description,
+                    cost = cardTemplate.cost,
                     attack = cardTemplate.attack,
                     health = cardTemplate.health
                 };

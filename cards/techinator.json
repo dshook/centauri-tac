@@ -2,6 +2,7 @@
 	"id": 4,
 	"name": "Techinator",
 	"description": "",
+	"cost": 3,
 	"attack": 4,
-	"health": 5
+	"health": 3
 }

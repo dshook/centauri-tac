@@ -3,6 +3,7 @@
 	"name": "Peace Officer",
 	"text": "Units in a cross get -2 attack",
 	"description": "Everyone calm down!",
-	"attack": 6,
+	"cost": 4,
+	"attack": 2,
 	"health": 5
 }

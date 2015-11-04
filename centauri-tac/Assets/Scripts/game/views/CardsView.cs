@@ -47,16 +47,7 @@ namespace ctac {
                 {
                     if (card == selectedCard)
                     {
-                        var dragPos = MouseToWorld( selectedCard.gameObject.transform.localPosition.z );
-                        if (dragPos.y < maxCardHeight)
-                        {
-                            card.gameObject.transform.localPosition = dragPos;
-                            continue;
-                        }
-                        else
-                        {
-                            dest = dest.SetY(dest.y + 40f);
-                        }
+                        dest = dest.SetY(dest.y + 60f);
                     }
                 }
                 rectTransform.anchorMax = anchorPosition;

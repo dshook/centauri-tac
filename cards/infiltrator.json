@@ -2,6 +2,7 @@
 	"id": 5,
 	"name": "Infiltrator",
 	"description": "Active camouflage engage",
+	"cost": 3,
 	"attack": 3,
 	"health": 5
 }

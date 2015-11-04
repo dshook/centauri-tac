@@ -9,6 +9,7 @@ namespace ctac
 
         public string name { get; set; }
         public string description { get; set; }
+        public int cost { get; set; }
         public int attack { get; set; }
         public int health { get; set; }
 

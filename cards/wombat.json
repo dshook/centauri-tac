@@ -2,6 +2,7 @@
 	"id": 1,
 	"name": "Wombat",
 	"description": "Grrnnnrn",
+	"cost": 1,
 	"attack": 1,
 	"health": 2
 }

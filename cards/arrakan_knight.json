@@ -2,6 +2,7 @@
 	"id": 7,
 	"name": "Arrakan Knight",
 	"description": "From the dunes I call",
+	"cost": 5,
 	"attack": 6,
 	"health": 5
 }
