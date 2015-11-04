@@ -76,6 +76,7 @@ namespace ctac
         private void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
+            view.init(GetCurrentPlayerCards());
         }
 
         private void onCardDrawn(CardModel card)
