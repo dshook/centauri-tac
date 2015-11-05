@@ -1,3 +1,4 @@
+import Card from './Card.js';
 import _ from 'lodash';
 
 /**
@@ -16,7 +17,11 @@ export default class CardDirectory
   }
 
   add(card){
-    this.directory[card.id] = card;
+    var c = new Card();
+    //copy props over to proper object
+    for(var k in card) c[k]=card[k];
+
+    this.directory[c.id] = c;
   }
 
   getByTag(tag){

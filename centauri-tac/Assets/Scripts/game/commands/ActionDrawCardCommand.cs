@@ -51,7 +51,8 @@ namespace ctac
                     description = cardTemplate.description,
                     cost = cardTemplate.cost,
                     attack = cardTemplate.attack,
-                    health = cardTemplate.health
+                    health = cardTemplate.health,
+                    movement = cardTemplate.movement
                 };
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))

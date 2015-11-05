@@ -9,8 +9,6 @@ export default class SpawnPiece
     this.playerId = playerId;
     this.position = position;
 
-    this.attack = null;
-    this.health = null;
     this.pieceId = null;
   }
 }

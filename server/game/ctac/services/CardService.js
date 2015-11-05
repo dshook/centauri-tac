@@ -5,7 +5,6 @@ import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
 import requireDir from 'require-dir';
 
-
 /**
  * Expose the cards and activate card processor
  */

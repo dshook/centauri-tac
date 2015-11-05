@@ -52,7 +52,7 @@ namespace ctac
             if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                var path = mapService.FindPath(gameTile, tile, selectedPiece.moveDist);
+                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement);
                 view.onTileMovePath(path);
 
                 if (pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl))
@@ -83,7 +83,7 @@ namespace ctac
                 if (!selectedPiece.hasMoved)
                 {
                     //find movement
-                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.moveDist);
+                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement);
                     //take out the central one
                     moveTiles.Remove(gameTile.position);
                     view.onMovableTiles(moveTiles);

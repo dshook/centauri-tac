@@ -10,6 +10,7 @@ export default class GamePiece
     this.position = new Position();
     this.attack = null;
     this.health = null;
+    this.movement = null;
   }
 
 }

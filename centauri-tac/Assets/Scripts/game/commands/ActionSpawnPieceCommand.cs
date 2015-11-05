@@ -32,6 +32,9 @@ namespace ctac
         public GameTurnModel turnModel { get; set; }
 
         [Inject]
+        public CardDirectory cardDirectory { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         [Inject]
@@ -89,6 +92,7 @@ namespace ctac
             }
 
             var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
+            var cardTemplate = cardDirectory.directory.FirstOrDefault(c => c.id == spawnedPiece.pieceResourceId);
 
             var pieceModel = new PieceModel()
             {
@@ -96,11 +100,11 @@ namespace ctac
                 playerId = spawnedPiece.playerId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newPiece,
-                attack = spawnedPiece.attack,
-                health = spawnedPiece.health,
-                originalAttack = spawnedPiece.attack,
-                originalHealth = spawnedPiece.health,
-                moveDist = 5
+                attack = cardTemplate.attack,
+                health = cardTemplate.health,
+                originalAttack = cardTemplate.attack,
+                originalHealth = cardTemplate.health,
+                movement = cardTemplate.movement
             };
 
             var pieceView = newPiece.AddComponent<PieceView>();

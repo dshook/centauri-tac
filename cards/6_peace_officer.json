@@ -6,5 +6,6 @@
 	"cost": 4,
 	"attack": 2,
 	"health": 5,
+	"movement": 3,
 	"tags": ["Minion"]
 }

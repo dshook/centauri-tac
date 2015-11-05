@@ -12,6 +12,7 @@ namespace ctac
         public int cost { get; set; }
         public int attack { get; set; }
         public int health { get; set; }
+        public int movement { get; set; }
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }

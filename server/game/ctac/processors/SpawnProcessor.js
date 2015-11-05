@@ -38,9 +38,8 @@ export default class SpawnProcessor
     newPiece.resourceId = action.pieceResourceId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
+    newPiece.movement = cardPlayed.movement;
 
-    action.attack = newPiece.attack;
-    action.health = newPiece.health;
     action.pieceId = newPiece.id;
 
     this.pieceState.pieces.push(newPiece);
