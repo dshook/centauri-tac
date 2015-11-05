@@ -1,4 +1,5 @@
 import loglevel from 'loglevel-decorator';
+import CardDirectory from '../models/CardDirectory.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
@@ -14,13 +15,13 @@ export default class CardService
   constructor(app, queue)
   {
     var cardRequires = requireDir('../../../../cards');
-    var cardDirectory = {};
+    var cardDirectory = new CardDirectory();
 
     for(let cardFileName in cardRequires){
       let card = cardRequires[cardFileName];
-      cardDirectory[card.id] = card;
+      cardDirectory.add(card);
     }
-    this.log.info('Registered cards %j', cardDirectory);
+    this.log.info('Registered cards %j', cardDirectory.directory);
     app.registerInstance('cardDirectory', cardDirectory);
 
     //cards in hand indexed by player id

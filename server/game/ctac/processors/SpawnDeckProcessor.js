@@ -24,13 +24,15 @@ export default class SpawnDeckProcessor
     }
     //give players some cards and init decks and hands
     let deckCards = 30;
-    let cardIds = Object.keys(this.cardDirectory);
+    var minions = this.cardDirectory.getByTag('Minion');
+    let cardIds = _.map(minions, (m) => m.id);
+
     let playerId = action.playerId;
     let deck = this.decks[playerId];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
-      deck.push( this.cardDirectory[randCardId]);
+      deck.push( this.cardDirectory.directory[randCardId]);
     }
 
     action.cards = deck.length;

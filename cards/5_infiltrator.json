@@ -4,5 +4,6 @@
 	"description": "Active camouflage engage",
 	"cost": 3,
 	"attack": 3,
-	"health": 5
+	"health": 5,
+	"tags": ["Minion"]
 }

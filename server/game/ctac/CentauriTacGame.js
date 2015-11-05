@@ -61,10 +61,9 @@ export default class CentauriTacGame
       }
 
       // spawn game pieces
-      for(let i = 0; i < 2; i++){
-        for(let j = 0; j < 4; j++){
-          this.queue.push(new SpawnPiece(this.players[i].id, i+1, new Position(j * 2, 0, i * 2)));
-        }
+      var heroUnit = this.cardDirectory.getByTag('Hero')[0];
+      for(let i = 0; i < this.players.length; i++){
+        this.queue.push(new SpawnPiece(this.players[i].id, heroUnit.id, new Position(i * 2 + 2, 0, i * 2 + 2)));
       }
 
 

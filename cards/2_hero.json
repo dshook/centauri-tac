@@ -4,5 +4,6 @@
 	"description": "Black hat, yellow hat, what's the diff",
 	"cost": 0,
 	"attack": 0,
-	"health": 30
+	"health": 30,
+	"tags": ["Hero"]
 }

@@ -8,9 +8,8 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class CardDrawProcessor
 {
-  constructor(cardDirectory, decks, hands)
+  constructor(decks, hands)
   {
-    this.cardDirectory = cardDirectory;
     this.decks = decks;
     this.hands = hands;
   }
@@ -26,6 +25,11 @@ export default class CardDrawProcessor
 
     let playerDeck = this.decks[action.playerId];
     let playerHand = this.hands[action.playerId];
+
+    if(playerDeck.length == 0){
+      this.log.info('No cards to draw for player %s', action.playerId);
+      return;
+    }
 
     let cardDrawn = playerDeck.splice(0, 1)[0];
     playerHand.push(cardDrawn);

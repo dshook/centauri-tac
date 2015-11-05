@@ -4,5 +4,6 @@
 	"description": "From the dunes I call",
 	"cost": 5,
 	"attack": 6,
-	"health": 5
+	"health": 5,
+	"tags": ["Minion"]
 }

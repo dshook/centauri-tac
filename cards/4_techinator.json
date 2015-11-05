@@ -4,5 +4,6 @@
 	"description": "",
 	"cost": 3,
 	"attack": 4,
-	"health": 3
+	"health": 3,
+	"tags": ["Minion"]
 }
