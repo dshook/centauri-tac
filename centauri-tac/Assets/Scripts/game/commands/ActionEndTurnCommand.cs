@@ -6,13 +6,6 @@ namespace ctac
 {
     public class ActionEndTurnCommand : Command
     {
-
-        [Inject]
-        public EndTurnSignal endTurn { get; set; }
-
-        [Inject]
-        public TurnEndedSignal turnEnded { get; set; }
-
         [Inject]
         public PiecesModel piecesModel { get; set; }
 
@@ -23,10 +16,16 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
-        public GamePassTurnModel gamePassModel { get; set; }
+        public PassTurnModel gamePassModel { get; set; }
+
+        [Inject]
+        public PlayerResourcesModel playerResources { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
+
+        [Inject]
+        public TurnEndedSignal turnEnded { get; set; }
 
         [Inject]
         public IDebugService debug { get; set; }
@@ -43,6 +42,7 @@ namespace ctac
             turnModel.currentTurn = gamePassModel.id;
             turnModel.currentPlayerId = gamePassModel.to;
             turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
+            playerResources.resources[gamePassModel.to] = gamePassModel.toPlayerResources;
             foreach (var piece in piecesModel.Pieces)
             {
                 piece.hasMoved = false;

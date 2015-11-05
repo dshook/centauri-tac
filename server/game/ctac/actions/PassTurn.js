@@ -8,5 +8,6 @@ export default class PassTurn
     this.id = null;
     this.to = to;
     this.from = from;
+    this.toPlayerResources = null;
   }
 }

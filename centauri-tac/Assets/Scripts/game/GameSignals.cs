@@ -9,16 +9,16 @@ namespace ctac.signals
     public class GameLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
-    public class PlayerConnectSignal : Signal<GameJoinConnectModel, SocketKey> { }
+    public class PlayerConnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
     [Singleton]
-    public class PlayerJoinedSignal : Signal<GameJoinConnectModel, SocketKey> { }
+    public class PlayerJoinedSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
     [Singleton]
-    public class PlayerPartSignal : Signal<GameJoinConnectModel, SocketKey> { }
+    public class PlayerPartSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
     [Singleton]
-    public class PlayerDisconnectSignal : Signal<GameJoinConnectModel, SocketKey> { }
+    public class PlayerDisconnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
     [Singleton]
     public class LeaveGameSignal : Signal<SocketKey> { }
@@ -58,7 +58,7 @@ namespace ctac.signals
     [Singleton]
     public class EndTurnSignal : Signal { }
     [Singleton]
-    public class ActionEndTurnSignal : Signal<GamePassTurnModel> { }
+    public class ActionEndTurnSignal : Signal<PassTurnModel> { }
     [Singleton]
     public class TurnEndedSignal : Signal { }
 

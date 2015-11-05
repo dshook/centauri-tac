@@ -1,6 +1,6 @@
 ﻿namespace ctac
 {
-    public class GameJoinConnectModel
+    public class JoinOrConnectModel
     {
         public string email { get; set; }
         public int id { get; set; }

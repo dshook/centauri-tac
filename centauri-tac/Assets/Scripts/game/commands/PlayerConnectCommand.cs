@@ -19,7 +19,7 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
-        public GameJoinConnectModel playerConnected { get; set; }
+        public JoinOrConnectModel playerConnected { get; set; }
 
         [Inject]
         public SocketKey socketKey { get; set; }

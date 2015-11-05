@@ -6,10 +6,11 @@ import DrawCard from '../actions/DrawCard.js';
  */
 export default class TurnProcessor
 {
-  constructor(turnState, players)
+  constructor(turnState, players, playerResourceState)
   {
     this.turnState = turnState;
     this.players = players;
+    this.playerResourceState = playerResourceState;
   }
 
   /**
@@ -31,6 +32,15 @@ export default class TurnProcessor
         return;
       }
     }
+
+    //check resources
+    if(this.playerResourceState.resources[action.to] === undefined){
+      this.playerResourceState.init(action.to);
+    }
+
+    //give some handouts
+    this.playerResourceState.resources[action.to]++;
+    action.toPlayerResources = this.playerResourceState.resources[action.to];
 
     // do it
     this.turnState.passTurnTo(action.to);

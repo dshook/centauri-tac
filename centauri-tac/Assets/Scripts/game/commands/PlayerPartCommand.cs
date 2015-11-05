@@ -11,7 +11,7 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
-        public GameJoinConnectModel playerParted { get; set; }
+        public JoinOrConnectModel playerParted { get; set; }
 
         [Inject]
         public SocketKey socketKey { get; set; }
