@@ -12,12 +12,12 @@ export default class PlayerResourceState
     this.resources = {};
   }
 
-  incriment(playerId){
+  incriment(playerId, turnId){
     //check init
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;    
     }
-    this.resources[playerId]++;
+    this.resources[playerId] = Math.floor(turnId / 2) + 1;
     this.resources[playerId] = Math.min(this.resources[playerId], 10);
     return this.resources[playerId];
   }

@@ -33,11 +33,13 @@ export default class TurnProcessor
       }
     }
 
-    //give some handouts
-    action.toPlayerResources = this.playerResourceState.incriment(action.to);
-
     // do it
-    this.turnState.passTurnTo(action.to);
+    var currentTurn = this.turnState.passTurnTo(action.to);
+
+    //give some handouts
+    action.toPlayerResources = this.playerResourceState.incriment(action.to, currentTurn);
+    action.currentTurn = currentTurn;
+
     queue.push(new DrawCard(action.to));
     queue.complete(action);
   }

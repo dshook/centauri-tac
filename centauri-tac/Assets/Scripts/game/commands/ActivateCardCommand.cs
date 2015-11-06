@@ -1,6 +1,4 @@
 using strange.extensions.command.impl;
-using System.Linq;
-using System.Collections.Generic;
 using ctac.signals;
 
 namespace ctac
@@ -25,9 +23,12 @@ namespace ctac
         public override void Execute()
         {
             socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
-                new { playerId = cardActivated.playerId, cardId = cardActivated.id, position = tilePlayedAt.position.ToPositionModel() }
+                new ActivateCardModel {
+                    playerId = cardActivated.playerId,
+                    cardId = cardActivated.id,
+                    position = tilePlayedAt.position.ToPositionModel()
+                }
             );
-            destroyCard.Dispatch(cardActivated);
         }
     }
 }

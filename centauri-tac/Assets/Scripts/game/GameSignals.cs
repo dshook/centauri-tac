@@ -87,7 +87,9 @@ namespace ctac.signals
     [Singleton]
     public class ActivateCardSignal : Signal<CardModel, Tile> { }
     [Singleton]
-    public class DestroyCardSignal : Signal<CardModel> { }
+    public class ActionActivateCardSignal : Signal<ActivateCardModel> { }
+    [Singleton]
+    public class DestroyCardSignal : Signal<int> { }
     [Singleton]
     public class CardDestroyedSignal : Signal<CardModel> { }
 

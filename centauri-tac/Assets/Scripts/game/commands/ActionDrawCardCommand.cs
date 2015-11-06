@@ -41,7 +41,7 @@ namespace ctac
             }
             processedActions.processedActions.Add(cardDraw.id);
 
-            var cardTemplate = cardDirectory.directory.FirstOrDefault(c => c.id == cardDraw.cardId);
+            var cardTemplate = cardDirectory.Card(cardDraw.cardId);
 
             var newCardModel = new CardModel()
                 {

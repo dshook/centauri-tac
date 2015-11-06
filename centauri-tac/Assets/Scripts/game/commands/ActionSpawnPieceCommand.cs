@@ -92,7 +92,7 @@ namespace ctac
             }
 
             var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
-            var cardTemplate = cardDirectory.directory.FirstOrDefault(c => c.id == spawnedPiece.cardId);
+            var cardTemplate = cardDirectory.Card(spawnedPiece.cardId);
 
             var pieceModel = new PieceModel()
             {

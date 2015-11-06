@@ -39,7 +39,7 @@ namespace ctac
             }
             processedActions.processedActions.Add(gamePassModel.id);
 
-            turnModel.currentTurn = gamePassModel.id;
+            turnModel.currentTurn = gamePassModel.currentTurn;
             turnModel.currentPlayerId = gamePassModel.to;
             turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
             playerResources.resources[gamePassModel.to] = gamePassModel.toPlayerResources;

@@ -37,5 +37,6 @@ export default class TurnState
     this.currentTurn++;
 
     this.log.info('started turn %s, player %s', this.currentTurn, playerId);
+    return this.currentTurn;
   }
 }

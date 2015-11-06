@@ -20,6 +20,9 @@ namespace ctac
         public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
+        public ActivateCardSignal activateCard { get; set; }
+
+        [Inject]
         public DestroyCardSignal destroyCard { get; set; }
 
         [Inject]
@@ -37,10 +40,14 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
+        [Inject]
+        public IDebugService debug { get; set; }
+
         public override void OnRegister()
         {
             view.init(GetCurrentPlayerCards());
             cardSelected.AddListener(onCardSelected);
+            activateCard.AddListener(onCardActivated);
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
             cardDrawn.AddListener(onCardDrawn);
@@ -53,6 +60,7 @@ namespace ctac
             base.onRemove();
             cardSelected.RemoveListener(onCardSelected);
             destroyCard.RemoveListener(onDestroyCard);
+            activateCard.RemoveListener(onCardActivated);
             cardDestroyed.RemoveListener(onCardDestroyed);
             cardDrawn.RemoveListener(onCardDrawn);
             cardDrawShown.RemoveListener(onCardDrawnShown);
@@ -64,11 +72,22 @@ namespace ctac
             view.onCardSelected(card);
         }
 
-        private void onDestroyCard(CardModel card)
+        private CardModel lastActivatedCard = null;
+        private void onCardActivated(CardModel cardActivated, Tile t)
         {
+            lastActivatedCard = cardActivated;
+        }
+
+        private void onDestroyCard(int cardId)
+        {
+            if (lastActivatedCard == null || lastActivatedCard.id != cardId)
+            {
+                debug.LogError("Could not destroy card from card Id");
+                return;
+            }
             animationQueue.Add(new CardsView.CardDestroyedAnim()
             {
-                card = card,
+                card = lastActivatedCard,
                 cardDestroyed = cardDestroyed
             });
         }
