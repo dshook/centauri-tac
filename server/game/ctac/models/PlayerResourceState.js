@@ -12,7 +12,16 @@ export default class PlayerResourceState
     this.resources = {};
   }
 
-  init(playerId){
-    this.resources[playerId] = 0;    
+  incriment(playerId){
+    //check init
+    if(this.resources[playerId] === undefined){
+      this.resources[playerId] = 0;    
+    }
+    this.resources[playerId]++;
+    return this.resources[playerId];
+  }
+
+  get(playerId){
+    return this.resources[playerId];
   }
 }

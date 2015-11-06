@@ -33,14 +33,8 @@ export default class TurnProcessor
       }
     }
 
-    //check resources
-    if(this.playerResourceState.resources[action.to] === undefined){
-      this.playerResourceState.init(action.to);
-    }
-
     //give some handouts
-    this.playerResourceState.resources[action.to]++;
-    action.toPlayerResources = this.playerResourceState.resources[action.to];
+    action.toPlayerResources = this.playerResourceState.incriment(action.to);
 
     // do it
     this.turnState.passTurnTo(action.to);

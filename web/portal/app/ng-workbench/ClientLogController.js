@@ -44,7 +44,7 @@ export default class ClientLogController
     var catchAll = 'General';
 
     var groupedLogs = _.groupBy( 
-      this.log.filter(x => this.filter[x.level] ),
+      this.log.filter(x => x && this.filter[x.level] ),
       (x) => x.key ? x.key.clientId : catchAll
     );
 
@@ -103,7 +103,7 @@ export default class ClientLogController
   {
     return _.unique(
         this.log
-        .filter(x => x.level)
+        .filter(x => x && x.level)
         .map(x => x.level)
     );
   }
