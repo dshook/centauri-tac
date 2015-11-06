@@ -93,5 +93,10 @@ namespace ctac.signals
     [Singleton]
     public class CardDestroyedSignal : Signal<CardModel> { }
 
+    [Singleton]
+    public class ActionSetPlayerResourceSignal : Signal<SetPlayerResourceModel> { }
+    [Singleton]
+    public class PlayerResourceSetSignal : Signal<SetPlayerResourceModel> { }
+
 }
 

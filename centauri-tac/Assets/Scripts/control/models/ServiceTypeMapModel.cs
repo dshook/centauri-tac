@@ -30,6 +30,7 @@ namespace ctac
             {"action:DrawCard", typeof(ActionDrawCardSignal) },
             {"action:SpawnDeck", typeof(ActionSpawnDeckSignal) },
             {"action:ActivateCard", typeof(ActionActivateCardSignal) },
+            {"action:SetPlayerResource", typeof(ActionSetPlayerResourceSignal) },
 
 
             {"player:connect", typeof(PlayerConnectSignal) },

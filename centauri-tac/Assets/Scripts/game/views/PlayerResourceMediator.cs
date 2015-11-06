@@ -16,24 +16,30 @@ namespace ctac
         public PlayerResourcesModel playerResources { get; set; }
 
         [Inject]
+        public PlayerResourceSetSignal resourceSet { get; set; }
+
+        [Inject]
         public TurnEndedSignal turnEnded { get; set; }
 
         public override void OnRegister()
         {
-            turnEnded.AddListener(onTurnEnded);
+            resourceSet.AddListener(onResourceSet);
+            turnEnded.AddListener(onResourcesUpdated);
             view.init();
         }
 
         public override void onRemove()
         {
-            turnEnded.RemoveListener(onTurnEnded);
+            resourceSet.RemoveListener(onResourceSet);
+            turnEnded.RemoveListener(onResourcesUpdated);
         }
 
-        private void onTurnClicked()
+        private void onResourceSet(SetPlayerResourceModel m)
         {
+            onResourcesUpdated();
         }
 
-        private void onTurnEnded()
+        private void onResourcesUpdated()
         {
             var currentResource = playerResources.resources[gameTurn.currentPlayerId];
             //TODO: un hardcode max
