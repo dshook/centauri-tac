@@ -18,6 +18,13 @@ export default class PlayerResourceState
       this.resources[playerId] = 0;    
     }
     this.resources[playerId]++;
+    this.resources[playerId] = Math.min(this.resources[playerId], 10);
+    return this.resources[playerId];
+  }
+
+  expend(playerId, amount){
+    this.resources[playerId] -= amount;
+    this.resources[playerId] = Math.max(this.resources[playerId], 0);
     return this.resources[playerId];
   }
 

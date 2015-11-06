@@ -28,14 +28,14 @@ export default class SpawnProcessor
     let nextId = this.pieceState.pieces.length == 0 ? 1 :
        _.max(this.pieceState.pieces, x => x.id).id + 1;
 
-    let cardPlayed = this.cardDirectory.directory[action.pieceResourceId];
+    let cardPlayed = this.cardDirectory.directory[action.cardId];
 
     //TODO: validate against board state and all that jazz
     var newPiece = new GamePiece();
     newPiece.id = nextId;
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
-    newPiece.resourceId = action.pieceResourceId;
+    newPiece.resourceId = action.cardId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
     newPiece.movement = cardPlayed.movement;

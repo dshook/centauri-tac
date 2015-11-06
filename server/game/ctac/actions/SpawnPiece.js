@@ -3,9 +3,9 @@
  */
 export default class SpawnPiece
 {
-  constructor(playerId, pieceResourceId, position)
+  constructor(playerId, cardId, position)
   {
-    this.pieceResourceId = pieceResourceId;
+    this.cardId = cardId;
     this.playerId = playerId;
     this.position = position;
 

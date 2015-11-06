@@ -58,8 +58,8 @@ export default class GameHost extends EventEmitter
 
     // TODO: pull this out to configs
     app.service(ActionQueueService);
-    app.service(CardService);
     app.service(TurnService);
+    app.service(CardService);
     app.service(SpawnService);
     app.service(MoveService);
     app.service(AttackService);

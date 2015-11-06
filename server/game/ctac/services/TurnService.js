@@ -2,6 +2,7 @@ import TurnState from '../models/TurnState.js';
 import PlayerResourceState from '../models/PlayerResourceState.js';
 import loglevel from 'loglevel-decorator';
 import TurnProcessor from '../processors/TurnProcessor.js';
+import PlayerResourceProcessor from '../processors/PlayerResourceProcessor.js';
 
 /**
  * Expose the turn model and add the processor to the action pipeline
@@ -16,5 +17,6 @@ export default class TurnService
     app.registerInstance('turnState', this.state);
     app.registerInstance('playerResourceState', this.playerResourceState);
     queue.addProcessor(TurnProcessor);
+    queue.addProcessor(PlayerResourceProcessor);
   }
 }
