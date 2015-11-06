@@ -17,14 +17,15 @@ export default class PlayerResourceState
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;    
     }
-    this.resources[playerId] = Math.floor(turnId / 2) + 1;
+    this.resources[playerId] = Math.ceil(turnId / 2);
     this.resources[playerId] = Math.min(this.resources[playerId], 10);
     return this.resources[playerId];
   }
 
-  expend(playerId, amount){
-    this.resources[playerId] -= amount;
+  adjust(playerId, amount){
+    this.resources[playerId] += amount;
     this.resources[playerId] = Math.max(this.resources[playerId], 0);
+    this.resources[playerId] = Math.min(this.resources[playerId], 10);
     return this.resources[playerId];
   }
 

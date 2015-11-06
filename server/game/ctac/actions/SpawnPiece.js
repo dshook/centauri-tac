@@ -1,3 +1,4 @@
+import Position from '../models/Position.js';
 /**
  * Spawn a piece for a player
  */
@@ -7,7 +8,7 @@ export default class SpawnPiece
   {
     this.cardId = cardId;
     this.playerId = playerId;
-    this.position = position;
+    this.position = new Position(position.x, position.y, position.z);
 
     this.pieceId = null;
   }

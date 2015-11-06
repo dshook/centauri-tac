@@ -28,7 +28,7 @@ namespace ctac
             }
             processedActions.processedActions.Add(setPlayerResource.id);
 
-            playerResource.resources[setPlayerResource.playerId] = setPlayerResource.amount;
+            playerResource.resources[setPlayerResource.playerId] = setPlayerResource.newTotal;
 
             playerResourceSet.Dispatch(setPlayerResource);
         }

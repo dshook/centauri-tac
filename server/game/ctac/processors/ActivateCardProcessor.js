@@ -33,7 +33,7 @@ export default class ActivateCardProcessor
       return;
     }
 
-    queue.push(new SetPlayerResource(action.playerId, cardPlayed.cost));
+    queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
 
     queue.complete(action);

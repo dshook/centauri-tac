@@ -46,6 +46,6 @@ export default class SpawnProcessor
 
     queue.complete(action);
     this.log.info('spawned piece %s for player %s at %s',
-      action.pieceResourceId, action.playerId, action.position);
+      action.cardId, action.playerId, action.position);
   }
 }

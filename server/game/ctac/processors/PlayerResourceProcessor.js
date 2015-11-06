@@ -20,7 +20,8 @@ export default class PlayerResourceProcessor
     if (!(action instanceof SetPlayerResource)) {
       return;
     }
-    this.playerResourceState.expend(action.playerId, action.amount);
+    var newTotal = this.playerResourceState.adjust(action.playerId, action.change);
+    action.newTotal = newTotal;
 
     queue.complete(action);
     this.log.info('player %s used %s resources', action.playerId, action.amount);

@@ -1,8 +1,9 @@
 export default class SetPlayerResource
 {
-  constructor(playerId, amount)
+  constructor(playerId, change)
   {
     this.playerId = playerId;
-    this.amount = amount;
+    this.change = change;
+    this.newTotal = null;
   }
 }
