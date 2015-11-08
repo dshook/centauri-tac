@@ -55,7 +55,10 @@ namespace ctac
                 var path = mapService.FindPath(gameTile, tile, selectedPiece.movement);
                 view.onTileMovePath(path);
 
-                if (pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl))
+                if (
+                    pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl)
+                    && path != null
+                )
                 {
                     view.onAttackTile(tile);
                 }
