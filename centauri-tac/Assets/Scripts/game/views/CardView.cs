@@ -31,16 +31,15 @@ namespace ctac {
             healthText = healthGO.GetComponent<TextMeshPro>();
             descriptionText = descriptionGO.GetComponent<TextMeshPro>();
             nameText = nameGO.GetComponent<TextMeshPro>();
+        }
 
+        void Update()
+        {
             costText.text = card.cost.ToString();
             attackText.text = card.attack.ToString();
             healthText.text = card.health.ToString();
             nameText.text = card.name;
             descriptionText.text = card.description;
-        }
-
-        void Update()
-        {
         }
     }
 }

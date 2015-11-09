@@ -28,16 +28,20 @@ namespace ctac
         {
             quit.AddListener(Dump);
         }
+        private object _logLock = new object();
 
         public void Log(object message, ErrorLevel level, SocketKey key = null)
         {
-            entries.Add(new LogEntry()
+            lock (_logLock)
             {
-                timestamp = DateTime.Now,
-                level = level,
-                key = key,
-                message = MsgFmt(message)
-            });
+                entries.Add(new LogEntry()
+                {
+                    timestamp = DateTime.Now,
+                    level = level,
+                    key = key,
+                    message = MsgFmt(message)
+                });
+            }
 
             switch (level)
             {
