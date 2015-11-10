@@ -19,9 +19,10 @@ namespace ctac
         [Inject]
         public MapModel map { get; set; }
 
-        private CardView hoverCard = null;
+        private string hoverName = "Hover Card";
+        private CardView hoverCardView = null;
 
-        private CardView hoveredCard = null;
+        private CardView lastHoveredCard = null;
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
 
@@ -37,7 +38,7 @@ namespace ctac
                 Quaternion.identity
             ) as GameObject;
             hoverCardGO.transform.SetParent(cardCanvas.transform, false);
-            hoverCardGO.name = "Hover Card";
+            hoverCardGO.name = hoverName;
 
             var hoverCardModel = new CardModel()
             {
@@ -45,10 +46,10 @@ namespace ctac
                 gameObject = hoverCardGO
             };
 
-            hoverCard = hoverCardGO.AddComponent<CardView>();
-            hoverCard.card = hoverCardModel;
+            hoverCardView = hoverCardGO.AddComponent<CardView>();
+            hoverCardView.card = hoverCardModel;
 
-            var rectTransform = hoverCard.GetComponent<RectTransform>();
+            var rectTransform = hoverCardView.GetComponent<RectTransform>();
             rectTransform.anchorMax = anchorPosition;
             rectTransform.anchorMin = anchorPosition;
             rectTransform.pivot = anchorPosition;
@@ -64,7 +65,7 @@ namespace ctac
             view.hoverSignal.RemoveListener(onHover);
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 190, 0);
+        private static Vector3 HoverOffset = new Vector3(0, 320, -1);
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -72,30 +73,40 @@ namespace ctac
                 if (hoveredObject.CompareTag("Card"))
                 {
                     var cardView = hoveredObject.GetComponent<CardView>();
-                    if (cardView != hoveredCard)
+                    if (cardView != null && cardView != lastHoveredCard && cardView != hoverCardView)
                     {
-                        hoveredCard = cardView;
-                        
-                        //copy over props from hovered to hover
-                        cardView.card.CopyProperties(hoverCard.card);
-                        //but reset some key things
-                        hoverCard.name = "Hover Card";
-                        hoverCard.card.gameObject = hoverCard.gameObject;
+                        Debug.Log("Hovered Diff Card " + cardView.name);
+                        lastHoveredCard = cardView;
 
-                        var rectTransform = hoverCard.GetComponent<RectTransform>();
-                        var hoveredCardRect = hoveredCard.GetComponent<RectTransform>();
+                        //copy over props from hovered to hover
+                        cardView.card.CopyProperties(hoverCardView.card);
+                        //but reset some key things
+                        hoverCardView.name = hoverName;
+                        hoverCardView.card.gameObject = hoverCardView.gameObject;
+
+                        var rectTransform = hoverCardView.GetComponent<RectTransform>();
+                        var hoveredCardRect = lastHoveredCard.GetComponent<RectTransform>();
 
                         rectTransform.anchoredPosition3D = hoveredCardRect.anchoredPosition3D + HoverOffset;
 
-                        hoverCard.gameObject.SetActive(true);
+                        hoverCardView.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        Debug.Log("Hovered Same Card");
                     }
 
                 }
             }
             else
             {
-                hoverCard.gameObject.SetActive(false);
-                hoveredCard = null;
+                Debug.Log("Hovered no Card");
+                if (lastHoveredCard != null)
+                {
+                    Debug.Log("Hovered no Card state change");
+                }
+                hoverCardView.gameObject.SetActive(false);
+                lastHoveredCard = null;
             }
         }
     }
