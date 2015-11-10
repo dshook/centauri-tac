@@ -85,6 +85,8 @@ namespace ctac.signals
     [Singleton]
     public class CardSelectedSignal : Signal<CardModel> { }
     [Singleton]
+    public class CardHoveredSignal : Signal<CardModel> { }
+    [Singleton]
     public class ActivateCardSignal : Signal<CardModel, Tile> { }
     [Singleton]
     public class ActionActivateCardSignal : Signal<ActivateCardModel> { }

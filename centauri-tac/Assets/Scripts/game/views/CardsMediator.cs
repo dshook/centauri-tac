@@ -17,6 +17,9 @@ namespace ctac
         public CardSelectedSignal cardSelected { get; set; }
 
         [Inject]
+        public CardHoveredSignal cardHovered { get; set; }
+
+        [Inject]
         public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
@@ -47,6 +50,7 @@ namespace ctac
         {
             view.init(GetCurrentPlayerCards());
             cardSelected.AddListener(onCardSelected);
+            cardHovered.AddListener(onCardHovered);
             activateCard.AddListener(onCardActivated);
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
@@ -59,6 +63,7 @@ namespace ctac
         {
             base.onRemove();
             cardSelected.RemoveListener(onCardSelected);
+            cardHovered.RemoveListener(onCardHovered);
             destroyCard.RemoveListener(onDestroyCard);
             activateCard.RemoveListener(onCardActivated);
             cardDestroyed.RemoveListener(onCardDestroyed);
@@ -70,6 +75,11 @@ namespace ctac
         private void onCardSelected(CardModel card)
         {
             view.onCardSelected(card);
+        }
+
+        private void onCardHovered(CardModel card)
+        {
+            view.onCardHovered(card);
         }
 
         private CardModel lastActivatedCard = null;

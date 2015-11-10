@@ -13,6 +13,9 @@ namespace ctac
         public CardSelectedSignal cardSelected { get; set; }
 
         [Inject]
+        public CardHoveredSignal cardHovered { get; set; }
+
+        [Inject]
         public ActivateCardSignal activateCard { get; set; }
 
         [Inject]
@@ -107,7 +110,7 @@ namespace ctac
             }
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 300, -1);
+        private static Vector3 HoverOffset = new Vector3(0, 305, -1);
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -120,7 +123,7 @@ namespace ctac
                         lastHoveredCard = cardView;
 
                         //copy over props from hovered to hover
-                        cardView.card.CopyProperties(hoverCardView.card);
+                        lastHoveredCard.card.CopyProperties(hoverCardView.card);
                         //but reset some key things
                         hoverCardView.name = hoverName;
                         hoverCardView.card.gameObject = hoverCardView.gameObject;
@@ -131,6 +134,8 @@ namespace ctac
                         rectTransform.anchoredPosition3D = hoveredCardRect.anchoredPosition3D + HoverOffset;
 
                         hoverCardView.gameObject.SetActive(true);
+
+                        cardHovered.Dispatch(lastHoveredCard.card);
                     }
                 }
             }
@@ -138,6 +143,7 @@ namespace ctac
             {
                 hoverCardView.gameObject.SetActive(false);
                 lastHoveredCard = null;
+                cardHovered.Dispatch(null);
             }
         }
     }

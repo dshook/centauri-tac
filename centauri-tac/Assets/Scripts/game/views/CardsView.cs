@@ -12,6 +12,7 @@ namespace ctac {
         private List<CardModel> cards { get; set; }
 
         private CardModel selectedCard { get; set; }
+        private CardModel hoveredCard { get; set; }
 
         private Vector3 baseCardOffset = new Vector3(0, -54f, 0);
         private Vector3 cardPositionOffset = new Vector3(60, 0, -1);
@@ -43,12 +44,13 @@ namespace ctac {
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 rectTransform.rotation = Quaternion.Euler(Vector3.zero);
                 dest = baseCardOffset - ((cards.Count / 2) * cardPositionOffset) + (cardPositionOffset * c);
-                if (selectedCard != null)
+                if (selectedCard != null && card == selectedCard)
                 {
-                    if (card == selectedCard)
-                    {
-                        dest = dest.SetY(dest.y + 60f);
-                    }
+                    dest = dest.SetY(dest.y + 40f);
+                }
+                if (hoveredCard != null && card == hoveredCard && hoveredCard != selectedCard)
+                {
+                    dest = dest.SetY(dest.y + 40f);
                 }
                 rectTransform.anchorMax = anchorPosition;
                 rectTransform.anchorMin = anchorPosition;
@@ -73,6 +75,11 @@ namespace ctac {
         internal void onCardSelected(CardModel card)
         {
             selectedCard = card;
+        }
+
+        internal void onCardHovered(CardModel card)
+        {
+            hoveredCard = card;
         }
 
         public class CardDestroyedAnim : IAnimate
