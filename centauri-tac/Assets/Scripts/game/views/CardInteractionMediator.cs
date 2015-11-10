@@ -1,14 +1,13 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
-using strange.extensions.context.api;
 
 namespace ctac
 {
-    public class CardHoverMediator : Mediator
+    public class CardInteractionMediator : Mediator
     {
         [Inject]
-        public CardHoverView view { get; set; }
+        public CardInteractionView view { get; set; }
 
         [Inject]
         public CardSelectedSignal cardSelected { get; set; }
@@ -19,6 +18,8 @@ namespace ctac
         [Inject]
         public MapModel map { get; set; }
 
+        private CardModel draggedCard = null;
+
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
 
@@ -27,6 +28,23 @@ namespace ctac
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
 
         public override void OnRegister()
+        {
+            initHoverCard();
+
+            view.clickSignal.AddListener(onClick);
+            view.activateSignal.AddListener(onActivate);
+            view.hoverSignal.AddListener(onHover);
+            view.init();
+        }
+
+        public override void onRemove()
+        {
+            view.clickSignal.RemoveListener(onClick);
+            view.activateSignal.RemoveListener(onActivate);
+            view.hoverSignal.RemoveListener(onHover);
+        }
+
+        private void initHoverCard()
         {
             //init the hover card that's hidden most of the time
             var cardPrefab = Resources.Load("Card") as GameObject;
@@ -55,17 +73,41 @@ namespace ctac
             rectTransform.pivot = anchorPosition;
 
             hoverCardGO.SetActive(false);
-
-            view.hoverSignal.AddListener(onHover);
-            view.init();
         }
 
-        public override void onRemove()
+        private void onClick(GameObject clickedObject)
         {
-            view.hoverSignal.RemoveListener(onHover);
+            if (clickedObject != null)
+            {
+                if (clickedObject.CompareTag("Card"))
+                {
+                    var cardView = clickedObject.GetComponent<CardView>();
+
+                    draggedCard = cardView.card;
+                    cardSelected.Dispatch(draggedCard);
+                }
+            }
+            else
+            {
+                draggedCard = null;
+                cardSelected.Dispatch(null);
+            }
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 320, -1);
+        private void onActivate(GameObject activated)
+        {
+            if (activated != null && draggedCard != null)
+            {
+                if (activated.CompareTag("Tile"))
+                {
+                    var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
+
+                    activateCard.Dispatch(draggedCard, gameTile);
+                }
+            }
+        }
+
+        private static Vector3 HoverOffset = new Vector3(0, 300, -1);
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -75,7 +117,6 @@ namespace ctac
                     var cardView = hoveredObject.GetComponent<CardView>();
                     if (cardView != null && cardView != lastHoveredCard && cardView != hoverCardView)
                     {
-                        Debug.Log("Hovered Diff Card " + cardView.name);
                         lastHoveredCard = cardView;
 
                         //copy over props from hovered to hover
@@ -91,20 +132,10 @@ namespace ctac
 
                         hoverCardView.gameObject.SetActive(true);
                     }
-                    else
-                    {
-                        Debug.Log("Hovered Same Card");
-                    }
-
                 }
             }
             else
             {
-                Debug.Log("Hovered no Card");
-                if (lastHoveredCard != null)
-                {
-                    Debug.Log("Hovered no Card state change");
-                }
                 hoverCardView.gameObject.SetActive(false);
                 lastHoveredCard = null;
             }

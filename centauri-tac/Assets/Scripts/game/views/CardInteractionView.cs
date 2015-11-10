@@ -6,27 +6,51 @@ using System.Linq;
 
 namespace ctac
 {
-    public class CardClickView : View
+    public class CardInteractionView : View
     {
         internal Signal<GameObject> clickSignal = new Signal<GameObject>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
+        internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
 
         bool active = false;
         private Camera cardCamera;
         bool dragging = false;
 
         Ray camRay;
+        int cardCanvasLayer = -1;
         internal void init()
         {
             active = true;
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
+            cardCanvasLayer = LayerMask.GetMask("cardCanvas");
         }
         void Update()
         {
             if (active)
             {
+                var hoverHit = TestSelection();
+
+                if (hoverHit.HasValue)
+                {
+                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                }
+                else
+                {
+                    hoverSignal.Dispatch(null);
+                }
+
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
+                    if (hoverHit.HasValue)
+                    {
+                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                        dragging = true;
+                    }
+                    else
+                    {
+                        clickSignal.Dispatch(null);
+                        dragging = false;
+                    }
                     TestSelection();
                 }
 
@@ -48,21 +72,19 @@ namespace ctac
             }
         }
 
-        void TestSelection()
+        RaycastHit? TestSelection()
         {
             var viewportPoint = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
             camRay = cardCamera.ViewportPointToRay(viewportPoint);
 
             RaycastHit objectHit;
-            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
+            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist, cardCanvasLayer))
             {
-                clickSignal.Dispatch(objectHit.collider.gameObject);
-                dragging = true;
+                return objectHit;
             }
             else
             {
-                clickSignal.Dispatch(null);
-                dragging = false;
+                return null;
             }
         }
 
