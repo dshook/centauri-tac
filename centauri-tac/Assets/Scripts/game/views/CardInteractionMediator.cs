@@ -19,6 +19,9 @@ namespace ctac
         public ActivateCardSignal activateCard { get; set; }
 
         [Inject]
+        public CardsModel cards { get; set; }
+
+        [Inject]
         public MapModel map { get; set; }
 
         private CardModel draggedCard = null;
@@ -111,31 +114,43 @@ namespace ctac
         }
 
         private static Vector3 HoverOffset = new Vector3(0, 305, -1);
-        private void onHover(GameObject hoveredObject)
+        private float hoverDelay = 0.5f;
+        private void onHover(GameObject hoveredObject, float timeElapsed)
         {
             if (hoveredObject != null)
             {
                 if (hoveredObject.CompareTag("Card"))
                 {
                     var cardView = hoveredObject.GetComponent<CardView>();
-                    if (cardView != null && cardView != lastHoveredCard && cardView != hoverCardView)
+                    if (cardView != null 
+                        && cardView != lastHoveredCard 
+                        && cardView != hoverCardView
+                    )
                     {
-                        lastHoveredCard = cardView;
+                        //break out and don't hover if it hasn't been added to the hand of cards yet
+                        if (!cards.Cards.Contains(cardView.card))
+                        {
+                            return;
+                        }
+                        cardHovered.Dispatch(cardView.card);
 
-                        //copy over props from hovered to hover
-                        lastHoveredCard.card.CopyProperties(hoverCardView.card);
-                        //but reset some key things
-                        hoverCardView.name = hoverName;
-                        hoverCardView.card.gameObject = hoverCardView.gameObject;
+                        if (timeElapsed > hoverDelay)
+                        {
+                            lastHoveredCard = cardView;
 
-                        var rectTransform = hoverCardView.GetComponent<RectTransform>();
-                        var hoveredCardRect = lastHoveredCard.GetComponent<RectTransform>();
+                            //copy over props from hovered to hover
+                            lastHoveredCard.card.CopyProperties(hoverCardView.card);
+                            //but reset some key things
+                            hoverCardView.name = hoverName;
+                            hoverCardView.card.gameObject = hoverCardView.gameObject;
 
-                        rectTransform.anchoredPosition3D = hoveredCardRect.anchoredPosition3D + HoverOffset;
+                            var rectTransform = hoverCardView.GetComponent<RectTransform>();
+                            var hoveredCardRect = lastHoveredCard.GetComponent<RectTransform>();
 
-                        hoverCardView.gameObject.SetActive(true);
+                            rectTransform.anchoredPosition3D = hoveredCardRect.anchoredPosition3D + HoverOffset;
 
-                        cardHovered.Dispatch(lastHoveredCard.card);
+                            hoverCardView.gameObject.SetActive(true);
+                        }
                     }
                 }
             }

@@ -10,11 +10,12 @@ namespace ctac
     {
         internal Signal<GameObject> clickSignal = new Signal<GameObject>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
-        internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
+        internal Signal<GameObject, float> hoverSignal = new Signal<GameObject, float>();
 
         bool active = false;
         private Camera cardCamera;
         bool dragging = false;
+        float hoverTime = 0f;
 
         Ray camRay;
         int cardCanvasLayer = -1;
@@ -32,11 +33,13 @@ namespace ctac
 
                 if (hoverHit.HasValue)
                 {
-                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverTime);
+                    hoverTime += Time.deltaTime;
                 }
                 else
                 {
-                    hoverSignal.Dispatch(null);
+                    hoverSignal.Dispatch(null, hoverTime);
+                    hoverTime = 0f;
                 }
 
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
