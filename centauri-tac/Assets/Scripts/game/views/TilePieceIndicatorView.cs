@@ -30,7 +30,7 @@ namespace ctac
 
         internal void ClearTile(Tile tile)
         {
-            var renderer = tile.gameObject.GetComponentInChildren<SpriteRenderer>();
+            var renderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
 
             renderer.material.SetFloat("_BorderWidth", 0f);
         }
@@ -63,7 +63,7 @@ namespace ctac
 
         internal void SetColor(Tile tile, Color color)
         {
-            var renderer = tile.gameObject.GetComponentInChildren<SpriteRenderer>();
+            var renderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
 
             renderer.material.SetColor("_RimColor", color);
             renderer.material.SetFloat("_BorderWidth", borderWidth);

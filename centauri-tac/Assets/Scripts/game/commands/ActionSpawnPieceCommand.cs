@@ -83,7 +83,6 @@ namespace ctac
 
                 var animator = newPiece.GetComponentInChildren<Animator>();
                 animator.runtimeAnimatorController = animationController;
-                animator.Play("Idle");
 
             }
             catch (Exception ex)
