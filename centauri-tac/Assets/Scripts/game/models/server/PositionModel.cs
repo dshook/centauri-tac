@@ -24,6 +24,15 @@ namespace ctac
             }
         }
 
+        [JsonIgnore]
+        public Vector2 Vector2
+        {
+            get
+            {
+                return new Vector2(x, z);
+            }
+        }
+
         public override string ToString()
         {
             return string.Format("({0}, {1:0.00}, {2})", x, y, z);

@@ -25,6 +25,7 @@ namespace ctac
     public class Tile
     {
         public Vector2 position { get; set; }
+        public Vector3 fullPosition { get; set; }
         public GameObject gameObject { get; set; }
         public TileHighlightStatus highlightStatus;
     }

@@ -40,9 +40,10 @@ namespace ctac
 
             foreach (var t in map.tiles)
             {
+                var fullPosition = new Vector3(t.transform.x, t.transform.y, t.transform.z);
                 var newTileGO = GameObject.Instantiate(
                     mapTilePrefab, 
-                    new Vector3(t.transform.x, t.transform.y, t.transform.z), 
+                    fullPosition, 
                     Quaternion.identity
                 ) as GameObject;
                 newTileGO.transform.parent = goMap.transform;
@@ -50,7 +51,8 @@ namespace ctac
                 var position = new Vector2(t.transform.x, t.transform.z);
                 var newTile = new Tile() {
                         gameObject = newTileGO,
-                        position = position
+                        position = position,
+                        fullPosition = fullPosition
                     };
                 mapModel.tiles.Add(position, newTile );
 

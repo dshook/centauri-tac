@@ -35,6 +35,9 @@ namespace ctac
         public CardDirectory cardDirectory { get; set; }
 
         [Inject]
+        public MapModel map { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         [Inject]
@@ -68,10 +71,12 @@ namespace ctac
             }
             processedActions.processedActions.Add(spawnedPiece.id);
 
+            //position is x and z from server, and y based on the map
+            var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;
 
             var newPiece = GameObject.Instantiate(
                 piecePrefab, 
-                spawnedPiece.position.Vector3,
+                spawnPosition,
                 Quaternion.identity
             ) as GameObject;
             newPiece.transform.parent = contextView.transform;
