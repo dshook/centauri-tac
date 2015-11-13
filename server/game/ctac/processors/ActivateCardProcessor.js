@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
+import SendMessage from '../actions/SendMessage.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import ActivateCard from '../actions/ActivateCard.js';
 import loglevel from 'loglevel-decorator';
@@ -30,6 +31,7 @@ export default class ActivateCardProcessor
       this.log.info('Not enough resources for player %s to play card %s'
         , action.playerId, action.cardId);
       queue.cancel(action);
+      queue.push(new SendMessage('You don\'t have enough energy to play that card!'));
       return;
     }
 
