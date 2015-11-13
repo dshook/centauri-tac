@@ -24,6 +24,9 @@ namespace ctac.signals
     public class LeaveGameSignal : Signal<SocketKey> { }
 
     [Singleton]
+    public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
+
+    [Singleton]
     public class TileHoverSignal : Signal<Tile> { }
 
     [Singleton]

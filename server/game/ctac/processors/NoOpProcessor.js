@@ -1,4 +1,4 @@
-import SendMessage from '../actions/SendMessage.js';
+import Message from '../actions/Message.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
@@ -13,7 +13,7 @@ export default class NoOpProcessor
    */
   async handleAction(action, queue)
   {
-    if (!(action instanceof SendMessage)) {
+    if (!(action instanceof Message)) {
       return;
     }
 
