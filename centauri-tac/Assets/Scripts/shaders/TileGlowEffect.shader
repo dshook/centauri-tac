@@ -5,8 +5,8 @@
         _MainTex ("Texture", 2D) = "white" { }
         _RimColor("Rim Color", Color) = (1, 0, 0, 1)
         _HighlightColor("Highlight Color", Color) = (1, 1, 1, 1)
-        _BorderWidth("Border Width", Range(0.0, 10.0)) = 0.05
-        _RimFalloff("Rim Falloff", Range(0.0, 10.0)) = 3.0
+        _BorderWidth("Border Width", Range(0.0, 2.0)) = 0.05
+        _RimFalloff("Rim Falloff", Range(0.0, 2.0)) = 3.0
     }
     SubShader
     {
@@ -50,9 +50,8 @@
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
 
-                float dist = i.uv.x * i.uv.x
-                   + i.uv.y * i.uv.y;
-                if( dist <= _BorderWidth ){
+                float dist = i.uv.x + i.uv.y;
+                if( dist <= _BorderWidth && i.uv.x <= 0.33 ){
                     float vig = _RimFalloff * (1/dist);
                     col = col * (_RimColor * vig);
                 }

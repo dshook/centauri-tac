@@ -6,10 +6,10 @@ namespace ctac
 {
     public class TilePieceIndicatorView : View
     {
-        private Color enemyColor = new Color(0.5f, .1f, .1f);
-        private Color friendlyColor = new Color(0.1f, .35f, .1f);
+        private Color enemyColor = new Color(1.0f, .2f, .2f);
+        private Color friendlyColor = new Color(0.0f, 1f, .6f);
 
-        private float borderWidth = 0.17f;
+        private float borderWidth = 0.5f;
 
         internal void init()
         {
