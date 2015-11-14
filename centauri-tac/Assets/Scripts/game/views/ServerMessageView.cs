@@ -1,4 +1,5 @@
 using strange.extensions.mediation.impl;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -22,7 +23,20 @@ namespace ctac
         {
             serverText.text = message;
             serverText.color = Color.white;
-            iTweenExtensions.ColorUpdate(gameObject, transparentWhite, 2f);
+
+            Hashtable tweenParams = new Hashtable();
+            tweenParams.Add("from", Color.white);
+            tweenParams.Add("to", transparentWhite);
+            tweenParams.Add("time", 1f);
+            tweenParams.Add("delay", 0.75f);
+            tweenParams.Add("onupdate", "OnColorUpdated");
+
+            iTween.ValueTo(serverText.gameObject, tweenParams);
+        }
+
+        private void OnColorUpdated(Color color)
+        {
+            serverText.color = color;
         }
     }
 }
