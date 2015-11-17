@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
+using System;
 
 namespace ctac
 {
@@ -19,11 +20,47 @@ namespace ctac
         float xSpeed = 10f;
         float ySpeed = 5f;
 
+        float rotateTimer = 0f;
+
         void Update()
         {
             var s_baseOrthographicSize = Screen.height / 96.0f / 2.0f;
             Camera.main.orthographicSize = s_baseOrthographicSize;
 
+            rotateTimer += Time.deltaTime;
+
+            if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
+            {
+                RotateCamera(true);
+            }
+            if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
+            {
+                RotateCamera(false);
+            }
+
+            UpdateDragging();
+        }
+
+        private void RotateCamera(bool rotateLeft)
+        {
+            if(rotateTimer < 1f) return;
+
+            rotateTimer = 0f;
+            //find what we're looking at
+            Ray camRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            RaycastHit objectHit;
+            Vector3 rotateWorldPosition = Vector3.zero;
+            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
+            {
+                rotateWorldPosition = objectHit.transform.position;
+            }
+
+            //then rotate around it
+            Camera.main.transform.RotateAround(rotateWorldPosition, Vector3.up, rotateLeft ? -90 : 90);
+        }
+
+        private void UpdateDragging()
+        {
             if (cardSelected)
             {
                 dragging = false;
