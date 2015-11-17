@@ -2,11 +2,13 @@
 using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
 using System;
+using strange.extensions.signal.impl;
 
 namespace ctac
 {
     public class CameraMovementView : View
     {
+        public Signal<float> CameraRotated = new Signal<float>();
         private Vector3 dragOrigin;
         private Vector3 camOrigin;
 
@@ -57,6 +59,8 @@ namespace ctac
 
             //then rotate around it
             Camera.main.transform.RotateAround(rotateWorldPosition, Vector3.up, rotateLeft ? -90 : 90);
+
+            CameraRotated.Dispatch(Camera.main.transform.eulerAngles.y);
         }
 
         private void UpdateDragging()
