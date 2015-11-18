@@ -16,6 +16,9 @@ namespace ctac
         public PieceAttackedSignal pieceAttacked { get; set; }
 
         [Inject]
+        public PiecesModel pieces { get; set; }
+
+        [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
         [Inject]
@@ -29,6 +32,8 @@ namespace ctac
                 return;
             }
             processedActions.processedActions.Add(attackedPiece.id);
+
+            pieces.Piece(attackedPiece.attackingPieceId).hasAttacked = true;
 
             pieceAttacked.Dispatch(attackedPiece);
 

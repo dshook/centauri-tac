@@ -88,6 +88,7 @@ namespace ctac
 
                 var animator = newPiece.GetComponentInChildren<Animator>();
                 animator.runtimeAnimatorController = animationController;
+                animator.Play("Idle");
 
             }
             catch (Exception ex)
@@ -108,7 +109,9 @@ namespace ctac
                 health = cardTemplate.health,
                 originalAttack = cardTemplate.attack,
                 originalHealth = cardTemplate.health,
-                movement = cardTemplate.movement
+                movement = cardTemplate.movement,
+                hasAttacked = true,
+                hasMoved = true
             };
 
             var pieceView = newPiece.AddComponent<PieceView>();

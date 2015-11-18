@@ -46,6 +46,7 @@ namespace ctac
             foreach (var piece in piecesModel.Pieces)
             {
                 piece.hasMoved = false;
+                piece.hasAttacked = false;
                 if (piece.playerId == gamePassModel.to)
                 {
                     piece.currentPlayerHasControl = true;
