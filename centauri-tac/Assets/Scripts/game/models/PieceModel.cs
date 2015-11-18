@@ -31,7 +31,7 @@ namespace ctac
         public int attack { get; set; }
         public int health { get; set; }
 
-        public int originalAttack { get; set; }
-        public int originalHealth { get; set; }
+        public int baseAttack { get; set; }
+        public int baseHealth { get; set; }
     }
 }

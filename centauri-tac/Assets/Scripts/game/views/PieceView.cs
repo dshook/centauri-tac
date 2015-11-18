@@ -82,6 +82,7 @@ namespace ctac {
             public TextMeshPro text { get; set; }
             public int current { get; set; }
             public int original { get; set; }
+            public int change { get; set; }
             private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
 
             public void Update()
@@ -89,7 +90,10 @@ namespace ctac {
                 if(text == null) return;
 
                 text.text = current.ToString();
-                iTweenExtensions.PunchScale(textGO, punchSize, 1.5f, 0);
+                if (change != 0)
+                {
+                    iTweenExtensions.PunchScale(textGO, punchSize, 1.5f, 0);
+                }
                 if (current > original)
                 {
                     text.color = Color.green;

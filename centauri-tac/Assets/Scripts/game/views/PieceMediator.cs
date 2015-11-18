@@ -56,12 +56,15 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
+            int change = 0;
             if (attackPiece.attackingPieceId == view.piece.id)
             {
+                change = attackPiece.attackerNewHp - view.piece.health;
                 view.piece.health = attackPiece.attackerNewHp;
             }
             else if (attackPiece.targetPieceId == view.piece.id)
             {
+                change = attackPiece.targetNewHp - view.piece.health;
                 view.piece.health = attackPiece.targetNewHp;
             }
 
@@ -73,7 +76,8 @@ namespace ctac
                         text = view.healthText,
                         textGO = view.healthGO,
                         current = view.piece.health,
-                        original = view.piece.originalHealth,
+                        original = view.piece.baseHealth,
+                        change = change,
                         attackFinished = pieceAttackedAnim,
                         piece = view.piece
                     }

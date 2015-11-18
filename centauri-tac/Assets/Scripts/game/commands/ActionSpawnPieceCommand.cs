@@ -107,8 +107,8 @@ namespace ctac
                 gameObject = newPiece,
                 attack = cardTemplate.attack,
                 health = cardTemplate.health,
-                originalAttack = cardTemplate.attack,
-                originalHealth = cardTemplate.health,
+                baseAttack = cardTemplate.attack,
+                baseHealth = cardTemplate.health,
                 movement = cardTemplate.movement,
                 hasAttacked = true,
                 hasMoved = true
