@@ -14,7 +14,7 @@ namespace ctac {
         private CardModel selectedCard { get; set; }
         private CardModel hoveredCard { get; set; }
 
-        private Vector3 baseCardOffset = new Vector3(0, -54f, 0);
+        private Vector3 baseCardOffset = new Vector3(0, -85f, 50);
         private Vector3 cardPositionOffset = new Vector3(60, 0, -1);
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private const float maxCardHeight = 20f;
