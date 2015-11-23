@@ -1,4 +1,5 @@
 using strange.extensions.mediation.impl;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
@@ -11,6 +12,8 @@ namespace ctac
         private Vector2 startPoint;
         private Camera cardCamera;
         private RectTransform CanvasRect;
+
+        private Vector3 yForward = new Vector3(0, 1, 0);
 
         internal void init()
         {
@@ -25,14 +28,22 @@ namespace ctac
             if (meshRenderer.enabled)
             {
                 Vector2 mouseScreen = CrossPlatformInputManager.mousePosition;
-                Debug.Log("Mouse " + mouseScreen);
 
-                //var rotateVector = Vector2.Dot(startPoint, mouseScreen);
-                //var angle = Vector2.Angle(startPoint, mouseScreen);
+                //find midway point
+                var midViewport = ((mouseScreen- startPoint) * 0.5f) + startPoint;
+                var midWorld = cardCamera.ViewportToWorldPoint(new Vector3(midViewport.x, midViewport.y, 0));
+                transform.localPosition = midWorld;
+
+                //find angles
+                var angle = Vector2.Angle(mouseScreen, startPoint);
+                Vector3 cross = Vector3.Cross(mouseScreen, startPoint);
+                if (cross.z > 0) angle -= 360;
+
+                Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Cross {3} Mid {4}", startPoint, mouseScreen, angle, cross, midWorld));
+
+                var newRotation = Quaternion.AngleAxis(angle, yForward);
+                transform.localRotation = newRotation;
                 var distance = Vector2.Distance(startPoint, mouseScreen);
-                //var up = mouseScreen - startPoint;
-                //var newRotation = Quaternion.LookRotation(transform.forward, up);
-                //transform.localRotation = newRotation;
                 transform.localScale = transform.localScale.SetZ(distance / 8);
             }
         }
@@ -58,7 +69,7 @@ namespace ctac
                 ((ViewportPosition.y * CanvasRect.sizeDelta.y))
             );
 
-            startPoint = WorldObject_ScreenPosition;
+            startPoint = new Vector2(Math.Max(WorldObject_ScreenPosition.x, 0), Math.Max(WorldObject_ScreenPosition.y, 0));
         }
 
         internal void disable()

@@ -16,6 +16,7 @@ namespace ctac {
         private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
         private Material moveOutline;
+        private Material attackOutline;
 
         protected override void Start()
         {
@@ -27,6 +28,7 @@ namespace ctac {
             spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
+            attackOutline = Resources.Load("Materials/AttackOutlineMat") as Material;
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -39,6 +41,8 @@ namespace ctac {
             if (piece.currentPlayerHasControl && !piece.hasMoved)
             {
                 spriteRenderer.material = moveOutline;
+            } else if (piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
+                spriteRenderer.material = attackOutline;
             }
             else
             {
