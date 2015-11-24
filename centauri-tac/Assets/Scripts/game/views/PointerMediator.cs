@@ -34,6 +34,10 @@ namespace ctac
             {
                 view.rectTransform(card.gameObject);
             }
+            else
+            {
+                view.disable();
+            }
         }
 
         private void onCardDragEnd(CardModel card, Tile t)

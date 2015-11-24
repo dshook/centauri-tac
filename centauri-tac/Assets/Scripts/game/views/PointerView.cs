@@ -29,22 +29,28 @@ namespace ctac
             {
                 Vector2 mouseScreen = CrossPlatformInputManager.mousePosition;
 
-                //find midway point
+                //position
                 var midViewport = ((mouseScreen- startPoint) * 0.5f) + startPoint;
-                var midWorld = cardCamera.ViewportToWorldPoint(new Vector3(midViewport.x, midViewport.y, 0));
+                //var midWorld = midViewport - (CanvasRect.sizeDelta / 2);
+                var midWorld = startPoint;
                 transform.localPosition = midWorld;
 
                 //find angles
-                var angle = Vector2.Angle(mouseScreen, startPoint);
+                //v1 is a vector pointing right because this is the default rotation of the arrow
+                var v1 = Vector2.right;
+                var v2 = mouseScreen - startPoint;
+                var angle = Vector2.Angle(v1, v2);
                 Vector3 cross = Vector3.Cross(mouseScreen, startPoint);
                 if (cross.z > 0) angle -= 360;
 
-                Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Cross {3} Mid {4}", startPoint, mouseScreen, angle, cross, midWorld));
-
                 var newRotation = Quaternion.AngleAxis(angle, yForward);
                 transform.localRotation = newRotation;
+
+                //scale
                 var distance = Vector2.Distance(startPoint, mouseScreen);
-                transform.localScale = transform.localScale.SetZ(distance / 8);
+                transform.localScale = transform.localScale.SetZ(distance / 4);
+
+                Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Mid View {3} Mid World {4}", startPoint, mouseScreen, angle, midViewport, midWorld));
             }
         }
 
