@@ -31,9 +31,8 @@ namespace ctac
 
                 //position
                 var midViewport = ((mouseScreen- startPoint) * 0.5f) + startPoint;
-                //var midWorld = midViewport - (CanvasRect.sizeDelta / 2);
-                var midWorld = startPoint;
-                transform.localPosition = midWorld;
+                var midWorld = midViewport - (CanvasRect.sizeDelta / 2);
+                transform.parent.localPosition = midWorld;
 
                 //find angles
                 //v1 is a vector pointing right because this is the default rotation of the arrow
@@ -48,7 +47,7 @@ namespace ctac
 
                 //scale
                 var distance = Vector2.Distance(startPoint, mouseScreen);
-                transform.localScale = transform.localScale.SetZ(distance / 4);
+                transform.localScale = transform.localScale.SetZ(distance / 10);
 
                 Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Mid View {3} Mid World {4}", startPoint, mouseScreen, angle, midViewport, midWorld));
             }
