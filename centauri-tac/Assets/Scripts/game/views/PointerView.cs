@@ -49,7 +49,7 @@ namespace ctac
                 var distance = Vector2.Distance(startPoint, mouseScreen);
                 transform.localScale = transform.localScale.SetZ(distance / 10);
 
-                Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Mid View {3} Mid World {4}", startPoint, mouseScreen, angle, midViewport, midWorld));
+                //Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Mid View {3} Mid World {4}", startPoint, mouseScreen, angle, midViewport, midWorld));
             }
         }
 
