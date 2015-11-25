@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
+import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import ActivateCard from '../actions/ActivateCard.js';
@@ -37,6 +38,11 @@ export default class ActivateCardProcessor
 
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
+
+    //placeholder
+    if(cardPlayed.events && cardPlayed.events.play === 'drawCard'){
+      queue.push(new DrawCard(action.playerId));
+    }
 
     queue.complete(action);
     this.log.info('player %s played card %s at %s',
