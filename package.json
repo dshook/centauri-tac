@@ -89,5 +89,8 @@
     "sql-params": "^1.0.1",
     "tape": "^4.2.0",
     "ws": "^0.8.0"
+  },
+  "devDependencies": {
+    "jison": "^0.4.15"
   }
 }
