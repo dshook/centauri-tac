@@ -16,7 +16,8 @@
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
-    "prestart": "npm run migrate && npm run build"
+    "prestart": "npm run migrate && npm run build",
+    "build-lang": "cd ./lang & jison cardlang.jison"
   },
   "browser": {
     "angular": "./node_modules/angular/angular.js",
