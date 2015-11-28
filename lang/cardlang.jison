@@ -7,8 +7,9 @@
 
 \s+                         /* skip whitespace */
 
-//root actions/events
+//root events
 (play)                    return 'play'
+(death)                   return 'death'
 
 // targets
 (PLAYER|TARGET)    return 'target'
@@ -45,10 +46,11 @@ events
   ;
 
 c
-  : playaction?
+  : playaction? ';'? deathaction?
       {{ $$ =
         {
-          play: $1
+          play: $1,
+          deathaction: $3
         };
       }}
   ;
@@ -57,6 +59,10 @@ c
 
 playaction
   : play '=' actionlist -> 'Play'
+  ;
+
+deathaction
+  : death '=' actionlist -> 'Death'
   ;
 
 actionlist
