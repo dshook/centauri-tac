@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,19,20,21,22,23,24,25,26,27,28,30,31,32,33,34,36,37,39],$V1=[5,30,31,32,33,34,36,37,39],$V2=[5,36,37,39],$V3=[5,39];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14,15],$V1=[5,14],$V2=[1,15],$V3=[1,17],$V4=[1,23],$V5=[1,24],$V6=[1,25],$V7=[20,21];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"chord":3,"c":4,"EOF":5,"root":6,"c_option0":7,"c_option1":8,"c_option2":9,"c_option3":10,"c_option4":11,"CHORD_ROOT":12,"quality":13,"Major":14,"Minor":15,"Augmented":16,"Diminished":17,"extended":18,"Major7":19,"Minor7":20,"Dominant7":21,"Diminished7":22,"Major9":23,"Major11":24,"Major13":25,"AugmentedDominant7":26,"AugmentedMajor7":27,"Minor9":28,"added":29,"Add9":30,"Add4":31,"SixNine":32,"Major6":33,"PowerChord":34,"suspended":35,"Sus2":36,"Sus4":37,"override":38,"/":39,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",12:"CHORD_ROOT",14:"Major",15:"Minor",16:"Augmented",17:"Diminished",19:"Major7",20:"Minor7",21:"Dominant7",22:"Diminished7",23:"Major9",24:"Major11",25:"Major13",26:"AugmentedDominant7",27:"AugmentedMajor7",28:"Minor9",30:"Add9",31:"Add4",32:"SixNine",33:"Major6",34:"PowerChord",36:"Sus2",37:"Sus4",39:"/"},
-productions_: [0,[3,2],[4,6],[6,1],[13,1],[13,1],[13,1],[13,1],[18,1],[18,1],[18,1],[18,1],[18,1],[18,1],[18,1],[18,1],[18,1],[18,1],[29,1],[29,1],[29,1],[29,1],[29,1],[35,1],[35,1],[38,2],[7,0],[7,1],[8,0],[8,1],[9,0],[9,1],[10,0],[10,1],[11,0],[11,1]],
+symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"c_option2":8,"playaction":9,"play":10,"=":11,"actionlist":12,"deathaction":13,"death":14,";":15,"actionargs":16,"action":17,"(":18,"arguments":19,")":20,",":21,"argument_item":22,"target":23,"attribute":24,"number":25,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",10:"play",11:"=",14:"death",15:";",17:"action",18:"(",20:")",21:",",23:"target",24:"attribute",25:"number"},
+productions_: [0,[3,2],[4,3],[9,3],[13,3],[12,3],[12,2],[12,1],[16,4],[19,3],[19,1],[22,1],[22,1],[22,1],[6,0],[6,1],[7,0],[7,1],[8,0],[8,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -89,85 +89,24 @@ break;
 case 2:
  this.$ =
         {
-          root: $$[$0-5],
-          quality: $$[$0-4] || 'Major',
-          extended: $$[$0-3],
-          added: $$[$0-2],
-          suspended: $$[$0-1],
-          overridingRoot: $$[$0]
+          play: $$[$0-2],
+          deathaction: $$[$0]
         };
       
 break;
-case 3: case 25:
+case 3: case 11: case 12: case 13:
 this.$ = $$[$0];
 break;
 case 4:
-this.$ = 'Major';
-break;
-case 5:
-this.$ = 'Minor';
-break;
-case 6:
-this.$ = 'Augmented';
-break;
-case 7:
-this.$ = 'Diminished';
+this.$ = 'Death';
 break;
 case 8:
-this.$ = "Major7";
-break;
-case 9:
-this.$ = "Minor7";
-break;
-case 10:
-this.$ = "Dominant7";
-break;
-case 11:
-this.$ = "Diminished7";
-break;
-case 12:
-this.$ = "Major9";
-break;
-case 13:
-this.$ = "Major11";
-break;
-case 14:
-this.$ = "Major13";
-break;
-case 15:
-this.$ = "AugmentedDominant7";
-break;
-case 16:
-this.$ = "AugmentedMajor7";
-break;
-case 17:
-this.$ = "Minor9";
-break;
-case 18:
-this.$ = 'Add9';
-break;
-case 19:
-this.$ = 'Add4';
-break;
-case 20:
-this.$ = 'SixNine';
-break;
-case 21:
-this.$ = 'Major6';
-break;
-case 22:
-this.$ = 'PowerChord';
-break;
-case 23:
-this.$ = 'Sus2';
-break;
-case 24:
-this.$ = 'Sus4';
+ this.$ = $$[$0-3] 
 break;
 }
 },
-table: [{3:1,4:2,6:3,12:[1,4]},{1:[3]},{5:[1,5]},o($V0,[2,26],{7:6,13:7,14:[1,8],15:[1,9],16:[1,10],17:[1,11]}),o([5,14,15,16,17,19,20,21,22,23,24,25,26,27,28,30,31,32,33,34,36,37,39],[2,3]),{1:[2,1]},o($V1,[2,28],{8:12,18:13,19:[1,14],20:[1,15],21:[1,16],22:[1,17],23:[1,18],24:[1,19],25:[1,20],26:[1,21],27:[1,22],28:[1,23]}),o($V0,[2,27]),o($V0,[2,4]),o($V0,[2,5]),o($V0,[2,6]),o($V0,[2,7]),o($V2,[2,30],{9:24,29:25,30:[1,26],31:[1,27],32:[1,28],33:[1,29],34:[1,30]}),o($V1,[2,29]),o($V1,[2,8]),o($V1,[2,9]),o($V1,[2,10]),o($V1,[2,11]),o($V1,[2,12]),o($V1,[2,13]),o($V1,[2,14]),o($V1,[2,15]),o($V1,[2,16]),o($V1,[2,17]),o($V3,[2,32],{10:31,35:32,36:[1,33],37:[1,34]}),o($V2,[2,31]),o($V2,[2,18]),o($V2,[2,19]),o($V2,[2,20]),o($V2,[2,21]),o($V2,[2,22]),{5:[2,34],11:35,38:36,39:[1,37]},o($V3,[2,33]),o($V3,[2,23]),o($V3,[2,24]),{5:[2,2]},{5:[2,35]},{12:[1,38]},{5:[2,25]}],
-defaultActions: {5:[2,1],35:[2,2],36:[2,35],38:[2,25]},
+table: [o($V0,[2,14],{3:1,4:2,6:3,9:4,10:[1,5]}),{1:[3]},{5:[1,6]},o($V1,[2,16],{7:7,15:[1,8]}),o($V0,[2,15]),{11:[1,9]},{1:[2,1]},{5:[2,18],8:10,13:11,14:[1,12]},o($V1,[2,17]),{12:13,16:14,17:$V2},{5:[2,2]},{5:[2,19]},{11:[1,16]},o($V1,[2,3],{15:$V3}),o($V0,[2,7]),{18:[1,18]},{12:19,16:14,17:$V2},o($V0,[2,6],{16:20,17:$V2}),{19:21,22:22,23:$V4,24:$V5,25:$V6},{5:[2,4],15:$V3},o($V0,[2,5]),{20:[1,26],21:[1,27]},o($V7,[2,10]),o($V7,[2,11]),o($V7,[2,12]),o($V7,[2,13]),o($V0,[2,8]),{22:28,23:$V4,24:$V5,25:$V6},o($V7,[2,9])],
+defaultActions: {6:[2,1],10:[2,2],11:[2,19]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -642,60 +581,36 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 12
+case 1:return 10
 break;
 case 2:return 14
 break;
-case 3:return 15
+case 3:return 23
 break;
-case 4:return 16
+case 4:return 17
 break;
-case 5:return 17
+case 5:return 24
 break;
-case 6:return 19
+case 6:return 25
 break;
-case 7:return 20
+case 7:return 18
 break;
-case 8:return 21
+case 8:return 20
 break;
-case 9:return 22
+case 9:return 21
 break;
-case 10:return 23
+case 10:return 15
 break;
-case 11:return 24
+case 11:return 11
 break;
-case 12:return 25
+case 12:return 5
 break;
-case 13:return 26
-break;
-case 14:return 27
-break;
-case 15:return 28
-break;
-case 16:return 30
-break;
-case 17:return 31
-break;
-case 18:return 32
-break;
-case 19:return 33
-break;
-case 20:return 34
-break;
-case 21:return 36
-break;
-case 22:return 37
-break;
-case 23:return 39
-break;
-case 24:return 5
-break;
-case 25:return 'INVALID'
+case 13:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:[A-G]b?#?)/,/^(?:(major|maj|M))/,/^(?:(minor|min|m))/,/^(?:(aug|augmented|\+))/,/^(?:(dim|diminished))/,/^(?:(Major|maj7|Maj7|M7|\+7))/,/^(?:(Minor|m7|Min7|min7|minor7))/,/^(?:(Major|7|dom7|dominant7))/,/^(?:(Diminished|dim7|diminished7))/,/^(?:(Major|maj9|M9|9))/,/^(?:(Major|maj11|M11|11))/,/^(?:(Major|maj13|M13|13))/,/^(?:(Major|75|7\(5\)))/,/^(?:(Major|maj75|maj7\(5\)))/,/^(?:(Minor|min9|m9|minor9))/,/^(?:(add9|2))/,/^(?:(add11|4))/,/^(?:(6(?=9)))/,/^(?:(6|maj6|major6|M6))/,/^(?:5\b)/,/^(?:(sus2|suspended2))/,/^(?:(sus4|suspended|sus))/,/^(?:\/)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|TARGET))/,/^(?:(DrawCard|SetAttribute))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13],"inclusive":true}}
 });
 return lexer;
 })();

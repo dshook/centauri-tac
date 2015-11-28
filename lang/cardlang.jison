@@ -58,7 +58,7 @@ c
 
 
 playaction
-  : play '=' actionlist -> 'Play'
+  : play '=' actionlist -> $3
   ;
 
 deathaction
@@ -72,7 +72,7 @@ actionlist
   ;
 
 actionargs
-  : action'('arguments')'
+  : action'('arguments')' {{ $$ = $1 }}
   ;
 
 arguments
@@ -81,7 +81,7 @@ arguments
   ;
 
 argument_item
-  : target
-  | attribute
-  | number
+  : target -> $1
+  | attribute -> $1
+  | number -> $1
   ;
