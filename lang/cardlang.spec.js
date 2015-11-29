@@ -26,6 +26,6 @@ test('basic play event', t => {
     }
   ];
 
-  t.strictEqual(d, expected);
+  t.deepEqual(d, expected);
 
 });
