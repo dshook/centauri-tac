@@ -62,22 +62,30 @@ playaction
   ;
 
 deathaction
-  : death '=' actionlist -> 'Death'
+  : death '=' actionlist -> $3
   ;
 
 actionlist
   : actionlist ';' actionargs
+     { $$ = $actionlist; $$.unshift($actionargs); }
   | actionlist ';'
+     { $$ = $actionlist; }
   | actionargs
+     { $$ = [$actionargs]; }
   ;
 
 actionargs
-  : action'('arguments')' {{ $$ = $1 }}
+  : action'('arguments')' 
+  {{ $$ = 
+    { action: $1, args: $3 }
+  }}
   ;
 
 arguments
-  : arguments',' argument_item
-  | argument_item
+  : arguments',' argument_item 
+     { $$ = $arguments; $$.unshift($argument_item); }
+  | argument_item 
+     { $$ = [$argument_item]; }
   ;
 
 argument_item

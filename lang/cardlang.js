@@ -94,14 +94,22 @@ case 2:
         };
       
 break;
-case 3: case 11: case 12: case 13:
+case 3: case 4: case 11: case 12: case 13:
 this.$ = $$[$0];
 break;
-case 4:
-this.$ = 'Death';
+case 5: case 9:
+ this.$ = $$[$0-2]; this.$.unshift($$[$0]); 
+break;
+case 6:
+ this.$ = $$[$0-1]; 
+break;
+case 7: case 10:
+ this.$ = [$$[$0]]; 
 break;
 case 8:
- this.$ = $$[$0-3] 
+ this.$ = 
+    { action: $$[$0-3], args: $$[$0-1] }
+  
 break;
 }
 },
