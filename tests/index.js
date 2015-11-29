@@ -13,3 +13,5 @@ global.Promise = require('bluebird');
 require('../lib/emitter-binder/EmitterBinder.spec.js');
 require('../lib/emitter-binder/AggregateBinder.spec.js');
 require('../lib/action-queue/ActionQueue.spec.js');
+
+require('../lang/cardlang.spec.js');
