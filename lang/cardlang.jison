@@ -47,8 +47,8 @@ events
   ;
 
 c
-  : pEvent c
-    { $$ = $c; $$.unshift($pEvent); }
+  : c pEvent 
+    { $$ = $c; $$.push($pEvent); }
   | pEvent
     { $$ = [$pEvent]; }
   ;
@@ -61,8 +61,8 @@ pEvent
   ;
 
 actionlist
-  : actionargs actionlist
-     { $$ = $actionlist; $$.unshift($actionargs); }
+  : actionlist actionargs
+     { $$ = $actionlist; $$.push($actionargs); }
   | actionargs
      { $$ = [$actionargs]; }
   ;
@@ -75,8 +75,8 @@ actionargs
   ;
 
 arguments
-  : argument_item ',' arguments 
-     { $$ = $arguments; $$.unshift($argument_item); }
+  : arguments ',' argument_item 
+     { $$ = $arguments; $$.push($argument_item); }
   | argument_item 
      { $$ = [$argument_item]; }
   ;
