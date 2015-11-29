@@ -72,12 +72,12 @@
   }
 */
 var parser = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14,15],$V1=[5,14],$V2=[1,15],$V3=[1,17],$V4=[1,23],$V5=[1,24],$V6=[1,25],$V7=[20,21];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,4],$V1=[1,10],$V2=[1,16],$V3=[1,17],$V4=[1,18],$V5=[15,18];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"c_option2":8,"playaction":9,"play":10,"=":11,"actionlist":12,"deathaction":13,"death":14,";":15,"actionargs":16,"action":17,"(":18,"arguments":19,")":20,",":21,"argument_item":22,"target":23,"attribute":24,"number":25,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",10:"play",11:"=",14:"death",15:";",17:"action",18:"(",20:")",21:",",23:"target",24:"attribute",25:"number"},
-productions_: [0,[3,2],[4,3],[9,3],[13,3],[12,3],[12,2],[12,1],[16,4],[19,3],[19,1],[22,1],[22,1],[22,1],[6,0],[6,1],[7,0],[7,1],[8,0],[8,1]],
+symbols_: {"error":2,"events":3,"c":4,"EOF":5,"pEvent":6,"event":7,"{":8,"actionlist":9,"}":10,"actionargs":11,"action":12,"(":13,"arguments":14,")":15,";":16,"argument_item":17,",":18,"target":19,"attribute":20,"number":21,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",7:"event",8:"{",10:"}",12:"action",13:"(",15:")",16:";",18:",",19:"target",20:"attribute",21:"number"},
+productions_: [0,[3,2],[4,2],[4,1],[6,4],[9,2],[9,1],[11,5],[14,3],[14,1],[17,1],[17,1],[17,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -86,35 +86,32 @@ switch (yystate) {
 case 1:
 return $$[$0-1];
 break;
-case 2:
- this.$ =
-        {
-          play: $$[$0-2],
-          deathaction: $$[$0]
-        };
-      
+case 2: case 5:
+ this.$ = $$[$0]; this.$.unshift($$[$0-1]); 
 break;
-case 3: case 4: case 11: case 12: case 13:
-this.$ = $$[$0];
-break;
-case 5: case 9:
- this.$ = $$[$0-2]; this.$.unshift($$[$0]); 
-break;
-case 6:
- this.$ = $$[$0-1]; 
-break;
-case 7: case 10:
+case 3: case 6: case 9:
  this.$ = [$$[$0]]; 
 break;
-case 8:
+case 4:
  this.$ = 
-    { action: $$[$0-3], args: $$[$0-1] }
+      { event: $$[$0-3], actions: $$[$0-1] }
+    
+break;
+case 7:
+ this.$ = 
+    { action: $$[$0-4], args: $$[$0-2] }
   
+break;
+case 8:
+ this.$ = $$[$0]; this.$.unshift($$[$0-2]); 
+break;
+case 10: case 11: case 12:
+this.$ = $$[$0];
 break;
 }
 },
-table: [o($V0,[2,14],{3:1,4:2,6:3,9:4,10:[1,5]}),{1:[3]},{5:[1,6]},o($V1,[2,16],{7:7,15:[1,8]}),o($V0,[2,15]),{11:[1,9]},{1:[2,1]},{5:[2,18],8:10,13:11,14:[1,12]},o($V1,[2,17]),{12:13,16:14,17:$V2},{5:[2,2]},{5:[2,19]},{11:[1,16]},o($V1,[2,3],{15:$V3}),o($V0,[2,7]),{18:[1,18]},{12:19,16:14,17:$V2},o($V0,[2,6],{16:20,17:$V2}),{19:21,22:22,23:$V4,24:$V5,25:$V6},{5:[2,4],15:$V3},o($V0,[2,5]),{20:[1,26],21:[1,27]},o($V7,[2,10]),o($V7,[2,11]),o($V7,[2,12]),o($V7,[2,13]),o($V0,[2,8]),{22:28,23:$V4,24:$V5,25:$V6},o($V7,[2,9])],
-defaultActions: {6:[2,1],10:[2,2],11:[2,19]},
+table: [{3:1,4:2,6:3,7:$V0},{1:[3]},{5:[1,5]},{4:6,5:[2,3],6:3,7:$V0},{8:[1,7]},{1:[2,1]},{5:[2,2]},{9:8,11:9,12:$V1},{10:[1,11]},{9:12,10:[2,6],11:9,12:$V1},{13:[1,13]},o([5,7],[2,4]),{10:[2,5]},{14:14,17:15,19:$V2,20:$V3,21:$V4},{15:[1,19]},{15:[2,9],18:[1,20]},o($V5,[2,10]),o($V5,[2,11]),o($V5,[2,12]),{16:[1,21]},{14:22,17:15,19:$V2,20:$V3,21:$V4},o([10,12],[2,7]),{15:[2,8]}],
+defaultActions: {5:[2,1],6:[2,2],12:[2,5],22:[2,8]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -589,36 +586,38 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 10
+case 1:return 7
 break;
-case 2:return 14
+case 2:return 19
 break;
-case 3:return 23
+case 3:return 12
 break;
-case 4:return 17
+case 4:return 20
 break;
-case 5:return 24
+case 5:return 21
 break;
-case 6:return 25
+case 6:return 13
 break;
-case 7:return 18
+case 7:return 15
 break;
-case 8:return 20
+case 8:return 18
 break;
-case 9:return 21
+case 9:return 16
 break;
-case 10:return 15
+case 10:return 8
 break;
-case 11:return 11
+case 11:return 10
 break;
-case 12:return 5
+case 12:return '='
 break;
-case 13:return 'INVALID'
+case 13:return 5
+break;
+case 14:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|TARGET))/,/^(?:(DrawCard|SetAttribute))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play|death))/,/^(?:(PLAYER|TARGET))/,/^(?:(DrawCard|SetAttribute))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"inclusive":true}}
 });
 return lexer;
 })();

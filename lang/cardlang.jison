@@ -47,7 +47,7 @@ events
   ;
 
 c
-  : c pEvent
+  : pEvent c
     { $$ = $c; $$.unshift($pEvent); }
   | pEvent
     { $$ = [$pEvent]; }
@@ -61,23 +61,21 @@ pEvent
   ;
 
 actionlist
-  : actionlist ';' actionargs
+  : actionargs actionlist
      { $$ = $actionlist; $$.unshift($actionargs); }
-  | actionlist ';'
-     { $$ = $actionlist; }
   | actionargs
      { $$ = [$actionargs]; }
   ;
 
 actionargs
-  : action'('arguments')' 
+  : action'('arguments')'';' 
   {{ $$ = 
     { action: $1, args: $3 }
   }}
   ;
 
 arguments
-  : arguments',' argument_item 
+  : argument_item ',' arguments 
      { $$ = $arguments; $$.unshift($argument_item); }
   | argument_item 
      { $$ = [$argument_item]; }
