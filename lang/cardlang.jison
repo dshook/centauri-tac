@@ -8,8 +8,7 @@
 \s+                         /* skip whitespace */
 
 //root events
-(play)                    return 'play'
-(death)                   return 'death'
+(play|death)                    return 'event'
 
 // targets
 (PLAYER|TARGET)    return 'target'
@@ -28,6 +27,8 @@
 ')'    return ')'
 ','    return ','
 ';'    return ';'
+'{'    return '{'
+'}'    return '}'
 '='    return '='
 
 <<EOF>>               return 'EOF'
@@ -46,23 +47,17 @@ events
   ;
 
 c
-  : playaction? ';'? deathaction?
-      {{ $$ =
-        {
-          play: $1,
-          deathaction: $3
-        };
-      }}
+  : c pEvent
+    { $$ = $c; $$.unshift($pEvent); }
+  | pEvent
+    { $$ = [$pEvent]; }
   ;
 
-
-
-playaction
-  : play '=' actionlist -> $3
-  ;
-
-deathaction
-  : death '=' actionlist -> $3
+pEvent
+  : event'{'actionlist'}'
+    {{ $$ = 
+      { event: $1, actions: $3 }
+    }}
   ;
 
 actionlist
