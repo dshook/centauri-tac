@@ -40,7 +40,7 @@ export default class ActivateCardProcessor
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
 
     //placeholder
-    if(cardPlayed.events && cardPlayed.events.play === 'drawCard'){
+    if(cardPlayed.events && cardPlayed.events[0].event == 'play' && cardPlayed.events[0].actions[0].action === 'DrawCard'){
       queue.push(new DrawCard(action.playerId));
     }
 

@@ -7,7 +7,5 @@
 	"health": 2,
 	"movement": 2,
 	"tags": ["Minion"],
-	"events":{
-		"play": "drawCard"
-	}
+	"events": "play{ DrawCard(PLAYER); }"
 }

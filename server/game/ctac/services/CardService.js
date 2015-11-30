@@ -3,6 +3,7 @@ import CardDirectory from '../models/CardDirectory.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
+import CardLang from '../../../../lang/cardlang.js';
 import requireDir from 'require-dir';
 
 /**
@@ -15,9 +16,16 @@ export default class CardService
   {
     var cardRequires = requireDir('../../../../cards');
     var cardDirectory = new CardDirectory();
+    let parser = CardLang.parser;
 
     for(let cardFileName in cardRequires){
       let card = cardRequires[cardFileName];
+      if(card.events){
+        let cardEvents = parser.parse(card.events);
+        card.events = cardEvents;
+      }else{
+        card.events = null;
+      }
       cardDirectory.add(card);
     }
     this.log.info('Registered cards %j', cardDirectory.directory);
