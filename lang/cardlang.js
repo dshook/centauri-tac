@@ -72,12 +72,12 @@
   }
 */
 var cardlang = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14],$V1=[1,14],$V2=[12,16],$V3=[1,22],$V4=[1,23],$V5=[1,24],$V6=[19,21];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14],$V1=[1,14],$V2=[12,16],$V3=[1,24],$V4=[1,22],$V5=[1,23],$V6=[19,23];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"pPlay":8,"play":9,"{":10,"actionlist":11,"}":12,"pDeath":13,"death":14,"actionargs":15,"action":16,"(":17,"arguments":18,")":19,";":20,",":21,"argument_item":22,"target":23,"attribute":24,"number":25,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",9:"play",10:"{",12:"}",14:"death",16:"action",17:"(",19:")",20:";",21:",",23:"target",24:"attribute",25:"number"},
-productions_: [0,[3,2],[4,2],[8,4],[13,4],[11,2],[11,1],[15,5],[18,3],[18,1],[22,1],[22,1],[22,1],[6,0],[6,1],[7,0],[7,1]],
+symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"pPlay":8,"play":9,"{":10,"actionlist":11,"}":12,"pDeath":13,"death":14,"actionargs":15,"action":16,"(":17,"arguments":18,")":19,";":20,"*":21,"number":22,",":23,"argument_item":24,"target":25,"attribute":26,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",9:"play",10:"{",12:"}",14:"death",16:"action",17:"(",19:")",20:";",21:"*",22:"number",23:",",25:"target",26:"attribute"},
+productions_: [0,[3,2],[4,2],[8,4],[13,4],[11,2],[11,1],[15,5],[15,7],[18,3],[18,1],[24,1],[24,1],[24,1],[6,0],[6,1],[7,0],[7,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -99,7 +99,7 @@ break;
 case 5:
  this.$ = $$[$0-1]; this.$.push($$[$0]); 
 break;
-case 6: case 9:
+case 6: case 10:
  this.$ = [$$[$0]]; 
 break;
 case 7:
@@ -108,15 +108,20 @@ case 7:
   
 break;
 case 8:
+ this.$ = 
+    { action: $$[$0-6], args: $$[$0-4], times: $$[$0-1] }
+  
+break;
+case 9:
  this.$ = $$[$0-2]; this.$.push($$[$0]); 
 break;
-case 10: case 11: case 12:
+case 11: case 12: case 13:
 this.$ = $$[$0];
 break;
 }
 },
-table: [o($V0,[2,13],{3:1,4:2,6:3,8:4,9:[1,5]}),{1:[3]},{5:[1,6]},{5:[2,15],7:7,13:8,14:[1,9]},o($V0,[2,14]),{10:[1,10]},{1:[2,1]},{5:[2,2]},{5:[2,16]},{10:[1,11]},{11:12,15:13,16:$V1},{11:15,15:13,16:$V1},{12:[1,16],15:17,16:$V1},o($V2,[2,6]),{17:[1,18]},{12:[1,19],15:17,16:$V1},o($V0,[2,3]),o($V2,[2,5]),{18:20,22:21,23:$V3,24:$V4,25:$V5},{5:[2,4]},{19:[1,25],21:[1,26]},o($V6,[2,9]),o($V6,[2,10]),o($V6,[2,11]),o($V6,[2,12]),{20:[1,27]},{22:28,23:$V3,24:$V4,25:$V5},o($V2,[2,7]),o($V6,[2,8])],
-defaultActions: {6:[2,1],7:[2,2],8:[2,16],19:[2,4]},
+table: [o($V0,[2,14],{3:1,4:2,6:3,8:4,9:[1,5]}),{1:[3]},{5:[1,6]},{5:[2,16],7:7,13:8,14:[1,9]},o($V0,[2,15]),{10:[1,10]},{1:[2,1]},{5:[2,2]},{5:[2,17]},{10:[1,11]},{11:12,15:13,16:$V1},{11:15,15:13,16:$V1},{12:[1,16],15:17,16:$V1},o($V2,[2,6]),{17:[1,18]},{12:[1,19],15:17,16:$V1},o($V0,[2,3]),o($V2,[2,5]),{18:20,22:$V3,24:21,25:$V4,26:$V5},{5:[2,4]},{19:[1,25],23:[1,26]},o($V6,[2,10]),o($V6,[2,11]),o($V6,[2,12]),o($V6,[2,13]),{20:[1,27],21:[1,28]},{22:$V3,24:29,25:$V4,26:$V5},o($V2,[2,7]),{22:[1,30]},o($V6,[2,9]),{20:[1,31]},o($V2,[2,8])],
+defaultActions: {6:[2,1],7:[2,2],8:[2,17],19:[2,4]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -601,19 +606,19 @@ case 1:return 9
 break;
 case 2:return 14
 break;
-case 3:return 23
+case 3:return 25
 break;
 case 4:return 16
 break;
-case 5:return 24
+case 5:return 26
 break;
-case 6:return 25
+case 6:return 22
 break;
 case 7:return 17
 break;
 case 8:return 19
 break;
-case 9:return 21
+case 9:return 23
 break;
 case 10:return 20
 break;
@@ -621,16 +626,18 @@ case 11:return 10
 break;
 case 12:return 12
 break;
-case 13:return '='
+case 13:return 21
 break;
-case 14:return 5
+case 14:return '='
 break;
-case 15:return 'INVALID'
+case 15:return 5
+break;
+case 16:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|TARGET))/,/^(?:(DrawCard|SetAttribute))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|TARGET))/,/^(?:(DrawCard|SetAttribute))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"inclusive":true}}
 });
 return lexer;
 })();

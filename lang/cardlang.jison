@@ -36,6 +36,7 @@
 ';'    return ';'
 '{'    return '{'
 '}'    return '}'
+'*'    return '*'
 '='    return '='
 
 <<EOF>>               return 'EOF'
@@ -84,6 +85,10 @@ actionargs
   : action'('arguments')'';' 
   {{ $$ = 
     { action: $1, args: $3 }
+  }}
+  | action '('arguments')' '*' number';'
+  {{ $$ = 
+    { action: $1, args: $3, times: $6 }
   }}
   ;
 

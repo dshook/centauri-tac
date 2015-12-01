@@ -96,3 +96,28 @@ test('Two Events', t => {
 
   t.deepEqual(d, expected);
 });
+
+test('Repeating action', t => {
+  t.plan(1);
+
+  let parser = lang.parser;
+  let input = `
+  play{ 
+    DrawCard(PLAYER) * 2; 
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      action: 'DrawCard',
+      args: [
+        'PLAYER'
+      ],
+      times: '2'
+    }
+  ];
+
+  t.deepEqual(d.play, expectedPlay);
+});
