@@ -12,21 +12,16 @@ test('basic play event', t => {
 
   let d = parser.parse(input);
 
-  let expected = [
+  let expectedPlay = [
     {
-      event: 'play',
-      actions: [
-        {
-          action: 'DrawCard',
-          args: [
-            'PLAYER'
-          ]
-        }
+      action: 'DrawCard',
+      args: [
+        'PLAYER'
       ]
     }
   ];
 
-  t.deepEqual(d, expected);
+  t.deepEqual(d.play, expectedPlay);
 });
 
 test('Two actions on event', t => {
@@ -42,29 +37,24 @@ test('Two actions on event', t => {
 
   let d = parser.parse(input);
 
-  let expected = [
+  let expectedPlay = [
     {
-      event: 'play',
-      actions: [
-        {
-          action: 'DrawCard',
-          args: [
-            'PLAYER'
-          ]
-        },
-        {
-          action: 'SetAttribute',
-          args: [
-            'TARGET',
-            'current_health',
-            '3'
-          ]
-        }
+      action: 'DrawCard',
+      args: [
+        'PLAYER'
+      ]
+    },
+    {
+      action: 'SetAttribute',
+      args: [
+        'TARGET',
+        'current_health',
+        '3'
       ]
     }
   ];
 
-  t.deepEqual(d, expected);
+  t.deepEqual(d.play, expectedPlay);
 });
 
 test('Two Events', t => {
@@ -82,33 +72,27 @@ test('Two Events', t => {
 
   let d = parser.parse(input);
 
-  let expected = [
-    {
-      event: 'play',
-      actions: [
-        {
-          action: 'SetAttribute',
-          args: [
-            'TARGET',
-            'current_health',
-            '3'
-          ]
-        }
-      ]
-    },
-    {
-    event: 'death',
-    actions: [
-        {
-          action: 'DrawCard',
-          args: [
-            'PLAYER',
-            '3'
-          ]
-        }
-      ]
-    }
-  ];
+  let expected = {
+    play: [
+      {
+        action: 'SetAttribute',
+        args: [
+          'TARGET',
+          'current_health',
+          '3'
+        ]
+      }
+    ],
+    death: [
+      {
+        action: 'DrawCard',
+        args: [
+          'PLAYER',
+          '3'
+        ]
+      }
+    ]
+  };
 
   t.deepEqual(d, expected);
 });

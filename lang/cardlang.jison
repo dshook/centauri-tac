@@ -5,22 +5,29 @@
 %lex
 %%
 
-\s+                         /* skip whitespace */
+\s+ /* skip whitespace */
 
 //root events
-(play|death)                    return 'event'
+(play) 
+  return 'play'
+(death)
+  return 'death'
 
 // targets
-(PLAYER|TARGET)    return 'target'
+(PLAYER|TARGET)
+  return 'target'
 
 // actions
-(DrawCard|SetAttribute)    return 'action'
+(DrawCard|SetAttribute)
+  return 'action'
 
 //attributes
-(current_health)    return 'attribute'
+(current_health)
+  return 'attribute'
 
 //numbers
-[0-9]    return 'number'
+[0-9]
+  return 'number'
 
 //syntax
 '('    return '('
@@ -44,22 +51,27 @@
 
 events
   : c EOF {return $1;}
-  ;
+;
 
 c
-  : c pEvent 
-    { $$ = $c; $$.push($pEvent); }
-  | pEvent
-    { $$ = [$pEvent]; }
-  ;
-
-pEvent
-  : event'{'actionlist'}'
-    {{ $$ = 
-      { event: $1, actions: $3 }
+  : pPlay? pDeath?
+    {{ $$ = {
+         play: $1,
+         death: $2
+      }; 
     }}
   ;
 
+/* events */
+pPlay
+  : play'{'actionlist'}' -> $3
+;
+
+pDeath
+  : death'{'actionlist'}' -> $3
+;
+
+/* actionlist is all the actions for each event */
 actionlist
   : actionlist actionargs
      { $$ = $actionlist; $$.push($actionargs); }
@@ -67,6 +79,7 @@ actionlist
      { $$ = [$actionargs]; }
   ;
 
+/* actionargs is the basic syntax for all the actions with function like arguments */
 actionargs
   : action'('arguments')'';' 
   {{ $$ = 
