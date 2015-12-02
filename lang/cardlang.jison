@@ -14,7 +14,7 @@
   return 'death'
 
 // targets
-(PLAYER|TARGET)
+(PLAYER|OPPONENT|TARGET)
   return 'target'
 
 // actions
