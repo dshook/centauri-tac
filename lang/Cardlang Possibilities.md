@@ -4,6 +4,7 @@
 *play
 *death
 *unit takes damage
+*unit attacks
 *turn end
 *card drawn
 *spell played

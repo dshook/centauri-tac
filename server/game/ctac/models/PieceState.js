@@ -8,4 +8,7 @@ export default class PieceState
     this.pieces = [];
   }
 
+  piece(id){
+    return this.pieces.filter(x => x.id == id)[0];
+  }
 }

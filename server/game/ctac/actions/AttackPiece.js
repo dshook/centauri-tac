@@ -8,8 +8,5 @@ export default class AttackPiece
     this.id = null;
     this.attackingPieceId = attackingPieceId;
     this.targetPieceId = targetPieceId;
-
-    this.attackerNewHp = null;
-    this.targetNewHp = null;
   }
 }

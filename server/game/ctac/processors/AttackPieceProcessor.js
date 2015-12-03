@@ -1,9 +1,10 @@
 import GamePiece from '../models/GamePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
+import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
 
 /**
- * Handle the PassTurn action
+ * Handle the units attacking each other
  */
 @loglevel
 export default class AttackPieceProcessor
@@ -23,8 +24,8 @@ export default class AttackPieceProcessor
     }
 
     //TODO: validate pieces are in range
-    var attacker = this.pieceState.pieces.filter(x => x.id == action.attackingPieceId)[0];
-    var target = this.pieceState.pieces.filter(x => x.id == action.targetPieceId)[0];
+    var attacker = this.pieceState.piece(action.attackingPieceId);
+    var target = this.pieceState.piece(action.targetPieceId);
 
     if(!attacker || !target ){
       this.log.info('Attacker or target not found in attack %j', this.pieceState);
@@ -32,11 +33,8 @@ export default class AttackPieceProcessor
       return;
     }
 
-    action.attackerNewHp = attacker.health - target.attack;
-    action.targetNewHp = target.health - attacker.attack;
-
-    attacker.health = action.attackerNewHp;
-    target.health = action.targetNewHp;
+    queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
+    queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack));
 
     this.log.info('piece %s (%s/%s) attacked %s (%s/%s)',
       attacker.id, attacker.attack, attacker.health,

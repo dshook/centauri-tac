@@ -13,6 +13,7 @@ export default class CardEvaluator{
   }
 
   evaluateAction(event, card){
+    if(!card.events || !card.events[event]) return;
     let evalActions = card.events[event];
 
     for (let i = 0; i < evalActions.length; i++) {

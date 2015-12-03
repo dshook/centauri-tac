@@ -15,6 +15,9 @@ namespace ctac
         public PieceAttackedSignal pieceAttacked { get; set; }
 
         [Inject]
+        public PieceHealthChangedSignal pieceHpChanged { get; set; }
+
+        [Inject]
         public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
@@ -30,6 +33,7 @@ namespace ctac
         {
             pieceMoved.AddListener(onMove);
             pieceAttacked.AddListener(onAttacked);
+            pieceHpChanged.AddListener(onHealthChange);
             pieceAttackedAnim.AddListener(onAttackFinished);
         }
 
@@ -37,6 +41,7 @@ namespace ctac
         {
             pieceMoved.RemoveListener(onMove);
             pieceAttacked.RemoveListener(onAttacked);
+            pieceHpChanged.RemoveListener(onHealthChange);
             pieceAttackedAnim.RemoveListener(onAttackFinished);
         }
 
@@ -56,19 +61,14 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
-            int change = 0;
-            if (attackPiece.attackingPieceId == view.piece.id)
-            {
-                change = attackPiece.attackerNewHp - view.piece.health;
-                view.piece.health = attackPiece.attackerNewHp;
-            }
-            else if (attackPiece.targetPieceId == view.piece.id)
-            {
-                change = attackPiece.targetNewHp - view.piece.health;
-                view.piece.health = attackPiece.targetNewHp;
-            }
+            //TODO: Add moving animation
+        }
 
-            if (attackPiece.attackingPieceId == view.piece.id || attackPiece.targetPieceId == view.piece.id)
+        public void onHealthChange(PieceHealthChangeModel hpChange)
+        {
+            view.piece.health = hpChange.newCurrentHealth;
+
+            if (hpChange.pieceId == view.piece.id)
             {
                 animationQueue.Add(
                     new PieceView.UpdateTextAnim()
@@ -77,13 +77,12 @@ namespace ctac
                         textGO = view.healthGO,
                         current = view.piece.health,
                         original = view.piece.baseHealth,
-                        change = change,
+                        change = hpChange.change,
                         attackFinished = pieceAttackedAnim,
                         piece = view.piece
                     }
                 );
             }
-
         }
 
         private void onAttackFinished(PieceModel pieceModel)
