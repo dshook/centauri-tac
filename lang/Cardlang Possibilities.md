@@ -8,6 +8,7 @@
 * turn end
 * card drawn
 * spell played
+* unit ability
 
 ##Selectors
 * Need set operators for Union, intersection, and compliment

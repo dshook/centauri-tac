@@ -1,0 +1,11 @@
+{
+	"id": 8,
+	"name": "Zombie",
+	"description": "",
+	"cost": 1,
+	"attack": 2,
+	"health": 1,
+	"movement": 2,
+	"tags": ["Minion"],
+	"events": ""
+}

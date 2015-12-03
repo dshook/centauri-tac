@@ -16,6 +16,7 @@
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
+    "dbreset": "db-migrate reset",
     "prestart": "npm run migrate && npm run build",
     "build-lang": "cd ./lang & node ../lib/jison/cli.js cardlang.jison"
   },
