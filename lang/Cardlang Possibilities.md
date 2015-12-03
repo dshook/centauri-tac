@@ -1,8 +1,8 @@
 #Cardlang Possibilities
 
 ##Event triggers
-*play
-*death
+*~~play~~
+*~~death~~
 *unit takes damage
 *unit attacks
 *turn end
@@ -40,6 +40,7 @@
 
 
 ##Actions
+*~~draw card~~
 *Shuffle into deck
 *Hit for damage
 *spawn minion
@@ -47,5 +48,5 @@
 *destroy target minion
 *copy minion (into hand or play)
 *give status effect (silence, shield)
-* aura effects
-*card cost modificatio*n
+*aura effects
+*card cost modification

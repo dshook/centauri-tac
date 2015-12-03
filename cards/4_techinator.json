@@ -1,10 +1,11 @@
 {
 	"id": 4,
 	"name": "Techinator",
-	"description": "",
+	"description": "<b>Death</b>: Draw a card",
 	"cost": 3,
 	"attack": 4,
 	"health": 3,
 	"movement": 3,
-	"tags": ["Minion"]
+	"tags": ["Minion"],
+	"events": "death{ DrawCard(PLAYER); }"
 }

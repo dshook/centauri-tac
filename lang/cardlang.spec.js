@@ -66,7 +66,7 @@ test('Two Events', t => {
     SetAttribute(TARGET, current_health, 3);
   }
   death{
-    DrawCard(PLAYER, 3);
+    DrawCard(PLAYER);
   }
   `;
 
@@ -87,8 +87,7 @@ test('Two Events', t => {
       {
         action: 'DrawCard',
         args: [
-          'PLAYER',
-          '3'
+          'PLAYER'
         ]
       }
     ]
