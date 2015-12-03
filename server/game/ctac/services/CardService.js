@@ -20,9 +20,13 @@ export default class CardService
 
     for(let cardFileName in cardRequires){
       let card = cardRequires[cardFileName];
-      if(card.events){
-        let cardEvents = parser.parse(card.events);
-        card.events = cardEvents;
+      if(card.eventcode){
+        try{
+          let cardEvents = parser.parse(card.eventcode);
+          card.events = cardEvents;
+        }catch(e){
+          this.log.info('Error parsing card text %s %s', card.events, e);
+        }
       }else{
         card.events = null;
       }
