@@ -1,7 +1,7 @@
 {
 	"id": 1,
 	"name": "Wombat",
-	"description": "Play: Draw a Card",
+	"description": "<b>Play</b>: Your opponent draws a card",
 	"cost": 1,
 	"attack": 1,
 	"health": 2,
