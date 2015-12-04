@@ -1,5 +1,6 @@
 ﻿using ctac.signals;
 using strange.extensions.mediation.impl;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace ctac {
         public GameObject healthGO;
         public TextMeshPro attackText;
         public TextMeshPro healthText;
+        public GameObject damageSplat;
+        public TextMeshPro damageSplatText;
 
         private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
@@ -24,6 +27,8 @@ namespace ctac {
             healthGO = piece.gameObject.transform.FindChild("Health").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
+            damageSplat = piece.gameObject.transform.FindChild("DamageSplat").gameObject;
+            damageSplatText = damageSplat.GetComponentInChildren<TextMeshPro>();
 
             spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
@@ -71,6 +76,25 @@ namespace ctac {
                     Complete = true;
                     finishedMoving.Dispatch(piece);
                 }
+            }
+        }
+
+        public class TakeDamageAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public GameObject damageSplat { get; set; }
+            public TextMeshPro text { get; set; }
+            public int damageTaken { get; set; }
+
+            public void Update()
+            {
+                text.text = Math.Abs(damageTaken).ToString();
+                iTweenExtensions.ScaleTo(damageSplat, Vector3.one, 0.5f, 0);
+                iTweenExtensions.ScaleTo(damageSplat, Vector3.zero, 0.8f, 1);
+                Complete = true;
             }
         }
 

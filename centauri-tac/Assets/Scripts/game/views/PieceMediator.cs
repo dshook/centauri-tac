@@ -66,10 +66,22 @@ namespace ctac
 
         public void onHealthChange(PieceHealthChangeModel hpChange)
         {
-            view.piece.health = hpChange.newCurrentHealth;
-
             if (hpChange.pieceId == view.piece.id)
             {
+                view.piece.health = hpChange.newCurrentHealth;
+
+                if (hpChange.change < 0)
+                {
+                    animationQueue.Add(
+                        new PieceView.TakeDamageAnim()
+                        {
+                            text = view.damageSplatText,
+                            damageSplat = view.damageSplat,
+                            damageTaken = hpChange.change
+                        }
+                    );
+                }
+
                 animationQueue.Add(
                     new PieceView.UpdateTextAnim()
                     {
