@@ -89,6 +89,11 @@ Run all tests
 $ npm test
 ```
 
+If card lang is updated run this to rebuild the parser:
+```
+$ npm run build-lang
+```
+
 ### Components
 
 A server is composed of one of more components that provide various
