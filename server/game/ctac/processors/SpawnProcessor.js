@@ -10,11 +10,12 @@ import _ from 'lodash';
 @loglevel
 export default class SpawnProcessor
 {
-  constructor(pieceState, players, cardDirectory)
+  constructor(pieceState, players, cardDirectory, cardEvaluator)
   {
     this.pieceState = pieceState;
     this.players = players;
     this.cardDirectory = cardDirectory;
+    this.cardEvaluator = cardEvaluator;
   }
 
   /**
@@ -43,6 +44,8 @@ export default class SpawnProcessor
     action.pieceId = newPiece.id;
 
     this.pieceState.pieces.push(newPiece);
+
+    this.cardEvaluator.evaluateAction('play', newPiece);
 
     queue.complete(action);
     this.log.info('spawned piece %s for player %s at %s',

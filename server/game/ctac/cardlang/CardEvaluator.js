@@ -6,13 +6,16 @@ import DrawCard from '../actions/DrawCard.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, turnState, selector){
+  constructor(queue, turnState, selector, cardDirectory){
     this.queue = queue;
     this.turnState = turnState;
     this.selector = selector;
+    this.cardDirectory = cardDirectory;
   }
 
-  evaluateAction(event, card){
+  evaluateAction(event, piece){
+    let card = this.cardDirectory.directory[piece.cardId];
+
     if(!card.events || !card.events[event]) return;
     let evalActions = card.events[event];
 
@@ -30,7 +33,7 @@ export default class CardEvaluator{
       for (var t = 0; t < times; t++) {
         switch(action.action){
           case 'DrawCard':
-            let playerSelector = this.selector.selectPlayer(action.args[0]);
+            let playerSelector = this.selector.selectPlayer(piece, action.args[0]);
             this.queue.push(new DrawCard(playerSelector));
             break;
           case 'SetAttribute':

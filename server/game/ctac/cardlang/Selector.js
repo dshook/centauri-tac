@@ -7,13 +7,13 @@ export default class Selector{
     this.players = players;
   }
 
-  selectPlayer(selector){
+  selectPlayer(piece, selector){
     switch(selector){
       case 'PLAYER':
-        return this.turnState.currentPlayerId;
+        return piece.playerId;
         break;
       case 'OPPONENT':
-        let opponents = this.players.filter(x => x.id !== this.turnState.currentPlayerId);
+        let opponents = this.players.filter(x => x.id !== piece.playerId);
         if(opponents.length > 0) 
           return opponents[0].id;
         break;

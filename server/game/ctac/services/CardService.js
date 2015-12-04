@@ -5,6 +5,8 @@ import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
 import CardLang from '../../../../lang/cardlang.js';
 import requireDir from 'require-dir';
+import Selector from '../cardlang/Selector.js';
+import CardEvaluator from '../cardlang/CardEvaluator.js';
 
 /**
  * Expose the cards and activate card processor
@@ -42,8 +44,12 @@ export default class CardService
     var decks = {};
     app.registerInstance('decks', decks);
 
+    app.registerInstance('selector', app.make(Selector));
+    app.registerInstance('cardEvaluator', app.make(CardEvaluator));
+
     queue.addProcessor(SpawnDeckProcessor);
     queue.addProcessor(ActivateCardProcessor);
     queue.addProcessor(CardDrawProcessor);
+
   }
 }

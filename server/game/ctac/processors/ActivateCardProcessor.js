@@ -12,11 +12,10 @@ import _ from 'lodash';
 @loglevel
 export default class ActivateCardProcessor
 {
-  constructor(playerResourceState, cardDirectory, cardEvaluator)
+  constructor(playerResourceState, cardDirectory)
   {
     this.playerResourceState = playerResourceState;
     this.cardDirectory = cardDirectory;
-    this.cardEvaluator = cardEvaluator;
   }
   /**
    * Proc
@@ -38,8 +37,6 @@ export default class ActivateCardProcessor
 
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
-
-    this.cardEvaluator.evaluateAction('play', cardPlayed);
 
     queue.complete(action);
     this.log.info('player %s played card %s at %s',

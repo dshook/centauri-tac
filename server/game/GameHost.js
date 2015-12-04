@@ -14,7 +14,6 @@ import SpawnService from './ctac/services/SpawnService.js';
 import MoveService from './ctac/services/MoveService.js';
 import AttackService from './ctac/services/AttackService.js';
 import CardService from './ctac/services/CardService.js';
-import CardEvalService from './ctac/services/CardEvalService.js';
 
 /**
  * Top-level entity for a running game
@@ -60,7 +59,6 @@ export default class GameHost extends EventEmitter
     // TODO: pull this out to configs
     app.service(ActionQueueService);
     app.service(TurnService);
-    app.service(CardEvalService);
     app.service(CardService);
     app.service(SpawnService);
     app.service(MoveService);

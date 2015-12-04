@@ -8,11 +8,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class HealthChangeProcessor
 {
-  constructor(pieceState, cardEvaluator, cardDirectory)
+  constructor(pieceState, cardEvaluator)
   {
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
-    this.cardDirectory = cardDirectory;
   }
 
   async handleAction(action, queue)
@@ -39,8 +38,7 @@ export default class HealthChangeProcessor
     piece.health = action.newCurrentHealth;
 
     if(piece.health <= 0){
-      let pieceCard = this.cardDirectory.directory[piece.cardId];
-      this.cardEvaluator.evaluateAction('death', pieceCard);
+      this.cardEvaluator.evaluateAction('death', piece);
       this.pieceState.remove(piece.id);
     }
 
