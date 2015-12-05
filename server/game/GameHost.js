@@ -9,10 +9,8 @@ import HostManager from '../game/HostManager.js';
 
 // TODO: in configs
 import ActionQueueService from './ctac/services/ActionQueueService.js';
-import TurnService from './ctac/services/TurnService.js';
-import SpawnService from './ctac/services/SpawnService.js';
-import MoveService from './ctac/services/MoveService.js';
-import AttackService from './ctac/services/AttackService.js';
+import GameDataService from './ctac/services/GameDataService.js';
+import ProcessorsService from './ctac/services/ProcessorsService.js';
 import CardService from './ctac/services/CardService.js';
 
 /**
@@ -58,11 +56,9 @@ export default class GameHost extends EventEmitter
 
     // TODO: pull this out to configs
     app.service(ActionQueueService);
-    app.service(TurnService);
+    app.service(GameDataService);
     app.service(CardService);
-    app.service(SpawnService);
-    app.service(MoveService);
-    app.service(AttackService);
+    app.service(ProcessorsService);
 
     await app.start();
 

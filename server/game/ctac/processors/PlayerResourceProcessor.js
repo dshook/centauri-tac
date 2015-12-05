@@ -24,6 +24,6 @@ export default class PlayerResourceProcessor
     action.newTotal = newTotal;
 
     queue.complete(action);
-    this.log.info('player %s used %s resources', action.playerId, action.amount);
+    this.log.info('player %s used %s resources', action.playerId, action.change);
   }
 }

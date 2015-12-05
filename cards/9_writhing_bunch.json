@@ -1,0 +1,11 @@
+{
+	"id": 9,
+	"name": "Writhing Bunch",
+	"description": "<b>Play</b>: Deal 2 damage randomly split between all other characters",
+	"cost": 3,
+	"attack": 3,
+	"health": 3,
+	"movement": 4,
+	"tags": ["Minion"],
+	"eventcode": "play{ Hit(RANDOM_CHARACTER, 1) * 2; }"
+}

@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import DrawCard from '../actions/DrawCard.js';
+import PieceHealthChange from '../actions/PieceHealthChange.js';
 
 /**
  * Evaluate the scripts on cards
@@ -16,6 +17,7 @@ export default class CardEvaluator{
   evaluateAction(event, piece){
     let card = this.cardDirectory.directory[piece.cardId];
 
+    this.log.info('Eval event %s piece %j: %j', event, piece, card.events);
     if(!card.events || !card.events[event]) return;
     let evalActions = card.events[event];
 
@@ -23,8 +25,7 @@ export default class CardEvaluator{
       let action = evalActions[i];
       let times = 1;
       if(action.times){
-        //eventually eval number objects
-        times = Number.parseInt(action.times);
+        times = action.times;
       }
 
       this.log.info('Evaluating action %s for card %s %s %s'
@@ -33,10 +34,15 @@ export default class CardEvaluator{
       for (var t = 0; t < times; t++) {
         switch(action.action){
           case 'DrawCard':
-            let playerSelector = this.selector.selectPlayer(piece, action.args[0]);
+            let playerSelector = this.selector.selectPlayer(piece.playerId, action.args[0]);
             this.queue.push(new DrawCard(playerSelector));
             break;
-          case 'SetAttribute':
+          case 'Hit':
+            let pieceSelected = this.selector.selectPiece(piece.playerId, action.args[0]);
+            this.log.info('Selected %j', pieceSelected);
+            if(pieceSelected != null){
+              this.queue.push(new PieceHealthChange(pieceSelected.id, -action.args[1]));
+            }
             break;
         }
       }
