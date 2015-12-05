@@ -43,7 +43,7 @@ namespace ctac
         {
             var currentResource = playerResources.resources[gameTurn.currentPlayerId];
             //TODO: un hardcode max
-            view.updateText(currentResource, 10);
+            view.updateText(currentResource, 20);
         }
 
     }
