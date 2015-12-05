@@ -49,7 +49,7 @@ test('Two actions on event', t => {
       args: [
         'TARGET',
         'current_health',
-        '3'
+        3
       ]
     }
   ];
@@ -79,7 +79,7 @@ test('Two Events', t => {
         args: [
           'TARGET',
           'current_health',
-          '3'
+          3
         ]
       }
     ],
@@ -114,7 +114,32 @@ test('Repeating action', t => {
       args: [
         'PLAYER'
       ],
-      times: '2'
+      times: 2
+    }
+  ];
+
+  t.deepEqual(d.play, expectedPlay);
+});
+
+test('Hit action', t => {
+  t.plan(1);
+
+  let parser = lang.parser;
+  let input = `
+  play{ 
+    Hit(RANDOM_CHARACTER, 2); 
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      action: 'Hit',
+      args: [
+        'RANDOM_CHARACTER',
+        2
+      ]
     }
   ];
 

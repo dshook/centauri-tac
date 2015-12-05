@@ -13,12 +13,16 @@
 (death)
   return 'death'
 
-// targets
-(PLAYER|OPPONENT|TARGET)
+// player targets
+(PLAYER|OPPONENT)
+  return 'target'
+
+// piece targets
+(TARGET|RANDOM_ENEMY_CHARACTER|RANDOM_CHARACTER)
   return 'target'
 
 // actions
-(DrawCard|SetAttribute)
+(DrawCard|SetAttribute|Hit)
   return 'action'
 
 //attributes
@@ -86,7 +90,7 @@ actionargs
   {{ $$ = 
     { action: $1, args: $3 }
   }}
-  | action '('arguments')' '*' number';'
+  | action '('arguments')' '*' pNumber';'
   {{ $$ = 
     { action: $1, args: $3, times: $6 }
   }}
@@ -102,5 +106,9 @@ arguments
 argument_item
   : target -> $1
   | attribute -> $1
-  | number -> $1
+  | pNumber -> $1
+  ;
+
+pNumber
+  : number -> parseInt($1)
   ;
