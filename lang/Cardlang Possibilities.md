@@ -31,7 +31,7 @@
 
 
 ##Randomness
-* ranom number in list
+* random number in list
 * random minion, possibly from class or by cost
 
 ##Conditions - check for AND and OR
@@ -43,7 +43,7 @@
 ##Actions
 * ~~draw card~~
 * Shuffle into deck
-* Hit for damage
+* ~~Hit for damage~~
 * spawn minion
 * add buff
 * destroy target minion

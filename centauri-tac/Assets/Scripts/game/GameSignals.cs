@@ -59,6 +59,9 @@ namespace ctac.signals
     public class PieceHealthChangedSignal : Signal<PieceHealthChangeModel> { }
 
     [Singleton]
+    public class PieceHoverSignal : Signal<PieceModel> { }
+
+    [Singleton]
     public class ServerQueueProcessStart : Signal<int> { }
     [Singleton]
     public class ServerQueueProcessEnd : Signal<int> { }

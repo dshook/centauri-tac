@@ -25,18 +25,10 @@ namespace ctac
         public MapModel map { get; set; }
 
         private CardModel draggedCard = null;
-
-        private string hoverName = "Hover Card";
-        private CardView hoverCardView = null;
-
         private CardView lastHoveredCard = null;
-
-        private Vector2 anchorPosition = new Vector2(0.5f, 0);
 
         public override void OnRegister()
         {
-            initHoverCard();
-
             view.clickSignal.AddListener(onClick);
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
@@ -50,36 +42,6 @@ namespace ctac
             view.hoverSignal.RemoveListener(onHover);
         }
 
-        private void initHoverCard()
-        {
-            //init the hover card that's hidden most of the time
-            var cardPrefab = Resources.Load("Card") as GameObject;
-            var cardCanvas = GameObject.Find("cardCanvas");
-
-            var hoverCardGO = GameObject.Instantiate(
-                cardPrefab,
-                new Vector3(10000,10000, 0),
-                Quaternion.identity
-            ) as GameObject;
-            hoverCardGO.transform.SetParent(cardCanvas.transform, false);
-            hoverCardGO.name = hoverName;
-
-            var hoverCardModel = new CardModel()
-            {
-                playerId = -1,
-                gameObject = hoverCardGO
-            };
-
-            hoverCardView = hoverCardGO.AddComponent<CardView>();
-            hoverCardView.card = hoverCardModel;
-
-            var rectTransform = hoverCardView.GetComponent<RectTransform>();
-            rectTransform.anchorMax = anchorPosition;
-            rectTransform.anchorMin = anchorPosition;
-            rectTransform.pivot = anchorPosition;
-
-            hoverCardGO.SetActive(false);
-        }
 
         private void onClick(GameObject clickedObject)
         {
@@ -113,50 +75,28 @@ namespace ctac
             }
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 305, -1);
-        private float hoverDelay = 0.5f;
-        private void onHover(GameObject hoveredObject, float timeElapsed)
+        private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
             {
                 if (hoveredObject.CompareTag("Card"))
                 {
                     var cardView = hoveredObject.GetComponent<CardView>();
-                    if (cardView != null 
-                        && cardView != lastHoveredCard 
-                        && cardView != hoverCardView
-                    )
+                    if (cardView != null && cardView != lastHoveredCard )
                     {
                         //break out and don't hover if it hasn't been added to the hand of cards yet
                         if (!cards.Cards.Contains(cardView.card))
                         {
                             return;
                         }
+                        lastHoveredCard = cardView;
                         cardHovered.Dispatch(cardView.card);
 
-                        if (timeElapsed > hoverDelay)
-                        {
-                            lastHoveredCard = cardView;
-
-                            //copy over props from hovered to hover
-                            lastHoveredCard.card.CopyProperties(hoverCardView.card);
-                            //but reset some key things
-                            hoverCardView.name = hoverName;
-                            hoverCardView.card.gameObject = hoverCardView.gameObject;
-
-                            var rectTransform = hoverCardView.GetComponent<RectTransform>();
-                            var hoveredCardRect = lastHoveredCard.GetComponent<RectTransform>();
-
-                            rectTransform.anchoredPosition3D = hoveredCardRect.anchoredPosition3D + HoverOffset;
-
-                            hoverCardView.gameObject.SetActive(true);
-                        }
                     }
                 }
             }
             else
             {
-                hoverCardView.gameObject.SetActive(false);
                 lastHoveredCard = null;
                 cardHovered.Dispatch(null);
             }

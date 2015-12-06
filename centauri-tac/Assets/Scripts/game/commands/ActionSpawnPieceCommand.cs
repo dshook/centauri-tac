@@ -103,6 +103,7 @@ namespace ctac
             {
                 id = spawnedPiece.pieceId,
                 playerId = spawnedPiece.playerId,
+                cardId = spawnedPiece.cardId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newPiece,
                 attack = cardTemplate.attack,
