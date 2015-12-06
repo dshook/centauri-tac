@@ -13,12 +13,6 @@ namespace ctac
         [Inject]
         public PieceHoverSignal pieceHoveredSignal { get; set; }
 
-        [Inject]
-        public PiecesModel pieces { get; set; }
-
-        [Inject]
-        public IMapService mapService { get; set; }
-
         public override void OnRegister()
         {
             view.pieceHover.AddListener(onPieceHover);
@@ -30,16 +24,25 @@ namespace ctac
             view.pieceHover.RemoveListener(onPieceHover);
         }
 
+        private PieceView lastHoveredPiece = null;
         void onPieceHover(GameObject pieceHovered)
         {
             if (pieceHovered != null)
             {
                 var pieceView = pieceHovered.GetComponent<PieceView>();
-                pieceHoveredSignal.Dispatch(pieceView.piece);
+                if (pieceView != lastHoveredPiece)
+                {
+                    lastHoveredPiece = pieceView;
+                    pieceHoveredSignal.Dispatch(pieceView.piece);
+                }
             }
             else
             {
-                pieceHoveredSignal.Dispatch(null);
+                if (lastHoveredPiece != null)
+                {
+                    lastHoveredPiece = null;
+                    pieceHoveredSignal.Dispatch(null);
+                }
             }
         }
     }

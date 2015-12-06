@@ -9,8 +9,6 @@ namespace ctac
     {
         internal Signal<GameObject> pieceHover = new Signal<GameObject>();
 
-        GameObject hoveredPiece = null;
-
         bool active = false;
         float rayFrequency = 0.1f;
         float timer = 0f;
@@ -41,17 +39,14 @@ namespace ctac
             Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
 
             RaycastHit pieceHit;
-            if (Physics.Raycast(camRay, out pieceHit, Constants.cameraRaycastDist))
+            if (Physics.Raycast(camRay, out pieceHit, Constants.cameraRaycastDist)
+                && pieceHit.collider.gameObject.CompareTag("Piece")
+            )
             {
-                if (hoveredPiece != pieceHit.collider.gameObject && pieceHit.collider.gameObject.CompareTag("Piece"))
-                {
-                    hoveredPiece = pieceHit.collider.gameObject;
-                    pieceHover.Dispatch(pieceHit.collider.gameObject);
-                }
+                pieceHover.Dispatch(pieceHit.collider.gameObject);
             }
             else
             {
-                hoveredPiece = null;
                 pieceHover.Dispatch(null);
             }
         }

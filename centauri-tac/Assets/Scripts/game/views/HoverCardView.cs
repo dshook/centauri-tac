@@ -56,7 +56,6 @@ namespace ctac
         //private float hoverDelay = 0.5f;
         internal void showCard(CardModel cardToShow, Vector3 position)
         {
-            Debug.Log("show hover");
             //copy over props from hovered to hover
             cardToShow.CopyProperties(hoverCardView.card);
             //but reset some key things
@@ -72,7 +71,6 @@ namespace ctac
 
         internal void hideCard()
         {
-            Debug.Log("hide hover");
             hoverCardView.gameObject.SetActive(false);
         }
     }

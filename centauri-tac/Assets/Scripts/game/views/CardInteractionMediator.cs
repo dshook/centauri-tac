@@ -25,7 +25,6 @@ namespace ctac
         public MapModel map { get; set; }
 
         private CardModel draggedCard = null;
-        private CardView lastHoveredCard = null;
 
         public override void OnRegister()
         {
@@ -75,6 +74,7 @@ namespace ctac
             }
         }
 
+        private CardView lastHoveredCard = null;
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -97,8 +97,11 @@ namespace ctac
             }
             else
             {
-                lastHoveredCard = null;
-                cardHovered.Dispatch(null);
+                if (lastHoveredCard != null)
+                {
+                    lastHoveredCard = null;
+                    cardHovered.Dispatch(null);
+                }
             }
         }
     }
