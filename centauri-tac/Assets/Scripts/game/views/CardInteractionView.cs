@@ -21,8 +21,8 @@ namespace ctac
         internal void init()
         {
             active = true;
-            cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
-            cardCanvasLayer = LayerMask.GetMask("cardCanvas");
+            cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
+            cardCanvasLayer = LayerMask.GetMask(Constants.cardCanvas);
         }
         void Update()
         {

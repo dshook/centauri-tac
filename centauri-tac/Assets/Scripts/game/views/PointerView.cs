@@ -10,17 +10,17 @@ namespace ctac
     {
         private MeshRenderer meshRenderer;
         private Vector2 startPoint;
-        private Camera cardCamera;
         private RectTransform CanvasRect;
+        private CardCanvasHelperView cardCanvasHelper;
 
         private Vector3 yForward = new Vector3(0, 1, 0);
 
         internal void init()
         {
             meshRenderer = GetComponent<MeshRenderer>();
-            cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == "CardCamera");
             meshRenderer.enabled = false;
-            CanvasRect = GameObject.Find("cardCanvas").GetComponent<RectTransform>();
+            CanvasRect = GameObject.Find(Constants.cardCanvas).GetComponent<RectTransform>();
+            cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
         void Update()
@@ -59,22 +59,13 @@ namespace ctac
             startPoint = start;
         }
 
-        internal void worldPointAt(Vector2 start)
-        {
-            meshRenderer.enabled = true;
-            startPoint = cardCamera.WorldToScreenPoint(start);
-        }
-
         internal void rectTransform(GameObject go)
         {
             meshRenderer.enabled = true;
-            Vector2 ViewportPosition = cardCamera.WorldToViewportPoint(go.transform.position);
-            Vector2 WorldObject_ScreenPosition = new Vector2(
-                ((ViewportPosition.x * CanvasRect.sizeDelta.x)),
-                ((ViewportPosition.y * CanvasRect.sizeDelta.y))
-            );
 
-            startPoint = new Vector2(Math.Max(WorldObject_ScreenPosition.x, 0), Math.Max(WorldObject_ScreenPosition.y, 0));
+            var screenPos = cardCanvasHelper.WorldToViewport(go.transform.position);
+
+            startPoint = new Vector2(Math.Max(screenPos.x, 0), Math.Max(screenPos.y, 0));
         }
 
         internal void disable()

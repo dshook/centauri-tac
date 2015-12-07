@@ -2,6 +2,7 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Linq;
 
 namespace ctac
 {
@@ -14,13 +15,16 @@ namespace ctac
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
 
+        private CardCanvasHelperView CardCanvasHelper;
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
 
         internal void init()
         {
+            CardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
+
             //init the hover card that's hidden most of the time
             var cardPrefab = Resources.Load("Card") as GameObject;
-            var cardCanvas = GameObject.Find("cardCanvas");
+            var cardCanvas = GameObject.Find(Constants.cardCanvas);
 
             var hoverCardGO = GameObject.Instantiate(
                 cardPrefab,
@@ -67,6 +71,14 @@ namespace ctac
             rectTransform.anchoredPosition3D = position  + HoverOffset;
 
             hoverCardView.gameObject.SetActive(true);
+        }
+
+        internal void showCardWorld(CardModel cardToShow, Vector3 worldPosition)
+        {
+            var screenPos = CardCanvasHelper.WorldToViewport(worldPosition);
+
+            screenPos = screenPos.SetZ(0);
+            showCard(cardToShow, screenPos);
         }
 
         internal void hideCard()
