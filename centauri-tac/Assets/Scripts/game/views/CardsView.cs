@@ -57,17 +57,6 @@ namespace ctac {
             }
         }
 
-        private Vector3 MouseToWorld(float z)
-        {
-           return CardCanvasHelper.WorldToViewport(
-               new Vector3(
-                    CrossPlatformInputManager.mousePosition.x,
-                    CrossPlatformInputManager.mousePosition.y,
-                    z
-                )
-            );
-        }
-
         internal void onCardSelected(CardModel card)
         {
             selectedCard = card;

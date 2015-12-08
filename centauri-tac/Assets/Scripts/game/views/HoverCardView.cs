@@ -1,6 +1,7 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
+using ctac;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Linq;
 
@@ -16,7 +17,10 @@ namespace ctac
         private CardView hoverCardView = null;
 
         private CardCanvasHelperView CardCanvasHelper;
-        private Vector2 anchorPosition = new Vector2(0.5f, 0);
+        private Vector2 cardAnchor = new Vector2(0.5f, 0);
+        private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
+        private Vector2 bottomLeftAnchor = new Vector2(0, 0);
+        private RectTransform rectTransform;
 
         internal void init()
         {
@@ -43,10 +47,8 @@ namespace ctac
             hoverCardView = hoverCardGO.AddComponent<CardView>();
             hoverCardView.card = hoverCardModel;
 
-            var rectTransform = hoverCardView.GetComponent<RectTransform>();
-            rectTransform.anchorMax = anchorPosition;
-            rectTransform.anchorMin = anchorPosition;
-            rectTransform.pivot = anchorPosition;
+            rectTransform = hoverCardView.GetComponent<RectTransform>();
+
 
             hoverCardGO.SetActive(false);
         }
@@ -56,7 +58,6 @@ namespace ctac
             timer += Time.deltaTime;
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 305, -1);
         //private float hoverDelay = 0.5f;
         internal void showCard(CardModel cardToShow, Vector3 position)
         {
@@ -66,17 +67,27 @@ namespace ctac
             hoverCardView.name = hoverName;
             hoverCardView.card.gameObject = hoverCardView.gameObject;
 
-            var rectTransform = hoverCardView.GetComponent<RectTransform>();
+            rectTransform = hoverCardView.GetComponent<RectTransform>();
 
-            rectTransform.anchoredPosition3D = position  + HoverOffset;
+            rectTransform.anchoredPosition3D = position ;
 
             hoverCardView.gameObject.SetActive(true);
+        }
+
+        private static Vector3 HoverOffset = new Vector3(0, 305, -1);
+        internal void showCardFromHand(CardModel cardToShow, Vector3 position)
+        {
+            rectTransform.SetAnchor(cardAnchor);
+            showCard(cardToShow, position + HoverOffset);
         }
 
         internal void showCardWorld(CardModel cardToShow, Vector3 worldPosition)
         {
             var screenPos = CardCanvasHelper.WorldToViewport(worldPosition);
 
+            //TODO: Close but no cigar.  Card always shows up near the middle and it seems like the coords
+            //are rotated since hovering over units aligned vertically moves the card left and right
+            rectTransform.SetAnchor(bottomLeftAnchor);
             screenPos = screenPos.SetZ(0);
             showCard(cardToShow, screenPos);
         }
