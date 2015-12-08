@@ -17,8 +17,16 @@
 (PLAYER|OPPONENT)
   return 'target'
 
-// piece targets
-(TARGET|RANDOM_ENEMY_CHARACTER|RANDOM_CHARACTER)
+// neutral piece targets
+(TARGET|SELF|RANDOM_CHARACTER)
+  return 'target'
+
+// enemy piece targets
+(RANDOM_ENEMY_CHARACTER|RANDOM_ENEMY_MINION)
+  return 'target'
+
+// friendly piece targets
+(RANDOM_FRIENDLY_CHARACTER|RANDOM_FRIENDLY_MINION)
   return 'target'
 
 // actions
@@ -26,7 +34,7 @@
   return 'action'
 
 //attributes
-(current_health)
+(health|attack|movement)
   return 'attribute'
 
 //numbers

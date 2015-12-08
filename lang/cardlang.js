@@ -613,36 +613,40 @@ case 3:return 25
 break;
 case 4:return 25
 break;
-case 5:return 16
+case 5:return 25
 break;
-case 6:return 26
+case 6:return 25
 break;
-case 7:return 27
+case 7:return 16
 break;
-case 8:return 17
+case 8:return 26
 break;
-case 9:return 19
+case 9:return 27
 break;
-case 10:return 23
+case 10:return 17
 break;
-case 11:return 20
+case 11:return 19
 break;
-case 12:return 10
+case 12:return 23
 break;
-case 13:return 12
+case 13:return 20
 break;
-case 14:return 21
+case 14:return 10
 break;
-case 15:return '='
+case 15:return 12
 break;
-case 16:return 5
+case 16:return 21
 break;
-case 17:return 'INVALID'
+case 17:return '='
+break;
+case 18:return 5
+break;
+case 19:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|RANDOM_ENEMY_CHARACTER|RANDOM_CHARACTER))/,/^(?:(DrawCard|SetAttribute|Hit))/,/^(?:(current_health))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF|RANDOM_CHARACTER))/,/^(?:(RANDOM_ENEMY_CHARACTER|RANDOM_ENEMY_MINION))/,/^(?:(RANDOM_FRIENDLY_CHARACTER|RANDOM_FRIENDLY_MINION))/,/^(?:(DrawCard|SetAttribute|Hit))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"inclusive":true}}
 });
 return lexer;
 })();

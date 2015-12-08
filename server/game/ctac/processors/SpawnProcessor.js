@@ -39,7 +39,11 @@ export default class SpawnProcessor
     newPiece.cardId = action.cardId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
+    newPiece.baseAttack = cardPlayed.attack;
+    newPiece.baseHealth = cardPlayed.health;
     newPiece.movement = cardPlayed.movement;
+    newPiece.baseMovement = cardPlayed.movement;
+    newPiece.tags = cardPlayed.tags;
 
     action.pieceId = newPiece.id;
 

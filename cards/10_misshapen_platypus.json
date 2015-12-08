@@ -1,0 +1,11 @@
+{
+	"id": 10,
+	"name": "Misshapen Platypus",
+	"description": "<b>Play</b>: Set a random enemy minion's attack to 1",
+	"cost": 2,
+	"attack": 1,
+	"health": 4,
+	"movement": 2,
+	"tags": ["Minion"],
+	"eventcode": "play{ SetAttribute(RANDOM_ENEMY_MINION, attack, 1); }"
+}

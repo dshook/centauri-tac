@@ -1,3 +1,4 @@
+//Whenever a piece takes damage or gets healed
 export default class PieceHealthChange
 {
   constructor(pieceId, change)

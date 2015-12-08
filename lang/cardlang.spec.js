@@ -31,7 +31,7 @@ test('Two actions on event', t => {
   let input = `
   play{ 
     DrawCard(PLAYER); 
-    SetAttribute(TARGET, current_health, 3);
+    SetAttribute(TARGET, health, 3);
   }
   `;
 
@@ -48,7 +48,7 @@ test('Two actions on event', t => {
       action: 'SetAttribute',
       args: [
         'TARGET',
-        'current_health',
+        'health',
         3
       ]
     }
@@ -63,7 +63,7 @@ test('Two Events', t => {
   let parser = lang.parser;
   let input = `
   play{ 
-    SetAttribute(TARGET, current_health, 3);
+    SetAttribute(TARGET, health, 3);
   }
   death{
     DrawCard(PLAYER);
@@ -78,7 +78,7 @@ test('Two Events', t => {
         action: 'SetAttribute',
         args: [
           'TARGET',
-          'current_health',
+          'health',
           3
         ]
       }

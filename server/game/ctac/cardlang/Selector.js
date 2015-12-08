@@ -31,9 +31,29 @@ export default class Selector{
           .Random()
           .Value();
         break;
+      case 'RANDOM_FRIENDLY_CHARACTER':
+        return new PieceSelector(this.pieceState.pieces)
+          .Friendlies(controllingPlayerId)
+          .Random()
+          .Value();
+        break;
       case 'RANDOM_ENEMY_CHARACTER':
         return new PieceSelector(this.pieceState.pieces)
           .Enemies(controllingPlayerId)
+          .Random()
+          .Value();
+        break;
+      case 'RANDOM_ENEMY_MINION':
+        return new PieceSelector(this.pieceState.pieces)
+          .Enemies(controllingPlayerId)
+          .Minion()
+          .Random()
+          .Value();
+        break;
+      case 'RANDOM_FRIENDLY_MINION':
+        return new PieceSelector(this.pieceState.pieces)
+          .Friendlies(controllingPlayerId)
+          .Minion()
           .Random()
           .Value();
         break;
@@ -49,6 +69,16 @@ class PieceSelector{
 
   Enemies(controllingPlayerId){
     this.pieces = this.pieces.filter(p => p.playerId != controllingPlayerId);
+    return this;
+  }
+
+  Friendlies(controllingPlayerId){
+    this.pieces = this.pieces.filter(p => p.playerId == controllingPlayerId);
+    return this;
+  }
+
+  Minion(){
+    this.pieces = this.pieces.filter(p => p.tags.indexOf('Minion') >= 0);
     return this;
   }
 
