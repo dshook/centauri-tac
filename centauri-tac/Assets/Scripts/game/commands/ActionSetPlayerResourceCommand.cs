@@ -21,12 +21,7 @@ namespace ctac
         
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == setPlayerResource.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(setPlayerResource.id);
+            if (!processedActions.Verify(setPlayerResource.id)) return;
 
             playerResource.resources[setPlayerResource.playerId] = setPlayerResource.newTotal;
 

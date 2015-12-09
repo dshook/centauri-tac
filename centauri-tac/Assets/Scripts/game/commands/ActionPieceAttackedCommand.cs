@@ -26,12 +26,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == attackedPiece.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(attackedPiece.id);
+            if (!processedActions.Verify(attackedPiece.id)) return;
 
             pieces.Piece(attackedPiece.attackingPieceId).hasAttacked = true;
 

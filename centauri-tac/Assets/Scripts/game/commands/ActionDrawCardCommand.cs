@@ -34,12 +34,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == cardDraw.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(cardDraw.id);
+            if (!processedActions.Verify(cardDraw.id)) return;
 
             var cardTemplate = cardDirectory.Card(cardDraw.cardId);
 

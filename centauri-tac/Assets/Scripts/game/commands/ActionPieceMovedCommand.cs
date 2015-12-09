@@ -29,12 +29,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == movePiece.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(movePiece.id);
+            if (!processedActions.Verify(movePiece.id)) return;
 
             var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == movePiece.pieceId);
             var toTile = map.tiles[movePiece.to.Vector3.ToTileCoordinates()];

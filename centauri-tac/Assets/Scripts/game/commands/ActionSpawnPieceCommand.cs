@@ -64,12 +64,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == spawnedPiece.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(spawnedPiece.id);
+            if (!processedActions.Verify(spawnedPiece.id)) return;
 
             //position is x and z from server, and y based on the map
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;

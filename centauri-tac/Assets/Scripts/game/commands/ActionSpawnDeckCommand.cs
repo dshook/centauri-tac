@@ -47,12 +47,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == spawnDeck.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(spawnDeck.id);
+            if (!processedActions.Verify(spawnDeck.id)) return;
 
             var DeckGO = GameObject.Find("Deck");
 

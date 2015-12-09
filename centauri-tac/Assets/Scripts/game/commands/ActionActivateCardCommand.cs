@@ -18,12 +18,7 @@ namespace ctac
         
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == cardActivated.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(cardActivated.id);
+            if(!processedActions.Verify(cardActivated.id)) return;
 
             //don't think there's a good way to pass the reference to the instance of the card dragged between
             //client and server at the moment.  perhaps introducing a cardInstanceId is needed

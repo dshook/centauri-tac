@@ -32,12 +32,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //check to see if this action has already been processed by another player
-            if (processedActions.processedActions.Any(x => x == gamePassModel.id))
-            {
-                return;
-            }
-            processedActions.processedActions.Add(gamePassModel.id);
+            if (!processedActions.Verify(gamePassModel.id)) return;
 
             turnModel.currentTurn = gamePassModel.currentTurn;
             turnModel.currentPlayerId = gamePassModel.to;
