@@ -104,7 +104,7 @@ namespace ctac {
             public bool Async { get { return true; } }
             public float? postDelay { get { return null; } }
 
-            public PieceAttackedAnimationSignal attackFinished { get; set; }
+            public PieceTextAnimationFinishedSignal animFinished { get; set; }
             public PieceModel piece { get; set; }
             public GameObject textGO { get; set; }
             public TextMeshPro text { get; set; }
@@ -135,7 +135,7 @@ namespace ctac {
                     text.color = Color.white;
                 }
                 Complete = true;
-                attackFinished.Dispatch(piece);
+                animFinished.Dispatch(piece);
             }
         }
 
