@@ -8,9 +8,8 @@ import PieceAttributeChange from '../actions/PieceAttributeChange.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, turnState, selector, cardDirectory){
+  constructor(queue, selector, cardDirectory){
     this.queue = queue;
-    this.turnState = turnState;
     this.selector = selector;
     this.cardDirectory = cardDirectory;
   }

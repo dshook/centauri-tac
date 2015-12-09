@@ -15,3 +15,4 @@ require('../lib/emitter-binder/AggregateBinder.spec.js');
 require('../lib/action-queue/ActionQueue.spec.js');
 
 require('../lang/cardlang.spec.js');
+require('../server/tests/index.js');

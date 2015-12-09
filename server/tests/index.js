@@ -1,0 +1,2 @@
+
+require('./CardEvaluator.spec.js');
