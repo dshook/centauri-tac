@@ -20,11 +20,8 @@ namespace ctac {
         private const float maxCardHeight = 20f;
         private Vector3 dest;
 
-        private CardCanvasHelperView CardCanvasHelper;
-
         protected override void Start()
         {
-            CardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
         public void init(List<CardModel> cards)
