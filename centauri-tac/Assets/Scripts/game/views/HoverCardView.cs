@@ -37,6 +37,7 @@ namespace ctac
             ) as GameObject;
             hoverCardGO.transform.SetParent(cardCanvas.transform, false);
             hoverCardGO.name = hoverName;
+            hoverCardGO.tag = "HoverCard";
 
             var hoverCardModel = new CardModel()
             {
