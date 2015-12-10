@@ -32,7 +32,7 @@ var heroesOnly = new PieceState();
 spawnPiece(heroesOnly, 2, 1);
 spawnPiece(heroesOnly, 2, 2);
 
-var empty = new PieceState();
+var noPieces = new PieceState();
 
 test('Select Player', t => {
   t.plan(2);
@@ -43,6 +43,9 @@ test('Select Player', t => {
 
 });
 
+//Not worrying about the "randomness" of the result since that's provided through lodash
+//which should be tested enough for us.  Testing that the selector returns the right class
+//of whatever should be taken care of by the multi piece selector tests
 test('Select a piece', t => {
   let selectors = [
     'RANDOM_CHARACTER',
@@ -60,6 +63,31 @@ test('Select a piece', t => {
   }
 });
 
+test('Characters', t => {
+  t.plan(3);
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, 'CHARACTERS');
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all the pieces'); 
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+});
+
+test('Friendly Characters', t => {
+  t.plan(6);
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, 'FRIENDLY_CHARACTERS');
+  
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 3, 'Got only friendly Pieces'); 
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+  t.equal(selection[0].playerId, 1, 'First piece is for the right player');
+
+  let emptySelector = new Selector(players, noPieces);
+  let emptySelection = emptySelector.selectPieces(1, 'FRIENDLY_CHARACTERS');
+  t.ok(Array.isArray(emptySelection), 'Got back an Array');
+  t.equal(emptySelection.length, 0, 'Got nothin'); 
+});
 
 
 function spawnPiece(pieceState, cardId, playerId){
