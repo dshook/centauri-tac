@@ -3,8 +3,7 @@ import _ from 'lodash';
 
 @loglevel
 export default class Selector{
-  constructor(turnState, players, pieceState){
-    this.turnState = turnState;
+  constructor(players, pieceState){
     this.players = players;
     this.pieceState = pieceState;
   }
@@ -24,37 +23,54 @@ export default class Selector{
     return null;
   }
 
+  //single target selectors
   selectPiece(controllingPlayerId, selector){
     switch(selector){
       case 'RANDOM_CHARACTER':
-        return new PieceSelector(this.pieceState.pieces)
-          .Random()
-          .Value();
+        return _.sample(this.selectPieces(controllingPlayerId, 'CHARACTERS'));
         break;
       case 'RANDOM_FRIENDLY_CHARACTER':
-        return new PieceSelector(this.pieceState.pieces)
-          .Friendlies(controllingPlayerId)
-          .Random()
-          .Value();
+        return _.sample(this.selectPieces(controllingPlayerId, 'FRIENDLY_CHARACTERS'));
         break;
       case 'RANDOM_ENEMY_CHARACTER':
-        return new PieceSelector(this.pieceState.pieces)
-          .Enemies(controllingPlayerId)
-          .Random()
-          .Value();
+        return _.sample(this.selectPieces(controllingPlayerId, 'ENEMY_CHARACTERS'));
         break;
       case 'RANDOM_ENEMY_MINION':
+        return _.sample(this.selectPieces(controllingPlayerId, 'ENEMY_MINIONS'));
+        break;
+      case 'RANDOM_FRIENDLY_MINION':
+        return _.sample(this.selectPieces(controllingPlayerId, 'FRIENDLY_MINIONS'));
+        break;
+    }
+  }
+
+  //multi target
+  selectPieces(controllingPlayerId, selector){
+    switch(selector){
+      case 'CHARACTERS':
+        return new PieceSelector(this.pieceState.pieces)
+          .Value();
+        break;
+      case 'FRIENDLY_CHARACTERS':
+        return new PieceSelector(this.pieceState.pieces)
+          .Friendlies(controllingPlayerId)
+          .Value();
+        break;
+      case 'ENEMY_CHARACTERS':
+        return new PieceSelector(this.pieceState.pieces)
+          .Enemies(controllingPlayerId)
+          .Value();
+        break;
+      case 'ENEMY_MINIONS':
         return new PieceSelector(this.pieceState.pieces)
           .Enemies(controllingPlayerId)
           .Minion()
-          .Random()
           .Value();
         break;
-      case 'RANDOM_FRIENDLY_MINION':
+      case 'FRIENDLY_MINIONS':
         return new PieceSelector(this.pieceState.pieces)
           .Friendlies(controllingPlayerId)
           .Minion()
-          .Random()
           .Value();
         break;
     }

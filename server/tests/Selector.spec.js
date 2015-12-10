@@ -1,17 +1,12 @@
 import test from 'tape';
-import CardEvaluator from '../game/ctac/cardlang/CardEvaluator.js';
 import Selector from '../game/ctac/cardlang/Selector.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
-import DrawCard from '../game/ctac/actions/DrawCard.js';
-import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
-import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
 import Player from 'models/Player';
-import ActionQueue from 'action-queue';
 import requireDir from 'require-dir';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 
-//init the dependencies for the evaluator and selector
+//init the dependencies for the selector
 var cardRequires = requireDir('../../cards/');
 var cardDirectory = new CardDirectory();
 
@@ -33,22 +28,39 @@ spawnPiece(pieceStateMix, 1, 2);
 spawnPiece(pieceStateMix, 2, 2);
 spawnPiece(pieceStateMix, 3, 2);
 
+var heroesOnly = new PieceState();
+spawnPiece(heroesOnly, 2, 1);
+spawnPiece(heroesOnly, 2, 2);
 
-test('Basic Draw card', t => {
-  t.plan(4);
-  let queue = new ActionQueue();
-  let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory);
+var empty = new PieceState();
 
-  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 3)[0]; 
-  t.ok(testBot, 'Found test bot');
+test('Select Player', t => {
+  t.plan(2);
+  let selector = new Selector(players, heroesOnly);
 
-  cardEval.evaluateAction('play', testBot);
+  t.equal(selector.selectPlayer(1, 'PLAYER'), 1, 'Player is equal to itself');
+  t.equal(selector.selectPlayer(1, 'OPPONENT'), 2, 'Select opponent');
 
-  t.equal(queue._actions.length, 2, '2 Actions in the queue');
-  t.ok(queue._actions[0] instanceof DrawCard, 'First action is Draw Card');
-  t.ok(queue._actions[1] instanceof DrawCard, 'Second action is Draw Card');
 });
+
+test('Select a piece', t => {
+  let selectors = [
+    'RANDOM_CHARACTER',
+    'RANDOM_FRIENDLY_CHARACTER',
+    'RANDOM_ENEMY_CHARACTER',
+    'RANDOM_ENEMY_MINION',
+    'RANDOM_FRIENDLY_MINION'
+  ];
+  t.plan(selectors.length);
+  let selector = new Selector(players, pieceStateMix);
+
+  for(let selectString of selectors){
+    let selection = selector.selectPiece(1, selectString);
+    t.ok(selection instanceof GamePiece, 'Selection got a gamepiece back for ' + selectString);
+  }
+});
+
+
 
 function spawnPiece(pieceState, cardId, playerId){
     let cardPlayed = cardDirectory.directory[cardId];
