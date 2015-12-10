@@ -11,7 +11,7 @@
 * unit ability
 
 ##Selectors
-* Need set operators for Union (|), intersection (+), and compliment (-)
+* Need set operators for Union (|), intersection (&), and compliment (-)
 * target
 * self
 * random enemy
