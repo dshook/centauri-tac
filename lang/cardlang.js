@@ -72,12 +72,12 @@
   }
 */
 var cardlang = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14],$V1=[1,14],$V2=[12,16],$V3=[1,22],$V4=[1,23],$V5=[1,25],$V6=[19,23];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14],$V1=[1,14],$V2=[12,16],$V3=[1,23],$V4=[1,26],$V5=[1,27],$V6=[1,28],$V7=[19,23],$V8=[1,32],$V9=[1,33],$Va=[1,34],$Vb=[19,23,31,32,33];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"pPlay":8,"play":9,"{":10,"actionlist":11,"}":12,"pDeath":13,"death":14,"actionargs":15,"action":16,"(":17,"arguments":18,")":19,";":20,"*":21,"pNumber":22,",":23,"argument_item":24,"target":25,"attribute":26,"number":27,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",9:"play",10:"{",12:"}",14:"death",16:"action",17:"(",19:")",20:";",21:"*",23:",",25:"target",26:"attribute",27:"number"},
-productions_: [0,[3,2],[4,2],[8,4],[13,4],[11,2],[11,1],[15,5],[15,7],[18,3],[18,1],[24,1],[24,1],[24,1],[22,1],[6,0],[6,1],[7,0],[7,1]],
+symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"pPlay":8,"play":9,"{":10,"actionlist":11,"}":12,"pDeath":13,"death":14,"actionargs":15,"action":16,"(":17,"arguments":18,")":19,";":20,"*":21,"pNumber":22,",":23,"argument_item":24,"possibleRandSelector":25,"attribute":26,"selector":27,"target":28,"random":29,"operator":30,"&":31,"|":32,"-":33,"number":34,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",9:"play",10:"{",12:"}",14:"death",16:"action",17:"(",19:")",20:";",21:"*",23:",",26:"attribute",28:"target",29:"random",31:"&",32:"|",33:"-",34:"number"},
+productions_: [0,[3,2],[4,2],[8,4],[13,4],[11,2],[11,1],[15,5],[15,7],[18,3],[18,1],[24,1],[24,1],[24,1],[25,1],[25,1],[25,4],[25,4],[27,3],[27,3],[30,1],[30,1],[30,1],[22,1],[6,0],[6,1],[7,0],[7,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -118,13 +118,25 @@ break;
 case 11: case 12: case 13:
 this.$ = $$[$0];
 break;
-case 14:
+case 15:
+ this.$ = { left: $$[$0]}; 
+break;
+case 16:
+ this.$ = { random: true, selector: { left: $$[$0-1]} }; 
+break;
+case 17:
+ this.$ = { random: true, selector: $$[$0-1] }; 
+break;
+case 18: case 19:
+ this.$ = { left: $$[$0-2], op: $$[$0-1], right: $$[$0] }; 
+break;
+case 23:
 this.$ = parseInt($$[$0]);
 break;
 }
 },
-table: [o($V0,[2,15],{3:1,4:2,6:3,8:4,9:[1,5]}),{1:[3]},{5:[1,6]},{5:[2,17],7:7,13:8,14:[1,9]},o($V0,[2,16]),{10:[1,10]},{1:[2,1]},{5:[2,2]},{5:[2,18]},{10:[1,11]},{11:12,15:13,16:$V1},{11:15,15:13,16:$V1},{12:[1,16],15:17,16:$V1},o($V2,[2,6]),{17:[1,18]},{12:[1,19],15:17,16:$V1},o($V0,[2,3]),o($V2,[2,5]),{18:20,22:24,24:21,25:$V3,26:$V4,27:$V5},{5:[2,4]},{19:[1,26],23:[1,27]},o($V6,[2,10]),o($V6,[2,11]),o($V6,[2,12]),o($V6,[2,13]),o([19,20,23],[2,14]),{20:[1,28],21:[1,29]},{22:24,24:30,25:$V3,26:$V4,27:$V5},o($V2,[2,7]),{22:31,27:$V5},o($V6,[2,9]),{20:[1,32]},o($V2,[2,8])],
-defaultActions: {6:[2,1],7:[2,2],8:[2,18],19:[2,4]},
+table: [o($V0,[2,24],{3:1,4:2,6:3,8:4,9:[1,5]}),{1:[3]},{5:[1,6]},{5:[2,26],7:7,13:8,14:[1,9]},o($V0,[2,25]),{10:[1,10]},{1:[2,1]},{5:[2,2]},{5:[2,27]},{10:[1,11]},{11:12,15:13,16:$V1},{11:15,15:13,16:$V1},{12:[1,16],15:17,16:$V1},o($V2,[2,6]),{17:[1,18]},{12:[1,19],15:17,16:$V1},o($V0,[2,3]),o($V2,[2,5]),{18:20,22:24,24:21,25:22,26:$V3,27:25,28:$V4,29:$V5,34:$V6},{5:[2,4]},{19:[1,29],23:[1,30]},o($V7,[2,10]),o($V7,[2,11]),o($V7,[2,12]),o($V7,[2,13]),o($V7,[2,14],{30:31,31:$V8,32:$V9,33:$Va}),o($V7,[2,15],{30:35,31:$V8,32:$V9,33:$Va}),{17:[1,36]},o([19,20,23],[2,23]),{20:[1,37],21:[1,38]},{22:24,24:39,25:22,26:$V3,27:25,28:$V4,29:$V5,34:$V6},{28:[1,40]},{28:[2,20]},{28:[2,21]},{28:[2,22]},{28:[1,41]},{27:43,28:[1,42]},o($V2,[2,7]),{22:44,34:$V6},o($V7,[2,9]),o($Vb,[2,19]),o($Vb,[2,18]),{19:[1,45],30:35,31:$V8,32:$V9,33:$Va},{19:[1,46],30:31,31:$V8,32:$V9,33:$Va},{20:[1,47]},o($V7,[2,16]),o($V7,[2,17]),o($V2,[2,8])],
+defaultActions: {6:[2,1],7:[2,2],8:[2,27],19:[2,4],32:[2,20],33:[2,21],34:[2,22]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -609,19 +621,19 @@ case 1:return 9
 break;
 case 2:return 14
 break;
-case 3:return 25
+case 3:return 28
 break;
-case 4:return 25
+case 4:return 28
 break;
-case 5:return 25
+case 5:return 28
 break;
-case 6:return 25
+case 6:return 29
 break;
 case 7:return 16
 break;
 case 8:return 26
 break;
-case 9:return 27
+case 9:return 34
 break;
 case 10:return 17
 break;
@@ -639,14 +651,20 @@ case 16:return 21
 break;
 case 17:return '='
 break;
-case 18:return 5
+case 18:return 32
 break;
-case 19:return 'INVALID'
+case 19:return 31
+break;
+case 20:return 33
+break;
+case 21:return 5
+break;
+case 22:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF|RANDOM_CHARACTER))/,/^(?:(RANDOM_ENEMY_CHARACTER|RANDOM_ENEMY_MINION))/,/^(?:(RANDOM_FRIENDLY_CHARACTER|RANDOM_FRIENDLY_MINION))/,/^(?:(DrawCard|SetAttribute|Hit))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"inclusive":true}}
 });
 return lexer;
 })();

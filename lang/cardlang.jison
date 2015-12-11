@@ -18,16 +18,15 @@
   return 'target'
 
 // neutral piece targets
-(TARGET|SELF|RANDOM_CHARACTER)
+(TARGET|SELF)
   return 'target'
 
-// enemy piece targets
-(RANDOM_ENEMY_CHARACTER|RANDOM_ENEMY_MINION)
+// selectors
+(ENEMY|CHARACTER|MINION|FRIENDLY|HERO)
   return 'target'
 
-// friendly piece targets
-(RANDOM_FRIENDLY_CHARACTER|RANDOM_FRIENDLY_MINION)
-  return 'target'
+(Random)
+  return 'random'
 
 // actions
 (DrawCard|SetAttribute|Hit)
@@ -50,6 +49,9 @@
 '}'    return '}'
 '*'    return '*'
 '='    return '='
+'|'    return '|'
+'&'    return '&'
+'-'    return '-'
 
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
@@ -57,6 +59,12 @@
 /lex
 
 %ebnf
+
+/* operator associations and precedence */
+
+%left '|'
+%left '&' 
+%left '-'
 
 %start events
 
@@ -112,9 +120,32 @@ arguments
   ;
 
 argument_item
-  : target -> $1
+  : possibleRandSelector -> $1
   | attribute -> $1
   | pNumber -> $1
+  ;
+
+possibleRandSelector
+  : selector
+  | target
+     { $$ = { left: $1}; }
+  | random'('target')'
+     { $$ = { random: true, selector: { left: $3} }; }
+  | random'('selector')'
+     { $$ = { random: true, selector: $3 }; }
+;
+
+selector
+  : target operator target 
+     { $$ = { left: $1, op: $2, right: $3 }; }
+  | selector operator target
+     { $$ = { left: $1, op: $2, right: $3 }; }
+  ;
+
+operator
+  : '&'
+  | '|'
+  | '-'
   ;
 
 pNumber

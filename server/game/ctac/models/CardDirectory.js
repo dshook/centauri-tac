@@ -32,7 +32,7 @@ export default class CardDirectory
       }catch(e){
         this.log.info('Error parsing card text %s %s', card.events, e);
         //throw again so you don't run the server with a bad card
-        throw e;
+        throw `Unable to parse card ${card.name} with text ${card.eventcode}`;
       }
     }else{
       c.events = null;

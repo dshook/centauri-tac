@@ -1,10 +1,11 @@
 import test from 'tape';
 import lang from './cardlang.js';
 
+var parser = lang.parser;
+
 test('basic play event', t => {
   t.plan(1);
 
-  let parser = lang.parser;
   let input = `
   play{ 
     DrawCard(PLAYER); 
@@ -16,7 +17,9 @@ test('basic play event', t => {
     {
       action: 'DrawCard',
       args: [
-        'PLAYER'
+        {
+          left: 'PLAYER'
+        }
       ]
     }
   ];
@@ -27,7 +30,6 @@ test('basic play event', t => {
 test('Two actions on event', t => {
   t.plan(1);
 
-  let parser = lang.parser;
   let input = `
   play{ 
     DrawCard(PLAYER); 
@@ -41,13 +43,15 @@ test('Two actions on event', t => {
     {
       action: 'DrawCard',
       args: [
-        'PLAYER'
+        {
+          left: 'PLAYER'
+        }
       ]
     },
     {
       action: 'SetAttribute',
       args: [
-        'TARGET',
+        { left: 'TARGET' },
         'health',
         3
       ]
@@ -60,10 +64,9 @@ test('Two actions on event', t => {
 test('Two Events', t => {
   t.plan(1);
 
-  let parser = lang.parser;
   let input = `
   play{ 
-    SetAttribute(TARGET, health, 3);
+    SetAttribute(Random(CHARACTER), health, 3);
   }
   death{
     DrawCard(PLAYER);
@@ -77,7 +80,12 @@ test('Two Events', t => {
       {
         action: 'SetAttribute',
         args: [
-          'TARGET',
+          {
+            random: true,
+            selector: { 
+              left: 'CHARACTER' 
+            }
+          },
           'health',
           3
         ]
@@ -87,7 +95,7 @@ test('Two Events', t => {
       {
         action: 'DrawCard',
         args: [
-          'PLAYER'
+          { left: 'PLAYER' }
         ]
       }
     ]
@@ -99,7 +107,6 @@ test('Two Events', t => {
 test('Repeating action', t => {
   t.plan(1);
 
-  let parser = lang.parser;
   let input = `
   play{ 
     DrawCard(PLAYER) * 2; 
@@ -112,7 +119,7 @@ test('Repeating action', t => {
     {
       action: 'DrawCard',
       args: [
-        'PLAYER'
+        { left: 'PLAYER' }
       ],
       times: 2
     }
@@ -124,10 +131,9 @@ test('Repeating action', t => {
 test('Hit action', t => {
   t.plan(1);
 
-  let parser = lang.parser;
   let input = `
   play{ 
-    Hit(RANDOM_CHARACTER, 2); 
+    Hit(CHARACTER, 2); 
   }
   `;
 
@@ -137,8 +143,76 @@ test('Hit action', t => {
     {
       action: 'Hit',
       args: [
-        'RANDOM_CHARACTER',
+        {left :'CHARACTER' },
         2
+      ]
+    }
+  ];
+
+  t.deepEqual(d.play, expectedPlay);
+});
+
+test('Selector input', t => {
+  t.plan(1);
+
+  let input = `
+  play{ 
+    DrawCard(ENEMY & CHARACTER & HERO); 
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      action: 'DrawCard',
+      args: [
+        {
+          left :
+            {
+              left: 'ENEMY',
+              op: '&',
+              right: 'CHARACTER'
+            },
+          op: '&',
+          right: 'HERO'
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d.play, expectedPlay);
+});
+
+test('Selector input with random', t => {
+  t.plan(1);
+
+  let input = `
+  play{ 
+    Hit(Random(FRIENDLY & MINION - HERO), 1);
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      action: 'Hit',
+      args: [
+        {
+          random: true,
+          selector:{
+            left :
+              {
+                left: 'FRIENDLY',
+                op: '&',
+                right: 'MINION'
+              },
+            op: '-',
+            right: 'HERO'
+          }
+        },
+        1
       ]
     }
   ];
