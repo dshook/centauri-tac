@@ -11,6 +11,9 @@ export default class PieceSelector{
     //base case
     if(typeof selector == 'string'){
       switch(selector){
+        case 'CHARACTER':
+          return this.allPieces;
+          break;
         case 'FRIENDLY':
           return this.allPieces.filter(p => p.playerId == this.controllingPlayerId);
           break;
@@ -34,13 +37,13 @@ export default class PieceSelector{
 
       switch(selector.op){
         case '|':
-          return _.union(leftResult, rightResult);
+          return leftResult.union(rightResult);
           break;
         case '&':
-          return _.intersection(leftResult, rightResult);
+          return leftResult.intersection(rightResult);
           break;
         case '-':
-          return _.difference(leftResult, rightResult);
+          return leftResult.difference(rightResult);
           break;
       }
 

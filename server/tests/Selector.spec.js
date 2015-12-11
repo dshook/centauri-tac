@@ -68,19 +68,24 @@ test('Select a piece', t => {
   }
 });
 
-// test('Characters', t => {
-//   t.plan(3);
-//   let selector = new Selector(players, pieceStateMix);
-//   let selection = selector.selectPieces(1, 'CHARACTERS');
+test('Characters', t => {
+  t.plan(3);
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, {left: 'CHARACTER' });
 
-//   t.ok(Array.isArray(selection), 'Got back an Array');
-//   t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all the pieces'); 
-//   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
-// });
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all the pieces'); 
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+});
 
 // test('Friendly Characters', t => {
 //   t.plan(6);
-//   let select = 'FRIENDLY_CHARACTERS';
+//   let select = 
+//     {
+//       left: 'FRIENDLY',
+//       op: '&',
+//       right: 'CHARACTER'
+//     };
 //   let selector = new Selector(players, pieceStateMix);
 //   let selection = selector.selectPieces(1, select);
   
