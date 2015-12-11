@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
+import PieceSelector from './PieceSelector.js';
 
 @loglevel
 export default class Selector{
@@ -9,7 +10,11 @@ export default class Selector{
   }
 
   selectPlayer(controllingPlayerId, selector){
-    switch(selector){
+    //for now, selecting a player can only use the single left prop
+    if(!selector.left || (selector.left && typeof(selector.left) != 'string' )){
+      throw 'Select player can only take basic player selectors';      
+    }
+    switch(selector.left){
       case 'PLAYER':
         return controllingPlayerId;
         break;
@@ -19,92 +24,24 @@ export default class Selector{
           return opponents[0].id;
         break;
     }
-    this.log.info('Invalid player selector %s', selector);
-    return null;
+    throw 'Invalid player selector ' + JSON.stringify(selector);
   }
 
   //single target selectors
   selectPiece(controllingPlayerId, selector){
-    switch(selector){
-      case 'RANDOM_CHARACTER':
-        return _.sample(this.selectPieces(controllingPlayerId, 'CHARACTERS'));
-        break;
-      case 'RANDOM_FRIENDLY_CHARACTER':
-        return _.sample(this.selectPieces(controllingPlayerId, 'FRIENDLY_CHARACTERS'));
-        break;
-      case 'RANDOM_ENEMY_CHARACTER':
-        return _.sample(this.selectPieces(controllingPlayerId, 'ENEMY_CHARACTERS'));
-        break;
-      case 'RANDOM_ENEMY_MINION':
-        return _.sample(this.selectPieces(controllingPlayerId, 'ENEMY_MINIONS'));
-        break;
-      case 'RANDOM_FRIENDLY_MINION':
-        return _.sample(this.selectPieces(controllingPlayerId, 'FRIENDLY_MINIONS'));
-        break;
+    //for now, only way to get a single piece from a selector is from random
+    if(!selector.random || !selector.selector){
+      throw 'Use random for a single piece selector';      
     }
+    return _.sample(this.selectPieces(controllingPlayerId, selector.selector));
   }
 
   //multi target
   selectPieces(controllingPlayerId, selector){
-    switch(selector){
-      case 'CHARACTERS':
-        return new PieceSelector(this.pieceState.pieces)
-          .Value();
-        break;
-      case 'FRIENDLY_CHARACTERS':
-        return new PieceSelector(this.pieceState.pieces)
-          .Friendlies(controllingPlayerId)
-          .Value();
-        break;
-      case 'ENEMY_CHARACTERS':
-        return new PieceSelector(this.pieceState.pieces)
-          .Enemies(controllingPlayerId)
-          .Value();
-        break;
-      case 'ENEMY_MINIONS':
-        return new PieceSelector(this.pieceState.pieces)
-          .Enemies(controllingPlayerId)
-          .Minion()
-          .Value();
-        break;
-      case 'FRIENDLY_MINIONS':
-        return new PieceSelector(this.pieceState.pieces)
-          .Friendlies(controllingPlayerId)
-          .Minion()
-          .Value();
-        break;
-    }
+    return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
+      .Select(selector)
+      .value();
   }
 
 }
 
-class PieceSelector{
-  constructor(pieces){
-    this.pieces = _.chain(pieces);
-  }
-
-  Enemies(controllingPlayerId){
-    this.pieces = this.pieces.filter(p => p.playerId != controllingPlayerId);
-    return this;
-  }
-
-  Friendlies(controllingPlayerId){
-    this.pieces = this.pieces.filter(p => p.playerId == controllingPlayerId);
-    return this;
-  }
-
-  Minion(){
-    this.pieces = this.pieces.filter(p => p.tags.indexOf('Minion') >= 0);
-    return this;
-  }
-
-  Random(){
-    this.pieces = this.pieces.sample();
-    return this;
-  }
-
-  Value(){
-    return this.pieces.value();
-  }
-
-}
