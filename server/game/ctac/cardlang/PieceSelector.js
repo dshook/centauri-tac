@@ -37,13 +37,13 @@ export default class PieceSelector{
 
       switch(selector.op){
         case '|':
-          return leftResult.union(rightResult);
+          return this.Union(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
         case '&':
-          return this.Intersection(leftResult, rightResult, (a,b) => a.id == b.id);
+          return this.Intersection(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
         case '-':
-          return leftResult.difference(rightResult);
+          return this.Difference(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
       }
 
@@ -53,13 +53,26 @@ export default class PieceSelector{
 
   }
 
-  Intersection(a, b, areEqualFunction){
+  Union(a, b, equal){
+    var results = [];
+    results = results.concat(a);
+
+    for(let bElement of b){
+      if(!_.any(results, res => equal(bElement, res) )) {
+          results.push(bElement);
+      }
+    }
+
+    return results;
+  }
+
+  Intersection(a, b, equal){
     var results = [];
 
     for(var i = 0; i < a.length; i++) {
         var aElement = a[i];
 
-        if(_.any(b, function(bElement) { return areEqualFunction(bElement, aElement); })) {
+        if(_.any(b, bElement => equal(bElement, aElement) )) {
             results.push(aElement);
         }
     }
@@ -67,4 +80,17 @@ export default class PieceSelector{
     return results;
   }
 
+  Difference(a, b, equal){
+    var results = [];
+
+    for(var i = 0; i < a.length; i++) {
+        var aElement = a[i];
+
+        if(!_.any(b, bElement => equal(bElement, aElement) )) {
+            results.push(aElement);
+        }
+    }
+
+    return results;
+  }
 }
