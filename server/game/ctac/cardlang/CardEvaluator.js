@@ -41,21 +41,26 @@ export default class CardEvaluator{
           }
           case 'Hit':
           {
-            let pieceSelected = this.selector.selectPiece(piece.playerId, action.args[0]);
-            this.log.info('Selected %j', pieceSelected);
-            if(pieceSelected != null){
-              this.queue.push(new PieceHealthChange(pieceSelected.id, -action.args[1]));
+            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            this.log.info('Selected %j', selected);
+            if(selected && selected.length > 0){
+              for(let s of selected){
+                this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
+              }
             }
             break;
           }
           case 'SetAttribute':
           {
-            let pieceSelected = this.selector.selectPiece(piece.playerId, action.args[0]);
-            this.log.info('Selected %j', pieceSelected);
-            if(pieceSelected != null){
-              var phc = new PieceAttributeChange(pieceSelected.id);
-              phc[action.args[1]] = action.args[2];
-              this.queue.push(phc);
+            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            this.log.info('Selected %j', selected);
+            if(selected && selected.length > 0){
+              for(let s of selected){
+                var phc = new PieceAttributeChange(s.id);
+                //set up the appropriate attribute change from args, i.e. attack = 1
+                phc[action.args[1]] = action.args[2];
+                this.queue.push(phc);
+              }
             }
 
             break;

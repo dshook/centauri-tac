@@ -56,15 +56,17 @@ test('Select a piece', t => {
   let selectors = [
     'FRIENDLY',
     'ENEMY',
-    'MINION'
+    'MINION',
+    'HERO'
   ];
-  t.plan(selectors.length);
+  t.plan(selectors.length * 2);
   let selector = new Selector(players, pieceStateMix);
 
   for(let selectString of selectors){
     selectorTemplate.selector.left = selectString;
-    let selection = selector.selectPiece(1, selectorTemplate);
-    t.ok(selection instanceof GamePiece, 'Selection got a gamepiece back for ' + selectString);
+    let selection = selector.selectPieces(1, selectorTemplate);
+    t.equal(selection.length, 1, 'Got a single piece back');
+    t.ok(selection[0] instanceof GamePiece, 'Selection got a gamepiece back for ' + selectString);
   }
 });
 

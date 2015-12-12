@@ -27,20 +27,14 @@ export default class Selector{
     throw 'Invalid player selector ' + JSON.stringify(selector);
   }
 
-  //single target selectors
-  selectPiece(controllingPlayerId, selector){
-    //for now, only way to get a single piece from a selector is from random
-    if(!selector.random || !selector.selector){
-      throw 'Use random for a single piece selector';      
-    }
-    return _.sample(this.selectPieces(controllingPlayerId, selector.selector));
-  }
-
-  //multi target
+  //select one or more pieces
   selectPieces(controllingPlayerId, selector){
+    //for now, only way to get a single piece from a selector is from random
+    if(selector.random && selector.selector){
+      return [_.sample(this.selectPieces(controllingPlayerId, selector.selector))];
+    }
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
       .Select(selector);
   }
-
 }
 
