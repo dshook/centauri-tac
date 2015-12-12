@@ -23,6 +23,11 @@ export default class PieceSelector{
         case 'MINION':
           return this.allPieces.filter(p => p.tags.indexOf('Minion') >= 0);
           break;
+        case 'HERO':
+          return this.allPieces.filter(p => p.tags.indexOf('Hero') >= 0);
+          break;
+        default:
+          throw 'Invalid piece type selector ' + selector;
       }
     }
 

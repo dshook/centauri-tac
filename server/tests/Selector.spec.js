@@ -172,6 +172,28 @@ test('Peace treaty union', t => {
   t.equal(emptySelection.length, 0, 'Got nothin'); 
 });
 
+test('Nested condition', t => {
+  t.plan(4);
+  let select = 
+    {
+      left: {
+        left: 'FRIENDLY',
+        op: '&',
+        right: 'CHARACTER'
+      },
+      op: '-',
+      right: 'HERO'
+    };
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, select);
+  
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 2, 'Got back friendly characters who arent a hero'); 
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+  t.equal(selection[0].tags[0], 'Minion', 'Selected piece is a minion');
+
+});
+
 
 function spawnPiece(pieceState, cardId, playerId){
     let cardPlayed = cardDirectory.directory[cardId];
