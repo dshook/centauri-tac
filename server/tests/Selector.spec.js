@@ -78,27 +78,27 @@ test('Characters', t => {
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
 });
 
-// test('Friendly Characters', t => {
-//   t.plan(6);
-//   let select = 
-//     {
-//       left: 'FRIENDLY',
-//       op: '&',
-//       right: 'CHARACTER'
-//     };
-//   let selector = new Selector(players, pieceStateMix);
-//   let selection = selector.selectPieces(1, select);
+test('Friendly Characters', t => {
+  t.plan(6);
+  let select = 
+    {
+      left: 'FRIENDLY',
+      op: '&',
+      right: 'CHARACTER'
+    };
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, select);
   
-//   t.ok(Array.isArray(selection), 'Got back an Array');
-//   t.equal(selection.length, 3, 'Got only friendly Pieces'); 
-//   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
-//   t.equal(selection[0].playerId, 1, 'First piece is for the right player');
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 3, 'Got only friendly Pieces'); 
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+  t.equal(selection[0].playerId, 1, 'First piece is for the right player');
 
-//   let emptySelector = new Selector(players, noPieces);
-//   let emptySelection = emptySelector.selectPieces(1, select);
-//   t.ok(Array.isArray(emptySelection), 'Got back an Array');
-//   t.equal(emptySelection.length, 0, 'Got nothin'); 
-// });
+  let emptySelector = new Selector(players, noPieces);
+  let emptySelection = emptySelector.selectPieces(1, select);
+  t.ok(Array.isArray(emptySelection), 'Got back an Array');
+  t.equal(emptySelection.length, 0, 'Got nothin'); 
+});
 
 // test('Enemy Characters', t => {
 //   t.plan(8);

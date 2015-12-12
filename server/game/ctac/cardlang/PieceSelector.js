@@ -32,8 +32,14 @@ export default class PieceSelector{
 
     let leftResult = this.Select(selector.left);
 
+    //console.log('left', leftResult.value());
+
     if(selector.op && selector.right){
       let rightResult = this.Select(selector.right);
+      //console.log('right', rightResult.value());
+      //TODO: Seemingly the array references coming back from left and right
+      //aren't matching and therefore interesction isn't matching any results
+      //need to investigate more
 
       switch(selector.op){
         case '|':
