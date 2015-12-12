@@ -11,16 +11,16 @@
 * unit ability
 
 ##Selectors
-* Need set operators for Union (|), intersection (&), and compliment (-)
+* ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
 * target
 * self
-* random enemy
-* all minions
+* ~~random enemy~~
+* ~~all minions~~
 
 * tags (battlecry, damaged, paralyzed, etc)
 * zones (play, deck, hand, secret, graveyard)
 * friendly/enemy
-* cardtype (minion, weapons, spell, secret, hero power)
+* cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
 
 ##Areas
 * cross
@@ -32,7 +32,7 @@
 
 ##Randomness
 * random number in list
-* random minion, possibly from class or by cost
+* ~~random minion, possibly from class or by cost~~
 
 ##Conditions - check for AND and OR
 * Unit is dead (self?)
