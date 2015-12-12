@@ -39,8 +39,7 @@ export default class Selector{
   //multi target
   selectPieces(controllingPlayerId, selector){
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
-      .Select(selector)
-      .value();
+      .Select(selector);
   }
 
 }

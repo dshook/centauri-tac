@@ -3,7 +3,7 @@ import _ from 'lodash';
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
   constructor(pieces, controllingPlayerId){
-    this.allPieces = _.chain(pieces);
+    this.allPieces = pieces;
     this.controllingPlayerId = controllingPlayerId;
   }
 
@@ -32,21 +32,15 @@ export default class PieceSelector{
 
     let leftResult = this.Select(selector.left);
 
-    //console.log('left', leftResult.value());
-
     if(selector.op && selector.right){
       let rightResult = this.Select(selector.right);
-      //console.log('right', rightResult.value());
-      //TODO: Seemingly the array references coming back from left and right
-      //aren't matching and therefore interesction isn't matching any results
-      //need to investigate more
 
       switch(selector.op){
         case '|':
           return leftResult.union(rightResult);
           break;
         case '&':
-          return leftResult.intersection(rightResult);
+          return this.Intersection(leftResult, rightResult, (a,b) => a.id == b.id);
           break;
         case '-':
           return leftResult.difference(rightResult);
@@ -57,6 +51,20 @@ export default class PieceSelector{
       return leftResult;
     }
 
+  }
+
+  Intersection(a, b, areEqualFunction){
+    var results = [];
+
+    for(var i = 0; i < a.length; i++) {
+        var aElement = a[i];
+
+        if(_.any(b, function(bElement) { return areEqualFunction(bElement, aElement); })) {
+            results.push(aElement);
+        }
+    }
+
+    return results;
   }
 
 }
