@@ -12,10 +12,12 @@ import _ from 'lodash';
 @loglevel
 export default class ActivateCardProcessor
 {
-  constructor(playerResourceState, cardDirectory)
+  constructor(playerResourceState, cardDirectory, pieceState, mapState)
   {
     this.playerResourceState = playerResourceState;
     this.cardDirectory = cardDirectory;
+    this.pieceState = pieceState;
+    this.mapState = mapState;
   }
   /**
    * Proc
@@ -35,11 +37,24 @@ export default class ActivateCardProcessor
       return;
     }
 
+    //check to make sure the card was played in a valid spot
+    let playerHero = this.pieceState.hero(action.playerId);
+    let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
+    if(kingDist > 1){
+      this.log.info('Cannot play minion that far away, dist %s'
+        , kingDist);
+      queue.cancel(action);
+      queue.push(new Message('You must play your minions close to your hero!'));
+      return;
+    }
+
+
+    //all good if we make it this far
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
 
     queue.complete(action);
-    this.log.info('player %s played card %s at %s',
-      action.playerId, action.cardId, action.position);
+    this.log.info('player %s played card %s at %s dist from hero: %s',
+      action.playerId, action.cardId, action.position, kingDist);
   }
 }

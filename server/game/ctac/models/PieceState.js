@@ -20,12 +20,16 @@ export default class PieceState
     return newPiece.id;
   }
 
+  remove(id){
+    let index = this.pieces.indexOf(this.piece(id));
+    this.pieces.splice(index, 1);
+  }
+
   piece(id){
     return this.pieces.filter(x => x.id == id)[0];
   }
 
-  remove(id){
-    let index = this.pieces.indexOf(this.piece(id));
-    this.pieces.splice(index, 1);
+  hero(playerId){
+    return this.pieces.filter(x => x.playerId == playerId && x.tags[0] === 'Hero')[0];
   }
 }

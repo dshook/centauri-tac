@@ -28,7 +28,6 @@ export default class SpawnProcessor
 
     let cardPlayed = this.cardDirectory.directory[action.cardId];
 
-    //TODO: validate against board state and all that jazz
     var newPiece = new GamePiece();
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
