@@ -2,6 +2,7 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -12,6 +13,9 @@ namespace ctac
         
         [Inject]
         public TileHoverSignal tileHover { get; set; }
+
+        [Inject]
+        public CardSelectedSignal cardSelected { get; set; }
 
         [Inject]
         public PieceSelectedSignal pieceSelected { get; set; }
@@ -30,6 +34,7 @@ namespace ctac
         public override void OnRegister()
         {
             view.tileHover.AddListener(onTileHover);
+            cardSelected.AddListener(onCardSelected);
             pieceSelected.AddListener(onPieceSelected);
             view.init();
         }
@@ -37,6 +42,7 @@ namespace ctac
         public override void onRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
+            cardSelected.RemoveListener(onCardSelected);
         }
 
         void onTileHover(GameObject newHoverTile)
@@ -98,6 +104,25 @@ namespace ctac
                 view.onTileSelected(null);
                 view.onMovableTiles(null);
             }
+        }
+
+        private void onCardSelected(CardModel card)
+        {
+            if (card == null)
+            {
+                view.onTilesSelected(null);
+                return;
+            }
+
+            //find play radius depending on the card
+            //assuming minion for now
+            var playerHero = pieces.Hero(card.playerId);
+            List<Tile> playableTiles = map.tileList
+                .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
+                    && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
+                )
+                .ToList();
+            view.onTilesSelected(playableTiles);
         }
     }
 }

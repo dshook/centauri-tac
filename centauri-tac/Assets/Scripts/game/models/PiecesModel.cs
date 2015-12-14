@@ -12,5 +12,10 @@ namespace ctac
         {
             return Pieces.FirstOrDefault(x => x.id == id);
         }
+
+        public PieceModel Hero(int playerId)
+        {
+            return Pieces.FirstOrDefault(x => x.playerId == playerId && x.tags.Contains("Hero"));
+        }
     }
 }

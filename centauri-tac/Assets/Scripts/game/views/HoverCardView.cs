@@ -18,7 +18,7 @@ namespace ctac
 
         private CardCanvasHelperView CardCanvasHelper;
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
-        private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
+        //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
         private Vector2 bottomLeftAnchor = new Vector2(0, 0);
         private RectTransform rectTransform;
 

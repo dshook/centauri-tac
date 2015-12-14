@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace ctac
 {
@@ -9,6 +10,7 @@ namespace ctac
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
+        int KingDistance(Vector2 a, Vector2 b);
         List<Tile> FindPath(Tile start, Tile end, int maxDist);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
         Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null);
@@ -105,10 +107,17 @@ namespace ctac
             return ret;
         }
 
-
         public int TileDistance(Vector2 a, Vector2 b)
         {
             return (int)(Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y));
+        }
+
+        public int KingDistance(Vector2 a, Vector2 b)
+        {
+            return Math.Max(
+                (int)Mathf.Abs(a.x - b.x),
+                (int)Mathf.Abs(a.y - b.y)
+            );
         }
 
         public List<Tile> FindPath(Tile start, Tile end, int maxDist)

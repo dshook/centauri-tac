@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ctac
@@ -13,6 +14,8 @@ namespace ctac
         public int attack { get; set; }
         public int health { get; set; }
         public int movement { get; set; }
+
+        public List<string> tags { get; set; }
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }

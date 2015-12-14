@@ -106,6 +106,7 @@ namespace ctac
                 baseAttack = cardTemplate.attack,
                 baseHealth = cardTemplate.health,
                 movement = cardTemplate.movement,
+                tags = cardTemplate.tags,
                 hasAttacked = true,
                 hasMoved = true
             };

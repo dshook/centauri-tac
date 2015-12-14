@@ -15,6 +15,7 @@ namespace ctac
         Tile selectedTile = null;
         Tile attackTile = null;
         Dictionary<Vector2, Tile> moveTiles = null;
+        List<Tile> selectedTiles = null;
         List<Tile> pathTiles = null;
 
         bool active = false;
@@ -51,10 +52,7 @@ namespace ctac
             RaycastHit floorHit;
             if (Physics.Raycast(camRay, out floorHit, Constants.cameraRaycastDist, tileMask))
             {
-                if (selectedTile == null || (selectedTile != null && floorHit.collider.gameObject != selectedTile.gameObject))
-                {
-                    tileHover.Dispatch(floorHit.collider.gameObject);
-                }
+                tileHover.Dispatch(floorHit.collider.gameObject);
             }
             else
             {
@@ -108,6 +106,26 @@ namespace ctac
             if (selectedTile != null)
             {
                 FlagsHelper.Set(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
+            }
+        }
+
+        internal void onTilesSelected(List<Tile> tiles)
+        {
+            if (selectedTiles != null && selectedTiles.Count > 0)
+            {
+                foreach (var tile in selectedTiles)
+                {
+                    FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.Selected);
+                }
+            }
+
+            selectedTiles = tiles;
+            if (tiles != null)
+            {
+                foreach (var tile in tiles)
+                {
+                    FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.Selected);
+                }
             }
         }
 

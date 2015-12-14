@@ -1,4 +1,4 @@
-﻿
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace ctac
@@ -20,6 +20,8 @@ namespace ctac
         public bool hasMoved { get; set; }
 
         public bool hasAttacked { get; set; }
+
+        public List<string> tags { get; set; }
 
         public Vector2 tilePosition {
             get
