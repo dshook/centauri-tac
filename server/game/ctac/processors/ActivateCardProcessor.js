@@ -54,7 +54,7 @@ export default class ActivateCardProcessor
     queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
 
     queue.complete(action);
-    this.log.info('player %s played card %s at %s dist from hero: %s',
-      action.playerId, action.cardId, action.position, kingDist);
+    this.log.info('player %s played card %s at %s',
+      action.playerId, action.cardId, action.position);
   }
 }

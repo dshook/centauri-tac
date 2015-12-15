@@ -1,10 +1,12 @@
 import _ from 'lodash';
 import Position from './Position.js';
 import Tile from './Tile.js';
+import loglevel from 'loglevel-decorator';
 
 /**
  * Current loaded map with tile positions
  */
+ @loglevel
 export default class MapState
 {
   constructor()
@@ -36,7 +38,7 @@ export default class MapState
   kingDistance(posA, posB){
     return Math.max(
       Math.abs(posA.x - posB.x), 
-      Math.abs(posA.y - posB.y)
+      Math.abs(posA.z - posB.z)
     );
   }
 
