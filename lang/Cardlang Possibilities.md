@@ -41,13 +41,14 @@
 
 
 ##Actions
-* ~~draw card~~
-* Shuffle into deck
-* ~~Hit for damage~~
-* spawn minion
 * add buff
+* spawn minion
+* aura effects
+* give status effect (silence, shield)
+* Shuffle into deck
 * destroy target minion
 * copy minion (into hand or play)
-* give status effect (silence, shield)
-* aura effects
 * card cost modification
+* effect that lasts till end of turn
+* ~~Hit for damage~~
+* ~~draw card~~

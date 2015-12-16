@@ -29,6 +29,7 @@ var pieceStateMix = new PieceState();
 spawnPiece(pieceStateMix, 1, 1);
 spawnPiece(pieceStateMix, 2, 1);
 spawnPiece(pieceStateMix, 3, 1);
+spawnPiece(pieceStateMix, 9, 1);
 spawnPiece(pieceStateMix, 1, 2);
 spawnPiece(pieceStateMix, 2, 2);
 spawnPiece(pieceStateMix, 3, 2);
@@ -48,6 +49,22 @@ test('Basic Draw card', t => {
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof DrawCard, 'First action is Draw Card');
   t.ok(queue._actions[1] instanceof DrawCard, 'Second action is Draw Card');
+});
+
+test('Basic Hit action', t => {
+  t.plan(4);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory);
+
+  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 9)[0]; 
+  t.ok(testBot, 'Found writhing bunch');
+
+  cardEval.evaluateAction('play', testBot);
+
+  t.equal(queue._actions.length, 2, '2 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Hit');
+  t.ok(queue._actions[1] instanceof PieceHealthChange, 'Second action is Hit');
 });
 
 function spawnPiece(pieceState, cardId, playerId){
