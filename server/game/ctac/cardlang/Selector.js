@@ -31,7 +31,11 @@ export default class Selector{
   selectPieces(controllingPlayerId, selector){
     //for now, only way to get a single piece from a selector is from random
     if(selector.random && selector.selector){
-      return [_.sample(this.selectPieces(controllingPlayerId, selector.selector))];
+      let selection = this.selectPieces(controllingPlayerId, selector.selector);
+      if(selection && selection.length > 0){
+        return [_.sample(selection)];
+      }
+      return [];
     }
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
       .Select(selector);

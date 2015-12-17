@@ -33,9 +33,20 @@ export default class HealthChangeProcessor
       return;
     }
 
-    action.newCurrentHealth = piece.health + action.change;
+    let hpBeforeChange = piece.health;
+    piece.health = piece.health + action.change;
 
-    piece.health = action.newCurrentHealth;
+    //cap hp at base health and adjust action change amounts
+    if(piece.health > piece.baseHealth){
+      action.change = piece.baseHealth - hpBeforeChange; 
+      piece.health = piece.baseHealth;
+    }
+
+    action.newCurrentHealth = piece.health;
+
+    if(action.change < 0){
+      this.cardEvaluator.evaluateAction('damaged', piece);
+    }
 
     if(piece.health <= 0){
       this.cardEvaluator.evaluateAction('death', piece);

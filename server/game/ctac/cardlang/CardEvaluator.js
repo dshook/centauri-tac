@@ -50,6 +50,17 @@ export default class CardEvaluator{
             }
             break;
           }
+          case 'Heal':
+          {
+            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            this.log.info('Selected %j', selected);
+            if(selected && selected.length > 0){
+              for(let s of selected){
+                this.queue.push(new PieceHealthChange(s.id, action.args[1]));
+              }
+            }
+            break;
+          }
           case 'SetAttribute':
           {
             let selected = this.selector.selectPieces(piece.playerId, action.args[0]);

@@ -1,0 +1,11 @@
+{
+	"id": 11,
+	"name": "Carbon Synthetic",
+	"description": "Whenever this takes damage, heal your hero for 2",
+	"cost": 3,
+	"attack": 2,
+	"health": 5,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "damaged{ Heal(FRIENDLY & HERO, 2); }"
+}

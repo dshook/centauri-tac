@@ -70,6 +70,21 @@ test('Select a piece', t => {
   }
 });
 
+test('Random none selected', t => {
+  t.plan(2);
+
+  let selectorTemplate = {
+    random: true,
+    selector:{
+      left : 'MINION'
+    }
+  };
+  let selector = new Selector(players, heroesOnly);
+  let selection = selector.selectPieces(1, selectorTemplate);
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 0, 'Got nothing back');
+});
+
 test('Characters', t => {
   t.plan(3);
   let selector = new Selector(players, pieceStateMix);
