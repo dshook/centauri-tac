@@ -8,12 +8,8 @@
 \s+ /* skip whitespace */
 
 //root events
-(play) 
-  return 'play'
-(death)
-  return 'death'
-(damaged)
-  return 'damaged'
+(play|death|damaged) 
+  return 'event'
 
 // player targets
 (PLAYER|OPPONENT)
@@ -77,26 +73,18 @@ events
 ;
 
 c
-  : pPlay? pDeath? pDamaged?
-    {{ $$ = {
-         play: $1,
-         death: $2,
-         damaged: $3
-      }; 
-    }}
+  : c pEvent
+     { $$ = $c; $$.push($pEvent); }
+  | pEvent
+     { $$ = [$pEvent]; }
   ;
 
 /* events */
-pPlay
-  : play'{'actionlist'}' -> $3
-;
-
-pDeath
-  : death'{'actionlist'}' -> $3
-;
-
-pDamaged
-  : damaged'{'actionlist'}' -> $3
+pEvent
+  : event'{'actionlist'}'
+   { $$ = { event: $1, actions: $3 } }
+  | event'('possibleRandSelector')''{'actionlist'}'
+   { $$ = { event: $1, selector: $3, actions: $6 } }
 ;
 
 /* actionlist is all the actions for each event */

@@ -82,7 +82,7 @@ namespace ctac {
         public class TakeDamageAnim : IAnimate
         {
             public bool Complete { get; set; }
-            public bool Async { get { return true; } }
+            public bool Async { get { return false; } }
             public float? postDelay { get { return null; } }
 
             public GameObject damageSplat { get; set; }
