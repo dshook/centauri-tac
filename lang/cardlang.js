@@ -72,12 +72,12 @@
   }
 */
 var cardlang = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,14],$V1=[1,14],$V2=[12,16],$V3=[1,23],$V4=[1,26],$V5=[1,27],$V6=[1,28],$V7=[19,23],$V8=[1,32],$V9=[1,33],$Va=[1,34],$Vb=[19,23,31,32,33];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[5,15,17],$V1=[5,17],$V2=[1,17],$V3=[13,19],$V4=[1,28],$V5=[1,31],$V6=[1,32],$V7=[1,33],$V8=[22,26],$V9=[1,38],$Va=[1,39],$Vb=[1,40],$Vc=[22,26,34,35,36];
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"pPlay":8,"play":9,"{":10,"actionlist":11,"}":12,"pDeath":13,"death":14,"actionargs":15,"action":16,"(":17,"arguments":18,")":19,";":20,"*":21,"pNumber":22,",":23,"argument_item":24,"possibleRandSelector":25,"attribute":26,"selector":27,"target":28,"random":29,"operator":30,"&":31,"|":32,"-":33,"number":34,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",9:"play",10:"{",12:"}",14:"death",16:"action",17:"(",19:")",20:";",21:"*",23:",",26:"attribute",28:"target",29:"random",31:"&",32:"|",33:"-",34:"number"},
-productions_: [0,[3,2],[4,2],[8,4],[13,4],[11,2],[11,1],[15,5],[15,7],[18,3],[18,1],[24,1],[24,1],[24,1],[25,1],[25,1],[25,4],[25,4],[27,3],[27,3],[30,1],[30,1],[30,1],[22,1],[6,0],[6,1],[7,0],[7,1]],
+symbols_: {"error":2,"events":3,"c":4,"EOF":5,"c_option0":6,"c_option1":7,"c_option2":8,"pPlay":9,"play":10,"{":11,"actionlist":12,"}":13,"pDeath":14,"death":15,"pDamaged":16,"damaged":17,"actionargs":18,"action":19,"(":20,"arguments":21,")":22,";":23,"*":24,"pNumber":25,",":26,"argument_item":27,"possibleRandSelector":28,"attribute":29,"selector":30,"target":31,"random":32,"operator":33,"&":34,"|":35,"-":36,"number":37,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",10:"play",11:"{",13:"}",15:"death",17:"damaged",19:"action",20:"(",22:")",23:";",24:"*",26:",",29:"attribute",31:"target",32:"random",34:"&",35:"|",36:"-",37:"number"},
+productions_: [0,[3,2],[4,3],[9,4],[14,4],[16,4],[12,2],[12,1],[18,5],[18,7],[21,3],[21,1],[27,1],[27,1],[27,1],[28,1],[28,1],[28,4],[28,4],[30,3],[30,3],[33,1],[33,1],[33,1],[25,1],[6,0],[6,1],[7,0],[7,1],[8,0],[8,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -88,55 +88,56 @@ return $$[$0-1];
 break;
 case 2:
  this.$ = {
-         play: $$[$0-1],
-         death: $$[$0]
+         play: $$[$0-2],
+         death: $$[$0-1],
+         damaged: $$[$0]
       }; 
     
 break;
-case 3: case 4:
+case 3: case 4: case 5:
 this.$ = $$[$0-1];
 break;
-case 5:
+case 6:
  this.$ = $$[$0-1]; this.$.push($$[$0]); 
 break;
-case 6: case 10:
+case 7: case 11:
  this.$ = [$$[$0]]; 
 break;
-case 7:
+case 8:
  this.$ = 
     { action: $$[$0-4], args: $$[$0-2] }
   
 break;
-case 8:
+case 9:
  this.$ = 
     { action: $$[$0-6], args: $$[$0-4], times: $$[$0-1] }
   
 break;
-case 9:
+case 10:
  this.$ = $$[$0-2]; this.$.push($$[$0]); 
 break;
-case 11: case 12: case 13:
+case 12: case 13: case 14:
 this.$ = $$[$0];
 break;
-case 15:
+case 16:
  this.$ = { left: $$[$0]}; 
 break;
-case 16:
+case 17:
  this.$ = { random: true, selector: { left: $$[$0-1]} }; 
 break;
-case 17:
+case 18:
  this.$ = { random: true, selector: $$[$0-1] }; 
 break;
-case 18: case 19:
+case 19: case 20:
  this.$ = { left: $$[$0-2], op: $$[$0-1], right: $$[$0] }; 
 break;
-case 23:
+case 24:
 this.$ = parseInt($$[$0]);
 break;
 }
 },
-table: [o($V0,[2,24],{3:1,4:2,6:3,8:4,9:[1,5]}),{1:[3]},{5:[1,6]},{5:[2,26],7:7,13:8,14:[1,9]},o($V0,[2,25]),{10:[1,10]},{1:[2,1]},{5:[2,2]},{5:[2,27]},{10:[1,11]},{11:12,15:13,16:$V1},{11:15,15:13,16:$V1},{12:[1,16],15:17,16:$V1},o($V2,[2,6]),{17:[1,18]},{12:[1,19],15:17,16:$V1},o($V0,[2,3]),o($V2,[2,5]),{18:20,22:24,24:21,25:22,26:$V3,27:25,28:$V4,29:$V5,34:$V6},{5:[2,4]},{19:[1,29],23:[1,30]},o($V7,[2,10]),o($V7,[2,11]),o($V7,[2,12]),o($V7,[2,13]),o($V7,[2,14],{30:31,31:$V8,32:$V9,33:$Va}),o($V7,[2,15],{30:35,31:$V8,32:$V9,33:$Va}),{17:[1,36]},o([19,20,23],[2,23]),{20:[1,37],21:[1,38]},{22:24,24:39,25:22,26:$V3,27:25,28:$V4,29:$V5,34:$V6},{28:[1,40]},{28:[2,20]},{28:[2,21]},{28:[2,22]},{28:[1,41]},{27:43,28:[1,42]},o($V2,[2,7]),{22:44,34:$V6},o($V7,[2,9]),o($Vb,[2,19]),o($Vb,[2,18]),{19:[1,45],30:35,31:$V8,32:$V9,33:$Va},{19:[1,46],30:31,31:$V8,32:$V9,33:$Va},{20:[1,47]},o($V7,[2,16]),o($V7,[2,17]),o($V2,[2,8])],
-defaultActions: {6:[2,1],7:[2,2],8:[2,27],19:[2,4],32:[2,20],33:[2,21],34:[2,22]},
+table: [o($V0,[2,25],{3:1,4:2,6:3,9:4,10:[1,5]}),{1:[3]},{5:[1,6]},o($V1,[2,27],{7:7,14:8,15:[1,9]}),o($V0,[2,26]),{11:[1,10]},{1:[2,1]},{5:[2,29],8:11,16:12,17:[1,13]},o($V1,[2,28]),{11:[1,14]},{12:15,18:16,19:$V2},{5:[2,2]},{5:[2,30]},{11:[1,18]},{12:19,18:16,19:$V2},{13:[1,20],18:21,19:$V2},o($V3,[2,7]),{20:[1,22]},{12:23,18:16,19:$V2},{13:[1,24],18:21,19:$V2},o($V0,[2,3]),o($V3,[2,6]),{21:25,25:29,27:26,28:27,29:$V4,30:30,31:$V5,32:$V6,37:$V7},{13:[1,34],18:21,19:$V2},o($V1,[2,4]),{22:[1,35],26:[1,36]},o($V8,[2,11]),o($V8,[2,12]),o($V8,[2,13]),o($V8,[2,14]),o($V8,[2,15],{33:37,34:$V9,35:$Va,36:$Vb}),o($V8,[2,16],{33:41,34:$V9,35:$Va,36:$Vb}),{20:[1,42]},o([22,23,26],[2,24]),{5:[2,5]},{23:[1,43],24:[1,44]},{25:29,27:45,28:27,29:$V4,30:30,31:$V5,32:$V6,37:$V7},{31:[1,46]},{31:[2,21]},{31:[2,22]},{31:[2,23]},{31:[1,47]},{30:49,31:[1,48]},o($V3,[2,8]),{25:50,37:$V7},o($V8,[2,10]),o($Vc,[2,20]),o($Vc,[2,19]),{22:[1,51],33:41,34:$V9,35:$Va,36:$Vb},{22:[1,52],33:37,34:$V9,35:$Va,36:$Vb},{23:[1,53]},o($V8,[2,17]),o($V8,[2,18]),o($V3,[2,9])],
+defaultActions: {6:[2,1],11:[2,2],12:[2,30],34:[2,5],38:[2,21],39:[2,22],40:[2,23]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -617,54 +618,56 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 9
+case 1:return 10
 break;
-case 2:return 14
+case 2:return 15
 break;
-case 3:return 28
+case 3:return 17
 break;
-case 4:return 28
+case 4:return 31
 break;
-case 5:return 28
+case 5:return 31
 break;
-case 6:return 29
+case 6:return 31
 break;
-case 7:return 16
+case 7:return 32
 break;
-case 8:return 26
+case 8:return 19
 break;
-case 9:return 34
+case 9:return 29
 break;
-case 10:return 17
+case 10:return 37
 break;
-case 11:return 19
+case 11:return 20
 break;
-case 12:return 23
+case 12:return 22
 break;
-case 13:return 20
+case 13:return 26
 break;
-case 14:return 10
+case 14:return 23
 break;
-case 15:return 12
+case 15:return 11
 break;
-case 16:return 21
+case 16:return 13
 break;
-case 17:return '='
+case 17:return 24
 break;
-case 18:return 32
+case 18:return '='
 break;
-case 19:return 31
+case 19:return 35
 break;
-case 20:return 33
+case 20:return 34
 break;
-case 21:return 5
+case 21:return 36
 break;
-case 22:return 'INVALID'
+case 22:return 5
+break;
+case 23:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(play))/,/^(?:(death))/,/^(?:(damaged))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit|Heal))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],"inclusive":true}}
 });
 return lexer;
 })();

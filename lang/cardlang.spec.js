@@ -62,7 +62,7 @@ test('Two actions on event', t => {
 });
 
 test('Two Events', t => {
-  t.plan(1);
+  t.plan(2);
 
   let input = `
   play{ 
@@ -75,8 +75,7 @@ test('Two Events', t => {
 
   let d = parser.parse(input);
 
-  let expected = {
-    play: [
+  let expectedPlay = [
       {
         action: 'SetAttribute',
         args: [
@@ -90,18 +89,18 @@ test('Two Events', t => {
           3
         ]
       }
-    ],
-    death: [
+    ];
+  let expectedDeath = [
       {
         action: 'DrawCard',
         args: [
           { left: 'PLAYER' }
         ]
       }
-    ]
-  };
+  ];
 
-  t.deepEqual(d, expected);
+  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d.death, expectedDeath);
 });
 
 test('Repeating action', t => {
@@ -218,4 +217,32 @@ test('Selector input with random', t => {
   ];
 
   t.deepEqual(d.play, expectedPlay);
+});
+
+test('Heal action on damaged', t => {
+  t.plan(1);
+
+  let input = `
+  damaged{ 
+    Heal(FRIENDLY & HERO, 2);
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      action: 'Heal',
+      args: [
+        {
+          left: 'FRIENDLY',
+          op: '&',
+          right: 'HERO'
+        },
+        2
+      ]
+    }
+  ];
+
+  t.deepEqual(d.damaged, expectedPlay);
 });

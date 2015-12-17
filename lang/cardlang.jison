@@ -12,6 +12,8 @@
   return 'play'
 (death)
   return 'death'
+(damaged)
+  return 'damaged'
 
 // player targets
 (PLAYER|OPPONENT)
@@ -29,7 +31,7 @@
   return 'random'
 
 // actions
-(DrawCard|SetAttribute|Hit)
+(DrawCard|SetAttribute|Hit|Heal)
   return 'action'
 
 //attributes
@@ -75,10 +77,11 @@ events
 ;
 
 c
-  : pPlay? pDeath?
+  : pPlay? pDeath? pDamaged?
     {{ $$ = {
          play: $1,
-         death: $2
+         death: $2,
+         damaged: $3
       }; 
     }}
   ;
@@ -90,6 +93,10 @@ pPlay
 
 pDeath
   : death'{'actionlist'}' -> $3
+;
+
+pDamaged
+  : damaged'{'actionlist'}' -> $3
 ;
 
 /* actionlist is all the actions for each event */

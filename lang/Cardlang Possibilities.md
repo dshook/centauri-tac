@@ -52,3 +52,4 @@
 * effect that lasts till end of turn
 * ~~Hit for damage~~
 * ~~draw card~~
+* ~~Heal target~~
