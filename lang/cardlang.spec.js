@@ -15,16 +15,21 @@ test('basic play event', t => {
 
   let expectedPlay = [
     {
-      action: 'DrawCard',
-      args: [
+      event: 'play',
+      actions: [
         {
-          left: 'PLAYER'
+          action: 'DrawCard',
+          args: [
+            {
+              left: 'PLAYER'
+            }
+          ]
         }
       ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Two actions on event', t => {
@@ -41,28 +46,33 @@ test('Two actions on event', t => {
 
   let expectedPlay = [
     {
-      action: 'DrawCard',
-      args: [
+      event: 'play',
+      actions: [
         {
-          left: 'PLAYER'
+          action: 'DrawCard',
+          args: [
+            {
+              left: 'PLAYER'
+            }
+          ]
+        },
+        {
+          action: 'SetAttribute',
+          args: [
+            { left: 'TARGET' },
+            'health',
+            3
+          ]
         }
-      ]
-    },
-    {
-      action: 'SetAttribute',
-      args: [
-        { left: 'TARGET' },
-        'health',
-        3
       ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Two Events', t => {
-  t.plan(2);
+  t.plan(1);
 
   let input = `
   play{ 
@@ -75,32 +85,39 @@ test('Two Events', t => {
 
   let d = parser.parse(input);
 
-  let expectedPlay = [
-      {
-        action: 'SetAttribute',
-        args: [
-          {
-            random: true,
-            selector: { 
-              left: 'CHARACTER' 
-            }
-          },
-          'health',
-          3
-        ]
-      }
-    ];
-  let expectedDeath = [
-      {
-        action: 'DrawCard',
-        args: [
-          { left: 'PLAYER' }
-        ]
-      }
+  let expected = [
+    {
+      event: 'play',
+      actions: [
+        {
+          action: 'SetAttribute',
+          args: [
+            {
+              random: true,
+              selector: { 
+                left: 'CHARACTER' 
+              }
+            },
+            'health',
+            3
+          ]
+        }
+      ]
+    },
+    {
+      event: 'death',
+      actions: [
+        {
+          action: 'DrawCard',
+          args: [
+            { left: 'PLAYER' }
+          ]
+        }
+      ]
+    }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
-  t.deepEqual(d.death, expectedDeath);
+  t.deepEqual(d, expected);
 });
 
 test('Repeating action', t => {
@@ -116,15 +133,20 @@ test('Repeating action', t => {
 
   let expectedPlay = [
     {
-      action: 'DrawCard',
-      args: [
-        { left: 'PLAYER' }
-      ],
-      times: 2
+      event: 'play',
+      actions: [
+        {
+          action: 'DrawCard',
+          args: [
+            { left: 'PLAYER' }
+          ],
+          times: 2
+        }
+      ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Hit action', t => {
@@ -140,15 +162,20 @@ test('Hit action', t => {
 
   let expectedPlay = [
     {
-      action: 'Hit',
-      args: [
-        {left :'CHARACTER' },
-        2
+      event: 'play',
+      actions: [
+        {
+          action: 'Hit',
+          args: [
+            {left :'CHARACTER' },
+            2
+          ]
+        }
       ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Selector input', t => {
@@ -164,23 +191,28 @@ test('Selector input', t => {
 
   let expectedPlay = [
     {
-      action: 'DrawCard',
-      args: [
+      event: 'play',
+      actions: [
         {
-          left :
+          action: 'DrawCard',
+          args: [
             {
-              left: 'ENEMY',
+              left :
+                {
+                  left: 'ENEMY',
+                  op: '&',
+                  right: 'CHARACTER'
+                },
               op: '&',
-              right: 'CHARACTER'
-            },
-          op: '&',
-          right: 'HERO'
+              right: 'HERO'
+            }
+          ]
         }
       ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Selector input with random', t => {
@@ -196,27 +228,32 @@ test('Selector input with random', t => {
 
   let expectedPlay = [
     {
-      action: 'Hit',
-      args: [
+      event: 'play',
+      actions: [
         {
-          random: true,
-          selector:{
-            left :
-              {
-                left: 'FRIENDLY',
-                op: '&',
-                right: 'MINION'
-              },
-            op: '-',
-            right: 'HERO'
-          }
-        },
-        1
+          action: 'Hit',
+          args: [
+            {
+              random: true,
+              selector:{
+                left :
+                  {
+                    left: 'FRIENDLY',
+                    op: '&',
+                    right: 'MINION'
+                  },
+                op: '-',
+                right: 'HERO'
+              }
+            },
+            1
+          ]
+        }
       ]
     }
   ];
 
-  t.deepEqual(d.play, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
 
 test('Heal action on damaged', t => {
@@ -232,17 +269,22 @@ test('Heal action on damaged', t => {
 
   let expectedPlay = [
     {
-      action: 'Heal',
-      args: [
+      event: 'damaged',
+      actions: [
         {
-          left: 'FRIENDLY',
-          op: '&',
-          right: 'HERO'
-        },
-        2
+          action: 'Heal',
+          args: [
+            {
+              left: 'FRIENDLY',
+              op: '&',
+              right: 'HERO'
+            },
+            2
+          ]
+        }
       ]
     }
   ];
 
-  t.deepEqual(d.damaged, expectedPlay);
+  t.deepEqual(d, expectedPlay);
 });
