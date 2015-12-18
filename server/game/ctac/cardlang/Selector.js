@@ -12,7 +12,7 @@ export default class Selector{
   selectPlayer(controllingPlayerId, selector){
     //for now, selecting a player can only use the single left prop
     if(!selector.left || (selector.left && typeof(selector.left) != 'string' )){
-      throw 'Select player can only take basic player selectors';      
+      throw 'Select player can only take basic player selectors';
     }
     switch(selector.left){
       case 'PLAYER':
@@ -20,7 +20,7 @@ export default class Selector{
         break;
       case 'OPPONENT':
         let opponents = this.players.filter(x => x.id !== controllingPlayerId);
-        if(opponents.length > 0) 
+        if(opponents.length > 0)
           return opponents[0].id;
         break;
     }
@@ -28,7 +28,7 @@ export default class Selector{
   }
 
   //select one or more pieces
-  selectPieces(controllingPlayerId, selector){
+  selectPieces(controllingPlayerId, triggeringPiece, selector){
     //for now, only way to get a single piece from a selector is from random
     if(selector.random && selector.selector){
       let selection = this.selectPieces(controllingPlayerId, selector.selector);
@@ -36,6 +36,9 @@ export default class Selector{
         return [_.sample(selection)];
       }
       return [];
+    }
+    if(selector.left == 'SELF'){
+      return [triggeringPiece];
     }
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
       .Select(selector);

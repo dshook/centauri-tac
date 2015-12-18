@@ -8,47 +8,75 @@ import PieceAttributeChange from '../actions/PieceAttributeChange.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, selector, cardDirectory){
+  constructor(queue, selector, cardDirectory, turnState, pieceState){
     this.queue = queue;
     this.selector = selector;
     this.cardDirectory = cardDirectory;
+    this.turnState = turnState;
+    this.pieceState = pieceState;
+
+    this.eventDefaultSelectors = {
+      playMinion: {left: 'SELF'},
+      death: {left: 'SELF'},
+      damaged: {left: 'SELF'}
+    };
   }
 
-  //used for one time events that happen to a single piece
-  evaluateAction(event, piece){
-    let card = this.cardDirectory.directory[piece.cardId];
-
-    this.log.info('Eval event %s piece %j: %j', event, piece, card.events);
-    if(!card.events || card.events.length === 0) return;
+  evaluateAction(event, triggeringPiece){
+    this.log.info('Eval event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
-    //find all actions for this event, there could be more than one
-    for(let cardEvent of card.events){
-      if(cardEvent.event === event){
-        evalActions = evalActions.concat(cardEvent.actions);
+    for(let piece of this.pieceState){
+      let card = this.cardDirectory.directory[piece.cardId];
+      if(!card.events || card.events.length === 0) return;
+
+      //find all actions for this event, there could be more than one
+      for(let cardEvent of card.events){
+        if(cardEvent.event === event){
+          //see if the selector matches up for this card
+          let eventSelector = cardEvent.selector;
+          if(!eventSelector){
+            eventSelector = this.eventDefaultSelectors[event];
+          }
+
+          let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector);
+          let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+
+          //if it does, add it to the list of actions to be processed
+          if(selectorMatched){
+            for(let cardEventAction of cardEvent.actions){
+              evalActions.push({
+                piece: piece,
+                action: cardEventAction
+              });
+            }
+          }
+        }
       }
     }
 
-    for(let action of evalActions){
+
+    for(let pieceAction of evalActions){
+      let action = pieceAction.action;
       let times = 1;
       if(action.times){
         times = action.times;
       }
 
-      this.log.info('Evaluating action %s for card %s %s %s'
-        , action.action, card.name, times, times > 1 ? 'times' : 'time');
+      this.log.info('Evaluating action %s for piece %s %s %s'
+        , action.action, pieceAction.piece.name, times, times > 1 ? 'times' : 'time');
 
       for (var t = 0; t < times; t++) {
         switch(action.action){
           case 'DrawCard':
           {
-            let playerSelector = this.selector.selectPlayer(piece.playerId, action.args[0]);
+            let playerSelector = this.selector.selectPlayer(triggeringPiece.playerId, action.args[0]);
             this.queue.push(new DrawCard(playerSelector));
             break;
           }
           case 'Hit':
           {
-            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -59,7 +87,7 @@ export default class CardEvaluator{
           }
           case 'Heal':
           {
-            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -70,7 +98,7 @@ export default class CardEvaluator{
           }
           case 'SetAttribute':
           {
-            let selected = this.selector.selectPieces(piece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
