@@ -7,7 +7,7 @@ test('basic play event', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     DrawCard(PLAYER); 
   }`;
 
@@ -15,7 +15,7 @@ test('basic play event', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'DrawCard',
@@ -36,7 +36,7 @@ test('Two actions on event', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     DrawCard(PLAYER); 
     SetAttribute(TARGET, health, 3);
   }
@@ -46,7 +46,7 @@ test('Two actions on event', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'DrawCard',
@@ -75,7 +75,7 @@ test('Two Events', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     SetAttribute(Random(CHARACTER), health, 3);
   }
   death{
@@ -87,7 +87,7 @@ test('Two Events', t => {
 
   let expected = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'SetAttribute',
@@ -124,7 +124,7 @@ test('Repeating action', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     DrawCard(PLAYER) * 2; 
   }
   `;
@@ -133,7 +133,7 @@ test('Repeating action', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'DrawCard',
@@ -153,7 +153,7 @@ test('Hit action', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     Hit(CHARACTER, 2); 
   }
   `;
@@ -162,7 +162,7 @@ test('Hit action', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'Hit',
@@ -182,7 +182,7 @@ test('Selector input', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     DrawCard(ENEMY & CHARACTER & HERO); 
   }
   `;
@@ -191,7 +191,7 @@ test('Selector input', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'DrawCard',
@@ -219,7 +219,7 @@ test('Selector input with random', t => {
   t.plan(1);
 
   let input = `
-  play{ 
+  playMinion{ 
     Hit(Random(FRIENDLY & MINION - HERO), 1);
   }
   `;
@@ -228,7 +228,7 @@ test('Selector input with random', t => {
 
   let expectedPlay = [
     {
-      event: 'play',
+      event: 'playMinion',
       actions: [
         {
           action: 'Hit',

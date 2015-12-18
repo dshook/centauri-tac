@@ -657,7 +657,7 @@ case 21:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(play|death|damaged))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit|Heal))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
+rules: [/^(?:\s+)/,/^(?:(playMinion|death|damaged))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit|Heal))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
 conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21],"inclusive":true}}
 });
 return lexer;

@@ -8,7 +8,7 @@
 \s+ /* skip whitespace */
 
 //root events
-(play|death|damaged) 
+(playMinion|death|damaged) 
   return 'event'
 
 // player targets

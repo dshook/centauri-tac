@@ -44,7 +44,7 @@ test('Basic Draw card', t => {
   let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 3)[0]; 
   t.ok(testBot, 'Found test bot');
 
-  cardEval.evaluateAction('play', testBot);
+  cardEval.evaluateAction('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof DrawCard, 'First action is Draw Card');
@@ -60,7 +60,7 @@ test('Basic Hit action', t => {
   let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 9)[0]; 
   t.ok(testBot, 'Found writhing bunch');
 
-  cardEval.evaluateAction('play', testBot);
+  cardEval.evaluateAction('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Hit');

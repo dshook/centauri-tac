@@ -42,7 +42,7 @@ export default class SpawnProcessor
 
     action.pieceId = this.pieceState.add(newPiece);
 
-    this.cardEvaluator.evaluateAction('play', newPiece);
+    this.cardEvaluator.evaluateAction('playMinion', newPiece);
 
     queue.complete(action);
     this.log.info('spawned piece %s for player %s at %s',
