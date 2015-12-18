@@ -288,3 +288,41 @@ test('Heal action on damaged', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Event Selector', t => {
+  t.plan(1);
+
+  let input = `
+  damaged(ENEMY & MINION){ 
+    Heal(FRIENDLY & HERO, 2);
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'damaged',
+      selector: {
+        left: 'ENEMY',
+        op: '&',
+        right: 'MINION'
+      },
+      actions: [
+        {
+          action: 'Heal',
+          args: [
+            {
+              left: 'FRIENDLY',
+              op: '&',
+              right: 'HERO'
+            },
+            2
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
