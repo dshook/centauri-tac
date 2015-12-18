@@ -14,15 +14,22 @@ export default class CardEvaluator{
     this.cardDirectory = cardDirectory;
   }
 
+  //used for one time events that happen to a single piece
   evaluateAction(event, piece){
     let card = this.cardDirectory.directory[piece.cardId];
 
     this.log.info('Eval event %s piece %j: %j', event, piece, card.events);
-    if(!card.events || !card.events[event]) return;
-    let evalActions = card.events[event];
+    if(!card.events || card.events.length === 0) return;
+    let evalActions = [];
 
-    for (let i = 0; i < evalActions.length; i++) {
-      let action = evalActions[i];
+    //find all actions for this event, there could be more than one
+    for(let cardEvent of card.events){
+      if(cardEvent.event === event){
+        evalActions = evalActions.concat(cardEvent.actions);
+      }
+    }
+
+    for(let action of evalActions){
       let times = 1;
       if(action.times){
         times = action.times;
