@@ -41,11 +41,10 @@ export default class CardEvaluator{
         }
 
         let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, triggeringPiece);
-        let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+        let selectorMatched = piecesSelected.indexOf(piece) > -1;
 
         //if it does, add it to the list of actions to be processed
         if(selectorMatched){
-            //console.log('selector matched ', piece.cardId);
           for(let cardEventAction of cardEvent.actions){
             evalActions.push({
               piece: piece,
