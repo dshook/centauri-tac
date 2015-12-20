@@ -39,9 +39,9 @@ test('Basic Draw card', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 3)[0]; 
+  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 3)[0];
   t.ok(testBot, 'Found test bot');
 
   cardEval.evaluateAction('playMinion', testBot);
@@ -55,9 +55,9 @@ test('Basic Hit action', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 9)[0]; 
+  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 9)[0];
   t.ok(testBot, 'Found writhing bunch');
 
   cardEval.evaluateAction('playMinion', testBot);

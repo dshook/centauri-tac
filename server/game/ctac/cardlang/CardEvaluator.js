@@ -8,12 +8,12 @@ import PieceAttributeChange from '../actions/PieceAttributeChange.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, selector, cardDirectory, turnState, pieceState){
+  constructor(queue, selector, cardDirectory, pieceState){
     this.queue = queue;
     this.selector = selector;
     this.cardDirectory = cardDirectory;
-    this.turnState = turnState;
     this.pieceState = pieceState;
+    this.log.info('piece state %j', pieceState);
 
     this.eventDefaultSelectors = {
       playMinion: {left: 'SELF'},
@@ -26,30 +26,31 @@ export default class CardEvaluator{
     this.log.info('Eval event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
-    for(let piece of this.pieceState){
+    for(let piece of this.pieceState.pieces){
       let card = this.cardDirectory.directory[piece.cardId];
-      if(!card.events || card.events.length === 0) return;
+      if(!card.events || card.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
       for(let cardEvent of card.events){
-        if(cardEvent.event === event){
-          //see if the selector matches up for this card
-          let eventSelector = cardEvent.selector;
-          if(!eventSelector){
-            eventSelector = this.eventDefaultSelectors[event];
-          }
+        if(cardEvent.event !== event) continue;
 
-          let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector);
-          let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+        //see if the selector matches up for this card
+        let eventSelector = cardEvent.selector;
+        if(!eventSelector){
+          eventSelector = this.eventDefaultSelectors[event];
+        }
 
-          //if it does, add it to the list of actions to be processed
-          if(selectorMatched){
-            for(let cardEventAction of cardEvent.actions){
-              evalActions.push({
-                piece: piece,
-                action: cardEventAction
-              });
-            }
+        let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, triggeringPiece);
+        let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+
+        //if it does, add it to the list of actions to be processed
+        if(selectorMatched){
+            //console.log('selector matched ', piece.cardId);
+          for(let cardEventAction of cardEvent.actions){
+            evalActions.push({
+              piece: piece,
+              action: cardEventAction
+            });
           }
         }
       }
@@ -76,7 +77,7 @@ export default class CardEvaluator{
           }
           case 'Hit':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -87,7 +88,7 @@ export default class CardEvaluator{
           }
           case 'Heal':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -98,7 +99,7 @@ export default class CardEvaluator{
           }
           case 'SetAttribute':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0]);
+            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){

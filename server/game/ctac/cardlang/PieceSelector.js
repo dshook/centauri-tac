@@ -2,9 +2,10 @@ import _ from 'lodash';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId){
+  constructor(pieces, controllingPlayerId, triggeringPiece){
     this.allPieces = pieces;
     this.controllingPlayerId = controllingPlayerId;
+    this.triggeringPiece = triggeringPiece;
   }
 
   Select(selector){
@@ -25,6 +26,9 @@ export default class PieceSelector{
           break;
         case 'HERO':
           return this.allPieces.filter(p => p.tags.indexOf('Hero') >= 0);
+          break;
+        case 'SELF':
+          return [this.triggeringPiece];
           break;
         default:
           throw 'Invalid piece type selector ' + selector;
