@@ -32,8 +32,8 @@ spawnPiece(pieceStateMix, 2, 2);
 spawnPiece(pieceStateMix, 3, 2);
 
 var heroesOnly = new PieceState();
-spawnPiece(heroesOnly, 2, 1);
-spawnPiece(heroesOnly, 2, 2);
+spawnPiece(heroesOnly, 1, 1);
+spawnPiece(heroesOnly, 1, 2);
 
 var noPieces = new PieceState();
 

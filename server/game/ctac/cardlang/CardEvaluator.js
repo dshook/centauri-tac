@@ -26,6 +26,7 @@ export default class CardEvaluator{
     this.log.info('Eval event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
+    //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
       let card = this.cardDirectory.directory[piece.cardId];
       if(!card.events || card.events.length === 0) continue;
@@ -40,10 +41,12 @@ export default class CardEvaluator{
           eventSelector = this.eventDefaultSelectors[event];
         }
 
-        let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, triggeringPiece);
-        let selectorMatched = piecesSelected.indexOf(piece) > -1;
+        //now find all pieces that match the selector given the context of the piece that the event is for
+        let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, piece);
 
-        //if it does, add it to the list of actions to be processed
+        let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+
+        //if the triggering piece is part of the selected pieces, add it to the list of actions
         if(selectorMatched){
           for(let cardEventAction of cardEvent.actions){
             evalActions.push({

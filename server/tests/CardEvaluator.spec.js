@@ -14,10 +14,27 @@ import CardDirectory from '../game/ctac/models/CardDirectory.js';
 //init the dependencies for the evaluator and selector
 var cardRequires = requireDir('../../cards/');
 var cardDirectory = new CardDirectory();
-
 for(let cardFileName in cardRequires){
   let card = cardRequires[cardFileName];
   cardDirectory.add(card);
+}
+
+function spawnPiece(pieceState, cardId, playerId){
+    let cardPlayed = cardDirectory.directory[cardId];
+
+    var newPiece = new GamePiece();
+    //newPiece.position = action.position;
+    newPiece.playerId = playerId;
+    newPiece.cardId = cardId;
+    newPiece.attack = cardPlayed.attack;
+    newPiece.health = cardPlayed.health;
+    newPiece.baseAttack = cardPlayed.attack;
+    newPiece.baseHealth = cardPlayed.health;
+    newPiece.movement = cardPlayed.movement;
+    newPiece.baseMovement = cardPlayed.movement;
+    newPiece.tags = cardPlayed.tags;
+
+    pieceState.add(newPiece);
 }
 
 var player1 = new Player(1);
@@ -67,20 +84,27 @@ test('Basic Hit action', t => {
   t.ok(queue._actions[1] instanceof PieceHealthChange, 'Second action is Hit');
 });
 
-function spawnPiece(pieceState, cardId, playerId){
-    let cardPlayed = cardDirectory.directory[cardId];
+test('Damaged with selector', t => {
+  t.plan(4);
 
-    var newPiece = new GamePiece();
-    //newPiece.position = action.position;
-    newPiece.playerId = playerId;
-    newPiece.cardId = cardId;
-    newPiece.attack = cardPlayed.attack;
-    newPiece.health = cardPlayed.health;
-    newPiece.baseAttack = cardPlayed.attack;
-    newPiece.baseHealth = cardPlayed.health;
-    newPiece.movement = cardPlayed.movement;
-    newPiece.baseMovement = cardPlayed.movement;
-    newPiece.tags = cardPlayed.tags;
+  let pieceState = new PieceState();
+  spawnPiece(pieceState, 1, 1);
+  spawnPiece(pieceState, 1, 2);
+  spawnPiece(pieceState, 12, 1);
+  spawnPiece(pieceState, 5, 2);
 
-    pieceState.add(newPiece);
-}
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceState);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceState);
+
+  let friendlyHero = pieceState.pieces.filter(p => p.playerId == 1 && p.cardId == 1)[0];
+  t.ok(friendlyHero, 'Found friendly hero');
+
+  cardEval.evaluateAction('damaged', friendlyHero);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  let action = queue._actions[0];
+  t.ok(action instanceof DrawCard, 'First action is Draw Card');
+  t.equal(action.playerId, 1, 'Drew card for right player');
+
+});
