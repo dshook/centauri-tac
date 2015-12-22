@@ -1,0 +1,11 @@
+{
+	"id": 12,
+	"name": "Agamemnon",
+	"description": "Whenever your hero takes damage draw a card.",
+	"cost": 5,
+	"attack": 8,
+	"health": 8,
+	"movement": 1,
+	"tags": ["Minion"],
+	"eventcode": "damaged(FRIENDLY & HERO){ DrawCard(PLAYER); }"
+}
