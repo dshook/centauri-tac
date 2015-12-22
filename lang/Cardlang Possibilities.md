@@ -3,7 +3,7 @@
 ##Event triggers
 * ~~play~~
 * ~~death~~
-* unit takes damage
+* ~~unit takes damage~~
 * unit attacks
 * turn end
 * card drawn
@@ -16,6 +16,7 @@
 * self
 * ~~random enemy~~
 * ~~all minions~~
+* ~~event selectors~~
 
 * tags (battlecry, damaged, paralyzed, etc)
 * zones (play, deck, hand, secret, graveyard)
