@@ -70,7 +70,7 @@ namespace ctac
 
             rectTransform = hoverCardView.GetComponent<RectTransform>();
 
-            rectTransform.anchoredPosition3D = position ;
+            rectTransform.anchoredPosition3D = position;
 
             hoverCardView.gameObject.SetActive(true);
         }
@@ -84,13 +84,37 @@ namespace ctac
 
         internal void showCardWorld(CardModel cardToShow, Vector3 worldPosition)
         {
-            var screenPos = CardCanvasHelper.WorldToViewport(worldPosition);
+            Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
-            //TODO: Close but no cigar.  Card always shows up near the middle and it seems like the coords
-            //are rotated since hovering over units aligned vertically moves the card left and right
+            var hWidth = rectTransform.sizeDelta;
             rectTransform.SetAnchor(bottomLeftAnchor);
-            screenPos = screenPos.SetZ(0);
-            showCard(cardToShow, screenPos);
+            //screenPos = screenPos.SetZ(0);
+
+            var offsets = new[] {
+                new Vector2(-hWidth.x, 0),
+                new Vector2(hWidth.x, 0),
+                new Vector2(0, -hWidth.y * .75f),
+                new Vector2(0, hWidth.y * .75f)
+            };
+
+            foreach (var offset in offsets)
+            {
+                if (onScreen(screenPos + offset, hWidth))
+                {
+                    showCard(cardToShow, screenPos + offset);
+                    break;
+                }
+            }
+        }
+
+        internal bool onScreen(Vector2 position, Vector2 hWidth)
+        {
+            var r1 = Camera.main.pixelRect;
+            var r2 = new Rect(position - (hWidth / 2), hWidth);
+            return r1.xMin < r2.xMin 
+                && r1.xMax > r2.xMax 
+                && r1.yMin < r2.yMin 
+                && r1.yMax > r2.yMax;
         }
 
         internal void hideCard()
