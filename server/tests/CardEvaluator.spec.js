@@ -41,18 +41,17 @@ var player1 = new Player(1);
 var player2 = new Player(2);
 var players = [player1, player2];
 
-//various setups for game state
-var pieceStateMix = new PieceState();
-spawnPiece(pieceStateMix, 1, 1);
-spawnPiece(pieceStateMix, 2, 1);
-spawnPiece(pieceStateMix, 3, 1);
-spawnPiece(pieceStateMix, 9, 1);
-spawnPiece(pieceStateMix, 1, 2);
-spawnPiece(pieceStateMix, 2, 2);
-spawnPiece(pieceStateMix, 3, 2);
-
 
 test('Basic Draw card', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 3, 1);
+  spawnPiece(pieceStateMix, 9, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+  spawnPiece(pieceStateMix, 3, 2);
+
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
@@ -69,6 +68,15 @@ test('Basic Draw card', t => {
 });
 
 test('Basic Hit action', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 3, 1);
+  spawnPiece(pieceStateMix, 9, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+  spawnPiece(pieceStateMix, 3, 2);
+
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
@@ -107,4 +115,28 @@ test('Damaged with selector', t => {
   t.ok(action instanceof DrawCard, 'First action is Draw Card');
   t.equal(action.playerId, 1, 'Drew card for right player');
 
+});
+
+test('Set attribute', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 3, 1);
+  spawnPiece(pieceStateMix, 10, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+  spawnPiece(pieceStateMix, 3, 2);
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let platypus = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 10)[0];
+  t.ok(platypus, 'Found platypus');
+
+  cardEval.evaluateAction('playMinion', platypus);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Set attribute');
 });
