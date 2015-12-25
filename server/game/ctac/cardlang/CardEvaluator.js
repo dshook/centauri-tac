@@ -18,7 +18,8 @@ export default class CardEvaluator{
     this.eventDefaultSelectors = {
       playMinion: {left: 'SELF'},
       death: {left: 'SELF'},
-      damaged: {left: 'SELF'}
+      damaged: {left: 'SELF'},
+      attacks: {left: 'SELF'}
     };
   }
 
@@ -39,6 +40,9 @@ export default class CardEvaluator{
         let eventSelector = cardEvent.selector;
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
+          if(!eventSelector){
+            throw 'Need default selector for ' + event;
+          }
         }
 
         //now find all pieces that match the selector given the context of the piece that the event is for

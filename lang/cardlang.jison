@@ -8,7 +8,7 @@
 \s+ /* skip whitespace */
 
 //root events
-(playMinion|death|damaged) 
+(playMinion|death|damaged|attacks)
   return 'event'
 
 // player targets
@@ -61,7 +61,7 @@
 /* operator associations and precedence */
 
 %left '|'
-%left '&' 
+%left '&'
 %left '-'
 
 %start events
@@ -97,20 +97,20 @@ actionlist
 
 /* actionargs is the basic syntax for all the actions with function like arguments */
 actionargs
-  : action'('arguments')'';' 
-  {{ $$ = 
+  : action'('arguments')'';'
+  {{ $$ =
     { action: $1, args: $3 }
   }}
   | action '('arguments')' '*' pNumber';'
-  {{ $$ = 
+  {{ $$ =
     { action: $1, args: $3, times: $6 }
   }}
   ;
 
 arguments
-  : arguments ',' argument_item 
+  : arguments ',' argument_item
      { $$ = $arguments; $$.push($argument_item); }
-  | argument_item 
+  | argument_item
      { $$ = [$argument_item]; }
   ;
 
@@ -131,7 +131,7 @@ possibleRandSelector
 ;
 
 selector
-  : target operator target 
+  : target operator target
      { $$ = { left: $1, op: $2, right: $3 }; }
   | selector operator target
      { $$ = { left: $1, op: $2, right: $3 }; }

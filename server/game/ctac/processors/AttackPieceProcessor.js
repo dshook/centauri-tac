@@ -36,6 +36,8 @@ export default class AttackPieceProcessor
     queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
     queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack));
 
+    this.cardEvaluator.evaluateAction('attacks', attacker);
+
     this.log.info('piece %s (%s/%s) attacked %s (%s/%s)',
       attacker.id, attacker.attack, attacker.health,
       target.id, target.attack, target.health);

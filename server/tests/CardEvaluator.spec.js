@@ -165,3 +165,28 @@ test('Heal on damaged', t => {
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].change > 0, 'Healing not hitting');
 });
+
+test('Attacks event', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 3, 1);
+  spawnPiece(pieceStateMix, 13, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+  spawnPiece(pieceStateMix, 3, 2);
+
+  t.plan(4);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let spore = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 13)[0];
+  t.ok(spore, 'Found spore');
+
+  cardEval.evaluateAction('attacks', spore);
+
+  t.equal(queue._actions.length, 1, '1 Action in the queue');
+  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].change < 0, 'Hit action');
+});

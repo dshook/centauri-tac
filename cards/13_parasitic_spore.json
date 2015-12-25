@@ -1,0 +1,11 @@
+{
+	"id": 13,
+	"name": "Parasitic Spore",
+	"description": "Whenever the spore attacks, deal 1 damage to a random enemy minion.",
+	"cost": 3,
+	"attack": 1,
+	"health": 4,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "attacks{ Hit(Random(ENEMY & MINION), 1); }"
+}
