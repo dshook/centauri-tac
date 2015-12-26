@@ -28,6 +28,7 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.tags.indexOf('Hero') >= 0);
           break;
         case 'SELF':
+          if(!this.triggeringPiece) throw 'SELF selector not available without triggering piece';
           return [this.triggeringPiece];
           break;
         default:

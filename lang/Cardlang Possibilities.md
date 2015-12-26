@@ -6,6 +6,7 @@
 * ~~unit takes damage~~
 * ~~unit attacks~~
 * turn end
+* turn start
 * card drawn
 * spell played
 * unit ability
@@ -13,7 +14,7 @@
 ##Selectors
 * ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
 * target
-* self
+* ~~self~~
 * ~~random enemy~~
 * ~~all minions~~
 * ~~event selectors~~

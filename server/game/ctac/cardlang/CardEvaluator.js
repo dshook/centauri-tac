@@ -62,7 +62,15 @@ export default class CardEvaluator{
       }
     }
 
+    this.processActions(evalActions, triggeringPiece.playerId, triggeringPiece);
 
+  }
+
+  //Process all actions that have been selected in the evaluation phase
+  // evalActions -> array of actions to be eval'd
+  // playerId -> required id of the controlling player (current turn player)
+  // triggeringPiece -> optional piece that will be used for SELF selections
+  processActions(evalActions, playerId, triggeringPiece){
     for(let pieceAction of evalActions){
       let action = pieceAction.action;
       let times = 1;
@@ -77,13 +85,13 @@ export default class CardEvaluator{
         switch(action.action){
           case 'DrawCard':
           {
-            let playerSelector = this.selector.selectPlayer(triggeringPiece.playerId, action.args[0]);
+            let playerSelector = this.selector.selectPlayer(playerId, action.args[0]);
             this.queue.push(new DrawCard(playerSelector));
             break;
           }
           case 'Hit':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -94,7 +102,7 @@ export default class CardEvaluator{
           }
           case 'Heal':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -105,7 +113,7 @@ export default class CardEvaluator{
           }
           case 'SetAttribute':
           {
-            let selected = this.selector.selectPieces(triggeringPiece.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -120,6 +128,6 @@ export default class CardEvaluator{
           }
         }
       }
-    };
+    }
   }
 }
