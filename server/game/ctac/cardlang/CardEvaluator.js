@@ -19,10 +19,12 @@ export default class CardEvaluator{
       playMinion: {left: 'SELF'},
       death: {left: 'SELF'},
       damaged: {left: 'SELF'},
-      attacks: {left: 'SELF'}
+      attacks: {left: 'SELF'},
+      cardDrawn: {left: 'PLAYER'}
     };
   }
 
+  //evaluate an event that directly relates to a piece, i.e. the piece dies
   evaluatePieceEvent(event, triggeringPiece){
     this.log.info('Eval event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
@@ -64,6 +66,47 @@ export default class CardEvaluator{
 
     this.processActions(evalActions, triggeringPiece.playerId, triggeringPiece);
 
+  }
+
+  //evaluate an event that doesn't correspond to a piece directly
+  evaluatePlayerEvent(event, playerId){
+    this.log.info('Eval player event %s player: %s', event, playerId);
+    let evalActions = [];
+
+    //first look through all the pieces on the board to see if any have actions on this event
+    for(let piece of this.pieceState.pieces){
+      let card = this.cardDirectory.directory[piece.cardId];
+      if(!card.events || card.events.length === 0) continue;
+
+      //find all actions for this event, there could be more than one
+      for(let cardEvent of card.events){
+        if(cardEvent.event !== event) continue;
+
+        //see if the selector matches up for this card
+        let eventSelector = cardEvent.selector;
+        if(!eventSelector){
+          eventSelector = this.eventDefaultSelectors[event];
+          if(!eventSelector){
+            throw 'Need default selector for ' + event;
+          }
+        }
+
+        //now find the player that matches the selector given the context of the piece that the event is for
+        let playerSelected = this.selector.selectPlayer(piece.playerId, eventSelector);
+
+        //if the triggering piece is part of the selected pieces, add it to the list of actions
+        if(playerSelected === playerId){
+          for(let cardEventAction of cardEvent.actions){
+            evalActions.push({
+              piece: piece,
+              action: cardEventAction
+            });
+          }
+        }
+      }
+    }
+
+    this.processActions(evalActions, playerId);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions

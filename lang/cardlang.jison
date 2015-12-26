@@ -7,8 +7,12 @@
 
 \s+ /* skip whitespace */
 
-//root events
+//piece events
 (playMinion|death|damaged|attacks)
+  return 'event'
+
+//player events
+(cardDrawn)
   return 'event'
 
 // player targets

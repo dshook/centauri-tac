@@ -7,7 +7,7 @@
 * ~~unit attacks~~
 * turn end
 * turn start
-* card drawn
+* ~~card drawn~~
 * spell played
 * unit ability
 
@@ -52,6 +52,7 @@
 * copy minion (into hand or play)
 * card cost modification
 * effect that lasts till end of turn
+* swap health and attack
 * ~~Hit for damage~~
 * ~~draw card~~
 * ~~Heal target~~

@@ -615,50 +615,52 @@ case 0:/* skip whitespace */
 break;
 case 1:return 7
 break;
-case 2:return 24
+case 2:return 7
 break;
 case 3:return 24
 break;
 case 4:return 24
 break;
-case 5:return 25
+case 5:return 24
 break;
-case 6:return 15
+case 6:return 25
 break;
-case 7:return 22
+case 7:return 15
 break;
-case 8:return 30
+case 8:return 22
 break;
-case 9:return 11
+case 9:return 30
 break;
-case 10:return 13
+case 10:return 11
 break;
-case 11:return 20
+case 11:return 13
 break;
-case 12:return 17
+case 12:return 20
 break;
-case 13:return 8
+case 13:return 17
 break;
-case 14:return 10
+case 14:return 8
 break;
-case 15:return 18
+case 15:return 10
 break;
-case 16:return '='
+case 16:return 18
 break;
-case 17:return 28
+case 17:return '='
 break;
-case 18:return 27
+case 18:return 28
 break;
-case 19:return 29
+case 19:return 27
 break;
-case 20:return 5
+case 20:return 29
 break;
-case 21:return 'INVALID'
+case 21:return 5
+break;
+case 22:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(playMinion|death|damaged|attacks))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit|Heal))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(playMinion|death|damaged|attacks))/,/^(?:(cardDrawn))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO))/,/^(?:(Random))/,/^(?:(DrawCard|SetAttribute|Hit|Heal))/,/^(?:(health|attack|movement))/,/^(?:[0-9])/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:;)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"inclusive":true}}
 });
 return lexer;
 })();

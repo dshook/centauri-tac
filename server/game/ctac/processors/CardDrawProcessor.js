@@ -8,10 +8,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class CardDrawProcessor
 {
-  constructor(decks, hands)
+  constructor(decks, hands, cardEvaluator)
   {
     this.decks = decks;
     this.hands = hands;
+    this.cardEvaluator = cardEvaluator;
   }
 
   /**
@@ -35,6 +36,8 @@ export default class CardDrawProcessor
     playerHand.push(cardDrawn);
 
     action.cardId = cardDrawn.id;
+
+    this.cardEvaluator.evaluatePlayerEvent('cardDrawn', action.playerId);
 
     queue.complete(action);
     this.log.info('player %s drew card %s %s',

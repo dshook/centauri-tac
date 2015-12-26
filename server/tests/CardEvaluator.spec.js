@@ -190,3 +190,26 @@ test('Attacks event', t => {
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].change < 0, 'Hit action');
 });
+
+test('Card drawn player event', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 14, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  t.plan(4);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  cardEval.evaluatePlayerEvent('cardDrawn', 1);
+
+  t.equal(queue._actions.length, 0, 'No actions in the queue yet');
+
+  cardEval.evaluatePlayerEvent('cardDrawn', 2);
+  t.equal(queue._actions.length, 1, '1 Action in the queue');
+  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].change > 0, 'Heal action');
+});

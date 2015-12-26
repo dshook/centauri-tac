@@ -1,0 +1,11 @@
+{
+	"id": 14,
+	"name": "Macx Marx",
+	"description": "Whenever your opponent draws a card, heal a random friendly character for 3",
+	"cost": 4,
+	"attack": 6,
+	"health": 4,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "cardDrawn(OPPONENT){ Heal(Random(FRIENDLY), 3); }"
+}
