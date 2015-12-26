@@ -48,7 +48,7 @@ export default class PieceAttributeChangeProcessor
     }
 
     if(piece.health <= 0){
-      this.cardEvaluator.evaluateAction('death', piece);
+      this.cardEvaluator.evaluatePieceEvent('death', piece);
       this.pieceState.remove(piece.id);
     }
 

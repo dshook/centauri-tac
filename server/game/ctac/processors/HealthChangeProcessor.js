@@ -38,18 +38,18 @@ export default class HealthChangeProcessor
 
     //cap hp at base health and adjust action change amounts
     if(piece.health > piece.baseHealth){
-      action.change = piece.baseHealth - hpBeforeChange; 
+      action.change = piece.baseHealth - hpBeforeChange;
       piece.health = piece.baseHealth;
     }
 
     action.newCurrentHealth = piece.health;
 
     if(action.change < 0){
-      this.cardEvaluator.evaluateAction('damaged', piece);
+      this.cardEvaluator.evaluatePieceEvent('damaged', piece);
     }
 
     if(piece.health <= 0){
-      this.cardEvaluator.evaluateAction('death', piece);
+      this.cardEvaluator.evaluatePieceEvent('death', piece);
       this.pieceState.remove(piece.id);
     }
 

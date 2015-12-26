@@ -23,7 +23,7 @@ export default class CardEvaluator{
     };
   }
 
-  evaluateAction(event, triggeringPiece){
+  evaluatePieceEvent(event, triggeringPiece){
     this.log.info('Eval event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
@@ -66,7 +66,7 @@ export default class CardEvaluator{
 
   }
 
-  //Process all actions that have been selected in the evaluation phase
+  //Process all actions that have been selected in the evaluation phase into actual queue actions
   // evalActions -> array of actions to be eval'd
   // playerId -> required id of the controlling player (current turn player)
   // triggeringPiece -> optional piece that will be used for SELF selections

@@ -60,7 +60,7 @@ test('Basic Draw card', t => {
   let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 3)[0];
   t.ok(testBot, 'Found test bot');
 
-  cardEval.evaluateAction('playMinion', testBot);
+  cardEval.evaluatePieceEvent('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof DrawCard, 'First action is Draw Card');
@@ -85,7 +85,7 @@ test('Basic Hit action', t => {
   let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 9)[0];
   t.ok(testBot, 'Found writhing bunch');
 
-  cardEval.evaluateAction('playMinion', testBot);
+  cardEval.evaluatePieceEvent('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Hit');
@@ -108,7 +108,7 @@ test('Damaged with selector', t => {
   let friendlyHero = pieceState.pieces.filter(p => p.playerId == 1 && p.cardId == 1)[0];
   t.ok(friendlyHero, 'Found friendly hero');
 
-  cardEval.evaluateAction('damaged', friendlyHero);
+  cardEval.evaluatePieceEvent('damaged', friendlyHero);
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   let action = queue._actions[0];
@@ -135,7 +135,7 @@ test('Set attribute', t => {
   let platypus = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 10)[0];
   t.ok(platypus, 'Found platypus');
 
-  cardEval.evaluateAction('playMinion', platypus);
+  cardEval.evaluatePieceEvent('playMinion', platypus);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Set attribute');
@@ -159,7 +159,7 @@ test('Heal on damaged', t => {
   let synth = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 11)[0];
   t.ok(synth, 'Found synth');
 
-  cardEval.evaluateAction('damaged', synth);
+  cardEval.evaluatePieceEvent('damaged', synth);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
@@ -184,7 +184,7 @@ test('Attacks event', t => {
   let spore = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 13)[0];
   t.ok(spore, 'Found spore');
 
-  cardEval.evaluateAction('attacks', spore);
+  cardEval.evaluatePieceEvent('attacks', spore);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
