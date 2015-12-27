@@ -33,12 +33,16 @@ export default class TurnProcessor
       }
     }
 
+    this.cardEvaluator.evaluatePlayerEvent('turnEnd', action.from);
+
     // do it
     var currentTurn = this.turnState.passTurnTo(action.to);
 
     //give some handouts
     action.toPlayerResources = this.playerResourceState.incriment(action.to, currentTurn);
     action.currentTurn = currentTurn;
+
+    this.cardEvaluator.evaluatePlayerEvent('turnStart', action.to);
 
     queue.push(new DrawCard(action.to));
     queue.complete(action);

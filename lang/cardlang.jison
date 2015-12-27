@@ -12,7 +12,7 @@
   return 'event'
 
 //player events
-(cardDrawn)
+(cardDrawn|turnEnd|turnStart)
   return 'event'
 
 // player targets

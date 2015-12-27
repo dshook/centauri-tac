@@ -5,8 +5,8 @@
 * ~~death~~
 * ~~unit takes damage~~
 * ~~unit attacks~~
-* turn end
-* turn start
+* ~~turn end~~
+* ~~turn start~~
 * ~~card drawn~~
 * spell played
 * unit ability
