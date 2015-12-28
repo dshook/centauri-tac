@@ -7,8 +7,8 @@ test('basic play event', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
-    DrawCard(PLAYER); 
+  playMinion{
+    DrawCard(PLAYER);
   }`;
 
   let d = parser.parse(input);
@@ -36,8 +36,8 @@ test('Two actions on event', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
-    DrawCard(PLAYER); 
+  playMinion{
+    DrawCard(PLAYER);
     SetAttribute(TARGET, health, 3);
   }
   `;
@@ -75,7 +75,7 @@ test('Two Events', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
+  playMinion{
     SetAttribute(Random(CHARACTER), health, 3);
   }
   death{
@@ -94,8 +94,8 @@ test('Two Events', t => {
           args: [
             {
               random: true,
-              selector: { 
-                left: 'CHARACTER' 
+              selector: {
+                left: 'CHARACTER'
               }
             },
             'health',
@@ -124,8 +124,8 @@ test('Repeating action', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
-    DrawCard(PLAYER) * 2; 
+  playMinion{
+    DrawCard(PLAYER) * 2;
   }
   `;
 
@@ -153,8 +153,8 @@ test('Hit action', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
-    Hit(CHARACTER, 2); 
+  playMinion{
+    Hit(CHARACTER, 2);
   }
   `;
 
@@ -182,8 +182,8 @@ test('Selector input', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
-    DrawCard(ENEMY & CHARACTER & HERO); 
+  playMinion{
+    DrawCard(ENEMY & CHARACTER & HERO);
   }
   `;
 
@@ -219,7 +219,7 @@ test('Selector input with random', t => {
   t.plan(1);
 
   let input = `
-  playMinion{ 
+  playMinion{
     Hit(Random(FRIENDLY & MINION - HERO), 1);
   }
   `;
@@ -260,7 +260,7 @@ test('Heal action on damaged', t => {
   t.plan(1);
 
   let input = `
-  damaged{ 
+  damaged{
     Heal(FRIENDLY & HERO, 2);
   }
   `;
@@ -293,7 +293,7 @@ test('Event Selector', t => {
   t.plan(1);
 
   let input = `
-  damaged(ENEMY & MINION){ 
+  damaged(ENEMY & MINION){
     Heal(FRIENDLY & HERO, 2);
   }
   `;
@@ -325,4 +325,34 @@ test('Event Selector', t => {
   ];
 
   t.deepEqual(d, expectedPlay);
+});
+
+test('Random number list', t => {
+  t.plan(1);
+
+  let input = `
+  playMinion{
+    DrawCard(Random(1,2,3));
+  }`;
+
+  let d = parser.parse(input);
+
+  let expected = [
+    {
+      event: 'playMinion',
+      actions: [
+        {
+          action: 'DrawCard',
+          args: [
+            {
+              random: true,
+              list: [1, 2, 3]
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expected);
 });

@@ -130,6 +130,8 @@ possibleRandSelector
      { $$ = { left: $1}; }
   | random'('target')'
      { $$ = { random: true, selector: { left: $3} }; }
+  | random'('numberList')'
+     { $$ = { random: true, list: $3 }; }
   | random'('selector')'
      { $$ = { random: true, selector: $3 }; }
 ;
@@ -145,6 +147,13 @@ operator
   : '&'
   | '|'
   | '-'
+  ;
+
+numberList
+  : numberList ',' pNumber
+     { $$ = $numberList; $$.push($pNumber); }
+  | pNumber
+     { $$ = [$pNumber]; }
   ;
 
 pNumber
