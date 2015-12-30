@@ -105,7 +105,7 @@ actionargs
   {{ $$ =
     { action: $1, args: $3 }
   }}
-  | action '('arguments')' '*' pNumber';'
+  | action '('arguments')' '*' eNumber';'
   {{ $$ =
     { action: $1, args: $3, times: $6 }
   }}
@@ -130,8 +130,6 @@ possibleRandSelector
      { $$ = { left: $1}; }
   | random'('target')'
      { $$ = { random: true, selector: { left: $3} }; }
-  | random'('numberList')'
-     { $$ = { random: true, list: $3 }; }
   | random'('selector')'
      { $$ = { random: true, selector: $3 }; }
 ;
@@ -147,6 +145,13 @@ operator
   : '&'
   | '|'
   | '-'
+  ;
+
+//eventually a number, could be random
+eNumber
+  : pNumber -> $1
+  | random'('numberList')'
+     { $$ = { randList: $3 }; }
   ;
 
 numberList

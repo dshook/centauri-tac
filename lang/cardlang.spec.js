@@ -332,7 +332,7 @@ test('Random number list', t => {
 
   let input = `
   playMinion{
-    DrawCard(Random(1,2,3));
+    DrawCard(PLAYER) * Random(1,2,3);
   }`;
 
   let d = parser.parse(input);
@@ -345,10 +345,12 @@ test('Random number list', t => {
           action: 'DrawCard',
           args: [
             {
-              random: true,
-              list: [1, 2, 3]
+              left: 'PLAYER'
             }
-          ]
+          ],
+          times: {
+            randList: [1, 2, 3]
+          }
         }
       ]
     }

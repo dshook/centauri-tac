@@ -33,7 +33,7 @@
 
 
 ##Randomness
-* random number in list
+* ~~random number in list~~
 * ~~random minion, possibly from class or by cost~~
 
 ##Conditions - check for AND and OR
