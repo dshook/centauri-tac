@@ -119,11 +119,7 @@ export default class CardEvaluator{
       let action = pieceAction.action;
       let times = 1;
       if(action.times){
-        if(action.times.randList){
-          times = _.sample(action.times.randList);
-        }else{
-          times = action.times;
-        }
+        times = this.eventualNumber(action.times);
       }
 
       this.log.info('Evaluating action %s for piece %s %s %s'
@@ -177,5 +173,13 @@ export default class CardEvaluator{
         }
       }
     }
+  }
+
+  //can either be an ordinary number, or something that evaluates to a number
+  eventualNumber(input){
+    if(input.randList){
+      return _.sample(input.randList);
+    }
+    return input;
   }
 }
