@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
 import DrawCard from '../actions/DrawCard.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
@@ -118,7 +119,11 @@ export default class CardEvaluator{
       let action = pieceAction.action;
       let times = 1;
       if(action.times){
-        times = action.times;
+        if(action.times.randList){
+          times = _.sample(action.times.randList);
+        }else{
+          times = action.times;
+        }
       }
 
       this.log.info('Evaluating action %s for piece %s %s %s'
