@@ -31,7 +31,7 @@
   return 'random'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal)
+(DrawCard|SetAttribute|Hit|Heal|Buff)
   return 'action'
 
 //attributes
@@ -121,6 +121,7 @@ arguments
 argument_item
   : possibleRandSelector -> $1
   | attribute -> $1
+  | buffAttribute -> $1
   | pNumber -> $1
   ;
 
@@ -163,4 +164,9 @@ numberList
 
 pNumber
   : number -> parseInt($1)
+  ;
+
+buffAttribute
+  : attribute'('eNumber')'
+    { $$ = { attribute: $attribute, amount: $3 }; }
   ;

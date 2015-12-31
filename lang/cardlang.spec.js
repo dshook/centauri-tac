@@ -358,3 +358,41 @@ test('Random number list', t => {
 
   t.deepEqual(d, expected);
 });
+
+test('Buff', t => {
+  t.plan(1);
+
+  let input = `
+    attacks{
+      Buff(FRIENDLY, attack(1), health(2) );
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'attacks',
+      actions: [
+        {
+          action: 'Buff',
+          args: [
+            {
+              left: 'FRIENDLY'
+            },
+            {
+              attribute: 'attack',
+              amount: 1
+            },
+            {
+              attribute: 'health',
+              amount: 2
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
