@@ -1,5 +1,5 @@
 /*
- * Simple card lang
+ * Card lang
  */
 
 %lex
@@ -42,6 +42,10 @@
 [0-9]
   return 'number'
 
+//text
+(\'(.*)\')
+  return 'text'
+
 //syntax
 '('    return '('
 ')'    return ')'
@@ -54,6 +58,7 @@
 '|'    return '|'
 '&'    return '&'
 '-'    return '-'
+
 
 <<EOF>>               return 'EOF'
 .                     return 'INVALID'
@@ -123,6 +128,7 @@ argument_item
   | attribute -> $1
   | buffAttribute -> $1
   | pNumber -> $1
+  | pText -> $1
   ;
 
 possibleRandSelector
@@ -169,4 +175,8 @@ pNumber
 buffAttribute
   : attribute'('eNumber')'
     { $$ = { attribute: $attribute, amount: $3 }; }
+  ;
+
+pText
+  : text -> $1.substring(1, $1.length-1);
   ;
