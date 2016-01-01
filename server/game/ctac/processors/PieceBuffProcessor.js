@@ -1,12 +1,12 @@
 import GamePiece from '../models/GamePiece.js';
-import PieceAttributeChange from '../actions/PieceAttributeChange.js';
+import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
 
 /**
  * Handle pieces losing or gaining their current health
  */
 @loglevel
-export default class PieceAttributeChangeProcessor
+export default class PieceBuffProcessor
 {
   constructor(pieceState, cardEvaluator)
   {
@@ -16,14 +16,14 @@ export default class PieceAttributeChangeProcessor
 
   async handleAction(action, queue)
   {
-    if (!(action instanceof PieceAttributeChange)) {
+    if (!(action instanceof PieceBuff)) {
       return;
     }
 
     let piece = this.pieceState.piece(action.pieceId);
 
     if(!piece){
-      this.log.info('Cannot find piece to change attributes on for id %s', action.pieceId);
+      this.log.info('Cannot find piece to buff for id %s', action.pieceId);
       queue.cancel(action);
       return;
     }
@@ -38,22 +38,21 @@ export default class PieceAttributeChangeProcessor
     for(let attrib of attribs){
       if(action[attrib] == null || piece[attrib] === action[attrib]) continue;
 
-      piece[attrib] = action[attrib];
+      piece[attrib] += action[attrib];
 
-      //set base as well
-      let baseattrib = 'base' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-      piece[baseattrib] = action[attrib];
-      action[baseattrib] = action[attrib];
-      this.log.info('setting piece %s %s to %s %s', piece.id, attrib, action[attrib]);
+      this.log.info('buffing piece %s %s to %s %s', piece.id, attrib, action[attrib]);
     }
 
+    piece.buffs.push(action);
+
+    //TODO: need to dedupe death logic and cleanup
     if(piece.health <= 0){
       this.cardEvaluator.evaluatePieceEvent('death', piece);
       this.pieceState.remove(piece.id);
     }
 
-    this.log.info('piece %s changed attribs to %s attack %s health %s movement',
-      action.pieceId, piece.attack, piece.health, piece.movement);
+    this.log.info('piece %s buffed by %s to %s attack %s health %s movement',
+      action.pieceId, action.name, piece.attack, piece.health, piece.movement);
     queue.complete(action);
   }
 }

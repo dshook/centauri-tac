@@ -15,6 +15,6 @@ export default class GamePiece
     this.movement = null;
     this.baseMovement = null;
     this.tags = [];
+    this.buffs = [];
   }
-
 }

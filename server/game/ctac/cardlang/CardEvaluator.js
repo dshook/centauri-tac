@@ -3,6 +3,7 @@ import loglevel from 'loglevel-decorator';
 import DrawCard from '../actions/DrawCard.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
+import PieceBuff from '../actions/PieceBuff.js';
 
 /**
  * Evaluate the scripts on cards
@@ -161,13 +162,32 @@ export default class CardEvaluator{
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
-                var phc = new PieceAttributeChange(s.id);
+                let phc = new PieceAttributeChange(s.id);
                 //set up the appropriate attribute change from args, i.e. attack = 1
                 phc[action.args[1]] = action.args[2];
                 this.queue.push(phc);
               }
             }
 
+            break;
+          }
+          case 'Buff':
+          {
+            let buffName = action.args[0];
+            let selected = this.selector.selectPieces(playerId, action.args[1], triggeringPiece);
+            this.log.info('Selected %j', selected);
+            let buffAttributes = action.args.splice(2);
+
+            if(selected && selected.length > 0){
+              for(let s of selected){
+                //set up a new buff for each selected piece that has all the attributes of the buff
+                let buff = new PieceBuff(s.id, buffName);
+                for(let buffAttribute of buffAttributes){
+                  buff[buffAttribute.attribute] = buffAttribute.amount;
+                }
+                this.queue.push(buff);
+              }
+            }
             break;
           }
         }

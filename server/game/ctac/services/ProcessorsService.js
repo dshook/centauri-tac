@@ -5,6 +5,7 @@ import MoveProcessor from '../processors/MovePieceProcessor.js';
 import AttackProcessor from '../processors/AttackPieceProcessor.js';
 import HealthChangeProcessor from '../processors/HealthChangeProcessor.js';
 import PieceAttributeChangeProcessor from '../processors/PieceAttributeChangeProcessor.js';
+import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
 import SpawnProcessor from '../processors/SpawnProcessor.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
@@ -24,6 +25,7 @@ export default class TurnService
     queue.addProcessor(AttackProcessor);
     queue.addProcessor(HealthChangeProcessor);
     queue.addProcessor(PieceAttributeChangeProcessor);
+    queue.addProcessor(PieceBuffProcessor);
     queue.addProcessor(SpawnProcessor);
 
     queue.addProcessor(SpawnDeckProcessor);
