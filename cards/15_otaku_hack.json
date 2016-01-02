@@ -1,0 +1,11 @@
+{
+	"id": 15,
+	"name": "Otaku Hack",
+	"description": "Whenever Otaku attacks, gain +1/+1",
+	"cost": 5,
+	"attack": 4,
+	"health": 4,
+	"movement": 4,
+	"tags": ["Minion"],
+	"eventcode": "attacks{ Buff('Neural upgrade', SELF, attack(1), health(1) ); }"
+}

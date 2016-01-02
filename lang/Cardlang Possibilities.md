@@ -18,10 +18,10 @@
 * ~~random enemy~~
 * ~~all minions~~
 * ~~event selectors~~
+* ~~friendly/enemy~~
 
 * tags (battlecry, damaged, paralyzed, etc)
 * zones (play, deck, hand, secret, graveyard)
-* friendly/enemy
 * cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
 
 ##Areas
