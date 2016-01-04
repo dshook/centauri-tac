@@ -43,7 +43,7 @@
 
 
 ##Actions
-* add buff
+* ~~add buff~~
 * spawn minion
 * aura effects
 * give status effect (silence, shield)
