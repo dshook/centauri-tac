@@ -19,6 +19,7 @@
 * ~~all minions~~
 * ~~event selectors~~
 * ~~friendly/enemy~~
+* ~~damaged~~
 
 * tags (battlecry, damaged, paralyzed, etc)
 * zones (play, deck, hand, secret, graveyard)

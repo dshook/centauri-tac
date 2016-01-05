@@ -6,6 +6,7 @@ export default class GamePiece
   {
     this.id = null;
     this.cardId = null;
+    this.name = null;
     this.playerId = null;
     this.position = new Position();
     this.attack = null;

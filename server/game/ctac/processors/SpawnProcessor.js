@@ -31,6 +31,7 @@ export default class SpawnProcessor
     var newPiece = new GamePiece();
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
+    newPiece.name = cardPlayed.name;
     newPiece.cardId = action.cardId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;

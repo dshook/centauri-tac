@@ -11,6 +11,8 @@ namespace ctac
 
         public int cardId { get; set; }
 
+        public string name { get; set; }
+
         public GameObject gameObject { get; set; }
 
         public bool currentPlayerHasControl { get; set; }
