@@ -6,11 +6,12 @@ import DrawCard from '../actions/DrawCard.js';
  */
 export default class TurnProcessor
 {
-  constructor(turnState, players, playerResourceState)
+  constructor(turnState, players, playerResourceState, cardEvaluator)
   {
     this.turnState = turnState;
     this.players = players;
     this.playerResourceState = playerResourceState;
+    this.cardEvaluator = cardEvaluator;
   }
 
   /**

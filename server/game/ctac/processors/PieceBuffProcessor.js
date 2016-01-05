@@ -40,7 +40,7 @@ export default class PieceBuffProcessor
 
       piece[attrib] += action[attrib];
 
-      this.log.info('buffing piece %s %s to %s %s', piece.id, attrib, action[attrib]);
+      this.log.info('buffing piece %s to %s %s', piece.id, action[attrib], attrib);
     }
 
     piece.buffs.push(action);

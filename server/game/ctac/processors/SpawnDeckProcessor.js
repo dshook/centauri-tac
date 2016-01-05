@@ -31,11 +31,11 @@ export default class SpawnDeckProcessor
     let deck = this.decks[playerId];
 
     //dev hack, set one card you're working on to be half your deck
-    let testingCardId = 12;
+    let testingCards = [13, 14, 15];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
-      if(c % 4 == 0) randCardId = testingCardId;
+      if(c % 4 == 0) randCardId = _.sample(testingCards);
       deck.push( this.cardDirectory.directory[randCardId]);
     }
 

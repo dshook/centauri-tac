@@ -9,9 +9,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class AttackPieceProcessor
 {
-  constructor(pieceState)
+  constructor(pieceState, cardEvaluator)
   {
     this.pieceState = pieceState;
+    this.cardEvaluator = cardEvaluator;
   }
 
   /**
