@@ -73,10 +73,10 @@ export default class CardEvaluator{
   //evaluate an event that doesn't correspond to a piece directly
   evaluatePlayerEvent(event, playerId){
     this.log.info('Eval player event %s player: %s', event, playerId);
-    let evalActions = [];
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
+      let evalActions = [];
       let card = this.cardDirectory.directory[piece.cardId];
       if(!card.events || card.events.length === 0) continue;
 
@@ -106,9 +106,10 @@ export default class CardEvaluator{
           }
         }
       }
-    }
 
-    this.processActions(evalActions, playerId);
+      //process the actions for each piece so they are run in context of the the player that controls them
+      this.processActions(evalActions, piece.playerId);
+    }
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions

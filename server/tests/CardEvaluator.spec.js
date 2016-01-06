@@ -199,6 +199,10 @@ test('Card drawn player event', t => {
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
 
+  //damage a friendly unit so there's something to heal
+  let friendlyHero = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardId == 1)[0];
+  friendlyHero.health -= 5;
+
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
