@@ -30,6 +30,7 @@ namespace ctac
             {"action:AttackPiece", typeof(ActionPieceAttackedSignal) },
             {"action:PieceHealthChange", typeof(ActionPieceHealthChangedSignal) },
             {"action:PieceAttributeChange", typeof(ActionPieceAttributeChangedSignal) },
+            {"action:PieceBuff", typeof(ActionPieceBuffSignal) },
             {"action:DrawCard", typeof(ActionDrawCardSignal) },
             {"action:SpawnDeck", typeof(ActionSpawnDeckSignal) },
             {"action:ActivateCard", typeof(ActionActivateCardSignal) },

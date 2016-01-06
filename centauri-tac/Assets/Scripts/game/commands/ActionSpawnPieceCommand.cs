@@ -107,6 +107,7 @@ namespace ctac
                 baseHealth = cardTemplate.health,
                 movement = cardTemplate.movement,
                 tags = cardTemplate.tags,
+                buffs = new List<PieceBuffModel>(),
                 hasAttacked = true,
                 hasMoved = true
             };

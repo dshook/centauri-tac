@@ -16,7 +16,6 @@ namespace ctac
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
 
-        private CardCanvasHelperView CardCanvasHelper;
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
         //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
         private Vector2 bottomLeftAnchor = new Vector2(0, 0);
@@ -24,8 +23,6 @@ namespace ctac
 
         internal void init()
         {
-            CardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
-
             //init the hover card that's hidden most of the time
             var cardPrefab = Resources.Load("Card") as GameObject;
             var cardCanvas = GameObject.Find(Constants.cardCanvas);

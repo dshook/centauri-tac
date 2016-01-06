@@ -40,6 +40,10 @@ export default class PieceBuffProcessor
 
       piece[attrib] += action[attrib];
 
+      //update action with new values
+      let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+      action[newAttrib] = piece[attrib];
+
       this.log.info('buffing piece %s to %s %s', piece.id, action[attrib], attrib);
     }
 

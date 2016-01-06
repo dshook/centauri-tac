@@ -61,6 +61,10 @@ namespace ctac.signals
     public class ActionPieceAttributeChangedSignal : Signal<PieceAttributeChangeModel, SocketKey> { }
     [Singleton]
     public class PieceAttributeChangedSignal : Signal<PieceAttributeChangeModel> { }
+    [Singleton]
+    public class ActionPieceBuffSignal : Signal<PieceBuffModel, SocketKey> { }
+    [Singleton]
+    public class PieceBuffSignal : Signal<PieceBuffModel> { }
 
     [Singleton]
     public class PieceHoverSignal : Signal<PieceModel> { }

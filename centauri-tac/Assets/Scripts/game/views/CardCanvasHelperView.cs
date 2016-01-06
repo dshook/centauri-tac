@@ -17,7 +17,6 @@ namespace ctac {
         public Vector3 WorldToViewport(Vector3 position)
         {
             Vector2 ViewportPosition = cardCamera.WorldToViewportPoint(position);
-            var screenPoint = cardCamera.WorldToScreenPoint(position);
             return new Vector3(
                 ((ViewportPosition.x * CanvasRect.sizeDelta.x)),
                 ((ViewportPosition.y * CanvasRect.sizeDelta.y)),

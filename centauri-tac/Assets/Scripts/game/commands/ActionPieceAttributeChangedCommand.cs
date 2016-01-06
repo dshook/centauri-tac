@@ -36,7 +36,7 @@ namespace ctac
             piece.attack = pieceChanged.attack ?? piece.attack;
             piece.baseAttack = pieceChanged.baseAttack ?? piece.baseAttack;
 
-            piece.movement = pieceChanged.health ?? piece.movement;
+            piece.movement = pieceChanged.movement ?? piece.movement;
             piece.baseMovement = pieceChanged.baseMovement ?? piece.baseMovement;
 
             attribChanged.Dispatch(pieceChanged);

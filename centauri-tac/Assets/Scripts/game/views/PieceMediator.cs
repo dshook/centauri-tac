@@ -21,6 +21,9 @@ namespace ctac
         public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
 
         [Inject]
+        public PieceBuffSignal pieceBuffed { get; set; }
+
+        [Inject]
         public AnimationQueueModel animationQueue { get; set; }
 
         [Inject]
@@ -38,6 +41,7 @@ namespace ctac
             pieceAttacked.AddListener(onAttacked);
             pieceHpChanged.AddListener(onHealthChange);
             pieceAttrChanged.AddListener(onAttrChange);
+            pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
         }
 
@@ -47,6 +51,7 @@ namespace ctac
             pieceAttacked.RemoveListener(onAttacked);
             pieceHpChanged.RemoveListener(onHealthChange);
             pieceAttrChanged.RemoveListener(onAttrChange);
+            pieceBuffed.RemoveListener(onBuffed);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
         }
 
@@ -132,6 +137,45 @@ namespace ctac
                         current = view.piece.health,
                         original = view.piece.baseHealth,
                         change = -1, 
+                        animFinished = pieceTextAnimFinished,
+                        piece = view.piece
+                    }
+                );
+            }
+
+            //TODO: display movement
+        }
+
+        public void onBuffed(PieceBuffModel pieceBuff)
+        {
+            if(pieceBuff.pieceId != view.piece.id) return;
+
+            if (pieceBuff.attack != null)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateTextAnim()
+                    {
+                        text = view.attackText,
+                        textGO = view.attackGO,
+                        current = view.piece.attack,
+                        original = view.piece.baseAttack,
+                        change = pieceBuff.attack.Value, 
+                        animFinished = pieceTextAnimFinished,
+                        piece = view.piece
+                    }
+                );
+            }
+
+            if (pieceBuff.health != null)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateTextAnim()
+                    {
+                        text = view.healthText,
+                        textGO = view.healthGO,
+                        current = view.piece.health,
+                        original = view.piece.baseHealth,
+                        change = pieceBuff.health.Value, 
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
