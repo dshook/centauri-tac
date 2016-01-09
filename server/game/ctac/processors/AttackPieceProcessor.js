@@ -9,10 +9,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class AttackPieceProcessor
 {
-  constructor(pieceState, cardEvaluator)
+  constructor(pieceState, cardEvaluator, mapState)
   {
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
+    this.mapState = mapState;
   }
 
   /**
@@ -24,7 +25,6 @@ export default class AttackPieceProcessor
       return;
     }
 
-    //TODO: validate pieces are in range
     var attacker = this.pieceState.piece(action.attackingPieceId);
     var target = this.pieceState.piece(action.targetPieceId);
 
@@ -32,6 +32,12 @@ export default class AttackPieceProcessor
       this.log.info('Attacker or target not found in attack %j', this.pieceState);
       queue.cancel(action);
       return;
+    }
+
+    let targetDistance = this.mapState.tileDistance(attacker.position, target.position);
+    if(targetDistance > 1){
+      this.log.info('Attacker too far away from target %s', targetDistance);
+      queue.cancel(action);
     }
 
     queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));

@@ -34,10 +34,9 @@ export default class MapState
     return Math.abs(posA.x - posB.x) + Math.abs(posA.y - posB.y);
   }
 
-  //TODO: seems to be bugged and returning smaller distances than actual
   kingDistance(posA, posB){
     return Math.max(
-      Math.abs(posA.x - posB.x), 
+      Math.abs(posA.x - posB.x),
       Math.abs(posA.z - posB.z)
     );
   }
