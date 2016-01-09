@@ -39,7 +39,7 @@
 
 ##Conditions - check for AND and OR
 * Unit is dead (self?)
-* holding tribal card
+* holding card with selector
 * attributes with selector (get enemy hero hp)
 
 

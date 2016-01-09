@@ -1,6 +1,6 @@
 export default class Position
 {
- //source: unity scene 
+ //source: unity scene
 
  // z       y       x
  //  \      |      /
@@ -17,6 +17,10 @@ export default class Position
 
   toString() {
       return `(${this.x}, ${this.y}, ${this.z})`;
+  }
+
+  equals(otherP){
+    return this.x === otherP.x && this.y === otherP.y && this.z === otherP.y;
   }
 
 }
