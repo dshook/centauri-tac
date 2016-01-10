@@ -1,7 +1,7 @@
 #Cardlang Possibilities
 
 ##Event triggers
-* ~~play~~
+* ~~play minion~~
 * ~~death~~
 * ~~unit takes damage~~
 * ~~unit attacks~~

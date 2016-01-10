@@ -12,7 +12,7 @@
   return 'event'
 
 //player events
-(cardDrawn|turnEnd|turnStart)
+(cardDrawn|turnEnd|turnStart|playSpell)
   return 'event'
 
 // player targets

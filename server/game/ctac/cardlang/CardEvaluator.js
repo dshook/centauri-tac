@@ -22,7 +22,8 @@ export default class CardEvaluator{
       death: {left: 'SELF'},
       damaged: {left: 'SELF'},
       attacks: {left: 'SELF'},
-      cardDrawn: {left: 'PLAYER'}
+      cardDrawn: {left: 'PLAYER'},
+      playSpell: {left: 'SELF'}
     };
   }
 
