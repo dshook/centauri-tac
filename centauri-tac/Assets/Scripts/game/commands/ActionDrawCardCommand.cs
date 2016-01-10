@@ -1,6 +1,7 @@
 using ctac.signals;
 using strange.extensions.command.impl;
 using strange.extensions.context.api;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -47,7 +48,8 @@ namespace ctac
                     cost = cardTemplate.cost,
                     attack = cardTemplate.attack,
                     health = cardTemplate.health,
-                    movement = cardTemplate.movement
+                    movement = cardTemplate.movement,
+                    tags = cardTemplate.tags
                 };
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))

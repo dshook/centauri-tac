@@ -10,4 +10,8 @@ export default class Card
     this.movement = null;
     this.tags = [];
   }
+
+  hasTag(tag){
+    return this.tags.indexOf(tag) != -1;
+  }
 }

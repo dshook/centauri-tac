@@ -114,8 +114,9 @@ namespace ctac
                 return;
             }
 
+            if(card.tags.Contains("Spell")) return;
+
             //find play radius depending on the card
-            //assuming minion for now
             var playerHero = pieces.Hero(card.playerId);
             List<Tile> playableTiles = map.tileList
                 .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1

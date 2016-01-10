@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
+import PlaySpell from '../actions/PlaySpell.js';
 import Message from '../actions/Message.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import ActivateCard from '../actions/ActivateCard.js';
@@ -38,20 +39,27 @@ export default class ActivateCardProcessor
     }
 
     //check to make sure the card was played in a valid spot
-    let playerHero = this.pieceState.hero(action.playerId);
-    let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
-    if(kingDist > 1){
-      this.log.info('Cannot play minion that far away, dist %s'
-        , kingDist);
-      queue.cancel(action);
-      queue.push(new Message('You must play your minions close to your hero!'));
-      return;
+    if(cardPlayed.hasTag('Minion')){
+      let playerHero = this.pieceState.hero(action.playerId);
+      let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
+      if(kingDist > 1){
+        this.log.info('Cannot play minion that far away, dist %s'
+          , kingDist);
+        queue.cancel(action);
+        queue.push(new Message('You must play your minions close to your hero!'));
+        return;
+      }
     }
-
 
     //all good if we make it this far
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
-    queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
+    if(cardPlayed.hasTag('Minion')){
+      queue.push(new SpawnPiece(action.playerId, action.cardId, action.position));
+    }else if(cardPlayed.hasTag('Spell')){
+      queue.push(new PlaySpell(action.playerId, action.cardId, action.position));
+    }else{
+      throw 'Card played must be either a minion or a spell';
+    }
 
     queue.complete(action);
     this.log.info('player %s played card %s at %s',
