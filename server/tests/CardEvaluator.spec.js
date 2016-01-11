@@ -217,3 +217,24 @@ test('Card drawn player event', t => {
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].change > 0, 'Heal action');
 });
+
+test('Spell played event', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let cardPlayed = cardDirectory.directory[16];
+
+  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1);
+
+  t.equal(queue._actions.length, 4, '4 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].change < 0, 'Hit action');
+});
