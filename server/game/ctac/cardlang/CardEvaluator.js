@@ -117,16 +117,20 @@ export default class CardEvaluator{
 
   //when a spell is played
   evaluateSpellEvent(event, spellCard, playerId){
-    this.log.info('Eval spell event %s player: %s', event, playerId);
+    this.log.info('Eval spell event %s with spell %s player: %s', event, spellCard.name, playerId);
 
     let evalActions = [];
 
-    for(let cardEventAction of spellCard.actions){
-      evalActions.push({
-        card: spellCard,
-        playerId: playerId,
-        action: cardEventAction
-      });
+    //always add the actions from this spell card
+    let spellActions = spellCard.events.filter(e => e.event === event);
+    if(spellActions.length > 0){
+      for(let cardEventAction of spellActions[0].actions){
+        evalActions.push({
+          card: spellCard,
+          playerId: playerId,
+          action: cardEventAction
+        });
+      }
     }
 
     //then look through all the pieces on the board to see if any have actions on this event
@@ -161,10 +165,9 @@ export default class CardEvaluator{
           }
         }
       }
-
-      //process the actions for each piece so they are run in context of the the player that controls them
-      this.processActions(evalActions);
     }
+
+    this.processActions(evalActions);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
@@ -178,8 +181,9 @@ export default class CardEvaluator{
         times = this.eventualNumber(action.times);
       }
 
-      this.log.info('Evaluating action %s for piece %s %s %s'
-        , action.action, pieceAction.piece.name, times, times > 1 ? 'times' : 'time');
+      let actionTriggerer = pieceAction.piece ? `piece ${pieceAction.piece.name}` : `spell ${pieceAction.card.name}`;
+      this.log.info('Evaluating action %s for %s %s %s'
+        , action.action, actionTriggerer, times, times > 1 ? 'times' : 'time');
 
       for (var t = 0; t < times; t++) {
         switch(action.action){

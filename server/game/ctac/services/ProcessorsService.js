@@ -10,6 +10,7 @@ import SpawnProcessor from '../processors/SpawnProcessor.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
+import PlaySpellProcessor from '../processors/PlaySpellProcessor.js';
 
 /**
  * Add action processors to the queue
@@ -31,5 +32,6 @@ export default class TurnService
     queue.addProcessor(SpawnDeckProcessor);
     queue.addProcessor(ActivateCardProcessor);
     queue.addProcessor(CardDrawProcessor);
+    queue.addProcessor(PlaySpellProcessor);
   }
 }
