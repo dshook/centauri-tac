@@ -20,6 +20,9 @@ namespace ctac {
         private const float maxCardHeight = 20f;
         private Vector3 dest;
 
+        private Color32 playableCardColor = new Color32(0, 53, 223, 255);
+        private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
+
         protected override void Start()
         {
         }
@@ -51,6 +54,15 @@ namespace ctac {
                 rectTransform.anchorMin = anchorPosition;
                 rectTransform.pivot = anchorPosition;
                 rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
+
+                if (card.playable)
+                {
+                    card.cardView.costText.outlineColor = playableCardColor;
+                }
+                else
+                {
+                    card.cardView.costText.outlineColor = unPlayableCardColor;
+                }
             }
         }
 

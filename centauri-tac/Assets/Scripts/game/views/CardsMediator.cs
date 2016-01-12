@@ -44,6 +44,12 @@ namespace ctac
         public GameTurnModel gameTurn { get; set; }
 
         [Inject]
+        public PlayerResourcesModel playerResources { get; set; }
+
+        [Inject]
+        public PlayerResourceSetSignal playerResourceSet { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public override void OnRegister()
@@ -57,6 +63,7 @@ namespace ctac
             cardDrawn.AddListener(onCardDrawn);
             cardDrawShown.AddListener(onCardDrawnShown);
             turnEnded.AddListener(onTurnEnded);
+            playerResourceSet.AddListener(onPlayerResourceSet);
         }
 
         public override void onRemove()
@@ -70,6 +77,7 @@ namespace ctac
             cardDrawn.RemoveListener(onCardDrawn);
             cardDrawShown.RemoveListener(onCardDrawnShown);
             turnEnded.RemoveListener(onTurnEnded);
+            playerResourceSet.RemoveListener(onPlayerResourceSet);
         }
 
         private void onCardSelected(CardModel card)
@@ -114,6 +122,7 @@ namespace ctac
             if (card.playerId != gameTurn.currentPlayerId)
             {
                 cards.Cards.Add(card);
+                UpdateCardsPlayableStatus(cards.Cards);
                 return;
             }
 
@@ -127,6 +136,7 @@ namespace ctac
         private void onCardDrawnShown(CardModel card)
         {
             cards.Cards.Add(card);
+            UpdateCardsPlayableStatus(cards.Cards);
             view.init(GetCurrentPlayerCards());
         }
 
@@ -153,6 +163,27 @@ namespace ctac
             }
 
             return playerCards;
+        }
+
+        private void onPlayerResourceSet(SetPlayerResourceModel resource)
+        {
+            UpdateCardsPlayableStatus(cards.Cards);
+        }
+
+        private void UpdateCardsPlayableStatus(List<CardModel> cards)
+        {
+            foreach (var card in cards)
+            {
+                if (playerResources.resources.ContainsKey(card.playerId) 
+                   && card.cost <= playerResources.resources[card.playerId])
+                {
+                    card.playable = true;
+                }
+                else
+                {
+                    card.playable = false;
+                }
+            }
         }
     }
 }

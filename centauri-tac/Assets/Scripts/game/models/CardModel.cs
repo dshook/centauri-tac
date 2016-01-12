@@ -7,7 +7,7 @@ namespace ctac
     public class CardModel
     {
         public int id { get; set; }
-
+        public int playerId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public int cost { get; set; }
@@ -19,7 +19,9 @@ namespace ctac
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }
+        [JsonIgnore]
+        public CardView cardView { get; set; }
 
-        public int playerId { get; set; }
+        public bool playable { get; set; }
     }
 }

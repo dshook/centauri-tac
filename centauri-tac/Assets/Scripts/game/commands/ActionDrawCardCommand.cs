@@ -49,7 +49,8 @@ namespace ctac
                     attack = cardTemplate.attack,
                     health = cardTemplate.health,
                     movement = cardTemplate.movement,
-                    tags = cardTemplate.tags
+                    tags = cardTemplate.tags,
+                    playable = false
                 };
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))
@@ -67,8 +68,9 @@ namespace ctac
             cardGameObject.transform.SetParent(cardParent.transform);
 
             newCardModel.gameObject = cardGameObject;
-            var pieceView = cardGameObject.AddComponent<CardView>();
-            pieceView.card = newCardModel;
+            var cardView = cardGameObject.AddComponent<CardView>();
+            cardView.card = newCardModel;
+            newCardModel.cardView = cardView;
 
             cardDrawn.Dispatch(newCardModel);
 
