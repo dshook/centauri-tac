@@ -1,6 +1,6 @@
 import loglevel from 'loglevel-decorator';
 
-const maxResources = 20;
+const maxResources = 10;
 /**
  * Current state of players resources, ie mana
  */
@@ -17,9 +17,10 @@ export default class PlayerResourceState
   incriment(playerId, turnId){
     //check init
     if(this.resources[playerId] === undefined){
-      this.resources[playerId] = 0;    
+      this.resources[playerId] = 0;
     }
-    this.resources[playerId] = turnId;
+
+    this.resources[playerId] = Math.ceil(turnId / 2);
     this.resources[playerId] = Math.min(this.resources[playerId], maxResources);
     return this.resources[playerId];
   }
