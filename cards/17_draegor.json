@@ -1,0 +1,11 @@
+{
+	"id": 17,
+	"name": "Draegor",
+	"description": "<b>Play</b>: Deal 1 damage to a character",
+	"cost": 1,
+	"attack": 1,
+	"health": 1,
+	"movement": 4,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Hit(TARGET, 1); }"
+}
