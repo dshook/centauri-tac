@@ -8,6 +8,7 @@ namespace ctac {
     {
         public CardModel card { get; set; }
 
+        public GameObject displayWrapper;
         public GameObject costGO;
         public GameObject attackGO;
         public GameObject healthGO;
@@ -21,11 +22,12 @@ namespace ctac {
 
         protected override void Start()
         {
-            costGO = card.gameObject.transform.FindChild("Cost").gameObject;
-            attackGO = card.gameObject.transform.FindChild("Attack").gameObject;
-            healthGO = card.gameObject.transform.FindChild("Health").gameObject;
-            nameGO = card.gameObject.transform.FindChild("Name").gameObject;
-            descriptionGO = card.gameObject.transform.FindChild("Descrip").gameObject;
+            displayWrapper = card.gameObject.transform.FindChild("DisplayWrapper").gameObject;
+            costGO = displayWrapper.transform.FindChild("Cost").gameObject;
+            attackGO = displayWrapper.transform.FindChild("Attack").gameObject;
+            healthGO = displayWrapper.transform.FindChild("Health").gameObject;
+            nameGO = displayWrapper.transform.FindChild("Name").gameObject;
+            descriptionGO = displayWrapper.transform.FindChild("Descrip").gameObject;
             costText = costGO.GetComponent<TextMeshPro>();
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
@@ -41,5 +43,7 @@ namespace ctac {
             nameText.text = card.name;
             descriptionText.text = card.description;
         }
+
+        public static readonly float HOVER_DELAY = 0.5f;
     }
 }

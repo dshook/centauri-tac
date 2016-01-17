@@ -12,6 +12,7 @@ namespace ctac
         internal Signal<GameObject> pieceHover = new Signal<GameObject>();
 
         float timer = 0f;
+        bool cardVisible = false;
 
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
@@ -36,6 +37,17 @@ namespace ctac
             hoverCardGO.name = hoverName;
             hoverCardGO.tag = "HoverCard";
 
+            //disable all colliders so you can't hover the hover
+            foreach (var collider in hoverCardGO.GetComponentsInChildren<BoxCollider>())
+            {
+                collider.enabled = false;
+            }
+            foreach (var collider in hoverCardGO.GetComponentsInChildren<MeshCollider>())
+            {
+                collider.enabled = false;
+            }
+
+            //set up fake card model
             var hoverCardModel = new CardModel()
             {
                 playerId = -1,
@@ -54,6 +66,11 @@ namespace ctac
         void Update()
         {
             timer += Time.deltaTime;
+
+            if (timer > CardView.HOVER_DELAY && cardVisible)
+            {
+                hoverCardView.gameObject.SetActive(true);
+            }
         }
 
         //private float hoverDelay = 0.5f;
@@ -69,14 +86,18 @@ namespace ctac
 
             rectTransform.anchoredPosition3D = position;
 
-            hoverCardView.gameObject.SetActive(true);
+            //hide card so it reshows after the delay
+            hideCard();
+            timer = 0f;
+            cardVisible = true;
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 305, -1);
+        private static Vector3 HoverOffset = new Vector3(0, 155, -1);
         internal void showCardFromHand(CardModel cardToShow, Vector3 position)
         {
             rectTransform.SetAnchor(cardAnchor);
-            showCard(cardToShow, position + HoverOffset);
+            var displayPosition = (position + HoverOffset).SetZ(39f);
+            showCard(cardToShow, displayPosition);
         }
 
         internal void showCardWorld(CardModel cardToShow, Vector3 worldPosition)
@@ -116,6 +137,7 @@ namespace ctac
 
         internal void hideCard()
         {
+            cardVisible = false;
             hoverCardView.gameObject.SetActive(false);
         }
     }

@@ -52,18 +52,16 @@ namespace ctac {
 
                 if (selectedCard != null && card == selectedCard)
                 {
-                    dest = dest.SetY(dest.y + 40f);
+                    dest = dest.SetY(dest.y + 30f);
                 }
                 if (hoveredCard != null && card == hoveredCard && hoveredCard != selectedCard)
                 {
-                    dest = dest.SetY(dest.y + 40f);
+                    dest = dest.SetY(dest.y + 30f);
                     hoverAccumulator += Time.deltaTime;
 
-                    if (hoverAccumulator > 0.4f)
+                    if (hoverAccumulator > CardView.HOVER_DELAY)
                     {
-                        rectTransform.rotation = Quaternion.Euler(Vector3.zero);
-                        dest = dest.SetY(dest.y + 150f);
-                        dest = dest.SetZ(cardCircleCenter.z - 11f);
+                        card.cardView.displayWrapper.SetActive(false);
                     }
                 }
                 rectTransform.anchorMax = anchorPosition;
@@ -98,6 +96,13 @@ namespace ctac {
 
         internal void onCardHovered(CardModel card)
         {
+            //reset previous hovered card to active
+            if (hoveredCard != null)
+            {
+                hoveredCard.cardView.displayWrapper.SetActive(true);
+            }
+
+            //then update
             hoveredCard = card;
             hoverAccumulator = 0f;
         }
