@@ -1,5 +1,6 @@
 ﻿using ctac.signals;
 using strange.extensions.mediation.impl;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,8 +15,7 @@ namespace ctac {
         private CardModel selectedCard { get; set; }
         private CardModel hoveredCard { get; set; }
 
-        private Vector3 baseCardOffset = new Vector3(0, -85f, 50);
-        private Vector3 cardPositionOffset = new Vector3(60, 0, -1);
+        private Vector3 baseCardOffset = new Vector3(0, 0, 60);
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private const float maxCardHeight = 20f;
         private Vector3 dest;
@@ -24,6 +24,9 @@ namespace ctac {
         private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
 
         private float hoverAccumulator = 0f;
+        private Vector3 cardCircleCenter = new Vector3(0, -450, 0);
+        private float cardCircleRadius = 420f;
+        private float cardAngleSpread = -5f;
 
         protected override void Start()
         {
@@ -42,8 +45,12 @@ namespace ctac {
             {
                 var card = cards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
-                rectTransform.rotation = Quaternion.Euler(Vector3.zero);
-                dest = baseCardOffset - ((cards.Count / 2) * cardPositionOffset) + (cardPositionOffset * c);
+                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0 - ((cards.Count / 2) * cardAngleSpread) + (cardAngleSpread * c)));
+
+                dest = baseCardOffset;
+                dest += PointOnCircle(cardCircleRadius, 90f - ((cards.Count / 2) * cardAngleSpread) + (cardAngleSpread * c), cardCircleCenter);
+                dest = dest.SetZ(-1 * c);
+
                 if (selectedCard != null && card == selectedCard)
                 {
                     dest = dest.SetY(dest.y + 40f);
@@ -73,6 +80,15 @@ namespace ctac {
                     card.cardView.costText.outlineColor = unPlayableCardColor;
                 }
             }
+        }
+
+        private static Vector3 PointOnCircle(float radius, float angleInDegrees, Vector3 origin)
+        {
+            // Convert from degrees to radians via multiplication by PI/180        
+            float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.x;
+            float y = (float)(radius * Math.Sin(angleInDegrees * Math.PI / 180F)) + origin.y;
+
+            return new Vector3(x, y, origin.z);
         }
 
         internal void onCardSelected(CardModel card)
