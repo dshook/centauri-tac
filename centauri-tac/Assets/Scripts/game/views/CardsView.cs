@@ -15,7 +15,6 @@ namespace ctac {
         private CardModel selectedCard { get; set; }
         private CardModel hoveredCard { get; set; }
 
-        private Vector3 baseCardOffset = new Vector3(0, 0, 60);
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private const float maxCardHeight = 20f;
         private Vector3 dest;
@@ -24,7 +23,7 @@ namespace ctac {
         private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -450, 0);
+        private Vector3 cardCircleCenter = new Vector3(0, -450, 50);
         private float cardCircleRadius = 420f;
         private float cardAngleSpread = -5f;
 
@@ -45,11 +44,11 @@ namespace ctac {
             {
                 var card = cards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
-                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0 - ((cards.Count / 2) * cardAngleSpread) + (cardAngleSpread * c)));
+                var cardCountOffset = 0 - ((cards.Count - 1) / 2) + c;
+                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
-                dest = baseCardOffset;
-                dest += PointOnCircle(cardCircleRadius, 90f - ((cards.Count / 2) * cardAngleSpread) + (cardAngleSpread * c), cardCircleCenter);
-                dest = dest.SetZ(-1 * c);
+                dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
+                dest = dest.SetZ(dest.z + (-1 * c));
 
                 if (selectedCard != null && card == selectedCard)
                 {
@@ -62,8 +61,9 @@ namespace ctac {
 
                     if (hoverAccumulator > 0.4f)
                     {
+                        rectTransform.rotation = Quaternion.Euler(Vector3.zero);
                         dest = dest.SetY(dest.y + 150f);
-                        dest = dest.SetZ(dest.z - 3f);
+                        dest = dest.SetZ(cardCircleCenter.z - 11f);
                     }
                 }
                 rectTransform.anchorMax = anchorPosition;
