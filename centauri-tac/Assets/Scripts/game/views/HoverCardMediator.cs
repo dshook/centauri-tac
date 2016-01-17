@@ -10,8 +10,8 @@ namespace ctac
         [Inject]
         public HoverCardView view { get; set; }
         
-        [Inject]
-        public CardHoveredSignal cardHovered { get; set; }
+        //[Inject]
+        //public CardHoveredSignal cardHovered { get; set; }
 
         [Inject]
         public PieceHoverSignal pieceHovered { get; set; }
@@ -22,13 +22,13 @@ namespace ctac
         public override void OnRegister()
         {
             view.init();
-            cardHovered.AddListener(onCardHovered);
+            //cardHovered.AddListener(onCardHovered);
             pieceHovered.AddListener(onPieceHovered);
         }
 
         public override void onRemove()
         {
-            cardHovered.RemoveListener(onCardHovered);
+            //cardHovered.RemoveListener(onCardHovered);
             pieceHovered.RemoveListener(onPieceHovered);
         }
 

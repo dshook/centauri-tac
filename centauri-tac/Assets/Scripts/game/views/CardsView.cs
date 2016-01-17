@@ -23,6 +23,8 @@ namespace ctac {
         private Color32 playableCardColor = new Color32(0, 53, 223, 255);
         private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
 
+        private float hoverAccumulator = 0f;
+
         protected override void Start()
         {
         }
@@ -49,6 +51,13 @@ namespace ctac {
                 if (hoveredCard != null && card == hoveredCard && hoveredCard != selectedCard)
                 {
                     dest = dest.SetY(dest.y + 40f);
+                    hoverAccumulator += Time.deltaTime;
+
+                    if (hoverAccumulator > 0.4f)
+                    {
+                        dest = dest.SetY(dest.y + 150f);
+                        dest = dest.SetZ(dest.z - 3f);
+                    }
                 }
                 rectTransform.anchorMax = anchorPosition;
                 rectTransform.anchorMin = anchorPosition;
@@ -74,6 +83,7 @@ namespace ctac {
         internal void onCardHovered(CardModel card)
         {
             hoveredCard = card;
+            hoverAccumulator = 0f;
         }
 
         public class CardDestroyedAnim : IAnimate
