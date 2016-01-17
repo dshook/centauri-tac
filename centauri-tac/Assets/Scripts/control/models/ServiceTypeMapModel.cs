@@ -2,6 +2,8 @@ using ctac.signals;
 using strange.extensions.signal.impl;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace ctac
 {
@@ -11,40 +13,38 @@ namespace ctac
     [Singleton]
     public class ServiceTypeMapModel
     {
-        private static Dictionary<string, Type> map = new Dictionary<string, Type>()
+        private Dictionary<string, Type> map;
+        public ServiceTypeMapModel()
         {
-            {"login", typeof(LoggedInSignal) },
-            {"me", typeof(PlayerFetchedSignal) },
-            {"token", typeof(TokenSignal) },
-            {"_ping", typeof(PingSignal) },
-            {"_latency", typeof(LatencySignal) },
+            map = new Dictionary<string, Type>()
+            {
+                {"login", typeof(LoggedInSignal) },
+                {"me", typeof(PlayerFetchedSignal) },
+                {"token", typeof(TokenSignal) },
+                {"_ping", typeof(PingSignal) },
+                {"_latency", typeof(LatencySignal) },
 
-            {"qps", typeof(ServerQueueProcessStart) },
-            {"qpc", typeof(ServerQueueProcessEnd) },
-            {"game", typeof(GamelistGameSignal) },
-            {"game:current", typeof(CurrentGameSignal) },
-            {"action:Message", typeof(ActionMessageSignal) },
-            {"action:PassTurn", typeof(ActionEndTurnSignal) },
-            {"action:SpawnPiece", typeof(ActionSpawnPieceSignal) },
-            {"action:MovePiece", typeof(ActionPieceMovedSignal) },
-            {"action:AttackPiece", typeof(ActionPieceAttackedSignal) },
-            {"action:PieceHealthChange", typeof(ActionPieceHealthChangedSignal) },
-            {"action:PieceAttributeChange", typeof(ActionPieceAttributeChangedSignal) },
-            {"action:PieceBuff", typeof(ActionPieceBuffSignal) },
-            {"action:PlaySpell", typeof(ActionPlaySpellSignal) },
-            {"action:DrawCard", typeof(ActionDrawCardSignal) },
-            {"action:SpawnDeck", typeof(ActionSpawnDeckSignal) },
-            {"action:ActivateCard", typeof(ActionActivateCardSignal) },
-            {"action:SetPlayerResource", typeof(ActionSetPlayerResourceSignal) },
+                {"qps", typeof(ServerQueueProcessStart) },
+                {"qpc", typeof(ServerQueueProcessEnd) },
+                {"game", typeof(GamelistGameSignal) },
+                {"game:current", typeof(CurrentGameSignal) },
 
+                {"player:connect", typeof(PlayerConnectSignal) },
+                {"player:join", typeof(PlayerJoinedSignal) },
+                {"player:part", typeof(PlayerPartSignal) },
+                {"player:disconnect", typeof(PlayerDisconnectSignal) },
 
-            {"player:connect", typeof(PlayerConnectSignal) },
-            {"player:join", typeof(PlayerJoinedSignal) },
-            {"player:part", typeof(PlayerPartSignal) },
-            {"player:disconnect", typeof(PlayerDisconnectSignal) },
+                {"status", typeof(MatchmakerStatusSignal) },
+            }; 
 
-            {"status", typeof(MatchmakerStatusSignal) },
-        };
+            //auto add action bindings
+            var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Name.StartsWith("Action"));
+            foreach (Type type in assemblyTypes)
+            {
+                var actionType = type.Name.Replace("Action", "").Replace("Signal", "");
+                map.Add("action:" + actionType, type);
+            }
+        }
 
         public Type Get(string def)
         {

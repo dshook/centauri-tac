@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    public class ActionEndTurnCommand : Command
+    public class ActionPassTurnCommand : Command
     {
         [Inject]
         public PiecesModel piecesModel { get; set; }

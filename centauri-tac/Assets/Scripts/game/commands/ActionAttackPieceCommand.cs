@@ -1,10 +1,9 @@
 using strange.extensions.command.impl;
 using ctac.signals;
-using System.Linq;
 
 namespace ctac
 {
-    public class ActionPieceAttackedCommand : Command
+    public class ActionAttackPieceCommand : Command
     {
         [Inject]
         public SocketKey socketKey { get; set; }

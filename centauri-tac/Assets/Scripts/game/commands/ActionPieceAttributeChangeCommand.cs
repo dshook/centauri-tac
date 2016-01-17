@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    public class ActionPieceAttributeChangedCommand : Command
+    public class ActionPieceAttributeChangeCommand : Command
     {
         [Inject]
         public SocketKey socketKey { get; set; }

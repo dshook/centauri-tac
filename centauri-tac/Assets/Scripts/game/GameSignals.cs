@@ -38,7 +38,7 @@ namespace ctac.signals
     [Singleton]
     public class MovePieceSignal : Signal<PieceModel, Tile> { }
     [Singleton]
-    public class ActionPieceMovedSignal : Signal<MovePieceModel, SocketKey> { }
+    public class ActionMovePieceSignal : Signal<MovePieceModel, SocketKey> { }
     [Singleton]
     public class PieceMovedSignal : Signal<PieceMovedModel> { }
     [Singleton]
@@ -47,18 +47,18 @@ namespace ctac.signals
     [Singleton]
     public class AttackPieceSignal : Signal<AttackPieceModel> { }
     [Singleton]
-    public class ActionPieceAttackedSignal : Signal<AttackPieceModel, SocketKey> { }
+    public class ActionAttackPieceSignal : Signal<AttackPieceModel, SocketKey> { }
     [Singleton]
     public class PieceAttackedSignal : Signal<AttackPieceModel> { }
     [Singleton]
     public class PieceTextAnimationFinishedSignal : Signal<PieceModel> { }
 
     [Singleton]
-    public class ActionPieceHealthChangedSignal : Signal<PieceHealthChangeModel, SocketKey> { }
+    public class ActionPieceHealthChangeSignal : Signal<PieceHealthChangeModel, SocketKey> { }
     [Singleton]
     public class PieceHealthChangedSignal : Signal<PieceHealthChangeModel> { }
     [Singleton]
-    public class ActionPieceAttributeChangedSignal : Signal<PieceAttributeChangeModel, SocketKey> { }
+    public class ActionPieceAttributeChangeSignal : Signal<PieceAttributeChangeModel, SocketKey> { }
     [Singleton]
     public class PieceAttributeChangedSignal : Signal<PieceAttributeChangeModel> { }
     [Singleton]
@@ -80,7 +80,7 @@ namespace ctac.signals
     [Singleton]
     public class EndTurnSignal : Signal { }
     [Singleton]
-    public class ActionEndTurnSignal : Signal<PassTurnModel> { }
+    public class ActionPassTurnSignal : Signal<PassTurnModel> { }
     [Singleton]
     public class TurnEndedSignal : Signal { }
 
