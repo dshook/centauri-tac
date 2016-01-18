@@ -11,5 +11,6 @@ export default class SpawnPiece
     this.position = new Position(position.x, position.y, position.z);
 
     this.pieceId = null;
+    this.tags = null;
   }
 }

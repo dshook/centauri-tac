@@ -1,4 +1,6 @@
-﻿namespace ctac
+﻿using System.Collections.Generic;
+
+namespace ctac
 {
     public class SpawnPieceModel
     {
@@ -7,7 +9,7 @@
         public int cardId { get; set; }
         public int playerId { get; set; }
         public PositionModel position { get; set; }
-        public int attack { get; set; }
-        public int health { get; set; }
+
+        public List<string> tags { get; set; }
     }
 }
