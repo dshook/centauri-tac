@@ -1,6 +1,8 @@
 ﻿using ctac.signals;
 using strange.extensions.mediation.impl;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -16,6 +18,15 @@ namespace ctac {
         public GameObject damageSplat;
         public TextMeshPro damageSplatText;
 
+        public GameObject eventIconContainer;
+        public GameObject circleBg;
+        public GameObject deathIcon;
+        public GameObject eventIcon;
+        //list of event tags to show icon on minion for 
+        private static List<string> eventTags = new List<string>() {
+            "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
+        };
+
         private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
         private Material moveOutline;
@@ -30,6 +41,11 @@ namespace ctac {
             damageSplat = piece.gameObject.transform.FindChild("DamageSplat").gameObject;
             damageSplatText = damageSplat.GetComponentInChildren<TextMeshPro>();
 
+            eventIconContainer = piece.gameObject.transform.FindChild("EventIconContainer").gameObject;
+            circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
+            eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
+            deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
+
             spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
@@ -37,6 +53,19 @@ namespace ctac {
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
+
+            //set icon visibility based on tags
+            if (piece.tags.Contains("death"))
+            {
+                circleBg.SetActive(true);
+                deathIcon.SetActive(true);
+            }
+            var eventTagCount = piece.tags.Join(eventTags, p => p, e => e, (p, e) => p).Count();
+            if (eventTagCount > 0)
+            {
+                circleBg.SetActive(true);
+                eventIcon.SetActive(true);
+            }
         }
 
         void Update()
