@@ -40,6 +40,7 @@ namespace ctac {
         {
             if(cards == null) return;
 
+            cardAngleSpread = -13f + (0.8f * cards.Count);
             for(int c = 0; c < cards.Count; c++) 
             {
                 var card = cards[c];
