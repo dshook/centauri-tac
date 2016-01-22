@@ -12,10 +12,11 @@ import ActivateCard from '../actions/ActivateCard.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue)
+  constructor(players, queue, pieceState)
   {
     this.players = players;
     this.queue = queue;
+    this.pieceState = pieceState;
   }
 
   /**
@@ -62,7 +63,7 @@ export default class GameController
   }
 
   /**
-   * Move a piece 
+   * Move a piece
    */
   @on('playerCommand', x => x === 'move')
   movePiece(command, data)
@@ -128,6 +129,30 @@ export default class GameController
   {
     for (const p of this.players.filter(x => x.client)) {
       p.client.send('qpc', ticks);
+    }
+
+    //check for game win condition
+    let loser = null;
+    for (const p of this.players) {
+      const hero = this.pieceState.hero(p.id);
+      if(!hero){
+        loser = p.id;
+        break;
+      }
+    }
+
+    //TODO: actually shut down the game
+    if(loser !== null){
+      this.log.info('player %s LOSES', loser);
+      for (const p of this.players.filter(x => x.client)) {
+        p.client.send('game:finished',
+          {
+            id: 99999,
+            winnerId: this.players.find(w => w.id != loser).id,
+            loserId: loser
+          }
+        );
+      }
     }
   }
 

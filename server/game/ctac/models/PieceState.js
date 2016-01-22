@@ -26,10 +26,10 @@ export default class PieceState
   }
 
   piece(id){
-    return this.pieces.filter(x => x.id == id)[0];
+    return this.pieces.find(x => x.id == id);
   }
 
   hero(playerId){
-    return this.pieces.filter(x => x.playerId == playerId && x.tags[0] === 'Hero')[0];
+    return this.pieces.find(x => x.playerId == playerId && x.tags[0] === 'Hero');
   }
 }
