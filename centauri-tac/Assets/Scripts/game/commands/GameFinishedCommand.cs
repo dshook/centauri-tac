@@ -1,6 +1,5 @@
 using ctac.signals;
 using strange.extensions.command.impl;
-using System.Linq;
 
 namespace ctac
 {
@@ -33,11 +32,11 @@ namespace ctac
 
             if (gameFinished.winnerId == turns.currentPlayerId)
             {
-                message.Dispatch(new MessageModel() { message = "Victory!"}, socketKey);
+                message.Dispatch(new MessageModel() { message = "Victory!", duration = 5000}, socketKey);
             }
             else
             {
-                message.Dispatch(new MessageModel() { message = "Defeat :("}, socketKey);
+                message.Dispatch(new MessageModel() { message = "Defeat :(", duration = 5000}, socketKey);
             }
         }
     }

@@ -24,7 +24,7 @@ namespace ctac
 
         private void onMessage(MessageModel message, SocketKey key)
         {
-            view.updateText(message.message);
+            view.updateText(message.message, message.duration ?? 1f);
         }
 
     }

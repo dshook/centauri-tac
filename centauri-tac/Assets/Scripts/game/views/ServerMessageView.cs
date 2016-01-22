@@ -19,7 +19,7 @@ namespace ctac
         {
         }
 
-        internal void updateText(string message)
+        internal void updateText(string message, float time)
         {
             serverText.text = message;
             serverText.color = Color.white;
@@ -27,7 +27,7 @@ namespace ctac
             Hashtable tweenParams = new Hashtable();
             tweenParams.Add("from", Color.white);
             tweenParams.Add("to", transparentWhite);
-            tweenParams.Add("time", 1f);
+            tweenParams.Add("time", time);
             tweenParams.Add("delay", 0.75f);
             tweenParams.Add("onupdate", "OnColorUpdated");
 
