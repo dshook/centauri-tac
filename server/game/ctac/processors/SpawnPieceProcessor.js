@@ -6,7 +6,7 @@ import loglevel from 'loglevel-decorator';
  * Handle the PassTurn action
  */
 @loglevel
-export default class SpawnProcessor
+export default class SpawnPieceProcessor
 {
   constructor(pieceState, players, cardDirectory, cardEvaluator)
   {
