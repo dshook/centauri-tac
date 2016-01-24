@@ -269,6 +269,7 @@ test('Find Possible targets', t => {
   spawnCard(cardState, 1, 5);
   spawnCard(cardState, 1, 6);
   spawnCard(cardState, 2, 18); //id 6
+  spawnCard(cardState, 2, 18); //id 7
 
   t.plan(2);
   let queue = new ActionQueue();
@@ -287,7 +288,8 @@ test('Find Possible targets', t => {
   let otherPlayerTargets = cardEval.findPossibleTargets(cardState.hands[2], 2);
   //expecting all minions
   let otherExpectedTargets = [
-    {cardId: 6, event: 'playMinion', targetPieceIds: [2, 4]}
+    {cardId: 6, event: 'playMinion', targetPieceIds: [2, 4]},
+    {cardId: 7, event: 'playMinion', targetPieceIds: [2, 4]}
   ];
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Player 2 targets are minions');
 });
