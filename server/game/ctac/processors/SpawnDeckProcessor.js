@@ -9,11 +9,10 @@ import _ from 'lodash';
 @loglevel
 export default class SpawnDeckProcessor
 {
-  constructor(cardDirectory, decks)
+  constructor(cardDirectory, cardState)
   {
     this.cardDirectory = cardDirectory;
-    this.decks = decks;
-    this.id = 1;
+    this.cardState = cardState;
   }
 
   /**
@@ -30,10 +29,10 @@ export default class SpawnDeckProcessor
     let cardIds = _.map(playableCards, (m) => m.cardId);
 
     let playerId = action.playerId;
-    let deck = this.decks[playerId];
+    let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be half your deck
-    let testingCards = [15];
+    let testingCards = [15, 17, 18];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
@@ -44,9 +43,7 @@ export default class SpawnDeckProcessor
       var cardClone = new Card();
       for(var k in directoryCard) cardClone[k]=directoryCard[k];
 
-      cardClone.id = this.id++;
-
-      deck.push(cardClone);
+      this.cardState.addToDeck(playerId, cardClone);
     }
 
     action.cards = deck.length;

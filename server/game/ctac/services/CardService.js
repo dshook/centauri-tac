@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import CardDirectory from '../models/CardDirectory.js';
+import CardState from '../models/CardState.js';
 import requireDir from 'require-dir';
 import Selector from '../cardlang/Selector.js';
 import CardEvaluator from '../cardlang/CardEvaluator.js';
@@ -23,11 +24,8 @@ export default class CardService
     app.registerInstance('cardDirectory', cardDirectory);
 
     //cards in hand indexed by player id
-    var hands = {};
-    app.registerInstance('hands', hands);
-    //cards in deck indexed by player id
-    var decks = {};
-    app.registerInstance('decks', decks);
+    var cardState = new CardState();
+    app.registerInstance('cardState', cardState);
 
     app.registerInstance('selector', app.make(Selector));
     app.registerInstance('cardEvaluator', app.make(CardEvaluator));

@@ -2,10 +2,11 @@ import _ from 'lodash';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId, triggeringPiece){
+  constructor(pieces, controllingPlayerId, triggeringPiece, targetId){
     this.allPieces = pieces;
     this.controllingPlayerId = controllingPlayerId;
     this.triggeringPiece = triggeringPiece;
+    this.targetId = targetId;
   }
 
   Select(selector){
@@ -31,8 +32,12 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.health < p.baseHealth);
           break;
         case 'SELF':
-          if(!this.triggeringPiece) throw 'SELF selector not available without triggering piece';
+          if(!this.triggeringPiece) return [];
           return [this.triggeringPiece];
+          break;
+        case 'TARGET':
+          if(!this.targetId) return this.allPieces;
+          return [{id: this.targetId}];
           break;
         default:
           throw 'Invalid piece type selector ' + selector;
@@ -63,8 +68,8 @@ export default class PieceSelector{
     }else{
       return leftResult;
     }
-
   }
+
 
   Union(a, b, equal){
     var results = [];

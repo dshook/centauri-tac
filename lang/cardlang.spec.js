@@ -364,7 +364,7 @@ test('Buff', t => {
 
   let input = `
     attacks{
-      Buff('Buff of the Chosen', FRIENDLY, attack(1), health(2) );
+      Buff(FRIENDLY, 'Buff of the Chosen', attack(1), health(2) );
     }
   `;
 
@@ -377,10 +377,10 @@ test('Buff', t => {
         {
           action: 'Buff',
           args: [
-            'Buff of the Chosen',
             {
               left: 'FRIENDLY'
             },
+            'Buff of the Chosen',
             {
               attribute: 'attack',
               amount: 1

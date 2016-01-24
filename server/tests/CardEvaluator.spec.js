@@ -3,6 +3,8 @@ import CardEvaluator from '../game/ctac/cardlang/CardEvaluator.js';
 import Selector from '../game/ctac/cardlang/Selector.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
+import CardState from '../game/ctac/models/CardState.js';
+import Card from '../game/ctac/models/Card.js';
 import DrawCard from '../game/ctac/actions/DrawCard.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
@@ -35,6 +37,17 @@ function spawnPiece(pieceState, cardId, playerId){
     newPiece.tags = cardPlayed.tags;
 
     pieceState.add(newPiece);
+}
+
+function spawnCard(cardState, playerId, cardId){
+  let directoryCard = cardDirectory.directory[cardId];
+  //clone into new card
+  var cardClone = new Card();
+  for(var k in directoryCard) cardClone[k]=directoryCard[k];
+
+  //add to deck the immediately draw so it's in hand
+  cardState.addToDeck(playerId, cardClone);
+  cardState.drawCard(playerId);
 }
 
 var player1 = new Player(1);
@@ -237,4 +250,44 @@ test('Spell played event', t => {
   t.equal(queue._actions.length, 4, '4 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].change < 0, 'Hit action');
+});
+
+test('Find Possible targets', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  //fill one player hands with a target card and some other random ones to try to catch other errors
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  cardState.initPlayer(2);
+  spawnCard(cardState, 1, 17); //id 1
+  spawnCard(cardState, 1, 3);
+  spawnCard(cardState, 1, 4);
+  spawnCard(cardState, 1, 5);
+  spawnCard(cardState, 1, 6);
+  spawnCard(cardState, 2, 18); //id 6
+
+  t.plan(2);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let targets = cardEval.findPossibleTargets(cardState.hands[1], 1);
+  //expecting enemy characters
+  let expectedTargets = [
+    {cardId: 1, event: 'playMinion', targetPieceIds: [3, 4]}
+  ];
+
+  t.deepEqual(targets, expectedTargets, 'Player 1 targets are enemy characters');
+
+
+  let otherPlayerTargets = cardEval.findPossibleTargets(cardState.hands[2], 2);
+  //expecting all minions
+  let otherExpectedTargets = [
+    {cardId: 6, event: 'playMinion', targetPieceIds: [2, 4]}
+  ];
+  t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Player 2 targets are minions');
 });

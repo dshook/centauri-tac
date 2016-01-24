@@ -40,5 +40,13 @@ export default class Selector{
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId, triggeringPiece)
       .Select(selector);
   }
+
+  selectPossibleTargets(controllingPlayerId, selector){
+    //Random TARGET is not happening
+    if(selector.random) return [];
+
+    return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
+      .Select(selector);
+  }
 }
 

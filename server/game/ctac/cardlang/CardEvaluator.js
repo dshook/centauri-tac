@@ -232,8 +232,8 @@ export default class CardEvaluator{
           }
           case 'Buff':
           {
-            let buffName = action.args[0];
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[1], triggeringPiece);
+            let buffName = action.args[1];
+            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece);
             this.log.info('Selected %j', selected);
             let buffAttributes = action.args.splice(2);
 
@@ -252,6 +252,49 @@ export default class CardEvaluator{
         }
       }
     }
+  }
+
+  //look through the cards for any cards needing a TARGET
+  //on one of the targetableEvents
+  //and then find what the possible targets are
+  //   [
+  //     {cardId: 2, event: 'x', targetPieceIds: [4,5,6]}
+  //   ]
+  findPossibleTargets(cards, playerId){
+    let targets = [];
+    const targetableEvents = ['playMinion', 'playSpell'];
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff'];
+
+    for(let card of cards){
+      if(!card.events) continue;
+
+      for(let targetEvent of targetableEvents){
+        let event = card.events.find(e => e.event === targetEvent);
+        if(!event) continue;
+
+        //try to find TARGETS in any of the actions
+        for(let cardEventAction of event.actions){
+          if(targetableActions.indexOf(cardEventAction.action) === -1) continue;
+          //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
+          let selector = cardEventAction.args[0];
+          let targetPieceIds = this.selector.selectPossibleTargets(
+            playerId, selector
+          ).map(p => p.id);
+          if(targetPieceIds.length > 0){
+            targets.push({
+              cardId: card.id,
+              event: event.event,
+              targetPieceIds
+            });
+
+            //only allow max of 1 targetable action per event
+            break;
+          }
+        }
+      }
+    }
+
+    return targets;
   }
 
   //can either be an ordinary number, or something that evaluates to a number

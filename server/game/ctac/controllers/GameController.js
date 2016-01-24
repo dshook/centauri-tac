@@ -12,14 +12,14 @@ import ActivateCard from '../actions/ActivateCard.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, hands, turnState, selector)
+  constructor(players, queue, pieceState, cardState, turnState, cardEvaluator)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
-    this.hands = hands;
+    this.cardState = cardState;
     this.turnState = turnState;
-    this.selector = selector;
+    this.cardEvaluator = cardEvaluator;
   }
 
   /**
@@ -134,7 +134,12 @@ export default class GameController
       p.client.send('qpc', ticks);
     }
 
-    //let possibleActions = this._findPossibleActions();
+    //find actions the client can take that could be filtered on the server side
+    let possibleActions = this._findPossibleActions();
+    const currentTurnPlayer = this.players.find(x => x.id === this.turnState.currentPlayerId && x.client);
+    if(currentTurnPlayer){
+      currentTurnPlayer.client.send('possibleActions', possibleActions);
+    }
 
     //check for game win condition
     let loser = null;
@@ -181,24 +186,19 @@ export default class GameController
   }
 
   //look through the current players hand for any cards needing a TARGET
+  //on one of the targetableEvents
   //and then find what the possible targets are
   // {
   //   playerId: 1,
   //   targets: [
-  //     {cardId: 2, targetPieceIds: [4,5,6]}
+  //     {cardId: 2, event: 'x', targetPieceIds: [4,5,6]}
   //   ]
   // }
   _findPossibleActions(){
-    let targets = [];
-    for(let card of this.hands[this.turnState.currentPlayerId]){
-      let targetPieceIds = this.selector.selectTargets(this.turnState.currentPlayerId, card.events);
-      if(targetPieceIds.length > 0){
-        targets.push({
-          cardId: card.id,
-          targetPieceIds
-        });
-      }
-    }
+    let targets = this.cardEvaluator.findPossibleTargets(
+      this.cardState.hands[this.turnState.currentPlayerId],
+      this.turnState.currentPlayerId
+    );
     return {
       playerId: this.turnState.currentPlayerId,
       targets

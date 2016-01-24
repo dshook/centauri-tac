@@ -13,13 +13,13 @@ import _ from 'lodash';
 @loglevel
 export default class ActivateCardProcessor
 {
-  constructor(playerResourceState, cardDirectory, pieceState, mapState, hands)
+  constructor(playerResourceState, cardDirectory, pieceState, mapState, cardState)
   {
     this.playerResourceState = playerResourceState;
     this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
     this.mapState = mapState;
-    this.hands = hands;
+    this.cardState = cardState;
   }
   /**
    * Proc
@@ -31,7 +31,7 @@ export default class ActivateCardProcessor
     }
 
     //find card in hand
-    let cardPlayed = this.hands[action.playerId].find(c => c.id === action.cardInstanceId);
+    let cardPlayed = this.cardState.hands[action.playerId].find(c => c.id === action.cardInstanceId);
     this.log.info('found card %j', cardPlayed);
     if(!cardPlayed){
       this.log.info('Cannot find card %s in player %s\'s hand'
@@ -63,8 +63,14 @@ export default class ActivateCardProcessor
     }
 
     //all good if we make it this far
+    let cardWasInHand = this.cardState.playCard(action.playerId, action.cardInstanceId);
+    if(!cardWasInHand){
+        this.log.info('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
+        queue.cancel(action);
+        queue.push(new Message('Cards must be in your hand to play them!'));
+        return;
+      }
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
-    _.remove(this.hands[action.playerId], c => c.id === action.cardInstanceId);
 
     if(cardPlayed.hasTag('Minion')){
       queue.push(new SpawnPiece(action.playerId, cardPlayed.cardId, action.position));

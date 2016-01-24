@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 4,
 	"tags": ["Minion"],
-	"eventcode": "attacks{ Buff('Neural upgrade', SELF, attack(1), health(1) ); }"
+	"eventcode": "attacks{ Buff(SELF, 'Neural upgrade', attack(1), health(1) ); }"
 }

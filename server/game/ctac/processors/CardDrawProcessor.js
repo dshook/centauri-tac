@@ -8,10 +8,9 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class CardDrawProcessor
 {
-  constructor(decks, hands, cardEvaluator)
+  constructor(cardState, cardEvaluator)
   {
-    this.decks = decks;
-    this.hands = hands;
+    this.cardState = cardState;
     this.cardEvaluator = cardEvaluator;
   }
 
@@ -24,17 +23,16 @@ export default class CardDrawProcessor
       return;
     }
 
-    let playerDeck = this.decks[action.playerId];
-    let playerHand = this.hands[action.playerId];
+    let playerDeck = this.cardState.decks[action.playerId];
 
     if(playerDeck.length == 0){
       this.log.info('No cards to draw for player %s', action.playerId);
+      //TODO: better handling of out of cards
+      queue.cancel(action);
       return;
     }
 
-    //TODO: handle out of cards
-    let cardDrawn = playerDeck.splice(0, 1)[0];
-    playerHand.push(cardDrawn);
+    let cardDrawn = this.cardState.drawCard(action.playerId);
 
     //kinda confusing since we have to refer to both the id of the card and the template id
     action.cardId = cardDrawn.id;

@@ -14,15 +14,14 @@ import _ from 'lodash';
 @loglevel
 export default class CentauriTacGame
 {
-  constructor(queue, players, binder, host, cardDirectory, decks, hands)
+  constructor(queue, players, binder, host, cardDirectory, cardState)
   {
     this.players = players;
     this.binder = binder;
     this.host = host;
     this.queue = queue;
     this.cardDirectory = cardDirectory;
-    this.decks = decks;
-    this.hands = hands;
+    this.cardState = cardState;
   }
 
   /**
@@ -43,8 +42,7 @@ export default class CentauriTacGame
 
       //spawn both player decks and init hands
       for(let p = 0; p < this.players.length; p++){
-        this.decks[this.players[p].id] = [];
-        this.hands[this.players[p].id] = [];
+        this.cardState.initPlayer(this.players[p].id);
         this.queue.push(new SpawnDeck(this.players[p].id));
       }
 
