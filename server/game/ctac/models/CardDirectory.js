@@ -41,7 +41,7 @@ export default class CardDirectory
       c.events = null;
     }
 
-    this.directory[c.cardId] = c;
+    this.directory[c.cardTemplateId] = c;
   }
 
   getByTag(tags){

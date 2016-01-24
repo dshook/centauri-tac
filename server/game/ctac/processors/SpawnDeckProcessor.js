@@ -26,7 +26,7 @@ export default class SpawnDeckProcessor
     //give players some cards and init decks and hands
     let deckCards = 30;
     var playableCards = this.cardDirectory.getByTag(['Minion', 'Spell']);
-    let cardIds = _.map(playableCards, (m) => m.cardId);
+    let cardIds = _.map(playableCards, (m) => m.cardTemplateId);
 
     let playerId = action.playerId;
     let deck = this.cardState.decks[playerId];

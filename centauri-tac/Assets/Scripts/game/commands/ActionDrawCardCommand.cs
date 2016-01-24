@@ -42,7 +42,7 @@ namespace ctac
             var newCardModel = new CardModel()
                 {
                     id = cardDraw.cardId,
-                    cardId = cardDraw.cardTemplateId,
+                    cardTemplateId = cardDraw.cardTemplateId,
                     playerId = cardDraw.playerId,
                     name = cardTemplate.name,
                     description = cardTemplate.description,

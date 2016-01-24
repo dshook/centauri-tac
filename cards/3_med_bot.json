@@ -1,5 +1,5 @@
 {
-	"cardId": 3,
+	"cardTemplateId": 3,
 	"name": "Med Bot",
 	"description": "<b>Play</b>: Draw 2 Cards",
 	"cost": 2,

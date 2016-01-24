@@ -1,5 +1,5 @@
 {
-	"cardId": 4,
+	"cardTemplateId": 4,
 	"name": "Techinator",
 	"description": "<b>Death</b>: Draw a card",
 	"cost": 3,

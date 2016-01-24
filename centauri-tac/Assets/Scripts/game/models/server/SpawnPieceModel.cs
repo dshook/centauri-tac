@@ -6,7 +6,7 @@ namespace ctac
     {
         public int id { get; set; }
         public int pieceId { get; set; }
-        public int cardId { get; set; }
+        public int cardTemplateId { get; set; }
         public int playerId { get; set; }
         public PositionModel position { get; set; }
 

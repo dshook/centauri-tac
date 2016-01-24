@@ -4,9 +4,9 @@ import Position from '../models/Position.js';
  */
 export default class SpawnPiece
 {
-  constructor(playerId, cardId, position)
+  constructor(playerId, cardTemplateId, position)
   {
-    this.cardId = cardId;
+    this.cardTemplateId = cardTemplateId;
     this.playerId = playerId;
     this.position = new Position(position.x, position.y, position.z);
 

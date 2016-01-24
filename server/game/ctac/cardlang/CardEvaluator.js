@@ -34,7 +34,7 @@ export default class CardEvaluator{
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
-      let card = this.cardDirectory.directory[piece.cardId];
+      let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
@@ -80,7 +80,7 @@ export default class CardEvaluator{
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
-      let card = this.cardDirectory.directory[piece.cardId];
+      let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
@@ -135,7 +135,7 @@ export default class CardEvaluator{
 
     //then look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
-      let card = this.cardDirectory.directory[piece.cardId];
+      let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one

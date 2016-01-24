@@ -1,5 +1,5 @@
 {
-	"cardId": 17,
+	"cardTemplateId": 17,
 	"name": "Draegor",
 	"description": "<b>Play</b>: Deal 1 damage to an enemy character",
 	"cost": 1,

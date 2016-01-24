@@ -79,7 +79,7 @@ namespace ctac
             //set up display
             try
             {
-                var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.cardId);
+                var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.cardTemplateId);
 
                 var animator = newPiece.GetComponentInChildren<Animator>();
                 animator.runtimeAnimatorController = animationController;
@@ -88,17 +88,17 @@ namespace ctac
             }
             catch (Exception ex)
             {
-                debug.LogError("Could not load resources for id " + spawnedPiece.cardId + " " + ex.ToString(), socketKey);
+                debug.LogError("Could not load resources for id " + spawnedPiece.cardTemplateId + " " + ex.ToString(), socketKey);
             }
 
             var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
-            var cardTemplate = cardDirectory.Card(spawnedPiece.cardId);
+            var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
 
             var pieceModel = new PieceModel()
             {
                 id = spawnedPiece.pieceId,
                 playerId = spawnedPiece.playerId,
-                cardId = spawnedPiece.cardId,
+                cardTemplateId = spawnedPiece.cardTemplateId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
                 gameObject = newPiece,
                 attack = cardTemplate.attack,
@@ -118,7 +118,7 @@ namespace ctac
             piecesModel.Pieces.Add(pieceModel);
 
             pieceSpawned.Dispatch(pieceModel);
-            debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.cardId, spawnedPiece.playerId), socketKey);
+            debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.cardTemplateId, spawnedPiece.playerId), socketKey);
         }
     }
 }

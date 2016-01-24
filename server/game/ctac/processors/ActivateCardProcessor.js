@@ -43,7 +43,7 @@ export default class ActivateCardProcessor
     //check to see if they have enough energy to play
     if(cardPlayed.cost > this.playerResourceState.get(action.playerId)){
       this.log.info('Not enough resources for player %s to play card %s'
-        , action.playerId, cardPlayed.cardId);
+        , action.playerId, cardPlayed.id);
       queue.cancel(action);
       queue.push(new Message('You don\'t have enough energy to play that card!'));
       return;
@@ -73,9 +73,9 @@ export default class ActivateCardProcessor
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
 
     if(cardPlayed.hasTag('Minion')){
-      queue.push(new SpawnPiece(action.playerId, cardPlayed.cardId, action.position));
+      queue.push(new SpawnPiece(action.playerId, cardPlayed.cardTemplateId, action.position));
     }else if(cardPlayed.hasTag('Spell')){
-      queue.push(new PlaySpell(action.playerId, cardPlayed.cardId, action.position));
+      queue.push(new PlaySpell(action.playerId, cardPlayed.cardTemplateId, action.position));
     }else{
       throw 'Card played must be either a minion or a spell';
     }

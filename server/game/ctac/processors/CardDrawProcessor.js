@@ -34,14 +34,13 @@ export default class CardDrawProcessor
 
     let cardDrawn = this.cardState.drawCard(action.playerId);
 
-    //kinda confusing since we have to refer to both the id of the card and the template id
     action.cardId = cardDrawn.id;
-    action.cardTemplateId = cardDrawn.cardId;
+    action.cardTemplateId = cardDrawn.cardTemplateId;
 
     this.cardEvaluator.evaluatePlayerEvent('cardDrawn', action.playerId);
 
     queue.complete(action);
     this.log.info('player %s drew card %s %s',
-      action.playerId, cardDrawn.cardId, cardDrawn.name);
+      action.playerId, cardDrawn.cardTemplateId, cardDrawn.name);
   }
 }

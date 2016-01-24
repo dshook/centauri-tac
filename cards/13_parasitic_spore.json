@@ -1,5 +1,5 @@
 {
-	"cardId": 13,
+	"cardTemplateId": 13,
 	"name": "Parasitic Spore",
 	"description": "Whenever the spore attacks, deal 1 damage to a random enemy minion.",
 	"cost": 3,

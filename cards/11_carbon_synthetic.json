@@ -1,5 +1,5 @@
 {
-	"cardId": 11,
+	"cardTemplateId": 11,
 	"name": "Carbon Synthetic",
 	"description": "Whenever this takes damage, heal your hero for 2",
 	"cost": 3,

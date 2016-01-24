@@ -1,5 +1,5 @@
 {
-	"cardId": 18,
+	"cardTemplateId": 18,
 	"name": "Power Assimilator",
 	"description": "<b>Play</b>: Deal 4 damage to a minion",
 	"cost": 4,

@@ -25,7 +25,7 @@ export default class PlaySpellProcessor
       return;
     }
 
-    let cardPlayed = this.cardDirectory.directory[action.cardId];
+    let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
     this.cardEvaluator.evaluateSpellEvent('playSpell', cardPlayed, action.playerId);
 

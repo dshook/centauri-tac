@@ -25,13 +25,13 @@ export default class SpawnPieceProcessor
       return;
     }
 
-    let cardPlayed = this.cardDirectory.directory[action.cardId];
+    let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
     var newPiece = new GamePiece();
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
     newPiece.name = cardPlayed.name;
-    newPiece.cardId = action.cardId;
+    newPiece.cardTemplateId = action.cardTemplateId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
     newPiece.baseAttack = cardPlayed.attack;
@@ -47,6 +47,6 @@ export default class SpawnPieceProcessor
 
     queue.complete(action);
     this.log.info('spawned piece %s for player %s at %s',
-      action.cardId, action.playerId, action.position);
+      action.cardTemplateId, action.playerId, action.position);
   }
 }

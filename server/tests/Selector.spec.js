@@ -234,13 +234,13 @@ test('Self Selector', t => {
 });
 
 
-function spawnPiece(pieceState, cardId, playerId){
-    let cardPlayed = cardDirectory.directory[cardId];
+function spawnPiece(pieceState, cardTemplateId, playerId){
+    let cardPlayed = cardDirectory.directory[cardTemplateId];
 
     var newPiece = new GamePiece();
     //newPiece.position = action.position;
     newPiece.playerId = playerId;
-    newPiece.cardId = cardId;
+    newPiece.cardTemplateId = cardTemplateId;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
     newPiece.baseAttack = cardPlayed.attack;

@@ -50,7 +50,7 @@ namespace ctac
         {
             if (piece != null)
             {
-                var card = cardDirectory.Card(piece.cardId);
+                var card = cardDirectory.Card(piece.cardTemplateId);
                 view.showCardWorld(card, piece.gameObject.transform.position);
             }
             else

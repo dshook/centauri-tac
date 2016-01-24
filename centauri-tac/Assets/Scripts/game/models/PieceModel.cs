@@ -9,7 +9,7 @@ namespace ctac
 
         public int playerId { get; set; }
 
-        public int cardId { get; set; }
+        public int cardTemplateId { get; set; }
 
         public string name { get; set; }
 

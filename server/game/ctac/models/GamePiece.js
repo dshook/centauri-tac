@@ -5,7 +5,7 @@ export default class GamePiece
   constructor()
   {
     this.id = null;
-    this.cardId = null;
+    this.cardTemplateId = null;
     this.name = null;
     this.playerId = null;
     this.position = new Position();
