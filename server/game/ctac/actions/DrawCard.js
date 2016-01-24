@@ -3,6 +3,7 @@ export default class DrawCard
   constructor(playerId)
   {
     this.cardId = null;
-    this.playerId = playerId; 
+    this.cardTemplateId = null;
+    this.playerId = playerId;
   }
 }

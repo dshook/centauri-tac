@@ -1,5 +1,5 @@
 {
-	"id": 12,
+	"cardId": 12,
 	"name": "Agamemnon",
 	"description": "Whenever your hero takes damage draw a card.",
 	"cost": 5,

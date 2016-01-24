@@ -12,11 +12,14 @@ import ActivateCard from '../actions/ActivateCard.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState)
+  constructor(players, queue, pieceState, hands, turnState, selector)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
+    this.hands = hands;
+    this.turnState = turnState;
+    this.selector = selector;
   }
 
   /**
@@ -97,9 +100,9 @@ export default class GameController
   @on('playerCommand', x => x === 'activatecard')
   activateCard(command, data)
   {
-    let {playerId, cardId, position} = data;
+    let {playerId, cardInstanceId, position, targetPieceId} = data;
 
-    this.queue.push(new ActivateCard(playerId, cardId, position));
+    this.queue.push(new ActivateCard(playerId, cardInstanceId, position, targetPieceId));
 
     this.queue.processUntilDone();
   }
@@ -130,6 +133,8 @@ export default class GameController
     for (const p of this.players.filter(x => x.client)) {
       p.client.send('qpc', ticks);
     }
+
+    //let possibleActions = this._findPossibleActions();
 
     //check for game win condition
     let loser = null;
@@ -173,5 +178,30 @@ export default class GameController
   _sendAction(player, action)
   {
     player.client.send('action:' + action.constructor.name, action);
+  }
+
+  //look through the current players hand for any cards needing a TARGET
+  //and then find what the possible targets are
+  // {
+  //   playerId: 1,
+  //   targets: [
+  //     {cardId: 2, targetPieceIds: [4,5,6]}
+  //   ]
+  // }
+  _findPossibleActions(){
+    let targets = [];
+    for(let card of this.hands[this.turnState.currentPlayerId]){
+      let targetPieceIds = this.selector.selectTargets(this.turnState.currentPlayerId, card.events);
+      if(targetPieceIds.length > 0){
+        targets.push({
+          cardId: card.id,
+          targetPieceIds
+        });
+      }
+    }
+    return {
+      playerId: this.turnState.currentPlayerId,
+      targets
+    };
   }
 }

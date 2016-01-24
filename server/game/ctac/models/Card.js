@@ -1,7 +1,8 @@
 export default class Card
 {
   constructor(){
-    this.id = null;
+    this.id = null; //id of instance of card
+    this.cardId = null; //id of template card
     this.name = null;
     this.description = null;
     this.cost = null;

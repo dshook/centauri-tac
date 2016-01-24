@@ -37,11 +37,12 @@ namespace ctac
         {
             if (!processedActions.Verify(cardDraw.id)) return;
 
-            var cardTemplate = cardDirectory.Card(cardDraw.cardId);
+            var cardTemplate = cardDirectory.Card(cardDraw.cardTemplateId);
 
             var newCardModel = new CardModel()
                 {
                     id = cardDraw.cardId,
+                    cardId = cardDraw.cardTemplateId,
                     playerId = cardDraw.playerId,
                     name = cardTemplate.name,
                     description = cardTemplate.description,

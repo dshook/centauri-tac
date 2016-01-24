@@ -41,10 +41,12 @@ export default class CardDirectory
       c.events = null;
     }
 
-    this.directory[c.id] = c;
+    this.directory[c.cardId] = c;
   }
 
-  getByTag(tag){
-    return _.filter(this.directory, c => c.tags && c.tags.indexOf(tag) != -1);
+  getByTag(tags){
+    //ensure array if single string is passed
+    tags = [].concat(tags);
+    return _.filter(this.directory, c => c.tags && _.intersection(c.tags, tags).length > 0 );
   }
 }

@@ -22,7 +22,7 @@ namespace ctac
 
             //don't think there's a good way to pass the reference to the instance of the card dragged between
             //client and server at the moment.  perhaps introducing a cardInstanceId is needed
-            destroyCard.Dispatch(cardActivated.cardId);
+            destroyCard.Dispatch(cardActivated.cardInstanceId);
         }
     }
 }

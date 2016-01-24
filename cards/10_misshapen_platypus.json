@@ -1,5 +1,5 @@
 {
-	"id": 10,
+	"cardId": 10,
 	"name": "Misshapen Platypus",
 	"description": "<b>Play</b>: Set a random enemy minion's attack to 1",
 	"cost": 2,

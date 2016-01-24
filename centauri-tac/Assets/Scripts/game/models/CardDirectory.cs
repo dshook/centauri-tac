@@ -8,9 +8,9 @@ namespace ctac
     {
         public List<CardModel> directory = new List<CardModel>();
 
-        public CardModel Card(int id)
+        public CardModel Card(int cardId)
         {
-            return directory.FirstOrDefault(x => x.id == id);
+            return directory.FirstOrDefault(x => x.cardId == cardId);
         }
     }
 }

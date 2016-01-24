@@ -25,7 +25,7 @@ namespace ctac
             socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
                 new ActivateCardModel {
                     playerId = cardActivated.playerId,
-                    cardId = cardActivated.id,
+                    cardInstanceId = cardActivated.id,
                     position = tilePlayedAt.position.ToPositionModel()
                 }
             );

@@ -32,15 +32,18 @@ export default class CardDrawProcessor
       return;
     }
 
+    //TODO: handle out of cards
     let cardDrawn = playerDeck.splice(0, 1)[0];
     playerHand.push(cardDrawn);
 
+    //kinda confusing since we have to refer to both the id of the card and the template id
     action.cardId = cardDrawn.id;
+    action.cardTemplateId = cardDrawn.cardId;
 
     this.cardEvaluator.evaluatePlayerEvent('cardDrawn', action.playerId);
 
     queue.complete(action);
     this.log.info('player %s drew card %s %s',
-      action.playerId, cardDrawn.id, cardDrawn.name);
+      action.playerId, cardDrawn.cardId, cardDrawn.name);
   }
 }

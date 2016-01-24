@@ -4,10 +4,14 @@ import Position from '../models/Position.js';
  */
 export default class ActivateCard
 {
-  constructor(playerId, cardId, position)
+  constructor(playerId, cardInstanceId, position, targetPieceId)
   {
-    this.cardId = cardId;
+    //which specific card was activated
+    this.cardInstanceId = cardInstanceId;
     this.playerId = playerId;
     this.position = new Position(position.x, position.y, position.z);
+
+    //what, if any, piece is targeted for this activation
+    this.targetPieceId = targetPieceId;
   }
 }
