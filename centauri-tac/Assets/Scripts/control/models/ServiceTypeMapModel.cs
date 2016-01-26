@@ -29,6 +29,7 @@ namespace ctac
                 {"game", typeof(GamelistGameSignal) },
                 {"game:finished", typeof(GameFinishedSignal) },
                 {"game:current", typeof(CurrentGameSignal) },
+                {"possibleActions", typeof(PossibleActionsSignal) },
 
                 {"player:connect", typeof(PlayerConnectSignal) },
                 {"player:join", typeof(PlayerJoinedSignal) },

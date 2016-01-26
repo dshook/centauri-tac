@@ -12,13 +12,10 @@ namespace ctac.signals
 
     [Singleton]
     public class PlayerConnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
-
     [Singleton]
     public class PlayerJoinedSignal : Signal<JoinOrConnectModel, SocketKey> { }
-
     [Singleton]
     public class PlayerPartSignal : Signal<JoinOrConnectModel, SocketKey> { }
-
     [Singleton]
     public class PlayerDisconnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
@@ -27,6 +24,9 @@ namespace ctac.signals
 
     [Singleton]
     public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
+
+    [Singleton]
+    public class PossibleActionsSignal : Signal<PossibleActions, SocketKey> { }
 
     [Singleton]
     public class TileHoverSignal : Signal<Tile> { }
