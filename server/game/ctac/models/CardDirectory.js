@@ -33,7 +33,7 @@ export default class CardDirectory
         //copy over each event as a tag
         c.tags = c.tags.concat(_.map(c.events, 'event'));
       }catch(e){
-        this.log.info('Error parsing card text %s %s', card.events, e);
+        this.log.error('Error parsing card text %s %s', card.events, e);
         //throw again so you don't run the server with a bad card
         throw `Unable to parse card ${card.name} with text ${card.eventcode} ${e.message}`;
       }

@@ -29,14 +29,14 @@ export default class AttackPieceProcessor
     var target = this.pieceState.piece(action.targetPieceId);
 
     if(!attacker || !target ){
-      this.log.info('Attacker or target not found in attack %j', this.pieceState);
+      this.log.warn('Attacker or target not found in attack %j', this.pieceState);
       queue.cancel(action);
       return;
     }
 
     let targetDistance = this.mapState.tileDistance(attacker.position, target.position);
     if(targetDistance > 1){
-      this.log.info('Attacker too far away from target %s', targetDistance);
+      this.log.warn('Attacker too far away from target %s', targetDistance);
       queue.cancel(action);
     }
 

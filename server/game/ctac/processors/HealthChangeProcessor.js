@@ -23,12 +23,12 @@ export default class HealthChangeProcessor
     let piece = this.pieceState.piece(action.pieceId);
 
     if(!piece){
-      this.log.info('Cannot find piece to change health on for id %s', action.pieceId);
+      this.log.warn('Cannot find piece to change health on for id %s', action.pieceId);
       queue.cancel(action);
       return;
     }
     if(action.change == 0){
-      this.log.info('No health to change for piece %s', action.pieceId);
+      this.log.warn('No health to change for piece %s', action.pieceId);
       queue.cancel(action);
       return;
     }

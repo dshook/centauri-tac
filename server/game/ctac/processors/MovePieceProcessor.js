@@ -24,7 +24,7 @@ export default class MovePieceProcessor
 
     var piece = this.pieceState.piece(action.pieceId);
     if(!piece){
-      this.log.info('Could not find piece %s to move %j', action.pieceId, this.pieceState);
+      this.log.warn('Could not find piece %s to move %j', action.pieceId, this.pieceState);
       queue.cancel(action);
       return;
     }
@@ -38,7 +38,7 @@ export default class MovePieceProcessor
       let upcomingQueue = queue.peek(1);
       let nextActionIsNotMove = upcomingQueue.length < 1 || !(upcomingQueue[0] instanceof MovePiece);
       if(otherPiece.playerId != piece.playerId || nextActionIsNotMove){
-        this.log.info('Cannot move piece %j on top of %j', piece, otherPiece);
+        this.log.warn('Cannot move piece %j on top of %j', piece, otherPiece);
         queue.cancel(action);
         return;
       }

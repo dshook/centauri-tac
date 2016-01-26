@@ -34,7 +34,7 @@ export default class ActivateCardProcessor
     let cardPlayed = this.cardState.hands[action.playerId].find(c => c.id === action.cardInstanceId);
     this.log.info('found card %j', cardPlayed);
     if(!cardPlayed){
-      this.log.info('Cannot find card %s in player %s\'s hand'
+      this.log.warn('Cannot find card %s in player %s\'s hand'
         , action.cardInstanceId, action.player);
       queue.cancel(action);
       return;
@@ -42,7 +42,7 @@ export default class ActivateCardProcessor
 
     //check to see if they have enough energy to play
     if(cardPlayed.cost > this.playerResourceState.get(action.playerId)){
-      this.log.info('Not enough resources for player %s to play card %s'
+      this.log.warn('Not enough resources for player %s to play card %s'
         , action.playerId, cardPlayed.id);
       queue.cancel(action);
       queue.push(new Message('You don\'t have enough energy to play that card!'));
@@ -54,7 +54,7 @@ export default class ActivateCardProcessor
       let playerHero = this.pieceState.hero(action.playerId);
       let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
       if(kingDist > 1){
-        this.log.info('Cannot play minion that far away, dist %s'
+        this.log.warn('Cannot play minion that far away, dist %s'
           , kingDist);
         queue.cancel(action);
         queue.push(new Message('You must play your minions close to your hero!'));
@@ -65,7 +65,7 @@ export default class ActivateCardProcessor
     //all good if we make it this far
     let cardWasInHand = this.cardState.playCard(action.playerId, action.cardInstanceId);
     if(!cardWasInHand){
-        this.log.info('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
+        this.log.warn('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
         queue.cancel(action);
         queue.push(new Message('Cards must be in your hand to play them!'));
         return;

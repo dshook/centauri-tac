@@ -23,12 +23,12 @@ export default class PieceAttributeChangeProcessor
     let piece = this.pieceState.piece(action.pieceId);
 
     if(!piece){
-      this.log.info('Cannot find piece to change attributes on for id %s', action.pieceId);
+      this.log.warn('Cannot find piece to change attributes on for id %s', action.pieceId);
       queue.cancel(action);
       return;
     }
     if(action.attack == null && action.health == null && action.movement == null){
-      this.log.info('No attributes to change for piece %s', action.pieceId);
+      this.log.warn('No attributes to change for piece %s', action.pieceId);
       queue.cancel(action);
       return;
     }
