@@ -111,13 +111,20 @@ namespace ctac.signals
     [Singleton]
     public class CardHoveredSignal : Signal<CardModel> { }
     [Singleton]
-    public class ActivateCardSignal : Signal<CardModel, Tile> { }
+    public class ActivateCardSignal : Signal<ActivateModel> { }
     [Singleton]
     public class ActionActivateCardSignal : Signal<ActivateCardModel> { }
     [Singleton]
     public class DestroyCardSignal : Signal<int> { }
     [Singleton]
     public class CardDestroyedSignal : Signal<CardModel> { }
+
+    [Singleton]
+    public class StartSelectTargetSignal : Signal<CardModel, ActionTarget> { }
+    [Singleton]
+    public class SelectTargetSignal : Signal<CardModel, PieceModel> { }
+    [Singleton]
+    public class CancelSelectTargetSignal : Signal<CardModel> { }
 
     [Singleton]
     public class ActionSetPlayerResourceSignal : Signal<SetPlayerResourceModel> { }

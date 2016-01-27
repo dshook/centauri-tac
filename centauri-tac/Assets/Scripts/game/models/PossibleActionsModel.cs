@@ -17,6 +17,15 @@ namespace ctac
         {
             possibleTargets[newActions.playerId] = newActions.targets;
         }
+
+        /// <summary>
+        /// Gets any action targets if they exist for a card, null if none
+        /// Note, that this may need to be scoped to the event but for now playMinion or playSpell will work the same
+        /// </summary>
+        public ActionTarget GetForCard(int playerId, int cardId)
+        {
+            return possibleTargets[playerId].FirstOrDefault(x => x.cardId == cardId);
+        }
     }
 
     public class PossibleActions

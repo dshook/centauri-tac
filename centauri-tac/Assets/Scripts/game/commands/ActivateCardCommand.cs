@@ -1,18 +1,18 @@
 using strange.extensions.command.impl;
-using ctac.signals;
 
 namespace ctac
 {
+    public class ActivateModel
+    {
+        public CardModel cardActivated { get; set; }
+        public Tile tilePlayedAt { get; set; }
+        public PieceModel optionalTarget { get; set; }
+    }
+
     public class ActivateCardCommand : Command
     {
         [Inject]
-        public CardModel cardActivated { get; set; }
-
-        [Inject]
-        public DestroyCardSignal destroyCard { get; set; }
-
-        [Inject]
-        public Tile tilePlayedAt { get; set; }
+        public ActivateModel cActivate { get; set; }
 
         [Inject]
         public ISocketService socket { get; set; }
@@ -24,9 +24,10 @@ namespace ctac
         {
             socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
                 new ActivateCardModel {
-                    playerId = cardActivated.playerId,
-                    cardInstanceId = cardActivated.id,
-                    position = tilePlayedAt.position.ToPositionModel()
+                    playerId = cActivate.cardActivated.playerId,
+                    cardInstanceId = cActivate.cardActivated.id,
+                    position = cActivate.tilePlayedAt.position.ToPositionModel(),
+                    targetPieceId = cActivate.optionalTarget != null ? cActivate.optionalTarget.id : (int?)null
                 }
             );
         }

@@ -105,6 +105,11 @@ namespace ctac
             }
         }
 
+        public void StartTarget()
+        {
+            dragging = true;
+        }
+
     }
 }
 

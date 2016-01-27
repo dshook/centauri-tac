@@ -19,12 +19,33 @@ namespace ctac
         public ActivateCardSignal activateCard { get; set; }
 
         [Inject]
+        public StartSelectTargetSignal startSelectTarget { get; set; }
+
+        [Inject]
+        public SelectTargetSignal selectTarget { get; set; }
+
+        [Inject]
+        public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+
+        [Inject]
         public CardsModel cards { get; set; }
+
+        [Inject]
+        public PossibleActionsModel possibleActions { get; set; }
+
+        [Inject]
+        public GameTurnModel turns { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
 
         private CardModel draggedCard = null;
+
+        [Inject]
+        public IDebugService debug { get; set; }
+
+        //for card targeting
+        private Tile cardDeployPosition;
 
         public override void OnRegister()
         {
@@ -53,9 +74,28 @@ namespace ctac
                     draggedCard = cardView.card;
                     cardSelected.Dispatch(draggedCard);
                 }
+                else if (clickedObject.CompareTag("Piece") && cardDeployPosition != null)
+                {
+                    debug.Log("Selected target");
+                    //we should have just selected the piece for the target now
+                    var pieceView = clickedObject.GetComponent<PieceView>();
+                    selectTarget.Dispatch(draggedCard, pieceView.piece);
+                    activateCard.Dispatch(new ActivateModel() {
+                        cardActivated = draggedCard,
+                        tilePlayedAt = cardDeployPosition,
+                        optionalTarget = pieceView.piece
+                    });
+                    cardDeployPosition = null;
+                }
             }
             else
             {
+                if (cardDeployPosition != null)
+                {
+                    debug.Log("Cancelling targeting");
+                    cardDeployPosition = null;
+                    cancelSelectTarget.Dispatch(draggedCard);
+                }
                 draggedCard = null;
                 cardSelected.Dispatch(null);
             }
@@ -69,7 +109,23 @@ namespace ctac
                 {
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
-                    activateCard.Dispatch(draggedCard, gameTile);
+                    var targets = possibleActions.GetForCard(turns.currentPlayerId, draggedCard.id);
+                    if (targets != null)
+                    {
+                        debug.Log("Starting targeting");
+                        //record state we need to maintain for subsequent clicks then dispatch the start target
+                        cardDeployPosition = gameTile;
+                        view.StartTarget();
+                        startSelectTarget.Dispatch(draggedCard, targets);
+                    }
+                    else
+                    {
+                        activateCard.Dispatch(new ActivateModel() {
+                            cardActivated = draggedCard,
+                            tilePlayedAt = gameTile,
+                            optionalTarget = null
+                        });
+                    }
                 }
             }
         }

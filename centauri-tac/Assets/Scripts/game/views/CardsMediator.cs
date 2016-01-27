@@ -91,9 +91,9 @@ namespace ctac
         }
 
         private CardModel lastActivatedCard = null;
-        private void onCardActivated(CardModel cardActivated, Tile t)
+        private void onCardActivated(ActivateModel act)
         {
-            lastActivatedCard = cardActivated;
+            lastActivatedCard = act.cardActivated;
         }
 
         private void onDestroyCard(int cardId)
