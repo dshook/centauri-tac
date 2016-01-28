@@ -27,49 +27,48 @@ namespace ctac
         }
         void Update()
         {
-            if (active)
-            {
-                var hoverHit = TestSelection();
+            if (!active) return;
+            
+            var hoverHit = TestSelection();
 
+            if (hoverHit.HasValue)
+            {
+                hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+            }
+            else
+            {
+                hoverSignal.Dispatch(null);
+            }
+
+            if ((targeting || dragging) && CrossPlatformInputManager.GetButtonUp("Fire1"))
+            {
+                TestActivate();
+            }
+
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            {
                 if (hoverHit.HasValue)
                 {
-                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                    clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                    dragging = true;
                 }
                 else
                 {
-                    hoverSignal.Dispatch(null);
-                }
-
-                if ((targeting || dragging) && CrossPlatformInputManager.GetButtonUp("Fire1"))
-                {
-                    TestActivate();
-                }
-
-                if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-                {
-                    if (hoverHit.HasValue)
-                    {
-                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
-                        dragging = true;
-                    }
-                    else
-                    {
-                        clickSignal.Dispatch(null);
-                        dragging = false;
-                    }
-                }
-
-                //right click et al deselects
-                if (CrossPlatformInputManager.GetButtonDown("Fire2"))
-                {
                     clickSignal.Dispatch(null);
+                    dragging = false;
                 }
-
-                //if (camRay.origin != null)
-                //{
-                //    Debug.DrawLine(camRay.origin, Quaternion.Euler(camRay.direction) * camRay.origin * Constants.cameraRaycastDist, Color.red, 10f);
-                //}
             }
+
+            //right click et al deselects
+            if (CrossPlatformInputManager.GetButtonDown("Fire2"))
+            {
+                clickSignal.Dispatch(null);
+            }
+
+            //if (camRay.origin != null)
+            //{
+            //    Debug.DrawLine(camRay.origin, Quaternion.Euler(camRay.direction) * camRay.origin * Constants.cameraRaycastDist, Color.red, 10f);
+            //}
         }
 
         RaycastHit? TestSelection()
