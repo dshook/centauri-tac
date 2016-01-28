@@ -15,6 +15,7 @@ namespace ctac
         bool active = false;
         private Camera cardCamera;
         bool dragging = false;
+        bool targeting = false;
 
         Ray camRay;
         int cardCanvasLayer = -1;
@@ -39,6 +40,11 @@ namespace ctac
                     hoverSignal.Dispatch(null);
                 }
 
+                if ((targeting || dragging) && CrossPlatformInputManager.GetButtonUp("Fire1"))
+                {
+                    TestActivate();
+                }
+
                 if (CrossPlatformInputManager.GetButtonDown("Fire1"))
                 {
                     if (hoverHit.HasValue)
@@ -51,12 +57,6 @@ namespace ctac
                         clickSignal.Dispatch(null);
                         dragging = false;
                     }
-                    TestSelection();
-                }
-
-                if (dragging && CrossPlatformInputManager.GetButtonUp("Fire1"))
-                {
-                    TestActivate();
                 }
 
                 //right click et al deselects
@@ -107,7 +107,11 @@ namespace ctac
 
         public void StartTarget()
         {
-            dragging = true;
+            targeting = true;
+        }
+        public void EndTarget()
+        {
+            targeting = false;
         }
 
     }
