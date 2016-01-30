@@ -19,11 +19,24 @@ namespace ctac
         public MovePieceSignal movePiece { get; set; }
 
         [Inject]
+        public StartSelectTargetSignal startSelectTarget { get; set; }
+
+        [Inject]
+        public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+
+        [Inject]
+        public SelectTargetSignal selectTarget { get; set; }
+
+        [Inject]
         public MapModel map { get; set; }
+
+        [Inject]
+        public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
             pieceSelected.AddListener(onPieceSelected);
+            startSelectTarget.AddListener(onStartTarget);
             view.clickSignal.AddListener(onClick);
             view.init();
         }
@@ -33,6 +46,7 @@ namespace ctac
         public override void onRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
+            startSelectTarget.RemoveListener(onStartTarget);
         }
 
         private void onClick(GameObject clickedObject)
@@ -42,7 +56,13 @@ namespace ctac
                 if (clickedObject.CompareTag("Piece"))
                 {
                     var pieceView = clickedObject.GetComponent<PieceView>();
-                    if (pieceView.piece.currentPlayerHasControl)
+                    if (cardTarget != null)
+                    {
+                        debug.Log("Selected target");
+                        selectTarget.Dispatch(cardTarget, pieceView.piece);
+                        cardTarget = null;
+                    }
+                    else if (pieceView.piece.currentPlayerHasControl)
                     {
                         pieceSelected.Dispatch(pieceView.piece);
                     }
@@ -75,8 +95,20 @@ namespace ctac
             else
             {
                 pieceSelected.Dispatch(null);
+                if (cardTarget != null)
+                {
+                    debug.Log("Cancelling targeting");
+                    cancelSelectTarget.Dispatch(cardTarget);
+                    cardTarget = null;
+                }
             }
 
+        }
+
+        CardModel cardTarget { get; set; }
+        private void onStartTarget(CardModel card, ActionTarget at)
+        {
+            cardTarget = card;
         }
 
         private void onPieceSelected(PieceModel pieceSelected)

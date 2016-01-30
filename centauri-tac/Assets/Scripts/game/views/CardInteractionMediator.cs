@@ -46,7 +46,6 @@ namespace ctac
 
         //for card targeting
         private Tile cardDeployPosition;
-        private int timesDeselected = 0;
         private ActionTarget targets;
         private CardModel targetCard;
 
@@ -55,6 +54,8 @@ namespace ctac
             view.clickSignal.AddListener(onClick);
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
+            selectTarget.AddListener(onSelectedTarget);
+            cancelSelectTarget.AddListener(onTargetCancel);
             view.init();
         }
 
@@ -63,6 +64,8 @@ namespace ctac
             view.clickSignal.RemoveListener(onClick);
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
+            selectTarget.RemoveListener(onSelectedTarget);
+            cancelSelectTarget.RemoveListener(onTargetCancel);
         }
 
 
@@ -80,17 +83,6 @@ namespace ctac
             }
             else
             {
-                //swallow the first deselect event that happens for the targeting
-                //so the card can stop being dragged
-                if (cardDeployPosition != null && timesDeselected == 0)
-                {
-                    debug.Log("Cancelling targeting");
-                    cardDeployPosition = null;
-                    targetCard = null;
-                    cancelSelectTarget.Dispatch(draggedCard);
-                    view.EndTarget();
-                }
-                timesDeselected++;
                 draggedCard = null;
                 cardSelected.Dispatch(null);
             }
@@ -110,7 +102,6 @@ namespace ctac
                         //record state we need to maintain for subsequent clicks then dispatch the start target
                         cardDeployPosition = gameTile;
                         targetCard = draggedCard;
-                        view.StartTarget();
 
                         //delay sending off the start select target signal till the card deselected event has cleared
                         Invoke("DelaySelectTargets", 0.10f);
@@ -124,29 +115,35 @@ namespace ctac
                         });
                     }
                 }
-                else if (activated.CompareTag("Piece") && cardDeployPosition != null)
-                {
-                    debug.Log("Selected target");
-                    //we should have just selected the piece for the target now
-                    var pieceView = activated.GetComponent<PieceView>();
-                    selectTarget.Dispatch(targetCard, pieceView.piece);
-                    activateCard.Dispatch(new ActivateModel() {
-                        cardActivated = targetCard,
-                        tilePlayedAt = cardDeployPosition,
-                        optionalTarget = pieceView.piece
-                    });
-                    cardDeployPosition = null;
-                    view.EndTarget();
-                }
             }
         }
 
         private void DelaySelectTargets()
         {
             debug.Log("Starting targeting");
-            timesDeselected = 0;
             startSelectTarget.Dispatch(targetCard, targets);
-            view.StartTarget();
+        }
+
+        private void onTargetCancel(CardModel card)
+        {
+            //swallow the first deselect event that happens for the targeting
+            //so the card can stop being dragged
+            if (cardDeployPosition != null)
+            {
+                cardDeployPosition = null;
+                targetCard = null;
+                cancelSelectTarget.Dispatch(draggedCard);
+            }
+        }
+
+        private void onSelectedTarget(CardModel card, PieceModel piece)
+        {
+            activateCard.Dispatch(new ActivateModel() {
+                cardActivated = targetCard,
+                tilePlayedAt = cardDeployPosition,
+                optionalTarget = piece
+            });
+            cardDeployPosition = null;
         }
 
         private CardView lastHoveredCard = null;
