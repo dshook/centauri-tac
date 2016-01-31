@@ -33,6 +33,13 @@ namespace ctac
         public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
 
         [Inject]
+        public StartSelectTargetSignal startTarget { get; set; }
+        [Inject]
+        public SelectTargetSignal targetSelected { get; set; }
+        [Inject]
+        public CancelSelectTargetSignal targetCancel { get; set; }
+
+        [Inject]
         public PieceDiedSignal pieceDied { get; set; }
 
         public override void OnRegister()
@@ -43,6 +50,9 @@ namespace ctac
             pieceAttrChanged.AddListener(onAttrChange);
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
+            startTarget.AddListener(onStartSelectTarget);
+            targetSelected.AddListener(onTargetSelected);
+            targetCancel.AddListener(onTargetCancel);
         }
 
         public override void onRemove()
@@ -53,6 +63,9 @@ namespace ctac
             pieceAttrChanged.RemoveListener(onAttrChange);
             pieceBuffed.RemoveListener(onBuffed);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
+            startTarget.RemoveListener(onStartSelectTarget);
+            targetSelected.RemoveListener(onTargetSelected);
+            targetCancel.RemoveListener(onTargetCancel);
         }
 
         public void onMove(PieceMovedModel pieceMoved)
@@ -201,6 +214,21 @@ namespace ctac
             }
         }
 
+        private void onStartSelectTarget(CardModel card, ActionTarget targets)
+        {
+            if (targets.targetPieceIds.Contains(view.piece.id))
+            {
+                view.targetCandidate = true;
+            }
+        }
+        private void onTargetSelected(CardModel c, PieceModel m)
+        {
+            view.targetCandidate = false;
+        }
+        private void onTargetCancel(CardModel card)
+        {
+            view.targetCandidate = false;
+        }
     }
 }
 

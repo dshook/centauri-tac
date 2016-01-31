@@ -26,11 +26,13 @@ namespace ctac {
         private static List<string> eventTags = new List<string>() {
             "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
         };
+        public bool targetCandidate = false;
 
         private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
         private Material moveOutline;
         private Material attackOutline;
+        private Material targetOutline;
 
         protected override void Start()
         {
@@ -50,6 +52,7 @@ namespace ctac {
             spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
             attackOutline = Resources.Load("Materials/AttackOutlineMat") as Material;
+            targetOutline = Resources.Load("Materials/TargetOutlineMat") as Material;
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -72,10 +75,15 @@ namespace ctac {
         {
             if(piece == null) return;
 
-            if (piece.currentPlayerHasControl && !piece.hasMoved)
+            if (targetCandidate)
+            {
+                spriteRenderer.material = targetOutline;
+            }
+            else if (piece.currentPlayerHasControl && !piece.hasMoved)
             {
                 spriteRenderer.material = moveOutline;
-            } else if (piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
+            }
+            else if (piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
                 spriteRenderer.material = attackOutline;
             }
             else
