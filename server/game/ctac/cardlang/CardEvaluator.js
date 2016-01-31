@@ -28,7 +28,7 @@ export default class CardEvaluator{
   }
 
   //evaluate an event that directly relates to a piece, i.e. the piece dies
-  evaluatePieceEvent(event, triggeringPiece){
+  evaluatePieceEvent(event, triggeringPiece, targetPieceId){
     this.log.info('Eval piece event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
@@ -68,7 +68,7 @@ export default class CardEvaluator{
       }
     }
 
-    this.processActions(evalActions, triggeringPiece);
+    this.processActions(evalActions, triggeringPiece, targetPieceId);
 
   }
 
@@ -116,7 +116,7 @@ export default class CardEvaluator{
   }
 
   //when a spell is played
-  evaluateSpellEvent(event, spellCard, playerId){
+  evaluateSpellEvent(event, spellCard, playerId, targetPieceId){
     this.log.info('Eval spell event %s with spell %s player: %s', event, spellCard.name, playerId);
 
     let evalActions = [];
@@ -167,13 +167,14 @@ export default class CardEvaluator{
       }
     }
 
-    this.processActions(evalActions);
+    this.processActions(evalActions, null, targetPieceId);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
   // evalActions -> array of actions to be eval'd, with playerId's of the controlling player (current turn player)
   // triggeringPiece -> optional piece that will be used for SELF selections
-  processActions(evalActions, triggeringPiece){
+  // targetPieceId -> id of piece that's been targeted by spell/playMinion event
+  processActions(evalActions, triggeringPiece, targetPieceId){
     for(let pieceAction of evalActions){
       let action = pieceAction.action;
       let times = 1;
@@ -195,7 +196,7 @@ export default class CardEvaluator{
           }
           case 'Hit':
           {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -206,7 +207,7 @@ export default class CardEvaluator{
           }
           case 'Heal':
           {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -217,7 +218,7 @@ export default class CardEvaluator{
           }
           case 'SetAttribute':
           {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
             this.log.info('Selected %j', selected);
             if(selected && selected.length > 0){
               for(let s of selected){
@@ -233,7 +234,7 @@ export default class CardEvaluator{
           case 'Buff':
           {
             let buffName = action.args[1];
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece);
+            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
             this.log.info('Selected %j', selected);
             let buffAttributes = action.args.splice(2);
 

@@ -43,7 +43,7 @@ export default class SpawnPieceProcessor
     action.pieceId = this.pieceState.add(newPiece);
     action.tags = newPiece.tags;
 
-    this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece);
+    this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId);
 
     queue.complete(action);
     this.log.info('spawned piece %s for player %s at %s',

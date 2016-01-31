@@ -27,7 +27,7 @@ export default class PlaySpellProcessor
 
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
-    this.cardEvaluator.evaluateSpellEvent('playSpell', cardPlayed, action.playerId);
+    this.cardEvaluator.evaluateSpellEvent('playSpell', cardPlayed, action.playerId, action.targetPieceId);
 
     queue.complete(action);
     this.log.info('played spell %s for player %s at %s',

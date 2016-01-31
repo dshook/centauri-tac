@@ -73,9 +73,9 @@ export default class ActivateCardProcessor
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
 
     if(cardPlayed.hasTag('Minion')){
-      queue.push(new SpawnPiece(action.playerId, cardPlayed.cardTemplateId, action.position));
+      queue.push(new SpawnPiece(action.playerId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
     }else if(cardPlayed.hasTag('Spell')){
-      queue.push(new PlaySpell(action.playerId, cardPlayed.cardTemplateId, action.position));
+      queue.push(new PlaySpell(action.playerId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
     }else{
       throw 'Card played must be either a minion or a spell';
     }
