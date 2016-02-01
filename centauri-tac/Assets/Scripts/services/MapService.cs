@@ -238,7 +238,12 @@ namespace ctac
             return ret
                 .Where(t => 
                     //this clause makes sure not to consider tiles that would be where the moving pieces lands when it attacks
-                    (dest == null || dest.position == t.Key || (TileDistance(t.Key, dest.position) > 1 || !pieces.Pieces.Any(p => p.tilePosition == t.Key) ) )
+                    (
+                        dest == null 
+                        || dest.position == t.Key 
+                        || (TileDistance(t.Key, dest.position) > 1 
+                        || !pieces.Pieces.Any(p => p.tilePosition == t.Key && !p.currentPlayerHasControl ) ) 
+                    )
                     && !pieces.Pieces.Any(m => 
                         (dest == null || dest.position != m.tilePosition ) 
                         && !m.currentPlayerHasControl 

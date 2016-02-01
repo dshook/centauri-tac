@@ -44,6 +44,7 @@ namespace Tests
                 expectedTiles.OrderBy(v => v.x).ThenBy(v => v.y).ToList());
         }
 
+        [TestMethod]
         public void FindPath()
         {
             var mapService = new MapService();

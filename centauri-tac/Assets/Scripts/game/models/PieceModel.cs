@@ -28,11 +28,11 @@ namespace ctac
         /// <summary>
         /// Only should be used in testing, otherwise the gameobject position has authority
         /// </summary>
-        public Vector2 mockPosition { get; set; }
+        public Vector2? mockPosition { get; set; }
         public Vector2 tilePosition {
             get
             {
-                return mockPosition == null ? gameObject.transform.position.ToTileCoordinates() : mockPosition;
+                return mockPosition ?? gameObject.transform.position.ToTileCoordinates();
             }
         }
 
