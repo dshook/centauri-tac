@@ -10,7 +10,7 @@ namespace Tests
     public class MapServiceTests
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TilesInRadius()
         {
             var mapService = new MapService();
             mapService.mapModel = new MapModel()
@@ -44,6 +44,63 @@ namespace Tests
                 expectedTiles.OrderBy(v => v.x).ThenBy(v => v.y).ToList());
         }
 
+        public void FindPath()
+        {
+            var mapService = new MapService();
+            mapService.mapModel = new MapModel()
+            {
+                name = "test map",
+                maxPlayers = 0,
+                root = null,
+                tiles = CreateTiles(10, 10)
+            };
+            mapService.pieces = new PiecesModel()
+            {
+                Pieces = new List<PieceModel>()
+                {
+                    MockPiece(new Vector2(1, 2), true),
+                    MockPiece(new Vector2(3, 2), false)
+                }
+            };
+
+            var start = mapService.mapModel.tiles[new Vector2(2,2)];
+
+            //test to walk around enemy
+            var enemyEnd = mapService.mapModel.tiles[new Vector2(4,2)];
+
+            var enemyPath = mapService.FindPath(start, enemyEnd, 4);
+            var expectedEnemyPath = new List<Vector2>()
+            {
+                new Vector2(2, 2),
+                new Vector2(2, 3),
+                new Vector2(3, 3),
+                new Vector2(4, 3),
+                new Vector2(4, 2),
+            };
+
+            CollectionAssert.AreEqual(
+                enemyPath.Select(t => t.position).ToList(), 
+                expectedEnemyPath
+            );
+
+
+            //test to walk through friendly
+            var end = mapService.mapModel.tiles[new Vector2(0,2)];
+            var tilePath = mapService.FindPath(start, end, 2);
+            var expectedTiles = new List<Vector2>()
+            {
+                new Vector2(2, 2),
+                new Vector2(1, 2),
+                new Vector2(0, 2),
+            };
+
+            CollectionAssert.AreEqual(
+                tilePath.Select(t => t.position).ToList(), 
+                expectedTiles
+            );
+
+        }
+
         private Dictionary<Vector2, Tile> CreateTiles(int x, int z)
         {
             var tiles = new Dictionary<Vector2, Tile>();
@@ -62,6 +119,15 @@ namespace Tests
                 }
             }
             return tiles;
+        }
+
+        private PieceModel MockPiece(Vector2 position, bool currentPlayerHasControl)
+        {
+            return new PieceModel()
+            {
+                currentPlayerHasControl = currentPlayerHasControl,
+                mockPosition = position,
+            };
         }
     }
 }

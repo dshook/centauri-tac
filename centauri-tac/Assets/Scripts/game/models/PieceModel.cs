@@ -25,10 +25,14 @@ namespace ctac
 
         public List<string> tags { get; set; }
 
+        /// <summary>
+        /// Only should be used in testing, otherwise the gameobject position has authority
+        /// </summary>
+        public Vector2 mockPosition { get; set; }
         public Vector2 tilePosition {
             get
             {
-                return gameObject.transform.position.ToTileCoordinates();
+                return mockPosition == null ? gameObject.transform.position.ToTileCoordinates() : mockPosition;
             }
         }
 
