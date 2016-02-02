@@ -75,6 +75,7 @@ namespace ctac
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
             injectionBinder.Bind<IMapService>().To<MapService>().ToSingleton();
             injectionBinder.Bind<IResourceLoaderService>().To<ResourceLoaderService>().ToSingleton();
+            injectionBinder.Bind<IPieceService>().To<PieceService>().ToSingleton();
 
             //bind views to mediators
             foreach (Type type in assemblyTypes.Where(x => x.Name.EndsWith("View")))
