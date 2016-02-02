@@ -120,7 +120,7 @@ namespace ctac.signals
     public class CardDestroyedSignal : Signal<CardModel> { }
 
     [Singleton]
-    public class StartSelectTargetSignal : Signal<CardModel, ActionTarget> { }
+    public class StartSelectTargetSignal : Signal<CardModel, Tile, ActionTarget> { }
     [Singleton]
     public class SelectTargetSignal : Signal<CardModel, PieceModel> { }
     [Singleton]

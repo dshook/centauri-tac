@@ -60,7 +60,7 @@ namespace ctac
             view.disable();
         }
 
-        private void onStartTarget(CardModel card, ActionTarget at)
+        private void onStartTarget(CardModel card, Tile where, ActionTarget at)
         {
             if (card != null && card.gameObject != null)
             {

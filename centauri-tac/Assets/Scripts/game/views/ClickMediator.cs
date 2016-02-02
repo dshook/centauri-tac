@@ -106,7 +106,7 @@ namespace ctac
         }
 
         CardModel cardTarget { get; set; }
-        private void onStartTarget(CardModel card, ActionTarget at)
+        private void onStartTarget(CardModel card, Tile where, ActionTarget at)
         {
             cardTarget = card;
         }

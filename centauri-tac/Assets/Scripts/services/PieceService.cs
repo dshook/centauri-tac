@@ -8,7 +8,7 @@ namespace ctac
 {
     public interface IPieceService
     {
-        PieceModel CreatePiece(SpawnPieceModel spawnedPiece);
+        PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null);
     }
 
     public class PieceService : IPieceService
@@ -50,7 +50,7 @@ namespace ctac
             }
         }
 
-        public PieceModel CreatePiece(SpawnPieceModel spawnedPiece)
+        public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null)
         {
             //position is x and z from server, and y based on the map
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;

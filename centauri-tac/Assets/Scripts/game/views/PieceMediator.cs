@@ -214,7 +214,7 @@ namespace ctac
             }
         }
 
-        private void onStartSelectTarget(CardModel card, ActionTarget targets)
+        private void onStartSelectTarget(CardModel card, Tile where, ActionTarget targets)
         {
             if (targets.targetPieceIds.Contains(view.piece.id))
             {

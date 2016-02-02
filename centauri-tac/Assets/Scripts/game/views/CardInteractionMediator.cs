@@ -121,7 +121,7 @@ namespace ctac
         private void DelaySelectTargets()
         {
             debug.Log("Starting targeting");
-            startSelectTarget.Dispatch(targetCard, targets);
+            startSelectTarget.Dispatch(targetCard, cardDeployPosition, targets);
         }
 
         private void onTargetCancel(CardModel card)
@@ -132,7 +132,6 @@ namespace ctac
             {
                 cardDeployPosition = null;
                 targetCard = null;
-                cancelSelectTarget.Dispatch(draggedCard);
             }
         }
 
