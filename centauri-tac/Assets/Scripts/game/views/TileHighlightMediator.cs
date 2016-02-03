@@ -21,6 +21,9 @@ namespace ctac
         public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject]
+        public PieceDiedSignal pieceDied { get; set; }
+
+        [Inject]
         public MapModel map { get; set; }
 
         [Inject]
@@ -36,6 +39,7 @@ namespace ctac
             view.tileHover.AddListener(onTileHover);
             cardSelected.AddListener(onCardSelected);
             pieceSelected.AddListener(onPieceSelected);
+            pieceDied.AddListener(onPieceDied);
             view.init();
         }
 
@@ -43,6 +47,7 @@ namespace ctac
         {
             pieceSelected.RemoveListener(onPieceSelected);
             cardSelected.RemoveListener(onCardSelected);
+            pieceDied.RemoveListener(onPieceDied);
         }
 
         void onTileHover(GameObject newHoverTile)
@@ -124,6 +129,14 @@ namespace ctac
                 )
                 .ToList();
             view.onTilesSelected(playableTiles);
+        }
+
+        private void onPieceDied(PieceModel piece)
+        {
+            if (selectedPiece != null && piece.id == selectedPiece.id)
+            {
+                selectedPiece = null;
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ export default class SpawnDeckProcessor
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be half your deck
-    let testingCards = [15, 17, 18];
+    let testingCards = [19, 17, 18];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);

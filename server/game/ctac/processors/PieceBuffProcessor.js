@@ -36,7 +36,7 @@ export default class PieceBuffProcessor
     let attribs = ['attack', 'health', 'movement'];
 
     for(let attrib of attribs){
-      if(action[attrib] == null || piece[attrib] === action[attrib]) continue;
+      if(action[attrib] == null) continue;
 
       piece[attrib] += action[attrib];
 
@@ -44,7 +44,7 @@ export default class PieceBuffProcessor
       let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
       action[newAttrib] = piece[attrib];
 
-      this.log.info('buffing piece %s to %s %s', piece.id, action[attrib], attrib);
+      this.log.info('buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
     }
 
     piece.buffs.push(action);

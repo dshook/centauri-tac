@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 19,
+	"name": "The Syndicate",
+	"description": "<b>Play:</b> give a friendly minion +1/+2",
+	"cost": 4,
+	"attack": 2,
+	"health": 2,
+	"movement": 4,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Buff(TARGET & FRIENDLY & MINION, 'Power of the Crowd', attack(1), health(2) ); }"
+}
