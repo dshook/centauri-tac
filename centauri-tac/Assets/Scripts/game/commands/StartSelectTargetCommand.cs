@@ -31,7 +31,7 @@ namespace ctac
                 tags = new List<string>() { "targetPiece" }
             };
 
-            var pieceModel = pieceService.CreatePiece(spawnedPiece);
+            pieceService.CreatePiece(spawnedPiece);
 
             //Skip sending out the piece spawned signal since it hasn't actually properly been spawned yet
             //pieceSpawned.Dispatch(pieceModel);

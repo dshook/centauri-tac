@@ -6,38 +6,22 @@ namespace ctac
 {
     public class CardInteractionMediator : Mediator
     {
-        [Inject]
-        public CardInteractionView view { get; set; }
+        [Inject] public CardInteractionView view { get; set; }
 
-        [Inject]
-        public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public CardHoveredSignal cardHovered { get; set; }
+        [Inject] public ActivateCardSignal activateCard { get; set; }
+        [Inject] public ActionMessageSignal message { get; set; }
+        
+        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public SelectTargetSignal selectTarget { get; set; }
+        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
-        [Inject]
-        public CardHoveredSignal cardHovered { get; set; }
-
-        [Inject]
-        public ActivateCardSignal activateCard { get; set; }
-
-        [Inject]
-        public StartSelectTargetSignal startSelectTarget { get; set; }
-
-        [Inject]
-        public SelectTargetSignal selectTarget { get; set; }
-
-        [Inject]
-        public CancelSelectTargetSignal cancelSelectTarget { get; set; }
-
-        [Inject]
-        public CardsModel cards { get; set; }
-
-        [Inject]
-        public PossibleActionsModel possibleActions { get; set; }
-
-        [Inject]
-        public GameTurnModel turns { get; set; }
-
-        [Inject]
-        public MapModel map { get; set; }
+        [Inject] public CardsModel cards { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public PlayerResourcesModel playerResources { get; set; }
 
         private CardModel draggedCard = null;
 
@@ -94,6 +78,13 @@ namespace ctac
             {
                 if (activated.CompareTag("Tile"))
                 {
+                    //check for appropriate resources
+                    if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
+                    {
+                        message.Dispatch(new MessageModel() { message = "Not enough energy to play!" }, new SocketKey(turns.currentTurnClientId, "game"));
+                        return;
+                    }
+
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
                     targets = possibleActions.GetForCard(turns.currentPlayerId, draggedCard.id);
