@@ -6,6 +6,7 @@ import PieceState from '../game/ctac/models/PieceState.js';
 import CardState from '../game/ctac/models/CardState.js';
 import Card from '../game/ctac/models/Card.js';
 import DrawCard from '../game/ctac/actions/DrawCard.js';
+import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
 import Player from 'models/Player';
@@ -268,11 +269,32 @@ test('Targeting minions', t => {
 
   cardEval.evaluatePieceEvent('playMinion', testBot, 4);
 
-  console.log(queue._actions);
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].change < 0, 'Hit action');
   t.equal(queue._actions[0].pieceId, 4, 'Targeted the right piece');
+});
+
+test('Targeting invalid', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let testBot = spawnPiece(pieceStateMix, 19, 1, true);
+
+  //the syndicate requires a friendly minion, this is not so we should get a message back
+  let evalReturn = cardEval.evaluatePieceEvent('playMinion', testBot, 3);
+
+  t.equal(evalReturn, false, 'Eval returned false for invalid target');
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof Message, 'First action is Message');
 });
 
 test('Find Possible targets', t => {

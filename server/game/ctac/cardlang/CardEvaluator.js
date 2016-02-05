@@ -181,7 +181,6 @@ export default class CardEvaluator{
   // triggeringPiece -> optional piece that will be used for SELF selections
   // targetPieceId -> id of piece that's been targeted by spell/playMinion event
   processActions(evalActions, triggeringPiece, targetPieceId){
-    console.log('eval actions', evalActions);
     try{
       for(let pieceAction of evalActions){
         let action = pieceAction.action;
