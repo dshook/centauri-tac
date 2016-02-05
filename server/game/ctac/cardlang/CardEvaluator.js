@@ -277,7 +277,7 @@ export default class CardEvaluator{
     if(this.selector.doesSelectorUse(selector, 'TARGET')){
       //make sure that if it's a target card and there are available targets, one of them is picked
       var possibleTargets = this.selector.selectPossibleTargets(controllingPlayerId, selector);
-      if(!possibleTargets.map(p => p.id).find(targetPieceId)){
+      if(!possibleTargets.find(p => p.id === targetPieceId)){
         throw new EvalError('You must select a valid target');
       }
     }

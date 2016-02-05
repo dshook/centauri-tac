@@ -1,6 +1,7 @@
 import GamePiece from '../models/GamePiece.js';
 import PlaySpell from '../actions/PlaySpell.js';
 import loglevel from 'loglevel-decorator';
+import SetPlayerResource from '../actions/SetPlayerResource.js';
 
 /**
  * Handle the PassTurn action
@@ -30,6 +31,7 @@ export default class PlaySpellProcessor
     this.cardEvaluator.evaluateSpellEvent('playSpell', cardPlayed, action.playerId, action.targetPieceId);
 
     queue.complete(action);
+    queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     this.log.info('played spell %s for player %s at %s',
       cardPlayed.name, action.playerId, action.position);
   }

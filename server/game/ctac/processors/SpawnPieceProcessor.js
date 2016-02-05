@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
+import SetPlayerResource from '../actions/SetPlayerResource.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -47,6 +48,7 @@ export default class SpawnPieceProcessor
       queue.complete(action);
       this.log.info('spawned piece %s for player %s at %s',
         action.cardTemplateId, action.playerId, action.position);
+      queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     }else{
       queue.cancel(action);
       this.log.info('Spawned piece %s for player %s SCRUBBED',

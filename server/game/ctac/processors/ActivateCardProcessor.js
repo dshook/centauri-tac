@@ -2,7 +2,6 @@ import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PlaySpell from '../actions/PlaySpell.js';
 import Message from '../actions/Message.js';
-import SetPlayerResource from '../actions/SetPlayerResource.js';
 import ActivateCard from '../actions/ActivateCard.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
@@ -70,7 +69,6 @@ export default class ActivateCardProcessor
         queue.push(new Message('Cards must be in your hand to play them!'));
         return;
       }
-    queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
 
     if(cardPlayed.hasTag('Minion')){
       queue.push(new SpawnPiece(action.playerId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));

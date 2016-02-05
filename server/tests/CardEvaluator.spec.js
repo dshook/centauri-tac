@@ -252,6 +252,29 @@ test('Spell played event', t => {
   t.ok(queue._actions[0].change < 0, 'Hit action');
 });
 
+test('Targeting minions', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  t.plan(4);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+
+  let testBot = spawnPiece(pieceStateMix, 17, 1, true);
+
+  cardEval.evaluatePieceEvent('playMinion', testBot, 4);
+
+  console.log(queue._actions);
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].change < 0, 'Hit action');
+  t.equal(queue._actions[0].pieceId, 4, 'Targeted the right piece');
+});
+
 test('Find Possible targets', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1); //id 1
