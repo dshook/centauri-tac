@@ -52,5 +52,20 @@ export default class Selector{
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
       .Select(selector);
   }
+
+  //returns t/f if the selctor ever uses the identifier, ex 'TARGET'
+  doesSelectorUse(selector, identifier){
+    if(selector.random){
+      return this.doesSelectorUse(selector.selector, identifier);
+    }
+
+    if(selector === identifier || selector.right === identifier){
+      return true;
+    }
+    if(selector.left){
+      return this.doesSelectorUse(selector.left, identifier);
+    }
+    return false;
+  }
 }
 

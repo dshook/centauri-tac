@@ -40,13 +40,18 @@ export default class SpawnPieceProcessor
     newPiece.baseMovement = cardPlayed.movement;
     newPiece.tags = cardPlayed.tags;
 
-    action.pieceId = this.pieceState.add(newPiece);
-    action.tags = newPiece.tags;
+    if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId)){
+      action.pieceId = this.pieceState.add(newPiece);
+      action.tags = newPiece.tags;
 
-    this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId);
+      queue.complete(action);
+      this.log.info('spawned piece %s for player %s at %s',
+        action.cardTemplateId, action.playerId, action.position);
+    }else{
+      queue.cancel(action);
+      this.log.info('Spawned piece %s for player %s SCRUBBED',
+        action.cardTemplateId, action.playerId, action.position);
+    }
 
-    queue.complete(action);
-    this.log.info('spawned piece %s for player %s at %s',
-      action.cardTemplateId, action.playerId, action.position);
   }
 }

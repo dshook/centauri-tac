@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
 import DrawCard from '../actions/DrawCard.js';
+import Message from '../actions/Message.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import PieceBuff from '../actions/PieceBuff.js';
@@ -32,8 +33,13 @@ export default class CardEvaluator{
     this.log.info('Eval piece event %s triggering piece: %j', event, triggeringPiece);
     let evalActions = [];
 
+    //in the pieces case, if this is a spawn piece event the evaluator has the chance to return false
+    //and scrub the spawn of the piece, so the triggering piece isn't in the piece state yet.
+    //However, include it in the loop so its events will be evaluated
+    let pieces = new Set([...this.pieceState.pieces, triggeringPiece]);
+
     //first look through all the pieces on the board to see if any have actions on this event
-    for(let piece of this.pieceState.pieces){
+    for(let piece of pieces){
       let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
@@ -68,7 +74,7 @@ export default class CardEvaluator{
       }
     }
 
-    this.processActions(evalActions, triggeringPiece, targetPieceId);
+    return this.processActions(evalActions, triggeringPiece, targetPieceId);
 
   }
 
@@ -112,7 +118,7 @@ export default class CardEvaluator{
       }
     }
 
-    this.processActions(evalActions);
+    return this.processActions(evalActions);
   }
 
   //when a spell is played
@@ -167,7 +173,7 @@ export default class CardEvaluator{
       }
     }
 
-    this.processActions(evalActions, null, targetPieceId);
+    return this.processActions(evalActions, null, targetPieceId);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
@@ -175,84 +181,108 @@ export default class CardEvaluator{
   // triggeringPiece -> optional piece that will be used for SELF selections
   // targetPieceId -> id of piece that's been targeted by spell/playMinion event
   processActions(evalActions, triggeringPiece, targetPieceId){
-    for(let pieceAction of evalActions){
-      let action = pieceAction.action;
-      let times = 1;
-      if(action.times){
-        times = this.eventualNumber(action.times);
-      }
+    console.log('eval actions', evalActions);
+    try{
+      for(let pieceAction of evalActions){
+        let action = pieceAction.action;
+        let times = 1;
+        if(action.times){
+          times = this.eventualNumber(action.times);
+        }
 
-      let actionTriggerer = pieceAction.piece ? `piece ${pieceAction.piece.name}` : `spell ${pieceAction.card.name}`;
-      this.log.info('Evaluating action %s for %s %s %s'
-        , action.action, actionTriggerer, times, times > 1 ? 'times' : 'time');
+        let actionTriggerer = pieceAction.piece ? `piece ${pieceAction.piece.name}` : `spell ${pieceAction.card.name}`;
+        this.log.info('Evaluating action %s for %s %s %s'
+          , action.action, actionTriggerer, times, times > 1 ? 'times' : 'time');
 
-      for (var t = 0; t < times; t++) {
-        switch(action.action){
-          case 'DrawCard':
-          {
-            let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-            this.queue.push(new DrawCard(playerSelector));
-            break;
-          }
-          case 'Hit':
-          {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
-            this.log.info('Selected %j', selected);
-            if(selected && selected.length > 0){
-              for(let s of selected){
-                this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
-              }
+        for (var t = 0; t < times; t++) {
+          switch(action.action){
+            case 'DrawCard':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              this.queue.push(new DrawCard(playerSelector));
+              break;
             }
-            break;
-          }
-          case 'Heal':
-          {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
-            this.log.info('Selected %j', selected);
-            if(selected && selected.length > 0){
-              for(let s of selected){
-                this.queue.push(new PieceHealthChange(s.id, action.args[1]));
-              }
-            }
-            break;
-          }
-          case 'SetAttribute':
-          {
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
-            this.log.info('Selected %j', selected);
-            if(selected && selected.length > 0){
-              for(let s of selected){
-                let phc = new PieceAttributeChange(s.id);
-                //set up the appropriate attribute change from args, i.e. attack = 1
-                phc[action.args[1]] = action.args[2];
-                this.queue.push(phc);
-              }
-            }
-
-            break;
-          }
-          case 'Buff':
-          {
-            let buffName = action.args[1];
-            let selected = this.selector.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
-            this.log.info('Selected %j', selected);
-            let buffAttributes = action.args.splice(2);
-
-            if(selected && selected.length > 0){
-              for(let s of selected){
-                //set up a new buff for each selected piece that has all the attributes of the buff
-                let buff = new PieceBuff(s.id, buffName);
-                for(let buffAttribute of buffAttributes){
-                  buff[buffAttribute.attribute] = buffAttribute.amount;
+            case 'Hit':
+            {
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              this.log.info('Selected %j', selected);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
                 }
-                this.queue.push(buff);
               }
+              break;
             }
-            break;
+            case 'Heal':
+            {
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              this.log.info('Selected %j', selected);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  this.queue.push(new PieceHealthChange(s.id, action.args[1]));
+                }
+              }
+              break;
+            }
+            case 'SetAttribute':
+            {
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              this.log.info('Selected %j', selected);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  let phc = new PieceAttributeChange(s.id);
+                  //set up the appropriate attribute change from args, i.e. attack = 1
+                  phc[action.args[1]] = action.args[2];
+                  this.queue.push(phc);
+                }
+              }
+
+              break;
+            }
+            case 'Buff':
+            {
+              let buffName = action.args[1];
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              this.log.info('Selected %j', selected);
+              let buffAttributes = action.args.splice(2);
+
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  //set up a new buff for each selected piece that has all the attributes of the buff
+                  let buff = new PieceBuff(s.id, buffName);
+                  for(let buffAttribute of buffAttributes){
+                    buff[buffAttribute.attribute] = buffAttribute.amount;
+                  }
+                  this.queue.push(buff);
+                }
+              }
+              break;
+            }
           }
         }
       }
+    }catch(e){
+      if(e instanceof EvalError){
+        this.queue.push(new Message(e));
+        return false;
+      }
+      throw e;
     }
+    return true;
+  }
+
+
+  //proxy for the Selector select pieces function that ensures proper targeting
+  selectPieces(controllingPlayerId, selector, triggeringPiece, targetPieceId){
+    if(this.selector.doesSelectorUse(selector, 'TARGET')){
+      //make sure that if it's a target card and there are available targets, one of them is picked
+      var possibleTargets = this.selector.selectPossibleTargets(controllingPlayerId, selector);
+      if(!possibleTargets.map(p => p.id).find(targetPieceId)){
+        throw new EvalError('You must select a valid target');
+      }
+    }
+
+    return this.selector.selectPieces(controllingPlayerId, selector, triggeringPiece, targetPieceId);
   }
 
   //look through the cards for any cards needing a TARGET
@@ -304,5 +334,14 @@ export default class CardEvaluator{
       return _.sample(input.randList);
     }
     return input;
+  }
+}
+
+class EvalError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+    this.message = message;
+    Error.captureStackTrace(this, this.constructor.name);
   }
 }

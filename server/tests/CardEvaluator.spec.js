@@ -21,7 +21,7 @@ for(let cardFileName in cardRequires){
   cardDirectory.add(card);
 }
 
-function spawnPiece(pieceState, cardTemplateId, playerId){
+function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
     let cardPlayed = cardDirectory.directory[cardTemplateId];
 
     var newPiece = new GamePiece();
@@ -36,7 +36,10 @@ function spawnPiece(pieceState, cardTemplateId, playerId){
     newPiece.baseMovement = cardPlayed.movement;
     newPiece.tags = cardPlayed.tags;
 
-    pieceState.add(newPiece);
+    if(addToState){
+      pieceState.add(newPiece);
+    }
+    return newPiece;
 }
 
 function spawnCard(cardState, playerId, cardTemplateId){
@@ -59,7 +62,6 @@ test('Basic Draw card', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1);
   spawnPiece(pieceStateMix, 2, 1);
-  spawnPiece(pieceStateMix, 3, 1);
   spawnPiece(pieceStateMix, 9, 1);
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
@@ -70,7 +72,7 @@ test('Basic Draw card', t => {
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 3)[0];
+  let testBot = spawnPiece(pieceStateMix, 3, 1, false);
   t.ok(testBot, 'Found test bot');
 
   cardEval.evaluatePieceEvent('playMinion', testBot);
@@ -85,7 +87,6 @@ test('Basic Hit action', t => {
   spawnPiece(pieceStateMix, 1, 1);
   spawnPiece(pieceStateMix, 2, 1);
   spawnPiece(pieceStateMix, 3, 1);
-  spawnPiece(pieceStateMix, 9, 1);
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
   spawnPiece(pieceStateMix, 3, 2);
@@ -95,7 +96,7 @@ test('Basic Hit action', t => {
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let testBot = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 9)[0];
+  let testBot = spawnPiece(pieceStateMix, 9, 1, true);
   t.ok(testBot, 'Found writhing bunch');
 
   cardEval.evaluatePieceEvent('playMinion', testBot);
@@ -118,7 +119,7 @@ test('Damaged with selector', t => {
   let selector = new Selector(players, pieceState);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceState);
 
-  let friendlyHero = pieceState.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 1)[0];
+  let friendlyHero = pieceState.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 1);
   t.ok(friendlyHero, 'Found friendly hero');
 
   cardEval.evaluatePieceEvent('damaged', friendlyHero);
@@ -135,7 +136,6 @@ test('Set attribute', t => {
   spawnPiece(pieceStateMix, 1, 1);
   spawnPiece(pieceStateMix, 2, 1);
   spawnPiece(pieceStateMix, 3, 1);
-  spawnPiece(pieceStateMix, 10, 1);
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
   spawnPiece(pieceStateMix, 3, 2);
@@ -145,7 +145,7 @@ test('Set attribute', t => {
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let platypus = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 10)[0];
+  let platypus = spawnPiece(pieceStateMix, 10, 1, true);
   t.ok(platypus, 'Found platypus');
 
   cardEval.evaluatePieceEvent('playMinion', platypus);
@@ -169,7 +169,7 @@ test('Heal on damaged', t => {
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let synth = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 11)[0];
+  let synth = pieceStateMix.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 11);
   t.ok(synth, 'Found synth');
 
   cardEval.evaluatePieceEvent('damaged', synth);
@@ -194,7 +194,7 @@ test('Attacks event', t => {
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
 
-  let spore = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 13)[0];
+  let spore = pieceStateMix.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 13);
   t.ok(spore, 'Found spore');
 
   cardEval.evaluatePieceEvent('attacks', spore);
@@ -213,7 +213,7 @@ test('Card drawn player event', t => {
   spawnPiece(pieceStateMix, 2, 2);
 
   //damage a friendly unit so there's something to heal
-  let friendlyHero = pieceStateMix.pieces.filter(p => p.playerId == 1 && p.cardTemplateId == 1)[0];
+  let friendlyHero = pieceStateMix.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 1);
   friendlyHero.health -= 5;
 
   t.plan(4);
