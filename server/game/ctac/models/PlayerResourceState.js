@@ -14,11 +14,13 @@ export default class PlayerResourceState
 
   }
 
-  incriment(playerId, turnId){
-    //check init
+  init(playerId){
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;
     }
+  }
+
+  incriment(playerId, turnId){
 
     this.resources[playerId] = Math.ceil(turnId / 2);
     this.resources[playerId] = Math.min(this.resources[playerId], maxResources);

@@ -14,7 +14,7 @@ import _ from 'lodash';
 @loglevel
 export default class CentauriTacGame
 {
-  constructor(queue, players, binder, host, cardDirectory, cardState)
+  constructor(queue, players, binder, host, cardDirectory, cardState, playerResourceState)
   {
     this.players = players;
     this.binder = binder;
@@ -22,6 +22,7 @@ export default class CentauriTacGame
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.cardState = cardState;
+    this.playerResourceState = playerResourceState;
   }
 
   /**
@@ -41,9 +42,10 @@ export default class CentauriTacGame
       await this.host.addController(GameController);
 
       //spawn both player decks and init hands
-      for(let p = 0; p < this.players.length; p++){
-        this.cardState.initPlayer(this.players[p].id);
-        this.queue.push(new SpawnDeck(this.players[p].id));
+      for(let player of this.players){
+        this.playerResourceState.init(player.id);
+        this.cardState.initPlayer(player.id);
+        this.queue.push(new SpawnDeck(player.id));
       }
 
       // start first turn with random player
@@ -52,9 +54,9 @@ export default class CentauriTacGame
 
       //draw initial cards
       let startingCards = 3;
-      for(let p = 0; p < this.players.length; p++){
+      for(let player of this.players){
         for(let c = 0; c < startingCards; c++){
-          this.queue.push(new DrawCard(this.players[p].id));
+          this.queue.push(new DrawCard(player.id));
         }
       }
 
