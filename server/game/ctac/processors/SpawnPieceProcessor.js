@@ -1,6 +1,7 @@
 import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
+import Message from '../actions/Message.js';
 import loglevel from 'loglevel-decorator';
 
 /**

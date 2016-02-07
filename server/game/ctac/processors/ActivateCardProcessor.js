@@ -61,19 +61,19 @@ export default class ActivateCardProcessor
       }
     }
 
-    //all good if we make it this far
+    //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
     let cardWasInHand = this.cardState.playCard(action.playerId, action.cardInstanceId);
     if(!cardWasInHand){
-        this.log.warn('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
-        queue.cancel(action);
-        queue.push(new Message('Cards must be in your hand to play them!'));
-        return;
-      }
+      this.log.warn('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
+      queue.cancel(action);
+      queue.push(new Message('Cards must be in your hand to play them!'));
+      return;
+    }
 
     if(cardPlayed.hasTag('Minion')){
-      queue.push(new SpawnPiece(action.playerId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
+      queue.push(new SpawnPiece(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
     }else if(cardPlayed.hasTag('Spell')){
-      queue.push(new PlaySpell(action.playerId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
+      queue.push(new PlaySpell(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId));
     }else{
       throw 'Card played must be either a minion or a spell';
     }
