@@ -262,7 +262,7 @@ export default class CardEvaluator{
       }
     }catch(e){
       if(e instanceof EvalError){
-        this.queue.push(new Message(e));
+        this.queue.push(new Message(e.message));
         return false;
       }
       throw e;
