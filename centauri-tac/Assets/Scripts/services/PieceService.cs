@@ -82,7 +82,7 @@ namespace ctac
 
             var pieceModel = new PieceModel()
             {
-                id = spawnedPiece.pieceId,
+                id = spawnedPiece.pieceId.Value,
                 playerId = spawnedPiece.playerId,
                 cardTemplateId = spawnedPiece.cardTemplateId,
                 currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,

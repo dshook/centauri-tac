@@ -46,7 +46,7 @@ namespace ctac
 
                 //should be a NOOP but just in case...
                 pieceModel.gameObject.transform.position = map.tiles[spawnedPiece.position.Vector2].fullPosition;
-                pieceModel.id = spawnedPiece.pieceId;
+                pieceModel.id = spawnedPiece.pieceId.Value;
                 pieceModel.playerId = spawnedPiece.playerId;
                 pieceModel.cardTemplateId = spawnedPiece.cardTemplateId;
                 pieceModel.tags = spawnedPiece.tags;

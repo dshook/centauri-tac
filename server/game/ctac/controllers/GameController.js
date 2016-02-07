@@ -114,13 +114,28 @@ export default class GameController
   async actionComplete(action)
   {
     for (const player of this.players) {
-
       // disconnceted played
       if (!player.client) {
         continue;
       }
 
       this._sendAction(player, action);
+    }
+  }
+
+  /**
+   * An action was cancelled
+   */
+  @on('actionCancelled')
+  async actionCancelled(action)
+  {
+    for (const player of this.players) {
+      // disconnceted played
+      if (!player.client) {
+        continue;
+      }
+
+      this._sendAction(player, action, true);
     }
   }
 
@@ -180,9 +195,10 @@ export default class GameController
   /**
    * Broadcast an action
    */
-  _sendAction(player, action)
+  _sendAction(player, action, cancelled = false)
   {
-    player.client.send('action:' + action.constructor.name, action);
+    const verb = cancelled ? 'actionCancelled:' : 'action:';
+    player.client.send(verb + action.constructor.name, action);
   }
 
   //look through the current players hand for any cards needing a TARGET

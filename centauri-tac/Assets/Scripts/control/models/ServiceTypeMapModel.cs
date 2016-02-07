@@ -37,6 +37,8 @@ namespace ctac
                 {"player:disconnect", typeof(PlayerDisconnectSignal) },
 
                 {"status", typeof(MatchmakerStatusSignal) },
+
+                {"actionCancelled:SpawnPiece", typeof(ActionSpawnPieceCancelledSignal) },
             }; 
 
             //auto add action bindings
