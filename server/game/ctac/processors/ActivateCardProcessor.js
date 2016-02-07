@@ -62,7 +62,7 @@ export default class ActivateCardProcessor
     }
 
     //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
-    let cardWasInHand = this.cardState.playCard(action.playerId, action.cardInstanceId);
+    let cardWasInHand = this.cardState.validateInHand(action.playerId, action.cardInstanceId);
     if(!cardWasInHand){
       this.log.warn('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
       queue.cancel(action);

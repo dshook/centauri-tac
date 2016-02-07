@@ -33,6 +33,10 @@ export default class CardState
     return cardDrawn;
   }
 
+  validateInHand(playerId, cardId){
+    return this.hands[playerId].find(c => c.id === cardId);
+  }
+
   //valdate it's in the hand then remove it
   playCard(playerId, cardId){
     let removed = _.remove(this.hands[playerId], c => c.id === cardId);

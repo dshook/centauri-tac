@@ -9,12 +9,13 @@ import SetPlayerResource from '../actions/SetPlayerResource.js';
 @loglevel
 export default class PlaySpellProcessor
 {
-  constructor(pieceState, players, cardDirectory, cardEvaluator)
+  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState)
   {
     this.pieceState = pieceState;
     this.players = players;
     this.cardDirectory = cardDirectory;
     this.cardEvaluator = cardEvaluator;
+    this.cardState = cardState;
   }
 
   /**
@@ -29,6 +30,14 @@ export default class PlaySpellProcessor
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
     this.cardEvaluator.evaluateSpellEvent('playSpell', cardPlayed, action.playerId, action.targetPieceId);
+
+    if(action.cardInstanceId !== null){
+      const playedCard = this.cardState.playCard(action.playerId, action.cardInstanceId);
+      if(!playedCard){
+        this.log.error('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
+        queue.cancel(action, true);
+      }
+    }
 
     queue.complete(action);
     queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
