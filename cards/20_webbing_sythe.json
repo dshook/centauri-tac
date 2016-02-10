@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 20,
+	"name": "Webbing Sythe",
+	"description": "Take +1/+1 from an enemy minion and give it to a friendly one",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Buff(Random(ENEMY & MINION), 'Energy sap', attack(-1), health(-1) );  Buff(Random(FRIENDLY & MINION), 'Energy boost', attack(1), health(1) ); }"
+}

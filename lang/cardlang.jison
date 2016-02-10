@@ -39,11 +39,11 @@
   return 'attribute'
 
 //numbers
-[0-9]
+(\-?[0-9])
   return 'number'
 
 //text
-(\'(.*)\')
+(\'(.*?)\')
   return 'text'
 
 //syntax
