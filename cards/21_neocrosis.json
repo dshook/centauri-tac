@@ -4,5 +4,5 @@
 	"description": "Deal 1 damage to all enemies.",
 	"cost": 2,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ Hit(CHARACTER, 1); }"
+	"eventcode": "playSpell{ Hit(ENEMY, 1); }"
 }
