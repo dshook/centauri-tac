@@ -49,6 +49,8 @@ export default class Selector{
     //Random TARGET is not happening
     if(selector.random) return [];
 
+    if(!this.doesSelectorUse(selector, 'TARGET')) return [];
+
     return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
       .Select(selector);
   }

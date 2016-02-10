@@ -23,6 +23,9 @@ namespace ctac
         [Inject]
         public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public GameTurnModel turns { get; set; }
+
         public override void OnRegister()
         {
             view.init();
@@ -47,6 +50,12 @@ namespace ctac
         {
             if (card != null && card.gameObject != null)
             {
+                if (card.tags.Contains("Spell"))
+                {
+                    var targets = possibleActions.GetForCard(turns.currentPlayerId, card.id);
+                    //don't point for untargeted spells
+                    if (targets == null) { return; }
+                }
                 view.rectTransform(card.gameObject);
             }
             else

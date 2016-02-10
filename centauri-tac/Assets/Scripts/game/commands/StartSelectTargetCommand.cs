@@ -22,6 +22,8 @@ namespace ctac
 
         public override void Execute()
         {
+            if(targetingCard.tags.Contains("Spell")) return;
+
             var spawnedPiece = new SpawnPieceModel
             {
                 cardTemplateId = targetingCard.cardTemplateId,

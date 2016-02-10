@@ -234,6 +234,45 @@ test('Self Selector', t => {
 });
 
 
+test('Possible Targets', t => {
+  t.plan(7);
+  let nonTargetSelect = {
+    left: 'FRIENDLY',
+    op: '&',
+    right: 'CHARACTER'
+  };
+
+  let selector = new Selector(players, pieceStateMix);
+  let nonTargetSelection = selector.selectPossibleTargets(1, nonTargetSelect);
+
+  t.ok(Array.isArray(nonTargetSelection), 'Got back an Array');
+  t.equal(nonTargetSelection.length, 0, 'Nothing to target here');
+
+  let randomNonTarget = {
+    random: true,
+    selector:{
+      left : 'MINION'
+    }
+  };
+
+  let randoTargetSelection = selector.selectPossibleTargets(1, randomNonTarget);
+
+  t.ok(Array.isArray(randoTargetSelection), 'Got back an Array');
+  t.equal(randoTargetSelection.length, 0, 'Nothing to target here');
+
+  let targetSelector = {
+    left: 'FRIENDLY',
+    op: '&',
+    right: 'TARGET'
+  };
+
+  let targetSelect = selector.selectPossibleTargets(1, targetSelector);
+
+  t.ok(Array.isArray(targetSelect), 'Got back an Array');
+  t.equal(targetSelect.length, 3, 'Got back 3 targets');
+  t.equal(targetSelect[0].playerId, 1, 'Got back friendly target');
+});
+
 function spawnPiece(pieceState, cardTemplateId, playerId){
     let cardPlayed = cardDirectory.directory[cardTemplateId];
 
