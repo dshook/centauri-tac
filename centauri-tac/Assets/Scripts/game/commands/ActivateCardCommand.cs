@@ -26,7 +26,7 @@ namespace ctac
                 new ActivateCardModel {
                     playerId = cActivate.cardActivated.playerId,
                     cardInstanceId = cActivate.cardActivated.id,
-                    position = cActivate.tilePlayedAt.position.ToPositionModel(),
+                    position = cActivate.tilePlayedAt == null ? null : cActivate.tilePlayedAt.position.ToPositionModel(),
                     targetPieceId = cActivate.optionalTarget != null ? cActivate.optionalTarget.id : (int?)null
                 }
             );

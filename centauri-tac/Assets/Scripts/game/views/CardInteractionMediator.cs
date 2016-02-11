@@ -29,9 +29,7 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         //for card targeting
-        private Tile cardDeployPosition;
-        private ActionTarget targets;
-        private CardModel targetCard;
+        private StartTargetModel startTargetModel;
 
         public override void OnRegister()
         {
@@ -61,6 +59,22 @@ namespace ctac
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
 
+                    if (cardView.card.tags.Contains("Spell"))
+                    {
+                        var targets = possibleActions.GetForCard(turns.currentPlayerId, cardView.card.id);
+                        if (targets != null)
+                        {
+                            startTargetModel = new StartTargetModel()
+                            {
+                                targetingCard = cardView.card,
+                                cardDeployPosition = null,
+                                targets = targets
+                            };
+                            Invoke("StartSelectTargets", 0.10f);
+                            return;
+                        }
+                    }
+
                     draggedCard = cardView.card;
                     cardSelected.Dispatch(draggedCard);
                 }
@@ -87,15 +101,19 @@ namespace ctac
 
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
-                    targets = possibleActions.GetForCard(turns.currentPlayerId, draggedCard.id);
+                    var targets = possibleActions.GetForCard(turns.currentPlayerId, draggedCard.id);
                     if (targets != null)
                     {
                         //record state we need to maintain for subsequent clicks then dispatch the start target
-                        cardDeployPosition = gameTile;
-                        targetCard = draggedCard;
+                        startTargetModel = new StartTargetModel()
+                        {
+                            targetingCard = draggedCard,
+                            cardDeployPosition = gameTile,
+                            targets = targets
+                        };
 
                         //delay sending off the start select target signal till the card deselected event has cleared
-                        Invoke("DelaySelectTargets", 0.10f);
+                        Invoke("StartSelectTargets", 0.10f);
                     }
                     else
                     {
@@ -109,31 +127,25 @@ namespace ctac
             }
         }
 
-        private void DelaySelectTargets()
+        private void StartSelectTargets()
         {
             debug.Log("Starting targeting");
-            startSelectTarget.Dispatch(targetCard, cardDeployPosition, targets);
+            startSelectTarget.Dispatch(startTargetModel);
         }
 
         private void onTargetCancel(CardModel card)
         {
-            //swallow the first deselect event that happens for the targeting
-            //so the card can stop being dragged
-            if (cardDeployPosition != null)
-            {
-                cardDeployPosition = null;
-                targetCard = null;
-            }
+            startTargetModel = null;
         }
 
-        private void onSelectedTarget(CardModel card, PieceModel piece)
+        private void onSelectedTarget(StartTargetModel targetModel, PieceModel piece)
         {
             activateCard.Dispatch(new ActivateModel() {
-                cardActivated = targetCard,
-                tilePlayedAt = cardDeployPosition,
+                cardActivated = targetModel.targetingCard,
+                tilePlayedAt = targetModel.cardDeployPosition,
                 optionalTarget = piece
             });
-            cardDeployPosition = null;
+            startTargetModel = null;
         }
 
         private CardView lastHoveredCard = null;

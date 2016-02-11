@@ -69,11 +69,11 @@ namespace ctac
             view.disable();
         }
 
-        private void onStartTarget(CardModel card, Tile where, ActionTarget at)
+        private void onStartTarget(StartTargetModel model)
         {
-            if (card != null && card.gameObject != null)
+            if (model.targetingCard != null && model.targetingCard.gameObject != null)
             {
-                view.rectTransform(card.gameObject);
+                view.rectTransform(model.targetingCard.gameObject);
             }
             else
             {
@@ -86,7 +86,7 @@ namespace ctac
             view.disable();
         }
 
-        private void onSelectTarget(CardModel card, PieceModel piece)
+        private void onSelectTarget(StartTargetModel card, PieceModel piece)
         {
             view.disable();
         }

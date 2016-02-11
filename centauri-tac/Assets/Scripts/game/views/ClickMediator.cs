@@ -98,17 +98,17 @@ namespace ctac
                 if (cardTarget != null)
                 {
                     debug.Log("Cancelling targeting");
-                    cancelSelectTarget.Dispatch(cardTarget);
+                    cancelSelectTarget.Dispatch(cardTarget.targetingCard);
                     cardTarget = null;
                 }
             }
 
         }
 
-        CardModel cardTarget { get; set; }
-        private void onStartTarget(CardModel card, Tile where, ActionTarget at)
+        StartTargetModel cardTarget { get; set; }
+        private void onStartTarget(StartTargetModel model)
         {
-            cardTarget = card;
+            cardTarget = model;
         }
 
         private void onPieceSelected(PieceModel pieceSelected)

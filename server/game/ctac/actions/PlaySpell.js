@@ -7,7 +7,7 @@ export default class PlaySpell
     this.cardInstanceId = cardInstanceId;
     this.cardTemplateId = cardTemplateId;
     this.playerId = playerId;
-    this.position = new Position(position.x, position.y, position.z);
+    this.position = position ? new Position(position.x, position.y, position.z) : null;
     this.targetPieceId = targetPieceId;
   }
 }

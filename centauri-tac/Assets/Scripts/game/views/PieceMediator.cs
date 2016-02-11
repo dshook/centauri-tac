@@ -214,14 +214,14 @@ namespace ctac
             }
         }
 
-        private void onStartSelectTarget(CardModel card, Tile where, ActionTarget targets)
+        private void onStartSelectTarget(StartTargetModel model)
         {
-            if (targets.targetPieceIds.Contains(view.piece.id))
+            if (model.targets.targetPieceIds.Contains(view.piece.id))
             {
                 view.targetCandidate = true;
             }
         }
-        private void onTargetSelected(CardModel c, PieceModel m)
+        private void onTargetSelected(StartTargetModel c, PieceModel m)
         {
             view.targetCandidate = false;
         }

@@ -6,13 +6,7 @@ namespace ctac
     public class StartSelectTargetCommand : Command
     {
         [Inject]
-        public CardModel targetingCard { get; set; }
-
-        [Inject]
-        public Tile spawnPosition { get; set; }
-
-        [Inject]
-        public ActionTarget actionTargets { get; set; }
+        public StartTargetModel startTargetModel { get; set; }
 
         [Inject]
         public IDebugService debug { get; set; }
@@ -22,14 +16,14 @@ namespace ctac
 
         public override void Execute()
         {
-            if(targetingCard.tags.Contains("Spell")) return;
+            if(startTargetModel.targetingCard.tags.Contains("Spell")) return;
 
             var spawnedPiece = new SpawnPieceModel
             {
-                cardTemplateId = targetingCard.cardTemplateId,
+                cardTemplateId = startTargetModel.targetingCard.cardTemplateId,
                 pieceId = -1,
-                playerId = targetingCard.playerId,
-                position = spawnPosition.position.ToPositionModel(),
+                playerId = startTargetModel.targetingCard.playerId,
+                position = startTargetModel.cardDeployPosition.position.ToPositionModel(),
                 tags = new List<string>() { "targetPiece" }
             };
 
