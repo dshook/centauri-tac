@@ -1,8 +1,6 @@
 using strange.extensions.command.impl;
 using ctac.signals;
 using UnityEngine;
-using System.Linq;
-using System;
 using strange.extensions.context.api;
 
 namespace ctac
@@ -49,6 +47,7 @@ namespace ctac
         {
             if (!processedActions.Verify(spawnDeck.id)) return;
 
+            //holding area that all cards go into to start with until the deck mediator sorts them out
             var DeckGO = GameObject.Find("Deck");
 
             for (var c = 0; c < spawnDeck.cards; c++)

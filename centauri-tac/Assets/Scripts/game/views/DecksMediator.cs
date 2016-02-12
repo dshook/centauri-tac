@@ -39,42 +39,31 @@ namespace ctac
 
         private void onDeckSpawned(SpawnDeckModel deck)
         {
-            initPlayerDeck(deck.playerId);
+            //wait till the turn ends so we can sort through the cards
         }
 
         private void onTurnEnded()
         {
-            initPlayerDeck(gameTurn.currentPlayerId);
+            updateDecks();
         }
 
-        private void initPlayerDeck(int playerId)
+        private void updateDecks()
         {
-            var cards = GetPlayerCards(playerId);
-            if (!playersInitted.Contains(playerId))
-            {
-                view.init(cards);
-                playersInitted.Add(playerId);
-            }
+            var playerCards = GetPlayerCards();
+            var opponentCards = GetOpponentCards();
+            view.UpdatePositions(playerCards, opponentCards);
         }
 
-        private List<CardModel> GetPlayerCards(int playerId)
+        private List<CardModel> GetPlayerCards()
         {
             if(decks == null || decks.Cards == null) return new List<CardModel>();
-            //hide non player cards
-            var nonPlayerCards = decks.Cards.Where(c => c.playerId != playerId).ToList();
-            foreach (var card in nonPlayerCards)
-            {
-                card.gameObject.SetActive(false);
-            }
+            return decks.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+        }
 
-            //enable player cards
-            var playerCards = decks.Cards.Where(c => c.playerId == playerId).ToList();
-            foreach (var card in playerCards)
-            {
-                card.gameObject.SetActive(true);
-            }
-
-            return playerCards;
+        private List<CardModel> GetOpponentCards()
+        {
+            if(decks == null || decks.Cards == null) return new List<CardModel>();
+            return decks.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
         }
     }
 }

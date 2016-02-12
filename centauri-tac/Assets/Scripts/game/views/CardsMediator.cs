@@ -7,54 +7,32 @@ namespace ctac
 {
     public class CardsMediator : Mediator
     {
-        [Inject]
-        public CardsView view { get; set; }
+        [Inject] public CardsView view { get; set; }
 
-        [Inject]
-        public CardsModel cards { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public CardHoveredSignal cardHovered { get; set; }
 
-        [Inject]
-        public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public ActivateCardSignal activateCard { get; set; }
 
-        [Inject]
-        public CardHoveredSignal cardHovered { get; set; }
+        [Inject] public DestroyCardSignal destroyCard { get; set; }
+        [Inject] public CardDestroyedSignal cardDestroyed { get; set; }
 
-        [Inject]
-        public AnimationQueueModel animationQueue { get; set; }
+        [Inject] public TurnEndedSignal turnEnded { get; set; }
 
-        [Inject]
-        public ActivateCardSignal activateCard { get; set; }
+        [Inject] public CardDrawnSignal cardDrawn { get; set; }
+        [Inject] public CardDrawShownSignal cardDrawShown { get; set; }
+        [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
 
-        [Inject]
-        public DestroyCardSignal destroyCard { get; set; }
+        [Inject] public CardsModel cards { get; set; }
+        [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
+        [Inject] public PlayerResourcesModel playerResources { get; set; }
 
-        [Inject]
-        public CardDestroyedSignal cardDestroyed { get; set; }
-
-        [Inject]
-        public TurnEndedSignal turnEnded { get; set; }
-
-        [Inject]
-        public CardDrawnSignal cardDrawn { get; set; }
-
-        [Inject]
-        public CardDrawShownSignal cardDrawShown { get; set; }
-
-        [Inject]
-        public GameTurnModel gameTurn { get; set; }
-
-        [Inject]
-        public PlayerResourcesModel playerResources { get; set; }
-
-        [Inject]
-        public PlayerResourceSetSignal playerResourceSet { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
-            view.init(GetCurrentPlayerCards());
+            view.init(PlayerCards(), OpponentCards());
             cardSelected.AddListener(onCardSelected);
             cardHovered.AddListener(onCardHovered);
             activateCard.AddListener(onCardActivated);
@@ -113,7 +91,7 @@ namespace ctac
         private void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
-            view.init(GetCurrentPlayerCards());
+            view.init(PlayerCards(), OpponentCards());
         }
 
         private void onCardDrawn(CardModel card)
@@ -137,32 +115,23 @@ namespace ctac
         {
             cards.Cards.Add(card);
             UpdateCardsPlayableStatus(cards.Cards);
-            view.init(GetCurrentPlayerCards());
+            view.init(PlayerCards(), OpponentCards());
         }
 
         private void onTurnEnded()
         {
-            view.init(GetCurrentPlayerCards());
+            view.init(PlayerCards(), OpponentCards());
         }
 
-        private List<CardModel> GetCurrentPlayerCards()
+        private List<CardModel> PlayerCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
-            //hide non player cards
-            var nonPlayerCards = cards.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
-            foreach (var card in nonPlayerCards)
-            {
-                card.gameObject.SetActive(false);
-            }
-
-            //enable player cards
-            var playerCards = cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
-            foreach (var card in playerCards)
-            {
-                card.gameObject.SetActive(true);
-            }
-
-            return playerCards;
+            return  cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+        }
+        private List<CardModel> OpponentCards()
+        {
+            if(cards == null || cards.Cards == null) return new List<CardModel>();
+            return  cards.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
         }
 
         private void onPlayerResourceSet(SetPlayerResourceModel resource)

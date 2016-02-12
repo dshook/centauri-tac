@@ -2,20 +2,20 @@
 using strange.extensions.mediation.impl;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac {
     public class CardsView : View
     {
         //should only be the current players cards
-        private List<CardModel> cards { get; set; }
+        private List<CardModel> playerCards { get; set; }
+        private List<CardModel> opponentCards { get; set; }
 
         private CardModel selectedCard { get; set; }
         private CardModel hoveredCard { get; set; }
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
+        private Vector2 opponentAnchorPosition = new Vector2(0.5f, 1);
         private const float maxCardHeight = 20f;
         private Vector3 dest;
 
@@ -24,6 +24,7 @@ namespace ctac {
 
         private float hoverAccumulator = 0f;
         private Vector3 cardCircleCenter = new Vector3(0, -450, 50);
+        private Vector3 opponentCardCircleCenter = new Vector3(0, 500, 50);
         private float cardCircleRadius = 420f;
         private float cardAngleSpread = -5f;
 
@@ -31,21 +32,43 @@ namespace ctac {
         {
         }
 
-        public void init(List<CardModel> cards)
+        public void init(List<CardModel> playerCards, List<CardModel> opponentCards)
         {
-            this.cards = cards;
+            this.playerCards = playerCards;
+            this.opponentCards = opponentCards;
         }
 
         void Update()
         {
-            if(cards == null) return;
+            if(playerCards == null || opponentCards == null) return;
 
-            cardAngleSpread = -13f + (0.8f * cards.Count);
-            for(int c = 0; c < cards.Count; c++) 
+            //position opponents cards
+            //might need to DRY it up sometime but rule of three still holds
+            cardAngleSpread = -13f + (0.8f * opponentCards.Count);
+            for(int c = 0; c < opponentCards.Count; c++) 
             {
-                var card = cards[c];
+                var card = opponentCards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
-                var cardCountOffset = 0 - ((cards.Count - 1) / 2) + c;
+                var cardCountOffset = 0 - ((opponentCards.Count - 1) / 2) + c;
+                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
+                rectTransform.Rotate(Vector3.up, 180f, Space.Self);
+
+                dest = PointOnCircle(cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, opponentCardCircleCenter);
+                dest = dest.SetZ(dest.z + (-1 * c));
+
+                rectTransform.anchorMax = opponentAnchorPosition;
+                rectTransform.anchorMin = opponentAnchorPosition;
+                rectTransform.pivot = opponentAnchorPosition;
+                rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
+            }
+
+            //and now players cards
+            cardAngleSpread = -13f + (0.8f * playerCards.Count);
+            for(int c = 0; c < playerCards.Count; c++) 
+            {
+                var card = playerCards[c];
+                var rectTransform = card.gameObject.GetComponent<RectTransform>();
+                var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
                 dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
