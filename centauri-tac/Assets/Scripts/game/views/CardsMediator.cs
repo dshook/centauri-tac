@@ -99,16 +99,21 @@ namespace ctac
             //skip animation for non active players
             if (card.playerId != gameTurn.currentPlayerId)
             {
-                cards.Cards.Add(card);
-                UpdateCardsPlayableStatus(cards.Cards);
-                return;
+                animationQueue.Add(new CardsView.DrawCardAnim()
+                {
+                    card = card,
+                    cardDrawn = cardDrawShown,
+                    isOpponentCard = true
+                });
             }
-
-            animationQueue.Add(new CardsView.DrawCardAnim()
+            else
             {
-                card = card,
-                cardDrawn = cardDrawShown
-            });
+                animationQueue.Add(new CardsView.DrawCardAnim()
+                {
+                    card = card,
+                    cardDrawn = cardDrawShown
+                });
+            }
         }
 
         private void onCardDrawnShown(CardModel card)

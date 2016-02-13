@@ -160,16 +160,28 @@ namespace ctac {
 
             public CardDrawShownSignal cardDrawn { get; set; }
             public CardModel card { get; set; }
+            public bool isOpponentCard { get; set; }
 
             private float animTime = 1.0f;
+            private Vector3 opponentDest = new Vector3(0, 150, 50);
 
             public void Update()
             {
-                iTweenExtensions.MoveToLocal(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
-                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
-                if (Vector3.Distance(card.gameObject.transform.localPosition, Vector3.zero) < 0.08f)
+                Vector3 dest = Vector3.zero;
+                if (isOpponentCard)
                 {
-                    card.gameObject.transform.localPosition = Vector3.zero;
+                    animTime = 0.5f;
+                    dest = opponentDest;
+                    iTweenExtensions.RotateTo(card.gameObject, new Vector3(0, 180f, 0), animTime, 0, EaseType.easeOutCubic);
+                }
+                else
+                {
+                    iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
+                }
+                iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+                if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
+                {
+                    card.gameObject.transform.localPosition = dest;
                     Complete = true;
                     cardDrawn.Dispatch(card);
                 }
