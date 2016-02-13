@@ -105,6 +105,7 @@ namespace ctac
             ws.OnOpen += (o, e) => onSocketOpen(key, o, e);
             ws.OnClose += (o, e) => onSocketClose(key, o, e);
 
+            debug.Log("Attempting connection to " + url, key);
             ws.ConnectAsync();
             int i = 0;
             while (i < 1000)

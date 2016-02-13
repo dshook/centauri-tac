@@ -10,7 +10,7 @@ namespace ctac {
         public Color moveColor = new Color(.4f, .4f, .9f);
         public Color attackColor = new Color(.9f, .4f, .4f);
 
-        new MeshRenderer renderer = null;
+        private MeshRenderer meshRenderer = null;
         private Color invisible = new Color(0f, 0f, 0f, 0f);
         private Color tint;
 
@@ -18,7 +18,7 @@ namespace ctac {
         {
             if (tile != null)
             {
-                renderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
+                meshRenderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
             }
         }
 
@@ -29,12 +29,12 @@ namespace ctac {
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
                 {
                     tint = hoverTint;
-                    renderer.material.SetColor("_HighlightColor", Color.white - tint);
+                    meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
                 }
                 else if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
                 {
                     tint = pathFindTint;
-                    renderer.material.SetColor("_HighlightColor", Color.white - tint);
+                    meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
                 }
                 else
                 {
@@ -43,21 +43,21 @@ namespace ctac {
 
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))
                 {
-                    renderer.material.SetColor("_HighlightColor", attackColor - tint);
+                    meshRenderer.material.SetColor("_HighlightColor", attackColor - tint);
                 }
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected))
                 {
-                    renderer.material.SetColor("_HighlightColor", selectColor - tint);
+                    meshRenderer.material.SetColor("_HighlightColor", selectColor - tint);
                 }
 
                 if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
                 {
-                    renderer.material.SetColor("_HighlightColor", moveColor - tint);
+                    meshRenderer.material.SetColor("_HighlightColor", moveColor - tint);
                 }
 
                 if (tile.highlightStatus == TileHighlightStatus.None)
                 {
-                    renderer.material.SetColor("_HighlightColor", Color.white);
+                    meshRenderer.material.SetColor("_HighlightColor", Color.white);
                 }
             }
         }
