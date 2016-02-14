@@ -21,6 +21,9 @@ namespace ctac
         [Inject]
         public TurnEndedSignal turnEnded { get; set; }
 
+        [Inject]
+        public GamePlayersModel players { get; set; }
+
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onTurnClicked);
@@ -42,7 +45,14 @@ namespace ctac
 
         private void onTurnEnded()
         {
-            view.onTurnEnded();
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+
+            var text = "End Turn";
+            if (gameTurn.currentPlayerId == opponentId)
+            {
+                text = "Enemy Turn";
+            }
+            view.onTurnEnded(text);
         }
 
     }

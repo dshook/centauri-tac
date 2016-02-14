@@ -77,7 +77,7 @@ namespace ctac
                 debug.LogError("Could not load resources for id " + spawnedPiece.cardTemplateId + " " + ex.ToString());
             }
 
-            var currentPlayerId = gamePlayers.players.First(x => x.clientId == turnModel.currentTurnClientId).id;
+            var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
 
             var pieceModel = new PieceModel()
@@ -85,7 +85,7 @@ namespace ctac
                 id = spawnedPiece.pieceId.Value,
                 playerId = spawnedPiece.playerId,
                 cardTemplateId = spawnedPiece.cardTemplateId,
-                currentPlayerHasControl = spawnedPiece.playerId == currentPlayerId,
+                currentPlayerHasControl = spawnedPiece.playerId != opponentId,
                 gameObject = newPiece,
                 attack = cardTemplate.attack,
                 health = cardTemplate.health,

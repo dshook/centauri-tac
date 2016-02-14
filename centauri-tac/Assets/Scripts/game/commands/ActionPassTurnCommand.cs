@@ -36,19 +36,21 @@ namespace ctac
 
             turnModel.currentTurn = gamePassModel.currentTurn;
             turnModel.currentPlayerId = gamePassModel.to;
-            turnModel.currentTurnClientId = gamePlayers.players.First(x => x.id == gamePassModel.to).clientId;
+            turnModel.currentTurnClientId = gamePlayers.GetByPlayerId(gamePassModel.to).clientId;
             playerResources.resources[gamePassModel.to] = gamePassModel.toPlayerResources;
+
+            var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             foreach (var piece in piecesModel.Pieces)
             {
                 piece.hasMoved = false;
                 piece.hasAttacked = false;
-                if (piece.playerId == gamePassModel.to)
+                if (piece.playerId == opponentId)
                 {
-                    piece.currentPlayerHasControl = true;
+                    piece.currentPlayerHasControl = false;
                 }
                 else
                 {
-                    piece.currentPlayerHasControl = false;
+                    piece.currentPlayerHasControl = true;
                 }
             }
             debug.Log("Turn Ended");

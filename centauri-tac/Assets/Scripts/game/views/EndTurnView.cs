@@ -28,16 +28,9 @@ namespace ctac
             clickSignal.Dispatch();
         }
 
-        internal void onTurnEnded()
+        internal void onTurnEnded(string text)
         {
-            if (buttonText.text == "End Turn")
-            {
-                buttonText.text = "Enemy Turn";
-            }
-            else
-            {
-                buttonText.text = "End Turn";
-            }
+            buttonText.text = text;
         }
     }
 }
