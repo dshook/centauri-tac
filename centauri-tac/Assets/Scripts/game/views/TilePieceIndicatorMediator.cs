@@ -68,10 +68,10 @@ namespace ctac
 
         private void onPieceFinishedMoving(PieceModel piece)
         {
-            resetTiles();
+            resetTiles(null);
         }
 
-        private void resetTiles()
+        private void resetTiles(GameTurnModel turns)
         {
             view.ClearTiles(map.tileList);
 

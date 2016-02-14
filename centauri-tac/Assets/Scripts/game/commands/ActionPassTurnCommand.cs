@@ -54,7 +54,7 @@ namespace ctac
                 }
             }
             debug.Log("Turn Ended");
-            turnEnded.Dispatch();
+            turnEnded.Dispatch(turnModel);
         }
     }
 }

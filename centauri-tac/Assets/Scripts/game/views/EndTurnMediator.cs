@@ -43,7 +43,7 @@ namespace ctac
             endTurnSignal.Dispatch();
         }
 
-        private void onTurnEnded()
+        private void onTurnEnded(GameTurnModel turns)
         {
             var opponentId = players.OpponentId(gameTurn.currentPlayerId);
 

@@ -42,7 +42,7 @@ namespace ctac
             //wait till the turn ends so we can sort through the cards
         }
 
-        private void onTurnEnded()
+        private void onTurnEnded(GameTurnModel turns)
         {
             updateDecks();
         }

@@ -5,42 +5,26 @@ namespace ctac
 {
     public class PieceMediator : Mediator
     {
-        [Inject]
-        public PieceView view { get; set; }
+        [Inject] public PieceView view { get; set; }
 
-        [Inject]
-        public PieceMovedSignal pieceMoved { get; set; }
+        [Inject] public PieceMovedSignal pieceMoved { get; set; }
+        [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
 
-        [Inject]
-        public PieceAttackedSignal pieceAttacked { get; set; }
+        [Inject] public PieceHealthChangedSignal pieceHpChanged { get; set; }
+        [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
+        [Inject] public PieceBuffSignal pieceBuffed { get; set; }
 
-        [Inject]
-        public PieceHealthChangedSignal pieceHpChanged { get; set; }
+        [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
+        [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
 
-        [Inject]
-        public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
+        [Inject] public StartSelectTargetSignal startTarget { get; set; }
+        [Inject] public SelectTargetSignal targetSelected { get; set; }
+        [Inject] public CancelSelectTargetSignal targetCancel { get; set; }
 
-        [Inject]
-        public PieceBuffSignal pieceBuffed { get; set; }
+        [Inject] public PieceDiedSignal pieceDied { get; set; }
+        [Inject] public TurnEndedSignal turnEnded { get; set; }
 
-        [Inject]
-        public AnimationQueueModel animationQueue { get; set; }
-
-        [Inject]
-        public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
-
-        [Inject]
-        public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
-
-        [Inject]
-        public StartSelectTargetSignal startTarget { get; set; }
-        [Inject]
-        public SelectTargetSignal targetSelected { get; set; }
-        [Inject]
-        public CancelSelectTargetSignal targetCancel { get; set; }
-
-        [Inject]
-        public PieceDiedSignal pieceDied { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         public override void OnRegister()
         {
@@ -53,6 +37,7 @@ namespace ctac
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
             targetCancel.AddListener(onTargetCancel);
+            turnEnded.AddListener(onTurnEnded);
         }
 
         public override void onRemove()
@@ -66,6 +51,7 @@ namespace ctac
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
             targetCancel.RemoveListener(onTargetCancel);
+            turnEnded.RemoveListener(onTurnEnded);
         }
 
         public void onMove(PieceMovedModel pieceMoved)
@@ -228,6 +214,11 @@ namespace ctac
         private void onTargetCancel(CardModel card)
         {
             view.targetCandidate = false;
+        }
+
+        private void onTurnEnded(GameTurnModel turns)
+        {
+            view.UpdateTurn(turns.currentPlayerId);
         }
     }
 }

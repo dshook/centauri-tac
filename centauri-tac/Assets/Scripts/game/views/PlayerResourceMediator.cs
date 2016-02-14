@@ -36,12 +36,12 @@ namespace ctac
 
         private void onResourceSet(SetPlayerResourceModel m)
         {
-            onResourcesUpdated();
+            onResourcesUpdated(gameTurn);
         }
 
-        private void onResourcesUpdated()
+        private void onResourcesUpdated(GameTurnModel turns)
         {
-            var currentResource = playerResources.resources[gameTurn.currentPlayerId];
+            var currentResource = playerResources.resources[turns.currentPlayerId];
             //TODO: un hardcode max
             view.updateText(currentResource, 10);
         }

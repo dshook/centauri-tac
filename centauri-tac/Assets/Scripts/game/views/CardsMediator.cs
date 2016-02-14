@@ -126,7 +126,7 @@ namespace ctac
             view.init(PlayerCards(), OpponentCards());
         }
 
-        private void onTurnEnded()
+        private void onTurnEnded(GameTurnModel turns)
         {
             view.init(PlayerCards(), OpponentCards());
         }

@@ -34,6 +34,8 @@ namespace ctac {
         private Material attackOutline;
         private Material targetOutline;
 
+        private int currentTurnPlayerId;
+
         protected override void Start()
         {
             attackGO = piece.gameObject.transform.FindChild("Attack").gameObject;
@@ -79,18 +81,22 @@ namespace ctac {
             {
                 spriteRenderer.material = targetOutline;
             }
-            else if (piece.currentPlayerHasControl && !piece.hasMoved)
+            else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasMoved)
             {
                 spriteRenderer.material = moveOutline;
             }
-            else if (piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
+            else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
                 spriteRenderer.material = attackOutline;
             }
             else
             {
                 spriteRenderer.material = spriteDefault;
             }
+        }
 
+        public void UpdateTurn(int newPlayerId)
+        {
+            currentTurnPlayerId = newPlayerId;
         }
 
         public class MoveAnim : IAnimate
