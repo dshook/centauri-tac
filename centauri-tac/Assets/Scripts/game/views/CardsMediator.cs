@@ -25,6 +25,7 @@ namespace ctac
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public AnimationQueueModel animationQueue { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
 
@@ -76,7 +77,8 @@ namespace ctac
 
         private void onDestroyCard(int cardId)
         {
-            if (lastActivatedCard == null || lastActivatedCard.id != cardId)
+            var card = cards.Cards.FirstOrDefault(c => c.id == cardId);
+            if (card == null)
             {
                 debug.LogError("Could not destroy card from card Id");
                 return;
@@ -96,8 +98,9 @@ namespace ctac
 
         private void onCardDrawn(CardModel card)
         {
-            //skip animation for non active players
-            if (card.playerId != gameTurn.currentPlayerId)
+            //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            if (card.playerId == opponentId)
             {
                 animationQueue.Add(new CardsView.DrawCardAnim()
                 {
@@ -131,12 +134,16 @@ namespace ctac
         private List<CardModel> PlayerCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
-            return  cards.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            return cards.Cards.Where(c => c.playerId != opponentId).ToList();
         }
         private List<CardModel> OpponentCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
-            return  cards.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
+
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            return cards.Cards.Where(c => c.playerId == opponentId).ToList();
         }
 
         private void onPlayerResourceSet(SetPlayerResourceModel resource)

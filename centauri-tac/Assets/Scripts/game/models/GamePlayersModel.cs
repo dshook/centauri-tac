@@ -29,5 +29,26 @@ namespace ctac
                 player.CopyProperties(existing);
             }
         }
+
+        public PlayerModel GetByPlayerId(int playerId)
+        {
+            return players.FirstOrDefault(x => x.id == playerId);
+        }
+
+        public int OpponentId(int currentTurnPlayerId)
+        {
+            PlayerModel opponent;
+            //hotseat mode
+            if (players.Count(x => x.isLocal) > 1)
+            {
+                opponent = players.FirstOrDefault(p => p.id != currentTurnPlayerId);
+            }
+            //net mode
+            else
+            {
+                opponent = players.FirstOrDefault(p => !p.isLocal);
+            }
+            return opponent != null ? opponent.id : -1;
+        }
     }
 }

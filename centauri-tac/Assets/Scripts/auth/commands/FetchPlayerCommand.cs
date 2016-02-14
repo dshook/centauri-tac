@@ -5,9 +5,6 @@ namespace ctac
     public class FetchPlayerCommand : Command
     {
         [Inject]
-        public PlayersModel playersModel { get; set; }
-
-        [Inject]
         public ISocketService socketService { get; set; }
 
         [Inject]
