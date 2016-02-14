@@ -85,7 +85,7 @@ namespace ctac
             }
             animationQueue.Add(new CardsView.CardDestroyedAnim()
             {
-                card = lastActivatedCard,
+                card = card,
                 cardDestroyed = cardDestroyed
             });
         }
