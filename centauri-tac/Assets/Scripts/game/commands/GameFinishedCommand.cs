@@ -21,6 +21,9 @@ namespace ctac
         public GameTurnModel turns { get; set; }
 
         [Inject]
+        public GamePlayersModel players { get; set; }
+
+        [Inject]
         public ActionMessageSignal message { get; set; }
 
         [Inject]
@@ -30,7 +33,9 @@ namespace ctac
         {
             if (!processedActions.Verify(gameFinished.id)) return;
 
-            if (gameFinished.winnerId == turns.currentPlayerId)
+            var opponentId = players.OpponentId(turns.currentPlayerId);
+
+            if (gameFinished.winnerId != opponentId)
             {
                 message.Dispatch(new MessageModel() { message = "Victory!", duration = 5000}, socketKey);
             }

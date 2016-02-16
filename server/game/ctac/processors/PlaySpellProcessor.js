@@ -41,8 +41,8 @@ export default class PlaySpellProcessor
 
       queue.complete(action);
       queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
-      this.log.info('played spell %s for player %s at %s',
-        cardPlayed.name, action.playerId, action.position);
+      this.log.info('played spell %s for player %s at %s target %s',
+        cardPlayed.name, action.playerId, action.position, action.targetPieceId);
     }else{
       //be sure to emit the cancel event so the client can respond
       queue.cancel(action, true);
