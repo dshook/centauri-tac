@@ -40,6 +40,9 @@
   "bugs": {
     "url": "https://github.com/dshook/centauri-tac/issues"
   },
+  "engines": {
+    "node": "0.12.7"
+  },
   "homepage": "https://github.com/dshook/centauri-tac#readme",
   "dependencies": {
     "aliasify": "^1.7.2",
