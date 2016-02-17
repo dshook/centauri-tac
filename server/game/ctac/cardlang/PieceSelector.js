@@ -2,9 +2,10 @@ import _ from 'lodash';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId, activatingPiece, targetPieceId){
+  constructor(pieces, controllingPlayerId, selfPiece, activatingPiece, targetPieceId){
     this.allPieces = pieces;
     this.controllingPlayerId = controllingPlayerId;
+    this.selfPiece = selfPiece;
     this.activatingPiece = activatingPiece;
     this.targetPieceId = targetPieceId;
   }
@@ -31,9 +32,13 @@ export default class PieceSelector{
         case 'DAMAGED':
           return this.allPieces.filter(p => p.health < p.baseHealth);
           break;
-        case 'SELF':
+        case 'ACTIVATOR':
           if(!this.activatingPiece) return [];
           return [this.activatingPiece];
+          break;
+        case 'SELF':
+          if(!this.selfPiece) return [];
+          return [this.selfPiece];
           break;
         case 'TARGET':
           if(!this.targetPieceId) return this.allPieces;
