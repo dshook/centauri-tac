@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 23,
+	"name": "Troeg",
+	"description": "Whenever your opponent plays a spell gain +2/-1",
+	"cost": 2,
+	"attack": 1,
+	"health": 4,
+	"movement": 4,
+	"tags": ["Minion"],
+	"eventcode": "playSpell(OPPONENT){ Buff(SELF, 'Energy Rage', attack(2), health(-1) ); }"
+}

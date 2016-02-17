@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 24,
+	"name": "Spirit Jack",
+	"description": "Whenever your opponent plays a minion give it +0/-1",
+	"cost": 3,
+	"attack": 2,
+	"health": 2,
+	"movement": 2,
+	"tags": ["Minion"],
+	"eventcode": "playMinion(OPPONENT){ Buff(ACTIVATOR, 'Depleted Soul', attack(0), health(-1) ); }"
+}

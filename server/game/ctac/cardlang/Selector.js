@@ -28,7 +28,7 @@ export default class Selector{
   }
 
   //select one or more pieces
-  selectPieces(controllingPlayerId, selector, triggeringPiece, targetPieceId){
+  selectPieces(controllingPlayerId, selector, activatingPiece, targetPieceId){
     //for now, only way to get a single piece from a selector is from random
     if(selector.random && selector.selector){
       let selection = this.selectPieces(controllingPlayerId, selector.selector);
@@ -40,7 +40,7 @@ export default class Selector{
     return new PieceSelector(
       this.pieceState.pieces,
       controllingPlayerId,
-      triggeringPiece,
+      activatingPiece,
       targetPieceId
     ).Select(selector);
   }

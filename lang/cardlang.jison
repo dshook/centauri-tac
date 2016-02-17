@@ -20,7 +20,7 @@
   return 'target'
 
 // neutral piece targets
-(TARGET|SELF)
+(TARGET|SELF|ACTIVATOR)
   return 'target'
 
 // selectors

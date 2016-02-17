@@ -29,14 +29,14 @@ export default class CardEvaluator{
   }
 
   //evaluate an event that directly relates to a piece, i.e. the piece dies
-  evaluatePieceEvent(event, triggeringPiece, targetPieceId){
-    this.log.info('Eval piece event %s triggering piece: %j', event, triggeringPiece);
+  evaluatePieceEvent(event, activatingPiece, targetPieceId){
+    this.log.info('Eval piece event %s activating piece: %j', event, activatingPiece);
     let evalActions = [];
 
     //in the pieces case, if this is a spawn piece event the evaluator has the chance to return false
-    //and scrub the spawn of the piece, so the triggering piece isn't in the piece state yet.
+    //and scrub the spawn of the piece, so the activating piece isn't in the piece state yet.
     //However, include it in the loop so its events will be evaluated
-    let pieces = new Set([...this.pieceState.pieces, triggeringPiece]);
+    let pieces = new Set([...this.pieceState.pieces, activatingPiece]);
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of pieces){
@@ -59,14 +59,14 @@ export default class CardEvaluator{
         //now find all pieces that match the selector given the context of the piece that the event is for
         let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, piece);
 
-        let selectorMatched = piecesSelected.indexOf(triggeringPiece) > -1;
+        let selectorMatched = piecesSelected.indexOf(activatingPiece) > -1;
 
-        //if the triggering piece is part of the selected pieces, add it to the list of actions
+        //if the activating piece is part of the selected pieces, add it to the list of actions
         if(selectorMatched){
           for(let cardEventAction of cardEvent.actions){
             evalActions.push({
               piece: piece,
-              playerId: triggeringPiece.playerId,
+              playerId: activatingPiece.playerId,
               action: cardEventAction
             });
           }
@@ -74,7 +74,7 @@ export default class CardEvaluator{
       }
     }
 
-    return this.processActions(evalActions, triggeringPiece, targetPieceId);
+    return this.processActions(evalActions, activatingPiece, targetPieceId);
 
   }
 
@@ -105,7 +105,7 @@ export default class CardEvaluator{
         //now find the player that matches the selector given the context of the piece that the event is for
         let playerSelected = this.selector.selectPlayer(piece.playerId, eventSelector);
 
-        //if the triggering piece is part of the selected pieces, add it to the list of actions
+        //if the activating piece is part of the selected pieces, add it to the list of actions
         if(playerSelected === playerId){
           for(let cardEventAction of cardEvent.actions){
             evalActions.push({
@@ -160,7 +160,7 @@ export default class CardEvaluator{
         //now find the player that matches the selector given the context of the piece that the event is for
         let playerSelected = this.selector.selectPlayer(piece.playerId, eventSelector);
 
-        //if the triggering piece is part of the selected pieces, add it to the list of actions
+        //if the activating piece is part of the selected pieces, add it to the list of actions
         if(playerSelected === playerId){
           for(let cardEventAction of cardEvent.actions){
             evalActions.push({
@@ -178,9 +178,9 @@ export default class CardEvaluator{
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
   // evalActions -> array of actions to be eval'd, with playerId's of the controlling player (current turn player)
-  // triggeringPiece -> optional piece that will be used for SELF selections
+  // activatingPiece -> optional piece that will be used for SELF selections
   // targetPieceId -> id of piece that's been targeted by spell/playMinion event
-  processActions(evalActions, triggeringPiece, targetPieceId){
+  processActions(evalActions, activatingPiece, targetPieceId){
     try{
       for(let pieceAction of evalActions){
         let action = pieceAction.action;
@@ -203,7 +203,7 @@ export default class CardEvaluator{
             }
             case 'Hit':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], activatingPiece, targetPieceId);
               this.log.info('Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -214,7 +214,7 @@ export default class CardEvaluator{
             }
             case 'Heal':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], activatingPiece, targetPieceId);
               this.log.info('Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -225,7 +225,7 @@ export default class CardEvaluator{
             }
             case 'SetAttribute':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], activatingPiece, targetPieceId);
               this.log.info('Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -241,7 +241,7 @@ export default class CardEvaluator{
             case 'Buff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], activatingPiece, targetPieceId);
               this.log.info('Selected %j', selected);
               let buffAttributes = action.args.slice(2);
 
@@ -272,7 +272,7 @@ export default class CardEvaluator{
 
 
   //proxy for the Selector select pieces function that ensures proper targeting
-  selectPieces(controllingPlayerId, selector, triggeringPiece, targetPieceId){
+  selectPieces(controllingPlayerId, selector, activatingPiece, targetPieceId){
     if(this.selector.doesSelectorUse(selector, 'TARGET')){
       //make sure that if it's a target card and there are available targets, one of them is picked
       var possibleTargets = this.selector.selectPossibleTargets(controllingPlayerId, selector);
@@ -281,7 +281,7 @@ export default class CardEvaluator{
       }
     }
 
-    return this.selector.selectPieces(controllingPlayerId, selector, triggeringPiece, targetPieceId);
+    return this.selector.selectPieces(controllingPlayerId, selector, activatingPiece, targetPieceId);
   }
 
   //look through the cards for any cards needing a TARGET

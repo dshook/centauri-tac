@@ -13,7 +13,7 @@
 
 ##Selectors
 * ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
-* target
+* ~~target~~
 * ~~self~~
 * ~~random enemy~~
 * ~~all minions~~

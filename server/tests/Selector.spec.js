@@ -19,8 +19,8 @@ var player1 = new Player(1);
 var player2 = new Player(2);
 var players = [player1, player2];
 
-//dummy triggering piece
-var triggeringPiece = new GamePiece();
+//dummy activating piece
+var activatingPiece = new GamePiece();
 
 //various setups for game state
 var pieceStateMix = new PieceState();
@@ -67,7 +67,7 @@ test('Select a piece', t => {
 
   for(let selectString of selectors){
     selectorTemplate.selector.left = selectString;
-    let selection = selector.selectPieces(1, selectorTemplate, triggeringPiece);
+    let selection = selector.selectPieces(1, selectorTemplate, activatingPiece);
     t.equal(selection.length, 1, 'Got a single piece back');
     t.ok(selection[0] instanceof GamePiece, 'Selection got a gamepiece back for ' + selectString);
   }
@@ -83,7 +83,7 @@ test('Random none selected', t => {
     }
   };
   let selector = new Selector(players, heroesOnly);
-  let selection = selector.selectPieces(1, selectorTemplate, triggeringPiece);
+  let selection = selector.selectPieces(1, selectorTemplate, activatingPiece);
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 0, 'Got nothing back');
 });
@@ -91,7 +91,7 @@ test('Random none selected', t => {
 test('Characters', t => {
   t.plan(3);
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, {left: 'CHARACTER' }, triggeringPiece);
+  let selection = selector.selectPieces(1, {left: 'CHARACTER' }, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all the pieces');
@@ -107,7 +107,7 @@ test('Friendly Characters Intersection', t => {
       right: 'CHARACTER'
     };
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, select, triggeringPiece);
+  let selection = selector.selectPieces(1, select, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 3, 'Got only friendly Pieces');
@@ -115,7 +115,7 @@ test('Friendly Characters Intersection', t => {
   t.equal(selection[0].playerId, 1, 'First piece is for the right player');
 
   let emptySelector = new Selector(players, noPieces);
-  let emptySelection = emptySelector.selectPieces(1, select, triggeringPiece);
+  let emptySelection = emptySelector.selectPieces(1, select, activatingPiece);
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
 });
@@ -129,7 +129,7 @@ test('Enemy Characters by Difference', t => {
       right: 'FRIENDLY'
     };
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, select, triggeringPiece);
+  let selection = selector.selectPieces(1, select, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 3, 'Got only enemy Pieces');
@@ -137,12 +137,12 @@ test('Enemy Characters by Difference', t => {
   t.equal(selection[0].playerId, 2, 'First piece is for the enemy player');
 
   let emptySelector = new Selector(players, noPieces);
-  let emptySelection = emptySelector.selectPieces(1, select, triggeringPiece);
+  let emptySelection = emptySelector.selectPieces(1, select, activatingPiece);
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
 
   let heroSelector = new Selector(players, heroesOnly);
-  let heroesSelection = heroSelector.selectPieces(1, select, triggeringPiece);
+  let heroesSelection = heroSelector.selectPieces(1, select, activatingPiece);
   t.equal(heroesSelection.length, 1, 'Selected 1 hero');
   t.equal(heroesSelection[0].tags[0], 'Hero', 'Selected piece is a hero');
   t.equal(heroesSelection[0].playerId, 2, 'Selected enemy hero');
@@ -157,7 +157,7 @@ test('Enemy Minions', t => {
       right: 'MINION'
     };
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, select, triggeringPiece);
+  let selection = selector.selectPieces(1, select, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 2, 'Got only enemy Pieces');
@@ -166,7 +166,7 @@ test('Enemy Minions', t => {
   t.equal(selection[0].tags[0], 'Minion', 'Selected piece is a minion');
 
   let emptySelector = new Selector(players, noPieces);
-  let emptySelection = emptySelector.selectPieces(1, select, triggeringPiece);
+  let emptySelection = emptySelector.selectPieces(1, select, activatingPiece);
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
 });
@@ -180,14 +180,14 @@ test('Peace treaty union', t => {
       right: 'FRIENDLY'
     };
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, select, triggeringPiece);
+  let selection = selector.selectPieces(1, select, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all pieces');
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
 
   let emptySelector = new Selector(players, noPieces);
-  let emptySelection = emptySelector.selectPieces(1, select, triggeringPiece);
+  let emptySelection = emptySelector.selectPieces(1, select, activatingPiece);
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
 });
@@ -205,7 +205,7 @@ test('Nested condition', t => {
       right: 'HERO'
     };
   let selector = new Selector(players, pieceStateMix);
-  let selection = selector.selectPieces(1, select, triggeringPiece);
+  let selection = selector.selectPieces(1, select, activatingPiece);
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 2, 'Got back friendly characters who arent a hero');
@@ -229,7 +229,7 @@ test('Self Selector', t => {
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 1, 'Got back just self');
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
-  t.equal(selection[0], triggerPiece, 'Selected piece is the triggering piece');
+  t.equal(selection[0], triggerPiece, 'Selected piece is the activating piece');
 
 });
 
