@@ -243,7 +243,7 @@ export default class CardEvaluator{
               let buffName = action.args[1];
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], triggeringPiece, targetPieceId);
               this.log.info('Selected %j', selected);
-              let buffAttributes = action.args.splice(2);
+              let buffAttributes = action.args.slice(2);
 
               if(selected && selected.length > 0){
                 for(let s of selected){

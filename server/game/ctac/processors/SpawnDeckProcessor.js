@@ -32,11 +32,11 @@ export default class SpawnDeckProcessor
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be half your deck
-    let testingCards = [21, 22];
+    let testingCards = [2, 3, 22];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
-      if(c % 4 == 0) randCardId = _.sample(testingCards);
+      if(c % 3 == 0) randCardId = _.sample(testingCards);
 
       let directoryCard = this.cardDirectory.directory[randCardId];
       //clone into new card
