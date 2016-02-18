@@ -8,12 +8,13 @@
 * ~~turn end~~
 * ~~turn start~~
 * ~~card drawn~~
-* spell played
+* ~~spell played~~
 * unit ability
 
 ##Selectors
 * ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
 * ~~target~~
+* ~~activator~~
 * ~~self~~
 * ~~random enemy~~
 * ~~all minions~~
@@ -30,8 +31,6 @@
 * square
 * line
 * diagonal
-* cone
-
 
 ##Randomness
 * ~~random number in list~~
@@ -47,10 +46,12 @@
 * ~~add buff~~
 * spawn minion
 * aura effects
+* move/push piece
 * give status effect (silence, shield)
 * Shuffle into deck
 * destroy target minion
 * copy minion (into hand or play)
+* move minion into play from deck
 * card cost modification
 * effect that lasts till end of turn
 * swap health and attack

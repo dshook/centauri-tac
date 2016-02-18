@@ -30,6 +30,15 @@ export default class SpawnPieceProcessor
 
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
+    //check if played in an unoccupied spot
+    let occupyingPiece = this.pieceState.pieceAt(action.position.x, action.position.z);
+    if(occupyingPiece){
+      //be sure to emit the cancel event so the client can respond
+      queue.cancel(action, true);
+      this.log.warn('Can\'t spawn piece %s at position %s because %j is occupying it',
+        cardPlayed.name, action.position, occupyingPiece);
+    }
+
     var newPiece = new GamePiece();
     //assign the next id to the piece before it's spawned so any actions can reference the piece
     newPiece.id = this.pieceState.nextId();

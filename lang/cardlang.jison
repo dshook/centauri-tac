@@ -31,7 +31,7 @@
   return 'random'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff)
+(DrawCard|SetAttribute|Hit|Heal|Buff|Spawn)
   return 'action'
 
 //attributes
