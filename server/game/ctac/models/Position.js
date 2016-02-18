@@ -20,7 +20,9 @@ export default class Position
   }
 
   equals(otherP){
-    return this.x === otherP.x && this.y === otherP.y && this.z === otherP.y;
+    return this.x === otherP.x
+        && this.y === otherP.y
+        && this.z === otherP.z;
   }
 
 }
