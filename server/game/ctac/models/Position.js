@@ -25,4 +25,19 @@ export default class Position
         && this.z === otherP.z;
   }
 
+  //ignore height here
+  tileEquals(otherP){
+    return this.x === otherP.x
+        && this.z === otherP.z;
+  }
+
+  addX(amt){
+    return new Position(this.x + amt, this.y, this.z);
+  }
+  addY(amt){
+    return new Position(this.x, this.y + amt, this.z);
+  }
+  addZ(amt){
+    return new Position(this.x, this.y, this.z + amt);
+  }
 }

@@ -30,8 +30,12 @@ export default class MapState
     }
   }
 
+  getTile(position){
+    return this.tiles.find(t => t.position.tileEquals(position));
+  }
+
   tileDistance(posA, posB){
-    return Math.abs(posA.x - posB.x) + Math.abs(posA.y - posB.y);
+    return Math.abs(posA.x - posB.x) + Math.abs(posA.z - posB.z);
   }
 
   kingDistance(posA, posB){
@@ -39,6 +43,69 @@ export default class MapState
       Math.abs(posA.x - posB.x),
       Math.abs(posA.z - posB.z)
     );
+  }
+
+  //returns [] of positions for circle around center
+  getTilesInRadius(center: Position, distance: number)
+  {
+    var ret = [];
+    var frontier = [];
+
+    var realCenter = this.getTile(center);
+    if(!realCenter) return [];
+
+    frontier.push(realCenter.position);
+
+    while (frontier.length > 0)
+    {
+      //pop the first item off
+      var current = frontier.splice(0, 1)[0];
+
+      if (!ret.find(r => r === current))
+      {
+        ret.push(current);
+      }
+
+      var neighbors = this.getNeighbors(current);
+      for (let neighbor of neighbors)
+      {
+        //add the neighbor to explore if it's not already being returned
+        //or in the queue or too far away
+        if (
+          !ret.find(r => r === neighbor)
+          && !frontier.find(r => r === neighbor)
+          && this.tileDistance(neighbor, center) <= distance
+        )
+        {
+          frontier.push(neighbor);
+        }
+      }
+    }
+
+    return ret;
+  }
+
+  getNeighbors(center: Position)
+  {
+    var ret = [];
+    var neighborTile = null;
+    var toCheck = [
+        center.addX(1),
+        center.addX(-1),
+        center.addZ(1),
+        center.addZ(-1)
+    ];
+
+    for(let currentDirection of toCheck)
+    {
+      //check it's not off the map
+      neighborTile = this.getTile(currentDirection);
+      if (neighborTile != null)
+      {
+        ret.push(neighborTile.position);
+      }
+    }
+    return ret;
   }
 
 }
