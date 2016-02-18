@@ -31,6 +31,8 @@ export default class SpawnPieceProcessor
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
     var newPiece = new GamePiece();
+    //assign the next id to the piece before it's spawned so any actions can reference the piece
+    newPiece.id = this.pieceState.nextId();
     newPiece.position = action.position;
     newPiece.playerId = action.playerId;
     newPiece.name = cardPlayed.name;

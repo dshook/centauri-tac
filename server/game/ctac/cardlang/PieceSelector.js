@@ -3,7 +3,15 @@ import _ from 'lodash';
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
   constructor(pieces, controllingPlayerId, selfPiece, activatingPiece, targetPieceId){
-    this.allPieces = pieces;
+    //Include the activating piece in all pieces if it isn't there
+    //This comes into affect when activating a piece that's not part of the pieces state yet
+    //but should be evaluated as such
+    if(activatingPiece){
+      this.allPieces = Array.from(new Set([...pieces, activatingPiece]));
+    }else{
+      this.allPieces = pieces;
+    }
+
     this.controllingPlayerId = controllingPlayerId;
     this.selfPiece = selfPiece;
     this.activatingPiece = activatingPiece;

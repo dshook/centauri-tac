@@ -10,10 +10,13 @@ export default class PieceState
     this.pieces = [];
   }
 
+  nextId(){
+    return this.pieces.length == 0 ? 1 :
+      _.max(this.pieces, x => x.id).id + 1;
+  }
+
   add(newPiece){
-    let nextId = this.pieces.length == 0 ? 1 :
-       _.max(this.pieces, x => x.id).id + 1;
-    newPiece.id = nextId;
+    newPiece.id = this.nextId();
 
     this.pieces.push(newPiece);
 

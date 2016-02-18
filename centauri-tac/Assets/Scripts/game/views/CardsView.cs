@@ -156,13 +156,14 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
-            public float? postDelay { get { return 0.8f; } }
+            public float? postDelay { get { return 0.5f; } }
 
             public CardDrawShownSignal cardDrawn { get; set; }
             public CardModel card { get; set; }
             public bool isOpponentCard { get; set; }
 
-            private float animTime = 1.0f;
+            //dev speed
+            private float animTime = 0.5f;
             private Vector3 opponentDest = new Vector3(0, 150, 50);
 
             public void Update()
@@ -170,7 +171,7 @@ namespace ctac {
                 Vector3 dest = Vector3.zero;
                 if (isOpponentCard)
                 {
-                    animTime = 0.5f;
+                    animTime = 0.3f;
                     dest = opponentDest;
                     iTweenExtensions.RotateTo(card.gameObject, new Vector3(0, 180f, 0), animTime, 0, EaseType.easeOutCubic);
                 }
