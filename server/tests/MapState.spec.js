@@ -9,7 +9,6 @@ function positionSort(a, b) {
 }
 
 function positionArrayEquals(a, b){
-  console.log(a, b);
   if(a.length != b.length) return false;
 
   a.sort(positionSort);

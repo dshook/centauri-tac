@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
+import Position from '../models/Position.js';
 import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
+import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 
 /**
@@ -197,12 +199,14 @@ export default class CardEvaluator{
 
         for (var t = 0; t < times; t++) {
           switch(action.action){
+            //DrawCard(playerSelector)
             case 'DrawCard':
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
               this.queue.push(new DrawCard(playerSelector));
               break;
             }
+            //Hit(pieceSelector, damageAmount)
             case 'Hit':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
@@ -214,6 +218,7 @@ export default class CardEvaluator{
               }
               break;
             }
+            //Heal(pieceSelector, healAmount)
             case 'Heal':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
@@ -225,6 +230,7 @@ export default class CardEvaluator{
               }
               break;
             }
+            //SetAttribute(pieceSelector, attribute, value)
             case 'SetAttribute':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
@@ -240,6 +246,7 @@ export default class CardEvaluator{
 
               break;
             }
+            //Buff(pieceSelector, buffName, attribute(amount), ...moreAttributes)
             case 'Buff':
             {
               let buffName = action.args[1];
@@ -257,6 +264,17 @@ export default class CardEvaluator{
                   this.queue.push(buff);
                 }
               }
+              break;
+            }
+            //Spawn(pieceId, kingsRadiusToSpawnIn)
+            //Spawn a unit based on where the activating piece is located.  So if the kings radius is 1
+            //spawn it right where the piece was (after it died presumably).  If it's 2, pick a random position
+            //from any of the surrounding tiles
+            case 'Spawn':
+            {
+              let position = new Position();
+              let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
+
               break;
             }
           }
