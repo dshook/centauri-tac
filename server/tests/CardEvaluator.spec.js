@@ -5,10 +5,14 @@ import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
 import CardState from '../game/ctac/models/CardState.js';
 import Card from '../game/ctac/models/Card.js';
+import Position from '../game/ctac/models/Position.js';
+import MapState from '../game/ctac/models/MapState.js';
+import cubeland from '../../maps/cubeland.json';
 import DrawCard from '../game/ctac/actions/DrawCard.js';
 import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
+import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
 import ActionQueue from 'action-queue';
 import requireDir from 'require-dir';
@@ -58,6 +62,8 @@ var player1 = new Player(1);
 var player2 = new Player(2);
 var players = [player1, player2];
 
+var mapState = new MapState();
+mapState.add(cubeland);
 
 test('Basic Draw card', t => {
   let pieceStateMix = new PieceState();
@@ -71,7 +77,7 @@ test('Basic Draw card', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let testBot = spawnPiece(pieceStateMix, 3, 1, false);
   t.ok(testBot, 'Found test bot');
@@ -95,7 +101,7 @@ test('Basic Hit action', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let testBot = spawnPiece(pieceStateMix, 9, 1, true);
   t.ok(testBot, 'Found writhing bunch');
@@ -118,7 +124,7 @@ test('Damaged with selector', t => {
 
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceState);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceState);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceState, mapState);
 
   let friendlyHero = pieceState.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 1);
   t.ok(friendlyHero, 'Found friendly hero');
@@ -144,7 +150,7 @@ test('Set attribute', t => {
   t.plan(3);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let platypus = spawnPiece(pieceStateMix, 10, 1, true);
   t.ok(platypus, 'Found platypus');
@@ -168,7 +174,7 @@ test('Heal on damaged', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let synth = pieceStateMix.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 11);
   t.ok(synth, 'Found synth');
@@ -193,7 +199,7 @@ test('Attacks event', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let spore = pieceStateMix.pieces.find(p => p.playerId == 1 && p.cardTemplateId == 13);
   t.ok(spore, 'Found spore');
@@ -220,7 +226,7 @@ test('Card drawn player event', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   cardEval.evaluatePlayerEvent('cardDrawn', 1);
 
@@ -242,7 +248,7 @@ test('Spell played event', t => {
   t.plan(3);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let cardPlayed = cardDirectory.directory[16];
 
@@ -263,7 +269,7 @@ test('Targeting minions', t => {
   t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let testBot = spawnPiece(pieceStateMix, 17, 1, true);
 
@@ -285,7 +291,7 @@ test('Targeting invalid', t => {
   t.plan(3);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let testBot = spawnPiece(pieceStateMix, 19, 1, true);
 
@@ -319,7 +325,7 @@ test('Find Possible targets', t => {
   t.plan(2);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let targets = cardEval.findPossibleTargets(cardState.hands[1], 1);
   //expecting enemy characters
@@ -337,4 +343,27 @@ test('Find Possible targets', t => {
     {cardId: 7, event: 'playMinion', targetPieceIds: [2, 4]}
   ];
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Player 2 targets are minions');
+});
+
+test('Spawn a piece', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 9, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+  spawnPiece(pieceStateMix, 3, 2);
+
+  t.plan(2);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
+
+  let testBot = spawnPiece(pieceStateMix, 25, 1, false);
+  testBot.position = new Position(1,0,1);
+
+  cardEval.evaluatePieceEvent('death', testBot);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof SpawnPiece, 'First action is Draw Card');
 });

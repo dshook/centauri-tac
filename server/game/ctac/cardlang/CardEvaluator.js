@@ -13,11 +13,12 @@ import PieceBuff from '../actions/PieceBuff.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, selector, cardDirectory, pieceState){
+  constructor(queue, selector, cardDirectory, pieceState, mapState){
     this.queue = queue;
     this.selector = selector;
     this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
+    this.mapState = mapState;
     this.log.info('piece state %j', pieceState);
 
     this.eventDefaultSelectors = {
@@ -272,8 +273,14 @@ export default class CardEvaluator{
             //from any of the surrounding tiles
             case 'Spawn':
             {
-              let position = new Position();
-              let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
+              let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
+              if(possiblePositions.length > 0){
+                let position = _.sample(possiblePositions);
+                let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
+                this.queue.push(spawn);
+              }else{
+                this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
+              }
 
               break;
             }

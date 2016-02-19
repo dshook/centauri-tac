@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 25,
+	"name": "Impulse Guard",
+	"description": "<b>Death</b>: Spawn a zombie",
+	"cost": 3,
+	"attack": 4,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "death{ Spawn(8, 0); }"
+}

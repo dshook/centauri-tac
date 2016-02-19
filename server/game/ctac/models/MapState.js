@@ -45,8 +45,16 @@ export default class MapState
     );
   }
 
+  getKingTilesInRadius(center: Position, distance: number){
+    return this.getTilesInRadiusGeneric(center, distance, this.getKingNeighbors.bind(this), this.kingDistance);
+  }
+
+  getTilesInRadius(center: Position, distance: number){
+    return this.getTilesInRadiusGeneric(center, distance, this.getNeighbors.bind(this), this.tileDistance);
+  }
+
   //returns [] of positions for circle around center
-  getTilesInRadius(center: Position, distance: number)
+  getTilesInRadiusGeneric(center: Position, distance: number, neighborsFunc, distanceFunc)
   {
     var ret = [];
     var frontier = [];
@@ -66,7 +74,7 @@ export default class MapState
         ret.push(current);
       }
 
-      var neighbors = this.getNeighbors(current);
+      var neighbors = neighborsFunc(current);
       for (let neighbor of neighbors)
       {
         //add the neighbor to explore if it's not already being returned
@@ -74,7 +82,7 @@ export default class MapState
         if (
           !ret.find(r => r === neighbor)
           && !frontier.find(r => r === neighbor)
-          && this.tileDistance(neighbor, center) <= distance
+          && distanceFunc(neighbor, center) <= distance
         )
         {
           frontier.push(neighbor);
@@ -94,6 +102,34 @@ export default class MapState
         center.addX(-1),
         center.addZ(1),
         center.addZ(-1)
+    ];
+
+    for(let currentDirection of toCheck)
+    {
+      //check it's not off the map
+      neighborTile = this.getTile(currentDirection);
+      if (neighborTile != null)
+      {
+        ret.push(neighborTile.position);
+      }
+    }
+    return ret;
+  }
+
+  getKingNeighbors(center: Position)
+  {
+    var ret = [];
+    var neighborTile = null;
+    var toCheck = [
+        center.addX(1),
+        center.addX(-1),
+        center.addZ(1),
+        center.addZ(-1),
+
+        center.add(-1, 0, -1),
+        center.add(-1, 0, 1),
+        center.add(1, 0, -1),
+        center.add(1, 0, 1),
     ];
 
     for(let currentDirection of toCheck)

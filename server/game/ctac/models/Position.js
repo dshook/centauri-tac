@@ -31,6 +31,10 @@ export default class Position
         && this.z === otherP.z;
   }
 
+  add(x, y, z){
+    return new Position(this.x + x, this.y + y, this.z + z);
+  }
+
   addX(amt){
     return new Position(this.x + amt, this.y, this.z);
   }
