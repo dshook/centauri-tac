@@ -37,6 +37,7 @@ export default class SpawnPieceProcessor
       queue.cancel(action, true);
       this.log.warn('Can\'t spawn piece %s at position %s because %j is occupying it',
         cardPlayed.name, action.position, occupyingPiece);
+      return;
     }
 
     var newPiece = new GamePiece();
@@ -63,6 +64,7 @@ export default class SpawnPieceProcessor
         if(!playedCard){
           this.log.error('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
           queue.cancel(action, true);
+          return;
         }
       }
 

@@ -186,6 +186,9 @@ export default class CardEvaluator{
   // targetPieceId -> id of piece that's been targeted by spell/playMinion event
   processActions(evalActions, activatingPiece, targetPieceId){
     try{
+      //see Spawn
+      let spawnLocations = [];
+
       for(let pieceAction of evalActions){
         let action = pieceAction.action;
         let piece = pieceAction.piece;
@@ -268,14 +271,19 @@ export default class CardEvaluator{
               break;
             }
             //Spawn(pieceId, kingsRadiusToSpawnIn)
-            //Spawn a unit based on where the activating piece is located.  So if the kings radius is 1
-            //spawn it right where the piece was (after it died presumably).  If it's 2, pick a random position
+            //Spawn a unit based on where the activating piece is located.  So if the kings radius is 0
+            //spawn it right where the piece was (after it died presumably).  If it's 1, pick a random position
             //from any of the surrounding tiles
+            //Also check to make sure it's a valid spawn location and another loop hasn't spawned at the same location
             case 'Spawn':
             {
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
+              possiblePositions = _.chain(possiblePositions)
+                .filter(p => !this.pieceState.pieceAt(p.x, p.z) && !spawnLocations.find(s => s.equals(p)))
+                .value();
               if(possiblePositions.length > 0){
                 let position = _.sample(possiblePositions);
+                spawnLocations.push(position);
                 let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
                 this.queue.push(spawn);
               }else{

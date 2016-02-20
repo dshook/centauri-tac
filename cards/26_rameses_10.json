@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 26,
+	"name": "Rameses 10",
+	"description": "<b>Death</b>: Spawn 3 zombies",
+	"cost": 4,
+	"attack": 1,
+	"health": 1,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "death{ Spawn(8, 1) * 3; }"
+}
