@@ -65,11 +65,11 @@ namespace ctac
             //set up display
             try
             {
-                var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.cardTemplateId);
+                //var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.cardTemplateId);
 
-                var animator = newPiece.GetComponentInChildren<Animator>();
-                animator.runtimeAnimatorController = animationController;
-                animator.Play("Idle");
+                //var animator = newPiece.GetComponentInChildren<Animator>();
+                //animator.runtimeAnimatorController = animationController;
+                //animator.Play("Idle");
 
             }
             catch (Exception ex)

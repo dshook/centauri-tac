@@ -28,7 +28,7 @@ namespace ctac {
         };
         public bool targetCandidate = false;
 
-        private SpriteRenderer spriteRenderer;
+        //private SpriteRenderer spriteRenderer;
         private Material spriteDefault;
         private Material moveOutline;
         private Material attackOutline;
@@ -50,8 +50,8 @@ namespace ctac {
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
 
-            spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
-            spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
+            //spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
+            //spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
             moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
             attackOutline = Resources.Load("Materials/AttackOutlineMat") as Material;
             targetOutline = Resources.Load("Materials/TargetOutlineMat") as Material;
@@ -79,18 +79,18 @@ namespace ctac {
 
             if (targetCandidate)
             {
-                spriteRenderer.material = targetOutline;
+                //spriteRenderer.material = targetOutline;
             }
             else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasMoved)
             {
-                spriteRenderer.material = moveOutline;
+                //spriteRenderer.material = moveOutline;
             }
             else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
-                spriteRenderer.material = attackOutline;
+                //spriteRenderer.material = attackOutline;
             }
             else
             {
-                spriteRenderer.material = spriteDefault;
+                //spriteRenderer.material = spriteDefault;
             }
         }
 
