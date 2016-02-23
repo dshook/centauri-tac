@@ -1,5 +1,6 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using UnityEngine;
 
 namespace ctac
 {
@@ -59,6 +60,14 @@ namespace ctac
             if (pieceMoved.piece != view.piece) return;
 
             animationQueue.Add(
+                new PieceView.RotateAnim()
+                {
+                    piece = view,
+                    destAngle = DirectionAngle.angle[pieceMoved.direction]
+                }
+            );
+
+            animationQueue.Add(
                 new PieceView.MoveAnim()
                 {
                     piece = view.piece,
@@ -70,7 +79,7 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
-            //TODO: Add moving animation
+            //TODO: Add animation
         }
 
         public void onHealthChange(PieceHealthChangeModel hpChange)

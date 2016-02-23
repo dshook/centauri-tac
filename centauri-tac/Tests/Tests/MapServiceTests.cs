@@ -127,7 +127,7 @@ namespace Tests
             return new PieceModel()
             {
                 currentPlayerHasControl = currentPlayerHasControl,
-                mockPosition = position,
+                tilePosition = position,
             };
         }
     }

@@ -22,6 +22,7 @@ namespace ctac {
         public GameObject circleBg;
         public GameObject deathIcon;
         public GameObject eventIcon;
+        public GameObject model;
         //list of event tags to show icon on minion for 
         private static List<string> eventTags = new List<string>() {
             "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
@@ -29,7 +30,7 @@ namespace ctac {
         public bool targetCandidate = false;
 
         //private SpriteRenderer spriteRenderer;
-        private Material spriteDefault;
+        //private Material spriteDefault;
         private Material moveOutline;
         private Material attackOutline;
         private Material targetOutline;
@@ -38,6 +39,7 @@ namespace ctac {
 
         protected override void Start()
         {
+            model = piece.gameObject.transform.FindChild("Model").gameObject;
             attackGO = piece.gameObject.transform.FindChild("Attack").gameObject;
             healthGO = piece.gameObject.transform.FindChild("Health").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
@@ -98,6 +100,29 @@ namespace ctac {
         {
             currentTurnPlayerId = newPlayerId;
         }
+
+        public class RotateAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+            public Vector3 destAngle { get; set; }
+            private float rotateSpeed = 0.3f;
+
+            public void Update()
+            {
+                iTweenExtensions.RotateTo(piece.model.gameObject, destAngle, rotateSpeed, 0f);
+
+                if (Vector3.Distance(piece.model.gameObject.transform.rotation.eulerAngles, destAngle) < 0.01)
+                {
+                    piece.model.gameObject.transform.rotation = Quaternion.Euler(destAngle);
+                    Complete = true;
+                }
+            }
+        }
+
 
         public class MoveAnim : IAnimate
         {

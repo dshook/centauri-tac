@@ -25,16 +25,10 @@ namespace ctac
 
         public List<string> tags { get; set; }
 
-        /// <summary>
-        /// Only should be used in testing, otherwise the gameobject position has authority
-        /// </summary>
-        public Vector2? mockPosition { get; set; }
-        public Vector2 tilePosition {
-            get
-            {
-                return mockPosition ?? gameObject.transform.position.ToTileCoordinates();
-            }
-        }
+        public Direction direction { get; set; }
+
+        //canonical game stat position of where the unit is
+        public Vector2 tilePosition { get; set; }
 
         public int attack { get; set; }
         public int health { get; set; }
@@ -46,4 +40,5 @@ namespace ctac
 
         public List<PieceBuffModel> buffs { get; set; }
     }
+
 }

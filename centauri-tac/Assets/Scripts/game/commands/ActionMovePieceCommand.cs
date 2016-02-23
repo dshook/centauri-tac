@@ -1,6 +1,7 @@
 using strange.extensions.command.impl;
 using ctac.signals;
 using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
@@ -32,12 +33,36 @@ namespace ctac
             if (!processedActions.Verify(movePiece.id)) return;
 
             var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == movePiece.pieceId);
-            var toTile = map.tiles[movePiece.to.Vector3.ToTileCoordinates()];
+            var toTileCoords = movePiece.to.Vector3.ToTileCoordinates();
+            Vector2 difference = toTileCoords - piece.tilePosition;
+            var toTile = map.tiles[toTileCoords];
+            piece.tilePosition = toTileCoords;
+
+            Direction targetDirection = Direction.South;
+            //determine direction piece should be facing to see if rotation is necessary
+            if (difference.x > 0)
+            {
+                targetDirection = Direction.East;
+            }
+            else if (difference.x < 0)
+            {
+                targetDirection = Direction.West;
+            }
+            else if (difference.y > 0)
+            {
+                targetDirection = Direction.North;
+            }
+            else if (difference.y < 0)
+            {
+                targetDirection = Direction.South;
+            }
 
             pieceMove.Dispatch(new PieceMovedModel()
             {
                 piece = piece,
-                to = toTile
+                to = toTile,
+                change = difference,
+                direction = targetDirection
             });
 
             debug.Log( string.Format("Moved piece {0} to {1}", movePiece.pieceId, movePiece.to) , socketKey );

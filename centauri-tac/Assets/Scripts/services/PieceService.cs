@@ -91,6 +91,8 @@ namespace ctac
                 health = cardTemplate.health,
                 baseAttack = cardTemplate.attack,
                 baseHealth = cardTemplate.health,
+                tilePosition = spawnPosition.ToTileCoordinates(),
+                direction = Direction.South,
                 movement = cardTemplate.movement,
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),
