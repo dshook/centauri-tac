@@ -1,4 +1,5 @@
 import Position from '../models/Position.js';
+import Direction from '../models/Direction.js';
 /**
  * Spawn a piece for a player
  */
@@ -11,6 +12,9 @@ export default class SpawnPiece
     this.playerId = playerId;
     this.position = new Position(position.x, position.y, position.z);
     this.targetPieceId = targetPieceId;
+
+    //default to spawn south for now
+    this.direction = Direction.East;
 
     this.pieceId = null;
     this.tags = null;

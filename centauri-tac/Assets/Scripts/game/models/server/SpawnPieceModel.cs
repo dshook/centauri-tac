@@ -10,6 +10,7 @@ namespace ctac
         public int cardTemplateId { get; set; }
         public int playerId { get; set; }
         public PositionModel position { get; set; }
+        public Direction direction { get; set; }
 
         public List<string> tags { get; set; }
     }

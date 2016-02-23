@@ -73,6 +73,8 @@ namespace ctac {
                 circleBg.SetActive(true);
                 eventIcon.SetActive(true);
             }
+            //rotate to model direction
+            model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
         }
 
         void Update()

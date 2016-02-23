@@ -92,7 +92,7 @@ namespace ctac
                 baseAttack = cardTemplate.attack,
                 baseHealth = cardTemplate.health,
                 tilePosition = spawnPosition.ToTileCoordinates(),
-                direction = Direction.South,
+                direction = spawnedPiece.direction,
                 movement = cardTemplate.movement,
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),

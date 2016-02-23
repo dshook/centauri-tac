@@ -126,10 +126,10 @@ export default class MapState
         center.addZ(1),
         center.addZ(-1),
 
-        center.add(-1, 0, -1),
-        center.add(-1, 0, 1),
-        center.add(1, 0, -1),
-        center.add(1, 0, 1),
+        center.addXYZ(-1, 0, -1),
+        center.addXYZ(-1, 0, 1),
+        center.addXYZ(1, 0, -1),
+        center.addXYZ(1, 0, 1),
     ];
 
     for(let currentDirection of toCheck)

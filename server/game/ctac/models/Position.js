@@ -31,7 +31,15 @@ export default class Position
         && this.z === otherP.z;
   }
 
-  add(x, y, z){
+  add(otherP){
+    return new Position(this.x + otherP.x, this.y + otherP.y, this.z + otherP.z);
+  }
+
+  sub(otherP){
+    return new Position(this.x - otherP.x, this.y - otherP.y, this.z - otherP.z);
+  }
+
+  addXYZ(x, y, z){
     return new Position(this.x + x, this.y + y, this.z + z);
   }
 

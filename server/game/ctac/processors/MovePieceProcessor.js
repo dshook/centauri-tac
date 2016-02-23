@@ -1,4 +1,5 @@
 import GamePiece from '../models/GamePiece.js';
+import Direction from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
 import loglevel from 'loglevel-decorator';
 
@@ -44,6 +45,27 @@ export default class MovePieceProcessor
       }
     }
 
+    let difference = action.to.sub(piece.position);
+    let targetDirection = Direction.South;
+    //determine direction piece should be facing to see if rotation is necessary
+    if (difference.x > 0)
+    {
+      targetDirection = Direction.East;
+    }
+    else if (difference.x < 0)
+    {
+      targetDirection = Direction.West;
+    }
+    else if (difference.z > 0)
+    {
+      targetDirection = Direction.North;
+    }
+    else if (difference.z < 0)
+    {
+      targetDirection = Direction.South;
+    }
+
+    action.direction = targetDirection;
     var currentPosition = piece.position;
     piece.position = action.to;
 

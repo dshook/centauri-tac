@@ -1,4 +1,5 @@
 import Position from './Position.js';
+import Direction from './Direction.js';
 
 export default class GamePiece
 {
@@ -9,6 +10,7 @@ export default class GamePiece
     this.name = null;
     this.playerId = null;
     this.position = new Position();
+    this.direction = Direction.South;
     this.attack = null;
     this.baseAttack = null;
     this.health = null;
