@@ -14,7 +14,7 @@ export default class SpawnPiece
     this.targetPieceId = targetPieceId;
 
     //default to spawn south for now
-    this.direction = Direction.East;
+    this.direction = Direction.South;
 
     this.pieceId = null;
     this.tags = null;

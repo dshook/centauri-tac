@@ -38,25 +38,6 @@ namespace ctac
             var toTile = map.tiles[toTileCoords];
             piece.tilePosition = toTileCoords;
 
-            Direction targetDirection = Direction.South;
-            //determine direction piece should be facing to see if rotation is necessary
-            if (difference.x > 0)
-            {
-                targetDirection = Direction.East;
-            }
-            else if (difference.x < 0)
-            {
-                targetDirection = Direction.West;
-            }
-            else if (difference.y > 0)
-            {
-                targetDirection = Direction.North;
-            }
-            else if (difference.y < 0)
-            {
-                targetDirection = Direction.South;
-            }
-
             pieceMove.Dispatch(new PieceMovedModel()
             {
                 piece = piece,

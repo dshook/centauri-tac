@@ -1,6 +1,7 @@
 import GamePiece from '../models/GamePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
+import {directionOf, faceDirection} from '../models/Direction.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -40,8 +41,19 @@ export default class AttackPieceProcessor
       queue.cancel(action);
     }
 
+    //determine direction piece should be facing to see if rotation is necessary
+    let targetDirection = faceDirection(target.position, attacker.position);
+    action.direction = targetDirection;
+
+    let facingDirection = directionOf(targetDirection, target.direction);
+
+    let finalAttack = attacker.attack;
+    if(facingDirection == 'behind'){
+      finalAttack++;
+    }
+
     queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
-    queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack));
+    queue.push(new PieceHealthChange(action.targetPieceId, -finalAttack));
 
     this.cardEvaluator.evaluatePieceEvent('attacks', attacker);
 

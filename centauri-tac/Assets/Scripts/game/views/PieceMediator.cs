@@ -79,7 +79,16 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
-            //TODO: Add animation
+            if(attackPiece.attackingPieceId != view.piece.id) return;
+
+            //TODO: Add more animation
+            animationQueue.Add(
+                new PieceView.RotateAnim()
+                {
+                    piece = view,
+                    destAngle = DirectionAngle.angle[attackPiece.direction]
+                }
+            );
         }
 
         public void onHealthChange(PieceHealthChangeModel hpChange)

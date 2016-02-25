@@ -1,5 +1,4 @@
 import Position from '../models/Position.js';
-import Direction from '../models/Direction.js';
 /**
  * Action that attemps to move a game piece one step
  */
