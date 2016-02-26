@@ -17,6 +17,7 @@ namespace ctac {
         public TextMeshPro healthText;
         public GameObject damageSplat;
         public TextMeshPro damageSplatText;
+        public TextMeshPro damageSplatBonusText;
 
         public GameObject eventIconContainer;
         public GameObject circleBg;
@@ -45,7 +46,8 @@ namespace ctac {
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
             damageSplat = piece.gameObject.transform.FindChild("DamageSplat").gameObject;
-            damageSplatText = damageSplat.GetComponentInChildren<TextMeshPro>();
+            damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
+            damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
 
             eventIconContainer = piece.gameObject.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -157,13 +159,24 @@ namespace ctac {
 
             public GameObject damageSplat { get; set; }
             public TextMeshPro text { get; set; }
+            public TextMeshPro bonusText { get; set; }
             public int damageTaken { get; set; }
+            public int? bonus { get; set; }
+            public string bonusMsg { get; set; }
 
             public void Update()
             {
                 text.text = Math.Abs(damageTaken).ToString();
                 iTweenExtensions.ScaleTo(damageSplat, Vector3.one, 0.5f, 0);
                 iTweenExtensions.ScaleTo(damageSplat, Vector3.zero, 0.8f, 1);
+                if (bonus.HasValue)
+                {
+                    bonusText.text = Math.Abs(bonus.Value).ToString() + " " + bonusMsg;
+                }
+                else
+                {
+                    bonusText.text = "";
+                }
                 Complete = true;
             }
         }

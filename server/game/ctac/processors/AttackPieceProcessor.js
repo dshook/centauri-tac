@@ -47,13 +47,15 @@ export default class AttackPieceProcessor
 
     let facingDirection = directionOf(targetDirection, target.direction);
 
-    let finalAttack = attacker.attack;
+    let bonus = 0;
+    let bonusMsg = null;
     if(facingDirection == 'behind'){
-      finalAttack++;
+      bonus = -1;
+      bonusMsg = 'Backstab';
     }
 
     queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
-    queue.push(new PieceHealthChange(action.targetPieceId, -finalAttack));
+    queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
 
     this.cardEvaluator.evaluatePieceEvent('attacks', attacker);
 

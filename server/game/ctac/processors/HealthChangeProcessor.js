@@ -34,7 +34,7 @@ export default class HealthChangeProcessor
     }
 
     let hpBeforeChange = piece.health;
-    piece.health = piece.health + action.change;
+    piece.health = piece.health + action.change + (action.bonus || 0);
 
     //cap hp at base health and adjust action change amounts
     if(piece.health > piece.baseHealth){

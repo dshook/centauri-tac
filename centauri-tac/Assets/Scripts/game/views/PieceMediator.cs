@@ -103,6 +103,9 @@ namespace ctac
                     new PieceView.TakeDamageAnim()
                     {
                         text = view.damageSplatText,
+                        bonusText = view.damageSplatBonusText,
+                        bonus = hpChange.bonus,
+                        bonusMsg = hpChange.bonusMsg,
                         damageSplat = view.damageSplat,
                         damageTaken = hpChange.change
                     }
