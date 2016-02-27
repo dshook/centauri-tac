@@ -1,28 +1,15 @@
 fileFormatVersion: 2
 guid: bb32d652a7ee86d42b732b3d94b51aad
-timeCreated: 1456087159
+timeCreated: 1456545412
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Camera
-    100004: Cube
-    100006: Lamp
-    100008: Man
     400000: //RootNode
-    400002: Camera
-    400004: Cube
-    400006: Lamp
-    400008: Man
-    2300000: Cube
-    2300002: //RootNode
-    2300004: Man
-    3300000: Cube
-    3300002: //RootNode
-    3300004: Man
-    4300000: Cube
-    4300002: Man
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Man
   materials:
     importMaterials: 1
     materialName: 0
@@ -63,9 +50,9 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
+    normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 0
+    tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
