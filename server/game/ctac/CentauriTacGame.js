@@ -6,6 +6,7 @@ import SpawnPiece from './actions/SpawnPiece.js';
 import DrawCard from './actions/DrawCard.js';
 import SpawnDeck from './actions/SpawnDeck.js';
 import Position from './models/Position.js';
+import Direction from './models/Direction.js';
 import _ from 'lodash';
 
 /**
@@ -60,12 +61,12 @@ export default class CentauriTacGame
         }
       }
 
-      // spawn game pieces
+      // spawn game pieces for two players
       var heroUnit = this.cardDirectory.getByTag('Hero')[0];
-      for(let i = 0; i < this.players.length; i++){
-        this.queue.push(new SpawnPiece(this.players[i].id, null, heroUnit.cardTemplateId, new Position(i * 2 + 2, 0, i * 2 + 2)));
+      if(this.players.length === 2){
+        this.queue.push(new SpawnPiece(this.players[0].id, null, heroUnit.cardTemplateId, new Position(2, 0, 4), null, Direction.South));
+        this.queue.push(new SpawnPiece(this.players[1].id, null, heroUnit.cardTemplateId, new Position(5, 0, 2), null, Direction.West));
       }
-
 
       await this.queue.processUntilDone();
 
