@@ -69,10 +69,8 @@ namespace ctac
             view.onCardHovered(card);
         }
 
-        private CardModel lastActivatedCard = null;
         private void onCardActivated(ActivateModel act)
         {
-            lastActivatedCard = act.cardActivated;
         }
 
         private void onDestroyCard(int cardId)

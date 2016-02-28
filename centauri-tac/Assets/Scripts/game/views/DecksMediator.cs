@@ -22,8 +22,6 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
-        private List<int> playersInitted = new List<int>();
-
         public override void OnRegister()
         {
             turnEnded.AddListener(onTurnEnded);

@@ -30,11 +30,8 @@ namespace ctac {
         };
         public bool targetCandidate = false;
 
-        //private SpriteRenderer spriteRenderer;
-        //private Material spriteDefault;
-        private Material moveOutline;
-        private Material attackOutline;
-        private Material targetOutline;
+        private MeshRenderer meshRenderer;
+        private float outlineWidth = 3f;
 
         private int currentTurnPlayerId;
 
@@ -54,11 +51,7 @@ namespace ctac {
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
 
-            //spriteRenderer = piece.gameObject.GetComponentInChildren<SpriteRenderer>();
-            //spriteDefault = Resources.Load("Materials/SpriteDefault") as Material;
-            moveOutline = Resources.Load("Materials/MoveOutlineMat") as Material;
-            attackOutline = Resources.Load("Materials/AttackOutlineMat") as Material;
-            targetOutline = Resources.Load("Materials/TargetOutlineMat") as Material;
+            meshRenderer = piece.gameObject.transform.FindChild("Model").GetComponentInChildren<MeshRenderer>();
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -85,18 +78,22 @@ namespace ctac {
 
             if (targetCandidate)
             {
-                //spriteRenderer.material = targetOutline;
+                meshRenderer.material.SetColor("_OutlineColor", Color.magenta);
+                meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasMoved)
             {
-                //spriteRenderer.material = moveOutline;
+                meshRenderer.material.SetColor("_OutlineColor", Color.green);
+                meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
-                //spriteRenderer.material = attackOutline;
+                meshRenderer.material.SetColor("_OutlineColor", Color.cyan);
+                meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else
             {
-                //spriteRenderer.material = spriteDefault;
+                meshRenderer.material.SetColor("_OutlineColor", Color.black);
+                meshRenderer.material.SetFloat("_Outline", 0.5f);
             }
         }
 
