@@ -3,6 +3,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
 using System;
 using strange.extensions.signal.impl;
+using System.Collections;
 
 namespace ctac
 {
@@ -43,24 +44,39 @@ namespace ctac
             UpdateDragging();
         }
 
+        Vector3 rotateWorldPosition = Vector3.zero;
         private void RotateCamera(bool rotateLeft)
         {
             if(rotateTimer < 1f) return;
 
             rotateTimer = 0f;
-            //find what we're looking at
-            Ray camRay = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            RaycastHit objectHit;
-            Vector3 rotateWorldPosition = Vector3.zero;
-            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
-            {
-                rotateWorldPosition = objectHit.transform.position;
-            }
+
+            //find the point the camera is looking at on an imaginary plane at 0f height
+            LinePlaneIntersection(out rotateWorldPosition, Camera.main.transform.position, Camera.main.transform.forward, Vector3.up, Vector3.zero);
 
             //then rotate around it
-            Camera.main.transform.RotateAround(rotateWorldPosition, Vector3.up, rotateLeft ? -90 : 90);
+            var destCameraAngle = rotateLeft ? Camera.main.transform.rotation.y + -90 : Camera.main.transform.rotation.y + 90;
 
-            CameraRotated.Dispatch(Camera.main.transform.eulerAngles.y);
+            StartCoroutine(RotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.8f));
+        }
+
+        public IEnumerator RotateCamera(Vector3 point, Vector3 axis, float angle, float time)
+        {
+            var step = 0.0f; //non-smoothed
+            var rate = 1.0f / time; //amount to increase non-smooth step by
+            var smoothStep = 0.0f; //smooth step this time
+            var lastStep = 0.0f; //smooth step last time
+            while (step < 1.0)
+            { // until we're done
+                step += Time.deltaTime * rate; //increase the step
+                smoothStep = Mathf.SmoothStep(0.0f, 1.0f, step); //get the smooth step
+                Camera.main.transform.RotateAround(point, axis, angle * (smoothStep - lastStep));
+                lastStep = smoothStep; //store the smooth step
+                yield return null;
+            }
+            //finish any left-over
+            if (step > 1.0)
+                Camera.main.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
         }
 
         private void UpdateDragging()
@@ -112,6 +128,52 @@ namespace ctac
         internal void onCardSelected(bool selected)
         {
             cardSelected = selected;
+        }
+
+        //Get the intersection between a line and a plane. 
+        //If the line and plane are not parallel, the function outputs true, otherwise false.
+        public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)
+        {
+
+            float length;
+            float dotNumerator;
+            float dotDenominator;
+            Vector3 vector;
+            intersection = Vector3.zero;
+
+            //calculate the distance between the linePoint and the line-plane intersection point
+            dotNumerator = Vector3.Dot((planePoint - linePoint), planeNormal);
+            dotDenominator = Vector3.Dot(lineVec, planeNormal);
+
+            //line and plane are not parallel
+            if (dotDenominator != 0.0f)
+            {
+                length = dotNumerator / dotDenominator;
+
+                //create a vector from the linePoint to the intersection point
+                vector = SetVectorLength(lineVec, length);
+
+                //get the coordinates of the line-plane intersection point
+                intersection = linePoint + vector;
+
+                return true;
+            }
+
+            //output not valid
+            else
+            {
+                return false;
+            }
+        }
+
+        //create a vector of direction "vector" with length "size"
+        public static Vector3 SetVectorLength(Vector3 vector, float size)
+        {
+            //normalize the vector
+            Vector3 vectorNormalized = Vector3.Normalize(vector);
+
+            //scale the vector
+            return vectorNormalized *= size;
         }
     }
 }
