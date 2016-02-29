@@ -9,7 +9,6 @@ namespace ctac
 {
     public class CameraMovementView : View
     {
-        public Signal<float> CameraRotated = new Signal<float>();
         private Vector3 dragOrigin;
         private Vector3 camOrigin;
 

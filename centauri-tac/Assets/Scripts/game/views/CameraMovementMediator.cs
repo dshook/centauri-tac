@@ -30,7 +30,6 @@ namespace ctac
             startTarget.AddListener(onStartTarget);
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
-            view.CameraRotated.AddListener(onCameraRotate);
         }
 
         public override void onRemove()
@@ -40,7 +39,6 @@ namespace ctac
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
-            view.CameraRotated.RemoveListener(onCameraRotate);
         }
 
         private void onCardSelected(CardModel card)
@@ -59,17 +57,6 @@ namespace ctac
         private void onCancelTarget(CardModel c)
         {
             view.onCardSelected(false);
-        }
-
-        private void onCameraRotate(float newRotation)
-        {
-            //gotta rotate all the pieces round for now
-            foreach (var piece in pieces.Pieces)
-            {
-                var curRot = piece.gameObject.transform.rotation.eulerAngles;
-                var newQuaternion = Quaternion.Euler(curRot.x, newRotation - 45, curRot.z);
-                piece.gameObject.transform.rotation = newQuaternion;
-            }
         }
     }
 }

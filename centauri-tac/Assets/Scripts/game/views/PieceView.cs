@@ -24,6 +24,7 @@ namespace ctac {
         public GameObject deathIcon;
         public GameObject eventIcon;
         public GameObject model;
+        private GameObject textContainer;
         //list of event tags to show icon on minion for 
         private static List<string> eventTags = new List<string>() {
             "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
@@ -38,8 +39,9 @@ namespace ctac {
         protected override void Start()
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
-            attackGO = piece.gameObject.transform.FindChild("Attack").gameObject;
-            healthGO = piece.gameObject.transform.FindChild("Health").gameObject;
+            textContainer = piece.gameObject.transform.FindChild("TextContainer").gameObject;
+            attackGO = textContainer.transform.FindChild("Attack").gameObject;
+            healthGO = textContainer.transform.FindChild("Health").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
             damageSplat = piece.gameObject.transform.FindChild("DamageSplat").gameObject;
@@ -51,7 +53,7 @@ namespace ctac {
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
 
-            meshRenderer = piece.gameObject.transform.FindChild("Model").GetComponentInChildren<MeshRenderer>();
+            meshRenderer = model.GetComponentInChildren<MeshRenderer>();
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -75,6 +77,8 @@ namespace ctac {
         void Update()
         {
             if(piece == null) return;
+
+            textContainer.transform.rotation = Camera.main.transform.rotation;
 
             if (targetCandidate)
             {
