@@ -56,8 +56,8 @@ namespace ctac
                     };
                 mapModel.tiles.Add(position, newTile );
 
-                newTileGO.AddComponent<TileHighlightColor>();
-                newTileGO.GetComponent<TileHighlightColor>().tile = newTile;
+                newTileGO.AddComponent<TileView>();
+                newTileGO.GetComponent<TileView>().tile = newTile;
             }
 
             mapCreated.Dispatch();

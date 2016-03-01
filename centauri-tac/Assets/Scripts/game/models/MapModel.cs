@@ -28,6 +28,7 @@ namespace ctac
         public Vector3 fullPosition { get; set; }
         public GameObject gameObject { get; set; }
         public TileHighlightStatus highlightStatus;
+        public bool showPieceRotation { get; set; }
     }
 
     [Flags]

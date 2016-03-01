@@ -1,7 +1,6 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
-using ctac.signals;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Collections.Generic;
 
@@ -100,12 +99,14 @@ namespace ctac
             if (selectedTile != null)
             {
                 FlagsHelper.Unset(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
+                selectedTile.showPieceRotation = false;
             }
 
             selectedTile = newTile;
             if (selectedTile != null)
             {
                 FlagsHelper.Set(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
+                selectedTile.showPieceRotation = true;
             }
         }
 
