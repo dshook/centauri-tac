@@ -1,13 +1,19 @@
+import _ from 'lodash';
+
 //gross
 import Enum from '../../../../lib/enum';
 
 var Direction = Enum({
   North: 1,
-  East: 2,
+  East : 2,
   South: 3,
-  West: 4
+  West : 4
 });
 export default Direction;
+
+export function fromInt(value){
+  return (_.invert(Direction))[value];
+}
 
 export function directionOf(dir1, dir2){
   var diff = dir2 - dir1;

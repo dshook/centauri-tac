@@ -6,32 +6,22 @@ namespace ctac
 {
     public class ClickMediator : Mediator
     {
-        [Inject]
-        public ClickView view { get; set; }
+        [Inject] public ClickView view { get; set; }
 
-        [Inject]
-        public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
 
-        [Inject]
-        public AttackPieceSignal attackPiece { get; set; }
+        [Inject] public AttackPieceSignal attackPiece { get; set; }
+        [Inject] public MovePieceSignal movePiece { get; set; }
+        [Inject] public RotatePieceSignal rotatePiece { get; set; }
 
-        [Inject]
-        public MovePieceSignal movePiece { get; set; }
+        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+        [Inject] public SelectTargetSignal selectTarget { get; set; }
 
-        [Inject]
-        public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public GameTurnModel turns { get; set; }
 
-        [Inject]
-        public CancelSelectTargetSignal cancelSelectTarget { get; set; }
-
-        [Inject]
-        public SelectTargetSignal selectTarget { get; set; }
-
-        [Inject]
-        public MapModel map { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
@@ -79,6 +69,26 @@ namespace ctac
                         }
                     }
                     return;
+                }
+
+                //selected should never be null but check anyways
+                if (selectedPiece != null && selectedPiece.playerId == turns.currentPlayerId) {
+                    if (clickedObject.CompareTag("RotateSouth"))
+                    {
+                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
+                    }
+                    if (clickedObject.CompareTag("RotateWest"))
+                    {
+                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
+                    }
+                    if (clickedObject.CompareTag("RotateNorth"))
+                    {
+                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
+                    }
+                    if (clickedObject.CompareTag("RotateEast"))
+                    {
+                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
+                    }
                 }
 
                 if (clickedObject.CompareTag("Tile"))

@@ -10,6 +10,7 @@ namespace ctac
 
         [Inject] public PieceMovedSignal pieceMoved { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
+        [Inject] public PieceRotatedSignal pieceRotated { get; set; }
 
         [Inject] public PieceHealthChangedSignal pieceHpChanged { get; set; }
         [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
@@ -31,6 +32,7 @@ namespace ctac
         {
             pieceMoved.AddListener(onMove);
             pieceAttacked.AddListener(onAttacked);
+            pieceRotated.AddListener(onRotated);
             pieceHpChanged.AddListener(onHealthChange);
             pieceAttrChanged.AddListener(onAttrChange);
             pieceBuffed.AddListener(onBuffed);
@@ -45,6 +47,7 @@ namespace ctac
         {
             pieceMoved.RemoveListener(onMove);
             pieceAttacked.RemoveListener(onAttacked);
+            pieceRotated.RemoveListener(onRotated);
             pieceHpChanged.RemoveListener(onHealthChange);
             pieceAttrChanged.RemoveListener(onAttrChange);
             pieceBuffed.RemoveListener(onBuffed);
@@ -87,6 +90,20 @@ namespace ctac
                 {
                     piece = view,
                     destAngle = DirectionAngle.angle[attackPiece.direction]
+                }
+            );
+        }
+
+        public void onRotated(RotatePieceModel rotatePiece)
+        {
+            if(rotatePiece.pieceId != view.piece.id) return;
+
+            //TODO: Add more animation
+            animationQueue.Add(
+                new PieceView.RotateAnim()
+                {
+                    piece = view,
+                    destAngle = DirectionAngle.angle[rotatePiece.direction]
                 }
             );
         }

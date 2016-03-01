@@ -4,6 +4,7 @@ import PassTurn from '../actions/PassTurn.js';
 import MovePiece from '../actions/MovePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import ActivateCard from '../actions/ActivateCard.js';
+import RotatePiece from '../actions/RotatePiece.js';
 
 /**
  * Deals with handling turn stuff and processing the action queue. "low level"
@@ -103,6 +104,16 @@ export default class GameController
     let {playerId, cardInstanceId, position, targetPieceId} = data;
 
     this.queue.push(new ActivateCard(playerId, cardInstanceId, position, targetPieceId));
+
+    this.queue.processUntilDone();
+  }
+
+  @on('playerCommand', x => x === 'rotate')
+  activateCard(command, data)
+  {
+    let {pieceId, direction} = data;
+
+    this.queue.push(new RotatePiece(pieceId, direction));
 
     this.queue.processUntilDone();
   }
