@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "play{ Buff(FRIENDLY & MINION & BASIC, 'Sublime satisfaction', attack(1), health(1) ); }"
+	"eventcode": "playMinion{ Buff(FRIENDLY & MINION & BASIC, 'Sublime satisfaction', attack(1), health(1) ); }"
 }
