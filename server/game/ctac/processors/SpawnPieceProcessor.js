@@ -53,6 +53,7 @@ export default class SpawnPieceProcessor
     newPiece.baseHealth = cardPlayed.health;
     newPiece.movement = cardPlayed.movement;
     newPiece.baseMovement = cardPlayed.movement;
+    newPiece.baseTags = cardPlayed.tags;
     newPiece.tags = cardPlayed.tags;
 
     if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId)){

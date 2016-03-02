@@ -32,10 +32,16 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.playerId != this.controllingPlayerId);
           break;
         case 'MINION':
-          return this.allPieces.filter(p => p.tags.indexOf('Minion') >= 0);
+          return this.allPieces.filter(p => p.tags.includes('Minion'));
           break;
         case 'HERO':
-          return this.allPieces.filter(p => p.tags.indexOf('Hero') >= 0);
+          return this.allPieces.filter(p => p.tags.includes('Hero'));
+          break;
+        case 'BASIC':
+          return this.allPieces.filter(p =>
+            p.baseTags.length === 1 &&
+            (p.baseTags.includes('Hero') || p.baseTags.includes('Minion'))
+          );
           break;
         case 'DAMAGED':
           return this.allPieces.filter(p => p.health < p.baseHealth);

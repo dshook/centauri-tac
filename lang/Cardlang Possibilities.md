@@ -21,8 +21,9 @@
 * ~~event selectors~~
 * ~~friendly/enemy~~
 * ~~damaged~~
+* ~~damaged~~
 
-* tags (battlecry, damaged, paralyzed, etc)
+* tags (battlecry, paralyzed, etc)
 * zones (play, deck, hand, secret, graveyard)
 * cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
 

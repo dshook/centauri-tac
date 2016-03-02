@@ -24,7 +24,7 @@
   return 'target'
 
 // selectors
-(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED)
+(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC)
   return 'target'
 
 (Random)
