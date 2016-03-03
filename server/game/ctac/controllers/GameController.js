@@ -109,10 +109,9 @@ export default class GameController
   }
 
   @on('playerCommand', x => x === 'rotate')
-  activateCard(command, data)
+  rotatePiece(command, data)
   {
     let {pieceId, direction} = data;
-
     this.queue.push(new RotatePiece(pieceId, direction));
 
     this.queue.processUntilDone();
