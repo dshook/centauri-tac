@@ -235,21 +235,24 @@ namespace ctac
         {
             var ret = GetNeighbors(center);
 
-            return ret
-                .Where(t => 
-                    //this clause makes sure not to consider tiles that would be where the moving pieces lands when it attacks
-                    (
-                        dest == null 
-                        || dest.position == t.Key 
-                        || (TileDistance(t.Key, dest.position) > 1 
-                        || !pieces.Pieces.Any(p => p.tilePosition == t.Key && !p.currentPlayerHasControl ) ) 
-                    )
-                    && !pieces.Pieces.Any(m => 
-                        (dest == null || dest.position != m.tilePosition ) 
-                        && !m.currentPlayerHasControl 
-                        && m.tilePosition == t.Key
-                    )
-                ).ToDictionary(k => k.Key, v => v.Value);
+            //filter out tiles with enemies on them that aren't the destination
+            ret = ret.Where(t => 
+                (dest == null || t.Key == dest.position) || 
+                !pieces.Pieces.Any(m => m.tilePosition == t.Key && !m.currentPlayerHasControl)
+            ).ToDictionary(k => k.Key, v => v.Value);
+
+            bool destinationOccupied = dest != null && pieces.Pieces.Any(p => p.tilePosition == dest.position);
+            
+            //make sure not to consider tiles that would be where the moving pieces lands when it attacks
+            ret = ret.Where(t => 
+                dest == null
+                || dest.position == t.Key
+                || !destinationOccupied
+                || TileDistance(t.Key, dest.position) > 1
+                || !pieces.Pieces.Any(p => p.tilePosition == t.Key)
+            ).ToDictionary(k => k.Key, v => v.Value);
+
+            return ret;
         }
 
     }

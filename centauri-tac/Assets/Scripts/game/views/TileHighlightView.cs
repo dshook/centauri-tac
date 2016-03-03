@@ -18,7 +18,7 @@ namespace ctac
         List<Tile> pathTiles = null;
 
         bool active = false;
-        float rayFrequency = 0.1f;
+        float rayFrequency = 0.05f;
         float timer = 0f;
         int tileMask = 0;
 
