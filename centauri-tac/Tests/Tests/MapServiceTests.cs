@@ -59,24 +59,27 @@ namespace Tests
             {
                 Pieces = new List<PieceModel>()
                 {
-                    MockPiece(new Vector2(1, 2), true),
-                    MockPiece(new Vector2(3, 2), false)
+                    MockPiece(new Vector2(1, 2), false),
+                    MockPiece(new Vector2(2, 3), true),
+                    MockPiece(new Vector2(3, 2), true),
+                    MockPiece(new Vector2(4, 2), true),
+                    MockPiece(new Vector2(5, 2), false)
                 }
             };
 
             var start = mapService.mapModel.tiles[new Vector2(2,2)];
 
             //test to walk around enemy
-            var enemyEnd = mapService.mapModel.tiles[new Vector2(4,2)];
+            var enemyEnd = mapService.mapModel.tiles[new Vector2(0,2)];
 
             var enemyPath = mapService.FindPath(start, enemyEnd, 4);
             var expectedEnemyPath = new List<Vector2>()
             {
                 new Vector2(2, 2),
                 new Vector2(2, 3),
-                new Vector2(3, 3),
-                new Vector2(4, 3),
-                new Vector2(4, 2),
+                new Vector2(1, 3),
+                new Vector2(0, 3),
+                new Vector2(0, 2),
             };
 
             CollectionAssert.AreEqual(
@@ -86,18 +89,36 @@ namespace Tests
 
 
             //test to walk through friendly
-            var end = mapService.mapModel.tiles[new Vector2(0,2)];
+            var end = mapService.mapModel.tiles[new Vector2(2,4)];
             var tilePath = mapService.FindPath(start, end, 2);
             var expectedTiles = new List<Vector2>()
             {
                 new Vector2(2, 2),
-                new Vector2(1, 2),
-                new Vector2(0, 2),
+                new Vector2(2, 3),
+                new Vector2(2, 4)
             };
 
             CollectionAssert.AreEqual(
                 tilePath.Select(t => t.position).ToList(), 
                 expectedTiles
+            );
+
+            //test to attack enemy but not land on a friendly
+            var passThroughEnd = mapService.mapModel.tiles[new Vector2(5,2)];
+            var passTilePath = mapService.FindPath(start, passThroughEnd, 6);
+            var passExpectedTiles = new List<Vector2>()
+            {
+                new Vector2(2, 2),
+                new Vector2(3, 2),
+                new Vector2(3, 3),
+                new Vector2(4, 3),
+                new Vector2(5, 3),
+                new Vector2(5, 2)
+            };
+
+            CollectionAssert.AreEqual(
+                passTilePath.Select(t => t.position).ToList(), 
+                passExpectedTiles
             );
 
         }
