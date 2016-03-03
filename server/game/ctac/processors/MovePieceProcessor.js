@@ -27,8 +27,7 @@ export default class MovePieceProcessor
     var piece = this.pieceState.piece(action.pieceId);
     if(!piece){
       this.log.warn('Could not find piece %s to move %j', action.pieceId, this.pieceState);
-      queue.cancel(action);
-      return;
+      return queue.cancel(action);
     }
 
     //check to make sure that the piece isn't moving on top of another piece
@@ -37,12 +36,12 @@ export default class MovePieceProcessor
     if(occupyingPieces.length > 0){
       if(occupyingPieces.length > 1) throw 'Multiple pieces already occupying position';
       let otherPiece = occupyingPieces[0];
-      let upcomingQueue = queue.peek(1);
-      let nextActionIsNotMove = upcomingQueue.length < 1 || !(upcomingQueue[0] instanceof MovePiece);
+      //peek two because the current action hasn't been completed yet
+      let upcomingQueue = queue.peek(2);
+      let nextActionIsNotMove = upcomingQueue.length < 1 || !(upcomingQueue[1] instanceof MovePiece);
       if(otherPiece.playerId != piece.playerId || nextActionIsNotMove){
         this.log.warn('Cannot move piece %j on top of %j', piece, otherPiece);
-        queue.cancel(action);
-        return;
+        return queue.cancel(action);
       }
     }
 

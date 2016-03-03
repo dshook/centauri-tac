@@ -29,8 +29,7 @@ export default class TurnProcessor
       const toOkay = this.players.some(x => x.id === action.to);
 
       if (!fromOkay || !toOkay) {
-        queue.cancel(action);
-        return;
+        return queue.cancel(action);
       }
     }
 

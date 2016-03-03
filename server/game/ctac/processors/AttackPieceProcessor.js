@@ -31,14 +31,13 @@ export default class AttackPieceProcessor
 
     if(!attacker || !target ){
       this.log.warn('Attacker or target not found in attack %j', this.pieceState);
-      queue.cancel(action);
-      return;
+      return queue.cancel(action);
     }
 
     let targetDistance = this.mapState.tileDistance(attacker.position, target.position);
     if(targetDistance > 1){
       this.log.warn('Attacker too far away from target %s', targetDistance);
-      queue.cancel(action);
+      return queue.cancel(action);
     }
 
     //determine direction piece should be facing to see if rotation is necessary

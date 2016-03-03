@@ -35,17 +35,15 @@ export default class ActivateCardProcessor
     if(!cardPlayed){
       this.log.warn('Cannot find card %s in player %s\'s hand'
         , action.cardInstanceId, action.player);
-      queue.cancel(action);
-      return;
+      return queue.cancel(action);
     }
 
     //check to see if they have enough energy to play
     if(cardPlayed.cost > this.playerResourceState.get(action.playerId)){
       this.log.warn('Not enough resources for player %s to play card %s'
         , action.playerId, cardPlayed.id);
-      queue.cancel(action);
       queue.push(new Message('You don\'t have enough energy to play that card!'));
-      return;
+      return queue.cancel(action);
     }
 
     //check to make sure the card was played in a valid spot
@@ -55,9 +53,8 @@ export default class ActivateCardProcessor
       if(kingDist > 1){
         this.log.warn('Cannot play minion that far away, dist %s'
           , kingDist);
-        queue.cancel(action);
         queue.push(new Message('You must play your minions close to your hero!'));
-        return;
+        return queue.cancel(action);
       }
     }
 
@@ -65,9 +62,8 @@ export default class ActivateCardProcessor
     let cardWasInHand = this.cardState.validateInHand(action.playerId, action.cardInstanceId);
     if(!cardWasInHand){
       this.log.warn('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
-      queue.cancel(action);
       queue.push(new Message('Cards must be in your hand to play them!'));
-      return;
+      return queue.cancel(action);
     }
 
     if(cardPlayed.hasTag('Minion')){

@@ -28,8 +28,7 @@ export default class CardDrawProcessor
     if(playerDeck.length == 0){
       this.log.warn('No cards to draw for player %s', action.playerId);
       //TODO: better handling of out of cards
-      queue.cancel(action);
-      return;
+      return queue.cancel(action);
     }
 
     let cardDrawn = this.cardState.drawCard(action.playerId);

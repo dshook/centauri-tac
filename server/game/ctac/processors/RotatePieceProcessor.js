@@ -27,8 +27,7 @@ export default class RotatePieceProcessor
     var piece = this.pieceState.piece(action.pieceId);
     if(!piece){
       this.log.warn('Could not find piece %s to rotate %j', action.pieceId, this.pieceState);
-      queue.cancel(action);
-      return;
+      return queue.cancel(action);
     }
 
     piece.direction = action.direction;
