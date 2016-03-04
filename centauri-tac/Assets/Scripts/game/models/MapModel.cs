@@ -39,7 +39,9 @@ namespace ctac
         Selected = 2,
         Movable = 4,
         PathFind = 8,
-        Attack = 16
+        Attack = 16,
+        MoveRange = 32,
+        AttackRange = 64
     }
 }
 

@@ -8,7 +8,9 @@ namespace ctac {
         public Color pathFindTint = new Color(.3f, .3f, .3f, .3f);
         public Color selectColor = new Color(.4f, .9f, .4f);
         public Color moveColor = new Color(.4f, .4f, .9f);
+        public Color moveRangeColor = new Color(.6f, .6f, 1f);
         public Color attackColor = new Color(.9f, .4f, .4f);
+        public Color attackRangeColor = new Color(1f, .6f, .6f);
 
         private MeshRenderer meshRenderer = null;
         private GameObject arrows = null;
@@ -51,10 +53,17 @@ namespace ctac {
             {
                 meshRenderer.material.SetColor("_HighlightColor", selectColor - tint);
             }
-
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
             {
                 meshRenderer.material.SetColor("_HighlightColor", moveColor - tint);
+            }
+            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.MoveRange))
+            {
+                meshRenderer.material.SetColor("_HighlightColor", moveRangeColor - tint);
+            }
+            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
+            {
+                meshRenderer.material.SetColor("_HighlightColor", attackRangeColor - tint);
             }
 
             if (tile.highlightStatus == TileHighlightStatus.None)

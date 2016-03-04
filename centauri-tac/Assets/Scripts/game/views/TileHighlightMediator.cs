@@ -21,6 +21,9 @@ namespace ctac
         public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject]
+        public PieceHoverSignal pieceHoveredSignal { get; set; }
+
+        [Inject]
         public PieceDiedSignal pieceDied { get; set; }
 
         [Inject]
@@ -40,6 +43,7 @@ namespace ctac
             cardSelected.AddListener(onCardSelected);
             pieceSelected.AddListener(onPieceSelected);
             pieceDied.AddListener(onPieceDied);
+            pieceHoveredSignal.AddListener(onPieceHover);
             view.init();
         }
 
@@ -47,6 +51,7 @@ namespace ctac
         {
             pieceSelected.RemoveListener(onPieceSelected);
             cardSelected.RemoveListener(onCardSelected);
+            pieceHoveredSignal.RemoveListener(onPieceHover);
             pieceDied.RemoveListener(onPieceDied);
         }
 
@@ -136,6 +141,21 @@ namespace ctac
             if (selectedPiece != null && piece.id == selectedPiece.id)
             {
                 selectedPiece = null;
+            }
+        }
+
+        private void onPieceHover(PieceModel piece)
+        {
+            if (piece != null)
+            {
+                var moveTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement);
+                //take out the central one
+                moveTiles.Remove(piece.tilePosition);
+                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
+            }
+            else
+            {
+                view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
             }
         }
     }

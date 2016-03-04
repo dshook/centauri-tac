@@ -74,6 +74,60 @@ namespace ctac
             }
         }
 
+        internal void onAttackTile(Tile newTile)
+        {
+            if (attackTile != null)
+            {
+                FlagsHelper.Unset(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
+            }
+
+            attackTile = newTile;
+            if (attackTile != null)
+            {
+                FlagsHelper.Set(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
+            }
+        }
+
+        internal void onTileSelected(Tile newTile)
+        {
+            if (selectedTile != null)
+            {
+                FlagsHelper.Unset(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
+                selectedTile.showPieceRotation = false;
+            }
+
+            selectedTile = newTile;
+            if (selectedTile != null)
+            {
+                FlagsHelper.Set(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
+                selectedTile.showPieceRotation = true;
+            }
+        }
+
+        private Dictionary<TileHighlightStatus, List<Tile>> tileStatuses = new Dictionary<TileHighlightStatus, List<Tile>>();
+        internal void toggleTileFlags(List<Tile> tiles, TileHighlightStatus status)
+        {
+            List<Tile> toggledTiles;
+            
+            if (tileStatuses.TryGetValue(status, out toggledTiles) && toggledTiles != null && toggledTiles.Count > 0)
+            {
+                foreach (var tile in toggledTiles)
+                {
+                    FlagsHelper.Unset(ref tile.highlightStatus, status);
+                }
+            }
+
+            tileStatuses[status] = tiles;
+            if (tiles != null)
+            {
+                foreach (var tile in tiles)
+                {
+                    FlagsHelper.Set(ref tile.highlightStatus, status);
+                }
+            }
+        }
+
+
         internal void onTileMovePath(List<Tile> tiles)
         {
             if (pathTiles != null && pathTiles.Count > 0)
@@ -94,21 +148,6 @@ namespace ctac
             }
         }
 
-        internal void onTileSelected(Tile newTile)
-        {
-            if (selectedTile != null)
-            {
-                FlagsHelper.Unset(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
-                selectedTile.showPieceRotation = false;
-            }
-
-            selectedTile = newTile;
-            if (selectedTile != null)
-            {
-                FlagsHelper.Set(ref selectedTile.highlightStatus, TileHighlightStatus.Selected);
-                selectedTile.showPieceRotation = true;
-            }
-        }
 
         internal void onTilesSelected(List<Tile> tiles)
         {
@@ -150,19 +189,6 @@ namespace ctac
             }
         }
 
-        internal void onAttackTile(Tile newTile)
-        {
-            if (attackTile != null)
-            {
-                FlagsHelper.Unset(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
-            }
-
-            attackTile = newTile;
-            if (attackTile != null)
-            {
-                FlagsHelper.Set(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
-            }
-        }
     }
 }
 
