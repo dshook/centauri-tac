@@ -69,7 +69,7 @@ namespace ctac
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
                 var path = mapService.FindPath(gameTile, tile, selectedPiece.movement);
-                view.onTileMovePath(path);
+                view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
                 if (
                     pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl)
@@ -85,7 +85,7 @@ namespace ctac
             }
             else
             {
-                view.onTileMovePath(null);
+                view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                 view.onAttackTile(null);
             }
         }
@@ -105,14 +105,14 @@ namespace ctac
                     var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement);
                     //take out the central one
                     moveTiles.Remove(gameTile.position);
-                    view.onMovableTiles(moveTiles);
+                    view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable);
                 }
             }
             else
             {
                 this.selectedPiece = null;
                 view.onTileSelected(null);
-                view.onMovableTiles(null);
+                view.toggleTileFlags(null, TileHighlightStatus.Movable);
             }
         }
 
@@ -120,7 +120,7 @@ namespace ctac
         {
             if (card == null)
             {
-                view.onTilesSelected(null);
+                view.toggleTileFlags(null, TileHighlightStatus.Selected);
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace ctac
                     && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
                 )
                 .ToList();
-            view.onTilesSelected(playableTiles);
+            view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected);
         }
 
         private void onPieceDied(PieceModel piece)

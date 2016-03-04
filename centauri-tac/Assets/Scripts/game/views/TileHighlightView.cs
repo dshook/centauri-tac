@@ -13,9 +13,6 @@ namespace ctac
         Tile hoveredTile = null;
         Tile selectedTile = null;
         Tile attackTile = null;
-        Dictionary<Vector2, Tile> moveTiles = null;
-        List<Tile> selectedTiles = null;
-        List<Tile> pathTiles = null;
 
         bool active = false;
         float rayFrequency = 0.05f;
@@ -126,69 +123,6 @@ namespace ctac
                 }
             }
         }
-
-
-        internal void onTileMovePath(List<Tile> tiles)
-        {
-            if (pathTiles != null && pathTiles.Count > 0)
-            {
-                foreach (var tile in pathTiles)
-                {
-                    FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.PathFind);
-                }
-            }
-
-            pathTiles = tiles;
-            if (tiles != null)
-            {
-                foreach (var tile in tiles)
-                {
-                    FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.PathFind);
-                }
-            }
-        }
-
-
-        internal void onTilesSelected(List<Tile> tiles)
-        {
-            if (selectedTiles != null && selectedTiles.Count > 0)
-            {
-                foreach (var tile in selectedTiles)
-                {
-                    FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.Selected);
-                }
-            }
-
-            selectedTiles = tiles;
-            if (tiles != null)
-            {
-                foreach (var tile in tiles)
-                {
-                    FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.Selected);
-                }
-            }
-        }
-
-        internal void onMovableTiles(Dictionary<Vector2, Tile> tiles)
-        {
-            if (moveTiles != null && moveTiles.Count > 0)
-            {
-                foreach (var tile in moveTiles)
-                {
-                    FlagsHelper.Unset(ref tile.Value.highlightStatus, TileHighlightStatus.Movable);
-                }
-            }
-
-            moveTiles = tiles;
-            if (tiles != null)
-            {
-                foreach (var tile in tiles)
-                {
-                    FlagsHelper.Set(ref tile.Value.highlightStatus, TileHighlightStatus.Movable);
-                }
-            }
-        }
-
     }
 }
 
