@@ -148,14 +148,29 @@ namespace ctac
         {
             if (piece != null)
             {
-                var moveTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement);
+                //TODO: better guess at attack range
+                var attackTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement + 1).Values.ToList();
+                var moveTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement).Values.ToList();
+                //find diff to get just attack tiles
+                attackTiles = attackTiles.Except(moveTiles).ToList();
+
                 //take out the central one
-                moveTiles.Remove(piece.tilePosition);
-                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
+                var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
+                moveTiles.Remove(center);
+                view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange);
+                if (piece.attack > 0)
+                {
+                    view.toggleTileFlags(attackTiles, TileHighlightStatus.AttackRange);
+                }
+                else
+                {
+                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                }
             }
             else
             {
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
+                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
             }
         }
     }
