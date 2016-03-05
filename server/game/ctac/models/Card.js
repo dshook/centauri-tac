@@ -10,6 +10,7 @@ export default class Card
     this.health = null;
     this.movement = null;
     this.tags = [];
+    this.statuses = [];
   }
 
   hasTag(tag){

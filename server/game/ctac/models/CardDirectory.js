@@ -1,5 +1,6 @@
 import Card from './Card.js';
 import CardLang from '../../../../lang/cardlang.js';
+import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
@@ -23,7 +24,10 @@ export default class CardDirectory
   add(card){
     var c = new Card();
     //copy props over to proper object
-    for(var k in card) c[k]=card[k];
+    for(var k in card) c[k] = card[k];
+
+    //set up statuses to be from model
+    c.statuses = _.map(c.statuses, status => Statuses[status]);
 
     if(card.eventcode){
       try{
