@@ -20,5 +20,6 @@ export default class GamePiece
     this.baseTags = [];
     this.tags = [];
     this.buffs = [];
+    this.statuses = [];
   }
 }
