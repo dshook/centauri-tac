@@ -9,7 +9,7 @@
 * ~~turn start~~
 * ~~card drawn~~
 * ~~spell played~~
-* unit ability
+* unit ability (may require n turns to charge)
 
 ##Selectors
 * ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
@@ -48,8 +48,9 @@
 * ~~spawn minion~~
 * aura effects
 * move/push piece
-* give status effect (silence, shield)
+* give status effect (silence, shield, paralyze, (taunt), cloak, tech resist, bind)
 * Shuffle into deck
+* take control of minion
 * destroy target minion
 * copy minion (into hand or play)
 * move minion into play from deck
