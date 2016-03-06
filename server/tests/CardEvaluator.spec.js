@@ -7,6 +7,7 @@ import CardState from '../game/ctac/models/CardState.js';
 import Card from '../game/ctac/models/Card.js';
 import Position from '../game/ctac/models/Position.js';
 import MapState from '../game/ctac/models/MapState.js';
+import Statuses from '../game/ctac/models/Statuses.js';
 import cubeland from '../../maps/cubeland.json';
 import DrawCard from '../game/ctac/actions/DrawCard.js';
 import Message from '../game/ctac/actions/Message.js';
@@ -366,4 +367,17 @@ test('Spawn a piece', t => {
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.ok(queue._actions[0] instanceof SpawnPiece, 'First action is Draw Card');
+});
+
+test('Statuses', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  let testBot = spawnPiece(pieceStateMix, 28, 1);
+  t.plan(1);
+
+  t.equal(testBot.statuses[0], Statuses.shield, 'Piece has shield status');
 });
