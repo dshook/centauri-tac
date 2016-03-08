@@ -6,7 +6,7 @@ import loglevel from 'loglevel-decorator';
  * Handle pieces losing or gaining their current health
  */
 @loglevel
-export default class HealthChangeProcessor
+export default class PieceHealthChangeProcessor
 {
   constructor(pieceState, cardEvaluator)
   {
