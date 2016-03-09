@@ -1,4 +1,5 @@
 import Message from '../actions/Message.js';
+import PieceStatusChange from '../actions/PieceStatusChange.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
@@ -8,15 +9,13 @@ import _ from 'lodash';
 @loglevel
 export default class NoOpProcessor
 {
-  /**
-   * Proc
-   */
   async handleAction(action, queue)
   {
-    if (!(action instanceof Message)) {
-      return;
+    if (
+      (action instanceof Message)
+      || (action instanceof PieceStatusChange)
+    ) {
+      queue.complete(action);
     }
-
-    queue.complete(action);
   }
 }

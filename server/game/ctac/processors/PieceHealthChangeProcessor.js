@@ -1,6 +1,9 @@
 import GamePiece from '../models/GamePiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
+import PieceStatusChange from '../actions/PieceStatusChange.js';
+import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
+import _ from 'lodash';
 
 /**
  * Handle pieces losing or gaining their current health
@@ -32,6 +35,16 @@ export default class PieceHealthChangeProcessor
     }
 
     let hpBeforeChange = piece.health;
+
+    //check for shield and nullify damage
+    if(piece.statuses.includes(Statuses.shield)){
+      action.change = 0;
+      action.bonus = 0;
+      piece.statuses = _.without(piece.statuses, Statuses.sheild);
+
+      queue.push(new PieceStatusChange(piece.id, piece.statuses));
+    }
+
     piece.health = piece.health + action.change + (action.bonus || 0);
 
     //cap hp at base health and adjust action change amounts
