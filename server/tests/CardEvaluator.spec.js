@@ -41,6 +41,7 @@ function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
     newPiece.movement = cardPlayed.movement;
     newPiece.baseMovement = cardPlayed.movement;
     newPiece.tags = cardPlayed.tags;
+    newPiece.statuses = cardPlayed.statuses;
 
     if(addToState){
       pieceState.add(newPiece);
