@@ -28,20 +28,7 @@ for(let cardFileName in cardRequires){
 }
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
-    let cardPlayed = cardDirectory.directory[cardTemplateId];
-
-    var newPiece = new GamePiece();
-    //newPiece.position = action.position;
-    newPiece.playerId = playerId;
-    newPiece.cardTemplateId = cardTemplateId;
-    newPiece.attack = cardPlayed.attack;
-    newPiece.health = cardPlayed.health;
-    newPiece.baseAttack = cardPlayed.attack;
-    newPiece.baseHealth = cardPlayed.health;
-    newPiece.movement = cardPlayed.movement;
-    newPiece.baseMovement = cardPlayed.movement;
-    newPiece.tags = cardPlayed.tags;
-    newPiece.statuses = cardPlayed.statuses;
+    var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
 
     if(addToState){
       pieceState.add(newPiece);
@@ -53,7 +40,7 @@ function spawnCard(cardState, playerId, cardTemplateId){
   let directoryCard = cardDirectory.directory[cardTemplateId];
   //clone into new card
   var cardClone = new Card();
-  for(var k in directoryCard) cardClone[k]=directoryCard[k];
+  for(var k in directoryCard) cardClone[k] = directoryCard[k];
 
   //add to deck the immediately draw so it's in hand
   cardState.addToDeck(playerId, cardClone);

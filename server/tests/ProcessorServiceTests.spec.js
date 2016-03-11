@@ -12,24 +12,12 @@ export default class ProcessorServiceTests
   }
 
   spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
-      let cardPlayed = this.cardDirectory.directory[cardTemplateId];
+    var newPiece = pieceState.newFromCard(this.cardDirectory, cardTemplateId, playerId, null);
 
-      var newPiece = new GamePiece();
-      newPiece.playerId = playerId;
-      newPiece.cardTemplateId = cardTemplateId;
-      newPiece.attack = cardPlayed.attack;
-      newPiece.health = cardPlayed.health;
-      newPiece.baseAttack = cardPlayed.attack;
-      newPiece.baseHealth = cardPlayed.health;
-      newPiece.movement = cardPlayed.movement;
-      newPiece.baseMovement = cardPlayed.movement;
-      newPiece.tags = cardPlayed.tags;
-      newPiece.statuses = cardPlayed.statuses;
-
-      if(addToState){
-        pieceState.add(newPiece);
-      }
-      return newPiece;
+    if(addToState){
+      pieceState.add(newPiece);
+    }
+    return newPiece;
   }
 
   async start()

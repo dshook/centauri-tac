@@ -40,22 +40,7 @@ export default class SpawnPieceProcessor
       return;
     }
 
-    var newPiece = new GamePiece();
-    //assign the next id to the piece before it's spawned so any actions can reference the piece
-    newPiece.id = this.pieceState.nextId();
-    newPiece.position = action.position;
-    newPiece.playerId = action.playerId;
-    newPiece.name = cardPlayed.name;
-    newPiece.cardTemplateId = action.cardTemplateId;
-    newPiece.attack = cardPlayed.attack;
-    newPiece.health = cardPlayed.health;
-    newPiece.baseAttack = cardPlayed.attack;
-    newPiece.baseHealth = cardPlayed.health;
-    newPiece.movement = cardPlayed.movement;
-    newPiece.baseMovement = cardPlayed.movement;
-    newPiece.baseTags = cardPlayed.tags;
-    newPiece.tags = cardPlayed.tags;
-    newPiece.statuses = cardPlayed.statuses;
+    var newPiece = this.pieceState.newFromCard(this.cardDirectory, action.cardTemplateId, action.playerId, action.position);
 
     if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId)){
       action.pieceId = this.pieceState.add(newPiece);

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import GamePiece from './GamePiece.js';
 
 /**
  * Current state of all the pieces
@@ -21,6 +22,30 @@ export default class PieceState
     this.pieces.push(newPiece);
 
     return newPiece.id;
+  }
+
+  newFromCard(cardDirectory, cardTemplateId, playerId, position){
+    let cardPlayed = cardDirectory.directory[cardTemplateId];
+
+    var newPiece = new GamePiece();
+
+    //assign the next id to the piece before it's spawned so any actions can reference the piece
+    newPiece.id = this.nextId();
+    newPiece.position = position;
+    newPiece.playerId = playerId;
+    newPiece.name = cardPlayed.name;
+    newPiece.cardTemplateId = cardTemplateId;
+    newPiece.attack = cardPlayed.attack;
+    newPiece.health = cardPlayed.health;
+    newPiece.baseAttack = cardPlayed.attack;
+    newPiece.baseHealth = cardPlayed.health;
+    newPiece.movement = cardPlayed.movement;
+    newPiece.baseMovement = cardPlayed.movement;
+    newPiece.baseTags = cardPlayed.tags;
+    newPiece.tags = cardPlayed.tags;
+    newPiece.statuses = cardPlayed.statuses;
+
+    return newPiece;
   }
 
   remove(id){
