@@ -52,7 +52,6 @@ export default class PieceHealthChangeProcessor
       action.change = piece.baseHealth - hpBeforeChange;
       piece.health = piece.baseHealth;
     }
-
     action.newCurrentHealth = piece.health;
 
     if(action.change < 0){
