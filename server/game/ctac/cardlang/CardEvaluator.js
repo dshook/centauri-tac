@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
 import Position from '../models/Position.js';
+import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
+import PieceStatusChange from '../actions/PieceStatusChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
@@ -214,7 +216,7 @@ export default class CardEvaluator{
             case 'Hit':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Selected %j', selected);
+              this.log.info('Hit Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
@@ -226,7 +228,7 @@ export default class CardEvaluator{
             case 'Heal':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Selected %j', selected);
+              this.log.info('Heal Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   this.queue.push(new PieceHealthChange(s.id, action.args[1]));
@@ -238,7 +240,7 @@ export default class CardEvaluator{
             case 'SetAttribute':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Selected %j', selected);
+              this.log.info('Set Attr Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   let phc = new PieceAttributeChange(s.id);
@@ -255,7 +257,7 @@ export default class CardEvaluator{
             {
               let buffName = action.args[1];
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Selected %j', selected);
+              this.log.info('Buff Selected %j', selected);
               let buffAttributes = action.args.slice(2);
 
               if(selected && selected.length > 0){
@@ -291,6 +293,29 @@ export default class CardEvaluator{
                 this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
               }
 
+              break;
+            }
+
+            case 'GiveStatus':
+            {
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              this.log.info('Give Status Selected %j', selected);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  this.queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
+                }
+              }
+              break;
+            }
+            case 'RemoveStatus':
+            {
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              this.log.info('Remove Status Selected %j', selected);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  this.queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));
+                }
+              }
               break;
             }
           }

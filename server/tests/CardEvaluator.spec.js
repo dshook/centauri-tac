@@ -12,6 +12,7 @@ import cubeland from '../../maps/cubeland.json';
 import DrawCard from '../game/ctac/actions/DrawCard.js';
 import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
+import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
 import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
@@ -349,7 +350,7 @@ test('Spawn a piece', t => {
   let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
 
   let testBot = spawnPiece(pieceStateMix, 25, 1, false);
-  testBot.position = new Position(1,0,1);
+  testBot.position = new Position(1, 0, 1);
 
   cardEval.evaluatePieceEvent('death', testBot);
 
@@ -368,4 +369,25 @@ test('Statuses', t => {
   t.plan(1);
 
   t.equal(testBot.statuses[0], Statuses.Shield, 'Piece has shield status');
+});
+
+test('Give Status', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, cardDirectory, pieceStateMix, mapState);
+
+  let testBot = spawnPiece(pieceStateMix, 29, 1);
+
+  cardEval.evaluatePieceEvent('playMinion', testBot, 2);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceStatusChange, 'First action is Piece Status change');
+  t.equal(queue._actions[0].add, Statuses.Shield, 'Adding shield status');
 });

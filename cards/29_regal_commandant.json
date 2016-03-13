@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 29,
+	"name": "Regal Commandant",
+	"description": "<b>Play</b>: Give a friendly minion a Holtzman Shield",
+	"cost": 5,
+	"attack": 4,
+	"health": 4,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ GiveStatus(FRIENDLY & MINION & TARGET, Shield ); }"
+}
