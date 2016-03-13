@@ -12,7 +12,7 @@
     "dev-server": "npm run migrate && nodemon ./server",
     "start": "node ./server",
     "build": "grunt ct app:portal",
-    "test": "node tests",
+    "test": "node tests | tap-spec",
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
@@ -97,6 +97,7 @@
     "ws": "^0.8.0"
   },
   "devDependencies": {
-    "jison": "^0.4.17"
+    "jison": "^0.4.17",
+    "tap-spec": "^4.1.1"
   }
 }
