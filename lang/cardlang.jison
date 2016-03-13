@@ -31,12 +31,16 @@
   return 'random'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff|Spawn)
+(DrawCard|SetAttribute|Hit|Heal|Buff|Spawn|GiveStatus|RemoveStatus)
   return 'action'
 
 //attributes
 (health|attack|movement)
   return 'attribute'
+
+//statuses
+(Silence|Sheild|Paralyze|Taunt|Cloak|TechResist|Rooted)
+  return 'status'
 
 //numbers
 (\-?[0-9])
@@ -126,6 +130,7 @@ arguments
 argument_item
   : possibleRandSelector -> $1
   | attribute -> $1
+  | status -> $1
   | buffAttribute -> $1
   | pNumber -> $1
   | pText -> $1
