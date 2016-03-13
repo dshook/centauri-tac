@@ -3,10 +3,13 @@
  */
 export default class PieceStatusChange
 {
-  constructor(pieceId, statuses)
+  constructor(pieceId, add, remove)
   {
     this.id = null;
     this.pieceId = pieceId;
-    this.statuses = statuses;
+    this.add = add;
+    this.remove = remove;
+
+    this.statuses = null;
   }
 }

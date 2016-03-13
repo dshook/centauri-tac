@@ -4,6 +4,7 @@ import PlayerResourceProcessor from '../processors/PlayerResourceProcessor.js';
 import MoveProcessor from '../processors/MovePieceProcessor.js';
 import AttackProcessor from '../processors/AttackPieceProcessor.js';
 import PieceHealthChangeProcessor from '../processors/PieceHealthChangeProcessor.js';
+import PieceStatusChangeProcessor from '../processors/PieceStatusChangeProcessor.js';
 import PieceAttributeChangeProcessor from '../processors/PieceAttributeChangeProcessor.js';
 import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
 import SpawnPieceProcessor from '../processors/SpawnPieceProcessor.js';
@@ -26,6 +27,7 @@ export default class TurnService
     queue.addProcessor(MoveProcessor);
     queue.addProcessor(AttackProcessor);
     queue.addProcessor(PieceHealthChangeProcessor);
+    queue.addProcessor(PieceStatusChangeProcessor);
     queue.addProcessor(PieceAttributeChangeProcessor);
     queue.addProcessor(PieceBuffProcessor);
     queue.addProcessor(SpawnPieceProcessor);

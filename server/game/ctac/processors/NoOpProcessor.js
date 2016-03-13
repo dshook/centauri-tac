@@ -11,10 +11,7 @@ export default class NoOpProcessor
 {
   async handleAction(action, queue)
   {
-    if (
-      (action instanceof Message)
-      || (action instanceof PieceStatusChange)
-    ) {
+    if ((action instanceof Message)) {
       queue.complete(action);
     }
   }

@@ -37,12 +37,10 @@ export default class PieceHealthChangeProcessor
     let hpBeforeChange = piece.health;
 
     //check for shield and nullify damage
-    if(piece.statuses.includes(Statuses.shield)){
+    if(piece.statuses.includes(Statuses.Shield)){
       action.change = 0;
       action.bonus = 0;
-      piece.statuses = _.without(piece.statuses, Statuses.sheild);
-
-      queue.push(new PieceStatusChange(piece.id, piece.statuses));
+      queue.push(new PieceStatusChange(piece.id, null, Statuses.Shield));
     }
 
     piece.health = piece.health + action.change + (action.bonus || 0);

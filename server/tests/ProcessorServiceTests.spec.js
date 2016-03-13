@@ -56,7 +56,7 @@ export default class ProcessorServiceTests
       var piece = this.spawnPiece(this.pieceState, 28, 1);
       const beforeHealth = piece.health;
       const damage = -2;
-      t.ok(piece.statuses.includes(Statuses.sheild), 'Piece has Shield');
+      t.ok(piece.statuses.includes(Statuses.Shield), 'Piece has Shield');
 
       this.queue.push(new PieceHealthChange(piece.id, damage));
 
@@ -70,7 +70,7 @@ export default class ProcessorServiceTests
       t.ok(actions[1] instanceof PieceStatusChange, 'Second Action is status change');
       t.equal(hpChangeAction.change, 0, 'Health change was blocked by shield');
       t.equal(beforeHealth, piece.health, 'Piece was not damaged');
-      t.ok(!piece.statuses.includes(Statuses.sheild), 'Shield was removed');
+      t.ok(!piece.statuses.includes(Statuses.Shield), 'Shield was removed');
 
     });
   }

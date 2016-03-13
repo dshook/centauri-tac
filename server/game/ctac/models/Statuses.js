@@ -5,7 +5,7 @@ import Enum from '../../../../lib/enum';
 
 var Statuses = Enum({
   Silence: 1,
-  Sheild : 2,
+  Shield : 2,
   Paralyze: 3,
   Taunt : 4,
   Cloak: 5,

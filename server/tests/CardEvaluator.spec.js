@@ -367,5 +367,5 @@ test('Statuses', t => {
   let testBot = spawnPiece(pieceStateMix, 28, 1);
   t.plan(1);
 
-  t.equal(testBot.statuses[0], Statuses.shield, 'Piece has shield status');
+  t.equal(testBot.statuses[0], Statuses.Shield, 'Piece has shield status');
 });
