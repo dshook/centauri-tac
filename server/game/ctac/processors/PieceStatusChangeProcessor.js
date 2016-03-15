@@ -35,12 +35,10 @@ export default class PieceStatusChangeProcessor
     }
 
     if(action.add){
-      let adds = [].concat(action.add);
-      piece.statuses = Array.from(new Set([...piece.statuses, ...adds]));
+      piece.statuses &= action.add;
     }
     if(action.remove){
-      let removes = [].concat(action.remove);
-      piece.statuses = _.without(piece.statuses, ...removes);
+      piece.statuses &= ~action.remove;
     }
 
     action.statuses = piece.statuses;
@@ -56,6 +54,12 @@ export default class PieceStatusChangeProcessor
 
   printStatuses(statuses){
     if(!statuses) return null;
-    return [].concat(statuses).map(s => fromInt(s));
+    let ret = '';
+    for(let status in Statuses){
+      if(statuses & status){
+        ret += status + ' ';
+      }
+    }
+    return ret;
   }
 }

@@ -7,5 +7,5 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
-	"statuses": ["Shield"]
+	"statuses": 2
 }

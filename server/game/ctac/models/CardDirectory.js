@@ -26,9 +26,6 @@ export default class CardDirectory
     //copy props over to proper object
     for(var k in card) c[k] = card[k];
 
-    //set up statuses to be from model
-    c.statuses = _.map(c.statuses, status => Statuses[status]);
-
     if(card.eventcode){
       try{
         let cardEvents = this.parser.parse(card.eventcode);

@@ -1,5 +1,4 @@
 import Message from '../actions/Message.js';
-import PieceStatusChange from '../actions/PieceStatusChange.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 

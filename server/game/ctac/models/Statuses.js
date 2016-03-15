@@ -4,13 +4,13 @@ import _ from 'lodash';
 import Enum from '../../../../lib/enum';
 
 var Statuses = Enum({
-  Silence: 1,
-  Shield : 2,
-  Paralyze: 3,
-  Taunt : 4,
-  Cloak: 5,
-  TechResist: 6,
-  Rooted: 7
+  Silence   : 1,
+  Shield    : 2,
+  Paralyze  : 4,
+  Taunt     : 8,
+  Cloak     : 16,
+  TechResist: 32,
+  Rooted    : 64
 });
 export default Statuses;
 
