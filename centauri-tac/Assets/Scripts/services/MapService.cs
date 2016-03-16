@@ -8,12 +8,13 @@ namespace ctac
     public interface IMapService
     {
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
-        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance);
+        Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
+        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId);
         int TileDistance(Vector2 a, Vector2 b);
         int KingDistance(Vector2 a, Vector2 b);
-        List<Tile> FindPath(Tile start, Tile end, int maxDist);
+        List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, int controllingPlayerId, Tile dest = null);
     }
 
     public class MapService : IMapService
@@ -61,7 +62,35 @@ namespace ctac
             return ret;
         }
 
-        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance)
+        public Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance)
+        {
+            var ret = new Dictionary<Vector2, Tile>();
+            if (distance <= 0) return ret;
+
+            for (int i = 1; i <= distance; i++)
+            {
+                foreach (var pos in selection)
+                {
+                    //TODO: optimization for bigger distances would be to remove the 'inner' tiles from the selection
+                    //so they aren't rechecked every iteration
+                    var neighbors = GetNeighbors(pos);
+                    var untouchedNeighbors = neighbors.Where(x => !selection.Contains(x.Key));
+                    foreach (var neighbor in untouchedNeighbors)
+                    {
+                        if (ret.ContainsKey(neighbor.Key)) continue;
+
+                        ret.Add(neighbor.Key, neighbor.Value);
+                    }
+                }
+
+                selection.ForEach(s => ret.Add(s, mapModel.tiles[s]));
+                selection = ret.Keys.ToList();
+            }
+
+            return ret;
+        }
+
+        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId)
         {
             var ret = new Dictionary<Vector2, Tile>();
             if (distance <= 0) return ret;
@@ -87,7 +116,7 @@ namespace ctac
                     ret.Add(current, mapModel.tiles[current]);
                 }
 
-                var neighbors = GetMovableNeighbors(current);
+                var neighbors = GetMovableNeighbors(current, controllingPlayerId);
                 foreach (var neighbor in neighbors)
                 {
                     //add the neighbor to explore if it's not already being returned 
@@ -120,7 +149,7 @@ namespace ctac
             );
         }
 
-        public List<Tile> FindPath(Tile start, Tile end, int maxDist)
+        public List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId)
         {
             var ret = new List<Tile>();
             if(start == end) return ret;
@@ -151,7 +180,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetMovableNeighbors(current.position, end);
+                var neighbors = GetMovableNeighbors(current.position, controllingPlayerId, end);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -231,14 +260,14 @@ namespace ctac
         /// but always include the dest tile for attacking if it's passed
         /// but also make sure not to land on a tile with an occupant if attacking
         /// </summary>
-        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, Tile dest = null)
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, int controllingPlayerId, Tile dest = null)
         {
             var ret = GetNeighbors(center);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 
-                (dest == null || t.Key == dest.position) || 
-                !pieces.Pieces.Any(m => m.tilePosition == t.Key && !m.currentPlayerHasControl)
+                (dest != null && t.Key == dest.position) ||
+                !pieces.Pieces.Any(m => m.tilePosition == t.Key && m.playerId != controllingPlayerId)
             ).ToDictionary(k => k.Key, v => v.Value);
 
             bool destinationOccupied = dest != null && pieces.Pieces.Any(p => p.tilePosition == dest.position);

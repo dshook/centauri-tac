@@ -72,7 +72,7 @@ namespace Tests
             //test to walk around enemy
             var enemyEnd = mapService.mapModel.tiles[new Vector2(0,2)];
 
-            var enemyPath = mapService.FindPath(start, enemyEnd, 4);
+            var enemyPath = mapService.FindPath(start, enemyEnd, 4, 1);
             var expectedEnemyPath = new List<Vector2>()
             {
                 new Vector2(2, 2),
@@ -90,7 +90,7 @@ namespace Tests
 
             //test to walk through friendly
             var end = mapService.mapModel.tiles[new Vector2(2,4)];
-            var tilePath = mapService.FindPath(start, end, 2);
+            var tilePath = mapService.FindPath(start, end, 2, 1);
             var expectedTiles = new List<Vector2>()
             {
                 new Vector2(2, 2),
@@ -105,7 +105,7 @@ namespace Tests
 
             //test to attack enemy but not land on a friendly
             var passThroughEnd = mapService.mapModel.tiles[new Vector2(5,2)];
-            var passTilePath = mapService.FindPath(start, passThroughEnd, 6);
+            var passTilePath = mapService.FindPath(start, passThroughEnd, 6, 1);
             var passExpectedTiles = new List<Vector2>()
             {
                 new Vector2(2, 2),
@@ -148,6 +148,7 @@ namespace Tests
             return new PieceModel()
             {
                 currentPlayerHasControl = currentPlayerHasControl,
+                playerId = currentPlayerHasControl ? 1 : 2,
                 tilePosition = position,
             };
         }

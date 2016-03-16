@@ -8,32 +8,22 @@ namespace ctac
 {
     public class TileHighlightMediator : Mediator
     {
-        [Inject]
-        public TileHighlightView view { get; set; }
+        [Inject] public TileHighlightView view { get; set; }
         
-        [Inject]
-        public TileHoverSignal tileHover { get; set; }
+        [Inject] public TileHoverSignal tileHover { get; set; }
 
-        [Inject]
-        public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
 
-        [Inject]
-        public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
 
-        [Inject]
-        public PieceHoverSignal pieceHoveredSignal { get; set; }
+        [Inject] public PieceDiedSignal pieceDied { get; set; }
 
-        [Inject]
-        public PieceDiedSignal pieceDied { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public GameTurnModel gameTurn { get; set; }
 
-        [Inject]
-        public MapModel map { get; set; }
-
-        [Inject]
-        public PiecesModel pieces { get; set; }
-
-        [Inject]
-        public IMapService mapService { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         private PieceModel selectedPiece = null;
 
@@ -68,7 +58,7 @@ namespace ctac
             if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement);
+                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement, gameTurn.currentPlayerId);
                 view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
                 if (
@@ -102,7 +92,7 @@ namespace ctac
                 if (!selectedPiece.hasMoved)
                 {
                     //find movement
-                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement);
+                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
                     //take out the central one
                     moveTiles.Remove(gameTile.position);
                     view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable);
@@ -148,9 +138,11 @@ namespace ctac
         {
             if (piece != null)
             {
-                //TODO: better guess at attack range
-                var attackTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement + 1).Values.ToList();
-                var moveTiles = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement).Values.ToList();
+                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
+                var moveTiles = movePositions.Values.ToList();
+                var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
+                var attackTiles = attackPositions.Values.ToList();
+
                 //find diff to get just attack tiles
                 attackTiles = attackTiles.Except(moveTiles).ToList();
 
