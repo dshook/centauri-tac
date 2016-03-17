@@ -45,6 +45,8 @@ export default class CardEvaluator{
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of pieces){
+      if(piece.statuses & Statuses.Silence) continue;
+
       let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
@@ -91,6 +93,8 @@ export default class CardEvaluator{
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
+      if(piece.statuses & Statuses.Silence) continue;
+
       let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 
@@ -147,6 +151,8 @@ export default class CardEvaluator{
 
     //then look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
+      if(piece.statuses & Statuses.Silence) continue;
+
       let card = this.cardDirectory.directory[piece.cardTemplateId];
       if(!card.events || card.events.length === 0) continue;
 

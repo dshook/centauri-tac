@@ -73,5 +73,20 @@ export default class ProcessorServiceTests
       t.ok(!(piece.statuses & Statuses.Shield), 'Shield was removed');
 
     });
+
+    test('Silence removes statuses', async (t) => {
+      t.plan(2);
+      this.queue.init();
+
+      var piece = this.spawnPiece(this.pieceState, 28, 1);
+      t.ok(piece.statuses & Statuses.Shield, 'Piece has Shield');
+
+      this.queue.push(new PieceStatusChange(piece.id, Statuses.Silence));
+
+      await this.queue.processUntilDone();
+
+      t.ok(!(piece.statuses & Statuses.Shield), 'Shield was removed');
+
+    });
   }
 }

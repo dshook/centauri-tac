@@ -41,6 +41,11 @@ export default class PieceStatusChangeProcessor
       piece.statuses &= ~action.remove;
     }
 
+    //remove all statuses other than silence if it was silenced
+    if(action.add & Statuses.Silence){
+      piece.statuses = Statuses.Silence;
+    }
+
     action.statuses = piece.statuses;
 
     this.log.info('changed piece %s statuses added %j removed %j, result %j',

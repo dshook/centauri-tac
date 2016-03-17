@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 30,
+	"name": "Sentient Silencer",
+	"description": "<b>Play</b>: Silence a minion",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ GiveStatus(MINION & TARGET, Silence ); }"
+}
