@@ -305,7 +305,7 @@ export default class CardEvaluator{
             case 'GiveStatus':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Give Status Selected %j', selected);
+              this.log.info('Give Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   this.queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
@@ -316,7 +316,7 @@ export default class CardEvaluator{
             case 'RemoveStatus':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
-              this.log.info('Remove Status Selected %j', selected);
+              this.log.info('Remove Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   this.queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));

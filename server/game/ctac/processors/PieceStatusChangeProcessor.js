@@ -35,10 +35,10 @@ export default class PieceStatusChangeProcessor
     }
 
     if(action.add){
-      piece.statuses &= action.add;
+      piece.statuses = piece.statuses | action.add;
     }
     if(action.remove){
-      piece.statuses &= ~action.remove;
+      piece.statuses = piece.statuses & ~action.remove;
     }
 
     //remove all statuses other than silence if it was silenced
@@ -48,23 +48,25 @@ export default class PieceStatusChangeProcessor
 
     action.statuses = piece.statuses;
 
-    this.log.info('changed piece %s statuses added %j removed %j, result %j',
+    this.log.info('changed piece %s statuses added %s removed %s, result %s',
       action.pieceId,
       this.printStatuses(action.add),
       this.printStatuses(action.remove),
-      this.printStatuses(piece.statuses)
+      this.printStatuses(piece.statuses),
+      action
     );
     queue.complete(action);
   }
 
   printStatuses(statuses){
     if(!statuses) return null;
-    let ret = '';
-    for(let status in Statuses){
-      if(statuses & status){
-        ret += status + ' ';
+    let ret = [];
+    let statusKeys = Object.keys(Statuses);
+    for(let key of statusKeys){
+      if(statuses & Statuses[key]){
+        ret.push(key);
       }
     }
-    return ret;
+    return ret.join(' ');
   }
 }
