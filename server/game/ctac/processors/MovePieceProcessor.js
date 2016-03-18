@@ -39,7 +39,7 @@ export default class MovePieceProcessor
       //peek two because the current action hasn't been completed yet
       let upcomingQueue = queue.peek(2);
       let nextActionIsNotMove = upcomingQueue.length < 1 || !(upcomingQueue[1] instanceof MovePiece);
-      if(otherPiece.playerId != piece.playerId || nextActionIsNotMove){
+      if(piece.id != otherPiece.id && (otherPiece.playerId != piece.playerId || nextActionIsNotMove)){
         this.log.warn('Cannot move piece %j on top of %j', piece, otherPiece);
         return queue.cancel(action);
       }

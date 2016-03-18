@@ -58,7 +58,7 @@ namespace ctac
                     }
                     else
                     {
-                        if (selectedPiece != null && !selectedPiece.hasAttacked)
+                        if (selectedPiece != null && !selectedPiece.hasAttacked && selectedPiece.attack > 0)
                         {
                             attackPiece.Dispatch(new AttackPieceModel()
                             {
