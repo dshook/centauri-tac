@@ -39,8 +39,9 @@ export default class PieceSelector{
           break;
         case 'BASIC':
           return this.allPieces.filter(p =>
-            p.baseTags.length === 1 &&
-            (p.baseTags.includes('Hero') || p.baseTags.includes('Minion'))
+            p.baseTags.length === 1
+            && (p.baseTags.includes('Hero') || p.baseTags.includes('Minion'))
+            && p.baseStatuses === 0
           );
           break;
         case 'DAMAGED':

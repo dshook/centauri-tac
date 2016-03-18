@@ -44,6 +44,7 @@ export default class PieceState
     newPiece.baseTags = cardPlayed.tags;
     newPiece.tags = cardPlayed.tags;
     newPiece.statuses = cardPlayed.statuses || 0;
+    newPiece.baseStatuses = cardPlayed.statuses || 0;
 
     return newPiece;
   }
