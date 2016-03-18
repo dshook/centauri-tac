@@ -75,7 +75,6 @@ namespace Tests
             var enemyPath = mapService.FindPath(start, enemyEnd, 4, 1);
             var expectedEnemyPath = new List<Vector2>()
             {
-                new Vector2(2, 2),
                 new Vector2(2, 3),
                 new Vector2(1, 3),
                 new Vector2(0, 3),
@@ -93,7 +92,6 @@ namespace Tests
             var tilePath = mapService.FindPath(start, end, 2, 1);
             var expectedTiles = new List<Vector2>()
             {
-                new Vector2(2, 2),
                 new Vector2(2, 3),
                 new Vector2(2, 4)
             };
@@ -108,7 +106,6 @@ namespace Tests
             var passTilePath = mapService.FindPath(start, passThroughEnd, 6, 1);
             var passExpectedTiles = new List<Vector2>()
             {
-                new Vector2(2, 2),
                 new Vector2(3, 2),
                 new Vector2(3, 3),
                 new Vector2(4, 3),

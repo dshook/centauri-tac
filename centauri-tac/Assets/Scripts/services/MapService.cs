@@ -229,7 +229,8 @@ namespace ctac
                 total_path.Add(current);
             }
             total_path.Reverse();
-            return total_path;
+            //remove starting tile
+            return total_path.Skip(1).ToList();
         }
 
         public Dictionary<Vector2, Tile> GetNeighbors(Vector2 center)
