@@ -50,6 +50,7 @@
 * move/push piece
 * give status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)
 * Shuffle into deck
+* Spend X mana for X stats
 * take control of minion
 * destroy target minion
 * copy minion (into hand or play)

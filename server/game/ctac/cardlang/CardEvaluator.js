@@ -360,7 +360,7 @@ export default class CardEvaluator{
   findPossibleTargets(cards, playerId){
     let targets = [];
     const targetableEvents = ['playMinion', 'playSpell'];
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff'];
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus'];
 
     for(let card of cards){
       if(!card.events) continue;
