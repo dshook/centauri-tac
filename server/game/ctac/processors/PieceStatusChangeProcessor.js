@@ -42,6 +42,7 @@ export default class PieceStatusChangeProcessor
     }
 
     //remove all statuses other than silence if it was silenced
+    //TODO: remove buffs and reset tags to remove events
     if(action.add & Statuses.Silence){
       piece.statuses = Statuses.Silence;
     }

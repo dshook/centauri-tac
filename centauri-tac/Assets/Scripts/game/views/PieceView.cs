@@ -19,6 +19,7 @@ namespace ctac {
         public TextMeshPro damageSplatText;
         public TextMeshPro damageSplatBonusText;
 
+        public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
         public GameObject circleBg;
         public GameObject deathIcon;
@@ -39,16 +40,17 @@ namespace ctac {
         protected override void Start()
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
-            textContainer = piece.gameObject.transform.FindChild("TextContainer").gameObject;
+            faceCameraContainer = piece.gameObject.transform.FindChild("FaceCameraContainer").gameObject;
+            textContainer = faceCameraContainer.transform.FindChild("TextContainer").gameObject;
             attackGO = textContainer.transform.FindChild("Attack").gameObject;
             healthGO = textContainer.transform.FindChild("Health").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
-            damageSplat = piece.gameObject.transform.FindChild("DamageSplat").gameObject;
+            damageSplat = faceCameraContainer.transform.FindChild("DamageSplat").gameObject;
             damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
             damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
 
-            eventIconContainer = piece.gameObject.transform.FindChild("EventIconContainer").gameObject;
+            eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
@@ -78,7 +80,7 @@ namespace ctac {
         {
             if(piece == null) return;
 
-            textContainer.transform.rotation = Camera.main.transform.rotation;
+            faceCameraContainer.transform.rotation = Camera.main.transform.rotation;
 
             if (targetCandidate)
             {
