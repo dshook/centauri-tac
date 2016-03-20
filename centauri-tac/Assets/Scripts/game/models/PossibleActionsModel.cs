@@ -6,16 +6,16 @@ namespace ctac
     [Singleton]
     public class PossibleActionsModel
     {
-        public Dictionary<int, List<ActionTarget>> possibleTargets;
+        public Dictionary<int, List<ActionTarget>> possibleActions;
 
         public PossibleActionsModel()
         {
-            possibleTargets = new Dictionary<int, List<ActionTarget>>();
+            possibleActions = new Dictionary<int, List<ActionTarget>>();
         }
 
         public void Update(PossibleActions newActions)
         {
-            possibleTargets[newActions.playerId] = newActions.targets;
+            possibleActions[newActions.playerId] = newActions.targets;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace ctac
         /// </summary>
         public ActionTarget GetForCard(int playerId, int cardId)
         {
-            return possibleTargets[playerId].FirstOrDefault(x => x.cardId == cardId);
+            return possibleActions[playerId].FirstOrDefault(x => x.cardId == cardId);
         }
     }
 
