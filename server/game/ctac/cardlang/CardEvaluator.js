@@ -377,16 +377,15 @@ export default class CardEvaluator{
           let targetPieceIds = this.selector.selectPossibleTargets(
             playerId, selector
           ).map(p => p.id);
-          if(targetPieceIds.length > 0){
-            targets.push({
-              cardId: card.id,
-              event: event.event,
-              targetPieceIds
-            });
 
-            //only allow max of 1 targetable action per event
-            break;
-          }
+          targets.push({
+            cardId: card.id,
+            event: event.event,
+            targetPieceIds
+          });
+
+          //only allow max of 1 targetable action per event
+          break;
         }
       }
     }

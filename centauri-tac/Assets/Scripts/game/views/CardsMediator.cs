@@ -28,6 +28,7 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public AnimationQueueModel animationQueue { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
 
@@ -156,6 +157,14 @@ namespace ctac
                 if (playerResources.resources.ContainsKey(card.playerId) 
                    && card.cost <= playerResources.resources[card.playerId])
                 {
+                    //Check for spells that need targets but don't have any
+                    var cardTargets = possibleActions.GetForCard(card.playerId, card.id);
+                    if (card.tags.Contains("Spell") && cardTargets != null && cardTargets.targetPieceIds.Count == 0)
+                    {
+                        card.playable = false;
+                        continue;
+                    }
+
                     card.playable = true;
                 }
                 else
