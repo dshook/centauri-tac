@@ -183,7 +183,7 @@ namespace ctac {
                 text.text = Math.Abs(damageTaken).ToString();
                 iTweenExtensions.ScaleTo(damageSplat, Vector3.one, 0.5f, 0);
                 iTweenExtensions.ScaleTo(damageSplat, Vector3.zero, 0.8f, 1);
-                if (bonus.HasValue)
+                if (bonus.HasValue && bonus != 0)
                 {
                     bonusText.text = Math.Abs(bonus.Value).ToString() + " " + bonusMsg;
                 }

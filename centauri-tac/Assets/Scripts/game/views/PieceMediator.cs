@@ -114,20 +114,17 @@ namespace ctac
 
             view.piece.health = hpChange.newCurrentHealth;
 
-            if (hpChange.change < 0)
-            {
-                animationQueue.Add(
-                    new PieceView.TakeDamageAnim()
-                    {
-                        text = view.damageSplatText,
-                        bonusText = view.damageSplatBonusText,
-                        bonus = hpChange.bonus,
-                        bonusMsg = hpChange.bonusMsg,
-                        damageSplat = view.damageSplat,
-                        damageTaken = hpChange.change
-                    }
-                );
-            }
+            animationQueue.Add(
+                new PieceView.TakeDamageAnim()
+                {
+                    text = view.damageSplatText,
+                    bonusText = view.damageSplatBonusText,
+                    bonus = hpChange.bonus,
+                    bonusMsg = hpChange.bonusMsg,
+                    damageSplat = view.damageSplat,
+                    damageTaken = hpChange.change
+                }
+            );
 
             animationQueue.Add(
                 new PieceView.UpdateTextAnim()
