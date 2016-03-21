@@ -346,6 +346,11 @@ export default class CardEvaluator{
       if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === targetPieceId)){
         throw new EvalError('You must select a valid target');
       }
+
+      //if it's a spell (as indicated by no activating piece) and doesn't have any possible targets then reject
+      if(activatingPiece == null && possibleTargets.length === 0){
+        throw new EvalError('You must select a valid target for this spell');
+      }
     }
 
     return this.selector.selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId);
