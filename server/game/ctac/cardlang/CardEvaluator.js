@@ -379,6 +379,9 @@ export default class CardEvaluator{
           if(targetableActions.indexOf(cardEventAction.action) === -1) continue;
           //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
           let selector = cardEventAction.args[0];
+
+          if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
+
           let targetPieceIds = this.selector.selectPossibleTargets(
             playerId, selector
           ).map(p => p.id);
