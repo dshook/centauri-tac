@@ -38,6 +38,9 @@ namespace ctac.signals
     [Singleton] public class PieceAttackedSignal : Signal<AttackPieceModel> { }
     [Singleton] public class PieceTextAnimationFinishedSignal : Signal<PieceModel> { }
 
+    [Singleton] public class ActionPieceStatusChangeSignal : Signal<PieceStatusChangeModel, SocketKey> { }
+    [Singleton] public class PieceStatusChangeSignal : Signal<PieceStatusChangeModel> { }
+
     [Singleton] public class ActionPieceHealthChangeSignal : Signal<PieceHealthChangeModel, SocketKey> { }
     [Singleton] public class PieceHealthChangedSignal : Signal<PieceHealthChangeModel> { }
     [Singleton] public class ActionPieceAttributeChangeSignal : Signal<PieceAttributeChangeModel, SocketKey> { }
