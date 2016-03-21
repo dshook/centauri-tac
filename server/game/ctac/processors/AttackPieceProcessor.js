@@ -49,6 +49,7 @@ export default class AttackPieceProcessor
     let bonus = 0;
     let bonusMsg = null;
     if(facingDirection == 'behind'){
+      this.log.info('Backstab triggered, attackerDirection: %s targetDirection: %s', action.direction, target.direction);
       bonus = -1;
       bonusMsg = 'Backstab';
     }
