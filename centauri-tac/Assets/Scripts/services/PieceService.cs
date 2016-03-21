@@ -96,6 +96,7 @@ namespace ctac
                 movement = cardTemplate.movement,
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),
+                statuses = cardTemplate.statuses,
                 hasAttacked = true,
                 hasMoved = true
             };

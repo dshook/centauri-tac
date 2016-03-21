@@ -5,6 +5,7 @@ namespace ctac
     [Flags]
     public enum Statuses
     {
+      None = 0,
       Silence = 1,
       Shield = 2,
       Paralyze = 4,

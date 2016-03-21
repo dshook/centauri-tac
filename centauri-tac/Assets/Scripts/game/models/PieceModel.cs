@@ -39,6 +39,8 @@ namespace ctac
         public int baseMovement { get; set; }
 
         public List<PieceBuffModel> buffs { get; set; }
+
+        public Statuses statuses { get; set; }
     }
 
 }

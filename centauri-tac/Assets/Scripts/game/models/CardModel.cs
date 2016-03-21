@@ -17,6 +17,7 @@ namespace ctac
         public int movement { get; set; }
 
         public List<string> tags { get; set; }
+        public Statuses statuses { get; set; }
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }
