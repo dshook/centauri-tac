@@ -47,7 +47,6 @@ export default class PieceBuffProcessor
 
     piece.buffs.push(action);
 
-    //TODO: need to dedupe death logic and cleanup
     if(piece.health <= 0){
       this.cardEvaluator.evaluatePieceEvent('death', piece);
       this.pieceState.remove(piece.id);

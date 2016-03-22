@@ -74,6 +74,11 @@ export default class PieceStatusChangeProcessor
 
     action.statuses = piece.statuses;
 
+    if(piece.health <= 0){
+      this.cardEvaluator.evaluatePieceEvent('death', piece);
+      this.pieceState.remove(piece.id);
+    }
+
     this.log.info('changed piece %s statuses added %s removed %s, result %s',
       action.pieceId,
       this.printStatuses(action.add),
