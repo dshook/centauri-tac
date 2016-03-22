@@ -136,7 +136,7 @@ namespace ctac
 
         private void onPieceHover(PieceModel piece)
         {
-            if (piece != null)
+            if (piece != null && selectedPiece == null)
             {
                 var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
                 var moveTiles = movePositions.Values.ToList();
