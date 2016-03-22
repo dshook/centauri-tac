@@ -42,9 +42,34 @@ export default class PieceStatusChangeProcessor
     }
 
     //remove all statuses other than silence if it was silenced
-    //TODO: remove buffs and reset tags to remove events
     if(action.add & Statuses.Silence){
       piece.statuses = Statuses.Silence;
+
+      //back out any buffs on the piece
+      if(piece.buffs.length > 0){
+        let attribs = ['attack', 'health', 'movement'];
+
+        for(let b = piece.buffs.length - 1; b >= 0; b--){
+          let buff = piece.buffs[b];
+
+          for(let attrib of attribs){
+            if(buff[attrib] == null) continue;
+
+            piece[attrib] -= buff[attrib];
+
+            //cap at min of 0 to prevent negative attack/movement
+            //TODO: check for death
+            piece[attrib] = Math.max(0, piece[attrib]);
+
+            //update action with new values
+            let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+            action[newAttrib] = piece[attrib];
+
+            this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+          }
+        }
+        piece.buffs = [];
+      }
     }
 
     action.statuses = piece.statuses;
@@ -53,8 +78,7 @@ export default class PieceStatusChangeProcessor
       action.pieceId,
       this.printStatuses(action.add),
       this.printStatuses(action.remove),
-      this.printStatuses(piece.statuses),
-      action
+      this.printStatuses(piece.statuses)
     );
     queue.complete(action);
   }

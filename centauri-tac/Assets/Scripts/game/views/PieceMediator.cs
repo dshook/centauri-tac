@@ -15,6 +15,7 @@ namespace ctac
         [Inject] public PieceHealthChangedSignal pieceHpChanged { get; set; }
         [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
         [Inject] public PieceBuffSignal pieceBuffed { get; set; }
+        [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -35,6 +36,7 @@ namespace ctac
             pieceRotated.AddListener(onRotated);
             pieceHpChanged.AddListener(onHealthChange);
             pieceAttrChanged.AddListener(onAttrChange);
+            pieceStatusChanged.AddListener(onStatusChange);
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
             startTarget.AddListener(onStartSelectTarget);
@@ -51,6 +53,7 @@ namespace ctac
             pieceHpChanged.RemoveListener(onHealthChange);
             pieceAttrChanged.RemoveListener(onAttrChange);
             pieceBuffed.RemoveListener(onBuffed);
+            pieceStatusChanged.RemoveListener(onStatusChange);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
@@ -176,8 +179,6 @@ namespace ctac
                     }
                 );
             }
-
-            //TODO: display movement
         }
 
         public void onBuffed(PieceBuffModel pieceBuff)
@@ -215,8 +216,50 @@ namespace ctac
                     }
                 );
             }
+        }
 
-            //TODO: display movement
+        public void onStatusChange(PieceStatusChangeModel pieceStatusChange)
+        {
+            if(pieceStatusChange.pieceId != view.piece.id) return;
+
+
+            //Animate?
+            view.circleBg.SetActive(false);
+            view.deathIcon.SetActive(false);
+
+            //as above, we don't actually know change in this case, but pass in -1 to always show
+            //the punch size
+            if (pieceStatusChange.newAttack != null)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateTextAnim()
+                    {
+                        text = view.attackText,
+                        textGO = view.attackGO,
+                        current = view.piece.attack,
+                        original = view.piece.baseAttack,
+                        change = -1, 
+                        animFinished = pieceTextAnimFinished,
+                        piece = view.piece
+                    }
+                );
+            }
+
+            if (pieceStatusChange.newHealth != null)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateTextAnim()
+                    {
+                        text = view.healthText,
+                        textGO = view.healthGO,
+                        current = view.piece.health,
+                        original = view.piece.baseHealth,
+                        change = -1, 
+                        animFinished = pieceTextAnimFinished,
+                        piece = view.piece
+                    }
+                );
+            }
         }
 
         private void onAnimFinished(PieceModel pieceModel)

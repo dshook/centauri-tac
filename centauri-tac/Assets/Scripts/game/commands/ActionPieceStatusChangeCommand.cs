@@ -28,7 +28,13 @@ namespace ctac
         {
             if (!processedActions.Verify(pieceStatusChanged.id)) return;
 
-            pieces.Piece(pieceStatusChanged.pieceId).statuses = pieceStatusChanged.statuses;
+            var piece = pieces.Piece(pieceStatusChanged.pieceId);
+
+            piece.statuses = pieceStatusChanged.statuses;
+
+            piece.health = pieceStatusChanged.newHealth ?? piece.health;
+            piece.attack = pieceStatusChanged.newAttack ?? piece.attack;
+            piece.movement = pieceStatusChanged.newMovement ?? piece.movement;
 
             statusChangeSignal.Dispatch(pieceStatusChanged);
 

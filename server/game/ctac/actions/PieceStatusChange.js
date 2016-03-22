@@ -11,5 +11,10 @@ export default class PieceStatusChange
     this.remove = remove;
 
     this.statuses = null;
+
+    //new values updated by proccessor, null meaning no change
+    this.newAttack = null;
+    this.newHealth = null;
+    this.newMovement = null;
   }
 }
