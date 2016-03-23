@@ -19,6 +19,7 @@ namespace ctac {
         public TextMeshPro damageSplatText;
         public TextMeshPro damageSplatBonusText;
         public GameObject shield;
+        public GameObject paralyze;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -51,6 +52,7 @@ namespace ctac {
             damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
             damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
             shield = faceCameraContainer.transform.FindChild("Shield").gameObject;
+            paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -104,6 +106,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", 0.5f);
             }
 
+            //statuses
             if (FlagsHelper.IsSet(piece.statuses, Statuses.Shield))
             {
                 shield.transform.localScale = Vector3.one;
@@ -111,6 +114,15 @@ namespace ctac {
             else
             {
                 shield.transform.localScale = Vector3.zero;
+            }
+
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze))
+            {
+                paralyze.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                paralyze.transform.localScale = Vector3.zero;
             }
         }
 

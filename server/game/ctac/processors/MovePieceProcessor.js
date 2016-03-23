@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import Direction from '../models/Direction.js';
+import Statuses from '../models/Statuses.js';
 import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
 import loglevel from 'loglevel-decorator';
@@ -43,6 +44,11 @@ export default class MovePieceProcessor
         this.log.warn('Cannot move piece %j on top of %j', piece, otherPiece);
         return queue.cancel(action);
       }
+    }
+
+    if((piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Rooted)){
+      this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
+      return queue.cancel(action);
     }
 
     //determine direction piece should be facing to see if rotation is necessary

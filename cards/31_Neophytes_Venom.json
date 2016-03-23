@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 31,
+	"name": "Neophytes Venom",
+	"description": "Paralyze all enemy minions",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ GiveStatus(ENEMY & MINION, Paralyze); }"
+}

@@ -1,4 +1,5 @@
 import GamePiece from '../models/GamePiece.js';
+import Statuses from '../models/Statuses.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import {directionOf, faceDirection} from '../models/Direction.js';
@@ -37,6 +38,11 @@ export default class AttackPieceProcessor
     let targetDistance = this.mapState.tileDistance(attacker.position, target.position);
     if(targetDistance > 1){
       this.log.warn('Attacker too far away from target %s', targetDistance);
+      return queue.cancel(action);
+    }
+
+    if(attacker.statuses & Statuses.Paralyze){
+      this.log.warn('Cannot attack with piece %s with status %s', attacker.id, attacker.statuses);
       return queue.cancel(action);
     }
 

@@ -58,7 +58,12 @@ namespace ctac
                     }
                     else
                     {
-                        if (selectedPiece != null && !selectedPiece.hasAttacked && selectedPiece.attack > 0)
+                        if (
+                            selectedPiece != null 
+                            && !selectedPiece.hasAttacked 
+                            && selectedPiece.attack > 0
+                            && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                            )
                         {
                             attackPiece.Dispatch(new AttackPieceModel()
                             {
@@ -95,7 +100,12 @@ namespace ctac
                 {
                     var gameTile = map.tiles.Get(clickedObject.transform.position.ToTileCoordinates());
 
-                    if (FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) && selectedPiece != null)
+                    if (
+                        FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
+                        && selectedPiece != null
+                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Rooted)
+                        )
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);
                         pieceSelected.Dispatch(null);
