@@ -84,7 +84,7 @@ namespace ctac {
         {
             if(piece == null) return;
 
-            faceCameraContainer.transform.rotation = Camera.main.transform.rotation;
+            faceCameraContainer.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
             if (targetCandidate)
             {
