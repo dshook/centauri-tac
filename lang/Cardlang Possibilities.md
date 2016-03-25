@@ -23,7 +23,8 @@
 * ~~damaged~~
 * ~~damaged~~
 
-* tags (battlecry, paralyzed, etc)
+* tags (battlecry, etc)
+* statuses
 * zones (play, deck, hand, secret, graveyard)
 * cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
 

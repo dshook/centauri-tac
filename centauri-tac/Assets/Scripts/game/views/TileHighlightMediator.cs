@@ -84,6 +84,11 @@ namespace ctac
         {
             if (selectedPiece != null && !selectedPiece.isMoving)
             {
+                if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                    || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Rooted)
+                ) {
+                    return;
+                }
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
                 this.selectedPiece = selectedPiece;
 
@@ -136,7 +141,11 @@ namespace ctac
 
         private void onPieceHover(PieceModel piece)
         {
-            if (piece != null && selectedPiece == null)
+            if (piece != null 
+                && selectedPiece == null 
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Rooted)
+                )
             {
                 var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
                 var moveTiles = movePositions.Values.ToList();

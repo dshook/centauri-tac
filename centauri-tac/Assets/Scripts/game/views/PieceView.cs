@@ -91,12 +91,22 @@ namespace ctac {
                 meshRenderer.material.SetColor("_OutlineColor", Color.magenta);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
-            else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasMoved)
+            else if (
+                currentTurnPlayerId == piece.playerId 
+                && piece.currentPlayerHasControl && !piece.hasMoved
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Rooted)
+            )
             {
                 meshRenderer.material.SetColor("_OutlineColor", Color.green);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
-            else if (currentTurnPlayerId == piece.playerId && piece.currentPlayerHasControl && !piece.hasAttacked && piece.attack > 0) {
+            else if (
+                currentTurnPlayerId == piece.playerId 
+                && piece.currentPlayerHasControl 
+                && !piece.hasAttacked && piece.attack > 0
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
+            ) {
                 meshRenderer.material.SetColor("_OutlineColor", Color.cyan);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
