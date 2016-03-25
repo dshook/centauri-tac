@@ -1,5 +1,6 @@
 import test from 'tape';
 import Selector from '../game/ctac/cardlang/Selector.js';
+import Statuses from '../game/ctac/models/Statuses.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
 import Player from 'models/Player';
@@ -37,6 +38,14 @@ spawnPiece(heroesOnly, 1, 1);
 spawnPiece(heroesOnly, 1, 2);
 
 var noPieces = new PieceState();
+
+var statusPieces = new PieceState();
+spawnPiece(statusPieces, 1, 1);
+spawnPiece(statusPieces, 2, 1);
+spawnPiece(statusPieces, 28, 1);
+spawnPiece(statusPieces, 1, 2);
+spawnPiece(statusPieces, 2, 2);
+spawnPiece(statusPieces, 28, 2);
 
 test('Select Player', t => {
   t.plan(2);
@@ -275,20 +284,30 @@ test('Possible Targets', t => {
   t.equal(targetSelect[0].playerId, 1, 'Got back friendly target');
 });
 
-function spawnPiece(pieceState, cardTemplateId, playerId){
-    let cardPlayed = cardDirectory.directory[cardTemplateId];
+test('Status Selector', t => {
+  t.plan(5);
+  let select =
+    {
+      left: 'SHIELD',
+      op: '&',
+      right: 'FRIENDLY'
+    };
 
-    var newPiece = new GamePiece();
-    //newPiece.position = action.position;
-    newPiece.playerId = playerId;
-    newPiece.cardTemplateId = cardTemplateId;
-    newPiece.attack = cardPlayed.attack;
-    newPiece.health = cardPlayed.health;
-    newPiece.baseAttack = cardPlayed.attack;
-    newPiece.baseHealth = cardPlayed.health;
-    newPiece.movement = cardPlayed.movement;
-    newPiece.baseMovement = cardPlayed.movement;
-    newPiece.tags = cardPlayed.tags;
+  let selector = new Selector(players, statusPieces);
+  let selection = selector.selectPieces(1, select, selfPiece, null);
 
-    pieceState.add(newPiece);
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 1, 'Got back one shielded');
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+  t.ok(selection[0].playerId, 1, 'Friendly minion');
+  t.equal(selection[0].statuses, Statuses.Shield, 'Selected piece has shield');
+});
+
+function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
+    var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
+
+    if(addToState){
+      pieceState.add(newPiece);
+    }
+    return newPiece;
 }

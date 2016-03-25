@@ -27,6 +27,10 @@
 (ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC)
   return 'target'
 
+//status selectors
+(SILENCE|SHIELD|PARALYZE|TAUNT|CLOAK|TECHRESIST|ROOTED)
+  return 'target'
+
 (Random)
   return 'random'
 

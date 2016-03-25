@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Statuses from '../models/Statuses.js';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
@@ -58,6 +59,27 @@ export default class PieceSelector{
         case 'TARGET':
           if(!this.targetPieceId) return this.allPieces;
           return [{id: this.targetPieceId}];
+          break;
+        case 'SILENCE':
+          return this.allPieces.filter(p => p.statuses & Statuses.Silence);
+          break;
+        case 'SHIELD':
+          return this.allPieces.filter(p => p.statuses & Statuses.Shield);
+          break;
+        case 'PARALYZE':
+          return this.allPieces.filter(p => p.statuses & Statuses.Paralyze);
+          break;
+        case 'TAUNT':
+          return this.allPieces.filter(p => p.statuses & Statuses.Taunt);
+          break;
+        case 'CLOAK':
+          return this.allPieces.filter(p => p.statuses & Statuses.Cloak);
+          break;
+        case 'TECHRESIST':
+          return this.allPieces.filter(p => p.statuses & Statuses.TechResist);
+          break;
+        case 'ROOTED':
+          return this.allPieces.filter(p => p.statuses & Statuses.Rooted);
           break;
         default:
           throw 'Invalid piece type selector ' + selector;
