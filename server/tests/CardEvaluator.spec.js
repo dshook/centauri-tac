@@ -391,3 +391,24 @@ test('Give Status', t => {
   t.ok(queue._actions[0] instanceof PieceStatusChange, 'First action is Piece Status change');
   t.equal(queue._actions[0].add, Statuses.Shield, 'Adding shield status');
 });
+
+test('Timers', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let cardPlayed = cardDirectory.directory[31];
+
+  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
+  t.equal(cardPlayed.events.length, 2, 'Card events were not modified');
+});

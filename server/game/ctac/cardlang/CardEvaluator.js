@@ -21,6 +21,8 @@ export default class CardEvaluator{
     this.pieceState = pieceState;
     this.mapState = mapState;
     this.log.info('piece state %j', pieceState);
+    this.startTurnTimers = [];
+    this.endTurnTimers = [];
 
     this.eventDefaultSelectors = {
       playMinion: {left: 'SELF'},
@@ -231,6 +233,7 @@ export default class CardEvaluator{
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
               this.log.info('Heal Selected %j', selected);
+              this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   this.queue.push(new PieceHealthChange(s.id, action.args[1]));
@@ -243,6 +246,7 @@ export default class CardEvaluator{
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
               this.log.info('Set Attr Selected %j', selected);
+              this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   let phc = new PieceAttributeChange(s.id);
@@ -262,6 +266,7 @@ export default class CardEvaluator{
               this.log.info('Buff Selected %j', selected);
               let buffAttributes = action.args.slice(2);
 
+              this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
                 for(let s of selected){
                   //set up a new buff for each selected piece that has all the attributes of the buff
@@ -281,6 +286,7 @@ export default class CardEvaluator{
             //Also check to make sure it's a valid spawn location and another loop hasn't spawned at the same location
             case 'Spawn':
             {
+              this.handleTimers([], pieceAction);
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
               possiblePositions = _.chain(possiblePositions)
                 .filter(p => (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
@@ -298,9 +304,11 @@ export default class CardEvaluator{
               break;
             }
 
+            //GiveStatus(pieceSelector, Status)
             case 'GiveStatus':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              this.handleTimers(selected, pieceAction);
               this.log.info('Give Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -309,9 +317,11 @@ export default class CardEvaluator{
               }
               break;
             }
+            //RemoveStatus(pieceSelector, Status)
             case 'RemoveStatus':
             {
               let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              this.handleTimers(selected, pieceAction);
               this.log.info('Remove Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -350,6 +360,49 @@ export default class CardEvaluator{
     }
 
     return this.selector.selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId);
+  }
+
+  //look through the events on piece (or card for spells) and see if there's any timers
+  //if so, move them to the saved timer arrays so they can be triggered later
+  //for pieces, take them out of the events so they only trigger once, copy out of spells since they're one and done
+  handleTimers(selectedPieces, {piece, card}){
+    let startTimers = [];
+    let endTimers = [];
+    if(piece){
+      startTimers = startTimers.concat(
+        piece.events.filter(e => e.event === 'startTurnTimer')
+      );
+      endTimers = endTimers.concat(
+        piece.events.filter(e => e.event === 'endTurnTimer')
+      );
+      piece.events = _.without(piece.events, ...startTimers, ...endTimers);
+    }else if(card){
+      startTimers = startTimers.concat(
+        _.cloneDeep(card.events.filter(e => e.event === 'startTurnTimer'))
+      );
+      endTimers = endTimers.concat(
+        _.cloneDeep(card.events.filter(e => e.event === 'endTurnTimer'))
+      );
+    }else{
+      throw 'Must have either piece or card to handle timers';
+    }
+
+    if(startTimers.length > 0){
+      for(let timer of startTimers){
+        this.startTurnTimers.push({
+          saved: selectedPieces,
+          timer: timer
+        });
+      }
+    }
+    if(endTimers.length > 0){
+      for(let timer of endTimers){
+        this.endTurnTimers.push({
+          saved: selectedPieces,
+          timer: timer
+        });
+      }
+    }
   }
 
   //look through the cards for any cards needing a TARGET

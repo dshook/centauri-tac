@@ -4,5 +4,5 @@
 	"description": "Paralyze all enemy minions",
 	"cost": 2,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ GiveStatus(ENEMY & MINION, Paralyze); } beginTurnTimer(2){ RemoveStatus(SAVED, Paralyze); }"
+	"eventcode": "playSpell{ GiveStatus(ENEMY & MINION, Paralyze); } startTurnTimer(2){ RemoveStatus(SAVED, Paralyze); }"
 }

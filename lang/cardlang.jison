@@ -16,7 +16,7 @@
   return 'event'
 
 //timer events
-(endTurnTimer|beginTurnTimer)
+(endTurnTimer|startTurnTimer)
   return 'event'
 
 // player targets
