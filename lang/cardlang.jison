@@ -15,6 +15,10 @@
 (cardDrawn|turnEnd|turnStart|playSpell)
   return 'event'
 
+//timer events
+(endTurnTimer|beginTurnTimer)
+  return 'event'
+
 // player targets
 (PLAYER|OPPONENT)
   return 'target'
@@ -102,6 +106,8 @@ pEvent
    { $$ = { event: $1, actions: $3 } }
   | event'('possibleRandSelector')''{'actionlist'}'
    { $$ = { event: $1, selector: $3, actions: $6 } }
+  | event'('pNumber')''{'actionlist'}'
+   { $$ = { event: $1, timer: $3, actions: $6 } }
 ;
 
 /* actionlist is all the actions for each event */
