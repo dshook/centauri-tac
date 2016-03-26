@@ -15,10 +15,9 @@ import PieceBuff from '../actions/PieceBuff.js';
  */
 @loglevel
 export default class CardEvaluator{
-  constructor(queue, selector, cardDirectory, pieceState, mapState){
+  constructor(queue, selector, pieceState, mapState){
     this.queue = queue;
     this.selector = selector;
-    this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
     this.mapState = mapState;
     this.log.info('piece state %j', pieceState);
@@ -47,14 +46,13 @@ export default class CardEvaluator{
     for(let piece of pieces){
       if(piece.statuses & Statuses.Silence) continue;
 
-      let card = this.cardDirectory.directory[piece.cardTemplateId];
-      if(!card.events || card.events.length === 0) continue;
+      if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
-      for(let cardEvent of card.events){
+      for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
 
-        //see if the selector matches up for this card
+        //see if the selector matches up for this piece
         let eventSelector = cardEvent.selector;
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
@@ -95,14 +93,13 @@ export default class CardEvaluator{
     for(let piece of this.pieceState.pieces){
       if(piece.statuses & Statuses.Silence) continue;
 
-      let card = this.cardDirectory.directory[piece.cardTemplateId];
-      if(!card.events || card.events.length === 0) continue;
+      if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
-      for(let cardEvent of card.events){
+      for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
 
-        //see if the selector matches up for this card
+        //see if the selector matches up for this piece
         let eventSelector = cardEvent.selector;
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
@@ -153,11 +150,10 @@ export default class CardEvaluator{
     for(let piece of this.pieceState.pieces){
       if(piece.statuses & Statuses.Silence) continue;
 
-      let card = this.cardDirectory.directory[piece.cardTemplateId];
-      if(!card.events || card.events.length === 0) continue;
+      if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
-      for(let cardEvent of card.events){
+      for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
 
         //see if the selector matches up for this card

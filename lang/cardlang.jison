@@ -27,6 +27,10 @@
 (TARGET|SELF|ACTIVATOR)
   return 'target'
 
+// Targets for timers
+(SAVED)
+  return 'target'
+
 // selectors
 (ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC)
   return 'target'

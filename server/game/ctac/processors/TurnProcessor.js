@@ -45,21 +45,6 @@ export default class TurnProcessor
     action.toPlayerResources = this.playerResourceState.incriment(action.to, currentTurn);
     action.currentTurn = currentTurn;
 
-    //clear statuses for pieces that have had them for a turn
-    //doesn't actually wait for a turn right now though
-    let select =
-    {
-      left: 'PARALYZE',
-      op: '&',
-      right: 'FRIENDLY'
-    };
-    let paralyzed = this.selector.selectPieces(action.to, select);
-    if(paralyzed.length > 0){
-      for(let s of paralyzed){
-        queue.push(new PieceStatusChange(s.id, null, Statuses.Paralyze ));
-      }
-    }
-
     //and finally eval the new turn
     this.cardEvaluator.evaluatePlayerEvent('turnStart', action.to);
 
