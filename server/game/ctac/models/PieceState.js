@@ -35,7 +35,7 @@ export default class PieceState
     newPiece.playerId = playerId;
     newPiece.name = cardPlayed.name;
     newPiece.cardTemplateId = cardTemplateId;
-    newPiece.events =_.cloneDeep(cardPlayed.events);
+    newPiece.events = cardPlayed.events;
     newPiece.attack = cardPlayed.attack;
     newPiece.health = cardPlayed.health;
     newPiece.baseAttack = cardPlayed.attack;

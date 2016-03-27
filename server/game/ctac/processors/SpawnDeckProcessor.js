@@ -38,10 +38,7 @@ export default class SpawnDeckProcessor
       let randCardId = _.sample(cardIds);
       if(c % 3 == 0) randCardId = _.sample(testingCards);
 
-      let directoryCard = this.cardDirectory.directory[randCardId];
-      //clone into new card
-      var cardClone = new Card();
-      for(var k in directoryCard) cardClone[k]=directoryCard[k];
+      let cardClone = this.cardDirectory.newFromId(randCardId);
 
       this.cardState.addToDeck(playerId, cardClone);
     }

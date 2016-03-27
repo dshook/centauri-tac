@@ -399,16 +399,26 @@ test('Timers', t => {
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
 
-  t.plan(3);
+  t.plan(9);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
 
-  let cardPlayed = cardDirectory.directory[31];
+  let cardPlayed = cardDirectory.newFromId(31);
 
   cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1);
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
-  t.equal(cardPlayed.events.length, 2, 'Card events were not modified');
+  t.equal(cardPlayed.events.length, 1, 'Card events were modified');
+  t.equal(cardDirectory.directory[31].events.length, 2, 'Card template events were not modified');
+
+  cardEval.evaluatePlayerEvent('turnStart', 2);
+  t.equal(queue._actions.length, 1, 'Still only 1 action in the queue');
+  t.equal(cardEval.startTurnTimers.length, 1, 'Still 1 timer saved');
+
+  cardEval.evaluatePlayerEvent('turnStart', 1);
+  t.equal(queue._actions.length, 2, 'Triggered another action with timer');
+  t.ok(queue._actions[1] instanceof PieceStatusChange, 'New Action coming in is Piece status change');
+  t.equal(cardEval.startTurnTimers.length, 0, 'No timers left');
 });

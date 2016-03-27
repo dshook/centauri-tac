@@ -91,7 +91,15 @@ export default class CardEvaluator{
 
     let evalActions = [];
 
-    //first look through all the pieces on the board to see if any have actions on this event
+    //special handling of turn start and end for timers
+    if(event === 'turnStart'){
+      evalActions = evalActions.concat(this.updateTimers(true));
+    }
+    if(event === 'turnEnd'){
+      evalActions = evalActions.concat(this.updateTimers(false));
+    }
+
+    //look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
       if(piece.statuses & Statuses.Silence) continue;
 
@@ -198,6 +206,7 @@ export default class CardEvaluator{
       for(let pieceAction of evalActions){
         let action = pieceAction.action;
         let piece = pieceAction.piece;
+        let savedPieces = pieceAction.savedPieces;
         let times = 1;
         if(action.times){
           times = this.eventualNumber(action.times);
@@ -219,7 +228,7 @@ export default class CardEvaluator{
             //Hit(pieceSelector, damageAmount)
             case 'Hit':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.log.info('Hit Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -231,7 +240,7 @@ export default class CardEvaluator{
             //Heal(pieceSelector, healAmount)
             case 'Heal':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.log.info('Heal Selected %j', selected);
               this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
@@ -244,7 +253,7 @@ export default class CardEvaluator{
             //SetAttribute(pieceSelector, attribute, value)
             case 'SetAttribute':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.log.info('Set Attr Selected %j', selected);
               this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
@@ -262,7 +271,7 @@ export default class CardEvaluator{
             case 'Buff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.log.info('Buff Selected %j', selected);
               let buffAttributes = action.args.slice(2);
 
@@ -307,7 +316,7 @@ export default class CardEvaluator{
             //GiveStatus(pieceSelector, Status)
             case 'GiveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.handleTimers(selected, pieceAction);
               this.log.info('Give Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
@@ -320,7 +329,7 @@ export default class CardEvaluator{
             //RemoveStatus(pieceSelector, Status)
             case 'RemoveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
               this.handleTimers(selected, pieceAction);
               this.log.info('Remove Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
@@ -345,7 +354,7 @@ export default class CardEvaluator{
 
 
   //proxy for the Selector select pieces function that ensures proper targeting
-  selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId){
+  selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId, savedPieces){
     if(this.selector.doesSelectorUse(selector, 'TARGET')){
       //make sure that if it's a target card and there are available targets, one of them is picked
       var possibleTargets = this.selector.selectPossibleTargets(controllingPlayerId, selector);
@@ -359,39 +368,37 @@ export default class CardEvaluator{
       }
     }
 
-    return this.selector.selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId);
+    return this.selector.selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId, savedPieces);
   }
 
   //look through the events on piece (or card for spells) and see if there's any timers
   //if so, move them to the saved timer arrays so they can be triggered later
-  //for pieces, take them out of the events so they only trigger once, copy out of spells since they're one and done
-  handleTimers(selectedPieces, {piece, card}){
+  //take them out of the events so they only trigger once
+  handleTimers(selectedPieces, {piece, card, playerId}){
     let startTimers = [];
     let endTimers = [];
-    if(piece){
-      startTimers = startTimers.concat(
-        piece.events.filter(e => e.event === 'startTurnTimer')
-      );
-      endTimers = endTimers.concat(
-        piece.events.filter(e => e.event === 'endTurnTimer')
-      );
-      piece.events = _.without(piece.events, ...startTimers, ...endTimers);
-    }else if(card){
-      startTimers = startTimers.concat(
-        _.cloneDeep(card.events.filter(e => e.event === 'startTurnTimer'))
-      );
-      endTimers = endTimers.concat(
-        _.cloneDeep(card.events.filter(e => e.event === 'endTurnTimer'))
-      );
-    }else{
+    let pieceCard = piece ? piece : card;
+
+    if(!pieceCard){
       throw 'Must have either piece or card to handle timers';
     }
+
+    startTimers = startTimers.concat(
+      pieceCard.events.filter(e => e.event === 'startTurnTimer')
+    );
+    endTimers = endTimers.concat(
+      pieceCard.events.filter(e => e.event === 'endTurnTimer')
+    );
+    pieceCard.events = _.without(pieceCard.events, ...startTimers, ...endTimers);
 
     if(startTimers.length > 0){
       for(let timer of startTimers){
         this.startTurnTimers.push({
           saved: selectedPieces,
-          timer: timer
+          piece,
+          card,
+          playerId,
+          timerAction: timer
         });
       }
     }
@@ -399,10 +406,48 @@ export default class CardEvaluator{
       for(let timer of endTimers){
         this.endTurnTimers.push({
           saved: selectedPieces,
-          timer: timer
+          piece,
+          card,
+          playerId,
+          timerAction: timer
         });
       }
     }
+  }
+
+  //Tick down all the timers in the array. When the metaphorical bomb ticks down remove it from
+  //the saved timers and return its actions to be evaluated
+  //have to use a bool instead of passing the array in so we can reassign it to remove items :(
+  updateTimers(isStartTimers){
+    let timerArray = isStartTimers ? this.startTurnTimers : this.endTurnTimers;
+    if(timerArray.length === 0) return [];
+
+    for(let timer of timerArray){
+      timer.timerAction.timer--;
+    }
+    let activatedTimers = timerArray.filter(t => t.timerAction.timer === 0);
+
+    if(isStartTimers){
+      this.startTurnTimers = _.without(timerArray, ...activatedTimers);
+    }else{
+      this.endTurnTimers = _.without(timerArray, ...activatedTimers);
+    }
+
+    let activatedEvents = [];
+
+    for(let activatedTimer of activatedTimers){
+      for(let cardEventAction of activatedTimer.timerAction.actions){
+        activatedEvents.push({
+          piece: activatedTimer.piece,
+          card: activatedTimer.card,
+          savedPieces: activatedTimer.saved,
+          playerId: activatedTimer.playerId,
+          action: cardEventAction
+        });
+      }
+    }
+
+    return activatedEvents;
   }
 
   //look through the cards for any cards needing a TARGET

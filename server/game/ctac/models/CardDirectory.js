@@ -50,4 +50,13 @@ export default class CardDirectory
     tags = [].concat(tags);
     return _.filter(this.directory, c => c.tags && _.intersection(c.tags, tags).length > 0 );
   }
+
+  newFromId(cardTemplateId){
+    let directoryCard = this.directory[cardTemplateId];
+    //clone into new card
+    var cardClone = new Card();
+    for(var k in directoryCard) cardClone[k]=directoryCard[k];
+
+    return cardClone;
+  }
 }
