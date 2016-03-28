@@ -40,6 +40,10 @@ export default class CardState
   //valdate it's in the hand then remove it
   playCard(playerId, cardId){
     let removed = _.remove(this.hands[playerId], c => c.id === cardId);
-    return removed.length;
+    if(removed.length !== 1){
+      //something went wrong so return null for an error to be thrown later
+      return null;
+    }
+    return removed[0];
   }
 }
