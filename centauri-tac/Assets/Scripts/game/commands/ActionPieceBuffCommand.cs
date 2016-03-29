@@ -1,5 +1,6 @@
 using strange.extensions.command.impl;
 using ctac.signals;
+using System.Linq;
 
 namespace ctac
 {
@@ -29,7 +30,15 @@ namespace ctac
 
             var piece = pieces.Piece(pieceBuff.pieceId);
 
-            piece.buffs.Add(pieceBuff);
+            if (pieceBuff.removed)
+            {
+                var buff = piece.buffs.FirstOrDefault(x => x.name == pieceBuff.name);
+                piece.buffs.Remove(buff);
+            }
+            else
+            {
+                piece.buffs.Add(pieceBuff);
+            }
 
             piece.health = pieceBuff.newHealth ?? piece.health;
             piece.attack = pieceBuff.newAttack ?? piece.attack;

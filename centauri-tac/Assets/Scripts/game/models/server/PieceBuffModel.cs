@@ -5,6 +5,7 @@
         public int id { get; set; }
         public int pieceId { get; set; }
         public string name { get; set; }
+        public bool removed { get; set; }
 
         public int? attack { get; set; }
         public int? health { get; set; }

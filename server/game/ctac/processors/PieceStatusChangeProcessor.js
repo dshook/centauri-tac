@@ -61,7 +61,7 @@ export default class PieceStatusChangeProcessor
           for(let attrib of attribs){
             let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
             action[attrib] = buffChange[attrib];
-            action[newAttrib] = buffChange[attrib];
+            action[newAttrib] = buffChange[newAttrib];
 
             this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
           }
