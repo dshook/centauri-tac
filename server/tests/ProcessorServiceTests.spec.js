@@ -1,6 +1,7 @@
 import test from 'tape';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
+import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 
@@ -87,6 +88,31 @@ export default class ProcessorServiceTests
 
       t.ok(!(piece.statuses & Statuses.Shield), 'Shield was removed');
 
+    });
+
+    test('Buff and remove buff', async (t) => {
+      t.plan(5);
+      this.queue.init();
+
+      var piece = this.spawnPiece(this.pieceState, 2, 1);
+      t.equal(piece.health, 2, 'Piece is unbuffed with hp 2');
+
+      let buffName = 'test buff';
+      let buff = new PieceBuff(piece.id, buffName);
+      buff.health = 2;
+      this.queue.push(buff);
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.health, 4, 'Piece now has 4 hp');
+      t.equal(piece.buffs.length, 1, 'Piece has buff in array');
+
+      this.queue.push(new PieceBuff(piece.id, buffName, true));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.health, 2, 'Piece now back down to 2 hp');
+      t.equal(piece.buffs.length, 0, 'Piece has no more buffs');
     });
   }
 }
