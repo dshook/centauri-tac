@@ -279,10 +279,26 @@ export default class CardEvaluator{
               if(selected && selected.length > 0){
                 for(let s of selected){
                   //set up a new buff for each selected piece that has all the attributes of the buff
-                  let buff = new PieceBuff(s.id, buffName);
+                  let buff = new PieceBuff(s.id, buffName, false);
                   for(let buffAttribute of buffAttributes){
                     buff[buffAttribute.attribute] = buffAttribute.amount;
                   }
+                  this.queue.push(buff);
+                }
+              }
+              break;
+            }
+            //RemoveBuff(pieceSelector, buffName)
+            case 'RemoveBuff':
+            {
+              let buffName = action.args[1];
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              this.log.info('Remove Buff Selected %j', selected);
+
+              this.handleTimers(selected, pieceAction);
+              if(selected && selected.length > 0){
+                for(let s of selected){
+                  let buff = new PieceBuff(s.id, buffName, true);
                   this.queue.push(buff);
                 }
               }

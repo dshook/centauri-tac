@@ -26,26 +26,51 @@ export default class PieceBuffProcessor
       this.log.warn('Cannot find piece to buff for id %s', action.pieceId);
       return queue.cancel(action);
     }
-    if(action.attack == null && action.health == null && action.movement == null){
+    if(!action.removed && action.attack == null && action.health == null && action.movement == null){
       this.log.warn('No attributes to change for piece %s', action.pieceId);
       return queue.cancel(action);
     }
 
     let attribs = ['attack', 'health', 'movement'];
+    //if we're removing a buff, find it by name, pop it off, and then reverse its stat changes
+    if(action.removed){
+      let buff = piece.buffs.find(b => b.name === action.name);
+      if(!buff){
+        this.log.warn('Cannot find buff %s to remove on piece %j', action.name, piece);
+        return queue.cancel(action);
+      }
 
-    for(let attrib of attribs){
-      if(action[attrib] == null) continue;
+      let buffChange = piece.removeBuff(buff);
 
-      piece[attrib] += action[attrib];
+      if(!buffChange){
+        this.log.error('Cannot unbuff piece %j with buff %j', piece, buff);
+        return queue.cancel(action);
+      }
 
-      //update action with new values
-      let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-      action[newAttrib] = piece[attrib];
+      for(let attrib of attribs){
+        let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+        action[attrib] = buffChange[attrib];
+        action[newAttrib] = buffChange[attrib];
 
-      this.log.info('buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+        this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+      }
+
+    }else{
+
+      for(let attrib of attribs){
+        if(action[attrib] == null) continue;
+
+        piece[attrib] += action[attrib];
+
+        //update action with new values
+        let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+        action[newAttrib] = piece[attrib];
+
+        this.log.info('buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+      }
+
+      piece.buffs.push(action);
     }
-
-    piece.buffs.push(action);
 
     if(piece.health <= 0){
       this.cardEvaluator.evaluatePieceEvent('death', piece);

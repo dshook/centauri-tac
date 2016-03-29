@@ -43,7 +43,7 @@
   return 'random'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff|Spawn|GiveStatus|RemoveStatus)
+(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus)
   return 'action'
 
 //attributes

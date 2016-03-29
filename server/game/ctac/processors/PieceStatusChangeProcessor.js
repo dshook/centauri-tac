@@ -51,24 +51,21 @@ export default class PieceStatusChangeProcessor
 
         for(let b = piece.buffs.length - 1; b >= 0; b--){
           let buff = piece.buffs[b];
+          let buffChange = piece.removeBuff(buff);
+
+          if(!buffChange){
+            this.log.error('Cannot unbuff piece %j with buff %j', piece, buff);
+            continue;
+          }
 
           for(let attrib of attribs){
-            if(buff[attrib] == null) continue;
-
-            piece[attrib] -= buff[attrib];
-
-            //cap at min of 0 to prevent negative attack/movement
-            //TODO: check for death
-            piece[attrib] = Math.max(0, piece[attrib]);
-
-            //update action with new values
             let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-            action[newAttrib] = piece[attrib];
+            action[attrib] = buffChange[attrib];
+            action[newAttrib] = buffChange[attrib];
 
             this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
           }
         }
-        piece.buffs = [];
       }
     }
 

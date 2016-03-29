@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 30,
+	"name": "Thresher",
+	"description": "<b>Play</b>: Give a minion +2 attack for a turn",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Buff(MINION & TARGET, 'Sickle', attack(2) ); } endTurnTimer(1){ RemoveBuff(SAVED, 'Sickle'); }"
+}
