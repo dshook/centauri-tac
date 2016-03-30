@@ -19,6 +19,7 @@ namespace ctac {
         public TextMeshPro damageSplatText;
         public TextMeshPro damageSplatBonusText;
         public GameObject shield;
+        public GameObject cloak;
         public GameObject paralyze;
 
         public GameObject faceCameraContainer;
@@ -52,6 +53,7 @@ namespace ctac {
             damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
             damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
             shield = faceCameraContainer.transform.FindChild("Shield").gameObject;
+            cloak = faceCameraContainer.transform.FindChild("Cloak").gameObject;
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
@@ -133,6 +135,15 @@ namespace ctac {
             else
             {
                 paralyze.transform.localScale = Vector3.zero;
+            }
+
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.Cloak))
+            {
+                cloak.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                cloak.transform.localScale = Vector3.zero;
             }
         }
 

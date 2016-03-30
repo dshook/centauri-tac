@@ -53,12 +53,12 @@
 * Shuffle into deck
 * Spend X mana for X stats
 * take control of minion
-* destroy target minion
+* destroy minion
 * copy minion (into hand or play)
 * move minion into play from deck
 * card cost modification
-* effect that lasts till end of turn
 * swap health and attack
+* ~~effect that lasts till end of turn~~
 * ~~Hit for damage~~
 * ~~draw card~~
 * ~~Heal target~~

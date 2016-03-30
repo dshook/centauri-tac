@@ -62,7 +62,11 @@ namespace ctac
                 view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
                 if (
-                    pieces.Pieces.Any(m => m.tilePosition == tile.position && !m.currentPlayerHasControl)
+                    pieces.Pieces.Any(m => 
+                        m.tilePosition == tile.position 
+                        && !m.currentPlayerHasControl
+                        && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
+                    )
                     && path != null
                 )
                 {
@@ -158,6 +162,9 @@ namespace ctac
                 //take out the central one
                 var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
                 moveTiles.Remove(center);
+
+                //TODO: take friendly units out of move and untargetable enemies like Cloak
+
                 view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange);
                 if (piece.attack > 0)
                 {

@@ -58,7 +58,10 @@ export default class PieceSelector{
           return [this.selfPiece];
           break;
         case 'TARGET':
-          if(!this.targetPieceId) return this.allPieces;
+          if(!this.targetPieceId){
+            return this.allPieces.filter(p => !(p.statuses & Statuses.Cloak));
+          }
+          return this.allPieces.filter(p => p.id === this.targetPieceId && !(p.statuses & Statuses.Cloak));
           return [{id: this.targetPieceId}];
           break;
         case 'SAVED':

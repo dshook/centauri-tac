@@ -6,11 +6,8 @@ namespace ctac
     public class PieceModel
     {
         public int id { get; set; }
-
-        public int playerId { get; set; }
-
         public int cardTemplateId { get; set; }
-
+        public int playerId { get; set; }
         public string name { get; set; }
 
         public GameObject gameObject { get; set; }
@@ -18,12 +15,11 @@ namespace ctac
         public bool currentPlayerHasControl { get; set; }
 
         public bool isMoving { get; set; }
-
         public bool hasMoved { get; set; }
-
         public bool hasAttacked { get; set; }
 
         public List<string> tags { get; set; }
+        public Statuses statuses { get; set; }
 
         public Direction direction { get; set; }
 
@@ -40,7 +36,6 @@ namespace ctac
 
         public List<PieceBuffModel> buffs { get; set; }
 
-        public Statuses statuses { get; set; }
     }
 
 }
