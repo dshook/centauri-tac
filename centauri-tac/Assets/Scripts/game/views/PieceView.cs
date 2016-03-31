@@ -21,6 +21,7 @@ namespace ctac {
         public GameObject shield;
         public GameObject cloak;
         public GameObject paralyze;
+        public GameObject root;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -55,6 +56,7 @@ namespace ctac {
             shield = faceCameraContainer.transform.FindChild("Shield").gameObject;
             cloak = faceCameraContainer.transform.FindChild("Cloak").gameObject;
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
+            root = faceCameraContainer.transform.FindChild("Root").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -97,7 +99,7 @@ namespace ctac {
                 currentTurnPlayerId == piece.playerId 
                 && piece.currentPlayerHasControl && !piece.hasMoved
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Rooted)
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
             )
             {
                 meshRenderer.material.SetColor("_OutlineColor", Color.green);
@@ -144,6 +146,15 @@ namespace ctac {
             else
             {
                 cloak.transform.localScale = Vector3.zero;
+            }
+
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.Root))
+            {
+                root.transform.localScale = Vector3.one;
+            }
+            else
+            {
+                root.transform.localScale = Vector3.zero;
             }
         }
 

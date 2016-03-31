@@ -51,7 +51,7 @@
   return 'attribute'
 
 //statuses
-(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Rooted)
+(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root)
   return 'status'
 
 //numbers

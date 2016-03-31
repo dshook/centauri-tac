@@ -105,7 +105,7 @@ namespace ctac
                         FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
                         && selectedPiece != null
                         && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
-                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Rooted)
+                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
                         )
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);

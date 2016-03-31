@@ -46,7 +46,7 @@ export default class MovePieceProcessor
       }
     }
 
-    if((piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Rooted)){
+    if((piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
       this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
       return queue.cancel(action);
     }

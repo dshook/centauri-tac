@@ -12,6 +12,6 @@ namespace ctac
       Taunt = 8,
       Cloak = 16,
       TechResist = 32,
-      Rooted = 64
+      Root = 64
     }
 }

@@ -87,7 +87,7 @@ export default class PieceSelector{
         case 'TECHRESIST':
           return this.allPieces.filter(p => p.statuses & Statuses.TechResist);
           break;
-        case 'ROOTED':
+        case 'ROOT':
           return this.allPieces.filter(p => p.statuses & Statuses.Rooted);
           break;
         default:

@@ -89,7 +89,7 @@ namespace ctac
             if (selectedPiece != null && !selectedPiece.isMoving)
             {
                 if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
-                    || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Rooted)
+                    || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
                 ) {
                     return;
                 }
@@ -148,7 +148,7 @@ namespace ctac
             if (piece != null 
                 && selectedPiece == null 
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Rooted)
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
                 )
             {
                 var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
