@@ -3,7 +3,10 @@ import Statuses from '../models/Statuses.js';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId, selfPiece, activatingPiece, targetPieceId, savedPieces){
+  constructor(pieces, controllingPlayerId,
+     // 'optional' params that are only used in some selectors
+    {selfPiece, activatingPiece, targetPieceId, savedPieces, isSpell}
+  ){
     //Include the activating piece in all pieces if it isn't there
     //This comes into affect when activating a piece that's not part of the pieces state yet
     //but should be evaluated as such
@@ -58,11 +61,11 @@ export default class PieceSelector{
           return [this.selfPiece];
           break;
         case 'TARGET':
-          if(!this.targetPieceId){
-            return this.allPieces.filter(p => !(p.statuses & Statuses.Cloak));
-          }
-          return this.allPieces.filter(p => p.id === this.targetPieceId && !(p.statuses & Statuses.Cloak));
-          return [{id: this.targetPieceId}];
+          return this.allPieces.filter(p =>
+            (!this.targetPieceId || p.id === this.targetPieceId)
+            && !(p.statuses & Statuses.Cloak)
+            && (!this.isSpell || !(p.statuses & Statuses.TechResist))
+          );
           break;
         case 'SAVED':
           if(!this.savedPieces) return [];

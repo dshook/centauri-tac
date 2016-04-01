@@ -28,10 +28,10 @@ export default class Selector{
   }
 
   //select one or more pieces
-  selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId, savedPieces){
+  selectPieces(controllingPlayerId, selector, pieceSelectorParams){
     //for now, only way to get a single piece from a selector is from random
     if(selector.random && selector.selector){
-      let selection = this.selectPieces(controllingPlayerId, selector.selector);
+      let selection = this.selectPieces(controllingPlayerId, selector.selector, pieceSelectorParams);
       if(selection && selection.length > 0){
         return [_.sample(selection)];
       }
@@ -40,20 +40,17 @@ export default class Selector{
     return new PieceSelector(
       this.pieceState.pieces,
       controllingPlayerId,
-      selfPiece,
-      activatingPiece,
-      targetPieceId,
-      savedPieces
+      pieceSelectorParams
     ).Select(selector);
   }
 
-  selectPossibleTargets(controllingPlayerId, selector){
+  selectPossibleTargets(controllingPlayerId, selector, isSpell){
     //Random TARGET is not happening
     if(selector.random) return [];
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
 
-    return new PieceSelector(this.pieceState.pieces, controllingPlayerId)
+    return new PieceSelector(this.pieceState.pieces, controllingPlayerId, {isSpell})
       .Select(selector);
   }
 

@@ -8,13 +8,12 @@ import Statuses from '../models/Statuses.js';
  */
 export default class TurnProcessor
 {
-  constructor(turnState, players, playerResourceState, cardEvaluator, selector)
+  constructor(turnState, players, playerResourceState, cardEvaluator)
   {
     this.turnState = turnState;
     this.players = players;
     this.playerResourceState = playerResourceState;
     this.cardEvaluator = cardEvaluator;
-    this.selector = selector;
   }
 
   /**

@@ -64,7 +64,7 @@ export default class CardEvaluator{
         }
 
         //now find all pieces that match the selector given the context of the piece that the event is for
-        let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, piece, activatingPiece);
+        let piecesSelected = this.selector.selectPieces(piece.playerId, eventSelector, {selfPiece: piece, activatingPiece});
 
         let selectorMatched = piecesSelected.indexOf(activatingPiece) > -1;
 
@@ -207,6 +207,13 @@ export default class CardEvaluator{
         let action = pieceAction.action;
         let piece = pieceAction.piece;
         let savedPieces = pieceAction.savedPieces;
+        let pieceSelectorParams = {
+          selfPiece: piece,
+          activatingPiece,
+          targetPieceId,
+          savedPieces,
+          isSpell: !pieceAction.piece
+        };
         let times = 1;
         if(action.times){
           times = this.eventualNumber(action.times);
@@ -228,7 +235,7 @@ export default class CardEvaluator{
             //Hit(pieceSelector, damageAmount)
             case 'Hit':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.log.info('Hit Selected %j', selected);
               if(selected && selected.length > 0){
                 for(let s of selected){
@@ -240,7 +247,7 @@ export default class CardEvaluator{
             //Heal(pieceSelector, healAmount)
             case 'Heal':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.log.info('Heal Selected %j', selected);
               this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
@@ -253,7 +260,7 @@ export default class CardEvaluator{
             //SetAttribute(pieceSelector, attribute, value)
             case 'SetAttribute':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.log.info('Set Attr Selected %j', selected);
               this.handleTimers(selected, pieceAction);
               if(selected && selected.length > 0){
@@ -271,7 +278,7 @@ export default class CardEvaluator{
             case 'Buff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.log.info('Buff Selected %j', selected);
               let buffAttributes = action.args.slice(2);
 
@@ -292,7 +299,7 @@ export default class CardEvaluator{
             case 'RemoveBuff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.log.info('Remove Buff Selected %j', selected);
 
               this.handleTimers(selected, pieceAction);
@@ -332,7 +339,7 @@ export default class CardEvaluator{
             //GiveStatus(pieceSelector, Status)
             case 'GiveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.handleTimers(selected, pieceAction);
               this.log.info('Give Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
@@ -345,7 +352,7 @@ export default class CardEvaluator{
             //RemoveStatus(pieceSelector, Status)
             case 'RemoveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], piece, activatingPiece, targetPieceId, savedPieces);
+              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               this.handleTimers(selected, pieceAction);
               this.log.info('Remove Status Selected %j status %s', selected, action.args[1]);
               if(selected && selected.length > 0){
@@ -370,21 +377,21 @@ export default class CardEvaluator{
 
 
   //proxy for the Selector select pieces function that ensures proper targeting
-  selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId, savedPieces){
+  selectPieces(controllingPlayerId, selector, pieceSelectorParams){
     if(this.selector.doesSelectorUse(selector, 'TARGET')){
       //make sure that if it's a target card and there are available targets, one of them is picked
       var possibleTargets = this.selector.selectPossibleTargets(controllingPlayerId, selector);
-      if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === targetPieceId)){
+      if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
         throw new EvalError('You must select a valid target');
       }
 
       //if it's a spell (as indicated by no activating piece) and doesn't have any possible targets then reject
-      if(activatingPiece == null && possibleTargets.length === 0){
+      if(pieceSelectorParams.activatingPiece == null && possibleTargets.length === 0){
         throw new EvalError('You must select a valid target for this spell');
       }
     }
 
-    return this.selector.selectPieces(controllingPlayerId, selector, selfPiece, activatingPiece, targetPieceId, savedPieces);
+    return this.selector.selectPieces(controllingPlayerId, selector, pieceSelectorParams);
   }
 
   //look through the events on piece (or card for spells) and see if there's any timers
@@ -493,7 +500,7 @@ export default class CardEvaluator{
           if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
 
           let targetPieceIds = this.selector.selectPossibleTargets(
-            playerId, selector
+            playerId, selector, card.tags.includes('Spell')
           ).map(p => p.id);
 
           targets.push({
