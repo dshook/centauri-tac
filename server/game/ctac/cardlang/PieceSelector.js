@@ -21,6 +21,7 @@ export default class PieceSelector{
     this.activatingPiece = activatingPiece;
     this.targetPieceId = targetPieceId;
     this.savedPieces = savedPieces;
+    this.isSpell = isSpell;
   }
 
   Select(selector){

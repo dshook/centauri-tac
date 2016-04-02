@@ -335,6 +335,39 @@ test('Find Possible targets', t => {
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Player 2 targets are minions');
 });
 
+test('Find Possible spell targets with TechResist', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 35, 1); //id 3
+  spawnPiece(pieceStateMix, 1, 2); //id 4
+  spawnPiece(pieceStateMix, 2, 2); //id 5
+
+  //fill one player hands with a target card and some other random ones to try to catch other errors
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  cardState.initPlayer(2);
+  spawnCard(cardState, 1, 18); //id 1
+  spawnCard(cardState, 1, 22); //id 2
+  spawnCard(cardState, 2, 3); //id 3
+  spawnCard(cardState, 2, 4); //id 4
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let targets = cardEval.findPossibleTargets(cardState.hands[1], 1);
+  //expecting enemy characters
+  let expectedTargets = [
+    {cardId: 1, event: 'playMinion', targetPieceIds: [2, 3, 5]},
+    {cardId: 2, event: 'playSpell', targetPieceIds: [2]}
+  ];
+
+  t.deepEqual(targets, expectedTargets, 'Player 1 can target with minion but not with spell');
+
+});
+
 test('Spawn a piece', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1);
