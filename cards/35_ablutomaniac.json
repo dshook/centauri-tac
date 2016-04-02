@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 35,
+	"name": "Ablutomaniac",
+	"description": "Cannot be targeted by spells or hero powers",
+	"cost": 3,
+	"attack": 3,
+	"health": 4,
+	"movement": 3,
+	"statuses": 32,
+	"tags": ["Minion"]
+}
