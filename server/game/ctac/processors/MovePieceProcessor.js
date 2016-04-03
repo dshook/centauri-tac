@@ -84,6 +84,7 @@ export default class MovePieceProcessor
 
         //add implicit attack action
         queue.push(new AttackPiece(piece.id, tauntPiece.id, true));
+        break;
       }
     }
   }
