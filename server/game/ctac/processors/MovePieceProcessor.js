@@ -3,6 +3,7 @@ import Direction from '../models/Direction.js';
 import Statuses from '../models/Statuses.js';
 import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
+import AttackPiece from '../actions/AttackPiece.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -11,9 +12,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class MovePieceProcessor
 {
-  constructor(pieceState)
+  constructor(pieceState, mapState)
   {
     this.pieceState = pieceState;
+    this.mapState = mapState;
   }
 
   /**
@@ -60,5 +62,29 @@ export default class MovePieceProcessor
     queue.complete(action);
     this.log.info('moved piece %s from %s to %s',
       action.pieceId, currentPosition, action.to);
+
+    //figure out if we've stepped into an enemy taunted area
+    //we do this by finding all the enemy taunt pieces, getting the combined area they block off
+    //and then seeing if we stepped into it
+    let tauntPieces = this.pieceState.withStatus(Statuses.Taunt)
+      .filter(p => p.playerId != piece.playerId);
+    for(let tauntPiece of tauntPieces){
+      let tauntPositions = this.mapState.getKingTilesInRadius(tauntPiece.position, 1);
+      if(tauntPositions.length > 0 && tauntPositions.find(p => p.tileEquals(piece.position) )){
+        this.log.info('Unit %j stepped onto a taunt area of %j', piece, tauntPiece);
+        //cancel any upcoming move actions
+        let upcomingQueue = queue.peek();
+        for(let upcomingAction of upcomingQueue){
+          if((upcomingAction instanceof MovePiece) && upcomingAction.pieceId == piece.id){
+            queue.cancel(upcomingAction);
+          }else{
+            break;
+          }
+        }
+
+        //add implicit attack action
+        queue.push(new AttackPiece(piece.id, tauntPiece.id));
+      }
+    }
   }
 }

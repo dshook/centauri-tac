@@ -63,6 +63,10 @@ export default class PieceState
     return this.pieces.find(p => p.position.x === x && p.position.z === z);
   }
 
+  withStatus(status){
+    return this.pieces.filter(p => p.statuses & status);
+  }
+
   hero(playerId){
     return this.pieces.find(x => x.playerId == playerId && x.tags[0] === 'Hero');
   }

@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 36,
+	"name": "XK-27",
+	"description": "<b>Taunt</b>",
+	"cost": 4,
+	"attack": 4,
+	"health": 4,
+	"movement": 2,
+	"statuses": 8,
+	"tags": ["Minion"]
+}
