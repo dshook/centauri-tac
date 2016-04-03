@@ -8,6 +8,7 @@ namespace ctac
     public interface IMapService
     {
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
+        Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
         Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId);
         int TileDistance(Vector2 a, Vector2 b);
@@ -25,7 +26,21 @@ namespace ctac
         [Inject]
         public MapModel mapModel { get; set; }
 
+        public Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance)
+        {
+            return GetTilesInRadiusGeneric(center, distance, GetKingNeighbors, KingDistance);
+        }
+
         public Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance)
+        {
+            return GetTilesInRadiusGeneric(center, distance, GetNeighbors, TileDistance);
+        }
+
+        private Dictionary<Vector2, Tile> GetTilesInRadiusGeneric(
+            Vector2 center, int distance
+            , Func<Vector2, Dictionary<Vector2, Tile>> neighborsFunc
+            , Func<Vector2, Vector2, int> distanceFunc
+        )
         {
             var ret = new Dictionary<Vector2, Tile>();
             if (distance <= 0) return ret;
@@ -43,7 +58,7 @@ namespace ctac
                     ret.Add(current, mapModel.tiles[current]);
                 }
 
-                var neighbors = GetNeighbors(current);
+                var neighbors = neighborsFunc(current);
                 foreach (var neighbor in neighbors)
                 {
                     //add the neighbor to explore if it's not already being returned 
@@ -51,7 +66,7 @@ namespace ctac
                     if (
                         !ret.ContainsKey(neighbor.Key) 
                         && !frontier.Contains(neighbor.Key)
-                        && TileDistance(neighbor.Key, center) <= distance
+                        && distanceFunc(neighbor.Key, center) <= distance
                     )
                     {
                         frontier.Add(neighbor.Key);
@@ -242,6 +257,33 @@ namespace ctac
                 center.AddX(-1f),
                 center.AddY(1f),
                 center.AddY(-1f)
+            };
+
+            foreach (var currentDirection in toCheck)
+            {
+                //check it's not off the map
+                next = mapModel.tiles.Get(currentDirection);
+                if (next != null)
+                {
+                    ret.Add(currentDirection, next);
+                }
+            }
+            return ret;
+        }
+
+        public Dictionary<Vector2, Tile> GetKingNeighbors(Vector2 center)
+        {
+            var ret = new Dictionary<Vector2, Tile>();
+            Tile next = null;
+            var toCheck = new Vector2[8]{
+                center.AddX(1f),
+                center.AddX(-1f),
+                center.AddY(1f),
+                center.AddY(-1f),
+                center.Add(-1, -1),
+                center.Add(-1, 1),
+                center.Add(1, -1),
+                center.Add(1, 1)
             };
 
             foreach (var currentDirection in toCheck)

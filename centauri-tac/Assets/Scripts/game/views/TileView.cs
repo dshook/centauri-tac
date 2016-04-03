@@ -6,6 +6,8 @@ namespace ctac {
         public Tile tile;
         public Color hoverTint = new Color(.1f, .1f, .1f, .1f);
         public Color pathFindTint = new Color(.3f, .3f, .3f, .3f);
+        public Color friendlyTauntTint = new Color(.15f, .0f, .15f, .2f);
+        public Color enemyTauntTint = new Color(0f, .15f, .0f, .2f);
         public Color selectColor = new Color(.4f, .9f, .4f);
         public Color moveColor = new Color(.4f, .4f, .9f);
         public Color moveRangeColor = new Color(.6f, .6f, 1f);
@@ -30,19 +32,26 @@ namespace ctac {
         {
             if (tile == null) return;
 
+            tint = invisible;
+            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.FriendlyTauntArea))
+            {
+                tint = friendlyTauntTint;
+                meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
+            }
+            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.EnemyTauntArea))
+            {
+                tint = tint + enemyTauntTint;
+                meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
+            }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
             {
-                tint = hoverTint;
+                tint = tint + hoverTint;
                 meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
             }
             else if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
             {
-                tint = pathFindTint;
+                tint = tint + pathFindTint;
                 meshRenderer.material.SetColor("_HighlightColor", Color.white - tint);
-            }
-            else
-            {
-                tint = invisible;
             }
 
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))

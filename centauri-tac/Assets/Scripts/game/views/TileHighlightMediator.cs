@@ -18,6 +18,9 @@ namespace ctac
         [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
 
         [Inject] public PieceDiedSignal pieceDied { get; set; }
+        [Inject] public PieceFinishedMovingSignal pieceMoved { get; set; }
+        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public TurnEndedSignal turnEnded { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -34,6 +37,9 @@ namespace ctac
             pieceSelected.AddListener(onPieceSelected);
             pieceDied.AddListener(onPieceDied);
             pieceHoveredSignal.AddListener(onPieceHover);
+            pieceMoved.AddListener(onPieceMove);
+            pieceSpawned.AddListener(onPieceSpawn);
+            turnEnded.AddListener(onTurnEnded);
             view.init();
         }
 
@@ -43,6 +49,9 @@ namespace ctac
             cardSelected.RemoveListener(onCardSelected);
             pieceHoveredSignal.RemoveListener(onPieceHover);
             pieceDied.RemoveListener(onPieceDied);
+            pieceMoved.RemoveListener(onPieceMove);
+            pieceSpawned.RemoveListener(onPieceSpawn);
+            turnEnded.RemoveListener(onTurnEnded);
         }
 
         void onTileHover(GameObject newHoverTile)
@@ -141,6 +150,7 @@ namespace ctac
             {
                 selectedPiece = null;
             }
+            updateTauntTiles(piece);
         }
 
         private void onPieceHover(PieceModel piece)
@@ -179,6 +189,59 @@ namespace ctac
             {
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+            }
+        }
+
+        private void onPieceMove(PieceModel piece)
+        {
+            updateTauntTiles();
+        }
+
+        private void onPieceSpawn(PieceModel piece)
+        {
+            updateTauntTiles();
+        }
+
+        private void onTurnEnded(GameTurnModel gameTurn)
+        {
+            updateTauntTiles();
+        }
+
+        private void updateTauntTiles(PieceModel deadPiece = null)
+        {
+            var tauntPieces = pieces.Pieces.Where(p => FlagsHelper.IsSet(p.statuses, Statuses.Taunt)
+                && (deadPiece == null || p != deadPiece));
+            var friendlyTauntTiles = new List<Tile>();
+            var enemyTauntTiles = new List<Tile>();
+            foreach (var tauntPiece in tauntPieces)
+            {
+                var kingTiles = mapService.GetKingTilesInRadius(tauntPiece.tilePosition, 1);
+                if (tauntPiece.currentPlayerHasControl)
+                {
+                    friendlyTauntTiles.AddRange(kingTiles.Values);
+                }
+                else
+                {
+                    enemyTauntTiles.AddRange(kingTiles.Values);
+                }
+            }
+
+            if (friendlyTauntTiles.Count > 0)
+            {
+                view.toggleTileFlags(friendlyTauntTiles.Distinct().ToList(), TileHighlightStatus.FriendlyTauntArea);
+            }
+            else
+            {
+                view.toggleTileFlags(null, TileHighlightStatus.FriendlyTauntArea);
+            }
+
+            if (enemyTauntTiles.Count > 0)
+            {
+                view.toggleTileFlags(enemyTauntTiles.Distinct().ToList(), TileHighlightStatus.EnemyTauntArea);
+            }
+            else
+            {
+                view.toggleTileFlags(null, TileHighlightStatus.EnemyTauntArea);
             }
         }
     }

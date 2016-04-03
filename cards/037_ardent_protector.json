@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 37,
+	"name": "Ardent Protector",
+	"description": "<b>Taunt</b>",
+	"cost": 1,
+	"attack": 3,
+	"health": 1,
+	"movement": 3,
+	"statuses": 8,
+	"tags": ["Minion"]
+}

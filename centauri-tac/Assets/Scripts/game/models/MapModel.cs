@@ -41,7 +41,9 @@ namespace ctac
         PathFind = 8,
         Attack = 16,
         MoveRange = 32,
-        AttackRange = 64
+        AttackRange = 64,
+        FriendlyTauntArea = 128,
+        EnemyTauntArea = 256
     }
 }
 
