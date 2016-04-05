@@ -66,6 +66,10 @@ export default class MovePieceProcessor
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off
     //and then seeing if we stepped into it
+
+    //if we're moving through a piece, don't consider a taunt action
+    if(occupyingPieces.length > 0) return;
+
     let tauntPieces = this.pieceState.withStatus(Statuses.Taunt)
       .filter(p => p.playerId != piece.playerId);
     for(let tauntPiece of tauntPieces){
