@@ -21,7 +21,7 @@ namespace ctac
         public override void Execute()
         {
             //find and cleanup the phantom piece start target spawned if existed, it won't for spells
-            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.id == -1 && p.tags.Contains("targetPiece"));
+            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));
 
             if (phantomPiece != null)
             {

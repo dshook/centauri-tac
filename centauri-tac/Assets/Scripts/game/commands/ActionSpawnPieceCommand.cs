@@ -43,7 +43,7 @@ namespace ctac
             }
 
             //search for phantom piece that was created when targeting started to update props from real spawn event
-            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.id == -1 && p.tags.Contains("targetPiece"));
+            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));
 
             PieceModel pieceModel = null;
 

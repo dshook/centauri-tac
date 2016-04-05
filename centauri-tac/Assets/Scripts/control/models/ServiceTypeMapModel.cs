@@ -39,6 +39,7 @@ namespace ctac
                 {"status", typeof(MatchmakerStatusSignal) },
 
                 {"actionCancelled:SpawnPiece", typeof(ActionSpawnPieceCancelledSignal) },
+                {"actionCancelled:ActivateCard", typeof(ActionActivateCardCancelledSignal) },
             }; 
 
             //auto add action bindings

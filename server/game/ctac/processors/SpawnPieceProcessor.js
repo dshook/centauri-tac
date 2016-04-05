@@ -34,10 +34,9 @@ export default class SpawnPieceProcessor
     let occupyingPiece = this.pieceState.pieceAt(action.position.x, action.position.z);
     if(occupyingPiece){
       //be sure to emit the cancel event so the client can respond
-      queue.cancel(action, true);
       this.log.warn('Can\'t spawn piece %s at position %s because %j is occupying it',
         cardPlayed.name, action.position, occupyingPiece);
-      return;
+      return queue.cancel(action, true);
     }
 
     var newPiece = this.pieceState.newFromCard(this.cardDirectory, action.cardTemplateId, action.playerId, action.position);
@@ -50,8 +49,7 @@ export default class SpawnPieceProcessor
         const playedCard = this.cardState.playCard(action.playerId, action.cardInstanceId);
         if(!playedCard){
           this.log.error('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
-          queue.cancel(action, true);
-          return;
+          return queue.cancel(action, true);
         }
       }
 
@@ -61,9 +59,9 @@ export default class SpawnPieceProcessor
       queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
     }else{
       //be sure to emit the cancel event so the client can respond
-      queue.cancel(action, true);
       this.log.info('Spawned piece %s for player %s SCRUBBED',
         action.cardTemplateId, action.playerId, action.position);
+      return queue.cancel(action, true);
     }
 
   }

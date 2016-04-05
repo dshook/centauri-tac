@@ -6,5 +6,6 @@
 
         public static string cardCanvas = "cardCanvas";
         public static string cardCamera = "CardCamera";
+        public static string targetPieceTag = "targetPiece";
     }
 }

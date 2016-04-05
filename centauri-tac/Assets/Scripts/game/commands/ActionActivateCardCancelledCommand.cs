@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace ctac
 {
-    public class ActionSpawnPieceCancelledCommand : Command
+    public class ActionActivateCardCancelledCommand : Command
     {
         [Inject]
-        public SpawnPieceModel pieceSpawnCancelled { get; set; }
+        public ActivateCardModel activateCancelled { get; set; }
 
         [Inject]
         public PieceDiedSignal pieceDied { get; set; }
@@ -21,7 +21,7 @@ namespace ctac
         public override void Execute()
         {
             //find and cleanup the phantom piece start target spawned
-            var phantomPiece = pieces.Pieces.FirstOrDefault(p =>  p.tags.Contains(Constants.targetPieceTag));
+            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));
 
             if (phantomPiece != null)
             {

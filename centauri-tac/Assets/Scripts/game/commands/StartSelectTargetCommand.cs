@@ -24,7 +24,7 @@ namespace ctac
                 pieceId = -1,
                 playerId = startTargetModel.targetingCard.playerId,
                 position = startTargetModel.cardDeployPosition.position.ToPositionModel(),
-                tags = new List<string>() { "targetPiece" },
+                tags = new List<string>() { Constants.targetPieceTag },
                 direction = Direction.South
             };
 
