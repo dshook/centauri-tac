@@ -58,10 +58,11 @@ export default class MovePieceProcessor
     action.direction = targetDirection;
     var currentPosition = piece.position;
     piece.position = action.to;
+    piece.direction = action.direction;
 
     queue.complete(action);
-    this.log.info('moved piece %s from %s to %s',
-      action.pieceId, currentPosition, action.to);
+    this.log.info('moved piece %s from %s to %s, direction %s',
+      action.pieceId, currentPosition, action.to, action.direction);
 
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off
