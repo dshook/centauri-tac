@@ -54,6 +54,10 @@
 (Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root)
   return 'status'
 
+//bool
+(true|false)
+  return 'bool'
+
 //numbers
 (\-?[0-9])
   return 'number'
@@ -112,6 +116,8 @@ pEvent
    { $$ = { event: $1, selector: $3, actions: $6 } }
   | event'('pNumber')''{'actionlist'}'
    { $$ = { event: $1, timer: $3, actions: $6 } }
+  | event'('pNumber','pBool')''{'actionlist'}'
+   { $$ = { event: $1, timer: $3, repeating: $5, actions: $8 } }
 ;
 
 /* actionlist is all the actions for each event */
@@ -199,3 +205,7 @@ buffAttribute
 pText
   : text -> $1.substring(1, $1.length-1);
   ;
+
+pBool
+  : bool -> $1 == 'true'
+;

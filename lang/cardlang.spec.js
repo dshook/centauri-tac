@@ -427,3 +427,34 @@ test('Turn timers', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Repeating Turn timers', t => {
+  t.plan(1);
+
+  let input = `
+    endTurnTimer(4, true){ GiveStatus(FRIENDLY, Shield ); }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'endTurnTimer',
+      timer: 4,
+      repeating: true,
+      actions: [
+        {
+          action: 'GiveStatus',
+          args: [
+            {
+              left: 'FRIENDLY'
+            },
+            'Shield'
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
