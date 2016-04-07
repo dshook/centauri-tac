@@ -39,6 +39,10 @@ export default class CardEvaluator{
     this.log.info('Eval piece event %s activating piece: %j', event, activatingPiece);
     let evalActions = [];
 
+    if(event === 'death'){
+      this.cleanupTimers(activatingPiece);
+    }
+
     //in the pieces case, if this is a spawn piece event the evaluator has the chance to return false
     //and scrub the spawn of the piece, so the activating piece isn't in the piece state yet.
     //However, include it in the loop so its events will be evaluated
@@ -472,6 +476,23 @@ export default class CardEvaluator{
     }
 
     return activatedEvents;
+  }
+
+  //Whenever a piece dies that had a repeating turn timer on it we need to remove it
+  cleanupTimers(killedPiece){
+    let abandonedFilter = (t) => (t.repeating == true && t.piece && t.piece.id === killedPiece.id);
+
+    let abandonedStartTimers = this.startTurnTimers.filter(abandonedFilter);
+    if(abandonedStartTimers.length > 0){
+      this.log.info('Cleaning up %s start timers', abandonedStartTimers.length);
+    }
+    this.startTurnTimers = _.without(this.startTurnTimers, ...abandonedStartTimers);
+
+    let abandonedEndTimers = this.endTurnTimers.filter(abandonedFilter);
+    if(abandonedEndTimers.length > 0){
+      this.log.info('Cleaning up %s end timers', abandonedEndTimers.length);
+    }
+    this.endTurnTimers = _.without(this.endTurnTimers, ...abandonedEndTimers);
   }
 
   //look through the cards for any cards needing a TARGET
