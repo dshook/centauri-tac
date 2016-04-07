@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 38,
+	"name": "Groggy Gomoria",
+	"description": "At the start of your turn, gain +1/1 and 1 movement",
+	"cost": 2,
+	"attack": 1,
+	"health": 1,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ startTurnTimer(2, true, Buff(SELF, 'Coffee', attack(1), health(1), movement(1) ) ) }"
+}

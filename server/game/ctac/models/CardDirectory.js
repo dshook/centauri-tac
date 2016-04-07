@@ -57,8 +57,6 @@ export default class CardDirectory
     var cardClone = new Card();
     for(var k in directoryCard) cardClone[k]=directoryCard[k];
 
-    cardClone.events = _.cloneDeep(directoryCard.events);
-
     return cardClone;
   }
 }

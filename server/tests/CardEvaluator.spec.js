@@ -432,7 +432,7 @@ test('Timers', t => {
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
 
-  t.plan(9);
+  t.plan(7);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
@@ -443,8 +443,6 @@ test('Timers', t => {
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
-  t.equal(cardPlayed.events.length, 1, 'Card events were modified');
-  t.equal(cardDirectory.directory[31].events.length, 2, 'Card template events were not modified');
 
   cardEval.evaluatePlayerEvent('turnStart', 2);
   t.equal(queue._actions.length, 1, 'Still only 1 action in the queue');

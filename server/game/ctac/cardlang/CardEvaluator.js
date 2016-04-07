@@ -203,9 +203,13 @@ export default class CardEvaluator{
       //see Spawn
       let spawnLocations = [];
 
+      //Every time something selects pieces, save them for a potential timer to capture as the saved pieces
+      let lastSelected = null;
+
       for(let pieceAction of evalActions){
         let action = pieceAction.action;
         let piece = pieceAction.piece;
+        let card = pieceAction.card;
         let savedPieces = pieceAction.savedPieces;
         let pieceSelectorParams = {
           selfPiece: piece,
@@ -235,10 +239,10 @@ export default class CardEvaluator{
             //Hit(pieceSelector, damageAmount)
             case 'Hit':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.log.info('Hit Selected %j', selected);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Hit Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
                 }
               }
@@ -247,11 +251,10 @@ export default class CardEvaluator{
             //Heal(pieceSelector, healAmount)
             case 'Heal':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.log.info('Heal Selected %j', selected);
-              this.handleTimers(selected, pieceAction);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Heal Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   this.queue.push(new PieceHealthChange(s.id, action.args[1]));
                 }
               }
@@ -260,11 +263,10 @@ export default class CardEvaluator{
             //SetAttribute(pieceSelector, attribute, value)
             case 'SetAttribute':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.log.info('Set Attr Selected %j', selected);
-              this.handleTimers(selected, pieceAction);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Set Attr Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   let phc = new PieceAttributeChange(s.id);
                   //set up the appropriate attribute change from args, i.e. attack = 1
                   phc[action.args[1]] = action.args[2];
@@ -278,13 +280,12 @@ export default class CardEvaluator{
             case 'Buff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.log.info('Buff Selected %j', selected);
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Buff Selected %j', lastSelected);
               let buffAttributes = action.args.slice(2);
 
-              this.handleTimers(selected, pieceAction);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   //set up a new buff for each selected piece that has all the attributes of the buff
                   let buff = new PieceBuff(s.id, buffName, false);
                   for(let buffAttribute of buffAttributes){
@@ -299,12 +300,11 @@ export default class CardEvaluator{
             case 'RemoveBuff':
             {
               let buffName = action.args[1];
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.log.info('Remove Buff Selected %j', selected);
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Remove Buff Selected %j', lastSelected);
 
-              this.handleTimers(selected, pieceAction);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   let buff = new PieceBuff(s.id, buffName, true);
                   this.queue.push(buff);
                 }
@@ -318,7 +318,6 @@ export default class CardEvaluator{
             //Also check to make sure it's a valid spawn location and another loop hasn't spawned at the same location
             case 'Spawn':
             {
-              this.handleTimers([], pieceAction);
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
               possiblePositions = _.chain(possiblePositions)
                 .filter(p => (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
@@ -339,11 +338,10 @@ export default class CardEvaluator{
             //GiveStatus(pieceSelector, Status)
             case 'GiveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.handleTimers(selected, pieceAction);
-              this.log.info('Give Status Selected %j status %s', selected, action.args[1]);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Give Status Selected %j status %s', lastSelected, action.args[1]);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   this.queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
                 }
               }
@@ -352,12 +350,51 @@ export default class CardEvaluator{
             //RemoveStatus(pieceSelector, Status)
             case 'RemoveStatus':
             {
-              let selected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
-              this.handleTimers(selected, pieceAction);
-              this.log.info('Remove Status Selected %j status %s', selected, action.args[1]);
-              if(selected && selected.length > 0){
-                for(let s of selected){
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Remove Status Selected %j status %s', lastSelected, action.args[1]);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
                   this.queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));
+                }
+              }
+              break;
+            }
+            //startTurnTimer(turns, repeating, ...Actions)
+            case 'startTurnTimer':
+            {
+              let timerActions = action.args.slice(2);
+              if(timerActions && timerActions.length > 0){
+                for(let timerAction of timerActions){
+                  this.startTurnTimers.push({
+                    saved: lastSelected,
+                    piece,
+                    card,
+                    playerId: pieceAction.playerId,
+                    interval: action.args[0],
+                    timer: action.args[0],
+                    repeating: action.args[1],
+                    timerAction: timerAction
+                  });
+                }
+              }
+              break;
+            }
+            //endTurnTimer(turns, repeating, ...Actions)
+            case 'endTurnTimer':
+            {
+              let timerActions = action.args.slice(2);
+              if(timerActions && timerActions.length > 0){
+                for(let timerAction of timerActions){
+                  this.endTurnTimers.push({
+                    saved: lastSelected,
+                    piece,
+                    card,
+                    playerId: pieceAction.playerId,
+                    interval: action.args[0],
+                    timer: action.args[0],
+                    repeating: action.args[1],
+                    timerAction: timerAction
+                  });
                 }
               }
               break;
@@ -394,50 +431,6 @@ export default class CardEvaluator{
     return this.selector.selectPieces(controllingPlayerId, selector, pieceSelectorParams);
   }
 
-  //look through the events on piece (or card for spells) and see if there's any timers
-  //if so, move them to the saved timer arrays so they can be triggered later
-  //take them out of the events so they only trigger once
-  handleTimers(selectedPieces, {piece, card, playerId}){
-    let startTimers = [];
-    let endTimers = [];
-    let pieceCard = piece ? piece : card;
-
-    if(!pieceCard){
-      throw 'Must have either piece or card to handle timers';
-    }
-
-    startTimers = startTimers.concat(
-      pieceCard.events.filter(e => e.event === 'startTurnTimer')
-    );
-    endTimers = endTimers.concat(
-      pieceCard.events.filter(e => e.event === 'endTurnTimer')
-    );
-    pieceCard.events = _.without(pieceCard.events, ...startTimers, ...endTimers);
-
-    if(startTimers.length > 0){
-      for(let timer of startTimers){
-        this.startTurnTimers.push({
-          saved: selectedPieces,
-          piece,
-          card,
-          playerId,
-          timerAction: timer
-        });
-      }
-    }
-    if(endTimers.length > 0){
-      for(let timer of endTimers){
-        this.endTurnTimers.push({
-          saved: selectedPieces,
-          piece,
-          card,
-          playerId,
-          timerAction: timer
-        });
-      }
-    }
-  }
-
   //Tick down all the timers in the array. When the metaphorical bomb ticks down remove it from
   //the saved timers and return its actions to be evaluated
   //have to use a bool instead of passing the array in so we can reassign it to remove items :(
@@ -446,28 +439,36 @@ export default class CardEvaluator{
     if(timerArray.length === 0) return [];
 
     for(let timer of timerArray){
-      timer.timerAction.timer--;
+      timer.timer--;
     }
-    let activatedTimers = timerArray.filter(t => t.timerAction.timer === 0);
+    let activatedTimers = timerArray.filter(t => t.timer === 0);
+
+    //reactivate those that are repeating
+    for(let activated of activatedTimers){
+      if(activated.repeating){
+        activated.timer = activated.interval;
+      }
+    }
+
+    //refilter for expired
+    let expiredTimers = timerArray.filter(t => t.timer === 0);
 
     if(isStartTimers){
-      this.startTurnTimers = _.without(timerArray, ...activatedTimers);
+      this.startTurnTimers = _.without(timerArray, ...expiredTimers);
     }else{
-      this.endTurnTimers = _.without(timerArray, ...activatedTimers);
+      this.endTurnTimers = _.without(timerArray, ...expiredTimers);
     }
 
     let activatedEvents = [];
 
     for(let activatedTimer of activatedTimers){
-      for(let cardEventAction of activatedTimer.timerAction.actions){
-        activatedEvents.push({
-          piece: activatedTimer.piece,
-          card: activatedTimer.card,
-          savedPieces: activatedTimer.saved,
-          playerId: activatedTimer.playerId,
-          action: cardEventAction
-        });
-      }
+      activatedEvents.push({
+        piece: activatedTimer.piece,
+        card: activatedTimer.card,
+        savedPieces: activatedTimer.saved,
+        playerId: activatedTimer.playerId,
+        action: activatedTimer.timerAction
+      });
     }
 
     return activatedEvents;
