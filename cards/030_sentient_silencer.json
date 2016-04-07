@@ -7,5 +7,5 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ GiveStatus(MINION & TARGET, Silence ); }"
+	"eventcode": "playMinion{ GiveStatus(MINION & TARGET, Silence ) }"
 }

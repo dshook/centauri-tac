@@ -4,5 +4,5 @@
 	"description": "Give a friendly minion +0/+2",
 	"cost": 1,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ Buff(TARGET & FRIENDLY & MINION, 'Energy boost', attack(0), health(2) ); }"
+	"eventcode": "playSpell{ Buff(TARGET & FRIENDLY & MINION, 'Energy boost', attack(0), health(2) ) }"
 }

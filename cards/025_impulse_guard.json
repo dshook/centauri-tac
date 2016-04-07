@@ -7,5 +7,5 @@
 	"health": 3,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "death{ Spawn(8, 0); }"
+	"eventcode": "death{ Spawn(8, 0) }"
 }

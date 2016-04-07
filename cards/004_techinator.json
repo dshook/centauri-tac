@@ -7,5 +7,5 @@
 	"health": 3,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "death{ DrawCard(PLAYER); }"
+	"eventcode": "death{ DrawCard(PLAYER) }"
 }

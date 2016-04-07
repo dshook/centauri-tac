@@ -7,5 +7,5 @@
 	"health": 1,
 	"movement": 4,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ Hit(TARGET & MINION, 4); }"
+	"eventcode": "playMinion{ Hit(TARGET & MINION, 4) }"
 }

@@ -7,5 +7,5 @@
 	"health": 5,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "damaged{ Heal(FRIENDLY & HERO, 2); }"
+	"eventcode": "damaged{ Heal(FRIENDLY & HERO, 2) }"
 }

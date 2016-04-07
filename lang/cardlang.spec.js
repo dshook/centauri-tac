@@ -8,7 +8,7 @@ test('basic play event', t => {
 
   let input = `
   playMinion{
-    DrawCard(PLAYER);
+    DrawCard(PLAYER)
   }`;
 
   let d = parser.parse(input);
@@ -37,8 +37,8 @@ test('Two actions on event', t => {
 
   let input = `
   playMinion{
-    DrawCard(PLAYER);
-    SetAttribute(TARGET, health, 3);
+    DrawCard(PLAYER)
+    SetAttribute(TARGET, health, 3)
   }
   `;
 
@@ -76,10 +76,10 @@ test('Two Events', t => {
 
   let input = `
   playMinion{
-    SetAttribute(Random(CHARACTER), health, 3);
+    SetAttribute(Random(CHARACTER), health, 3)
   }
   death{
-    DrawCard(PLAYER);
+    DrawCard(PLAYER)
   }
   `;
 
@@ -125,7 +125,7 @@ test('Repeating action', t => {
 
   let input = `
   playMinion{
-    DrawCard(PLAYER) * 2;
+    DrawCard(PLAYER) * 2
   }
   `;
 
@@ -154,7 +154,7 @@ test('Hit action', t => {
 
   let input = `
   playMinion{
-    Hit(CHARACTER, 2);
+    Hit(CHARACTER, 2)
   }
   `;
 
@@ -183,7 +183,7 @@ test('Selector input', t => {
 
   let input = `
   playMinion{
-    DrawCard(ENEMY & CHARACTER & HERO);
+    DrawCard(ENEMY & CHARACTER & HERO)
   }
   `;
 
@@ -220,7 +220,7 @@ test('Selector input with random', t => {
 
   let input = `
   playMinion{
-    Hit(Random(FRIENDLY & MINION - HERO), 1);
+    Hit(Random(FRIENDLY & MINION - HERO), 1)
   }
   `;
 
@@ -261,7 +261,7 @@ test('Heal action on damaged', t => {
 
   let input = `
   damaged{
-    Heal(FRIENDLY & HERO, 2);
+    Heal(FRIENDLY & HERO, 2)
   }
   `;
 
@@ -294,7 +294,7 @@ test('Event Selector', t => {
 
   let input = `
   damaged(ENEMY & MINION){
-    Heal(FRIENDLY & HERO, 2);
+    Heal(FRIENDLY & HERO, 2)
   }
   `;
 
@@ -332,7 +332,7 @@ test('Random number list', t => {
 
   let input = `
   playMinion{
-    DrawCard(PLAYER) * Random(1,2,3);
+    DrawCard(PLAYER) * Random(1,2,3)
   }`;
 
   let d = parser.parse(input);
@@ -364,7 +364,7 @@ test('Buff', t => {
 
   let input = `
     attacks{
-      Buff(FRIENDLY, 'Buff of the Chosen', attack(1), health(2) );
+      Buff(FRIENDLY, 'Buff of the Chosen', attack(1), health(2) )
     }
   `;
 
@@ -402,54 +402,43 @@ test('Turn timers', t => {
   t.plan(1);
 
   let input = `
-    endTurnTimer(4){ GiveStatus(FRIENDLY, Shield ); }
-  `;
-
-  let d = parser.parse(input);
-
-  let expectedPlay = [
-    {
-      event: 'endTurnTimer',
-      timer: 4,
-      actions: [
-        {
-          action: 'GiveStatus',
-          args: [
-            {
-              left: 'FRIENDLY'
-            },
-            'Shield'
-          ]
-        }
-      ]
+    playSpell{
+      GiveStatus(ENEMY & MINION, Paralyze)
+      startTurnTimer(2, false, RemoveStatus(SAVED, Paralyze) )
     }
-  ];
-
-  t.deepEqual(d, expectedPlay);
-});
-
-test('Repeating Turn timers', t => {
-  t.plan(1);
-
-  let input = `
-    endTurnTimer(4, true){ GiveStatus(FRIENDLY, Shield ); }
   `;
 
   let d = parser.parse(input);
 
   let expectedPlay = [
     {
-      event: 'endTurnTimer',
-      timer: 4,
-      repeating: true,
+      event: "playSpell",
       actions: [
         {
-          action: 'GiveStatus',
+          action: "GiveStatus",
           args: [
             {
-              left: 'FRIENDLY'
+              left: "ENEMY",
+              op: "&",
+              right: "MINION"
             },
-            'Shield'
+            "Paralyze"
+          ]
+        },
+        {
+          action: "startTurnTimer",
+          args: [
+            2,
+            false,
+            {
+              action: "RemoveStatus",
+              args: [
+                {
+                  left: "SAVED"
+                },
+                "Paralyze"
+              ]
+            }
           ]
         }
       ]

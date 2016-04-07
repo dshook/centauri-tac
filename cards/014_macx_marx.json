@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "cardDrawn(OPPONENT){ Heal(Random(FRIENDLY & DAMAGED), 3); }"
+	"eventcode": "cardDrawn(OPPONENT){ Heal(Random(FRIENDLY & DAMAGED), 3) }"
 }

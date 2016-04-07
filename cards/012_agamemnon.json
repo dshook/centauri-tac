@@ -7,5 +7,5 @@
 	"health": 8,
 	"movement": 1,
 	"tags": ["Minion"],
-	"eventcode": "damaged(FRIENDLY & HERO){ DrawCard(PLAYER); }"
+	"eventcode": "damaged(FRIENDLY & HERO){ DrawCard(PLAYER) }"
 }

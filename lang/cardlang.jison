@@ -15,10 +15,6 @@
 (cardDrawn|turnEnd|turnStart|playSpell)
   return 'event'
 
-//timer events
-(endTurnTimer|startTurnTimer)
-  return 'event'
-
 // player targets
 (PLAYER|OPPONENT)
   return 'target'
@@ -46,6 +42,10 @@
 (DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus)
   return 'action'
 
+//timer actions
+(endTurnTimer|startTurnTimer)
+  return 'action'
+
 //attributes
 (health|attack|movement)
   return 'attribute'
@@ -70,7 +70,6 @@
 '('    return '('
 ')'    return ')'
 ','    return ','
-';'    return ';'
 '{'    return '{'
 '}'    return '}'
 '*'    return '*'
@@ -114,10 +113,6 @@ pEvent
    { $$ = { event: $1, actions: $3 } }
   | event'('possibleRandSelector')''{'actionlist'}'
    { $$ = { event: $1, selector: $3, actions: $6 } }
-  | event'('pNumber')''{'actionlist'}'
-   { $$ = { event: $1, timer: $3, actions: $6 } }
-  | event'('pNumber','pBool')''{'actionlist'}'
-   { $$ = { event: $1, timer: $3, repeating: $5, actions: $8 } }
 ;
 
 /* actionlist is all the actions for each event */
@@ -130,11 +125,11 @@ actionlist
 
 /* actionargs is the basic syntax for all the actions with function like arguments */
 actionargs
-  : action'('arguments')'';'
+  : action'('arguments')'
   {{ $$ =
     { action: $1, args: $3 }
   }}
-  | action '('arguments')' '*' eNumber';'
+  | action '('arguments')' '*' eNumber
   {{ $$ =
     { action: $1, args: $3, times: $6 }
   }}
@@ -154,6 +149,8 @@ argument_item
   | buffAttribute -> $1
   | pNumber -> $1
   | pText -> $1
+  | pBool -> $1
+  | actionargs -> $1
   ;
 
 possibleRandSelector

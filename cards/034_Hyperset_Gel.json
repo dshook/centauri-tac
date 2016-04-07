@@ -4,5 +4,5 @@
 	"description": "Root all enemy characters",
 	"cost": 1,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ GiveStatus(ENEMY, Root); } startTurnTimer(2){ RemoveStatus(SAVED, Root); }"
+	"eventcode": "playSpell{ GiveStatus(ENEMY, Root) startTurnTimer(2, false, RemoveStatus(SAVED, Root) ) }"
 }

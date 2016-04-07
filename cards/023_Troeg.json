@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 4,
 	"tags": ["Minion"],
-	"eventcode": "playSpell(OPPONENT){ Buff(SELF, 'Energy Rage', attack(2), health(-1) ); }"
+	"eventcode": "playSpell(OPPONENT){ Buff(SELF, 'Energy Rage', attack(2), health(-1) ) }"
 }

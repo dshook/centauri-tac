@@ -7,5 +7,5 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ DrawCard(PLAYER) * 2; }"
+	"eventcode": "playMinion{ DrawCard(PLAYER) * 2 }"
 }

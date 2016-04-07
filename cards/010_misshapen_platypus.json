@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 2,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ SetAttribute(Random(ENEMY & MINION), attack, 1); }"
+	"eventcode": "playMinion{ SetAttribute(Random(ENEMY & MINION), attack, 1) }"
 }

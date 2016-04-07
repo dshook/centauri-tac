@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ GiveStatus(FRIENDLY & MINION & TARGET, Shield ); }"
+	"eventcode": "playMinion{ GiveStatus(FRIENDLY & MINION & TARGET, Shield ) }"
 }
