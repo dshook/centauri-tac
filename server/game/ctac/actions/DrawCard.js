@@ -5,5 +5,7 @@ export default class DrawCard
     this.cardId = null;
     this.cardTemplateId = null;
     this.playerId = playerId;
+
+    this.milled = false;
   }
 }

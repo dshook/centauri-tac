@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import DrawCard from '../actions/DrawCard.js';
+import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -8,10 +9,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class CardDrawProcessor
 {
-  constructor(cardState, cardEvaluator)
+  constructor(cardState, cardEvaluator, pieceState)
   {
     this.cardState = cardState;
     this.cardEvaluator = cardEvaluator;
+    this.pieceState = pieceState;
   }
 
   /**
@@ -27,8 +29,12 @@ export default class CardDrawProcessor
 
     if(playerDeck.length == 0){
       this.log.warn('No cards to draw for player %s', action.playerId);
-      //TODO: better handling of out of cards
-      return queue.cancel(action);
+
+      action.milled = true;
+      let hero = this.pieceState.hero(action.playerId);
+      this.cardState.millState[action.playerId] -= 1;
+      queue.push(new PieceHealthChange(hero.id, this.cardState.millState[action.playerId]));
+      return queue.cancel(action, true);
     }
 
     let cardDrawn = this.cardState.drawCard(action.playerId);

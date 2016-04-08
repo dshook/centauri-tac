@@ -10,11 +10,13 @@ export default class CardState
     this.hands = {};
     this.decks = {};
     this.nextId = 1;
+    this.millState = {};
   }
 
   initPlayer(playerId){
     this.hands[playerId] = [];
     this.decks[playerId] = [];
+    this.millState[playerId] = 0;
   }
 
   addToDeck(playerId, newCard){
