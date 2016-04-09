@@ -12,5 +12,25 @@ namespace ctac
         {
             return directory.FirstOrDefault(x => x.cardTemplateId == cardTemplateId);
         }
+
+        public CardModel NewFromTemplate(int cardId, int cardTemplateId, int playerId)
+        {
+            var cardTemplate = Card(cardTemplateId);
+
+            return new CardModel()
+                {
+                    id = cardId,
+                    cardTemplateId = cardTemplateId,
+                    playerId = playerId,
+                    name = cardTemplate.name,
+                    description = cardTemplate.description,
+                    cost = cardTemplate.cost,
+                    attack = cardTemplate.attack,
+                    health = cardTemplate.health,
+                    movement = cardTemplate.movement,
+                    tags = cardTemplate.tags,
+                    playable = false
+                };
+        }
     }
 }

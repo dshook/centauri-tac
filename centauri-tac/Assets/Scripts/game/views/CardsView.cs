@@ -189,5 +189,36 @@ namespace ctac {
             }
         }
 
+        public class OverdrawCardAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return 0.5f; } }
+
+            public AnimationQueueModel animationQueue { get; set; }
+            public CardDestroyedSignal cardDestroyed { get; set; }
+            public CardModel card { get; set; }
+
+            //dev speed
+            private float animTime = 0.5f;
+            private Vector3 dest = new Vector3(250, 0, 0);
+
+            public void Update()
+            {
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
+                iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+                if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
+                {
+                    card.gameObject.transform.localPosition = dest;
+                    animationQueue.Add(new CardDestroyedAnim()
+                    {
+                        card = card,
+                        cardDestroyed = cardDestroyed
+                    });
+                    Complete = true;
+                }
+            }
+        }
+
     }
 }

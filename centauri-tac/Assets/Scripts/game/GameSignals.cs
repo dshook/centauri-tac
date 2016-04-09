@@ -66,6 +66,7 @@ namespace ctac.signals
     [Singleton] public class PieceDiedSignal : Signal<PieceModel> { }
 
     [Singleton] public class ActionDrawCardSignal : Signal<DrawCardModel, SocketKey> { }
+    [Singleton] public class ActionCancelledDrawCardSignal : Signal<DrawCardModel, SocketKey> { }
     [Singleton] public class CardDrawnSignal : Signal<CardModel> { }
     [Singleton] public class CardDrawShownSignal : Signal<CardModel> { }
 
