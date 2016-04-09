@@ -140,6 +140,7 @@ namespace ctac {
             public CardDestroyedSignal cardDestroyed { get; set; }
             public CardModel card { get; set; }
 
+            public void Init() { }
             public void Update()
             {
                 iTweenExtensions.ScaleTo(card.gameObject, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
@@ -166,6 +167,7 @@ namespace ctac {
             private float animTime = 0.5f;
             private Vector3 opponentDest = new Vector3(0, 150, 50);
 
+            public void Init() { }
             public void Update()
             {
                 Vector3 dest = Vector3.zero;
@@ -203,6 +205,7 @@ namespace ctac {
             private float animTime = 0.5f;
             private Vector3 dest = new Vector3(250, 0, 0);
 
+            public void Init() { }
             public void Update()
             {
                 iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);

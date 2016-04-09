@@ -37,7 +37,7 @@ namespace ctac
 
         private void onDeckSpawned(SpawnDeckModel deck)
         {
-            //wait till the turn ends so we can sort through the cards
+            updateDecks();
         }
 
         private void onTurnEnded(GameTurnModel turns)

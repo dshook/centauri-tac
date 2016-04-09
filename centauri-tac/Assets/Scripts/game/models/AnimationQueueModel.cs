@@ -5,6 +5,7 @@ namespace ctac
     public interface IAnimate
     {
         void Update();
+        void Init();
         bool Complete { get; }
         bool Async { get; }
         float? postDelay { get; }
@@ -21,6 +22,7 @@ namespace ctac
         public void Add(IAnimate animation)
         {
             animations.Add(animation);
+            animation.Init();
         }
 
         public void Update(float deltaTime)

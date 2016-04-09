@@ -163,6 +163,35 @@ namespace ctac {
             currentTurnPlayerId = newPlayerId;
         }
 
+        public class SpawnAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+
+            private Vector3 destPosition { get; set; }
+            private Vector3 startOffset = new Vector3(0, 5f, 0);
+            private float moveSpeed = 0.8f;
+
+            public void Init()
+            {
+                destPosition = piece.gameObject.transform.position;
+                piece.gameObject.transform.position = destPosition + startOffset;
+            }
+            public void Update()
+            {
+                iTweenExtensions.MoveTo(piece.gameObject, destPosition, moveSpeed, 0, EaseType.easeInQuart);
+
+                if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
+                {
+                    piece.gameObject.transform.position = destPosition;
+                    Complete = true;
+                }
+            }
+        }
+
         public class RotateAnim : IAnimate
         {
             public bool Complete { get; set; }
@@ -173,6 +202,7 @@ namespace ctac {
             public Vector3 destAngle { get; set; }
             private float rotateSpeed = 0.3f;
 
+            public void Init() { }
             public void Update()
             {
                 iTweenExtensions.RotateTo(piece.model.gameObject, destAngle, rotateSpeed, 0f);
@@ -185,7 +215,6 @@ namespace ctac {
             }
         }
 
-
         public class MoveAnim : IAnimate
         {
             public bool Complete { get; set; }
@@ -197,6 +226,7 @@ namespace ctac {
             public Vector3 destination { get; set; }
             private float moveSpeed = 0.3f;
 
+            public void Init() { }
             public void Update()
             {
                 iTweenExtensions.MoveTo(piece.gameObject, destination, moveSpeed, 0, EaseType.linear);
@@ -222,6 +252,7 @@ namespace ctac {
             public int? bonus { get; set; }
             public string bonusMsg { get; set; }
 
+            public void Init() { }
             public void Update()
             {
                 text.text = Math.Abs(damageTaken).ToString();
@@ -254,6 +285,7 @@ namespace ctac {
             public int change { get; set; }
             private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
 
+            public void Init() { }
             public void Update()
             {
                 if(text == null) return;
@@ -289,6 +321,7 @@ namespace ctac {
             public PieceDiedSignal pieceDied { get; set; }
             public PieceModel piece { get; set; }
 
+            public void Init() { }
             public void Update()
             {
                 iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);

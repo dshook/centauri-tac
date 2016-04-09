@@ -14,6 +14,9 @@ namespace ctac
         [Inject]
         public IPieceService pieceService { get; set; }
 
+        [Inject]
+        public AnimationQueueModel animationQueue { get; set; }
+
         public override void Execute()
         {
             if(startTargetModel.targetingCard.tags.Contains("Spell")) return;
@@ -28,7 +31,8 @@ namespace ctac
                 direction = Direction.South
             };
 
-            pieceService.CreatePiece(spawnedPiece);
+            var pieceModel = pieceService.CreatePiece(spawnedPiece);
+            animationQueue.Add(new PieceView.SpawnAnim() { piece = pieceModel.gameObject.GetComponent<PieceView>() });
 
             //Skip sending out the piece spawned signal since it hasn't actually properly been spawned yet
             //pieceSpawned.Dispatch(pieceModel);

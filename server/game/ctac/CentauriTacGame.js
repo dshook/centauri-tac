@@ -42,6 +42,17 @@ export default class CentauriTacGame
       // bootup the main controller
       await this.host.addController(GameController);
 
+      // start first turn with random player
+      const startingId = _.sample(this.players).id;
+      this.queue.push(new PassTurn(startingId));
+
+      // spawn game pieces for two players
+      var heroUnit = this.cardDirectory.getByTag('Hero')[0];
+      if(this.players.length === 2){
+        this.queue.push(new SpawnPiece(this.players[0].id, null, heroUnit.cardTemplateId, new Position(2, 0, 4), null, Direction.South));
+        this.queue.push(new SpawnPiece(this.players[1].id, null, heroUnit.cardTemplateId, new Position(5, 0, 2), null, Direction.West));
+      }
+
       //spawn both player decks and init hands
       for(let player of this.players){
         this.playerResourceState.init(player.id);
@@ -49,23 +60,12 @@ export default class CentauriTacGame
         this.queue.push(new SpawnDeck(player.id));
       }
 
-      // start first turn with random player
-      const startingId = _.sample(this.players).id;
-      this.queue.push(new PassTurn(startingId));
-
       //draw initial cards
       let startingCards = 3;
       for(let player of this.players){
         for(let c = 0; c < startingCards; c++){
           this.queue.push(new DrawCard(player.id));
         }
-      }
-
-      // spawn game pieces for two players
-      var heroUnit = this.cardDirectory.getByTag('Hero')[0];
-      if(this.players.length === 2){
-        this.queue.push(new SpawnPiece(this.players[0].id, null, heroUnit.cardTemplateId, new Position(2, 0, 4), null, Direction.South));
-        this.queue.push(new SpawnPiece(this.players[1].id, null, heroUnit.cardTemplateId, new Position(5, 0, 2), null, Direction.West));
       }
 
       await this.queue.processUntilDone();

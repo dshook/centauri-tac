@@ -1,37 +1,27 @@
 using strange.extensions.command.impl;
 using ctac.signals;
 using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
     public class ActionSpawnPieceCommand : Command
     {
-        [Inject]
-        public SpawnPieceModel spawnedPiece { get; set; }
+        [Inject] public SpawnPieceModel spawnedPiece { get; set; }
+        [Inject] public SocketKey socketKey { get; set; }
 
-        [Inject]
-        public PieceSpawnedSignal pieceSpawned { get; set; }
-
-        [Inject]
-        public DestroyCardSignal destroyCard { get; set; }
-
-        [Inject]
-        public SocketKey socketKey { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public DestroyCardSignal destroyCard { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
-        [Inject]
-        public PiecesModel pieces { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
-        [Inject]
-        public MapModel map { get; set; }
-
-        [Inject]
-        public IPieceService pieceService { get; set; }
+        [Inject] public IPieceService pieceService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
         {
@@ -63,6 +53,8 @@ namespace ctac
             else
             {
                 pieceModel = pieceService.CreatePiece(spawnedPiece);
+                Vector3 startOffset = new Vector3(0, 10f, 0);
+                animationQueue.Add(new PieceView.SpawnAnim() { piece = pieceModel.gameObject.GetComponent<PieceView>() });
             }
 
             pieceSpawned.Dispatch(pieceModel);
