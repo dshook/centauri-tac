@@ -224,7 +224,7 @@ export default class CardEvaluator{
         };
         let times = 1;
         if(action.times){
-          times = this.eventualNumber(action.times);
+          times = this.eventualNumber(action.times, pieceAction.playerId, pieceSelectorParams);
         }
 
         let actionTriggerer = piece ? `piece ${piece.name}` : `spell ${pieceAction.card.name}`;
@@ -247,7 +247,7 @@ export default class CardEvaluator{
               this.log.info('Hit Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceHealthChange(s.id, -action.args[1]));
+                  this.queue.push(new PieceHealthChange(s.id, -this.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams)));
                 }
               }
               break;
@@ -259,7 +259,7 @@ export default class CardEvaluator{
               this.log.info('Heal Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceHealthChange(s.id, action.args[1]));
+                  this.queue.push(new PieceHealthChange(s.id, this.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams)));
                 }
               }
               break;
@@ -273,7 +273,7 @@ export default class CardEvaluator{
                 for(let s of lastSelected){
                   let phc = new PieceAttributeChange(s.id);
                   //set up the appropriate attribute change from args, i.e. attack = 1
-                  phc[action.args[1]] = action.args[2];
+                  phc[action.args[1]] = this.eventualNumber(action.args[2], pieceAction.playerId, pieceSelectorParams);
                   this.queue.push(phc);
                 }
               }
@@ -293,7 +293,7 @@ export default class CardEvaluator{
                   //set up a new buff for each selected piece that has all the attributes of the buff
                   let buff = new PieceBuff(s.id, buffName, false);
                   for(let buffAttribute of buffAttributes){
-                    buff[buffAttribute.attribute] = buffAttribute.amount;
+                    buff[buffAttribute.attribute] = this.eventualNumber(buffAttribute.amount, pieceAction.playerId, pieceSelectorParams);
                   }
                   this.queue.push(buff);
                 }
@@ -541,9 +541,16 @@ export default class CardEvaluator{
   }
 
   //can either be an ordinary number, or something that evaluates to a number
-  eventualNumber(input){
+  eventualNumber(input, controllingPlayerId, pieceSelectorParams){
     if(input.randList){
       return _.sample(input.randList);
+    }else if(input.attributeSelector){
+      let selectedPieces = this.selectPieces(controllingPlayerId, input.attributeSelector, pieceSelectorParams);
+      if(selectedPieces.length > 0){
+        let firstPiece = selectedPieces[0];
+        return firstPiece[input.attribute];
+      }
+      return 0;
     }
     return input;
   }

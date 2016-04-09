@@ -38,6 +38,9 @@
 (Random)
   return 'random'
 
+(SelectAttribute)
+  return 'selectAttr'
+
 // actions
 (DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus)
   return 'action'
@@ -147,7 +150,7 @@ argument_item
   | attribute -> $1
   | status -> $1
   | buffAttribute -> $1
-  | pNumber -> $1
+  | eNumber -> $1
   | pText -> $1
   | pBool -> $1
   | actionargs -> $1
@@ -181,6 +184,8 @@ eNumber
   : pNumber -> $1
   | random'('numberList')'
      { $$ = { randList: $3 }; }
+  | selectAttr'('possibleRandSelector','attribute')'
+     { $$ = { attributeSelector: $3, attribute: $5 }; }
   ;
 
 numberList

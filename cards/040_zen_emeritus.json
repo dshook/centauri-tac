@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 40,
+	"name": "Zen Emeritus",
+	"description": "Swap the attack and health of a minion",
+	"cost": 1,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health)) SetAttribute(TARGET & MINION, health, SelectAttribute(TARGET, attack))}"
+}

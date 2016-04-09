@@ -453,3 +453,26 @@ test('Timers', t => {
   t.ok(queue._actions[1] instanceof PieceStatusChange, 'New Action coming in is Piece status change');
   t.equal(cardEval.startTurnTimers.length, 0, 'No timers left');
 });
+
+test('Swap attack and health', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  t.plan(5);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let cardPlayed = cardDirectory.directory[40];
+
+  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1, 4);
+
+  t.equal(queue._actions.length, 2, '2 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Piece Status change');
+  t.equal(queue._actions[0].attack, 2, 'Attack is now 2');
+  t.ok(queue._actions[1] instanceof PieceAttributeChange, 'Second action is Piece Status change');
+  t.equal(queue._actions[1].health, 1, 'Health is now 2');
+});

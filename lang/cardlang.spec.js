@@ -447,3 +447,43 @@ test('Turn timers', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Eventual Number with Attribute selector', t => {
+  t.plan(1);
+
+  let input = `
+    playMinion{
+      SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health))
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: "playMinion",
+      actions: [
+        {
+          action: "SetAttribute",
+          args: [
+            {
+              left: "TARGET",
+              op: "&",
+              right: "MINION"
+            },
+            "attack",
+            {
+              attributeSelector: {
+                left: "TARGET"
+              },
+              attribute: "health"
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
+
