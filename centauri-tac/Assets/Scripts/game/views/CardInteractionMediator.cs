@@ -12,7 +12,8 @@ namespace ctac
         [Inject] public CardHoveredSignal cardHovered { get; set; }
         [Inject] public ActivateCardSignal activateCard { get; set; }
         [Inject] public ActionMessageSignal message { get; set; }
-        
+
+        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
@@ -76,6 +77,7 @@ namespace ctac
                     }
 
                     draggedCard = cardView.card;
+                    pieceSelected.Dispatch(null); 
                     cardSelected.Dispatch(draggedCard);
                 }
             }
