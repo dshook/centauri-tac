@@ -49,7 +49,7 @@
 * ~~spawn minion~~
 * aura effects
 * move/push piece
-* give status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)
+* ~~give/remove status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)~~
 * Shuffle into deck
 * take control of minion
 * destroy minion

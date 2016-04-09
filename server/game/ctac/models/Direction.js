@@ -31,7 +31,7 @@ export function directionOf(dir1, dir2){
       return 'facing';
       break;
     default:
-      throw 'Invalid Directions to face';
+      throw 'Invalid Direction to face dir1 ' + dir1 + ' dir2' + dir2;
   }
 }
 
