@@ -16,8 +16,9 @@ export default class PieceState
       _.max(this.pieces, x => x.id).id + 1;
   }
 
-  add(newPiece){
+  add(newPiece, turn){
     newPiece.id = this.nextId();
+    newPiece.bornOn = turn;
 
     this.pieces.push(newPiece);
 
@@ -46,6 +47,9 @@ export default class PieceState
     newPiece.tags = cardPlayed.tags;
     newPiece.statuses = cardPlayed.statuses || 0;
     newPiece.baseStatuses = cardPlayed.statuses || 0;
+
+    //server only tracking vars
+    newPiece.bornOn = null;
 
     return newPiece;
   }

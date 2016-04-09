@@ -22,6 +22,8 @@ export default class GamePiece
     this.tags = [];
     this.buffs = [];
     this.statuses = 0;
+
+    this.bornOn = null;
   }
 
   //requires you to find the buff instance beforehand

@@ -12,11 +12,12 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class AttackPieceProcessor
 {
-  constructor(pieceState, cardEvaluator, mapState)
+  constructor(pieceState, cardEvaluator, mapState, turnState)
   {
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
     this.mapState = mapState;
+    this.turnState = turnState;
   }
 
   /**
@@ -54,6 +55,14 @@ export default class AttackPieceProcessor
 
     if(target.statuses & Statuses.Cloak){
       this.log.warn('Cannot attack piece %s with Cloak', target.id);
+      return queue.cancel(action);
+    }
+
+    //check if piece is 'old' enough to attack
+    if(!attacker.bornOn ||
+      ((this.turnState.currentTurn - attacker.bornOn) < 1 && !(attacker.statuses & Statuses.Charge))
+    ){
+      this.log.warn('Piece %s must wait a turn to attack', attacker.id);
       return queue.cancel(action);
     }
 

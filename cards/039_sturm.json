@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 39,
+	"name": "Sturm",
+	"description": "Charge",
+	"cost": 1,
+	"attack": 1,
+	"health": 1,
+	"movement": 3,
+	"statuses": 128,
+	"tags": ["Minion"]
+}

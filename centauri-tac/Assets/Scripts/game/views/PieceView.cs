@@ -39,7 +39,7 @@ namespace ctac {
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
 
-        private int currentTurnPlayerId;
+        public int currentTurnPlayerId;
 
         protected override void Start()
         {

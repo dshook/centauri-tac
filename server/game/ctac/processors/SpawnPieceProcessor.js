@@ -10,13 +10,14 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class SpawnPieceProcessor
 {
-  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState)
+  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, turnState)
   {
     this.pieceState = pieceState;
     this.players = players;
     this.cardDirectory = cardDirectory;
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
+    this.turnState = turnState;
   }
 
   /**
@@ -42,7 +43,7 @@ export default class SpawnPieceProcessor
     var newPiece = this.pieceState.newFromCard(this.cardDirectory, action.cardTemplateId, action.playerId, action.position);
 
     if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId)){
-      action.pieceId = this.pieceState.add(newPiece);
+      action.pieceId = this.pieceState.add(newPiece, this.turnState.currentTurn);
       action.tags = newPiece.tags;
 
       if(action.cardInstanceId !== null){
