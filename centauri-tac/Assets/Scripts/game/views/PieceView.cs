@@ -170,23 +170,53 @@ namespace ctac {
             public float? postDelay { get { return null; } }
 
             public PieceView piece { get; set; }
+            public MapModel map { get; set; }
+            public IMapService mapService { get; set; }
 
             private Vector3 destPosition { get; set; }
             private Vector3 startOffset = new Vector3(0, 5f, 0);
-            private float moveSpeed = 0.8f;
+            private float dropTime = 0.7f;
+            private float pieceMagnitude = 0f;
+            private float pieceDuration = 0f;
+
+            //private Tile originTile { get; set; }
+            private List<Tile> oneRing { get; set; }
+            private List<Tile> twoRing { get; set; }
 
             public void Init()
             {
                 destPosition = piece.gameObject.transform.position;
                 piece.gameObject.transform.position = destPosition + startOffset;
+
+                pieceMagnitude = Math.Min(1f, (piece.piece.health + piece.piece.attack) / 20f);
+                pieceDuration = Math.Min(1f, (piece.piece.health + piece.piece.attack) / 10f);
+
+                //originTile = map.tiles[piece.piece.tilePosition];
+                oneRing = mapService.GetKingTilesInRadius(piece.piece.tilePosition, 1).Values.ToList();
+                twoRing = mapService.GetKingTilesInRadius(piece.piece.tilePosition, 2).Values.Except(oneRing).ToList();
             }
             public void Update()
             {
-                iTweenExtensions.MoveTo(piece.gameObject, destPosition, moveSpeed, 0, EaseType.easeInQuart);
+                iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeInQuart);
 
                 if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
                 {
                     piece.gameObject.transform.position = destPosition;
+
+                    foreach (var tile in oneRing)
+                    {
+                        var tileBounce = tile.gameObject.AddComponent<TileBounce>();
+                        tileBounce.magnitudeMult = pieceMagnitude;
+                        tileBounce.waveDuration *= pieceDuration;
+                    }
+                    foreach (var tile in twoRing)
+                    {
+                        var tileBounce = tile.gameObject.AddComponent<TileBounce>();
+                        tileBounce.magnitudeMult = pieceMagnitude * .7f;
+                        tileBounce.delay = .2f;
+                        tileBounce.waveDuration = (tileBounce.waveDuration * pieceDuration) + .2f;
+                    }
+
                     Complete = true;
                 }
             }

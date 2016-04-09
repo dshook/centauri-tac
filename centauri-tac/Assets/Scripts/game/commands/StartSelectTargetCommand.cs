@@ -8,14 +8,14 @@ namespace ctac
         [Inject]
         public StartTargetModel startTargetModel { get; set; }
 
-        [Inject]
-        public IDebugService debug { get; set; }
-
-        [Inject]
-        public IPieceService pieceService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public IPieceService pieceService { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         [Inject]
         public AnimationQueueModel animationQueue { get; set; }
+        [Inject]
+        public MapModel map { get; set; }
 
         public override void Execute()
         {
@@ -32,7 +32,11 @@ namespace ctac
             };
 
             var pieceModel = pieceService.CreatePiece(spawnedPiece);
-            animationQueue.Add(new PieceView.SpawnAnim() { piece = pieceModel.gameObject.GetComponent<PieceView>() });
+            animationQueue.Add(new PieceView.SpawnAnim() {
+                piece = pieceModel.gameObject.GetComponent<PieceView>(),
+                map = map,
+                mapService = mapService
+            });
 
             //Skip sending out the piece spawned signal since it hasn't actually properly been spawned yet
             //pieceSpawned.Dispatch(pieceModel);

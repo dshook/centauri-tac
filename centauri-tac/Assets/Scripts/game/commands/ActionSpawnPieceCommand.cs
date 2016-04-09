@@ -22,6 +22,7 @@ namespace ctac
 
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IDebugService debug { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         public override void Execute()
         {
@@ -53,8 +54,11 @@ namespace ctac
             else
             {
                 pieceModel = pieceService.CreatePiece(spawnedPiece);
-                Vector3 startOffset = new Vector3(0, 10f, 0);
-                animationQueue.Add(new PieceView.SpawnAnim() { piece = pieceModel.gameObject.GetComponent<PieceView>() });
+                animationQueue.Add(new PieceView.SpawnAnim() {
+                    piece = pieceModel.gameObject.GetComponent<PieceView>(),
+                    map = map,
+                    mapService = mapService
+                });
             }
 
             pieceSpawned.Dispatch(pieceModel);
