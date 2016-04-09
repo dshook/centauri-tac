@@ -67,6 +67,9 @@ export default class PieceStatusChangeProcessor
           }
         }
       }
+
+      //remove timers for this piece
+      this.cardEvaluator.cleanupTimers(piece);
     }
 
     action.statuses = piece.statuses;
