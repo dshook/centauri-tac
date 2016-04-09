@@ -20,6 +20,7 @@ namespace ctac
         [Inject] public PieceDiedSignal pieceDied { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceMoved { get; set; }
         [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
         [Inject] public MapModel map { get; set; }
@@ -39,6 +40,7 @@ namespace ctac
             pieceHoveredSignal.AddListener(onPieceHover);
             pieceMoved.AddListener(onPieceMove);
             pieceSpawned.AddListener(onPieceSpawn);
+            pieceStatusChanged.AddListener(onPieceStatusChange);
             turnEnded.AddListener(onTurnEnded);
             view.init();
         }
@@ -51,6 +53,7 @@ namespace ctac
             pieceDied.RemoveListener(onPieceDied);
             pieceMoved.RemoveListener(onPieceMove);
             pieceSpawned.RemoveListener(onPieceSpawn);
+            pieceStatusChanged.RemoveListener(onPieceStatusChange);
             turnEnded.RemoveListener(onTurnEnded);
         }
 
@@ -203,6 +206,11 @@ namespace ctac
         }
 
         private void onTurnEnded(GameTurnModel gameTurn)
+        {
+            updateTauntTiles();
+        }
+
+        private void onPieceStatusChange(PieceStatusChangeModel change)
         {
             updateTauntTiles();
         }

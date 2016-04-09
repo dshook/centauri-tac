@@ -212,7 +212,7 @@ namespace ctac {
                     foreach (var tile in twoRing)
                     {
                         var tileBounce = tile.gameObject.AddComponent<TileBounce>();
-                        tileBounce.magnitudeMult = pieceMagnitude * .7f;
+                        tileBounce.magnitudeMult = pieceMagnitude * .5f;
                         tileBounce.delay = .2f;
                         tileBounce.waveDuration = (tileBounce.waveDuration * pieceDuration) + .2f;
                     }
