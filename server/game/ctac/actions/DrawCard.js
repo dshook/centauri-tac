@@ -7,5 +7,6 @@ export default class DrawCard
     this.playerId = playerId;
 
     this.milled = false;
+    this.overdrew = false;
   }
 }

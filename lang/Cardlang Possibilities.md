@@ -51,14 +51,20 @@
 * move/push piece
 * give status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)
 * Shuffle into deck
-* Spend X mana for X stats
 * take control of minion
 * destroy minion
 * copy minion (into hand or play)
 * move minion into play from deck
 * card cost modification
 * swap health and attack
+* discard a card
+* destroy/give energy
 * ~~effect that lasts till end of turn~~
 * ~~Hit for damage~~
 * ~~draw card~~
 * ~~Heal target~~
+
+##Counters
+* mana spent for card
+* minions died 
+* 
