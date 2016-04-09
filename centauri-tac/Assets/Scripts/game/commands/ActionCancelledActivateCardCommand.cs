@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    public class ActionActivateCardCancelledCommand : Command
+    public class ActionCancelledActivateCardCommand : Command
     {
         [Inject]
         public ActivateCardModel activateCancelled { get; set; }

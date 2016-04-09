@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    public class ActionSpawnPieceCancelledCommand : Command
+    public class ActionCancelledSpawnPieceCommand : Command
     {
         [Inject]
         public SpawnPieceModel pieceSpawnCancelled { get; set; }
