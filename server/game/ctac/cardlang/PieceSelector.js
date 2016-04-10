@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Statuses from '../models/Statuses.js';
+import loglevel from 'loglevel-decorator';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
@@ -44,11 +45,12 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.tags.includes('Hero'));
           break;
         case 'BASIC':
-          return this.allPieces.filter(p =>
+          let basicBitches = this.allPieces.filter(p =>
             p.baseTags.length === 1
             && (p.baseTags.includes('Hero') || p.baseTags.includes('Minion'))
             && p.baseStatuses === 0
           );
+          return basicBitches;
           break;
         case 'DAMAGED':
           return this.allPieces.filter(p => p.health < p.baseHealth);

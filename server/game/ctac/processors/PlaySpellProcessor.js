@@ -27,7 +27,7 @@ export default class PlaySpellProcessor
       return;
     }
 
-    const playedCard = this.cardState.playCard(action.playerId, action.cardInstanceId);
+    const playedCard = this.cardState.validateInHand(action.playerId, action.cardInstanceId);
     if(!playedCard){
       this.log.error('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
       return queue.cancel(action, true);
@@ -35,6 +35,7 @@ export default class PlaySpellProcessor
 
     if(this.cardEvaluator.evaluateSpellEvent('playSpell', playedCard, action.playerId, action.targetPieceId)){
 
+      this.cardState.playCard(action.playerId, action.cardInstanceId);
       queue.complete(action);
       queue.push(new SetPlayerResource(action.playerId, -playedCard.cost));
       this.log.info('played spell %s for player %s at %s target %s',

@@ -18,6 +18,8 @@ namespace ctac
 
         [Inject]
         public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject]
+        public PieceCharmedSignal pieceCharmed { get; set; }
 
         [Inject]
         public PieceMovedSignal pieceMoved { get; set; }
@@ -37,6 +39,7 @@ namespace ctac
             pieceFinishedMoving.AddListener(onPieceFinishedMoving);
             turnEnded.AddListener(resetTiles);
             pieceDied.AddListener(onPieceDied);
+            pieceCharmed.AddListener(onPieceCharmed);
             view.init();
         }
 
@@ -47,6 +50,7 @@ namespace ctac
             pieceFinishedMoving.RemoveListener(onPieceFinishedMoving);
             turnEnded.RemoveListener(resetTiles);
             pieceDied.RemoveListener(onPieceDied);
+            pieceCharmed.RemoveListener(onPieceCharmed);
         }
 
         private void onPieceSpawned(PieceModel piece)
@@ -67,6 +71,11 @@ namespace ctac
         }
 
         private void onPieceFinishedMoving(PieceModel piece)
+        {
+            resetTiles(null);
+        }
+
+        private void onPieceCharmed(CharmPieceModel piece)
         {
             resetTiles(null);
         }

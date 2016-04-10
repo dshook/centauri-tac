@@ -4,6 +4,7 @@ import Position from '../models/Position.js';
 import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
+import CharmPiece from '../actions/CharmPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
@@ -233,6 +234,18 @@ export default class CardEvaluator{
 
         for (var t = 0; t < times; t++) {
           switch(action.action){
+            //Charm(pieceSelector)
+            case 'Charm':
+            {
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Charm Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  this.queue.push(new CharmPiece(s.id));
+                }
+              }
+              break;
+            }
             //DrawCard(playerSelector)
             case 'DrawCard':
             {
@@ -504,7 +517,7 @@ export default class CardEvaluator{
   findPossibleTargets(cards, playerId){
     let targets = [];
     const targetableEvents = ['playMinion', 'playSpell'];
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus'];
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm'];
 
     for(let card of cards){
       if(!card.events) continue;

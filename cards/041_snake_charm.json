@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 41,
+	"name": "Snake Charm",
+	"description": "Take control of an enemy minion without card text",
+	"cost": 4,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Charm(TARGET & ENEMY & BASIC & MINION) }"
+}
