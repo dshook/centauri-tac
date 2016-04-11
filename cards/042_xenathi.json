@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 42,
+	"name": "Xenathi",
+	"description": "<b>Play</b>: Destroy a damaged minion",
+	"cost": 4,
+	"attack": 3,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Destroy(MINION & DAMAGED & TARGET) }"
+}

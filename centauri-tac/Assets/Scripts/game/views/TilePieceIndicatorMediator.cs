@@ -1,4 +1,3 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
@@ -7,30 +6,19 @@ namespace ctac
 {
     public class TilePieceIndicatorMediator : Mediator
     {
-        [Inject]
-        public TilePieceIndicatorView view { get; set; }
+        [Inject] public TilePieceIndicatorView view { get; set; }
 
-        [Inject]
-        public MapModel map { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
 
-        [Inject]
-        public PiecesModel pieces { get; set; }
+        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
 
-        [Inject]
-        public PieceSpawnedSignal pieceSpawned { get; set; }
-        [Inject]
-        public PieceCharmedSignal pieceCharmed { get; set; }
+        [Inject] public PieceMovedSignal pieceMoved { get; set; }
+        [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
 
-        [Inject]
-        public PieceMovedSignal pieceMoved { get; set; }
-        [Inject]
-        public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
-
-        [Inject]
-        public TurnEndedSignal turnEnded { get; set; }
-
-        [Inject]
-        public PieceDiedSignal pieceDied { get; set; }
+        [Inject] public TurnEndedSignal turnEnded { get; set; }
+        [Inject] public PieceDiedSignal pieceDied { get; set; }
 
         public override void OnRegister()
         {

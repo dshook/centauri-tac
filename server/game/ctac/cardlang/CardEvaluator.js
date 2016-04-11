@@ -6,6 +6,7 @@ import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
 import CharmPiece from '../actions/CharmPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
+import PieceDestroyed from '../actions/PieceDestroyed.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
@@ -242,6 +243,18 @@ export default class CardEvaluator{
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
                   this.queue.push(new CharmPiece(s.id));
+                }
+              }
+              break;
+            }
+            //Destroy(pieceSelector)
+            case 'Destroy':
+            {
+              lastSelected = this.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Destroyed Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  this.queue.push(new PieceDestroyed(s.id));
                 }
               }
               break;
@@ -517,7 +530,7 @@ export default class CardEvaluator{
   findPossibleTargets(cards, playerId){
     let targets = [];
     const targetableEvents = ['playMinion', 'playSpell'];
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm'];
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
 
     for(let card of cards){
       if(!card.events) continue;

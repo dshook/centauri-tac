@@ -53,7 +53,7 @@
 * ~~give/remove status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)~~
 * Shuffle into deck
 * ~~take control of minion~~
-* destroy minion
+* ~~destroy minion~~
 * copy minion (into hand or play)
 * move minion into play from deck
 * card cost modification

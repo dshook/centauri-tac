@@ -5,6 +5,7 @@ import MoveProcessor from '../processors/MovePieceProcessor.js';
 import AttackProcessor from '../processors/AttackPieceProcessor.js';
 import CharmProcessor from '../processors/CharmPieceProcessor.js';
 import PieceHealthChangeProcessor from '../processors/PieceHealthChangeProcessor.js';
+import PieceDestroyedProcessor from '../processors/PieceDestroyedProcessor.js';
 import PieceStatusChangeProcessor from '../processors/PieceStatusChangeProcessor.js';
 import PieceAttributeChangeProcessor from '../processors/PieceAttributeChangeProcessor.js';
 import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
@@ -30,6 +31,7 @@ export default class TurnService
     queue.addProcessor(CharmProcessor);
     queue.addProcessor(PieceHealthChangeProcessor);
     queue.addProcessor(PieceStatusChangeProcessor);
+    queue.addProcessor(PieceDestroyedProcessor);
     queue.addProcessor(PieceAttributeChangeProcessor);
     queue.addProcessor(PieceBuffProcessor);
     queue.addProcessor(SpawnPieceProcessor);

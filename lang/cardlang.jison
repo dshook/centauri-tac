@@ -42,7 +42,7 @@
   return 'selectAttr'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm)
+(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy)
   return 'action'
 
 //timer actions
