@@ -22,6 +22,9 @@ namespace ctac
         public ActionsProcessedModel processedActions { get; set; }
 
         [Inject]
+        public AnimationQueueModel animationQueue { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -30,7 +33,13 @@ namespace ctac
 
             var piece = pieces.Piece(pieceDestroyed.pieceId);
 
-            pieceDied.Dispatch(piece);
+            animationQueue.Add(
+                new PieceView.DieAnim()
+                {
+                    piece = piece,
+                    pieceDied = pieceDied
+                }
+            );
 
             debug.Log( string.Format("Piece {0} Destroyed", pieceDestroyed.pieceId), socketKey );
         }

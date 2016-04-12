@@ -154,6 +154,7 @@ namespace ctac
                 selectedPiece = null;
             }
             updateTauntTiles(piece);
+            onPieceHover(null);
         }
 
         private void onPieceHover(PieceModel piece)
