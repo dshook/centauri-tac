@@ -198,10 +198,8 @@ compareOperator
   ;
 
 comparisonExpression
-  : comparisonExpression compareOperator eNumber
-     { $$ = { left: $1, op: $2, right: $3 }; }
-  | eNumber compareOperator eNumber
-     { $$ = { left: $1, op: $2, right: $3 }; }
+  : eNumber compareOperator eNumber
+     { $$ = { compareExpression: true, left: $1, op: $2, right: $3 }; }
   ;
 
 //eventually a number, could be random

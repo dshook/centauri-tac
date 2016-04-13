@@ -487,3 +487,49 @@ test('Eventual Number with Attribute selector', t => {
   t.deepEqual(d, expectedPlay);
 });
 
+test('Selector with comparison expression', t => {
+  t.plan(1);
+
+  let input = `
+    playMinion{
+      Hit(TARGET & (SelectAttribute(TARGET, health) > 4) & MINION, 1)
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: "playMinion",
+      actions: [
+        {
+          action: "Hit",
+          args: [
+            {
+              left: {
+                left: "TARGET",
+                op: "&",
+                right: {
+                  compareExpression: true,
+                  left: {
+                    attributeSelector: {
+                      left: "TARGET"
+                    },
+                    attribute: "health"
+                  },
+                  op: ">",
+                  right: 4
+                }
+              },
+              op: "&",
+              right: "MINION"
+            },
+            1
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
