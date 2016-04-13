@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 43,
+	"name": "Protocruiser",
+	"description": "<b>Play</b>: Give a friendly minion with less than 3 attack +2/2",
+	"cost": 3,
+	"attack": 1,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Buff(MINION & FRIENDLY & TARGET & (SelectAttribute(TARGET, attack) < 3), 'Cruise Control', attack(2), health(2)) }"
+}

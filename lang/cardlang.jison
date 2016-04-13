@@ -80,6 +80,11 @@
 '|'    return '|'
 '&'    return '&'
 '-'    return '-'
+'<'    return '<'
+'<='   return '<='
+'>'    return '>'
+'>='   return '>='
+'=='   return '=='
 
 
 <<EOF>>               return 'EOF'
@@ -158,7 +163,7 @@ argument_item
 
 possibleRandSelector
   : selector
-  | target
+  | targetExpr
      { $$ = { left: $1}; }
   | random'('target')'
      { $$ = { random: true, selector: { left: $3} }; }
@@ -166,10 +171,15 @@ possibleRandSelector
      { $$ = { random: true, selector: $3 }; }
 ;
 
+targetExpr
+  : target -> $1
+  | '('comparisonExpression')' -> $2
+;
+
 selector
-  : target operator target
+  : selector operator targetExpr
      { $$ = { left: $1, op: $2, right: $3 }; }
-  | selector operator target
+  | targetExpr operator targetExpr
      { $$ = { left: $1, op: $2, right: $3 }; }
   ;
 
@@ -177,6 +187,21 @@ operator
   : '&'
   | '|'
   | '-'
+  ;
+
+compareOperator
+  : '<'
+  | '>'
+  | '>='
+  | '<='
+  | '=='
+  ;
+
+comparisonExpression
+  : comparisonExpression compareOperator eNumber
+     { $$ = { left: $1, op: $2, right: $3 }; }
+  | eNumber compareOperator eNumber
+     { $$ = { left: $1, op: $2, right: $3 }; }
   ;
 
 //eventually a number, could be random

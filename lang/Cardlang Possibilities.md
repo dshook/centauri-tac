@@ -38,7 +38,7 @@
 * ~~random number in list~~
 * ~~random minion, possibly from class or by cost~~
 
-##Conditions - check for AND and OR
+##Conditions - check for AND, OR, Equality
 * Unit is dead (self?)
 * holding card with selector
 * attributes with selector (get enemy hero hp)
