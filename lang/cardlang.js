@@ -133,10 +133,10 @@ case 36:
  this.$ = { compareExpression: true, left: $$[$0-2], op: $$[$0-1], right: $$[$0] }; 
 break;
 case 38:
- this.$ = { randList: $$[$0-1] }; 
+ this.$ = { eNumber: true, randList: $$[$0-1] }; 
 break;
 case 39:
- this.$ = { attributeSelector: $$[$0-3], attribute: $$[$0-1] }; 
+ this.$ = { eNumber: true, attributeSelector: $$[$0-3], attribute: $$[$0-1] }; 
 break;
 case 42:
 this.$ = parseInt($$[$0]);

@@ -206,9 +206,9 @@ comparisonExpression
 eNumber
   : pNumber -> $1
   | random'('numberList')'
-     { $$ = { randList: $3 }; }
+     { $$ = { eNumber: true, randList: $3 }; }
   | selectAttr'('possibleRandSelector','attribute')'
-     { $$ = { attributeSelector: $3, attribute: $5 }; }
+     { $$ = { eNumber: true, attributeSelector: $3, attribute: $5 }; }
   ;
 
 numberList
