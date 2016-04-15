@@ -82,6 +82,8 @@ export default class MovePieceProcessor
         for(let upcomingAction of upcomingQueue){
           if((upcomingAction instanceof MovePiece) && upcomingAction.pieceId == piece.id){
             queue.cancel(upcomingAction);
+          }else if((upcomingAction instanceof AttackPiece) && upcomingAction.attackingPieceId == piece.id){
+            queue.cancel(upcomingAction);
           }else{
             break;
           }

@@ -42,6 +42,11 @@ export default class Selector{
       if(pieceSelectorParams.isSpell && possibleTargets.length === 0){
         throw new EvalError('You must select a valid target for this spell');
       }
+
+      //make sure nothing matches target if one isn't provided
+      if(!pieceSelectorParams.targetPieceId){
+        pieceSelectorParams.targetPieceId = -1;
+      }
     }
 
     //for now, only way to get a single piece from a selector is from random
