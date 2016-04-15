@@ -55,6 +55,7 @@ export default class Selector{
     return new PieceSelector(
       this.pieceState.pieces,
       controllingPlayerId,
+      this,
       pieceSelectorParams
     ).Select(selector);
   }
@@ -65,7 +66,7 @@ export default class Selector{
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
 
-    return new PieceSelector(this.pieceState.pieces, controllingPlayerId, {isSpell})
+    return new PieceSelector(this.pieceState.pieces, controllingPlayerId, this, {isSpell})
       .Select(selector);
   }
 

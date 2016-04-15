@@ -4,25 +4,27 @@ import loglevel from 'loglevel-decorator';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId,
-     // 'optional' params that are only used in some selectors
-    {selfPiece, activatingPiece, targetPieceId, savedPieces, isSpell}
+  constructor(pieces, controllingPlayerId, selector, pieceSelectorParams
   ){
     //Include the activating piece in all pieces if it isn't there
     //This comes into affect when activating a piece that's not part of the pieces state yet
     //but should be evaluated as such
-    if(activatingPiece){
-      this.allPieces = Array.from(new Set([...pieces, activatingPiece]));
+    if(pieceSelectorParams.activatingPiece){
+      this.allPieces = Array.from(new Set([...pieces, pieceSelectorParams.activatingPiece]));
     }else{
       this.allPieces = pieces;
     }
 
     this.controllingPlayerId = controllingPlayerId;
-    this.selfPiece = selfPiece;
-    this.activatingPiece = activatingPiece;
-    this.targetPieceId = targetPieceId;
-    this.savedPieces = savedPieces;
-    this.isSpell = isSpell;
+    this.selector = selector;
+    this.pieceSelectorParams = pieceSelectorParams;
+
+    // 'optional' params that are only used in some selectors
+    this.selfPiece = pieceSelectorParams.selfPiece;
+    this.activatingPiece = pieceSelectorParams.activatingPiece;
+    this.targetPieceId = pieceSelectorParams.targetPieceId;
+    this.savedPieces = pieceSelectorParams.savedPieces;
+    this.isSpell = pieceSelectorParams.isSpell;
   }
 
   Select(selector){
@@ -105,6 +107,46 @@ export default class PieceSelector{
       throw 'Selector must have left hand side selector';
     }
 
+    //first check if this is a compare expression
+    //The compare expressions can only have 1 depth so evaluate both the left and right here and return the result
+    //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
+    if(selector.compareExpression){
+      let leftResult, rightResult;
+
+      if(selector.left.attributeSelector){
+        leftResult = this.selector.selectPieces(this.controllingPlayerId, selector.left.attributeSelector, this.pieceSelectorParams);
+      }else{
+        leftResult = this.selector.eventualNumber(selector.left, this.controllingPlayerId, this.pieceSelectorParams);
+      }
+
+      if(selector.right.attributeSelector){
+        rightResult = this.selector.selectPieces(this.controllingPlayerId, selector.right.attributeSelector, this.pieceSelectorParams);
+      }else{
+        rightResult = this.selector.eventualNumber(selector.right, this.controllingPlayerId, this.pieceSelectorParams);
+      }
+
+      let leftIsArray = Array.isArray(leftResult);
+      let rightIsArray = Array.isArray(rightResult);
+      if(leftIsArray && rightIsArray){
+        throw 'Cannot use two attribute selectors in a comparison expression';
+      }else if(!leftIsArray && !rightIsArray){
+        //two number case
+        let compareResult = this.CompareFromString(leftResult, rightResult, selector.op);
+        if(compareResult){
+          return this.allPieces;
+        }else{
+          return [];
+        }
+      }else{
+        //one number, one piece array case.  Iterate and compare attributes
+        let array = leftIsArray ? leftResult : rightResult;
+        let number = leftIsArray ? rightResult : leftResult;
+        let attribute = leftIsArray ? selector.left.attribute : selector.right.attribute;
+        return this.allPieces.filter(p => this.CompareFromString(p[attribute], number, selector.op));
+      }
+    }
+
+    //ordinary case of recursing the piece selections
     let leftResult = this.Select(selector.left);
 
     if(selector.op && selector.right){
@@ -167,5 +209,27 @@ export default class PieceSelector{
     }
 
     return results;
+  }
+
+  CompareFromString(a, b, op){
+    switch(op){
+      case '<':
+        return a < b;
+        break;
+      case '>':
+        return a > b;
+        break;
+      case '>=':
+        return a >= b;
+        break;
+      case '<=':
+        return a <= b;
+        break;
+      case '==':
+        return a === b;
+        break;
+      default:
+        throw 'Invalid comparison operator ' + op;
+    }
   }
 }

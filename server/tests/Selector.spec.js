@@ -299,8 +299,44 @@ test('Status Selector', t => {
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 1, 'Got back one shielded');
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
-  t.ok(selection[0].playerId, 1, 'Friendly minion');
+  t.equal(selection[0].playerId, 1, 'Friendly minion');
   t.equal(selection[0].statuses, Statuses.Shield, 'Selected piece has shield');
+});
+
+test('Selector with comparison expression', t => {
+  t.plan(5);
+  let select =
+    {
+      left: {
+        left: "ENEMY",
+        op: "&",
+        right: {
+          compareExpression: true,
+          left: {
+            eNumber: true,
+            attributeSelector: {
+              left: "ENEMY",
+              op: "&",
+              right: "MINION"
+            },
+            attribute: "attack"
+          },
+          op: "<",
+          right: 3
+        }
+      },
+      op: "&",
+      right: "MINION"
+    };
+
+  let selector = new Selector(players, pieceStateMix);
+  let selection = selector.selectPieces(1, select, {selfPiece});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 1, 'Got back only one piece');
+  t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
+  t.equal(selection[0].playerId, 2, 'Enemy minion');
+  t.ok(selection[0].attack < 3, 'Attack is less than selector specified');
 });
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){

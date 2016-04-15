@@ -349,6 +349,7 @@ test('Random number list', t => {
             }
           ],
           times: {
+            eNumber: true,
             randList: [1, 2, 3]
           }
         }
@@ -473,6 +474,7 @@ test('Eventual Number with Attribute selector', t => {
             },
             "attack",
             {
+              eNumber: true,
               attributeSelector: {
                 left: "TARGET"
               },
@@ -512,6 +514,7 @@ test('Selector with comparison expression', t => {
                 right: {
                   compareExpression: true,
                   left: {
+                    eNumber: true,
                     attributeSelector: {
                       left: "TARGET"
                     },
