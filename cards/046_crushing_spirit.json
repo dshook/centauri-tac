@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 46,
+	"name": "Crushing Spirit",
+	"description": "Destroy one of your opponents energy cells. This costs your hero 3, 5, or 10 health chosen randomly.",
+	"cost": 3,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ ChangeEnergy(OPPONENT, -1, true, false) Hit(FRIENDLY & HERO, Random(3,5,10)) }"
+}

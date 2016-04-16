@@ -6,7 +6,7 @@ import requireDir from 'require-dir';
  * Expose the cards and activate card processor
  */
 @loglevel
-export default class CardService
+export default class MapService
 {
   constructor(app, queue)
   {

@@ -13,21 +13,26 @@ export default class CardService
 {
   constructor(app, queue)
   {
-    var cardRequires = requireDir('../../../../cards');
-    var cardDirectory = new CardDirectory();
+      var cardRequires = requireDir('../../../../cards');
+      var cardDirectory = new CardDirectory();
 
-    for(let cardFileName in cardRequires){
-      let card = cardRequires[cardFileName];
-      cardDirectory.add(card);
-    }
-    this.log.info('Registered cards %j', cardDirectory.directory);
-    app.registerInstance('cardDirectory', cardDirectory);
+      for(let cardFileName in cardRequires){
+        try{
+          let card = cardRequires[cardFileName];
+          cardDirectory.add(card);
+        }catch(e){
+          this.log.error('Error registering card ' + cardFileName, e, e.stack);
+          throw e;
+        }
+      }
+      this.log.info('Registered cards %j', cardDirectory.directory);
+      app.registerInstance('cardDirectory', cardDirectory);
 
-    //cards in hand indexed by player id
-    var cardState = new CardState();
-    app.registerInstance('cardState', cardState);
+      //cards in hand indexed by player id
+      var cardState = new CardState();
+      app.registerInstance('cardState', cardState);
 
-    app.registerInstance('selector', app.make(Selector));
-    app.registerInstance('cardEvaluator', app.make(CardEvaluator));
+      app.registerInstance('selector', app.make(Selector));
+      app.registerInstance('cardEvaluator', app.make(CardEvaluator));
   }
 }

@@ -59,7 +59,7 @@
 * card cost modification
 * ~~swap health and attack~~
 * discard a card
-* destroy/give energy
+* ~~destroy/give energy~~
 * ~~effect that lasts till end of turn~~
 * ~~Hit for damage~~
 * ~~draw card~~

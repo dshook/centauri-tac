@@ -62,7 +62,7 @@
   return 'bool'
 
 //numbers
-(\-?[0-9])
+(\-?[0-9]+)
   return 'number'
 
 //text

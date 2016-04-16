@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 45,
+	"name": "Afterburner",
+	"description": "Gain an empty energy cell",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ ChangeEnergy(PLAYER, 1, true, false) }"
+}
