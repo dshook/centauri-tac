@@ -41,7 +41,8 @@ export default class TurnProcessor
     var currentTurn = this.turnState.passTurnTo(action.to);
 
     //give some handouts
-    action.toPlayerResources = this.playerResourceState.incriment(action.to, currentTurn);
+    action.toPlayerMaxResources = this.playerResourceState.incriment(action.to, 1);
+    action.toPlayerResources = this.playerResourceState.refill(action.to);
     action.currentTurn = currentTurn;
 
     //and finally eval the new turn

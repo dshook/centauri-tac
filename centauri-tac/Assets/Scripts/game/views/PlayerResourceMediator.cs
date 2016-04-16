@@ -42,8 +42,8 @@ namespace ctac
         private void onResourcesUpdated(GameTurnModel turns)
         {
             var currentResource = playerResources.resources[turns.currentPlayerId];
-            //TODO: un hardcode max
-            view.updateText(currentResource, 10);
+            var maxResources = playerResources.maxResources[turns.currentPlayerId];
+            view.updateText(currentResource, maxResources);
         }
 
     }

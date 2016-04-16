@@ -23,7 +23,8 @@ namespace ctac
         {
             if (!processedActions.Verify(setPlayerResource.id)) return;
 
-            playerResource.resources[setPlayerResource.playerId] = setPlayerResource.newTotal;
+            playerResource.resources[setPlayerResource.playerId] = setPlayerResource.newAmount;
+            playerResource.maxResources[setPlayerResource.playerId] = setPlayerResource.newMax;
 
             playerResourceSet.Dispatch(setPlayerResource);
         }

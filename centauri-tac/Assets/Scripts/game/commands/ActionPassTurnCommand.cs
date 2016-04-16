@@ -38,6 +38,7 @@ namespace ctac
             turnModel.currentPlayerId = gamePassModel.to;
             turnModel.currentTurnClientId = gamePlayers.GetByPlayerId(gamePassModel.to).clientId;
             playerResources.resources[gamePassModel.to] = gamePassModel.toPlayerResources;
+            playerResources.maxResources[gamePassModel.to] = gamePassModel.toPlayerMaxResources;
 
             var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             foreach (var piece in piecesModel.Pieces)

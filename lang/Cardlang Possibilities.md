@@ -41,7 +41,7 @@
 ##Conditions - check for AND, OR, Equality
 * Unit is dead (self?)
 * holding card with selector
-* attributes with selector (get enemy hero hp)
+* ~~attributes with selector (get enemy hero hp)~~
 * board state
 
 

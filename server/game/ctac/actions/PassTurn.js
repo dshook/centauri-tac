@@ -10,5 +10,6 @@ export default class PassTurn
     this.from = from;
     this.currentTurn = null;
     this.toPlayerResources = null;
+    this.toPlayerMaxResources = null;
   }
 }

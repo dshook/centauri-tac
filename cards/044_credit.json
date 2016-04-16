@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 44,
+	"name": "One Credit",
+	"description": "Gain 1 energy for this turn",
+	"cost": 0,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ ChangeEnergy(PLAYER, 1, false, true) }"
+}

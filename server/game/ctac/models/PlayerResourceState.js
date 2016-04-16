@@ -11,24 +11,31 @@ export default class PlayerResourceState
   {
     //map from playerId -> resource
     this.resources = {};
-
+    this.maxResources = {};
   }
 
   init(playerId){
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;
+      this.maxResources[playerId] = 0;
     }
   }
 
-  incriment(playerId, turnId){
+  incriment(playerId, amount){
+    this.maxResources[playerId] += amount;
+    this.maxResources[playerId] = Math.min(this.maxResources[playerId], maxResources);
+    return this.maxResources[playerId];
+  }
 
-    this.resources[playerId] = Math.ceil(turnId / 2);
-    this.resources[playerId] = Math.min(this.resources[playerId], maxResources);
+  refill(playerId){
+    this.resources[playerId] = this.maxResources[playerId];
     return this.resources[playerId];
   }
 
   adjust(playerId, amount){
     this.resources[playerId] += amount;
+    //limit the change to zero and the max.  Don't cap at maxResources so you can
+    //temporarily go over
     this.resources[playerId] = Math.max(this.resources[playerId], 0);
     this.resources[playerId] = Math.min(this.resources[playerId], maxResources);
     return this.resources[playerId];
@@ -36,5 +43,8 @@ export default class PlayerResourceState
 
   get(playerId){
     return this.resources[playerId];
+  }
+  getMax(playerId){
+    return this.maxResources[playerId];
   }
 }

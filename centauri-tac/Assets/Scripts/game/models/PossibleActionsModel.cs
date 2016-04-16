@@ -24,6 +24,8 @@ namespace ctac
         /// </summary>
         public ActionTarget GetForCard(int playerId, int cardId)
         {
+            if (!possibleActions.ContainsKey(playerId)){ return null; }
+
             return possibleActions[playerId].FirstOrDefault(x => x.cardId == cardId);
         }
     }

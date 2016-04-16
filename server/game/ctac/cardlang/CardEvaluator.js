@@ -6,6 +6,7 @@ import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import Message from '../actions/Message.js';
 import CharmPiece from '../actions/CharmPiece.js';
+import SetPlayerResource from '../actions/SetPlayerResource.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceDestroyed from '../actions/PieceDestroyed.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
@@ -265,6 +266,20 @@ export default class CardEvaluator{
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
               this.queue.push(new DrawCard(playerSelector));
+              break;
+            }
+            //ChangeEnergy(playerSelector, amount, permanent, full)
+            //Permanent meaning for every turn going forward, non permanent is just this turn
+            //Full meaning whether or not to fill the adjusted amount or if they come empty
+            case 'ChangeEnergy':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              this.queue.push(new SetPlayerResource(
+                playerSelector,
+                this.selector.eventualNumber(action.args[1]),
+                action.args[2],
+                action.args[3]
+              ));
               break;
             }
             //Hit(pieceSelector, damageAmount)

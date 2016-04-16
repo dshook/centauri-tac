@@ -20,8 +20,15 @@ export default class PlayerResourceProcessor
     if (!(action instanceof SetPlayerResource)) {
       return;
     }
-    var newTotal = this.playerResourceState.adjust(action.playerId, action.change);
-    action.newTotal = newTotal;
+    if(action.permanent){
+      this.playerResourceState.incriment(action.playerId, action.change);
+    }
+    if(action.filled){
+      this.playerResourceState.adjust(action.playerId, action.change);
+    }
+
+    action.newAmount = this.playerResourceState.get(action.playerId);
+    action.newMax = this.playerResourceState.getMax(action.playerId);
 
     queue.complete(action);
     this.log.info('player %s used %s resources', action.playerId, action.change);
