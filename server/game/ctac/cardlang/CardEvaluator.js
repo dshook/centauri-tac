@@ -578,8 +578,6 @@ export default class CardEvaluator{
   //   ]
   findPossibleAbilities(pieces, playerId){
     let targets = [];
-    const targetableEvents = ['playMinion', 'playSpell'];
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
 
     let playerPieces = pieces.filter(x => x.playerId === playerId);
 
@@ -590,17 +588,15 @@ export default class CardEvaluator{
 
       if(!ability) continue;
 
-      let targetPieceIds = this.findActionTargets(ability.actions, playerId, true);
-      if(targetPieceIds){
-        targets.push({
-          pieceId: piece.id,
-          abilityCost: ability.args[0],
-          abilityChargeTime: ability.args[1],
-          abilityCooldown: Math.max(0, ability.args[1] - piece.abilityCharge),
-          ability: ability.args[2],
-          targetPieceIds
-        });
-      }
+      let targetPieceIds = this.findActionTargets(ability.actions, playerId, true) || [];
+      targets.push({
+        pieceId: piece.id,
+        abilityCost: ability.args[0],
+        abilityChargeTime: ability.args[1],
+        abilityCooldown: Math.max(0, ability.args[1] - piece.abilityCharge),
+        ability: ability.args[2],
+        targetPieceIds
+      });
     }
 
     return targets;

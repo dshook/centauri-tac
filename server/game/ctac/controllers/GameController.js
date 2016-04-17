@@ -13,14 +13,13 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, cardState, turnState, cardEvaluator)
+  constructor(players, queue, pieceState, turnState, possibleActions)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
-    this.cardState = cardState;
+    this.possibleActions = possibleActions;
     this.turnState = turnState;
-    this.cardEvaluator = cardEvaluator;
   }
 
   /**
@@ -160,7 +159,7 @@ export default class GameController
     }
 
     //find actions the client can take that could be filtered on the server side
-    let possibleActions = this._findPossibleActions();
+    let possibleActions = this.possibleActions.findPossibleActions();
     const currentTurnPlayer = this.players.find(x => x.id === this.turnState.currentPlayerId && x.client);
     if(currentTurnPlayer){
       currentTurnPlayer.client.send('possibleActions', possibleActions);
@@ -209,30 +208,5 @@ export default class GameController
   {
     const verb = cancelled ? 'actionCancelled:' : 'action:';
     player.client.send(verb + action.constructor.name, action);
-  }
-
-  //look through the current players hand for any cards needing a TARGET
-  //on one of the targetableEvents
-  //and then find what the possible targets are
-  // {
-  //   playerId: 1,
-  //   targets: [
-  //     {cardId: 2, event: 'x', targetPieceIds: [4,5,6]}
-  //   ]
-  // }
-  _findPossibleActions(){
-    let targets = this.cardEvaluator.findPossibleTargets(
-      this.cardState.hands[this.turnState.currentPlayerId],
-      this.turnState.currentPlayerId
-    );
-    let abilities = this.cardEvaluator.findPossibleAbilities(
-      this.pieceState.pieces,
-      this.turnState.currentPlayerId
-    );
-    return {
-      playerId: this.turnState.currentPlayerId,
-      targets,
-      abilities
-    };
   }
 }

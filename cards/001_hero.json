@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 1,
 	"name": "Your Hero",
-	"description": "Black hat, yellow hat, what's the diff",
+	"description": "<b>Ability(2):</b> Deal 1 damage",
 	"cost": 0,
 	"attack": 0,
 	"health": 30,

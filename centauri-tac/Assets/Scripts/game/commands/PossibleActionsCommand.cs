@@ -1,3 +1,4 @@
+using ctac.signals;
 using strange.extensions.command.impl;
 
 namespace ctac
@@ -10,9 +11,14 @@ namespace ctac
         [Inject]
         public PossibleActionsModel possibleActions { get; set; }
 
+        [Inject]
+        public PossibleActionsReceivedSignal possibleActionsReceived { get; set; }
+
         public override void Execute()
         {
             possibleActions.Update(newPossibleActions);
+
+            possibleActionsReceived.Dispatch(newPossibleActions);
         }
     }
 }

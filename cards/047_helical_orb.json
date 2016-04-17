@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 47,
+	"name": "Helical Orb",
+	"description": "<b>Ability(0)</b>: Swap attack and health",
+	"cost": 2,
+	"attack": 2,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "ability(2, 1, 'Swip Swap'){ SetAttribute(SELF, attack, SelectAttribute(SELF, health)) SetAttribute(SELF, health, SelectAttribute(SELF, attack))}"
+}

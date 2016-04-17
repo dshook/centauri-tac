@@ -13,6 +13,7 @@ import GameDataService from './ctac/services/GameDataService.js';
 import ProcessorsService from './ctac/services/ProcessorsService.js';
 import CardService from './ctac/services/CardService.js';
 import MapService from './ctac/services/MapService.js';
+import UtilService from './ctac/services/UtilService.js';
 
 /**
  * Top-level entity for a running game
@@ -61,6 +62,7 @@ export default class GameHost extends EventEmitter
     app.service(GameDataService);
     app.service(CardService);
     app.service(ProcessorsService);
+    app.service(UtilService);
 
     await app.start();
 
