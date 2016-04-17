@@ -476,3 +476,31 @@ test('Swap attack and health', t => {
   t.ok(queue._actions[1] instanceof PieceAttributeChange, 'Second action is Piece Status change');
   t.equal(queue._actions[1].health, 1, 'Health is now 2');
 });
+
+test('Find Possible abilities', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let targets = cardEval.findPossibleAbilities(pieceStateMix.pieces, 1);
+  //all pieces
+  let expectedTargets = [
+    {
+      pieceId: 1,
+      abilityCost: 2,
+      abilityChargeTime: 1,
+      abilityCooldown: 1,
+      ability: 'Overwatch Shot',
+      targetPieceIds: [1, 2, 3, 4]
+    }
+  ];
+
+  t.deepEqual(targets, expectedTargets, 'Player 1 ability targets is everyone');
+});

@@ -22,6 +22,7 @@ export default class GamePiece
     this.tags = [];
     this.buffs = [];
     this.statuses = 0;
+    this.abilityCharge = 0;
 
     this.bornOn = null;
   }

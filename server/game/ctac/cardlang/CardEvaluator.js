@@ -527,7 +527,6 @@ export default class CardEvaluator{
   findPossibleTargets(cards, playerId){
     let targets = [];
     const targetableEvents = ['playMinion', 'playSpell'];
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
 
     for(let card of cards){
       if(!card.events) continue;
@@ -536,27 +535,71 @@ export default class CardEvaluator{
         let event = card.events.find(e => e.event === targetEvent);
         if(!event) continue;
 
-        //try to find TARGETS in any of the actions
-        for(let cardEventAction of event.actions){
-          if(targetableActions.indexOf(cardEventAction.action) === -1) continue;
-          //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
-          let selector = cardEventAction.args[0];
-
-          if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
-
-          let targetPieceIds = this.selector.selectPossibleTargets(
-            playerId, selector, card.tags.includes('Spell')
-          ).map(p => p.id);
-
+        let targetPieceIds = this.findActionTargets(event.actions, playerId, card.tags.includes('Spell'));
+        if(targetPieceIds){
           targets.push({
             cardId: card.id,
             event: event.event,
             targetPieceIds
           });
-
-          //only allow max of 1 targetable action per event
-          break;
         }
+      }
+    }
+
+    return targets;
+  }
+
+  findActionTargets(eventActions, playerId, isSpell){
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
+
+    //try to find TARGETS in any of the actions
+    for(let cardEventAction of eventActions){
+      if(targetableActions.indexOf(cardEventAction.action) === -1) continue;
+      //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
+      let selector = cardEventAction.args[0];
+
+      if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
+
+      let targetPieceIds = this.selector.selectPossibleTargets(
+        playerId, selector, isSpell
+      ).map(p => p.id);
+
+      //only allow max of 1 targetable action per event
+      return targetPieceIds;
+    }
+
+    return null;
+  }
+
+  //look through the pieces for any piece with an ability
+  //then find the name, charge time, and what the possible targets are
+  //   [
+  //     {pieceId: 2, ability: 'x', abilityCost: 0, abilityChargeTime: 0, abilityCooldown: 0, targetPieceIds: [4,5,6]}
+  //   ]
+  findPossibleAbilities(pieces, playerId){
+    let targets = [];
+    const targetableEvents = ['playMinion', 'playSpell'];
+    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
+
+    let playerPieces = pieces.filter(x => x.playerId === playerId);
+
+    for(let piece of playerPieces){
+      if(!piece.events) continue;
+
+      let ability = piece.events.find(e => e.event === 'ability');
+
+      if(!ability) continue;
+
+      let targetPieceIds = this.findActionTargets(ability.actions, playerId, true);
+      if(targetPieceIds){
+        targets.push({
+          pieceId: piece.id,
+          abilityCost: ability.args[0],
+          abilityChargeTime: ability.args[1],
+          abilityCooldown: Math.max(0, ability.args[1] - piece.abilityCharge),
+          ability: ability.args[2],
+          targetPieceIds
+        });
       }
     }
 

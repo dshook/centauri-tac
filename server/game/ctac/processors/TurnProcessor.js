@@ -8,12 +8,13 @@ import Statuses from '../models/Statuses.js';
  */
 export default class TurnProcessor
 {
-  constructor(turnState, players, playerResourceState, cardEvaluator)
+  constructor(turnState, players, playerResourceState, cardEvaluator, pieceState)
   {
     this.turnState = turnState;
     this.players = players;
     this.playerResourceState = playerResourceState;
     this.cardEvaluator = cardEvaluator;
+    this.pieceState = pieceState;
   }
 
   /**
@@ -33,6 +34,14 @@ export default class TurnProcessor
       if (!fromOkay || !toOkay) {
         return queue.cancel(action);
       }
+    }
+
+    //TODO: reset piece vars like hasAttacked, hasMoved etc
+
+    //incriment piece ability charges
+    let playerPieces = this.pieces.filter(x => x.playerId === action.to);
+    for(let piece of playerPieces){
+      piece.abilityCharge++;
     }
 
     this.cardEvaluator.evaluatePlayerEvent('turnEnd', action.from);

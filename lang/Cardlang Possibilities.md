@@ -9,7 +9,7 @@
 * ~~turn start~~
 * ~~card drawn~~
 * ~~spell played~~
-* unit ability (may require n turns to charge)
+* ~~unit ability (may require n turns to charge)~~
 
 ##Selectors
 * ~~Need set operators for Union (|), intersection (&), and compliment (-)~~
