@@ -536,3 +536,33 @@ test('Selector with comparison expression', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Event with number', t => {
+  t.plan(1);
+
+  let input = `
+    ability(2){ Hit(TARGET, 1)  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'ability',
+      number: 2,
+      actions: [
+        {
+          action: 'Hit',
+          args: [
+            {
+              left: 'TARGET',
+            },
+            1
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});

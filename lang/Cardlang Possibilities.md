@@ -42,7 +42,7 @@
 * Unit is dead (self?)
 * holding card with selector
 * ~~attributes with selector (get enemy hero hp)~~
-* board state
+* board state (number of minions on board)
 
 
 ##Actions

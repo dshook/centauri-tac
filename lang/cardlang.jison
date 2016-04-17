@@ -8,7 +8,7 @@
 \s+ /* skip whitespace */
 
 //piece events
-(playMinion|death|damaged|attacks)
+(playMinion|death|damaged|attacks|ability)
   return 'event'
 
 //player events
@@ -121,6 +121,8 @@ pEvent
    { $$ = { event: $1, actions: $3 } }
   | event'('possibleRandSelector')''{'actionlist'}'
    { $$ = { event: $1, selector: $3, actions: $6 } }
+  | event'('eNumber')''{'actionlist'}'
+   { $$ = { event: $1, number: $3, actions: $6 } }
 ;
 
 /* actionlist is all the actions for each event */
