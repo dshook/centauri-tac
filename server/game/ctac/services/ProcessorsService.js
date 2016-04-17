@@ -11,6 +11,7 @@ import PieceAttributeChangeProcessor from '../processors/PieceAttributeChangePro
 import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
 import SpawnPieceProcessor from '../processors/SpawnPieceProcessor.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
+import ActivateAbilityProcessor from '../processors/ActivateAbilityProcessor.js';
 import CardDrawProcessor from '../processors/CardDrawProcessor.js';
 import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
 import PlaySpellProcessor from '../processors/PlaySpellProcessor.js';
@@ -38,6 +39,7 @@ export default class TurnService
 
     queue.addProcessor(SpawnDeckProcessor);
     queue.addProcessor(ActivateCardProcessor);
+    queue.addProcessor(ActivateAbilityProcessor);
     queue.addProcessor(CardDrawProcessor);
     queue.addProcessor(PlaySpellProcessor);
     queue.addProcessor(RotatePieceProcessor);

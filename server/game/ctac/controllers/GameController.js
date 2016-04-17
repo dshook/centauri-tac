@@ -3,6 +3,7 @@ import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 import MovePiece from '../actions/MovePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
+import ActivateAbility from '../actions/ActivateAbility.js';
 import ActivateCard from '../actions/ActivateCard.js';
 import RotatePiece from '../actions/RotatePiece.js';
 
@@ -112,6 +113,16 @@ export default class GameController
   {
     let {pieceId, direction} = data;
     this.queue.push(new RotatePiece(pieceId, direction));
+
+    this.queue.processUntilDone();
+  }
+
+  @on('playerCommand', x => x === 'activateability')
+  activateAbility(command, data)
+  {
+    let {pieceId, targetPieceId} = data;
+
+    this.queue.push(new ActivateAbility(pieceId, targetPieceId));
 
     this.queue.processUntilDone();
   }

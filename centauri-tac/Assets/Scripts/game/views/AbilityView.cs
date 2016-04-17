@@ -46,7 +46,9 @@ namespace ctac
                 var actualButton = newButton.GetComponent<Button>();
                 var buttonRect = newButton.GetComponent<RectTransform>();
                 var buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>();
+                var abilityButtonView = newButton.GetComponent<AbilityButtonView>();
 
+                abilityButtonView.ability = ability;
                 buttonRect.anchorMin = Vector2.up;
                 buttonRect.anchorMax = Vector2.up;
                 buttonRect.pivot = Vector2.up;
