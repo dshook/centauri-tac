@@ -303,11 +303,11 @@ test('Event Selector', t => {
   let expectedPlay = [
     {
       event: 'damaged',
-      selector: {
+      args: [{
         left: 'ENEMY',
         op: '&',
         right: 'MINION'
-      },
+      }],
       actions: [
         {
           action: 'Heal',
@@ -537,11 +537,11 @@ test('Selector with comparison expression', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Event with number', t => {
+test('Event with number and text', t => {
   t.plan(1);
 
   let input = `
-    ability(2){ Hit(TARGET, 1)  }
+    ability(2, 'Test'){ Hit(TARGET, 1)  }
   `;
 
   let d = parser.parse(input);
@@ -549,7 +549,10 @@ test('Event with number', t => {
   let expectedPlay = [
     {
       event: 'ability',
-      number: 2,
+      args: [
+        2,
+        'Test'
+      ],
       actions: [
         {
           action: 'Hit',

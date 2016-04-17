@@ -63,7 +63,7 @@ export default class CardEvaluator{
         if(cardEvent.event !== event) continue;
 
         //see if the selector matches up for this piece
-        let eventSelector = cardEvent.selector;
+        let eventSelector = this.eventSelector(cardEvent);
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
           if(!eventSelector){
@@ -118,7 +118,7 @@ export default class CardEvaluator{
         if(cardEvent.event !== event) continue;
 
         //see if the selector matches up for this piece
-        let eventSelector = cardEvent.selector;
+        let eventSelector = this.eventSelector(cardEvent);
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
           if(!eventSelector){
@@ -175,7 +175,7 @@ export default class CardEvaluator{
         if(cardEvent.event !== event) continue;
 
         //see if the selector matches up for this card
-        let eventSelector = cardEvent.selector;
+        let eventSelector = this.eventSelector(cardEvent);
         if(!eventSelector){
           eventSelector = this.eventDefaultSelectors[event];
           if(!eventSelector){
@@ -561,5 +561,17 @@ export default class CardEvaluator{
     }
 
     return targets;
+  }
+
+  //Gets the event selector for the card event.  By convention this is the 0th arg that's a selector
+  //but the 0th arg doesn't have to be a selector
+  eventSelector(cardEvent){
+    if(!cardEvent.args) return null;
+
+    const firstArg = cardEvent.args[0];
+    if(firstArg.left){
+      return firstArg;
+    }
+    return null;
   }
 }

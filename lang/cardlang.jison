@@ -119,10 +119,8 @@ c
 pEvent
   : event'{'actionlist'}'
    { $$ = { event: $1, actions: $3 } }
-  | event'('possibleRandSelector')''{'actionlist'}'
-   { $$ = { event: $1, selector: $3, actions: $6 } }
-  | event'('eNumber')''{'actionlist'}'
-   { $$ = { event: $1, number: $3, actions: $6 } }
+  | event'('arguments')''{'actionlist'}'
+   { $$ = { event: $1, args: $3, actions: $6 } }
 ;
 
 /* actionlist is all the actions for each event */
