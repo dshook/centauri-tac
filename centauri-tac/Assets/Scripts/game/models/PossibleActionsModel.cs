@@ -7,15 +7,18 @@ namespace ctac
     public class PossibleActionsModel
     {
         public Dictionary<int, List<ActionTarget>> possibleActions;
+        public Dictionary<int, List<AbilityTarget>> possibleAbilities;
 
         public PossibleActionsModel()
         {
             possibleActions = new Dictionary<int, List<ActionTarget>>();
+            possibleAbilities = new Dictionary<int, List<AbilityTarget>>();
         }
 
         public void Update(PossibleActions newActions)
         {
             possibleActions[newActions.playerId] = newActions.targets;
+            possibleAbilities[newActions.playerId] = newActions.abilities;
         }
 
         /// <summary>
@@ -34,12 +37,23 @@ namespace ctac
     {
         public int playerId { get; set; }
         public List<ActionTarget> targets { get; set; }
+        public List<AbilityTarget> abilities { get; set; }
     }
 
     public class ActionTarget
     {
         public int cardId { get; set; }
         public string @event { get; set; }
+        public List<int> targetPieceIds { get; set; }
+    }
+
+    public class AbilityTarget
+    {
+        public int pieceId { get; set; }
+        public int abilityCost { get; set; }
+        public int abilityChargeTime { get; set; }
+        public int abilityCooldown { get; set; }
+        public string ability { get; set; }
         public List<int> targetPieceIds { get; set; }
     }
 }

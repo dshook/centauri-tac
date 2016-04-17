@@ -225,9 +225,14 @@ export default class GameController
       this.cardState.hands[this.turnState.currentPlayerId],
       this.turnState.currentPlayerId
     );
+    let abilities = this.cardEvaluator.findPossibleAbilities(
+      this.pieceState.pieces,
+      this.turnState.currentPlayerId
+    );
     return {
       playerId: this.turnState.currentPlayerId,
-      targets
+      targets,
+      abilities
     };
   }
 }
