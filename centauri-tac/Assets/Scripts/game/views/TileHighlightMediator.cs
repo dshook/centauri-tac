@@ -70,15 +70,17 @@ namespace ctac
             if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement, gameTurn.currentPlayerId);
-                view.toggleTileFlags(path, TileHighlightStatus.PathFind);
-
-                if (
-                    pieces.Pieces.Any(m => 
+                var enemyOccupyingDest = pieces.Pieces.Any(m => 
                         m.tilePosition == tile.position 
                         && !m.currentPlayerHasControl
                         && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
-                    )
+                    );
+                //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
+                var boost = enemyOccupyingDest ? 1 : 0;
+                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, gameTurn.currentPlayerId);
+                view.toggleTileFlags(path, TileHighlightStatus.PathFind);
+
+                if (enemyOccupyingDest
                     && path != null
                 )
                 {

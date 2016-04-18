@@ -31,7 +31,7 @@ namespace ctac
             var attacker = pieces.Piece(attackModel.attackingPieceId);
             var startTile = map.tiles.Get(attacker.tilePosition);
             var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
-            var path = mapService.FindPath(startTile, destTile, attacker.movement, gameTurn.currentPlayerId);
+            var path = mapService.FindPath(startTile, destTile, attacker.movement + 1, gameTurn.currentPlayerId);
 
             if (path == null)
             {
