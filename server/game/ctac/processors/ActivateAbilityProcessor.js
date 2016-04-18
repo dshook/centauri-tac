@@ -46,9 +46,9 @@ export default class ActivateAbilityProcessor
     let abilityChargeTime = ability.args[1];
     let abilityName = ability.args[2];
     //check to see if they have enough energy to play
-    if(abilityCost > this.playerResourceState.get(action.playerId)){
+    if(abilityCost > this.playerResourceState.get(piece.playerId)){
       this.log.warn('Not enough resources for player %s to use ability %j'
-        , action.playerId, ability);
+        , piece.playerId, ability);
       queue.push(new Message('You don\'t have enough energy to activate the ability!'));
       return queue.cancel(action);
     }

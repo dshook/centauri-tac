@@ -154,6 +154,8 @@ namespace ctac
                 selectedPiece = null;
             }
             updateTauntTiles(piece);
+            view.onTileSelected(null);
+            view.toggleTileFlags(null, TileHighlightStatus.Movable);
             onPieceHover(null);
         }
 
