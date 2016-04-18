@@ -53,6 +53,13 @@ export default class ActivateAbilityProcessor
       return queue.cancel(action);
     }
 
+    if(piece.abilityCharge < abilityChargeTime){
+      this.log.warn('Ability not charged. Pice abilityCharge %s need %s'
+        , piece.abilityCharge, abilityChargeTime);
+      queue.push(new Message('Ability needs time to charge!'));
+      return queue.cancel(action);
+    }
+
     if(this.cardEvaluator.evaluatePieceEvent('ability', piece, action.targetPieceId)){
       queue.complete(action);
 

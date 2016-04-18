@@ -16,7 +16,6 @@ namespace ctac
         [Inject]
         public GameTurnModel gameTurn { get; set; }
 
-
         public override void Execute()
         {
             socket.Request(gameTurn.currentTurnClientId, "game", "activateability", 

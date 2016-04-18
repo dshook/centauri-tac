@@ -89,6 +89,8 @@ namespace ctac
 
         private void onSelectedTarget(StartAbilityTargetModel targetModel, PieceModel piece)
         {
+            if(targetModel.targetingPiece.id != view.ability.pieceId) return;
+
             activateAbility.Dispatch(new ActivateAbilityModel()
             {
                 piece = targetModel.targetingPiece,
