@@ -1,6 +1,5 @@
 using strange.extensions.mediation.impl;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -45,7 +44,6 @@ namespace ctac
 
                 var actualButton = newButton.GetComponent<Button>();
                 var buttonRect = newButton.GetComponent<RectTransform>();
-                var buttonText = newButton.GetComponentInChildren<TextMeshProUGUI>();
                 var abilityButtonView = newButton.GetComponent<AbilityButtonView>();
 
                 abilityButtonView.ability = ability;
@@ -55,10 +53,6 @@ namespace ctac
 
                 var vertPosition = -((buttonHeight * index) + buttonMargin);
                 buttonRect.anchoredPosition3D = new Vector3(0, vertPosition, 0);
-
-                buttonText.text = string.Format("({0}) {1}", ability.abilityCost, ability.ability);
-
-                actualButton.enabled = ability.abilityCooldown == 0;
 
                 index++;
             }

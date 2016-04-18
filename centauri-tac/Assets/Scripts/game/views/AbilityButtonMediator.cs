@@ -17,6 +17,7 @@ namespace ctac
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         //for ability targeting
@@ -28,7 +29,12 @@ namespace ctac
             view.hoverSignal.AddListener(onAbilityHover);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
-            view.init();
+
+            if (view.ability != null)
+            {
+                var piece = pieces.Piece(view.ability.pieceId);
+                view.init(playerResources, piece);
+            }
         }
 
         public override void onRemove()
@@ -40,7 +46,7 @@ namespace ctac
 
         private void onAbilityClicked()
         {
-            var piece = pieces.Piece(view.ability.pieceId);
+            var piece = view.piece;
             var targets = possibleActions.GetAbilitiesForPiece(piece.playerId, piece.id);
             if (targets != null && targets.targetPieceIds.Count >= 1)
             {
@@ -68,8 +74,7 @@ namespace ctac
         {
             if (hover)
             {
-                var piece = pieces.Piece(view.ability.pieceId);
-                pieceHovered.Dispatch(piece);
+                pieceHovered.Dispatch(view.piece);
             }
             else
             {

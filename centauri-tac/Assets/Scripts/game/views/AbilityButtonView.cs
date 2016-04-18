@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using UnityEngine.EventSystems;
+using TMPro;
 
 namespace ctac
 {
@@ -12,10 +13,25 @@ namespace ctac
 
         public AbilityTarget ability;
         public Button abilityButton;
+        public PieceModel piece;
 
-        internal void init()
+        private TextMeshProUGUI buttonText;
+        private PlayerResourcesModel playerResources;
+
+        internal void init(PlayerResourcesModel playerResources, PieceModel piece)
         {
             abilityButton.onClick.AddListener(() => onClick());
+            buttonText = abilityButton.GetComponentInChildren<TextMeshProUGUI>();
+            this.playerResources = playerResources;
+            this.piece = piece;
+        }
+
+        void Update()
+        {
+            buttonText.text = string.Format("({0}) {1}", ability.abilityCost, ability.ability);
+
+            abilityButton.interactable = (ability.abilityCooldown == 0) 
+                && ability.abilityCost <= playerResources.resources[piece.playerId];
         }
 
         void onClick()
