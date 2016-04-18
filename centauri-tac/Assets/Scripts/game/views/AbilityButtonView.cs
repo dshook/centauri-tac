@@ -5,10 +5,10 @@ using UnityEngine.EventSystems;
 
 namespace ctac
 {
-    public class AbilityButtonView : View
+    public class AbilityButtonView : View, IPointerEnterHandler, IPointerExitHandler
     {
         public Signal clickSignal = new Signal();
-        public Signal hoverSignal = new Signal();
+        public Signal<bool> hoverSignal = new Signal<bool>();
 
         public AbilityTarget ability;
         public Button abilityButton;
@@ -23,9 +23,14 @@ namespace ctac
             clickSignal.Dispatch();
         }
 
-        void OnPointerEnter(PointerEventData e)
+        public void OnPointerEnter(PointerEventData e)
         {
-            hoverSignal.Dispatch();
+            hoverSignal.Dispatch(true);
+        }
+
+        public void OnPointerExit(PointerEventData e)
+        {
+            hoverSignal.Dispatch(false);
         }
     }
 }

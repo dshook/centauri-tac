@@ -8,8 +8,9 @@ namespace ctac
         [Inject]
         public AbilityButtonView view { get; set; }
 
-        [Inject]
-        public ActivateAbilitySignal activateAbility { get; set; }
+        [Inject] public ActivateAbilitySignal activateAbility { get; set; }
+
+        [Inject] public PieceHoverSignal pieceHovered { get; set; }
 
         [Inject] public StartSelectAbilityTargetSignal startSelectTarget { get; set; }
         [Inject] public SelectAbilityTargetSignal selectTarget { get; set; }
@@ -24,6 +25,7 @@ namespace ctac
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onAbilityClicked);
+            view.hoverSignal.AddListener(onAbilityHover);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
             view.init();
@@ -59,6 +61,19 @@ namespace ctac
                     piece = piece,
                     optionalTarget = null
                 });
+            }
+        }
+
+        private void onAbilityHover(bool hover)
+        {
+            if (hover)
+            {
+                var piece = pieces.Piece(view.ability.pieceId);
+                pieceHovered.Dispatch(piece);
+            }
+            else
+            {
+                pieceHovered.Dispatch(null);
             }
         }
 
