@@ -14,14 +14,13 @@ namespace ctac
         [Inject]
         public ActivateCardSignal cardActivated { get; set; }
 
-        [Inject]
-        public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public SelectTargetSignal selectTarget { get; set; }
+        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
-        [Inject]
-        public SelectTargetSignal selectTarget { get; set; }
-
-        [Inject]
-        public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+        [Inject] public StartSelectAbilityTargetSignal startAbilitySelectTarget { get; set; }
+        [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
+        [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
 
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
@@ -32,18 +31,28 @@ namespace ctac
 
             cardStartDrag.AddListener(onCardDragStart);
             cardActivated.AddListener(onCardDragEnd);
+
             cancelSelectTarget.AddListener(onCancelSelectTarget);
             selectTarget.AddListener(onSelectTarget);
             startSelectTarget.AddListener(onStartTarget);
+
+            cancelSelectAbilityTarget.AddListener(onAbilityCancelSelectTarget);
+            selectAbilityTarget.AddListener(onAbilitySelectTarget);
+            startAbilitySelectTarget.AddListener(onAbilityStartTarget);
         }
 
         public override void onRemove()
         {
             cardStartDrag.RemoveListener(onCardDragStart);
             cardActivated.RemoveListener(onCardDragEnd);
+
             cancelSelectTarget.RemoveListener(onCancelSelectTarget);
             selectTarget.RemoveListener(onSelectTarget);
             startSelectTarget.RemoveListener(onStartTarget);
+
+            cancelSelectAbilityTarget.RemoveListener(onAbilityCancelSelectTarget);
+            selectAbilityTarget.RemoveListener(onAbilitySelectTarget);
+            startAbilitySelectTarget.RemoveListener(onAbilityStartTarget);
         }
 
         private void onCardDragStart(CardModel card)
@@ -87,6 +96,28 @@ namespace ctac
         }
 
         private void onSelectTarget(StartTargetModel card, PieceModel piece)
+        {
+            view.disable();
+        }
+
+        private void onAbilityStartTarget(StartAbilityTargetModel model)
+        {
+            if (model.targetingPiece != null && model.targetingPiece.gameObject != null)
+            {
+                view.rectTransform(model.targetingPiece.gameObject);
+            }
+            else
+            {
+                view.disable();
+            }
+        }
+
+        private void onAbilityCancelSelectTarget(PieceModel card)
+        {
+            view.disable();
+        }
+
+        private void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
         {
             view.disable();
         }

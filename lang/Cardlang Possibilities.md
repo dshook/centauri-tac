@@ -57,6 +57,7 @@
 * copy minion (into hand or play)
 * move minion into play from deck
 * card cost modification
+* transform a minion into another minion
 * ~~swap health and attack~~
 * discard a card
 * ~~destroy/give energy~~

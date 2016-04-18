@@ -86,11 +86,16 @@ namespace ctac.signals
     [Singleton] public class DestroyCardSignal : Signal<int> { }
     [Singleton] public class CardDestroyedSignal : Signal<CardModel> { }
 
-    [Singleton] public class ActivateAbilitySignal : Signal<ActivateAbilityModel> { }
 
     [Singleton] public class StartSelectTargetSignal : Signal<StartTargetModel> { }
     [Singleton] public class SelectTargetSignal : Signal<StartTargetModel, PieceModel> { }
     [Singleton] public class CancelSelectTargetSignal : Signal<CardModel> { }
+
+    [Singleton] public class ActivateAbilitySignal : Signal<ActivateAbilityModel> { }
+
+    [Singleton] public class StartSelectAbilityTargetSignal : Signal<StartAbilityTargetModel> { }
+    [Singleton] public class SelectAbilityTargetSignal : Signal<StartAbilityTargetModel, PieceModel> { }
+    [Singleton] public class CancelSelectAbilityTargetSignal : Signal<PieceModel> { }
 
     [Singleton] public class ActionSetPlayerResourceSignal : Signal<SetPlayerResourceModel> { }
     [Singleton] public class PlayerResourceSetSignal : Signal<SetPlayerResourceModel> { }

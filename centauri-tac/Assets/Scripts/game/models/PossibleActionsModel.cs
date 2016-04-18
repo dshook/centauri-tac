@@ -31,6 +31,16 @@ namespace ctac
 
             return possibleActions[playerId].FirstOrDefault(x => x.cardId == cardId);
         }
+
+        /// <summary>
+        /// Gets any ability targets if they exist for a piece, null if none
+        /// </summary>
+        public AbilityTarget GetAbilitiesForPiece(int playerId, int pieceId)
+        {
+            if (!possibleAbilities.ContainsKey(playerId)){ return null; }
+
+            return possibleAbilities[playerId].FirstOrDefault(x => x.pieceId == pieceId);
+        }
     }
 
     public class PossibleActions

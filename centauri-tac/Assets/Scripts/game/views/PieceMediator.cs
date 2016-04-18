@@ -24,6 +24,10 @@ namespace ctac
         [Inject] public SelectTargetSignal targetSelected { get; set; }
         [Inject] public CancelSelectTargetSignal targetCancel { get; set; }
 
+        [Inject] public StartSelectAbilityTargetSignal startAbilityTarget { get; set; }
+        [Inject] public SelectAbilityTargetSignal targetAbilitySelected { get; set; }
+        [Inject] public CancelSelectAbilityTargetSignal targetAbilityCancel { get; set; }
+
         [Inject] public PieceDiedSignal pieceDied { get; set; }
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
@@ -39,10 +43,15 @@ namespace ctac
             pieceStatusChanged.AddListener(onStatusChange);
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
+            turnEnded.AddListener(onTurnEnded);
+
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
             targetCancel.AddListener(onTargetCancel);
-            turnEnded.AddListener(onTurnEnded);
+
+            startAbilityTarget.AddListener(onStartSelectAbilityTarget);
+            targetAbilitySelected.AddListener(onTargetAbilitySelected);
+            targetAbilityCancel.AddListener(onTargetAbilityCancel);
         }
 
         public override void onRemove()
@@ -55,10 +64,15 @@ namespace ctac
             pieceBuffed.RemoveListener(onBuffed);
             pieceStatusChanged.RemoveListener(onStatusChange);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
+            turnEnded.RemoveListener(onTurnEnded);
+
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
             targetCancel.RemoveListener(onTargetCancel);
-            turnEnded.RemoveListener(onTurnEnded);
+
+            startAbilityTarget.RemoveListener(onStartSelectAbilityTarget);
+            targetAbilitySelected.RemoveListener(onTargetAbilitySelected);
+            targetAbilityCancel.RemoveListener(onTargetAbilityCancel);
         }
 
         public void onMove(PieceMovedModel pieceMoved)
@@ -290,6 +304,22 @@ namespace ctac
             view.targetCandidate = false;
         }
         private void onTargetCancel(CardModel card)
+        {
+            view.targetCandidate = false;
+        }
+
+        private void onStartSelectAbilityTarget(StartAbilityTargetModel model)
+        {
+            if (model.targets.targetPieceIds.Contains(view.piece.id))
+            {
+                view.targetCandidate = true;
+            }
+        }
+        private void onTargetAbilitySelected(StartAbilityTargetModel c, PieceModel m)
+        {
+            view.targetCandidate = false;
+        }
+        private void onTargetAbilityCancel(PieceModel card)
         {
             view.targetCandidate = false;
         }
