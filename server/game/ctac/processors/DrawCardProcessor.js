@@ -7,7 +7,7 @@ import loglevel from 'loglevel-decorator';
  * Handle the PassTurn action
  */
 @loglevel
-export default class CardDrawProcessor
+export default class DrawCardProcessor
 {
   constructor(cardState, cardEvaluator, pieceState)
   {

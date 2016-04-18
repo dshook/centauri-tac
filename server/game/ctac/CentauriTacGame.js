@@ -55,14 +55,15 @@ export default class CentauriTacGame
 
       //spawn both player decks and init hands
       for(let player of this.players){
+        let startingCards = player.id === startingId ? 3 : 4;
         this.playerResourceState.init(player.id);
         this.cardState.initPlayer(player.id);
-        this.queue.push(new SpawnDeck(player.id));
+        this.queue.push(new SpawnDeck(player.id, startingId, startingCards));
       }
 
       //draw initial cards
-      let startingCards = 3;
       for(let player of this.players){
+        let startingCards = player.id === startingId ? 3 : 4;
         for(let c = 0; c < startingCards; c++){
           this.queue.push(new DrawCard(player.id));
         }
