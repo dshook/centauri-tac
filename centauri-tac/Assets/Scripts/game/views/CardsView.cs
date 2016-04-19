@@ -54,7 +54,7 @@ namespace ctac {
                 rectTransform.Rotate(Vector3.up, 180f, Space.Self);
 
                 dest = PointOnCircle(cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, opponentCardCircleCenter);
-                dest = dest.SetZ(dest.z + (-1 * c));
+                dest = dest.SetZ(dest.z + (-1.5f * c));
 
                 rectTransform.anchorMax = opponentAnchorPosition;
                 rectTransform.anchorMin = opponentAnchorPosition;
@@ -72,7 +72,7 @@ namespace ctac {
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
                 dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
-                dest = dest.SetZ(dest.z + (-1 * c));
+                dest = dest.SetZ(dest.z + (-1.5f * c));
 
                 if (selectedCard != null && card == selectedCard)
                 {

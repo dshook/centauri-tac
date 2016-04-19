@@ -92,11 +92,10 @@ namespace ctac
             cardVisible = true;
         }
 
-        private static Vector3 HoverOffset = new Vector3(0, 155, -1);
         internal void showCardFromHand(CardModel cardToShow, Vector3 position)
         {
             rectTransform.SetAnchor(cardAnchor);
-            var displayPosition = (position + HoverOffset).SetZ(39f);
+            var displayPosition = new Vector3(position.x, 125f, 39f);
             showCard(cardToShow, displayPosition);
         }
 
