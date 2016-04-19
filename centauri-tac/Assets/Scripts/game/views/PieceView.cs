@@ -35,6 +35,7 @@ namespace ctac {
             "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
         };
         public bool targetCandidate = false;
+        public bool enemiesInRange = false;
 
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
@@ -110,6 +111,7 @@ namespace ctac {
                 && piece.currentPlayerHasControl 
                 && !piece.hasAttacked && piece.attack > 0
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
+                && enemiesInRange
             ) {
                 meshRenderer.material.SetColor("_OutlineColor", Color.cyan);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);

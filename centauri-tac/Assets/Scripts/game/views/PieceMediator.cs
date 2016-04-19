@@ -1,6 +1,7 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using UnityEngine;
+using System.Linq;
 
 namespace ctac
 {
@@ -33,6 +34,9 @@ namespace ctac
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public IMapService mapService { get; set; }
+
         public override void OnRegister()
         {
             pieceMoved.AddListener(onMove);
@@ -44,6 +48,7 @@ namespace ctac
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
             turnEnded.AddListener(onTurnEnded);
+            pieceDied.AddListener(onPieceDied);
 
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
@@ -65,6 +70,7 @@ namespace ctac
             pieceStatusChanged.RemoveListener(onStatusChange);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
             turnEnded.RemoveListener(onTurnEnded);
+            pieceDied.RemoveListener(onPieceDied);
 
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
@@ -77,6 +83,7 @@ namespace ctac
 
         public void onMove(PieceMovedModel pieceMoved)
         {
+            checkEnemiesInRange();
             if (pieceMoved.piece != view.piece) return;
 
             animationQueue.Add(
@@ -327,6 +334,22 @@ namespace ctac
         private void onTurnEnded(GameTurnModel turns)
         {
             view.UpdateTurn(turns.currentPlayerId);
+        }
+
+        private void onPieceDied(PieceModel p)
+        {
+            checkEnemiesInRange();
+        }
+
+        private void checkEnemiesInRange()
+        {
+            var pieceLocation = view.piece.tilePosition;
+            var neighbors = mapService.GetNeighbors(pieceLocation);
+
+            view.enemiesInRange = pieces.Pieces.Any(p => 
+                p.playerId != view.piece.playerId
+                && neighbors.ContainsKey(p.tilePosition)
+            );
         }
     }
 }
