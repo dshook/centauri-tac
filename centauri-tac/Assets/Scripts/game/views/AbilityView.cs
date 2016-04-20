@@ -42,7 +42,6 @@ namespace ctac
                 var newButton = GameObject.Instantiate(abilityButtonPrefab);
                 newButton.transform.SetParent(abilityPanel.transform, false);
 
-                var actualButton = newButton.GetComponent<Button>();
                 var buttonRect = newButton.GetComponent<RectTransform>();
                 var abilityButtonView = newButton.GetComponent<AbilityButtonView>();
 
