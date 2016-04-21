@@ -15,7 +15,7 @@ namespace ctac
         int KingDistance(Vector2 a, Vector2 b);
         List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-        Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, int controllingPlayerId, Tile dest = null);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null);
     }
 
     public class MapService : IMapService
@@ -119,6 +119,7 @@ namespace ctac
             while (frontier.Count > 0)
             {
                 var current = frontier[0];
+                var currentTile = mapModel.tiles[current];
                 frontier.RemoveAt(0);
 
                 if (g_score[current] > distance)
@@ -128,10 +129,10 @@ namespace ctac
 
                 if (!ret.ContainsKey(current))
                 {
-                    ret.Add(current, mapModel.tiles[current]);
+                    ret.Add(current, currentTile);
                 }
 
-                var neighbors = GetMovableNeighbors(current, controllingPlayerId);
+                var neighbors = GetMovableNeighbors(currentTile, controllingPlayerId);
                 foreach (var neighbor in neighbors)
                 {
                     //add the neighbor to explore if it's not already being returned 
@@ -195,7 +196,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetMovableNeighbors(current.position, controllingPlayerId, end);
+                var neighbors = GetMovableNeighbors(current, controllingPlayerId, end);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -303,9 +304,13 @@ namespace ctac
         /// but always include the dest tile for attacking if it's passed
         /// but also make sure not to land on a tile with an occupant if attacking
         /// </summary>
-        public Dictionary<Vector2, Tile> GetMovableNeighbors(Vector2 center, int controllingPlayerId, Tile dest = null)
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null)
         {
-            var ret = GetNeighbors(center);
+            var ret = GetNeighbors(center.position);
+
+            //filter tiles that are too high/low to move to
+            ret = ret.Where(t => Math.Abs(t.Value.fullPosition.y - center.fullPosition.y ) < Constants.heightDeltaThreshold)
+                .ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 
