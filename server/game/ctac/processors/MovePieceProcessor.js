@@ -4,6 +4,7 @@ import Statuses from '../models/Statuses.js';
 import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
+import Constants from '../util/Constants.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -51,6 +52,15 @@ export default class MovePieceProcessor
     if((piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
       this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
       return queue.cancel(action);
+    }
+
+    //check height differential
+    let currentTile = this.mapState.getTile(piece.position);
+    let destinationTile = this.mapState.getTile(action.to)
+    let heightDiff = Math.abs(currentTile.position.y - destinationTile.position.y);
+    if( heightDiff > Constants.heightDeltaThreshold){
+        this.log.warn('Cannot move piece %j up height diff of %s', piece, heightDiff);
+        return queue.cancel(action);
     }
 
     //determine direction piece should be facing to see if rotation is necessary

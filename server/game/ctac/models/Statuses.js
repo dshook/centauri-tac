@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
-//gross
-import Enum from '../../../../lib/enum';
+import Enum from 'enum';
 
 var Statuses = Enum({
   Silence   : 1,
