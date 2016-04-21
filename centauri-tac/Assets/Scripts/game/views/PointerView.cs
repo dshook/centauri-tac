@@ -8,69 +8,73 @@ namespace ctac
 {
     public class PointerView : View
     {
-        private MeshRenderer meshRenderer;
-        private Vector2 startPoint;
+        private GameObject pointerCurve;
+        private BezierSpline pointerSpline;
+
+        private Vector3 startPoint;
+        private Vector3 curveHeight = new Vector3(0, 1.15f, 0);
         private RectTransform CanvasRect;
         private CardCanvasHelperView cardCanvasHelper;
-
-        private Vector3 yForward = new Vector3(0, 1, 0);
+        private int tileMask = 0;
 
         internal void init()
         {
-            meshRenderer = GetComponent<MeshRenderer>();
-            meshRenderer.enabled = false;
+            pointerCurve = transform.Find("PointerCurve").gameObject;
+            pointerCurve.SetActive(false);
+
+            pointerSpline = pointerCurve.GetComponent<BezierSpline>();
+
+            tileMask = LayerMask.GetMask("Tile");
             CanvasRect = GameObject.Find(Constants.cardCanvas).GetComponent<RectTransform>();
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
         void Update()
         {
-            if (meshRenderer.enabled)
+            if (pointerCurve.activeSelf)
             {
-                Vector2 mouseScreen = CrossPlatformInputManager.mousePosition;
+                var ray = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, Constants.cameraRaycastDist, tileMask))
+                {
+                    Vector3 mouseWorld = hit.point;
 
-                //position
-                var midViewport = ((mouseScreen- startPoint) * 0.5f) + startPoint;
-                var midWorld = midViewport - (CanvasRect.sizeDelta / 2);
-                transform.parent.localPosition = midWorld;
+                    var diffVector = mouseWorld - startPoint;
 
-                //find angles
-                //v1 is a vector pointing right because this is the default rotation of the arrow
-                var v1 = Vector2.right;
-                var v2 = mouseScreen - startPoint;
-                var angle = Vector2.Angle(v1, v2);
-                Vector3 cross = Vector3.Cross(mouseScreen, startPoint);
-                if (cross.z > 0) angle -= 360;
+                    var secondControl = (diffVector * 0.2f) + curveHeight + startPoint;
+                    var thirdControl = (diffVector * 0.8f) + curveHeight + startPoint;
 
-                var newRotation = Quaternion.AngleAxis(angle, yForward);
-                transform.localRotation = newRotation;
-
-                //scale
-                var distance = Vector2.Distance(startPoint, mouseScreen);
-                transform.localScale = transform.localScale.SetZ(distance / 10);
-
-                //Debug.Log(string.Format("Start {0} Mouse {1} Angle {2} Mid View {3} Mid World {4}", startPoint, mouseScreen, angle, midViewport, midWorld));
+                    pointerSpline.SetControlPoint(0, startPoint);
+                    pointerSpline.SetControlPoint(1, secondControl);
+                    pointerSpline.SetControlPoint(2, thirdControl);
+                    pointerSpline.SetControlPoint(3, mouseWorld);
+                }
             }
         }
 
         internal void screenPointAt(Vector2 start)
         {
-            meshRenderer.enabled = true;
             startPoint = start;
+            pointerCurve.SetActive(true);
         }
 
         internal void rectTransform(GameObject go)
         {
-            meshRenderer.enabled = true;
-
             var screenPos = cardCanvasHelper.WorldToViewport(go.transform.position);
 
             startPoint = new Vector2(Math.Max(screenPos.x, 0), Math.Max(screenPos.y, 0));
+            pointerCurve.SetActive(true);
+        }
+
+        internal void worldPoint(Transform t)
+        {
+            startPoint = t.position;
+            pointerCurve.SetActive(true);
         }
 
         internal void disable()
         {
-            meshRenderer.enabled = false;
+            pointerCurve.SetActive(false);
         }
     }
 }

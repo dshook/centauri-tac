@@ -104,7 +104,7 @@ namespace ctac
         {
             if (model.targetingPiece != null && model.targetingPiece.gameObject != null)
             {
-                view.rectTransform(model.targetingPiece.gameObject);
+                view.worldPoint(model.targetingPiece.gameObject.transform);
             }
             else
             {
