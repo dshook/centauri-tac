@@ -80,8 +80,16 @@ namespace ctac
 
         private void onStartTarget(StartTargetModel model)
         {
-            if (model.targetingCard != null && model.targetingCard.gameObject != null)
+            if (model.targetingCard != null && model.cardDeployPosition != null)
             {
+                view.worldPoint(model.cardDeployPosition.gameObject.transform);
+            }
+            else if (model.targetingCard.tags.Contains("Spell"))
+            {
+                var targets = possibleActions.GetForCard(turns.currentPlayerId, model.targetingCard.id);
+                //don't point for untargeted spells
+                if (targets == null) { return; }
+
                 view.rectTransform(model.targetingCard.gameObject);
             }
             else

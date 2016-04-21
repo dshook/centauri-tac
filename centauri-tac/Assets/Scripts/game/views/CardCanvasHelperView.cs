@@ -14,7 +14,7 @@ namespace ctac {
             CanvasRect = GameObject.Find(Constants.cardCanvas).GetComponent<RectTransform>();
         }
 
-        public Vector3 WorldToViewport(Vector3 position)
+        public Vector3 WorldToScreenPoint(Vector3 position)
         {
             Vector2 ViewportPosition = cardCamera.WorldToViewportPoint(position);
             return new Vector3(
@@ -24,5 +24,9 @@ namespace ctac {
             );
         }
 
+        public Vector3 WorldToViewportPoint(Vector3 position)
+        {
+            return cardCamera.WorldToViewportPoint(position);
+        }
     }
 }

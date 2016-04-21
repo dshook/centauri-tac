@@ -12,10 +12,12 @@ namespace ctac
         private BezierSpline pointerSpline;
 
         private Vector3 startPoint;
-        private Vector3 curveHeight = new Vector3(0, 1.15f, 0);
+        private Vector3 curveHeight = new Vector3(0, 1.35f, 0);
         private RectTransform CanvasRect;
         private CardCanvasHelperView cardCanvasHelper;
         private int tileMask = 0;
+
+        private Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
         internal void init()
         {
@@ -60,10 +62,17 @@ namespace ctac
 
         internal void rectTransform(GameObject go)
         {
-            var screenPos = cardCanvasHelper.WorldToViewport(go.transform.position);
+            var screenPoint = cardCanvasHelper.WorldToViewportPoint(go.transform.position);
+            screenPoint.Scale(new Vector3(Camera.main.pixelWidth, 1, Camera.main.pixelHeight));
 
-            startPoint = new Vector2(Math.Max(screenPos.x, 0), Math.Max(screenPos.y, 0));
-            pointerCurve.SetActive(true);
+            var ray = Camera.main.ScreenPointToRay(screenPoint);
+            float dist;
+            if (groundPlane.Raycast(ray, out dist))
+            {
+                var worldPos = ray.GetPoint(dist);
+                startPoint = worldPos.SetY(1f);
+                pointerCurve.SetActive(true);
+            }
         }
 
         internal void worldPoint(Transform t)
