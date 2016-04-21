@@ -26,6 +26,7 @@ namespace ctac
         [Inject] public GameTurnModel turns { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         public override void OnRegister()
         {
@@ -76,6 +77,10 @@ namespace ctac
                             && selectedPiece.attack > 0
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
                             && !FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)
+                            && mapService.TileMovableHeight(
+                                  mapService.Tile(selectedPiece.tilePosition),
+                                  mapService.Tile(pieceView.piece.tilePosition)
+                               )
                             )
                         {
                             attackPiece.Dispatch(new AttackPieceModel()

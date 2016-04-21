@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Position from './Position.js';
 import Tile from './Tile.js';
 import loglevel from 'loglevel-decorator';
+import Constants from '../util/Constants.js';
 
 /**
  * Current loaded map with tile positions
@@ -36,6 +37,10 @@ export default class MapState
 
   tileDistance(posA, posB){
     return Math.abs(posA.x - posB.x) + Math.abs(posA.z - posB.z);
+  }
+
+  tileMovableHeight(start, end){
+    return Math.abs(start.position.y - end.position.y) < Constants.heightDeltaThreshold;
   }
 
   kingDistance(posA, posB){

@@ -16,6 +16,8 @@ namespace ctac
         List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
         Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null);
+        bool TileMovableHeight(Tile start, Tile end);
+        Tile Tile(Vector2 position);
     }
 
     public class MapService : IMapService
@@ -299,6 +301,16 @@ namespace ctac
             return ret;
         }
 
+        public bool TileMovableHeight(Tile start, Tile end)
+        {
+            return Math.Abs(start.fullPosition.y - end.fullPosition.y ) < Constants.heightDeltaThreshold;
+        }
+
+        public Tile Tile(Vector2 position)
+        {
+            return mapModel.tiles[position];
+        }
+
         /// <summary>
         /// Find neighboring tiles that aren't occupied by enemies,
         /// but always include the dest tile for attacking if it's passed
@@ -309,8 +321,7 @@ namespace ctac
             var ret = GetNeighbors(center.position);
 
             //filter tiles that are too high/low to move to
-            ret = ret.Where(t => Math.Abs(t.Value.fullPosition.y - center.fullPosition.y ) < Constants.heightDeltaThreshold)
-                .ToDictionary(k => k.Key, v => v.Value);
+            ret = ret.Where(t => TileMovableHeight(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 

@@ -1,6 +1,5 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
-using UnityEngine;
 using System.Linq;
 
 namespace ctac
@@ -345,6 +344,8 @@ namespace ctac
         {
             var pieceLocation = view.piece.tilePosition;
             var neighbors = mapService.GetNeighbors(pieceLocation);
+            neighbors = neighbors.Where(t => mapService.TileMovableHeight(t.Value, mapService.Tile(pieceLocation)))
+                .ToDictionary(k => k.Key, v => v.Value);
 
             view.enemiesInRange = pieces.Pieces.Any(p => 
                 p.playerId != view.piece.playerId

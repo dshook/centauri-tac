@@ -3,6 +3,7 @@ import Statuses from '../models/Statuses.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
+import Constants from '../util/Constants.js';
 import {directionOf, faceDirection} from '../models/Direction.js';
 import loglevel from 'loglevel-decorator';
 
@@ -46,6 +47,14 @@ export default class AttackPieceProcessor
     if(targetDistance > 1){
       this.log.warn('Attacker too far away from target %s', targetDistance);
       return queue.cancel(action);
+    }
+
+    //check height differential
+    let attackerTile = this.mapState.getTile(attacker.position);
+    let targetTile = this.mapState.getTile(target.position)
+    if(!this.mapState.tileMovableHeight(attackerTile, targetTile)){
+        this.log.warn('Cannot attack due to tile heigh diff');
+        return queue.cancel(action);
     }
 
     if(attacker.statuses & Statuses.Paralyze){

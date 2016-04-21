@@ -57,9 +57,8 @@ export default class MovePieceProcessor
     //check height differential
     let currentTile = this.mapState.getTile(piece.position);
     let destinationTile = this.mapState.getTile(action.to)
-    let heightDiff = Math.abs(currentTile.position.y - destinationTile.position.y);
-    if( heightDiff > Constants.heightDeltaThreshold){
-        this.log.warn('Cannot move piece %j up height diff of %s', piece, heightDiff);
+    if(!this.mapState.tileMovableHeight(currentTile, destinationTile)){
+        this.log.warn('Cannot move piece %j up height diff', piece);
         return queue.cancel(action);
     }
 
