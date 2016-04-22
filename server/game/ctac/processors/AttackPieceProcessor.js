@@ -52,8 +52,8 @@ export default class AttackPieceProcessor
     //check height differential
     let attackerTile = this.mapState.getTile(attacker.position);
     let targetTile = this.mapState.getTile(target.position)
-    if(!this.mapState.tileMovableHeight(attackerTile, targetTile)){
-        this.log.warn('Cannot attack due to tile heigh diff');
+    if(!this.mapState.isHeightPassable(attackerTile, targetTile)){
+        this.log.info('Cannot attack due to tile heigh diff');
         return queue.cancel(action);
     }
 

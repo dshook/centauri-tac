@@ -344,7 +344,7 @@ namespace ctac
         {
             var pieceLocation = view.piece.tilePosition;
             var neighbors = mapService.GetNeighbors(pieceLocation);
-            neighbors = neighbors.Where(t => mapService.TileMovableHeight(t.Value, mapService.Tile(pieceLocation)))
+            neighbors = neighbors.Where(t => mapService.isHeightPassable(t.Value, mapService.Tile(pieceLocation)))
                 .ToDictionary(k => k.Key, v => v.Value);
 
             view.enemiesInRange = pieces.Pieces.Any(p => 

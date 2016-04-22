@@ -57,7 +57,7 @@ export default class MovePieceProcessor
     //check height differential
     let currentTile = this.mapState.getTile(piece.position);
     let destinationTile = this.mapState.getTile(action.to)
-    if(!this.mapState.tileMovableHeight(currentTile, destinationTile)){
+    if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
         this.log.warn('Cannot move piece %j up height diff', piece);
         return queue.cancel(action);
     }
@@ -84,7 +84,12 @@ export default class MovePieceProcessor
       .filter(p => p.playerId != piece.playerId);
     for(let tauntPiece of tauntPieces){
       let tauntPositions = this.mapState.getKingTilesInRadius(tauntPiece.position, 1);
-      if(tauntPositions.length > 0 && tauntPositions.find(p => p.tileEquals(piece.position) )){
+      if(tauntPositions.length > 0 &&
+          tauntPositions.find(p => p.tileEquals(piece.position)
+            && this.mapState.isHeightPassable(this.mapState.getTile(tauntPiece.position), destinationTile)
+          )
+        )
+      {
         this.log.info('Unit %j stepped onto a taunt area of %j', piece, tauntPiece);
         //cancel any upcoming move actions
         let upcomingQueue = queue.peek();

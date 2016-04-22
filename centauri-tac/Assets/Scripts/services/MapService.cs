@@ -16,7 +16,7 @@ namespace ctac
         List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
         Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null);
-        bool TileMovableHeight(Tile start, Tile end);
+        bool isHeightPassable(Tile start, Tile end);
         Tile Tile(Vector2 position);
     }
 
@@ -301,7 +301,7 @@ namespace ctac
             return ret;
         }
 
-        public bool TileMovableHeight(Tile start, Tile end)
+        public bool isHeightPassable(Tile start, Tile end)
         {
             return Math.Abs(start.fullPosition.y - end.fullPosition.y ) < Constants.heightDeltaThreshold;
         }
@@ -321,7 +321,7 @@ namespace ctac
             var ret = GetNeighbors(center.position);
 
             //filter tiles that are too high/low to move to
-            ret = ret.Where(t => TileMovableHeight(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
+            ret = ret.Where(t => isHeightPassable(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 

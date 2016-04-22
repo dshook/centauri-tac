@@ -77,7 +77,7 @@ namespace ctac
                             && selectedPiece.attack > 0
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
                             && !FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)
-                            && mapService.TileMovableHeight(
+                            && mapService.isHeightPassable(
                                   mapService.Tile(selectedPiece.tilePosition),
                                   mapService.Tile(pieceView.piece.tilePosition)
                                )

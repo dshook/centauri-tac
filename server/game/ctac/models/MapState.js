@@ -39,8 +39,8 @@ export default class MapState
     return Math.abs(posA.x - posB.x) + Math.abs(posA.z - posB.z);
   }
 
-  tileMovableHeight(start, end){
-    return Math.abs(start.position.y - end.position.y) < Constants.heightDeltaThreshold;
+  isHeightPassable(startTile, endTile){
+    return Math.abs(startTile.position.y - endTile.position.y) < Constants.heightDeltaThreshold;
   }
 
   kingDistance(posA, posB){

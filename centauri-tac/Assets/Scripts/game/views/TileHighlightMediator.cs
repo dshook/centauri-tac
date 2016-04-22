@@ -229,6 +229,12 @@ namespace ctac
             foreach (var tauntPiece in tauntPieces)
             {
                 var kingTiles = mapService.GetKingTilesInRadius(tauntPiece.tilePosition, 1);
+                //filter tiles that are too high/low to protect
+                kingTiles = kingTiles.Where(t => 
+                    mapService.isHeightPassable(t.Value, mapService.Tile(tauntPiece.tilePosition))
+                ).ToDictionary(k => k.Key, v => v.Value);
+
+
                 if (tauntPiece.currentPlayerHasControl)
                 {
                     friendlyTauntTiles.AddRange(kingTiles.Values);
