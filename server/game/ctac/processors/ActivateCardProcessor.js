@@ -56,6 +56,15 @@ export default class ActivateCardProcessor
         queue.push(new Message('You must play your minions close to your hero!'));
         return queue.cancel(action, true);
       }
+
+      //check height differential
+      let currentTile = this.mapState.getTile(playerHero.position);
+      let destinationTile = this.mapState.getTile(action.position)
+      if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
+        this.log.warn('Cannot play minion up that much height diff');
+        queue.push(new Message('You must play your minions close to your hero!'));
+        return queue.cancel(action, true);
+      }
     }
 
     //mostly all good if we make it this far, individual processors could still potentiall cancel their own action

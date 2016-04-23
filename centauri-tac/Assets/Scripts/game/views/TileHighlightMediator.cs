@@ -144,6 +144,7 @@ namespace ctac
             List<Tile> playableTiles = map.tileList
                 .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
                     && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
+                    && mapService.isHeightPassable(t, mapService.Tile(playerHero.tilePosition))
                 )
                 .ToList();
             view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected);
