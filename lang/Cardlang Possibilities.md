@@ -46,20 +46,21 @@
 
 
 ##Actions
-* ~~add buff~~
-* ~~spawn minion~~
-* aura effects
 * move/push piece
-* ~~give/remove status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)~~
-* Shuffle into deck
-* ~~take control of minion~~
-* ~~destroy minion~~
+* aura effects
+* transform a minion into another minion
+* discard a card
+* choose effects
 * copy minion (into hand or play)
 * move minion into play from deck
 * card cost modification
-* transform a minion into another minion
+* Shuffle into deck
+* ~~add buff~~
+* ~~spawn minion~~
+* ~~give/remove status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)~~
+* ~~take control of minion~~
+* ~~destroy minion~~
 * ~~swap health and attack~~
-* discard a card
 * ~~destroy/give energy~~
 * ~~effect that lasts till end of turn~~
 * ~~Hit for damage~~

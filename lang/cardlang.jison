@@ -57,6 +57,10 @@
 (Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root)
   return 'status'
 
+//areas
+(Cross|Square|Line|Diagonal)
+  return 'area'
+
 //bool
 (true|false)
   return 'bool'
