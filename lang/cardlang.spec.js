@@ -569,3 +569,41 @@ test('Event with number and text', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Hit area', t => {
+  t.plan(1);
+
+  let input = `
+    death{ Hit(Area(SELF, Square, 1), 2) }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'death',
+      actions: [
+        {
+          action: 'Hit',
+          args: [
+            {
+              left: {
+                area: true,
+                args: [
+                  {
+                    left: 'SELF'
+                  },
+                  'Square',
+                  1
+                ]
+              }
+            },
+            2
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
