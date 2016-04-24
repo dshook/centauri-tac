@@ -50,6 +50,58 @@ export default class MapState
     );
   }
 
+  getCrossTiles(center, distance){
+    let ret = [];
+    let neighborTile = null;
+    for(let d = 1; d <= distance; d++){
+      let toCheck = [
+        center.addX(d),
+        center.addX(-d),
+        center.addZ(d),
+        center.addZ(-d)
+      ];
+
+      for(let currentDirection of toCheck)
+      {
+        //check it's not off the map
+        neighborTile = this.getTile(currentDirection);
+        if (neighborTile != null)
+        {
+          ret.push(neighborTile.position);
+        }
+      }
+    }
+    return ret;
+  }
+
+  //uses second point to determine direction of the line, should be within 1 distance of center
+  getLineTiles(center, secondPoint, distance, bothDirections){
+    let xDiff = Math.abs(secondPoint.x - center.x);
+    let zDiff = Math.abs(secondPoint.z - center.z);
+
+    let ret = [];
+    let neighborTile = null;
+    for(let d = 1; d <= distance; d++){
+      let toCheck = [
+        center.addXYZ(xDiff * d, 0, zDiff * d)
+      ];
+      if(bothDirections){
+        toCheck.push(center.addXYZ(-xDiff * d, 0, -zDiff * d));
+      }
+
+      for(let currentDirection of toCheck)
+      {
+        //check it's not off the map
+        neighborTile = this.getTile(currentDirection);
+        if (neighborTile != null)
+        {
+          ret.push(neighborTile.position);
+        }
+      }
+    }
+    return ret;
+  }
+
   getKingTilesInRadius(center: Position, distance: number){
     return this.getTilesInRadiusGeneric(center, distance, this.getKingNeighbors.bind(this), this.kingDistance);
   }
@@ -100,13 +152,13 @@ export default class MapState
 
   getNeighbors(center: Position)
   {
-    var ret = [];
-    var neighborTile = null;
-    var toCheck = [
-        center.addX(1),
-        center.addX(-1),
-        center.addZ(1),
-        center.addZ(-1)
+    let ret = [];
+    let neighborTile = null;
+    let toCheck = [
+      center.addX(1),
+      center.addX(-1),
+      center.addZ(1),
+      center.addZ(-1)
     ];
 
     for(let currentDirection of toCheck)
@@ -123,18 +175,18 @@ export default class MapState
 
   getKingNeighbors(center: Position)
   {
-    var ret = [];
-    var neighborTile = null;
-    var toCheck = [
-        center.addX(1),
-        center.addX(-1),
-        center.addZ(1),
-        center.addZ(-1),
+    let ret = [];
+    let neighborTile = null;
+    let toCheck = [
+      center.addX(1),
+      center.addX(-1),
+      center.addZ(1),
+      center.addZ(-1),
 
-        center.addXYZ(-1, 0, -1),
-        center.addXYZ(-1, 0, 1),
-        center.addXYZ(1, 0, -1),
-        center.addXYZ(1, 0, 1),
+      center.addXYZ(-1, 0, -1),
+      center.addXYZ(-1, 0, 1),
+      center.addXYZ(1, 0, -1),
+      center.addXYZ(1, 0, 1),
     ];
 
     for(let currentDirection of toCheck)

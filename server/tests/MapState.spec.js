@@ -5,15 +5,21 @@ import Tile from     '../game/ctac/models/Tile.js';
 import cubeland from '../../maps/cubeland.json';
 
 function positionSort(a, b) {
-  return (a.x - b.x) + (a.z - b.z);
+  return 10000 * (a.x - b.x) + (a.z - b.z);
 }
 
 function positionArrayEquals(a, b){
-  if(a.length != b.length) return false;
+  if(a.length != b.length){
+    console.log('actual', a);
+    console.log('expected', b);
+    return false;
+  }
 
   a.sort(positionSort);
   b.sort(positionSort);
 
+  console.log('actual', a);
+  console.log('expected', b);
 
   for(let i = 0; i < a.length; i++){
     if( !a[i].equals(b[i]) ) return false;
@@ -76,4 +82,43 @@ test('Get Tiles in Radius', t => {
   ];
   t.ok(positionArrayEquals(oneTileRadus, expectedOnes), 'Got expected for 1 radius');
 
+});
+
+test('Get cross Tiles', t => {
+  var mapState = new MapState();
+  mapState.add(cubeland);
+  t.plan(1);
+
+  let edgeCrossTiles = mapState.getCrossTiles(new Position(1, 0, 1), 2);
+  let expectedEdgeCrossTiles = [
+    mapState.getTile(new Position(0,0,1)).position,
+    mapState.getTile(new Position(1,0,0)).position,
+    mapState.getTile(new Position(1,0,2)).position,
+    mapState.getTile(new Position(2,0,1)).position,
+    mapState.getTile(new Position(3,0,1)).position,
+    mapState.getTile(new Position(1,0,3)).position,
+  ];
+  t.ok(positionArrayEquals(edgeCrossTiles, expectedEdgeCrossTiles), 'Got expected cross tiles');
+});
+
+test('Get line Tiles', t => {
+  var mapState = new MapState();
+  mapState.add(cubeland);
+  t.plan(2);
+
+  let diagonalTiles = mapState.getLineTiles(new Position(1, 0, 1), new Position(0, 0, 0), 2, true);
+  let expectedDiagonalTiles = [
+    mapState.getTile(new Position(0,0,0)).position,
+    mapState.getTile(new Position(2,0,2)).position,
+    mapState.getTile(new Position(3,0,3)).position,
+  ];
+  t.ok(positionArrayEquals(diagonalTiles, expectedDiagonalTiles), 'Got expected diagonal tiles');
+
+  let lineTiles = mapState.getLineTiles(new Position(2, 0, 2), new Position(2, 0, 3), 3, false);
+  let expectedLineTiles = [
+    mapState.getTile(new Position(2,0,3)).position,
+    mapState.getTile(new Position(2,0,4)).position,
+    mapState.getTile(new Position(2,0,5)).position,
+  ];
+  t.ok(positionArrayEquals(lineTiles, expectedLineTiles), 'Got expected line tiles');
 });
