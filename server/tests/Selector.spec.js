@@ -4,8 +4,10 @@ import Statuses from '../game/ctac/models/Statuses.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
 import Player from 'models/Player';
+import MapState from '../game/ctac/models/MapState.js';
 import requireDir from 'require-dir';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
+import cubeland from '../../maps/cubeland.json';
 
 //init the dependencies for the selector
 var cardRequires = requireDir('../../cards/');
@@ -15,6 +17,9 @@ for(let cardFileName in cardRequires){
   let card = cardRequires[cardFileName];
   cardDirectory.add(card);
 }
+
+var mapState = new MapState();
+mapState.add(cubeland);
 
 var player1 = new Player(1);
 var player2 = new Player(2);
@@ -49,7 +54,7 @@ spawnPiece(statusPieces, 28, 2);
 
 test('Select Player', t => {
   t.plan(2);
-  let selector = new Selector(players, heroesOnly);
+  let selector = new Selector(players, heroesOnly, mapState);
 
   t.equal(selector.selectPlayer(1, {left: 'PLAYER'}), 1, 'Player is equal to itself');
   t.equal(selector.selectPlayer(1, {left: 'OPPONENT'}), 2, 'Select opponent');
@@ -73,7 +78,7 @@ test('Select a piece', t => {
     'HERO'
   ];
   t.plan(selectors.length * 2);
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
 
   for(let selectString of selectors){
     selectorTemplate.selector.left = selectString;
@@ -92,7 +97,7 @@ test('Random none selected', t => {
       left : 'MINION'
     }
   };
-  let selector = new Selector(players, heroesOnly);
+  let selector = new Selector(players, heroesOnly, mapState);
   let selection = selector.selectPieces(1, selectorTemplate, {selfPiece});
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 0, 'Got nothing back');
@@ -100,7 +105,7 @@ test('Random none selected', t => {
 
 test('Characters', t => {
   t.plan(3);
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, {left: 'CHARACTER' }, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -116,7 +121,7 @@ test('Friendly Characters Intersection', t => {
       op: '&',
       right: 'CHARACTER'
     };
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -124,7 +129,7 @@ test('Friendly Characters Intersection', t => {
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
   t.equal(selection[0].playerId, 1, 'First piece is for the right player');
 
-  let emptySelector = new Selector(players, noPieces);
+  let emptySelector = new Selector(players, noPieces, mapState);
   let emptySelection = emptySelector.selectPieces(1, select, {selfPiece});
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
@@ -138,7 +143,7 @@ test('Enemy Characters by Difference', t => {
       op: '-',
       right: 'FRIENDLY'
     };
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -146,12 +151,12 @@ test('Enemy Characters by Difference', t => {
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
   t.equal(selection[0].playerId, 2, 'First piece is for the enemy player');
 
-  let emptySelector = new Selector(players, noPieces);
+  let emptySelector = new Selector(players, noPieces, mapState);
   let emptySelection = emptySelector.selectPieces(1, select, {selfPiece});
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
 
-  let heroSelector = new Selector(players, heroesOnly);
+  let heroSelector = new Selector(players, heroesOnly, mapState);
   let heroesSelection = heroSelector.selectPieces(1, select, {selfPiece});
   t.equal(heroesSelection.length, 1, 'Selected 1 hero');
   t.equal(heroesSelection[0].tags[0], 'Hero', 'Selected piece is a hero');
@@ -166,7 +171,7 @@ test('Enemy Minions', t => {
       op: '&',
       right: 'MINION'
     };
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -175,7 +180,7 @@ test('Enemy Minions', t => {
   t.equal(selection[0].playerId, 2, 'First piece is for the right player');
   t.equal(selection[0].tags[0], 'Minion', 'Selected piece is a minion');
 
-  let emptySelector = new Selector(players, noPieces);
+  let emptySelector = new Selector(players, noPieces, mapState);
   let emptySelection = emptySelector.selectPieces(1, select, {selfPiece});
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
@@ -189,14 +194,14 @@ test('Peace treaty union', t => {
       op: '|',
       right: 'FRIENDLY'
     };
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, pieceStateMix.pieces.length, 'Got back all pieces');
   t.ok(selection[0] instanceof GamePiece, 'First element is a game piece');
 
-  let emptySelector = new Selector(players, noPieces);
+  let emptySelector = new Selector(players, noPieces, mapState);
   let emptySelection = emptySelector.selectPieces(1, select, {selfPiece});
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
@@ -214,7 +219,7 @@ test('Nested condition', t => {
       op: '-',
       right: 'HERO'
     };
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -234,7 +239,7 @@ test('Self Selector', t => {
   let selfPiece = pieceStateMix.pieces[pieceStateMix.pieces.length - 1];
   let triggerPiece = pieceStateMix.pieces[pieceStateMix.pieces.length - 2];
 
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece, activatingPiece: triggerPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -253,7 +258,7 @@ test('Possible Targets', t => {
     right: 'CHARACTER'
   };
 
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let nonTargetSelection = selector.selectPossibleTargets(1, nonTargetSelect);
 
   t.ok(Array.isArray(nonTargetSelection), 'Got back an Array');
@@ -293,7 +298,7 @@ test('Status Selector', t => {
       right: 'FRIENDLY'
     };
 
-  let selector = new Selector(players, statusPieces);
+  let selector = new Selector(players, statusPieces, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
@@ -329,7 +334,7 @@ test('Selector with comparison expression', t => {
       right: "MINION"
     };
 
-  let selector = new Selector(players, pieceStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState);
   let selection = selector.selectPieces(1, select, {selfPiece});
 
   t.ok(Array.isArray(selection), 'Got back an Array');

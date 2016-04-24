@@ -5,9 +5,10 @@ import PieceSelector from './PieceSelector.js';
 
 @loglevel
 export default class Selector{
-  constructor(players, pieceState){
+  constructor(players, pieceState, mapState){
     this.players = players;
     this.pieceState = pieceState;
+    this.mapState = mapState;
   }
 
   selectPlayer(controllingPlayerId, selector){
@@ -58,9 +59,8 @@ export default class Selector{
       return [];
     }
     return new PieceSelector(
-      this.pieceState.pieces,
-      controllingPlayerId,
       this,
+      controllingPlayerId,
       pieceSelectorParams
     ).Select(selector);
   }
@@ -71,7 +71,7 @@ export default class Selector{
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
 
-    return new PieceSelector(this.pieceState.pieces, controllingPlayerId, this, {isSpell})
+    return new PieceSelector(this, controllingPlayerId, {isSpell})
       .Select(selector);
   }
 

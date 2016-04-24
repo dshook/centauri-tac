@@ -4,16 +4,18 @@ import loglevel from 'loglevel-decorator';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(pieces, controllingPlayerId, selector, pieceSelectorParams
+  constructor(selector, controllingPlayerId, pieceSelectorParams
   ){
     //Include the activating piece in all pieces if it isn't there
     //This comes into affect when activating a piece that's not part of the pieces state yet
     //but should be evaluated as such
     if(pieceSelectorParams.activatingPiece){
-      this.allPieces = Array.from(new Set([...pieces, pieceSelectorParams.activatingPiece]));
+      this.allPieces = Array.from(new Set([...selector.pieceState.pieces, pieceSelectorParams.activatingPiece]));
     }else{
-      this.allPieces = pieces;
+      this.allPieces = selector.pieceState.pieces;
     }
+
+    this.mapState = selector.mapState;
 
     this.controllingPlayerId = controllingPlayerId;
     this.selector = selector;
@@ -28,8 +30,43 @@ export default class PieceSelector{
   }
 
   Select(selector){
+    //area case
+    //first find the centering piece then all the pieces in the area
+    if(selector.area){
+      let centerPieceSelector = selector.args[0];
+      let areaType = selector.args[1];
+      let distance = selector.args[2];
+      let centerPieces = this.selector.selectPieces(this.controllingPlayerId, centerPieceSelector, this.pieceSelectorParams);
+      let centerPiece = centerPieces[0];
+      if(!centerPiece){
+        return [];
+      }
+
+      let areaTiles = [];
+      switch(areaType){
+        case 'Cross':
+          areaTiles = this.mapState.getCrossTiles(centerPiece.position, distance);
+          break;
+        case 'Square':
+          areaTiles = this.mapState.getKingTilesInRadius(centerPiece.position, distance);
+          break;
+        case 'Line':
+          break;
+        case 'Diagonal':
+          break;
+        default:
+          throw 'Invalid Area selection type ' + areaType;
+      }
+
+      if(areaTiles.length === 0){
+        return [];
+      }
+
+      return this.allPieces.filter(p => areaTiles.some(t => t.tileEquals(p.position)));
+    }
+
     //base case
-    if(typeof selector == 'string'){
+    else if(typeof selector == 'string'){
       switch(selector){
         case 'CHARACTER':
           return this.allPieces;
