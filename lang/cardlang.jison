@@ -61,6 +61,9 @@
 (Cross|Square|Line|Diagonal)
   return 'area'
 
+(Area)
+  return 'Area'
+
 //bool
 (true|false)
   return 'bool'
@@ -159,6 +162,7 @@ argument_item
   | attribute -> $1
   | status -> $1
   | buffAttribute -> $1
+  | area -> $1
   | eNumber -> $1
   | pText -> $1
   | pBool -> $1
@@ -177,6 +181,7 @@ possibleRandSelector
 
 targetExpr
   : target -> $1
+  | areaExpression -> $1
   | '('comparisonExpression')' -> $2
 ;
 
@@ -204,6 +209,13 @@ compareOperator
 comparisonExpression
   : eNumber compareOperator eNumber
      { $$ = { compareExpression: true, left: $1, op: $2, right: $3 }; }
+  ;
+
+areaExpression
+  : Area'('arguments')'
+    {{ $$ =
+      { area: true, args: $3 }
+    }}
   ;
 
 //eventually a number, could be random
