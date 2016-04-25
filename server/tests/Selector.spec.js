@@ -3,6 +3,7 @@ import Selector from '../game/ctac/cardlang/Selector.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
+import Position from '../game/ctac/models/Position.js';
 import Player from 'models/Player';
 import MapState from '../game/ctac/models/MapState.js';
 import requireDir from 'require-dir';
@@ -344,11 +345,56 @@ test('Selector with comparison expression', t => {
   t.ok(selection[0].attack < 3, 'Attack is less than selector specified');
 });
 
-function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
-    var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
+var pieceStatePositions = new PieceState();
+spawnPiece(pieceStatePositions, 1, 1, new Position(0, 0, 0));
+spawnPiece(pieceStatePositions, 1, 2, new Position(0, 0, 1));
+spawnPiece(pieceStatePositions, 1, 2, new Position(0, 0, 2));
+spawnPiece(pieceStatePositions, 1, 2, new Position(0, 0, 3));
+spawnPiece(pieceStatePositions, 1, 2, new Position(1, 0, 0));
+spawnPiece(pieceStatePositions, 1, 2, new Position(1, 0, 1));
+spawnPiece(pieceStatePositions, 1, 2, new Position(1, 0, 2));
+spawnPiece(pieceStatePositions, 1, 2, new Position(1, 0, 3));
+spawnPiece(pieceStatePositions, 2, 2, new Position(2, 0, 0));
+spawnPiece(pieceStatePositions, 2, 2, new Position(2, 0, 1));
+spawnPiece(pieceStatePositions, 2, 2, new Position(2, 0, 2));
+spawnPiece(pieceStatePositions, 2, 2, new Position(2, 0, 3));
+spawnPiece(pieceStatePositions, 2, 2, new Position(3, 0, 0));
+spawnPiece(pieceStatePositions, 2, 2, new Position(3, 0, 1));
+spawnPiece(pieceStatePositions, 2, 2, new Position(3, 0, 2));
+spawnPiece(pieceStatePositions, 2, 1, new Position(3, 0, 3));
 
-    if(addToState){
-      pieceState.add(newPiece);
-    }
-    return newPiece;
+test('Area Selector', t => {
+  t.plan(4);
+  let select =
+    {
+      left: {
+        area: true,
+        args: [
+          {
+            left: 'SELF'
+          },
+          'Square',
+          1
+        ]
+      }
+    };
+
+  var selfPiecePosition = new GamePiece();
+  selfPiecePosition.position = new Position(1, 0, 1);
+
+  let selector = new Selector(players, pieceStatePositions, mapState);
+  let selection = selector.selectPieces(1, select, {selfPiece: selfPiecePosition});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 8, 'Got back the eight surrounding tiles');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(0, 0, 0))), 'Someone is at (0, 0, 0)');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(2, 0, 2))), 'Someone is at (2, 0, 2)');
+});
+
+function spawnPiece(pieceState, cardTemplateId, playerId, position){
+  var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
+  newPiece.position = position;
+
+  pieceState.add(newPiece);
+  return newPiece;
 }

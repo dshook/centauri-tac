@@ -58,6 +58,9 @@ export default class PieceSelector{
           throw 'Invalid Area selection type ' + areaType;
       }
 
+      //always remove piece center tile.
+      areaTiles = areaTiles.filter(t => !t.tileEquals(centerPiece.position));
+
       if(areaTiles.length === 0){
         return [];
       }
