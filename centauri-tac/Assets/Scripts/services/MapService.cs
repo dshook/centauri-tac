@@ -79,6 +79,63 @@ namespace ctac
             return ret;
         }
 
+        public Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance)
+        {
+            var ret = new Dictionary<Vector2, Tile>();
+            Tile neighborTile = null;
+            for (var d = 1; d <= distance; d++)
+            {
+                var toCheck = new Vector2[4] { 
+                  center.AddX(d),
+                  center.AddX(-d),
+                  center.AddY(d),
+                  center.AddY(-d)
+                };
+
+                foreach (var currentDirection in toCheck)
+                {
+                    //check it's not off the map
+                    neighborTile = mapModel.tiles.Get(currentDirection);
+                    if (neighborTile != null)
+                    {
+                        ret[currentDirection] = neighborTile;
+                    }
+                }
+            }
+            return ret;
+        }
+
+        //uses second point to determine direction of the line, should be within 1 distance of center
+        public Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections)
+        {
+            var xDiff = Math.Abs(secondPoint.x - center.x);
+            var zDiff = Math.Abs(secondPoint.y - center.y);
+
+            var ret = new Dictionary<Vector2, Tile>();
+            Tile neighborTile = null;
+            for (var d = 1; d <= distance; d++)
+            {
+                var toCheck = new List<Vector2>(){
+                  center.Add(xDiff * d, zDiff * d)
+                };
+                if (bothDirections)
+                {
+                    toCheck.Add(center.Add(-xDiff * d, -zDiff * d));
+                }
+
+                foreach (var currentDirection in toCheck)
+                {
+                    //check it's not off the map
+                    neighborTile = mapModel.tiles.Get(currentDirection);
+                    if (neighborTile != null)
+                    {
+                        ret[currentDirection] = neighborTile;
+                    }
+                }
+            }
+            return ret;
+        }
+
         public Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance)
         {
             var ret = new Dictionary<Vector2, Tile>();
