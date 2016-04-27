@@ -37,6 +37,8 @@ export default class CardEvaluator{
       cardDrawn: {left: 'PLAYER'},
       playSpell: {left: 'PLAYER'}
     };
+    this.targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
+    this.targetableEvents = ['playMinion', 'playSpell'];
   }
 
   //evaluate an event that directly relates to a piece, i.e. the piece dies
@@ -527,12 +529,11 @@ export default class CardEvaluator{
   //   ]
   findPossibleTargets(cards, playerId){
     let targets = [];
-    const targetableEvents = ['playMinion', 'playSpell'];
 
     for(let card of cards){
       if(!card.events) continue;
 
-      for(let targetEvent of targetableEvents){
+      for(let targetEvent of this.targetableEvents){
         let event = card.events.find(e => e.event === targetEvent);
         if(!event) continue;
 
@@ -551,11 +552,10 @@ export default class CardEvaluator{
   }
 
   findActionTargets(eventActions, playerId, isSpell){
-    const targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
 
     //try to find TARGETS in any of the actions
     for(let cardEventAction of eventActions){
-      if(targetableActions.indexOf(cardEventAction.action) === -1) continue;
+      if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
       //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
       let selector = cardEventAction.args[0];
 
@@ -598,6 +598,55 @@ export default class CardEvaluator{
         ability: ability.args[2],
         targetPieceIds
       });
+    }
+
+    return targets;
+  }
+
+  //look through cards for any areas when played
+  //   [
+  //     {cardId: 2, event: 'x', area: [Square|Cross...], size: 3, center?: Position}
+  //   ]
+  findPossibleAreas(cards, playerId){
+    let targets = [];
+
+    for(let card of cards){
+      if(!card.events) continue;
+
+      for(let targetEvent of this.targetableEvents){
+        let event = card.events.find(e => e.event === targetEvent);
+        if(!event) continue;
+
+        let isSpell = card.tags.includes('Spell');
+        let areaSelector = null;
+        //try to find areas in any of the actions
+        for(let cardEventAction of event.actions){
+          if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
+          //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
+          let selector = cardEventAction.args[0];
+
+          areaSelector = this.selector.findSelector(selector, s => s && s.area);
+          if(!areaSelector) continue;
+
+          //only allow max of 1 area action per event
+          break;
+        }
+
+        if(areaSelector){
+          let centerPieceSelector = areaSelector.args[0];
+          let areaType = areaSelector.args[1];
+          let size = areaSelector.args[2];
+          let centerPieces = this.selector.selectPieces(playerId, centerPieceSelector, this.pieceSelectorParams);
+          let centerPiece = centerPieces[0];
+          targets.push({
+            cardId: card.id,
+            event: event.event,
+            area: areaType,
+            size,
+            center: centerPiece ? centerPiece.position : null
+          });
+        }
+      }
     }
 
     return targets;

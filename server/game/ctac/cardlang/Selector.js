@@ -75,7 +75,7 @@ export default class Selector{
       .Select(selector);
   }
 
-  //returns t/f if the selctor ever uses the identifier, ex 'TARGET'
+  //returns t/f if the selector ever uses the identifier, ex 'TARGET'
   doesSelectorUse(selector, identifier){
     if(selector.random){
       return this.doesSelectorUse(selector.selector, identifier);
@@ -88,6 +88,21 @@ export default class Selector{
       return this.doesSelectorUse(selector.left, identifier);
     }
     return false;
+  }
+
+  //returns t/f if the selector works with the comparison function
+  findSelector(selector, comparison){
+    if(selector.random){
+      return this.doesSelectorUse(selector.selector, comparison);
+    }
+
+    if(comparison(selector) || comparison(selector.right)){
+      return selector;
+    }
+    if(selector.left){
+      return this.doesSelectorUse(selector.left, comparison);
+    }
+    return null;
   }
 
   //can either be an ordinary number, or something that evaluates to a number

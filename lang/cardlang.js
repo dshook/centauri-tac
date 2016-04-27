@@ -653,66 +653,68 @@ case 6:return 30
 break;
 case 7:return 30
 break;
-case 8:return 29
+case 8:return 30
 break;
-case 9:return 46
+case 9:return 29
 break;
-case 10:return 15
+case 10:return 46
 break;
 case 11:return 15
 break;
-case 12:return 21
+case 12:return 15
 break;
-case 13:return 22
+case 13:return 21
 break;
-case 14:return 24
+case 14:return 22
 break;
-case 15:return 43
+case 15:return 24
 break;
-case 16:return 49
+case 16:return 43
 break;
-case 17:return 47
+case 17:return 49
 break;
-case 18:return 48
+case 18:return 47
 break;
-case 19:return 11
+case 19:return 48
 break;
-case 20:return 13
+case 20:return 11
 break;
-case 21:return 18
+case 21:return 13
 break;
-case 22:return 8
+case 22:return 18
 break;
-case 23:return 10
+case 23:return 8
 break;
-case 24:return 16
+case 24:return 10
 break;
-case 25:return '='
+case 25:return 16
 break;
-case 26:return 35
+case 26:return '='
 break;
-case 27:return 34
+case 27:return 35
 break;
-case 28:return 36
+case 28:return 34
 break;
-case 29:return 38
+case 29:return 36
 break;
-case 30:return 41
+case 30:return 38
 break;
-case 31:return 39
+case 31:return 41
 break;
-case 32:return 40
+case 32:return 39
 break;
-case 33:return 42
+case 33:return 40
 break;
-case 34:return 5
+case 34:return 42
 break;
-case 35:return 'INVALID'
+case 35:return 5
+break;
+case 36:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:(playMinion|death|damaged|attacks|ability))/,/^(?:(cardDrawn|turnEnd|turnStart|playSpell))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF|ACTIVATOR))/,/^(?:(SAVED))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC))/,/^(?:(SILENCE|SHIELD|PARALYZE|TAUNT|CLOAK|TECHRESIST|ROOTED))/,/^(?:(Random))/,/^(?:(SelectAttribute))/,/^(?:(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|ChangeEnergy))/,/^(?:(endTurnTimer|startTurnTimer))/,/^(?:(health|attack|movement))/,/^(?:(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root))/,/^(?:(Cross|Square|Line|Diagonal))/,/^(?:(Area))/,/^(?:(true|false))/,/^(?:(-?[0-9]+))/,/^(?:('(.*?)'))/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:<)/,/^(?:<=)/,/^(?:>)/,/^(?:>=)/,/^(?:==)/,/^(?:$)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:(playMinion|death|damaged|attacks|ability))/,/^(?:(cardDrawn|turnEnd|turnStart|playSpell))/,/^(?:(PLAYER|OPPONENT))/,/^(?:(TARGET|SELF|ACTIVATOR))/,/^(?:(CURSOR))/,/^(?:(SAVED))/,/^(?:(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC))/,/^(?:(SILENCE|SHIELD|PARALYZE|TAUNT|CLOAK|TECHRESIST|ROOTED))/,/^(?:(Random))/,/^(?:(SelectAttribute))/,/^(?:(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|ChangeEnergy))/,/^(?:(endTurnTimer|startTurnTimer))/,/^(?:(health|attack|movement))/,/^(?:(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root))/,/^(?:(Cross|Square|Line|Diagonal))/,/^(?:(Area))/,/^(?:(true|false))/,/^(?:(-?[0-9]+))/,/^(?:('(.*?)'))/,/^(?:\()/,/^(?:\))/,/^(?:,)/,/^(?:\{)/,/^(?:\})/,/^(?:\*)/,/^(?:=)/,/^(?:\|)/,/^(?:&)/,/^(?:-)/,/^(?:<)/,/^(?:<=)/,/^(?:>)/,/^(?:>=)/,/^(?:==)/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36],"inclusive":true}}
 });
 return lexer;
 })();

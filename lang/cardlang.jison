@@ -23,6 +23,10 @@
 (TARGET|SELF|ACTIVATOR)
   return 'target'
 
+// targets for area selection
+(CURSOR)
+  return 'target'
+
 // Targets for timers
 (SAVED)
   return 'target'
