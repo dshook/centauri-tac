@@ -32,9 +32,14 @@ class PossibleActions
       this.pieceState.pieces,
       this.turnState.currentPlayerId
     );
+    let areas = this.cardEvaluator.findPossibleAreas(
+      this.cardState.hands[this.turnState.currentPlayerId],
+      this.turnState.currentPlayerId
+    );
     return {
       playerId: this.turnState.currentPlayerId,
       targets,
+      areas,
       abilities
     };
   }

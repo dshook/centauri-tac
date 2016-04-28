@@ -61,7 +61,7 @@ namespace ctac
             {
                 if (card.tags.Contains("Spell"))
                 {
-                    var targets = possibleActions.GetForCard(turns.currentPlayerId, card.id);
+                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, card.id);
                     //don't point for untargeted spells
                     if (targets == null) { return; }
                 }
@@ -86,7 +86,7 @@ namespace ctac
             }
             else if (model.targetingCard.tags.Contains("Spell"))
             {
-                var targets = possibleActions.GetForCard(turns.currentPlayerId, model.targetingCard.id);
+                var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, model.targetingCard.id);
                 //don't point for untargeted spells
                 if (targets == null) { return; }
 

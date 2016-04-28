@@ -62,7 +62,7 @@ namespace ctac
 
                     if (cardView.card.tags.Contains("Spell"))
                     {
-                        var targets = possibleActions.GetForCard(turns.currentPlayerId, cardView.card.id);
+                        var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, cardView.card.id);
                         if (targets != null)
                         {
                             startTargetModel = new StartTargetModel()
@@ -103,7 +103,7 @@ namespace ctac
 
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
-                    var targets = possibleActions.GetForCard(turns.currentPlayerId, draggedCard.id);
+                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
                     if (targets != null && targets.targetPieceIds.Count >= 1)
                     {
                         //record state we need to maintain for subsequent clicks then dispatch the start target

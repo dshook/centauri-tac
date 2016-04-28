@@ -6,26 +6,22 @@ namespace ctac
     [Singleton]
     public class PossibleActionsModel
     {
-        public Dictionary<int, List<ActionTarget>> possibleActions;
-        public Dictionary<int, List<AbilityTarget>> possibleAbilities;
-
-        public PossibleActionsModel()
-        {
-            possibleActions = new Dictionary<int, List<ActionTarget>>();
-            possibleAbilities = new Dictionary<int, List<AbilityTarget>>();
-        }
+        public Dictionary<int, List<ActionTarget>> possibleActions = new Dictionary<int, List<ActionTarget>>();
+        public Dictionary<int, List<AbilityTarget>> possibleAbilities = new Dictionary<int, List<AbilityTarget>>();
+        public Dictionary<int, List<AreaTarget>> possibleAreas = new Dictionary<int, List<AreaTarget>>();
 
         public void Update(PossibleActions newActions)
         {
             possibleActions[newActions.playerId] = newActions.targets;
             possibleAbilities[newActions.playerId] = newActions.abilities;
+            possibleAreas[newActions.playerId] = newActions.areas;
         }
 
         /// <summary>
         /// Gets any action targets if they exist for a card, null if none
         /// Note, that this may need to be scoped to the event but for now playMinion or playSpell will work the same
         /// </summary>
-        public ActionTarget GetForCard(int playerId, int cardId)
+        public ActionTarget GetActionsForCard(int playerId, int cardId)
         {
             if (!possibleActions.ContainsKey(playerId)){ return null; }
 
@@ -41,6 +37,13 @@ namespace ctac
 
             return possibleAbilities[playerId].FirstOrDefault(x => x.pieceId == pieceId);
         }
+
+        public AreaTarget GetAreasForCard(int playerId, int cardId)
+        {
+            if (!possibleAreas.ContainsKey(playerId)){ return null; }
+
+            return possibleAreas[playerId].FirstOrDefault(x => x.cardId == cardId);
+        }
     }
 
     public class PossibleActions
@@ -48,6 +51,7 @@ namespace ctac
         public int playerId { get; set; }
         public List<ActionTarget> targets { get; set; }
         public List<AbilityTarget> abilities { get; set; }
+        public List<AreaTarget> areas { get; set; }
     }
 
     public class ActionTarget
@@ -65,5 +69,23 @@ namespace ctac
         public int abilityCooldown { get; set; }
         public string ability { get; set; }
         public List<int> targetPieceIds { get; set; }
+    }
+
+    public class AreaTarget
+    {
+        public int cardId { get; set; }
+        public string @event { get; set; }
+        public AreaType areaType { get; set; } 
+        public int size { get; set; }
+        public bool isCursor { get; set; }
+        public List<PositionModel> areaTiles { get; set; }
+    }
+
+    public enum AreaType
+    {
+        Cross = 1,
+        Square = 2,
+        Line = 3,
+        Diagonal = 4
     }
 }

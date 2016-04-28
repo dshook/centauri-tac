@@ -158,7 +158,7 @@ namespace ctac
                    && card.cost <= playerResources.resources[card.playerId])
                 {
                     //Check for spells that need targets but don't have any
-                    var cardTargets = possibleActions.GetForCard(card.playerId, card.id);
+                    var cardTargets = possibleActions.GetActionsForCard(card.playerId, card.id);
                     if (card.tags.Contains("Spell") && cardTargets != null && cardTargets.targetPieceIds.Count == 0)
                     {
                         card.playable = false;

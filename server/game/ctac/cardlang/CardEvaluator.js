@@ -608,7 +608,7 @@ export default class CardEvaluator{
   //     {cardId: 2, event: 'x', area: [Square|Cross...], size: 3, center?: Position}
   //   ]
   findPossibleAreas(cards, playerId){
-    let targets = [];
+    let areas = [];
 
     for(let card of cards){
       if(!card.events) continue;
@@ -633,23 +633,25 @@ export default class CardEvaluator{
         }
 
         if(areaSelector){
-          let centerPieceSelector = areaSelector.args[0];
-          let areaType = areaSelector.args[1];
-          let size = areaSelector.args[2];
-          let centerPieces = this.selector.selectPieces(playerId, centerPieceSelector, this.pieceSelectorParams);
-          let centerPiece = centerPieces[0];
-          targets.push({
+          let areaDescrip = this.selector.selectArea(
+            playerId,
+            areaSelector,
+            {isSpell: card.tags.includes('Spell')}
+          );
+
+          areas.push({
             cardId: card.id,
             event: event.event,
-            area: areaType,
-            size,
-            center: centerPiece ? centerPiece.position : null
+            areaType: areaDescrip.areaType,
+            size: areaDescrip.size,
+            isCursor: areaDescrip.isCursor,
+            areaTiles: areaDescrip.areaTiles
           });
         }
       }
     }
 
-    return targets;
+    return areas;
   }
 
   //Gets the event selector for the card event.  By convention this is the 0th arg that's a selector

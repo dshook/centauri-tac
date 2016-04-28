@@ -2,13 +2,14 @@ import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 import EvalError from './EvalError.js';
 import PieceSelector from './PieceSelector.js';
+import AreaSelector from './AreaSelector.js';
 
 @loglevel
 export default class Selector{
   constructor(players, pieceState, mapState){
     this.players = players;
     this.pieceState = pieceState;
-    this.mapState = mapState;
+    this.areaSelector = new AreaSelector(this, mapState);
   }
 
   selectPlayer(controllingPlayerId, selector){
@@ -65,6 +66,10 @@ export default class Selector{
     ).Select(selector);
   }
 
+  selectArea(controllingPlayerId, selector, pieceSelectorParams){
+    return this.areaSelector.Select(selector, controllingPlayerId, pieceSelectorParams);
+  }
+
   selectPossibleTargets(controllingPlayerId, selector, isSpell){
     //Random TARGET is not happening
     if(selector.random) return [];
@@ -93,14 +98,14 @@ export default class Selector{
   //returns t/f if the selector works with the comparison function
   findSelector(selector, comparison){
     if(selector.random){
-      return this.doesSelectorUse(selector.selector, comparison);
+      return this.findSelector(selector.selector, comparison);
     }
 
     if(comparison(selector) || comparison(selector.right)){
       return selector;
     }
     if(selector.left){
-      return this.doesSelectorUse(selector.left, comparison);
+      return this.findSelector(selector.left, comparison);
     }
     return null;
   }

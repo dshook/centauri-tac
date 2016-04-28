@@ -33,39 +33,13 @@ export default class PieceSelector{
     //area case
     //first find the centering piece then all the pieces in the area
     if(selector.area){
-      let centerPieceSelector = selector.args[0];
-      let areaType = selector.args[1];
-      let distance = selector.args[2];
-      let centerPieces = this.selector.selectPieces(this.controllingPlayerId, centerPieceSelector, this.pieceSelectorParams);
-      let centerPiece = centerPieces[0];
-      if(!centerPiece){
+      let areaDescrip = this.selector.selectArea(this.controllingPlayerId, selector, this.pieceSelectorParams);
+
+      if(areaDescrip.areaTiles.length > 0){
+        return this.allPieces.filter(p => areaDescrip.areaTiles.some(t => t.tileEquals(p.position)));
+      }else{
         return [];
       }
-
-      let areaTiles = [];
-      switch(areaType){
-        case 'Cross':
-          areaTiles = this.mapState.getCrossTiles(centerPiece.position, distance);
-          break;
-        case 'Square':
-          areaTiles = this.mapState.getKingTilesInRadius(centerPiece.position, distance);
-          break;
-        case 'Line':
-          break;
-        case 'Diagonal':
-          break;
-        default:
-          throw 'Invalid Area selection type ' + areaType;
-      }
-
-      //always remove piece center tile.
-      areaTiles = areaTiles.filter(t => !t.tileEquals(centerPiece.position));
-
-      if(areaTiles.length === 0){
-        return [];
-      }
-
-      return this.allPieces.filter(p => areaTiles.some(t => t.tileEquals(p.position)));
     }
 
     //base case
