@@ -13,12 +13,14 @@ namespace ctac {
 
         private CardModel selectedCard { get; set; }
         private CardModel hoveredCard { get; set; }
+        private CardCanvasHelperView cardCanvasHelper;
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private Vector2 opponentAnchorPosition = new Vector2(0.5f, 1);
-        private const float maxCardHeight = 20f;
+        private const float maxDragDistance = 100f;
         private Vector3 dest;
 
+        private Vector2 cardDimensions = new Vector2(156, 258.2f);
         private Color32 playableCardColor = new Color32(0, 53, 223, 255);
         private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
 
@@ -36,6 +38,7 @@ namespace ctac {
         {
             this.playerCards = playerCards;
             this.opponentCards = opponentCards;
+            cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
         void Update()
@@ -68,6 +71,7 @@ namespace ctac {
             {
                 var card = playerCards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
+                rectTransform.localScale = Vector3.one;
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
@@ -76,7 +80,23 @@ namespace ctac {
 
                 if (selectedCard != null && card == selectedCard)
                 {
-                    dest = dest.SetY(dest.y + 30f);
+                    var dragPos = cardCanvasHelper.MouseToWorld(dest.z);
+                    dragPos = dragPos.SetY(dragPos.y + cardDimensions.y / 2);
+                    //var destWorldPos = cardCanvasHelper.RectTransformToWorld(rectTransform, dest);
+                    var dragDist = Vector3.Distance(dragPos, dest);
+                    if (dragDist < maxDragDistance)
+                    {
+                        //TODO: make this look better
+                        //dragPos = dragPos.SetZ(dragPos.z + (2 * dragDist));
+                        //rectTransform.rotation = Quaternion.Euler(new Vector3(33, 0, 0));
+                        //rectTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                        rectTransform.anchoredPosition3D = dragPos;
+                        continue;
+                    }
+                    else
+                    {
+                        dest = dest.SetY(dest.y + 30f);
+                    }
                 }
                 if (hoveredCard != null && card == hoveredCard && hoveredCard != selectedCard)
                 {
@@ -88,6 +108,7 @@ namespace ctac {
                         card.cardView.displayWrapper.SetActive(false);
                     }
                 }
+
                 rectTransform.anchorMax = anchorPosition;
                 rectTransform.anchorMin = anchorPosition;
                 rectTransform.pivot = anchorPosition;
@@ -112,6 +133,8 @@ namespace ctac {
 
             return new Vector3(x, y, origin.z);
         }
+
+
 
         internal void onCardSelected(CardModel card)
         {

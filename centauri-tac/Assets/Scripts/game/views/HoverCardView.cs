@@ -13,6 +13,7 @@ namespace ctac
 
         float timer = 0f;
         bool cardVisible = false;
+        bool active = true;
 
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
@@ -65,12 +66,20 @@ namespace ctac
 
         void Update()
         {
+            if(!active) return;
+
             timer += Time.deltaTime;
 
             if (timer > CardView.HOVER_DELAY && cardVisible)
             {
                 hoverCardView.gameObject.SetActive(true);
             }
+        }
+
+        //Should the hover timer be ticking?
+        internal void setActive(bool newActive)
+        {
+            active = newActive;
         }
 
         //private float hoverDelay = 0.5f;

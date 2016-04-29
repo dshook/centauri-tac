@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac {
     public class CardCanvasHelperView : MonoBehaviour
@@ -27,6 +28,19 @@ namespace ctac {
         public Vector3 WorldToViewportPoint(Vector3 position)
         {
             return cardCamera.WorldToViewportPoint(position);
+        }
+
+        public Vector3 MouseToWorld(float z)
+        {
+            var mouseViewport = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+
+            //calculate the position of the UI element
+            //0,0 for the canvas is at the center of the screen, whereas WorldToViewPortPoint treats the lower left corner as 0,0. Because of this, you need to subtract the height / width of the canvas * 0.5 to get the correct position.
+            return new Vector3(
+                ((mouseViewport.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
+                ((mouseViewport.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)),
+                z
+            );
         }
     }
 }

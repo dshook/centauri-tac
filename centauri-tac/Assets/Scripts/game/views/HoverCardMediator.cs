@@ -10,8 +10,8 @@ namespace ctac
         [Inject]
         public HoverCardView view { get; set; }
         
-        [Inject]
-        public CardHoveredSignal cardHovered { get; set; }
+        [Inject] public CardHoveredSignal cardHovered { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
 
         [Inject]
         public PieceHoverSignal pieceHovered { get; set; }
@@ -23,12 +23,14 @@ namespace ctac
         {
             view.init();
             cardHovered.AddListener(onCardHovered);
+            cardSelected.AddListener(onCardSelected);
             pieceHovered.AddListener(onPieceHovered);
         }
 
         public override void onRemove()
         {
             cardHovered.RemoveListener(onCardHovered);
+            cardSelected.RemoveListener(onCardSelected);
             pieceHovered.RemoveListener(onPieceHovered);
         }
 
@@ -44,6 +46,11 @@ namespace ctac
             {
                 view.hideCard();
             }
+        }
+
+        private void onCardSelected(CardModel card)
+        {
+            view.setActive(card == null);
         }
 
         private void onPieceHovered(PieceModel piece)
