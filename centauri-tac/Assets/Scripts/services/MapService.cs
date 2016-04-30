@@ -11,6 +11,8 @@ namespace ctac
         Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
         Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId);
+        Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections);
+        Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
         int KingDistance(Vector2 a, Vector2 b);
         List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);

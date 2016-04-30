@@ -26,10 +26,12 @@ namespace ctac
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
 
         private PieceModel selectedPiece = null;
+        private AreaTarget selectingArea = null;
 
         public override void OnRegister()
         {
@@ -96,6 +98,23 @@ namespace ctac
                 view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                 view.onAttackTile(null);
             }
+
+            if (selectingArea != null && selectingArea.isCursor && tile != null)
+            {
+                List<Tile> tiles = null;
+                switch (selectingArea.areaType) {
+                    case AreaType.Square:
+                        tiles = mapService.GetKingTilesInRadius(tile.position, selectingArea.size).Values.ToList();
+                        break;
+                    case AreaType.Cross:
+                        tiles = mapService.GetCrossTiles(tile.position, selectingArea.size).Values.ToList();
+                        break;
+                }
+                if (tiles != null)
+                {
+                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
+                }
+            }
         }
 
         private void onPieceSelected(PieceModel selectedPiece)
@@ -134,20 +153,35 @@ namespace ctac
             if (card == null)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.Selected);
+                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                selectingArea = null;
                 return;
             }
 
-            if(card.tags.Contains("Spell")) return;
+            //see if there are any areas to show
+            var area = possibleActions.GetAreasForCard(card.playerId, card.id);
+            if (area != null)
+            {
+                selectingArea = area;
+                if(area.areaTiles.Count > 0){
+                    var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
+                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
+                }
+            }
 
-            //find play radius depending on the card
-            var playerHero = pieces.Hero(card.playerId);
-            List<Tile> playableTiles = map.tileList
-                .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
-                    && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
-                    && mapService.isHeightPassable(t, mapService.Tile(playerHero.tilePosition))
-                )
-                .ToList();
-            view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected);
+            if (!card.tags.Contains("Spell"))
+            {
+
+                //find play radius depending on the card
+                var playerHero = pieces.Hero(card.playerId);
+                List<Tile> playableTiles = map.tileList
+                    .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
+                        && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
+                        && mapService.isHeightPassable(t, mapService.Tile(playerHero.tilePosition))
+                    )
+                    .ToList();
+                view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected);
+            }
         }
 
         private void onPieceDied(PieceModel piece)

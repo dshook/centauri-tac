@@ -20,6 +20,11 @@ namespace ctac
                 return tiles.Select(x => x.Value).ToList();
             }
         }
+
+        public List<Tile> getTilesByPosition(List<Vector2> positions)
+        {
+            return tiles.Where((k) => positions.Contains(k.Key)).Select(a => a.Value).ToList(); 
+        }
     }
 
     public class Tile
