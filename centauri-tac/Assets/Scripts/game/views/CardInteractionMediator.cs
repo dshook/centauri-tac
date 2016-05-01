@@ -63,13 +63,15 @@ namespace ctac
                     if (cardView.card.tags.Contains("Spell"))
                     {
                         var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, cardView.card.id);
-                        if (targets != null)
+                        var area = possibleActions.GetAreasForCard(turns.currentPlayerId, cardView.card.id);
+                        if (targets != null || area != null)
                         {
                             startTargetModel = new StartTargetModel()
                             {
                                 targetingCard = cardView.card,
                                 cardDeployPosition = null,
-                                targets = targets
+                                targets = targets,
+                                area = area
                             };
                             Invoke("StartSelectTargets", 0.10f);
                             return;
@@ -105,7 +107,7 @@ namespace ctac
 
                     var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
                     var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
-                    if ((targets != null && targets.targetPieceIds.Count >= 1) || area != null)
+                    if ((targets != null && targets.targetPieceIds.Count >= 1) || (area != null && !draggedCard.tags.Contains("Spell")))
                     {
                         //record state we need to maintain for subsequent clicks then dispatch the start target
                         startTargetModel = new StartTargetModel()

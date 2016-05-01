@@ -120,7 +120,7 @@ namespace ctac
 
                     if (cardTarget != null && cardTarget.area != null)
                     {
-                        if (cardTarget.area.areaTiles != null)
+                        if (cardTarget.area.areaTiles != null && cardTarget.area.areaTiles.Count > 0)
                         {
                             //verify tile selected is in area
                             if (!cardTarget.area.areaTiles.Contains(gameTile.position.ToPositionModel()))

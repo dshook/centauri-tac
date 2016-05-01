@@ -23,6 +23,10 @@ namespace ctac
         [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
+        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public SelectTargetSignal selectTarget { get; set; }
+        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -44,6 +48,11 @@ namespace ctac
             pieceSpawned.AddListener(onPieceSpawn);
             pieceStatusChanged.AddListener(onPieceStatusChange);
             turnEnded.AddListener(onTurnEnded);
+
+            cancelSelectTarget.AddListener(onCancelSelectTarget);
+            selectTarget.AddListener(onSelectTarget);
+            startSelectTarget.AddListener(onStartTarget);
+
             view.init();
         }
 
@@ -57,6 +66,10 @@ namespace ctac
             pieceSpawned.RemoveListener(onPieceSpawn);
             pieceStatusChanged.RemoveListener(onPieceStatusChange);
             turnEnded.RemoveListener(onTurnEnded);
+
+            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
+            selectTarget.RemoveListener(onSelectTarget);
+            startSelectTarget.RemoveListener(onStartTarget);
         }
 
         void onTileHover(GameObject newHoverTile)
@@ -153,20 +166,7 @@ namespace ctac
             if (card == null)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.Selected);
-                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
-                selectingArea = null;
                 return;
-            }
-
-            //see if there are any areas to show
-            var area = possibleActions.GetAreasForCard(card.playerId, card.id);
-            if (area != null)
-            {
-                selectingArea = area;
-                if(area.areaTiles.Count > 0){
-                    var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
-                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
-                }
             }
 
             if (!card.tags.Contains("Spell"))
@@ -297,6 +297,32 @@ namespace ctac
             {
                 view.toggleTileFlags(null, TileHighlightStatus.EnemyTauntArea);
             }
+        }
+
+        private void onStartTarget(StartTargetModel model)
+        {
+            //see if there are any areas to show
+            var area = model.area;
+            if (area != null)
+            {
+                selectingArea = area;
+                if(area.areaTiles.Count > 0){
+                    var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
+                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
+                }
+            }
+        }
+
+        private void onCancelSelectTarget(CardModel card)
+        {
+            view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+            selectingArea = null;
+        }
+
+        private void onSelectTarget(StartTargetModel card, SelectTargetModel select)
+        {
+            view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+            selectingArea = null;
         }
     }
 }

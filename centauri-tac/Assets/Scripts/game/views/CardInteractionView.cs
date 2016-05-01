@@ -12,9 +12,12 @@ namespace ctac
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
 
+        GameObject draggedObject;
         bool active = false;
         private Camera cardCamera;
         bool dragging = false;
+        float dragTimer = 0f;
+        float dragMin = 0.8f;
 
         Ray camRay;
         int cardCanvasLayer = -1;
@@ -23,7 +26,14 @@ namespace ctac
             active = true;
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
             cardCanvasLayer = LayerMask.GetMask(Constants.cardCanvas);
+            clickSignal.AddListener(onClick);
         }
+
+        void onClick(GameObject g)
+        {
+            draggedObject = g;
+        }
+
         void Update()
         {
             if (!active) return;
@@ -39,22 +49,35 @@ namespace ctac
                 hoverSignal.Dispatch(null);
             }
 
+            if (CrossPlatformInputManager.GetButton("Fire1"))
+            {
+                dragTimer += Time.deltaTime;
+                if (dragTimer > dragMin)
+                {
+                    dragging = true;
+                    Debug.Log("Starting drag");
+                }
+            }
+
             if (dragging && CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 TestActivate();
+                dragging = false;
+                dragTimer = 0f;
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                if (hoverHit.HasValue)
+                if (draggedObject == null || !TestActivate())
                 {
-                    clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
-                    dragging = true;
-                }
-                else
-                {
-                    clickSignal.Dispatch(null);
-                    dragging = false;
+                    if (hoverHit.HasValue)
+                    {
+                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                    }
+                    else
+                    {
+                        clickSignal.Dispatch(null);
+                    }
                 }
             }
 
@@ -62,6 +85,8 @@ namespace ctac
             if (CrossPlatformInputManager.GetButtonDown("Fire2"))
             {
                 clickSignal.Dispatch(null);
+                dragging = false;
+                dragTimer = 0f;
             }
 
             //if (camRay.origin != null)
@@ -86,21 +111,23 @@ namespace ctac
             }
         }
 
-        void TestActivate()
+        bool TestActivate()
         {
+            bool hit = false;
             Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
 
             RaycastHit objectHit;
             if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
             {
+                hit = true;
                 activateSignal.Dispatch(objectHit.collider.gameObject);
                 clickSignal.Dispatch(null);
-                dragging = false;
             }
             else
             {
                 activateSignal.Dispatch(null);
             }
+            return hit;
         }
     }
 }

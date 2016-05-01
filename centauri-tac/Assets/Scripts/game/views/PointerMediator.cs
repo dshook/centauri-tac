@@ -9,7 +9,7 @@ namespace ctac
         public PointerView view { get; set; }
 
         [Inject]
-        public CardSelectedSignal cardStartDrag { get; set; }
+        public CardSelectedSignal cardSelected { get; set; }
 
         [Inject]
         public ActivateCardSignal cardActivated { get; set; }
@@ -29,7 +29,7 @@ namespace ctac
         {
             view.init();
 
-            cardStartDrag.AddListener(onCardDragStart);
+            cardSelected.AddListener(onCardSelected);
             cardActivated.AddListener(onCardDragEnd);
 
             cancelSelectTarget.AddListener(onCancelSelectTarget);
@@ -43,7 +43,7 @@ namespace ctac
 
         public override void onRemove()
         {
-            cardStartDrag.RemoveListener(onCardDragStart);
+            cardSelected.RemoveListener(onCardSelected);
             cardActivated.RemoveListener(onCardDragEnd);
 
             cancelSelectTarget.RemoveListener(onCancelSelectTarget);
@@ -55,15 +55,16 @@ namespace ctac
             startAbilitySelectTarget.RemoveListener(onAbilityStartTarget);
         }
 
-        private void onCardDragStart(CardModel card)
+        private void onCardSelected(CardModel card)
         {
             if (card != null && card.gameObject != null)
             {
                 if (card.tags.Contains("Spell"))
                 {
                     var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, card.id);
-                    //don't point for untargeted spells
-                    if (targets == null) { return; }
+                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, card.id);
+                    //don't point for untargeted or un aread spells
+                    if (targets == null && area == null) { return; }
                 }
                 view.rectTransform(card.gameObject);
             }
