@@ -83,7 +83,10 @@ namespace ctac
 
         public Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance)
         {
-            var ret = new Dictionary<Vector2, Tile>();
+            var ret = new Dictionary<Vector2, Tile>()
+            {
+                { center, mapModel.tiles.Get(center) }
+            };
             Tile neighborTile = null;
             for (var d = 1; d <= distance; d++)
             {
@@ -113,7 +116,10 @@ namespace ctac
             var xDiff = Math.Abs(secondPoint.x - center.x);
             var zDiff = Math.Abs(secondPoint.y - center.y);
 
-            var ret = new Dictionary<Vector2, Tile>();
+            var ret = new Dictionary<Vector2, Tile>()
+            {
+                { center, mapModel.tiles.Get(center) }
+            };
             Tile neighborTile = null;
             for (var d = 1; d <= distance; d++)
             {

@@ -52,6 +52,8 @@ export default class MapState
 
   getCrossTiles(center, distance){
     let ret = [];
+    ret.push(this.getTile(center).position);
+
     let neighborTile = null;
     for(let d = 1; d <= distance; d++){
       let toCheck = [
@@ -80,6 +82,7 @@ export default class MapState
     let zDiff = Math.abs(secondPoint.z - center.z);
 
     let ret = [];
+    ret.push(this.getTile(center).position);
     let neighborTile = null;
     for(let d = 1; d <= distance; d++){
       let toCheck = [
