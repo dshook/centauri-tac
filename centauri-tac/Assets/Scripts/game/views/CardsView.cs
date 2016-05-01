@@ -71,7 +71,6 @@ namespace ctac {
             {
                 var card = playerCards[c];
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
-                rectTransform.localScale = Vector3.one;
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
