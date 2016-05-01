@@ -56,7 +56,7 @@ namespace ctac
                     if (cardTarget != null)
                     {
                         debug.Log("Selected target");
-                        selectTarget.Dispatch(cardTarget, pieceView.piece);
+                        selectTarget.Dispatch(cardTarget, new SelectTargetModel() { piece = pieceView.piece });
                         cardTarget = null;
                     }
                     else if (abilityTarget != null)
@@ -118,7 +118,25 @@ namespace ctac
                 {
                     var gameTile = map.tiles.Get(clickedObject.transform.position.ToTileCoordinates());
 
-                    if (
+                    if (cardTarget != null && cardTarget.area != null)
+                    {
+                        if (cardTarget.area.areaTiles != null)
+                        {
+                            //verify tile selected is in area
+                            if (!cardTarget.area.areaTiles.Contains(gameTile.position.ToPositionModel()))
+                            {
+                                debug.Log("Cancelling target for outside area");
+                                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+                                return;
+                            }
+                        }
+                        debug.Log("Selected target");
+                        selectTarget.Dispatch(cardTarget, new SelectTargetModel
+                        {
+                            tile = gameTile
+                        });
+                        cardTarget = null;
+                    } else if (
                         FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
                         && selectedPiece != null
                         && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)

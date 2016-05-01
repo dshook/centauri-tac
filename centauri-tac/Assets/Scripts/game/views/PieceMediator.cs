@@ -300,12 +300,12 @@ namespace ctac
 
         private void onStartSelectTarget(StartTargetModel model)
         {
-            if (model.targets.targetPieceIds.Contains(view.piece.id))
+            if (model.targets != null && model.targets.targetPieceIds.Contains(view.piece.id))
             {
                 view.targetCandidate = true;
             }
         }
-        private void onTargetSelected(StartTargetModel c, PieceModel m)
+        private void onTargetSelected(StartTargetModel c, SelectTargetModel m)
         {
             view.targetCandidate = false;
         }

@@ -50,7 +50,7 @@ namespace ctac
         {
             view.onCardSelected(true);
         }
-        private void onSelectTarget(StartTargetModel c, PieceModel m)
+        private void onSelectTarget(StartTargetModel c, SelectTargetModel m)
         {
             view.onCardSelected(false);
         }

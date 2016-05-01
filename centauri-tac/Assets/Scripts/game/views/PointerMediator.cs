@@ -86,9 +86,9 @@ namespace ctac
             }
             else if (model.targetingCard.tags.Contains("Spell"))
             {
-                var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, model.targetingCard.id);
+                var area = possibleActions.GetAreasForCard(turns.currentPlayerId, model.targetingCard.id);
                 //don't point for untargeted spells
-                if (targets == null) { return; }
+                if (model.targets == null && area == null) { return; }
 
                 view.rectTransform(model.targetingCard.gameObject);
             }
@@ -103,7 +103,7 @@ namespace ctac
             view.disable();
         }
 
-        private void onSelectTarget(StartTargetModel card, PieceModel piece)
+        private void onSelectTarget(StartTargetModel card, SelectTargetModel select)
         {
             view.disable();
         }

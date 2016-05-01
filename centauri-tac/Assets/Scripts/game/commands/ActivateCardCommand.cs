@@ -7,6 +7,7 @@ namespace ctac
         public CardModel cardActivated { get; set; }
         public Tile tilePlayedAt { get; set; }
         public PieceModel optionalTarget { get; set; }
+        public Tile secondaryAreaTile { get; set; }
     }
 
     public class ActivateCardCommand : Command

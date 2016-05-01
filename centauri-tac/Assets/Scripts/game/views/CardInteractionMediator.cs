@@ -104,14 +104,16 @@ namespace ctac
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
                     var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
-                    if (targets != null && targets.targetPieceIds.Count >= 1)
+                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
+                    if ((targets != null && targets.targetPieceIds.Count >= 1) || area != null)
                     {
                         //record state we need to maintain for subsequent clicks then dispatch the start target
                         startTargetModel = new StartTargetModel()
                         {
                             targetingCard = draggedCard,
                             cardDeployPosition = gameTile,
-                            targets = targets
+                            targets = targets,
+                            area = area
                         };
 
                         //delay sending off the start select target signal till the card deselected event has cleared
@@ -140,12 +142,12 @@ namespace ctac
             startTargetModel = null;
         }
 
-        private void onSelectedTarget(StartTargetModel targetModel, PieceModel piece)
+        private void onSelectedTarget(StartTargetModel targetModel, SelectTargetModel selectedTarget)
         {
             activateCard.Dispatch(new ActivateModel() {
                 cardActivated = targetModel.targetingCard,
-                tilePlayedAt = targetModel.cardDeployPosition,
-                optionalTarget = piece
+                tilePlayedAt = targetModel.cardDeployPosition ?? selectedTarget.tile,
+                optionalTarget = selectedTarget.piece
             });
             startTargetModel = null;
         }
