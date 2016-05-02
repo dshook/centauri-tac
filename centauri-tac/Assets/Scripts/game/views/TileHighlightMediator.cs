@@ -30,6 +30,7 @@ namespace ctac
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
@@ -39,7 +40,6 @@ namespace ctac
 
         public override void OnRegister()
         {
-            view.tileHover.AddListener(onTileHover);
             cardSelected.AddListener(onCardSelected);
             pieceSelected.AddListener(onPieceSelected);
             pieceDied.AddListener(onPieceDied);
@@ -52,8 +52,6 @@ namespace ctac
             cancelSelectTarget.AddListener(onCancelSelectTarget);
             selectTarget.AddListener(onSelectTarget);
             startSelectTarget.AddListener(onStartTarget);
-
-            view.init();
         }
 
         public override void onRemove()
@@ -72,13 +70,13 @@ namespace ctac
             startSelectTarget.RemoveListener(onStartTarget);
         }
 
-        void onTileHover(GameObject newHoverTile)
+        void Update()
         {
-            Tile tile = null;
-            if (newHoverTile != null)
-            {
-                tile = map.tiles.Get(newHoverTile.transform.position.ToTileCoordinates());
-            }
+            onTileHover(raycastModel.tile);
+        }
+
+        void onTileHover(Tile tile)
+        {
             tileHover.Dispatch(tile);
             view.onTileHover(tile);
 

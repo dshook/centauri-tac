@@ -24,6 +24,7 @@ namespace ctac
 
         [Inject] public MapModel map { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public RaycastModel raycastModel { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IMapService mapService { get; set; }
@@ -34,7 +35,7 @@ namespace ctac
             startSelectTarget.AddListener(onStartTarget);
             startSelectAbilityTarget.AddListener(onStartAbilityTarget);
             view.clickSignal.AddListener(onClick);
-            view.init();
+            view.init(raycastModel);
         }
 
         private PieceModel selectedPiece = null;

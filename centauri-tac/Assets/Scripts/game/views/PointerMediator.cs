@@ -24,10 +24,11 @@ namespace ctac
 
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public RaycastModel raycastModel { get; set; }
 
         public override void OnRegister()
         {
-            view.init();
+            view.init(raycastModel);
 
             cardSelected.AddListener(onCardSelected);
             cardActivated.AddListener(onCardDragEnd);

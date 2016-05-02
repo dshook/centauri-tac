@@ -11,6 +11,7 @@ namespace ctac
         internal Signal<GameObject> clickSignal = new Signal<GameObject>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
+        RaycastModel raycastModel;
 
         GameObject draggedObject;
         bool active = false;
@@ -21,12 +22,13 @@ namespace ctac
 
         Ray camRay;
         int cardCanvasLayer = -1;
-        internal void init()
+        internal void init(RaycastModel rm)
         {
             active = true;
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
             cardCanvasLayer = LayerMask.GetMask(Constants.cardCanvas);
             clickSignal.AddListener(onClick);
+            raycastModel = rm;
         }
 
         void onClick(GameObject g)
@@ -96,30 +98,16 @@ namespace ctac
 
         RaycastHit? TestSelection()
         {
-            var viewportPoint = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
-            camRay = cardCamera.ViewportPointToRay(viewportPoint);
-
-            RaycastHit objectHit;
-            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist, cardCanvasLayer))
-            {
-                return objectHit;
-            }
-            else
-            {
-                return null;
-            }
+            return raycastModel.cardCanvasHit;
         }
 
         bool TestActivate()
         {
             bool hit = false;
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-            RaycastHit objectHit;
-            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
+            if (raycastModel.worldHit.HasValue)
             {
                 hit = true;
-                activateSignal.Dispatch(objectHit.collider.gameObject);
+                activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
                 clickSignal.Dispatch(null);
             }
             else

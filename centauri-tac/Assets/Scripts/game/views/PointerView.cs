@@ -8,18 +8,20 @@ namespace ctac
 {
     public class PointerView : View
     {
-        private GameObject pointerCurve;
-        private BezierSpline pointerSpline;
+        GameObject pointerCurve;
+        BezierSpline pointerSpline;
+        RaycastModel raycastModel;
 
-        private Vector3 startPoint;
-        private Vector3 curveHeight = new Vector3(0, 1.35f, 0);
-        private CardCanvasHelperView cardCanvasHelper;
-        private int tileMask = 0;
+        Vector3 startPoint;
+        Vector3 curveHeight = new Vector3(0, 1.35f, 0);
+        CardCanvasHelperView cardCanvasHelper;
+        int tileMask = 0;
 
-        private Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
-        internal void init()
+        internal void init(RaycastModel rm)
         {
+            raycastModel = rm;
             pointerCurve = transform.Find("PointerCurve").gameObject;
             pointerCurve.SetActive(false);
 
@@ -33,11 +35,9 @@ namespace ctac
         {
             if (pointerCurve.activeSelf)
             {
-                var ray = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, Constants.cameraRaycastDist, tileMask))
+                if (raycastModel.worldHit.HasValue)
                 {
-                    Vector3 mouseWorld = hit.point;
+                    Vector3 mouseWorld = raycastModel.worldHit.Value.point;
 
                     var diffVector = mouseWorld - startPoint;
 

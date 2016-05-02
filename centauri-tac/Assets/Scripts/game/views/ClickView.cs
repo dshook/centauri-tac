@@ -8,12 +8,14 @@ namespace ctac
     public class ClickView : View
     {
         internal Signal<GameObject> clickSignal = new Signal<GameObject>();
+        RaycastModel raycastModel;
 
         bool active = false;
 
-        internal void init()
+        internal void init(RaycastModel rm)
         {
             active = true;
+            raycastModel = rm;
         }
 
         void Update()
@@ -35,12 +37,9 @@ namespace ctac
 
         void TestSelection()
         {
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-            RaycastHit objectHit;
-            if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
+            if (raycastModel.worldHit.HasValue)
             {
-                clickSignal.Dispatch(objectHit.collider.gameObject);
+                clickSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
             }
             else
             {

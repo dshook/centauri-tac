@@ -1,56 +1,14 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
-using strange.extensions.signal.impl;
-using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac
 {
+    //really only here for the mediator now that raycast is around
+    //TODO: probably get rid of this
     public class PieceHoverView : View
     {
-        internal Signal<GameObject> pieceHover = new Signal<GameObject>();
-
-        bool active = false;
-        float rayFrequency = 0.1f;
-        float timer = 0f;
-
-        internal void init()
+        internal void init(RaycastModel rm)
         {
-            active = true;
         }
-
-        void Update()
-        {
-            if (active)
-            {
-                timer += Time.deltaTime;
-                if (timer > rayFrequency)
-                {
-                    timer = 0f;
-
-                    //only mouse handling for now
-                    CameraToMouseRay();
-                }
-
-            }
-        }
-
-        void CameraToMouseRay()
-        {
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-            RaycastHit pieceHit;
-            if (Physics.Raycast(camRay, out pieceHit, Constants.cameraRaycastDist)
-                && pieceHit.collider.gameObject.CompareTag("Piece")
-            )
-            {
-                pieceHover.Dispatch(pieceHit.collider.gameObject);
-            }
-            else
-            {
-                pieceHover.Dispatch(null);
-            }
-        }
-
 
     }
 }

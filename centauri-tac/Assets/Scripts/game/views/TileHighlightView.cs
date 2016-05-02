@@ -1,7 +1,6 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
-using UnityStandardAssets.CrossPlatformInput;
 using System.Collections.Generic;
 
 namespace ctac
@@ -13,49 +12,6 @@ namespace ctac
         Tile hoveredTile = null;
         Tile selectedTile = null;
         Tile attackTile = null;
-
-        bool active = false;
-        float rayFrequency = 0.05f;
-        float timer = 0f;
-        int tileMask = 0;
-
-        internal void init()
-        {
-            active = true;
-            tileMask = LayerMask.GetMask("Tile");
-        }
-
-        void Update()
-        {
-            if (active)
-            {
-                timer += Time.deltaTime;
-                if (timer > rayFrequency)
-                {
-                    timer = 0f;
-
-                    //only mouse handling for now
-                    CameraToMouseRay();
-                }
-
-            }
-        }
-
-        void CameraToMouseRay()
-        {
-            Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-            RaycastHit floorHit;
-            if (Physics.Raycast(camRay, out floorHit, Constants.cameraRaycastDist, tileMask))
-            {
-                tileHover.Dispatch(floorHit.collider.gameObject);
-            }
-            else
-            {
-                tileHover.Dispatch(null);
-            }
-        }
-
 
         internal void onTileHover(Tile newTile)
         {

@@ -10,30 +10,32 @@ namespace ctac
         [Inject]
         public PieceHoverView view { get; set; }
         
-        [Inject]
-        public PieceHoverSignal pieceHoveredSignal { get; set; }
+        [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
+
+        [Inject] public RaycastModel raycastModel { get; set; }
 
         public override void OnRegister()
         {
-            view.pieceHover.AddListener(onPieceHover);
-            view.init();
         }
 
         public override void onRemove()
         {
-            view.pieceHover.RemoveListener(onPieceHover);
+        }
+
+        void Update()
+        {
+            onPieceHover(raycastModel.piece);
         }
 
         private PieceView lastHoveredPiece = null;
-        void onPieceHover(GameObject pieceHovered)
+        void onPieceHover(PieceView pieceHovered)
         {
             if (pieceHovered != null)
             {
-                var pieceView = pieceHovered.GetComponent<PieceView>();
-                if (pieceView != lastHoveredPiece)
+                if (pieceHovered != lastHoveredPiece)
                 {
-                    lastHoveredPiece = pieceView;
-                    pieceHoveredSignal.Dispatch(pieceView.piece);
+                    lastHoveredPiece = pieceHovered;
+                    pieceHoveredSignal.Dispatch(pieceHovered.piece);
                 }
             }
             else

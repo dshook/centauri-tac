@@ -23,6 +23,7 @@ namespace ctac
         [Inject] public GameTurnModel turns { get; set; }
         [Inject] public MapModel map { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
+        [Inject] public RaycastModel raycastModel { get; set; }
 
         private CardModel draggedCard = null;
 
@@ -39,7 +40,7 @@ namespace ctac
             view.hoverSignal.AddListener(onHover);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
-            view.init();
+            view.init(raycastModel);
         }
 
         public override void onRemove()
