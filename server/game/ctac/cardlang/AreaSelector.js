@@ -1,3 +1,6 @@
+import loglevel from 'loglevel-decorator';
+
+ @loglevel
 export default class AreaSelector{
   constructor(selector, mapState){
     this.selector = selector;
@@ -16,6 +19,7 @@ export default class AreaSelector{
 
       let isCursor = false;
       let centerPosition = null;
+      this.log.info('Evaluating area %s center %j size %s', areaType, centerPieceSelector, size);
       if(centerPieceSelector.left && centerPieceSelector.left === 'CURSOR'){
         isCursor = true;
         if(pieceSelectorParams.position){
@@ -28,6 +32,7 @@ export default class AreaSelector{
           centerPosition = centerPiece.position;
         }
       }
+      this.log.info('Selected center of %s with params of %j', centerPosition, pieceSelectorParams);
 
       let areaTiles = [];
 
@@ -47,8 +52,6 @@ export default class AreaSelector{
           default:
             throw 'Invalid Area selection type ' + areaType;
         }
-        //always remove piece center tile.
-        areaTiles = areaTiles.filter(t => !t.tileEquals(centerPosition));
       }
 
       return {

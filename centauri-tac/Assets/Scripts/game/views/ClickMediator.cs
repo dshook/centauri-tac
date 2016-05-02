@@ -56,7 +56,10 @@ namespace ctac
                     if (cardTarget != null)
                     {
                         debug.Log("Selected target");
-                        selectTarget.Dispatch(cardTarget, new SelectTargetModel() { piece = pieceView.piece });
+                        selectTarget.Dispatch(cardTarget, new SelectTargetModel() {
+                            piece = pieceView.piece,
+                            tile = map.tiles.Get(pieceView.piece.tilePosition)
+                        });
                         cardTarget = null;
                     }
                     else if (abilityTarget != null)

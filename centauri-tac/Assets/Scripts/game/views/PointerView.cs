@@ -13,7 +13,6 @@ namespace ctac
 
         private Vector3 startPoint;
         private Vector3 curveHeight = new Vector3(0, 1.35f, 0);
-        private RectTransform CanvasRect;
         private CardCanvasHelperView cardCanvasHelper;
         private int tileMask = 0;
 
@@ -27,7 +26,6 @@ namespace ctac
             pointerSpline = pointerCurve.GetComponent<BezierSpline>();
 
             tileMask = LayerMask.GetMask("Tile");
-            CanvasRect = GameObject.Find(Constants.cardCanvas).GetComponent<RectTransform>();
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
