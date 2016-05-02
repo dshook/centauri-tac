@@ -55,7 +55,6 @@ namespace ctac
                 if (dragTimer > dragMin)
                 {
                     dragging = true;
-                    Debug.Log("Starting drag");
                 }
             }
 

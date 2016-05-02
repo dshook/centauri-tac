@@ -33,7 +33,9 @@ export default class PlaySpellProcessor
       return queue.cancel(action, true);
     }
 
-    if(this.cardEvaluator.evaluateSpellEvent('playSpell', playedCard, action.playerId, action.targetPieceId)){
+    if(this.cardEvaluator.evaluateSpellEvent('playSpell',
+      {spellCard: playedCard, playerId: action.playerId, targetPieceId: action.targetPieceId, position: action.position})
+    ){
 
       this.cardState.playCard(action.playerId, action.cardInstanceId);
       queue.complete(action);

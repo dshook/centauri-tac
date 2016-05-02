@@ -149,7 +149,7 @@ export default class CardEvaluator{
   }
 
   //when a spell is played
-  evaluateSpellEvent(event, spellCard, playerId, targetPieceId){
+  evaluateSpellEvent(event, {spellCard, playerId, targetPieceId, position}){
     this.log.info('Eval spell event %s with spell %s player: %s', event, spellCard.name, playerId);
 
     let evalActions = [];
@@ -162,6 +162,7 @@ export default class CardEvaluator{
           piece: null,
           card: spellCard,
           playerId: playerId,
+          position: position,
           action: cardEventAction
         });
       }
@@ -195,7 +196,8 @@ export default class CardEvaluator{
             evalActions.push({
               piece: piece,
               playerId: piece.playerId,
-              action: cardEventAction
+              action: cardEventAction,
+              position: position
             });
           }
         }
@@ -221,12 +223,12 @@ export default class CardEvaluator{
         let action = pieceAction.action;
         let piece = pieceAction.piece;
         let card = pieceAction.card;
-        let savedPieces = pieceAction.savedPieces;
         let pieceSelectorParams = {
           selfPiece: piece,
           activatingPiece,
           targetPieceId,
-          savedPieces,
+          savedPieces: pieceAction.savedPieces,
+          position: pieceAction.position,
           isSpell: !pieceAction.piece
         };
         let times = 1;

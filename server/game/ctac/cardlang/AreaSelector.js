@@ -1,4 +1,3 @@
-
 export default class AreaSelector{
   constructor(selector, mapState){
     this.selector = selector;
@@ -19,6 +18,9 @@ export default class AreaSelector{
       let centerPosition = null;
       if(centerPieceSelector.left && centerPieceSelector.left === 'CURSOR'){
         isCursor = true;
+        if(pieceSelectorParams.position){
+          centerPosition = pieceSelectorParams.position;
+        }
       }else{
         let centerPieces = this.selector.selectPieces(controllingPlayerId, centerPieceSelector, pieceSelectorParams);
         let centerPiece = centerPieces[0];
