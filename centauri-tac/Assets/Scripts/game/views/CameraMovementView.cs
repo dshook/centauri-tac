@@ -16,6 +16,8 @@ namespace ctac
         private Vector3 amountToMove;
         private Vector3 move;
 
+        private RaycastModel raycastModel;
+
         private bool cardSelected = false;
 
         bool dragging = false;
@@ -23,6 +25,11 @@ namespace ctac
         float ySpeed = 5f;
 
         float rotateTimer = 0f;
+
+        public void Init(RaycastModel rm)
+        {
+            raycastModel = rm;
+        }
 
         void Update()
         {
@@ -86,24 +93,6 @@ namespace ctac
                 return;
             }
 
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
-            {
-                //test click position to see if we hit the ground
-                Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
-
-                RaycastHit objectHit;
-                if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
-                {
-                    if (objectHit.collider.gameObject.CompareTag("Tile"))
-                    {
-                        dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
-                        camOrigin = Camera.main.transform.position;
-                        dragging = true;
-                        return;
-                    }
-                }
-            }
-
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 dragging = false;
@@ -121,6 +110,17 @@ namespace ctac
                 move = camOrigin + amountToMove;
 
                 Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, move, 1f);
+            }
+
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            {
+                if (raycastModel.tile != null && raycastModel.cardCanvasHit == null)
+                {
+                    Debug.Log("Starting to drag camera");
+                    dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+                    camOrigin = Camera.main.transform.position;
+                    dragging = true;
+                }
             }
         }
 

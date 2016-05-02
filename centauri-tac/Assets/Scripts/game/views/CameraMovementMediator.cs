@@ -24,12 +24,17 @@ namespace ctac
         [Inject]
         public PiecesModel pieces { get; set; }
 
+        [Inject]
+        public RaycastModel raycastModel { get; set; }
+
         public override void OnRegister()
         {
             cardSelected.AddListener(onCardSelected);
             startTarget.AddListener(onStartTarget);
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
+
+            view.Init(raycastModel);
         }
 
         public override void onRemove()
