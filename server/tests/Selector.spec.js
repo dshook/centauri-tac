@@ -386,7 +386,7 @@ test('Area Selector', t => {
   let selection = selector.selectPieces(1, select, {selfPiece: selfPiecePosition});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
-  t.equal(selection.length, 8, 'Got back the eight surrounding tiles');
+  t.equal(selection.length, 9, 'Got back the nine tiles');
   t.ok(selection.some(p => p.position.tileEquals(new Position(0, 0, 0))), 'Someone is at (0, 0, 0)');
   t.ok(selection.some(p => p.position.tileEquals(new Position(2, 0, 2))), 'Someone is at (2, 0, 2)');
 });

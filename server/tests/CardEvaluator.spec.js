@@ -242,7 +242,7 @@ test('Spell played event', t => {
 
   let cardPlayed = cardDirectory.directory[16];
 
-  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1);
+  cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1});
 
   t.equal(queue._actions.length, 4, '4 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
@@ -439,7 +439,7 @@ test('Timers', t => {
 
   let cardPlayed = cardDirectory.newFromId(31);
 
-  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1);
+  cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
@@ -468,7 +468,7 @@ test('Swap attack and health', t => {
 
   let cardPlayed = cardDirectory.directory[40];
 
-  cardEval.evaluateSpellEvent('playSpell', cardPlayed, 1, 4);
+  cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1, targetPieceId: 4});
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Piece Status change');
