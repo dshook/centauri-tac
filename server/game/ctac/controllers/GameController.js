@@ -101,9 +101,9 @@ export default class GameController
   @on('playerCommand', x => x === 'activatecard')
   activateCard(command, data)
   {
-    let {playerId, cardInstanceId, position, targetPieceId} = data;
+    let {playerId, cardInstanceId, position, targetPieceId, pivotPosition} = data;
 
-    this.queue.push(new ActivateCard(playerId, cardInstanceId, position, targetPieceId));
+    this.queue.push(new ActivateCard(playerId, cardInstanceId, position, targetPieceId, pivotPosition));
 
     this.queue.processUntilDone();
   }
