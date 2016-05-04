@@ -7,5 +7,5 @@
 	"health": 1,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "death{ Hit(Area(SELF, Square, 1), 2) }"
+	"eventcode": "death{ Hit(Area(Square, 1, SELF), 2) }"
 }

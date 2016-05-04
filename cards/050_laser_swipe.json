@@ -4,5 +4,5 @@
 	"description": "Deal 1 damage in a tiny cross",
 	"cost": 1,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ Hit(Area(CURSOR, Cross, 1), 1) }"
+	"eventcode": "playSpell{ Hit(Area(Cross, 1, CURSOR), 1) }"
 }

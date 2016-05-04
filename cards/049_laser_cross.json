@@ -4,5 +4,5 @@
 	"description": "Deal 3 damage in a massive cross",
 	"cost": 5,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ Hit(Area(CURSOR, Cross, 99), 3) }"
+	"eventcode": "playSpell{ Hit(Area(Cross, 99, CURSOR), 3) }"
 }

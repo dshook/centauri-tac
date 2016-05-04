@@ -13,31 +13,50 @@ export default class AreaSelector{
   Select(selector, controllingPlayerId, pieceSelectorParams){
     //first find the centering piece then all the pieces in the area
     if(selector.area){
-      let centerPieceSelector = selector.args[0];
-      let areaType = selector.args[1];
-      let size = selector.args[2];
+      let areaType = selector.args[0];
+      let size = selector.args[1];
+      let centerSelector = selector.args[2];
+      let extraParams = areaType === 'Line' || areaType === 'Diagonal';
+      let pivotSelector = extraParams ? selector.args[3] : null;
+      let bothDirections = extraParams ? selector.args[4] : null;
 
       let isCursor = false;
       let centerPosition = null;
-      this.log.info('Evaluating area %s center %j size %s', areaType, centerPieceSelector, size);
-      if(centerPieceSelector.left && centerPieceSelector.left === 'CURSOR'){
+      let pivotPosition = null;
+      this.log.info('Evaluating area %s size %s', areaType, centerSelector, size);
+      if(centerSelector.left && centerSelector.left === 'CURSOR'){
         isCursor = true;
         if(pieceSelectorParams.position){
           centerPosition = pieceSelectorParams.position;
         }
       }else{
-        let centerPieces = this.selector.selectPieces(controllingPlayerId, centerPieceSelector, pieceSelectorParams);
+        let centerPieces = this.selector.selectPieces(controllingPlayerId, centerSelector, pieceSelectorParams);
         let centerPiece = centerPieces[0];
         if(centerPiece){
           centerPosition = centerPiece.position;
         }
       }
-      this.log.info('Selected center of %s with params of %j', centerPosition, pieceSelectorParams);
+
+      if(pivotSelector && pivotSelector.left && pivotSelector.left === 'CURSOR'){
+        isCursor = true;
+        if(pieceSelectorParams.pivotPosition){
+          pivotPosition = pieceSelectorParams.pivotPosition;
+        }
+      }else if(pivotSelector){
+        let pivotPieces = this.selector.selectPieces(controllingPlayerId, pivotSelector, pieceSelectorParams);
+        let pivotPiece = pivotPieces[0];
+        if(pivotPiece){
+          pivotPosition = pivotPiece.position;
+        }
+      }
+
+      this.log.info('Selected center of %s and pivot of %s', centerPosition, pivotPosition);
 
       let areaTiles = [];
 
       //if we have a defined center, actually resolve what the area tiles are
-      if(centerPosition){
+      //also check for the required pivot position for lines/diagonals
+      if(centerPosition && (!extraParams || pivotPosition)){
         switch(areaType){
           case 'Cross':
             areaTiles = this.mapState.getCrossTiles(centerPosition, size);
@@ -45,8 +64,16 @@ export default class AreaSelector{
           case 'Square':
             areaTiles = this.mapState.getKingTilesInRadius(centerPosition, size);
             break;
-          case 'Line':
+          case 'Line': {
+            //check to see that the pivot position is close to the center and in one of the cross tiles
+            let neighbors = this.mapState.getNeighbors(centerPosition);
+            let foundNeighbor = neighbors.find(p => p.tileEquals(pivotPosition));
+            if(!foundNeighbor){
+              throw 'Invalid neighbor for line. Center ' + centerPosition + ' pivot ' + pivotPosition;
+            }
+            areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
             break;
+          }
           case 'Diagonal':
             break;
           default:

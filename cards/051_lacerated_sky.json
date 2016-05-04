@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 51,
+	"name": "Lacerated Sky",
+	"description": "Deal 4 damage in a massive ray",
+	"cost": 3,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(Area(Line, 99, CURSOR, CURSOR, false), 4) }"
+}

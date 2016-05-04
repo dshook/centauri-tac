@@ -370,11 +370,11 @@ test('Area Selector', t => {
       left: {
         area: true,
         args: [
+          'Square',
+          1,
           {
             left: 'SELF'
-          },
-          'Square',
-          1
+          }
         ]
       }
     };
@@ -389,6 +389,51 @@ test('Area Selector', t => {
   t.equal(selection.length, 9, 'Got back the nine tiles');
   t.ok(selection.some(p => p.position.tileEquals(new Position(0, 0, 0))), 'Someone is at (0, 0, 0)');
   t.ok(selection.some(p => p.position.tileEquals(new Position(2, 0, 2))), 'Someone is at (2, 0, 2)');
+});
+
+test('Line Selector with cursor', t => {
+  t.plan(6);
+  let select =
+    {
+      left: {
+        area: true,
+        args: [
+          'Line',
+          2,
+          {
+            left: 'CURSOR'
+          },
+          {
+            left: 'CURSOR'
+          },
+          false
+        ]
+      }
+    };
+
+  var selfPiecePosition = new GamePiece();
+  selfPiecePosition.position = new Position(1, 0, 1);
+
+  let selector = new Selector(players, pieceStatePositions, mapState);
+  let selection = selector.selectPieces(1, select, {
+    selfPiece: selfPiecePosition,
+    position: new Position(1, 0, 0),
+    pivotPosition: new Position(1, 0, 1)
+  });
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 3, 'Got back three tiles');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(1, 0, 0))), 'Someone is at (0, 0, 0)');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(1, 0, 1))), 'Someone is at (1, 0, 1)');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(1, 0, 2))), 'Someone is at (1, 0, 2)');
+
+  t.throws(() =>
+    selector.selectPieces(1, select, {
+      selfPiece: selfPiecePosition,
+      position: new Position(1, 0, 0),
+      pivotPosition: new Position(0, 0, 1)
+    })
+  , 'Threw exception for bad pivot position')
 });
 
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
