@@ -12,5 +12,6 @@
     {
         public PieceModel piece { get; set; }
         public Tile tile { get; set; }
+        public Tile pivot { get; set; }
     }
 }

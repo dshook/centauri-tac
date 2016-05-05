@@ -650,6 +650,9 @@ export default class CardEvaluator{
             areaType: areaDescrip.areaType,
             size: areaDescrip.size,
             isCursor: areaDescrip.isCursor,
+            isDoubleCursor: areaDescrip.isDoubleCursor,
+            centerPosition: areaDescrip.centerPosition,
+            pivotPosition: areaDescrip.pivotPosition,
             areaTiles: areaDescrip.areaTiles
           });
         }

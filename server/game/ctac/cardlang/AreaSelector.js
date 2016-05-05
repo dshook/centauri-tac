@@ -21,6 +21,7 @@ export default class AreaSelector{
       let bothDirections = extraParams ? selector.args[4] : null;
 
       let isCursor = false;
+      let isDoubleCursor = false;
       let centerPosition = null;
       let pivotPosition = null;
       this.log.info('Evaluating area %s size %s', areaType, centerSelector, size);
@@ -38,6 +39,9 @@ export default class AreaSelector{
       }
 
       if(pivotSelector && pivotSelector.left && pivotSelector.left === 'CURSOR'){
+        if(isCursor){
+          isDoubleCursor = true;
+        }
         isCursor = true;
         if(pieceSelectorParams.pivotPosition){
           pivotPosition = pieceSelectorParams.pivotPosition;
@@ -85,6 +89,9 @@ export default class AreaSelector{
         areaType,
         size,
         isCursor,
+        isDoubleCursor,
+        centerPosition,
+        pivotPosition,
         areaTiles
       };
     }

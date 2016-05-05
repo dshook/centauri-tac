@@ -78,6 +78,9 @@ namespace ctac
         public AreaType areaType { get; set; } 
         public int size { get; set; }
         public bool isCursor { get; set; }
+        public bool isDoubleCursor { get; set; }
+        public PositionModel centerPosition { get; set; }
+        public PositionModel pivotPosition { get; set; }
         public List<PositionModel> areaTiles { get; set; }
     }
 

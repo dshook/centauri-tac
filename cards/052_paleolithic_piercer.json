@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 52,
+	"name": "Paleolithic Piercer",
+	"description": "<b>Play</b>: Deal 1 damage in a short ray",
+	"cost": 2,
+	"attack": 2,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Hit(Area(Line, 3, SELF, CURSOR, false), 1) }"
+}
