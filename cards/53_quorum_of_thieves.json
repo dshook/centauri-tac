@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 53,
+	"name": "Quorum of Thieves",
+	"description": "Give all minions in a large square +2/-1",
+	"cost": 5,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Buff(Area(Square, 5, CURSOR), 'Traitorous Minds', attack(2), health(-1)) }"
+}

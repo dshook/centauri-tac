@@ -29,8 +29,8 @@
 * cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
 
 ##Areas
-* cross
-* square
+* ~~cross~~
+* ~~square~~
 * line
 * diagonal
 
