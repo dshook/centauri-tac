@@ -79,6 +79,15 @@ export default class AreaSelector{
             break;
           }
           case 'Diagonal':
+            //check to see that the pivot position is close to the center and in one of the diagonal tiles
+            let kingNeighbors = this.mapState.getKingTilesInRadius(centerPosition, 1);
+            let lineNeighbors = this.mapState.getNeighbors(centerPosition);
+            let foundKingNeighbor = kingNeighbors.find(p => p.tileEquals(pivotPosition));
+            let foundLineNeighbor = lineNeighbors.find(p => p.tileEquals(pivotPosition));
+            if(!foundKingNeighbor || foundLineNeighbor){
+              throw 'Invalid neighbor for diagonal. Center ' + centerPosition + ' pivot ' + pivotPosition;
+            }
+            areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
             break;
           default:
             throw 'Invalid Area selection type ' + areaType;

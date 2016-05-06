@@ -433,7 +433,52 @@ test('Line Selector with cursor', t => {
       position: new Position(1, 0, 0),
       pivotPosition: new Position(0, 0, 1)
     })
-  , 'Threw exception for bad pivot position')
+  , 'Threw exception for bad pivot position');
+});
+
+test('Diagonal Selector with one cursor', t => {
+  t.plan(6);
+  let select =
+    {
+      left: {
+        area: true,
+        args: [
+          'Diagonal',
+          2,
+          {
+            left: 'SELF'
+          },
+          {
+            left: 'CURSOR'
+          },
+          false
+        ]
+      }
+    };
+
+  var selfPiecePosition = new GamePiece();
+  selfPiecePosition.position = new Position(1, 0, 1);
+
+  let selector = new Selector(players, pieceStatePositions, mapState);
+  let selection = selector.selectPieces(1, select, {
+    selfPiece: selfPiecePosition,
+    position: new Position(1, 0, 0),
+    pivotPosition: new Position(2, 0, 2)
+  });
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 3, 'Got back three tiles');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(1, 0, 1))), 'Someone is at (1, 0, 1)');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(2, 0, 2))), 'Someone is at (2, 0, 2)');
+  t.ok(selection.some(p => p.position.tileEquals(new Position(3, 0, 3))), 'Someone is at (3, 0, 3)');
+
+  t.throws(() =>
+    selector.selectPieces(1, select, {
+      selfPiece: selfPiecePosition,
+      position: new Position(1, 0, 0),
+      pivotPosition: new Position(0, 0, 1)
+    })
+  , 'Threw exception for bad pivot position');
 });
 
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
