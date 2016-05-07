@@ -481,6 +481,26 @@ test('Diagonal Selector with one cursor', t => {
   , 'Threw exception for bad pivot position');
 });
 
+test('Tag selection', t => {
+  let select =
+    {
+      left: {
+        tag: 'Minion'
+      }
+    };
+  let selectMinion = {
+    left : 'MINION'
+  };
+  t.plan(3);
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let selection = selector.selectPieces(1, select, {selfPiece});
+  let minionSelection = selector.selectPieces(1, selectMinion, {selfPiece});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, minionSelection.length, 'Got back same number for minions');
+  t.equal(selection[0], minionSelection[0], 'First element of selections are the same');
+});
+
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
   var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
   newPiece.position = position;

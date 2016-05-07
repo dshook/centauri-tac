@@ -67,6 +67,8 @@
 
 (Area)
   return 'Area'
+(Tagged)
+  return 'Tagged'
 
 //bool
 (true|false)
@@ -186,6 +188,7 @@ possibleRandSelector
 targetExpr
   : target -> $1
   | areaExpression -> $1
+  | tagExpression -> $1
   | '('comparisonExpression')' -> $2
 ;
 
@@ -222,6 +225,12 @@ areaExpression
     }}
   ;
 
+tagExpression
+  : Tagged'('pText')'
+    {{ $$ =
+      { tag: $3 }
+    }}
+  ;
 //eventually a number, could be random
 eNumber
   : pNumber -> $1

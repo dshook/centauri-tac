@@ -607,3 +607,34 @@ test('Hit area', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Tag selection', t => {
+  t.plan(1);
+
+  let input = `
+    death{ Hit(Tagged('test'), 2) }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      event: 'death',
+      actions: [
+        {
+          action: 'Hit',
+          args: [
+            {
+              left: {
+                tag: 'test'
+              }
+            },
+            2
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});

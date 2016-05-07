@@ -42,6 +42,10 @@ export default class PieceSelector{
       }
     }
 
+    if(selector.tag){
+      return this.allPieces.filter(p => p.tags.includes(selector.tag));
+    }
+
     //base case
     else if(typeof selector == 'string'){
       switch(selector){
