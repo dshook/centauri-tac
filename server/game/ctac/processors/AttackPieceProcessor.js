@@ -93,6 +93,8 @@ export default class AttackPieceProcessor
     queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
     queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
 
+    attacker.hasAttacked = true;
+
     //Remove cloak once they've attacked
     if(attacker.statuses & Statuses.Cloak){
       queue.push(new PieceStatusChange(attacker.id, null, Statuses.Cloak ));

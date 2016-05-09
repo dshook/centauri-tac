@@ -68,6 +68,7 @@ export default class MovePieceProcessor
     var currentPosition = piece.position;
     piece.position = action.to;
     piece.direction = action.direction;
+    piece.hasMoved = true;
 
     queue.complete(action);
     this.log.info('moved piece %s from %s to %s, direction %s',

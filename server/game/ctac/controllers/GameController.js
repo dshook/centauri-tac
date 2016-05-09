@@ -74,6 +74,18 @@ export default class GameController
   {
     let {pieceId, route} = data;
 
+    var piece = this.pieceState.piece(pieceId);
+    if(!piece){
+      this.log.warn('Could not find piece %s to move %j', pieceId, this.pieceState);
+      return;
+    }
+
+    if(piece.hasMoved){
+      this.log.warn('Piece %s has already moved', pieceId);
+      return;
+    }
+
+
     if(route){
       for (let step of route) {
         const action = new MovePiece(pieceId, step);
@@ -88,7 +100,18 @@ export default class GameController
   {
     let {attackingPieceId, targetPieceId, route} = data;
 
+    var piece = this.pieceState.piece(attackingPieceId);
+    if(!piece){
+      this.log.warn('Could not find piece %s to attack with %j', attackingPieceId, this.pieceState);
+      return;
+    }
+
     if(route){
+      if(piece.hasMoved){
+        this.log.warn('Piece %s has already moved', attackingPieceId);
+        return;
+      }
+
       for (let step of route) {
         this.queue.push(new MovePiece(attackingPieceId, step));
       }
