@@ -36,7 +36,7 @@ namespace ctac
         [Inject] public IMapService mapService { get; set; }
 
         private PieceModel selectedPiece = null;
-        private AreaTarget selectingArea = null;
+        private TargetModel selectingArea = null;
 
         public override void OnRegister()
         {
@@ -110,15 +110,26 @@ namespace ctac
                 view.onAttackTile(null);
             }
 
-            if (selectingArea != null && selectingArea.isCursor && tile != null)
+            if (selectingArea != null && selectingArea.area != null && selectingArea.area.isCursor && tile != null)
             {
                 List<Tile> tiles = null;
-                switch (selectingArea.areaType) {
+                switch (selectingArea.area.areaType) {
                     case AreaType.Square:
-                        tiles = mapService.GetKingTilesInRadius(tile.position, selectingArea.size).Values.ToList();
+                        tiles = mapService.GetKingTilesInRadius(tile.position, selectingArea.area.size).Values.ToList();
                         break;
                     case AreaType.Cross:
-                        tiles = mapService.GetCrossTiles(tile.position, selectingArea.size).Values.ToList();
+                        tiles = mapService.GetCrossTiles(tile.position, selectingArea.area.size).Values.ToList();
+                        break;
+                    case AreaType.Line:
+                        if (selectingArea.selectedPosition != null)
+                        {
+                            tiles = mapService.GetLineTiles(
+                                selectingArea.selectedPosition.Value, 
+                                tile.position, 
+                                selectingArea.area.size,
+                                selectingArea.area.bothDirections ?? false
+                             ).Values.ToList();
+                        }
                         break;
                 }
                 if (tiles != null)
@@ -167,7 +178,7 @@ namespace ctac
                 return;
             }
 
-            if (!card.tags.Contains("Spell"))
+            if (!card.isSpell)
             {
 
                 //find play radius depending on the card
@@ -297,13 +308,13 @@ namespace ctac
             }
         }
 
-        private void onStartTarget(StartTargetModel model)
+        private void onStartTarget(TargetModel model)
         {
             //see if there are any areas to show
             var area = model.area;
-            if (area != null)
+            if (model.area != null)
             {
-                selectingArea = area;
+                selectingArea = model;
                 if(area.areaTiles.Count > 0){
                     var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
                     view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
@@ -317,7 +328,7 @@ namespace ctac
             selectingArea = null;
         }
 
-        private void onSelectTarget(StartTargetModel card, SelectTargetModel select)
+        private void onSelectTarget(TargetModel card)
         {
             view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
             selectingArea = null;

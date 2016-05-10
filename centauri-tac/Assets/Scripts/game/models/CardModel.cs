@@ -24,6 +24,24 @@ namespace ctac
         [JsonIgnore]
         public CardView cardView { get; set; }
 
+        [JsonIgnore]
+        public bool isMinion
+        {
+            get
+            {
+                return tags.Contains("Minion");
+            }
+        }
+
+        [JsonIgnore]
+        public bool isSpell
+        {
+            get
+            {
+                return tags.Contains("Spell");
+            }
+        }
+
         public bool playable { get; set; }
     }
 }

@@ -42,7 +42,7 @@ export default class CardEvaluator{
   }
 
   //evaluate an event that directly relates to a piece, i.e. the piece dies
-  evaluatePieceEvent(event, activatingPiece, targetPieceId){
+  evaluatePieceEvent(event, activatingPiece, targetPieceId, position, pivotPosition){
     this.log.info('Eval piece event %s activating piece: %j', event, activatingPiece);
     let evalActions = [];
 
@@ -85,6 +85,8 @@ export default class CardEvaluator{
             evalActions.push({
               piece: piece,
               playerId: activatingPiece.playerId,
+              position,
+              pivotPosition,
               action: cardEventAction
             });
           }
@@ -651,6 +653,8 @@ export default class CardEvaluator{
             size: areaDescrip.size,
             isCursor: areaDescrip.isCursor,
             isDoubleCursor: areaDescrip.isDoubleCursor,
+            bothDirections: areaDescrip.bothDirections,
+            selfCentered: areaDescrip.selfCentered,
             centerPosition: areaDescrip.centerPosition,
             pivotPosition: areaDescrip.pivotPosition,
             areaTiles: areaDescrip.areaTiles

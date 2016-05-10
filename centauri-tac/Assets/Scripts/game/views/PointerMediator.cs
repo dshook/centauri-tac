@@ -60,7 +60,7 @@ namespace ctac
         {
             if (card != null && card.gameObject != null)
             {
-                if (card.tags.Contains("Spell"))
+                if (card.isSpell)
                 {
                     var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, card.id);
                     var area = possibleActions.GetAreasForCard(turns.currentPlayerId, card.id);
@@ -80,13 +80,13 @@ namespace ctac
             view.disable();
         }
 
-        private void onStartTarget(StartTargetModel model)
+        private void onStartTarget(TargetModel model)
         {
             if (model.targetingCard != null && model.cardDeployPosition != null)
             {
                 view.worldPoint(model.cardDeployPosition.gameObject.transform);
             }
-            else if (model.targetingCard.tags.Contains("Spell"))
+            else if (model.targetingCard.isSpell)
             {
                 var area = possibleActions.GetAreasForCard(turns.currentPlayerId, model.targetingCard.id);
                 //don't point for untargeted spells
@@ -105,7 +105,7 @@ namespace ctac
             view.disable();
         }
 
-        private void onSelectTarget(StartTargetModel card, SelectTargetModel select)
+        private void onSelectTarget(TargetModel card)
         {
             view.disable();
         }

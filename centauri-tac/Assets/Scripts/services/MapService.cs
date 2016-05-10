@@ -113,8 +113,8 @@ namespace ctac
         //uses second point to determine direction of the line, should be within 1 distance of center
         public Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections)
         {
-            var xDiff = Math.Abs(secondPoint.x - center.x);
-            var zDiff = Math.Abs(secondPoint.y - center.y);
+            var xDiff = secondPoint.x - center.x;
+            var zDiff = secondPoint.y - center.y;
 
             var ret = new Dictionary<Vector2, Tile>()
             {

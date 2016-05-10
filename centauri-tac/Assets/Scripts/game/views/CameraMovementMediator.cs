@@ -51,11 +51,11 @@ namespace ctac
             view.onCardSelected(card != null);
         }
 
-        private void onStartTarget(StartTargetModel m)
+        private void onStartTarget(TargetModel m)
         {
             view.onCardSelected(true);
         }
-        private void onSelectTarget(StartTargetModel c, SelectTargetModel m)
+        private void onSelectTarget(TargetModel c)
         {
             view.onCardSelected(false);
         }

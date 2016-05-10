@@ -57,11 +57,20 @@ namespace ctac
                     if (cardTarget != null)
                     {
                         debug.Log("Selected target");
-                        selectTarget.Dispatch(cardTarget, new SelectTargetModel() {
-                            piece = pieceView.piece,
-                            tile = map.tiles.Get(pieceView.piece.tilePosition)
-                        });
-                        cardTarget = null;
+                        cardTarget.selectedPiece = pieceView.piece;
+                        if (!cardTarget.selectedPosition.HasValue)
+                        {
+                            cardTarget.selectedPosition = map.tiles.Get(pieceView.piece.tilePosition).position;
+                        }
+                        else
+                        {
+                            cardTarget.selectedPivotPosition = map.tiles.Get(pieceView.piece.tilePosition).position;
+                        }
+                        if (cardTarget.targetFulfilled)
+                        {
+                            selectTarget.Dispatch(cardTarget);
+                            cardTarget = null;
+                        }
                     }
                     else if (abilityTarget != null)
                     {
@@ -134,12 +143,20 @@ namespace ctac
                                 return;
                             }
                         }
-                        debug.Log("Selected target");
-                        selectTarget.Dispatch(cardTarget, new SelectTargetModel
+                        if (!cardTarget.selectedPosition.HasValue)
                         {
-                            tile = gameTile
-                        });
-                        cardTarget = null;
+                            cardTarget.selectedPosition = gameTile.position;
+                        }
+                        else
+                        {
+                            cardTarget.selectedPivotPosition = gameTile.position;
+                        }
+
+                        if (cardTarget.targetFulfilled)
+                        {
+                            selectTarget.Dispatch(cardTarget);
+                            cardTarget = null;
+                        }
                     } else if (
                         FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
                         && selectedPiece != null
@@ -171,8 +188,8 @@ namespace ctac
 
         }
 
-        StartTargetModel cardTarget { get; set; }
-        private void onStartTarget(StartTargetModel model)
+        TargetModel cardTarget { get; set; }
+        private void onStartTarget(TargetModel model)
         {
             cardTarget = model;
         }

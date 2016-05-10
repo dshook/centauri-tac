@@ -298,14 +298,14 @@ namespace ctac
             }
         }
 
-        private void onStartSelectTarget(StartTargetModel model)
+        private void onStartSelectTarget(TargetModel model)
         {
             if (model.targets != null && model.targets.targetPieceIds.Contains(view.piece.id))
             {
                 view.targetCandidate = true;
             }
         }
-        private void onTargetSelected(StartTargetModel c, SelectTargetModel m)
+        private void onTargetSelected(TargetModel c)
         {
             view.targetCandidate = false;
         }

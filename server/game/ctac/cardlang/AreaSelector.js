@@ -22,9 +22,11 @@ export default class AreaSelector{
 
       let isCursor = false;
       let isDoubleCursor = false;
+      let selfCentered = false;
       let centerPosition = null;
       let pivotPosition = null;
-      this.log.info('Evaluating area %s size %s', areaType, centerSelector, size);
+      this.log.info('Evaluating area %s size %s, center %s pivot %s'
+        , areaType, size, pieceSelectorParams.position, pieceSelectorParams.pivotPosition);
       if(centerSelector.left && centerSelector.left === 'CURSOR'){
         isCursor = true;
         if(pieceSelectorParams.position){
@@ -36,6 +38,11 @@ export default class AreaSelector{
         if(centerPiece){
           centerPosition = centerPiece.position;
         }
+      }
+
+      //special case to tell the client that the center is around the piece
+      if(centerSelector.left && centerSelector.left === 'SELF'){
+        selfCentered = true;
       }
 
       if(pivotSelector && pivotSelector.left && pivotSelector.left === 'CURSOR'){
@@ -99,6 +106,8 @@ export default class AreaSelector{
         size,
         isCursor,
         isDoubleCursor,
+        bothDirections,
+        selfCentered,
         centerPosition,
         pivotPosition,
         areaTiles

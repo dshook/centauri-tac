@@ -6,7 +6,7 @@ namespace ctac
     public class StartSelectTargetCommand : Command
     {
         [Inject]
-        public StartTargetModel startTargetModel { get; set; }
+        public TargetModel startTargetModel { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
@@ -19,7 +19,7 @@ namespace ctac
 
         public override void Execute()
         {
-            if(startTargetModel.targetingCard.tags.Contains("Spell")) return;
+            if(startTargetModel.targetingCard.isSpell) return;
 
             var spawnedPiece = new SpawnPieceModel
             {

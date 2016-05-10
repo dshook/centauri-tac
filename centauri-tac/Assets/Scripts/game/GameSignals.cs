@@ -87,8 +87,8 @@ namespace ctac.signals
     [Singleton] public class CardDestroyedSignal : Signal<CardModel> { }
 
 
-    [Singleton] public class StartSelectTargetSignal : Signal<StartTargetModel> { }
-    [Singleton] public class SelectTargetSignal : Signal<StartTargetModel, SelectTargetModel> { }
+    [Singleton] public class StartSelectTargetSignal : Signal<TargetModel> { }
+    [Singleton] public class SelectTargetSignal : Signal<TargetModel> { }
     [Singleton] public class CancelSelectTargetSignal : Signal<CardModel> { }
 
     [Singleton] public class ActivateAbilitySignal : Signal<ActivateAbilityModel> { }

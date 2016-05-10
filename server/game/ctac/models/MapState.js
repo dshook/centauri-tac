@@ -78,8 +78,8 @@ export default class MapState
 
   //uses second point to determine direction of the line, should be within 1 distance of center
   getLineTiles(center, secondPoint, distance, bothDirections){
-    let xDiff = Math.abs(secondPoint.x - center.x);
-    let zDiff = Math.abs(secondPoint.z - center.z);
+    let xDiff = secondPoint.x - center.x;
+    let zDiff = secondPoint.z - center.z;
 
     let ret = [];
     ret.push(this.getTile(center).position);

@@ -108,7 +108,7 @@ export default class ComponentStore
 
   async purge()
   {
-    //TODO: needs to be cleaned up and a find a better solution for restarting the server 
+    //TODO: needs to be cleaned up and a find a better solution for restarting the server
     await this.sql.query(`delete from game_players; delete from games;delete from components;`);
 
     this.log.info('purged db');

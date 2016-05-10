@@ -15,18 +15,13 @@ namespace ctac
 
         GameObject draggedObject;
         bool active = false;
-        private Camera cardCamera;
         bool dragging = false;
         float dragTimer = 0f;
         float dragMin = 0.8f;
 
-        Ray camRay;
-        int cardCanvasLayer = -1;
         internal void init(RaycastModel rm)
         {
             active = true;
-            cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
-            cardCanvasLayer = LayerMask.GetMask(Constants.cardCanvas);
             clickSignal.AddListener(onClick);
             raycastModel = rm;
         }

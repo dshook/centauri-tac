@@ -15,7 +15,6 @@ namespace ctac
         Vector3 startPoint;
         Vector3 curveHeight = new Vector3(0, 1.35f, 0);
         CardCanvasHelperView cardCanvasHelper;
-        int tileMask = 0;
 
         Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -27,7 +26,6 @@ namespace ctac
 
             pointerSpline = pointerCurve.GetComponent<BezierSpline>();
 
-            tileMask = LayerMask.GetMask("Tile");
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 

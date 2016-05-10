@@ -79,6 +79,8 @@ namespace ctac
         public int size { get; set; }
         public bool isCursor { get; set; }
         public bool isDoubleCursor { get; set; }
+        public bool? bothDirections { get; set; }
+        public bool selfCentered { get; set; }
         public PositionModel centerPosition { get; set; }
         public PositionModel pivotPosition { get; set; }
         public List<PositionModel> areaTiles { get; set; }

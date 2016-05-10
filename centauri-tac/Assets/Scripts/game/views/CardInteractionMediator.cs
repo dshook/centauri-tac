@@ -31,7 +31,7 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         //for card targeting
-        private StartTargetModel startTargetModel;
+        private TargetModel startTargetModel;
 
         public override void OnRegister()
         {
@@ -61,13 +61,13 @@ namespace ctac
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
 
-                    if (cardView.card.tags.Contains("Spell"))
+                    if (cardView.card.isSpell)
                     {
                         var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, cardView.card.id);
                         var area = possibleActions.GetAreasForCard(turns.currentPlayerId, cardView.card.id);
                         if (targets != null || area != null)
                         {
-                            startTargetModel = new StartTargetModel()
+                            startTargetModel = new TargetModel()
                             {
                                 targetingCard = cardView.card,
                                 cardDeployPosition = null,
@@ -108,15 +108,24 @@ namespace ctac
 
                     var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
                     var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
-                    if ((targets != null && targets.targetPieceIds.Count >= 1) || (area != null && !draggedCard.tags.Contains("Spell")))
+                    if ((targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor))
                     {
+                        var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
+                        if (area != null && area.selfCentered)
+                        {
+                            selectedPosition = gameTile.position;
+                        }
+                        var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
+
                         //record state we need to maintain for subsequent clicks then dispatch the start target
-                        startTargetModel = new StartTargetModel()
+                        startTargetModel = new TargetModel()
                         {
                             targetingCard = draggedCard,
                             cardDeployPosition = gameTile,
                             targets = targets,
-                            area = area
+                            area = area,
+                            selectedPosition = selectedPosition,
+                            selectedPivotPosition = pivotPosition
                         };
 
                         //delay sending off the start select target signal till the card deselected event has cleared
@@ -126,7 +135,7 @@ namespace ctac
                     {
                         activateCard.Dispatch(new ActivateModel() {
                             cardActivated = draggedCard,
-                            tilePlayedAt = gameTile,
+                            position = gameTile.position,
                             optionalTarget = null
                         });
                     }
@@ -145,12 +154,15 @@ namespace ctac
             startTargetModel = null;
         }
 
-        private void onSelectedTarget(StartTargetModel targetModel, SelectTargetModel selectedTarget)
+        private void onSelectedTarget(TargetModel targetModel)
         {
             activateCard.Dispatch(new ActivateModel() {
                 cardActivated = targetModel.targetingCard,
-                tilePlayedAt = targetModel.cardDeployPosition ?? selectedTarget.tile,
-                optionalTarget = selectedTarget.piece
+                position = targetModel.cardDeployPosition != null ? 
+                    targetModel.cardDeployPosition.position : 
+                    targetModel.selectedPosition,
+                pivotPosition = targetModel.selectedPivotPosition,
+                optionalTarget = targetModel.selectedPiece
             });
             startTargetModel = null;
         }
