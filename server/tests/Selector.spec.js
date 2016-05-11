@@ -431,7 +431,7 @@ test('Line Selector with cursor', t => {
     selector.selectPieces(1, select, {
       selfPiece: selfPiecePosition,
       position: new Position(1, 0, 0),
-      pivotPosition: new Position(0, 0, 1)
+      pivotPosition: new Position(0, 0, 2)
     })
   , 'Threw exception for bad pivot position');
 });
