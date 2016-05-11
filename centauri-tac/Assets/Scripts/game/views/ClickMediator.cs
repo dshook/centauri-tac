@@ -58,14 +58,9 @@ namespace ctac
                     {
                         debug.Log("Selected target");
                         cardTarget.selectedPiece = pieceView.piece;
-                        if (!cardTarget.selectedPosition.HasValue)
-                        {
-                            cardTarget.selectedPosition = map.tiles.Get(pieceView.piece.tilePosition).position;
-                        }
-                        else
-                        {
-                            cardTarget.selectedPivotPosition = map.tiles.Get(pieceView.piece.tilePosition).position;
-                        }
+
+                        updateTarget(map.tiles.Get(pieceView.piece.tilePosition).position);
+
                         if (cardTarget.targetFulfilled)
                         {
                             selectTarget.Dispatch(cardTarget);
@@ -143,14 +138,8 @@ namespace ctac
                                 return;
                             }
                         }
-                        if (!cardTarget.selectedPosition.HasValue)
-                        {
-                            cardTarget.selectedPosition = gameTile.position;
-                        }
-                        else
-                        {
-                            cardTarget.selectedPivotPosition = gameTile.position;
-                        }
+
+                        updateTarget(gameTile.position);
 
                         if (cardTarget.targetFulfilled)
                         {
@@ -203,6 +192,20 @@ namespace ctac
         private void onPieceSelected(PieceModel pieceSelected)
         {
             selectedPiece = pieceSelected;
+        }
+
+        private void updateTarget(Vector2 position)
+        {
+            if(cardTarget == null) return;
+
+            if (!cardTarget.selectedPosition.HasValue)
+            {
+                cardTarget.selectedPosition = position;
+            }
+            else if(cardTarget.selectedPosition != position)
+            {
+                cardTarget.selectedPivotPosition = position;
+            }
         }
     }
 }
