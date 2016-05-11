@@ -91,6 +91,7 @@ namespace ctac
         Cross = 1,
         Square = 2,
         Line = 3,
-        Diagonal = 4
+        Row = 4,
+        Diagonal = 5
     }
 }

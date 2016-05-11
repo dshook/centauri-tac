@@ -121,6 +121,8 @@ namespace ctac
                         tiles = mapService.GetCrossTiles(tile.position, selectingArea.area.size).Values.ToList();
                         break;
                     case AreaType.Line:
+                    case AreaType.Row:
+                    case AreaType.Diagonal:
                         if (selectingArea.selectedPosition != null)
                         {
                             tiles = mapService.GetLineTiles(

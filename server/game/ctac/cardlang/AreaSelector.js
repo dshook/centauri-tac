@@ -17,7 +17,7 @@ export default class AreaSelector{
       let areaType = selector.args[0];
       let size = selector.args[1];
       let centerSelector = selector.args[2];
-      let extraParams = areaType === 'Line' || areaType === 'Diagonal';
+      let extraParams = areaType === 'Line' || areaType === 'Diagonal' || areaType === 'Row';
       let pivotSelector = extraParams ? selector.args[3] : null;
       let bothDirections = extraParams ? selector.args[4] : null;
 
@@ -78,11 +78,22 @@ export default class AreaSelector{
             break;
           case 'Line': {
             //check to see that the pivot position is close to the center and in one of the cross tiles
-            let neighbors = this.mapState.getNeighbors(centerPosition);
-            let foundNeighbor = neighbors.find(p => p.tileEquals(pivotPosition));
+            let kingNeighbors = this.mapState.getKingTilesInRadius(centerPosition, 1);
+            let foundNeighbor = kingNeighbors.find(p => p.tileEquals(pivotPosition));
             if(!foundNeighbor){
               this.log.error('Invalid neighbor for line. Center ' + centerPosition + ' pivot ' + pivotPosition);
               throw new EvalError('Invalid neighbor for line.');
+            }
+            areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
+            break;
+          }
+          case 'Row': {
+            //check to see that the pivot position is close to the center and in one of the cross tiles
+            let neighbors = this.mapState.getNeighbors(centerPosition);
+            let foundNeighbor = neighbors.find(p => p.tileEquals(pivotPosition));
+            if(!foundNeighbor){
+              this.log.error('Invalid neighbor for row. Center ' + centerPosition + ' pivot ' + pivotPosition);
+              throw new EvalError('Invalid neighbor for row.');
             }
             areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
             break;
