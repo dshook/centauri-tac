@@ -7,5 +7,5 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ Hit(Area(Line, 3, SELF, CURSOR, false), 1) }"
+	"eventcode": "playMinion{ Hit(Area(Line, 3, SELF, CURSOR, false) - SELF, 1) }"
 }

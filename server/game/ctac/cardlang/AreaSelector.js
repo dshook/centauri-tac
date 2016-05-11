@@ -1,4 +1,5 @@
 import loglevel from 'loglevel-decorator';
+import EvalError from './EvalError.js';
 
  @loglevel
 export default class AreaSelector{
@@ -80,7 +81,8 @@ export default class AreaSelector{
             let neighbors = this.mapState.getNeighbors(centerPosition);
             let foundNeighbor = neighbors.find(p => p.tileEquals(pivotPosition));
             if(!foundNeighbor){
-              throw 'Invalid neighbor for line. Center ' + centerPosition + ' pivot ' + pivotPosition;
+              this.log.error('Invalid neighbor for line. Center ' + centerPosition + ' pivot ' + pivotPosition);
+              throw new EvalError('Invalid neighbor for line.');
             }
             areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
             break;
@@ -92,7 +94,8 @@ export default class AreaSelector{
             let foundKingNeighbor = kingNeighbors.find(p => p.tileEquals(pivotPosition));
             let foundLineNeighbor = lineNeighbors.find(p => p.tileEquals(pivotPosition));
             if(!foundKingNeighbor || foundLineNeighbor){
-              throw 'Invalid neighbor for diagonal. Center ' + centerPosition + ' pivot ' + pivotPosition;
+              this.log.error('Invalid neighbor for diagonal. Center ' + centerPosition + ' pivot ' + pivotPosition)
+              throw new EvalError('Invalid neighbor for diagonal.');
             }
             areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
             break;
