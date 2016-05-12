@@ -34,6 +34,7 @@ namespace ctac
         {
             pieceSelected.AddListener(onPieceSelected);
             startSelectTarget.AddListener(onStartTarget);
+            cancelSelectTarget.AddListener(onCancelTarget);
             startSelectAbilityTarget.AddListener(onStartAbilityTarget);
             view.clickSignal.AddListener(onClick);
             view.init(raycastModel);
@@ -45,6 +46,7 @@ namespace ctac
         {
             pieceSelected.RemoveListener(onPieceSelected);
             startSelectTarget.RemoveListener(onStartTarget);
+            cancelSelectTarget.RemoveListener(onCancelTarget);
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
         }
 
@@ -60,9 +62,9 @@ namespace ctac
                         debug.Log("Selected target");
                         cardTarget.selectedPiece = pieceView.piece;
 
-                        updateTarget(map.tiles.Get(pieceView.piece.tilePosition));
+                        var continueTarget = updateTarget(map.tiles.Get(pieceView.piece.tilePosition));
 
-                        if (cardTarget.targetFulfilled)
+                        if (continueTarget && cardTarget.targetFulfilled)
                         {
                             selectTarget.Dispatch(cardTarget);
                             cardTarget = null;
@@ -140,9 +142,9 @@ namespace ctac
                             }
                         }
 
-                        updateTarget(gameTile);
+                        var continueTargeting = updateTarget(gameTile);
 
-                        if (cardTarget.targetFulfilled)
+                        if (continueTargeting && cardTarget.targetFulfilled)
                         {
                             selectTarget.Dispatch(cardTarget);
                             cardTarget = null;
@@ -184,6 +186,11 @@ namespace ctac
             cardTarget = model;
         }
 
+        private void onCancelTarget(CardModel card)
+        {
+            cardTarget = null;
+        }
+
         StartAbilityTargetModel abilityTarget { get; set; }
         private void onStartAbilityTarget(StartAbilityTargetModel model)
         {
@@ -195,14 +202,14 @@ namespace ctac
             selectedPiece = pieceSelected;
         }
 
-        private void updateTarget(Tile tile)
+        private bool updateTarget(Tile tile)
         {
-            if(cardTarget == null) return;
+            if(cardTarget == null) return false;
 
             if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                return;
+                return false;
             }
 
             if (!cardTarget.selectedPosition.HasValue)
@@ -214,6 +221,8 @@ namespace ctac
                 cardTarget.selectedPivotPosition = tile.position;
             }
             updateTargetSignal.Dispatch(cardTarget);
+
+            return true;
         }
     }
 }
