@@ -113,7 +113,14 @@ namespace ctac
                 view.onAttackTile(null);
             }
 
-            if (selectingArea != null && selectingArea.area != null && selectingArea.area.isCursor && tile != null)
+            //display area preview on area targeting
+            if (
+                selectingArea != null 
+                && selectingArea.area != null 
+                && selectingArea.area.isCursor 
+                && tile != null
+                && FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile)
+                )
             {
                 List<Tile> tiles = null;
                 switch (selectingArea.area.areaType) {

@@ -60,7 +60,7 @@ namespace ctac
                         debug.Log("Selected target");
                         cardTarget.selectedPiece = pieceView.piece;
 
-                        updateTarget(map.tiles.Get(pieceView.piece.tilePosition).position);
+                        updateTarget(map.tiles.Get(pieceView.piece.tilePosition));
 
                         if (cardTarget.targetFulfilled)
                         {
@@ -140,7 +140,7 @@ namespace ctac
                             }
                         }
 
-                        updateTarget(gameTile.position);
+                        updateTarget(gameTile);
 
                         if (cardTarget.targetFulfilled)
                         {
@@ -195,17 +195,23 @@ namespace ctac
             selectedPiece = pieceSelected;
         }
 
-        private void updateTarget(Vector2 position)
+        private void updateTarget(Tile tile)
         {
             if(cardTarget == null) return;
 
+            if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
+            {
+                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+                return;
+            }
+
             if (!cardTarget.selectedPosition.HasValue)
             {
-                cardTarget.selectedPosition = position;
+                cardTarget.selectedPosition = tile.position;
             }
-            else if(cardTarget.selectedPosition != position)
+            else if(cardTarget.selectedPosition != tile.position)
             {
-                cardTarget.selectedPivotPosition = position;
+                cardTarget.selectedPivotPosition = tile.position;
             }
             updateTargetSignal.Dispatch(cardTarget);
         }
