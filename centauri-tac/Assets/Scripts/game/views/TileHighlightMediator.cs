@@ -25,6 +25,7 @@ namespace ctac
 
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
+        [Inject] public UpdateTargetSignal updateTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public MapModel map { get; set; }
@@ -50,6 +51,7 @@ namespace ctac
             turnEnded.AddListener(onTurnEnded);
 
             cancelSelectTarget.AddListener(onCancelSelectTarget);
+            updateTarget.AddListener(onUpdateTarget);
             selectTarget.AddListener(onSelectTarget);
             startSelectTarget.AddListener(onStartTarget);
         }
@@ -66,6 +68,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
 
             cancelSelectTarget.RemoveListener(onCancelSelectTarget);
+            updateTarget.AddListener(onUpdateTarget);
             selectTarget.RemoveListener(onSelectTarget);
             startSelectTarget.RemoveListener(onStartTarget);
         }
@@ -322,18 +325,59 @@ namespace ctac
                     view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
                 }
             }
+            updateSelectHighlights(model);
+        }
+
+        private void onUpdateTarget(TargetModel model)
+        {
+            updateSelectHighlights(model);
         }
 
         private void onCancelSelectTarget(CardModel card)
         {
             view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
             selectingArea = null;
+            updateSelectHighlights(null);
         }
 
         private void onSelectTarget(TargetModel card)
         {
             view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
             selectingArea = null;
+            updateSelectHighlights(null);
+        }
+
+        private void updateSelectHighlights(TargetModel model)
+        {
+            view.toggleTileFlags(null, TileHighlightStatus.TargetTile);
+            if (model != null && model.area != null)
+            {
+                if (model.selectedPosition.HasValue)
+                {
+                    List<Tile> tiles = null;
+                    switch (model.area.areaType) {
+                        case AreaType.Square:
+                            tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
+                            break;
+                        case AreaType.Cross:
+                            tiles = mapService.GetCrossTiles(model.selectedPosition.Value, 1).Values.ToList();
+                            break;
+                        case AreaType.Line:
+                        case AreaType.Row:
+                        case AreaType.Diagonal:
+                            if (selectingArea.selectedPosition != null)
+                            {
+                                tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
+                            }
+                            break;
+                    }
+                    view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile);
+                }
+                else
+                {
+                    view.toggleTileFlags(map.tileList, TileHighlightStatus.TargetTile);
+                }
+            }
         }
     }
 }

@@ -58,7 +58,8 @@ namespace ctac {
             {
                 meshRenderer.material.SetColor("_HighlightColor", attackColor - tint);
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected))
+            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected)
+                || FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
                 meshRenderer.material.SetColor("_HighlightColor", selectColor - tint);
             }

@@ -15,6 +15,7 @@ namespace ctac
         [Inject] public RotatePieceSignal rotatePiece { get; set; }
 
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
+        [Inject] public UpdateTargetSignal updateTargetSignal { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
 
@@ -206,6 +207,7 @@ namespace ctac
             {
                 cardTarget.selectedPivotPosition = position;
             }
+            updateTargetSignal.Dispatch(cardTarget);
         }
     }
 }
