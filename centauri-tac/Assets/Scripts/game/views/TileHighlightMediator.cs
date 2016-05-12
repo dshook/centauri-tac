@@ -356,19 +356,14 @@ namespace ctac
                 {
                     List<Tile> tiles = null;
                     switch (model.area.areaType) {
-                        case AreaType.Square:
+                        case AreaType.Line:
                             tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
                             break;
-                        case AreaType.Cross:
+                        case AreaType.Row:
                             tiles = mapService.GetCrossTiles(model.selectedPosition.Value, 1).Values.ToList();
                             break;
-                        case AreaType.Line:
-                        case AreaType.Row:
                         case AreaType.Diagonal:
-                            if (selectingArea.selectedPosition != null)
-                            {
-                                tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
-                            }
+                            tiles = mapService.GetDiagonalTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
                             break;
                     }
                     view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile);

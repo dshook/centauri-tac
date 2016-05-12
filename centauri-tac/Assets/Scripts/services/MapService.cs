@@ -9,6 +9,7 @@ namespace ctac
     {
         Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
+        Dictionary<Vector2, Tile> GetDiagonalTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
         Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId);
         Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections);
@@ -33,6 +34,11 @@ namespace ctac
         public Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance)
         {
             return GetTilesInRadiusGeneric(center, distance, GetKingNeighbors, KingDistance);
+        }
+
+        public Dictionary<Vector2, Tile> GetDiagonalTilesInRadius(Vector2 center, int distance)
+        {
+            return GetTilesInRadiusGeneric(center, distance, GetDiagonalNeighbors, TileDistance);
         }
 
         public Dictionary<Vector2, Tile> GetTilesInRadius(Vector2 center, int distance)
@@ -318,8 +324,6 @@ namespace ctac
 
         public Dictionary<Vector2, Tile> GetNeighbors(Vector2 center)
         {
-            var ret = new Dictionary<Vector2, Tile>();
-            Tile next = null;
             var toCheck = new Vector2[4]{
                 center.AddX(1f),
                 center.AddX(-1f),
@@ -327,22 +331,23 @@ namespace ctac
                 center.AddY(-1f)
             };
 
-            foreach (var currentDirection in toCheck)
-            {
-                //check it's not off the map
-                next = mapModel.tiles.Get(currentDirection);
-                if (next != null)
-                {
-                    ret.Add(currentDirection, next);
-                }
-            }
-            return ret;
+            return CheckNeighbors(toCheck);
+        }
+
+        public Dictionary<Vector2, Tile> GetDiagonalNeighbors(Vector2 center)
+        {
+            var toCheck = new Vector2[4]{
+                center.Add(-1, -1),
+                center.Add(-1, 1),
+                center.Add(1, -1),
+                center.Add(1, 1)
+            };
+
+            return CheckNeighbors(toCheck);
         }
 
         public Dictionary<Vector2, Tile> GetKingNeighbors(Vector2 center)
         {
-            var ret = new Dictionary<Vector2, Tile>();
-            Tile next = null;
             var toCheck = new Vector2[8]{
                 center.AddX(1f),
                 center.AddX(-1f),
@@ -353,6 +358,14 @@ namespace ctac
                 center.Add(1, -1),
                 center.Add(1, 1)
             };
+
+            return CheckNeighbors(toCheck);
+        }
+
+        private Dictionary<Vector2, Tile> CheckNeighbors(Vector2[] toCheck)
+        {
+            var ret = new Dictionary<Vector2, Tile>();
+            Tile next = null;
 
             foreach (var currentDirection in toCheck)
             {
