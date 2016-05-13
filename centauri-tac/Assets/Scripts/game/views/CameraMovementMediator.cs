@@ -6,26 +6,17 @@ namespace ctac
 {
     public class CameraMovementMediator : Mediator
     {
-        [Inject]
-        public CameraMovementView view { get; set; }
+        [Inject] public CameraMovementView view { get; set; }
 
-        [Inject]
-        public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
 
-        [Inject]
-        public StartSelectTargetSignal startTarget { get; set; }
+        [Inject] public StartSelectTargetSignal startTarget { get; set; }
+        [Inject] public CancelSelectTargetSignal cancelTarget { get; set; }
+        [Inject] public SelectTargetSignal targetSelected { get; set; }
 
-        [Inject]
-        public CancelSelectTargetSignal cancelTarget { get; set; }
-
-        [Inject]
-        public SelectTargetSignal targetSelected { get; set; }
-
-        [Inject]
-        public PiecesModel pieces { get; set; }
-
-        [Inject]
-        public RaycastModel raycastModel { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public RaycastModel raycastModel { get; set; }
 
         public override void OnRegister()
         {
@@ -33,6 +24,7 @@ namespace ctac
             startTarget.AddListener(onStartTarget);
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
+            pieceSelected.AddListener(onPieceSelected);
 
             view.Init(raycastModel);
         }
@@ -44,24 +36,30 @@ namespace ctac
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
+            pieceSelected.RemoveListener(onPieceSelected);
         }
 
         private void onCardSelected(CardModel card)
         {
-            view.onCardSelected(card != null);
+            view.setDragEnabled(card != null);
         }
 
         private void onStartTarget(TargetModel m)
         {
-            view.onCardSelected(true);
+            view.setDragEnabled(true);
         }
         private void onSelectTarget(TargetModel c)
         {
-            view.onCardSelected(false);
+            view.setDragEnabled(false);
         }
         private void onCancelTarget(CardModel c)
         {
-            view.onCardSelected(false);
+            view.setDragEnabled(false);
+        }
+
+        private void onPieceSelected(PieceModel p)
+        {
+            view.setDragEnabled(p == null);
         }
     }
 }

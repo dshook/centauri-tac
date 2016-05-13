@@ -18,7 +18,7 @@ namespace ctac
 
         private RaycastModel raycastModel;
 
-        private bool cardSelected = false;
+        private bool disableDrag = false;
 
         bool dragging = false;
         float xSpeed = 10f;
@@ -87,7 +87,7 @@ namespace ctac
 
         private void UpdateDragging()
         {
-            if (cardSelected)
+            if (disableDrag)
             {
                 dragging = false;
                 return;
@@ -116,7 +116,6 @@ namespace ctac
             {
                 if (raycastModel.tile != null && raycastModel.cardCanvasHit == null)
                 {
-                    Debug.Log("Starting to drag camera");
                     dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
                     camOrigin = Camera.main.transform.position;
                     dragging = true;
@@ -124,9 +123,9 @@ namespace ctac
             }
         }
 
-        internal void onCardSelected(bool selected)
+        internal void setDragEnabled(bool selected)
         {
-            cardSelected = selected;
+            disableDrag = selected;
         }
 
         //Get the intersection between a line and a plane. 
