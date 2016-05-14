@@ -67,7 +67,7 @@ namespace ctac
             {
                 needsArrow = cardModel.card.needsTargeting(possibleActions);
             }
-            view.onCardSelected(cardModel == null ? null : cardModel.card, needsArrow);
+            view.onCardSelected(cardModel, needsArrow);
         }
 
         private void onCardHovered(CardModel card)

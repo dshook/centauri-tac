@@ -11,7 +11,7 @@ namespace ctac {
         private List<CardModel> playerCards { get; set; }
         private List<CardModel> opponentCards { get; set; }
 
-        private CardModel selectedCard { get; set; }
+        private CardSelectedModel selectedCard { get; set; }
         private bool selectedNeedsArrow { get; set; }
         private CardModel hoveredCard { get; set; }
         private CardCanvasHelperView cardCanvasHelper;
@@ -78,9 +78,10 @@ namespace ctac {
                 dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
                 dest = dest.SetZ(dest.z + (-1.5f * c));
 
-                if (selectedCard != null && card == selectedCard)
+                if (selectedCard != null && card == selectedCard.card)
                 {
                     var dragPos = cardCanvasHelper.MouseToWorld(dest.z);
+                    dragPos = new Vector3(dragPos.x + selectedCard.point.x, dragPos.y + selectedCard.point.y, dragPos.z);
                     dragPos = dragPos.SetY(dragPos.y + cardDimensions.y / 2);
                     //var destWorldPos = cardCanvasHelper.RectTransformToWorld(rectTransform, dest);
                     var dragDist = Vector3.Distance(dragPos, dest);
@@ -95,7 +96,7 @@ namespace ctac {
                         dest = dest.SetY(dest.y + 30f);
                     }
                 }
-                if (hoveredCard != null && card == hoveredCard && hoveredCard != selectedCard)
+                if (hoveredCard != null && card == hoveredCard && (selectedCard == null || hoveredCard != selectedCard.card))
                 {
                     dest = dest.SetY(dest.y + 30f);
                     hoverAccumulator += Time.deltaTime;
@@ -133,7 +134,7 @@ namespace ctac {
 
 
 
-        internal void onCardSelected(CardModel card, bool needsArrow)
+        internal void onCardSelected(CardSelectedModel card, bool needsArrow)
         {
             selectedCard = card;
             selectedNeedsArrow = needsArrow;
