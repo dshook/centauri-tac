@@ -80,7 +80,7 @@ namespace ctac
             //right click et al deselects
             if (CrossPlatformInputManager.GetButtonDown("Fire2"))
             {
-                clickSignal.Dispatch(null);
+                clickSignal.Dispatch(null, Vector3.zero);
                 dragging = false;
                 dragTimer = 0f;
             }
@@ -103,7 +103,7 @@ namespace ctac
             {
                 hit = true;
                 activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
-                clickSignal.Dispatch(null);
+                clickSignal.Dispatch(null, Vector3.zero);
             }
             else
             {
