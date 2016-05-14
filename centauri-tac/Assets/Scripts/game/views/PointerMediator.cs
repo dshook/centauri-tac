@@ -56,18 +56,16 @@ namespace ctac
             startAbilitySelectTarget.RemoveListener(onAbilityStartTarget);
         }
 
-        private void onCardSelected(CardModel card)
+        private void onCardSelected(CardSelectedModel cardModel)
         {
-            if (card != null && card.gameObject != null)
+            if (cardModel != null && cardModel.card.gameObject != null)
             {
-                if (card.isSpell)
+                //don't point for untargeted or un aread spells
+                if (cardModel.card.isSpell && !cardModel.card.needsTargeting(possibleActions))
                 {
-                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, card.id);
-                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, card.id);
-                    //don't point for untargeted or un aread spells
-                    if (targets == null && area == null) { return; }
+                    return;
                 }
-                view.rectTransform(card.gameObject);
+                view.rectTransform(cardModel.card.gameObject);
             }
             else
             {

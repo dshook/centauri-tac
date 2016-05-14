@@ -48,7 +48,7 @@ namespace ctac
             }
         }
 
-        private void onCardSelected(CardModel card)
+        private void onCardSelected(CardSelectedModel card)
         {
             view.setActive(card == null);
         }

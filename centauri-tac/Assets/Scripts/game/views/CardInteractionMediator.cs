@@ -53,7 +53,7 @@ namespace ctac
         }
 
 
-        private void onClick(GameObject clickedObject)
+        private void onClick(GameObject clickedObject, Vector3 point)
         {
             if (clickedObject != null)
             {
@@ -81,7 +81,7 @@ namespace ctac
 
                     draggedCard = cardView.card;
                     pieceSelected.Dispatch(null); 
-                    cardSelected.Dispatch(draggedCard);
+                    cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
                 }
             }
             else
@@ -106,10 +106,11 @@ namespace ctac
 
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
-                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
-                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
-                    if ((targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor))
+                    if (draggedCard.needsTargeting(possibleActions))
                     {
+                        var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
+                        var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
+
                         var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
                         if (area != null && area.selfCentered)
                         {
@@ -165,6 +166,7 @@ namespace ctac
                 optionalTarget = targetModel.selectedPiece
             });
             startTargetModel = null;
+            cardSelected.Dispatch(null);
         }
 
         private CardView lastHoveredCard = null;

@@ -182,19 +182,19 @@ namespace ctac
             }
         }
 
-        private void onCardSelected(CardModel card)
+        private void onCardSelected(CardSelectedModel cardModel)
         {
-            if (card == null)
+            if (cardModel == null)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.Selected);
                 return;
             }
 
-            if (!card.isSpell)
+            if (!cardModel.card.isSpell)
             {
 
                 //find play radius depending on the card
-                var playerHero = pieces.Hero(card.playerId);
+                var playerHero = pieces.Hero(cardModel.card.playerId);
                 List<Tile> playableTiles = map.tileList
                     .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
                         && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)

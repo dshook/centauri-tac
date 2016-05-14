@@ -60,9 +60,14 @@ namespace ctac
             playerResourceSet.RemoveListener(onPlayerResourceSet);
         }
 
-        private void onCardSelected(CardModel card)
+        private void onCardSelected(CardSelectedModel cardModel)
         {
-            view.onCardSelected(card);
+            var needsArrow = true;
+            if (cardModel != null && cardModel.card.isSpell)
+            {
+                needsArrow = cardModel.card.needsTargeting(possibleActions);
+            }
+            view.onCardSelected(cardModel == null ? null : cardModel.card, needsArrow);
         }
 
         private void onCardHovered(CardModel card)

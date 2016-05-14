@@ -206,6 +206,8 @@ namespace ctac
         {
             if(cardTarget == null) return false;
 
+            if(cardTarget.area == null) return true;
+
             if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);

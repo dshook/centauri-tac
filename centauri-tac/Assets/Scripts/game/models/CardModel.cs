@@ -42,6 +42,16 @@ namespace ctac
             }
         }
 
+        /// <summary>
+        /// Returns if this card needs to have some sort of targeting, area or targets
+        /// </summary>
+        public bool needsTargeting(PossibleActionsModel possibleActions)
+        {
+            var targets = possibleActions.GetActionsForCard(playerId, id);
+            var area = possibleActions.GetAreasForCard(playerId, id);
+            return (targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor);
+        }
+
         public bool playable { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace ctac {
         private List<CardModel> opponentCards { get; set; }
 
         private CardModel selectedCard { get; set; }
+        private bool selectedNeedsArrow { get; set; }
         private CardModel hoveredCard { get; set; }
         private CardCanvasHelperView cardCanvasHelper;
 
@@ -83,12 +84,9 @@ namespace ctac {
                     dragPos = dragPos.SetY(dragPos.y + cardDimensions.y / 2);
                     //var destWorldPos = cardCanvasHelper.RectTransformToWorld(rectTransform, dest);
                     var dragDist = Vector3.Distance(dragPos, dest);
-                    if (dragDist < maxDragDistance)
+                    if (dragDist < maxDragDistance || !selectedNeedsArrow)
                     {
-                        //TODO: make this look better
-                        //dragPos = dragPos.SetZ(dragPos.z + (2 * dragDist));
-                        //rectTransform.rotation = Quaternion.Euler(new Vector3(33, 0, 0));
-                        //rectTransform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+                        rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
                         rectTransform.anchoredPosition3D = dragPos;
                         continue;
                     }
@@ -126,7 +124,7 @@ namespace ctac {
 
         private static Vector3 PointOnCircle(float radius, float angleInDegrees, Vector3 origin)
         {
-            // Convert from degrees to radians via multiplication by PI/180        
+            // Convert from degrees to radians via multiplication by PI/180
             float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.x;
             float y = (float)(radius * Math.Sin(angleInDegrees * Math.PI / 180F)) + origin.y;
 
@@ -135,9 +133,10 @@ namespace ctac {
 
 
 
-        internal void onCardSelected(CardModel card)
+        internal void onCardSelected(CardModel card, bool needsArrow)
         {
             selectedCard = card;
+            selectedNeedsArrow = needsArrow;
         }
 
         internal void onCardHovered(CardModel card)

@@ -8,7 +8,7 @@ namespace ctac
 {
     public class CardInteractionView : View
     {
-        internal Signal<GameObject> clickSignal = new Signal<GameObject>();
+        internal Signal<GameObject, Vector3> clickSignal = new Signal<GameObject, Vector3>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
         RaycastModel raycastModel;
@@ -26,7 +26,7 @@ namespace ctac
             raycastModel = rm;
         }
 
-        void onClick(GameObject g)
+        void onClick(GameObject g, Vector3 v)
         {
             draggedObject = g;
         }
@@ -68,11 +68,11 @@ namespace ctac
                 {
                     if (hoverHit.HasValue)
                     {
-                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
                     }
                     else
                     {
-                        clickSignal.Dispatch(null);
+                        clickSignal.Dispatch(null, Vector3.zero);
                     }
                 }
             }
