@@ -15,7 +15,6 @@ namespace ctac
 
         GameObject draggedObject;
         bool active = false;
-        bool dragging = false;
         float dragTimer = 0f;
         float dragMin = 0.8f;
 
@@ -35,7 +34,7 @@ namespace ctac
         {
             if (!active) return;
             
-            var hoverHit = TestSelection();
+            var hoverHit = raycastModel.cardCanvasHit;
 
             if (hoverHit.HasValue)
             {
@@ -46,25 +45,26 @@ namespace ctac
                 hoverSignal.Dispatch(null);
             }
 
-            if (CrossPlatformInputManager.GetButton("Fire1"))
+            if (draggedObject != null)
             {
                 dragTimer += Time.deltaTime;
-                if (dragTimer > dragMin)
-                {
-                    dragging = true;
-                }
             }
 
-            if (dragging && CrossPlatformInputManager.GetButtonUp("Fire1"))
-            {
-                TestActivate();
-                dragging = false;
-                dragTimer = 0f;
+            if (CrossPlatformInputManager.GetButtonUp("Fire1")) {
+                if (draggedObject != null && dragTimer > dragMin)
+                {
+                    TestActivate();
+                }
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                if (draggedObject == null || !TestActivate())
+                //if we're already dragging, test the activate, otherwise start dragging
+                if (draggedObject != null && dragTimer > dragMin)
+                {
+                    TestActivate();
+                }
+                else
                 {
                     if (hoverHit.HasValue)
                     {
@@ -81,7 +81,6 @@ namespace ctac
             if (CrossPlatformInputManager.GetButtonDown("Fire2"))
             {
                 clickSignal.Dispatch(null, Vector3.zero);
-                dragging = false;
                 dragTimer = 0f;
             }
 
@@ -89,11 +88,6 @@ namespace ctac
             //{
             //    Debug.DrawLine(camRay.origin, Quaternion.Euler(camRay.direction) * camRay.origin * Constants.cameraRaycastDist, Color.red, 10f);
             //}
-        }
-
-        RaycastHit? TestSelection()
-        {
-            return raycastModel.cardCanvasHit;
         }
 
         bool TestActivate()
@@ -109,6 +103,9 @@ namespace ctac
             {
                 activateSignal.Dispatch(null);
             }
+            //implicitly stop dragging after activating since we only test activation when we want to stop dragging
+            draggedObject = null;
+            dragTimer = 0f;
             return hit;
         }
     }
