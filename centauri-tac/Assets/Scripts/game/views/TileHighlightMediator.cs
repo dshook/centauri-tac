@@ -91,20 +91,29 @@ namespace ctac
                         && !m.currentPlayerHasControl
                         && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
                     );
-                //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
-                var boost = enemyOccupyingDest ? 1 : 0;
-                var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, gameTurn.currentPlayerId);
-                view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
-                if (enemyOccupyingDest
-                    && path != null
-                )
+                //don't show move path for ranged units hovering over an enemy
+                if (!(enemyOccupyingDest && selectedPiece.range.HasValue))
                 {
-                    view.onAttackTile(tile);
+                    //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
+                    var boost = enemyOccupyingDest ? 1 : 0;
+                    var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, gameTurn.currentPlayerId);
+                    view.toggleTileFlags(path, TileHighlightStatus.PathFind);
+
+                    if (enemyOccupyingDest
+                        && path != null
+                    )
+                    {
+                        view.onAttackTile(tile);
+                    }
+                    else
+                    {
+                        view.onAttackTile(null);
+                    }
                 }
                 else
                 {
-                    view.onAttackTile(null);
+                    view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                 }
             }
             else
@@ -153,32 +162,40 @@ namespace ctac
 
         private void onPieceSelected(PieceModel selectedPiece)
         {
-            if (selectedPiece != null && !selectedPiece.isMoving)
-            {
-                if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
-                    || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
-                ) {
-                    return;
-                }
-                var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                this.selectedPiece = selectedPiece;
-
-                view.onTileSelected(gameTile);
-
-                if (!selectedPiece.hasMoved)
-                {
-                    //find movement
-                    var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
-                    //take out the central one
-                    moveTiles.Remove(gameTile.position);
-                    view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable);
-                }
-            }
-            else
+            if (selectedPiece == null)
             {
                 this.selectedPiece = null;
                 view.onTileSelected(null);
                 view.toggleTileFlags(null, TileHighlightStatus.Movable);
+                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                return;
+            }
+
+            //check for attack range tiles
+            if (selectedPiece.range.HasValue)
+            {
+                var attackTiles = mapService.GetTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
+                view.toggleTileFlags(attackTiles.Values.ToList(), TileHighlightStatus.AttackRange);
+            }
+
+            //set movement and tile selected highlights
+            if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
+            ) {
+                return;
+            }
+            var gameTile = map.tiles.Get(selectedPiece.tilePosition);
+            this.selectedPiece = selectedPiece;
+
+            view.onTileSelected(gameTile);
+
+            if (!selectedPiece.hasMoved)
+            {
+                //find movement
+                var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
+                //take out the central one
+                moveTiles.Remove(gameTile.position);
+                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable);
             }
         }
 
@@ -225,34 +242,69 @@ namespace ctac
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
                 )
             {
-                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
-                var moveTiles = movePositions.Values.ToList();
-                var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
-                var attackTiles = attackPositions.Values.ToList();
-
-                //find diff to get just attack tiles
-                attackTiles = attackTiles.Except(moveTiles).ToList();
-
-                //take out the central one
-                var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
-                moveTiles.Remove(center);
-
-                //TODO: take friendly units out of move and untargetable enemies like Cloak
-
-                view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange);
-                if (piece.attack > 0)
+                if (piece.attack <= 0)
                 {
-                    view.toggleTileFlags(attackTiles, TileHighlightStatus.AttackRange);
+                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                }
+                //check for ranged units first since they can't move and attack
+                else if (piece.range.HasValue && piece.attack > 0)
+                {
+                    var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
+                    view.toggleTileFlags(attackRangeTiles.Values.ToList(), TileHighlightStatus.AttackRange);
                 }
                 else
                 {
-                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                    //melee units
+
+                    var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
+                    var moveTiles = movePositions.Values.ToList();
+                    var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
+                    var attackTiles = attackPositions.Values.ToList();
+
+                    //find diff to get just attack tiles
+                    attackTiles = attackTiles.Except(moveTiles).ToList();
+
+                    //take out the central one
+                    var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
+                    moveTiles.Remove(center);
+
+                    //TODO: take friendly units out of move and untargetable enemies like Cloak
+
+                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange);
+                    view.toggleTileFlags(attackTiles, TileHighlightStatus.AttackRange);
                 }
             }
             else
             {
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
-                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                if (selectedPiece == null)
+                {
+                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                }
+            }
+
+            //attacking enemy at range
+            if (
+                selectedPiece != null
+                && piece != null
+                && piece != selectedPiece
+                && selectedPiece.range.HasValue
+                )
+            {
+                if (mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition)
+                    <= selectedPiece.range.Value)
+                {
+                    var gameTile = map.tiles.Get(piece.tilePosition);
+                    view.onAttackTile(gameTile);
+                }
+                else
+                {
+                    view.onAttackTile(null);
+                }
+            }
+            else
+            {
+                view.onAttackTile(null);
             }
         }
 
