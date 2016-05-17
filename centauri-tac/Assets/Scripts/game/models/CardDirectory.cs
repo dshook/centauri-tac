@@ -28,6 +28,7 @@ namespace ctac
                     attack = cardTemplate.attack,
                     health = cardTemplate.health,
                     movement = cardTemplate.movement,
+                    range = cardTemplate.range,
                     tags = cardTemplate.tags,
                     playable = false
                 };

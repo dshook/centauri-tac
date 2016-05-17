@@ -94,6 +94,7 @@ namespace ctac
                 tilePosition = spawnPosition.ToTileCoordinates(),
                 direction = spawnedPiece.direction,
                 movement = cardTemplate.movement,
+                range = cardTemplate.range,
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses,

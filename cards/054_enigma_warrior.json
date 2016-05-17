@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 54,
+	"name": "Enigma Warrior",
+	"description": "",
+	"cost": 2,
+	"attack": 1,
+	"health": 3,
+	"range": 3,
+	"movement": 3,
+	"tags": ["Minion"]
+}

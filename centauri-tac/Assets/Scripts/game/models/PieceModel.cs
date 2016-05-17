@@ -29,6 +29,7 @@ namespace ctac
         public int attack { get; set; }
         public int health { get; set; }
         public int movement { get; set; }
+        public int? range { get; set; }
 
         public int baseAttack { get; set; }
         public int baseHealth { get; set; }

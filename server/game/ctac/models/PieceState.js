@@ -43,6 +43,8 @@ export default class PieceState
     newPiece.baseHealth = cardPlayed.health;
     newPiece.movement = cardPlayed.movement;
     newPiece.baseMovement = cardPlayed.movement;
+    newPiece.range = cardPlayed.range;
+    newPiece.baseRange = cardPlayed.range;
     newPiece.baseTags = cardPlayed.tags;
     newPiece.tags = cardPlayed.tags;
     newPiece.statuses = cardPlayed.statuses || 0;

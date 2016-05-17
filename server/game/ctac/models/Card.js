@@ -9,6 +9,7 @@ export default class Card
     this.attack = null;
     this.health = null;
     this.movement = null;
+    this.range = null;
     this.tags = [];
     this.statuses = 0;
   }

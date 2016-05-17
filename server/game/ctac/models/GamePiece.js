@@ -17,6 +17,8 @@ export default class GamePiece
     this.baseHealth = null;
     this.movement = null;
     this.baseMovement = null;
+    this.range = null;
+    this.baseRange = null;
     this.events = null;
     this.baseTags = [];
     this.tags = [];

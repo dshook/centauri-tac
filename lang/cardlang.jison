@@ -54,7 +54,7 @@
   return 'action'
 
 //attributes
-(health|attack|movement)
+(health|attack|movement|range)
   return 'attribute'
 
 //statuses

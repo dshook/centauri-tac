@@ -10,10 +10,12 @@ export default class PieceAttributeChange
     this.attack = null;
     this.health = null;
     this.movement = null;
+    this.range = null;
 
     //set by processor
     this.baseAttack = null;
     this.baseHealth = null;
     this.baseMovement = null;
+    this.baseRange = null;
   }
 }

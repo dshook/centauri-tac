@@ -31,8 +31,8 @@
 ##Areas
 * ~~cross~~
 * ~~square~~
-* line
-* diagonal
+* ~~line~~
+* ~~diagonal~~
 
 ##Randomness
 * ~~random number in list~~
