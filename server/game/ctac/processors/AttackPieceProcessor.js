@@ -44,6 +44,7 @@ export default class AttackPieceProcessor
     }else{
       targetDistance = this.mapState.tileDistance(attacker.position, target.position);
     }
+    let rangedAttack = attacker.range != null && targetDistance > 1;
     if(targetDistance > 1 && (attacker.range != null && attacker.range < targetDistance)){
       this.log.warn('Attacker too far away from target %s %s', targetDistance, attacker.range);
       return queue.cancel(action);
@@ -83,15 +84,18 @@ export default class AttackPieceProcessor
 
     let bonus = 0;
     let bonusMsg = null;
-    if(facingDirection == 'behind'){
+    if(facingDirection == 'behind' && !rangedAttack){
       this.log.info('Backstab triggered, attackerDirection: %s targetDirection: %s, target.direction: %s'
         , action.direction, targetDirection, target.direction);
       bonus = -1;
       bonusMsg = 'Backstab';
     }
 
-    queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
     queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
+    //counter attack if in range
+    if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
+      queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
+    }
 
     attacker.hasAttacked = true;
 

@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 55,
+	"name": "Norn Polestar",
+	"description": "",
+	"cost": 3,
+	"attack": 2,
+	"health": 3,
+	"range": 3,
+	"movement": 3,
+	"tags": ["Minion"]
+}
