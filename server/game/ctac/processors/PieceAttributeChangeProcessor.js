@@ -31,7 +31,7 @@ export default class PieceAttributeChangeProcessor
       return queue.cancel(action);
     }
 
-    let attribs = ['attack', 'health', 'movement'];
+    let attribs = ['attack', 'health', 'movement', 'range'];
 
     for(let attrib of attribs){
       if(action[attrib] == null || piece[attrib] === action[attrib]) continue;

@@ -31,7 +31,7 @@ export default class PieceBuffProcessor
       return queue.cancel(action);
     }
 
-    let attribs = ['attack', 'health', 'movement'];
+    let attribs = ['attack', 'health', 'movement', 'range'];
     //if we're removing a buff, find it by name, pop it off, and then reverse its stat changes
     if(action.removed){
       let buff = piece.buffs.find(b => b.name === action.name);

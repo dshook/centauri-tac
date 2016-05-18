@@ -41,7 +41,7 @@ export default class GamePiece
     if(buffIndex === -1) return null;
     this.buffs.splice(buffIndex, 1);
 
-    let attribs = ['attack', 'health', 'movement'];
+    let attribs = ['attack', 'health', 'movement', 'range'];
     let action = {};
     for(let attrib of attribs){
       if(buff[attrib] == null) continue;

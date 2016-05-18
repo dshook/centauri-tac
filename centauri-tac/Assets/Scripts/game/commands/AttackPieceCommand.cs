@@ -31,19 +31,28 @@ namespace ctac
             var attacker = pieces.Piece(attackModel.attackingPieceId);
             var startTile = map.tiles.Get(attacker.tilePosition);
             var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
-            var path = mapService.FindPath(startTile, destTile, attacker.movement + 1, gameTurn.currentPlayerId);
+            List<Tile> path = null;
+            if (!attacker.range.HasValue)
+            {
+                path = mapService.FindPath(startTile, destTile, attacker.movement + 1, gameTurn.currentPlayerId);
+            }
 
-            if (path == null)
+            if (path == null && !attacker.range.HasValue)
             {
                 //noop if can't find a path to attack to 
                 return;
             }
             List<PositionModel> serverPath = null;
-            if (path.Count > 1)
+            if (path != null && path.Count > 1)
             {
                 //slice off the last move tile since it'll be the enemy and then format for server
                 serverPath = path.Take(path.Count - 1).Select(x => new PositionModel(x.position)).ToList();
 
+                attacker.hasMoved = true;
+            }
+
+            if (attacker.range.HasValue)
+            {
                 attacker.hasMoved = true;
             }
 

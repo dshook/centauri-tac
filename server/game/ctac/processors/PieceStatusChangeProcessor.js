@@ -47,7 +47,7 @@ export default class PieceStatusChangeProcessor
 
       //back out any buffs on the piece
       if(piece.buffs.length > 0){
-        let attribs = ['attack', 'health', 'movement'];
+        let attribs = ['attack', 'health', 'movement', 'range'];
 
         for(let b = piece.buffs.length - 1; b >= 0; b--){
           let buff = piece.buffs[b];

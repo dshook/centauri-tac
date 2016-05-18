@@ -39,13 +39,13 @@ export default class AttackPieceProcessor
     }
 
     let targetDistance = Number.MAX_VALUE;
-    if(action.isTauntAttack){
+    if(action.isTauntAttack || attacker.range != null){
       targetDistance = this.mapState.kingDistance(attacker.position, target.position);
     }else{
       targetDistance = this.mapState.tileDistance(attacker.position, target.position);
     }
-    if(targetDistance > 1){
-      this.log.warn('Attacker too far away from target %s', targetDistance);
+    if(targetDistance > 1 && (attacker.range != null && attacker.range < targetDistance)){
+      this.log.warn('Attacker too far away from target %s %s', targetDistance, attacker.range);
       return queue.cancel(action);
     }
 
