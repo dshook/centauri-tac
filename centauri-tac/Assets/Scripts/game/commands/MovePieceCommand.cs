@@ -34,6 +34,12 @@ namespace ctac
             socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = pieceMoved.id, route = serverPath });
 
             pieceMoved.hasMoved = true;
+
+            //ranged can't move and attack
+            if (pieceMoved.range.HasValue)
+            {
+                pieceMoved.hasAttacked = true;
+            }
         }
     }
 }

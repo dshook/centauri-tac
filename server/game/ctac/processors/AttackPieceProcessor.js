@@ -98,6 +98,9 @@ export default class AttackPieceProcessor
     }
 
     attacker.hasAttacked = true;
+    if(attacker.range != null){
+      attacker.hasMoved = true;
+    }
 
     //Remove cloak once they've attacked
     if(attacker.statuses & Statuses.Cloak){
