@@ -21,7 +21,7 @@ namespace ctac
         [Inject] public TokenSignal tokenSignal { get; set; }
 
         private float loginTimer = 0f;
-        private const float retryTime = 1f;
+        private const float retryTime = 2f;
         private int retries = 0;
 
         private class LoginWatch

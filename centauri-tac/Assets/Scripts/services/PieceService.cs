@@ -98,8 +98,8 @@ namespace ctac
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses,
-                hasAttacked = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge),
-                hasMoved = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge)
+                hasMoved = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge) && cardTemplate.range == null,
+                hasAttacked = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge)
             };
 
             var pieceView = newPiece.AddComponent<PieceView>();

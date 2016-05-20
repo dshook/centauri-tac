@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import GamePiece from './GamePiece.js';
+import Statuses from './Statuses.js';
 
 /**
  * Current state of all the pieces
@@ -43,12 +44,15 @@ export default class PieceState
     newPiece.baseHealth = cardPlayed.health;
     newPiece.movement = cardPlayed.movement;
     newPiece.baseMovement = cardPlayed.movement;
-    newPiece.range = cardPlayed.range;
-    newPiece.baseRange = cardPlayed.range;
+    newPiece.range = cardPlayed.range || null;
+    newPiece.baseRange = cardPlayed.range || null;
     newPiece.baseTags = cardPlayed.tags;
     newPiece.tags = cardPlayed.tags;
     newPiece.statuses = cardPlayed.statuses || 0;
     newPiece.baseStatuses = cardPlayed.statuses || 0;
+
+    newPiece.hasMoved = !(newPiece.statuses & Statuses.Charge) && newPiece.range === null;
+    newPiece.hasAttacked = !(newPiece.statuses & Statuses.Charge);
 
     //server only tracking vars
     newPiece.bornOn = null;
