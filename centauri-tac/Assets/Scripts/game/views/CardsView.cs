@@ -213,6 +213,43 @@ namespace ctac {
             }
         }
 
+        public class DiscardCardAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return 0.5f; } }
+
+            public DestroyCardSignal destroyCard { get; set; }
+            public CardModel card { get; set; }
+            public bool isOpponentCard { get; set; }
+
+            //dev speed
+            private float animTime = 0.5f;
+            private Vector3 opponentDest = new Vector3(0, 150, 50);
+
+            private float elapsedTime = 0f;
+
+            public void Init() { }
+            public void Update()
+            {
+                elapsedTime += Time.deltaTime;
+                Vector3 dest = Vector3.zero;
+                if (isOpponentCard)
+                {
+                    animTime = 0.3f;
+                    dest = opponentDest;
+                }
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
+
+                iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+                if (elapsedTime > animTime)
+                {
+                    Complete = true;
+                    destroyCard.Dispatch(card.id);
+                }
+            }
+        }
+
         public class OverdrawCardAnim : IAnimate
         {
             public bool Complete { get; set; }

@@ -21,6 +21,7 @@ namespace ctac
 
         [Inject] public CardDrawnSignal cardDrawn { get; set; }
         [Inject] public CardDrawShownSignal cardDrawShown { get; set; }
+        [Inject] public CardDiscardedSignal cardDiscarded { get; set; }
         [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
@@ -42,6 +43,7 @@ namespace ctac
             cardDestroyed.AddListener(onCardDestroyed);
             cardDrawn.AddListener(onCardDrawn);
             cardDrawShown.AddListener(onCardDrawnShown);
+            cardDiscarded.AddListener(onCardDiscarded);
             turnEnded.AddListener(onTurnEnded);
             playerResourceSet.AddListener(onPlayerResourceSet);
         }
@@ -56,6 +58,7 @@ namespace ctac
             cardDestroyed.RemoveListener(onCardDestroyed);
             cardDrawn.RemoveListener(onCardDrawn);
             cardDrawShown.RemoveListener(onCardDrawnShown);
+            cardDiscarded.RemoveListener(onCardDiscarded);
             turnEnded.RemoveListener(onTurnEnded);
             playerResourceSet.RemoveListener(onPlayerResourceSet);
         }
@@ -128,6 +131,29 @@ namespace ctac
             cards.Cards.Add(card);
             UpdateCardsPlayableStatus(cards.Cards);
             view.init(PlayerCards(), OpponentCards());
+        }
+
+        private void onCardDiscarded(CardModel card)
+        {
+            //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            if (card.playerId == opponentId)
+            {
+                animationQueue.Add(new CardsView.DiscardCardAnim()
+                {
+                    card = card,
+                    destroyCard = destroyCard,
+                    isOpponentCard = true
+                });
+            }
+            else
+            {
+                animationQueue.Add(new CardsView.DiscardCardAnim()
+                {
+                    card = card,
+                    destroyCard = destroyCard
+                });
+            }
         }
 
         private void onTurnEnded(GameTurnModel turns)

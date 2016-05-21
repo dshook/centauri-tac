@@ -12,7 +12,7 @@
   return 'event'
 
 //player events
-(cardDrawn|turnEnd|turnStart|playSpell)
+(cardDrawn|turnEnd|turnStart|playSpell|cardDiscarded)
   return 'event'
 
 // player targets
@@ -46,7 +46,7 @@
   return 'selectAttr'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|ChangeEnergy)
+(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|ChangeEnergy|Discard)
   return 'action'
 
 //timer actions

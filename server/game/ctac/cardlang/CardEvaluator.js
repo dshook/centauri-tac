@@ -4,6 +4,7 @@ import EvalError from './EvalError.js';
 import Position from '../models/Position.js';
 import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
+import DiscardCard from '../actions/DiscardCard.js';
 import Message from '../actions/Message.js';
 import CharmPiece from '../actions/CharmPiece.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
@@ -269,6 +270,14 @@ export default class CardEvaluator{
                   this.queue.push(new PieceDestroyed(s.id));
                 }
               }
+              break;
+            }
+            //Discard(playerSelector)
+            //Only chooses a random card for now
+            case 'Discard':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              this.queue.push(new DiscardCard(playerSelector));
               break;
             }
             //DrawCard(playerSelector)

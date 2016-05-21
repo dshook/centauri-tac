@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 56,
+	"name": "Electric Fire",
+	"description": "Deal 5 damage to a minion. Discard a random card.",
+	"cost": 1,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(TARGET & MINION, 5) Discard(PLAYER) }"
+}
