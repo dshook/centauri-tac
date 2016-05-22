@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 57,
+	"name": "Tachyon Orb",
+	"description": "<b>Ability(1)</b>: Deal 1 damage to all surrounding minions",
+	"cost": 3,
+	"attack": 3,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "ability(1, 1, 'Particle Burst'){ Hit(Area(Square, 1, SELF) - SELF, 1) }"
+}

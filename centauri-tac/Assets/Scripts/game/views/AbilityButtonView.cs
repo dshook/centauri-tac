@@ -21,6 +21,7 @@ namespace ctac
         internal void init(PlayerResourcesModel playerResources, PieceModel piece)
         {
             abilityButton.onClick.AddListener(() => onClick());
+            abilityButton.interactable = false;
             buttonText = abilityButton.GetComponentInChildren<TextMeshProUGUI>();
             this.playerResources = playerResources;
             this.piece = piece;

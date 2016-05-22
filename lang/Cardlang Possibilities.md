@@ -49,12 +49,12 @@
 * move/push piece
 * aura effects
 * transform a minion into another minion
-* discard a card
 * choose effects
 * copy minion (into hand or play)
-* move minion into play from deck
+* move minion into play from deck/unsummon minion from play
 * card cost modification
 * Shuffle into deck
+* ~~discard a card~~
 * ~~add buff~~
 * ~~spawn minion~~
 * ~~give/remove status effect (silence, shield, paralyze, taunt, cloak, tech resist, rooted)~~
