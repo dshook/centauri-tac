@@ -14,6 +14,7 @@ import PieceStatusChange from '../actions/PieceStatusChange.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
+import PieceAura from '../actions/PieceAura.js';
 
 /**
  * Evaluate the scripts on cards
@@ -357,6 +358,29 @@ export default class CardEvaluator{
                     buff[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceAction.playerId, pieceSelectorParams);
                   }
                   this.queue.push(buff);
+                }
+              }
+              break;
+            }
+            //Aura(auraPieceSelector, pieceSelector, auraName, attribute(amount), ...moreAttributes)
+            //to clarify further: first piece selector is who to attach the aura to,
+            //second one is who is affected by the aura
+            case 'Aura':
+            {
+              lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Aura Selected %j', lastSelected);
+              let pieceSelector = action.args[1];
+              let auraName = action.args[2];
+              let auraAttributes = action.args.slice(3);
+
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  //set up a new aura for each selected piece that has all the attributes of the aura
+                  let aura = new PieceAura(s.id, pieceSelector, auraName);
+                  for(let auraAttribute of auraAttributes){
+                    aura[auraAttribute.attribute] = this.selector.eventualNumber(auraAttribute.amount, pieceAction.playerId, pieceSelectorParams);
+                  }
+                  this.queue.push(aura);
                 }
               }
               break;

@@ -12,10 +12,12 @@ export default class PieceBuff
     this.attack = null;
     this.health = null;
     this.movement = null;
+    this.range = null;
 
     //new values updated by proccessor
     this.newAttack = null;
     this.newHealth = null;
     this.newMovement = null;
+    this.newRange = null;
   }
 }

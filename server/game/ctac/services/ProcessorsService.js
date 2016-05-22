@@ -9,6 +9,7 @@ import PieceDestroyedProcessor from '../processors/PieceDestroyedProcessor.js';
 import PieceStatusChangeProcessor from '../processors/PieceStatusChangeProcessor.js';
 import PieceAttributeChangeProcessor from '../processors/PieceAttributeChangeProcessor.js';
 import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
+import PieceAuraProcessor from '../processors/PieceAuraProcessor.js';
 import SpawnPieceProcessor from '../processors/SpawnPieceProcessor.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import ActivateAbilityProcessor from '../processors/ActivateAbilityProcessor.js';
@@ -36,6 +37,7 @@ export default class TurnService
     queue.addProcessor(PieceDestroyedProcessor);
     queue.addProcessor(PieceAttributeChangeProcessor);
     queue.addProcessor(PieceBuffProcessor);
+    queue.addProcessor(PieceAuraProcessor);
     queue.addProcessor(SpawnPieceProcessor);
 
     queue.addProcessor(SpawnDeckProcessor);

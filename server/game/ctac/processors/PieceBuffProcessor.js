@@ -3,7 +3,7 @@ import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
 
 /**
- * Handle pieces losing or gaining their current health
+ * Attach or remove buffs from a piece
  */
 @loglevel
 export default class PieceBuffProcessor
@@ -26,7 +26,7 @@ export default class PieceBuffProcessor
       this.log.warn('Cannot find piece to buff for id %s', action.pieceId);
       return queue.cancel(action);
     }
-    if(!action.removed && action.attack == null && action.health == null && action.movement == null){
+    if(!action.removed && action.attack == null && action.health == null && action.movement == null && action.range == null){
       this.log.warn('No attributes to change for piece %s', action.pieceId);
       return queue.cancel(action);
     }

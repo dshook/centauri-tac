@@ -23,6 +23,7 @@ export default class GamePiece
     this.baseTags = [];
     this.tags = [];
     this.buffs = [];
+    this.auras = [];
     this.statuses = 0;
     this.abilityCharge = 0;
 

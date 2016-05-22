@@ -46,7 +46,11 @@
   return 'selectAttr'
 
 // actions
-(DrawCard|SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|ChangeEnergy|Discard)
+(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura)
+  return 'action'
+
+// actions about players
+(DrawCard|Discard|ChangeEnergy)
   return 'action'
 
 //timer actions
