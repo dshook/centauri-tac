@@ -68,6 +68,9 @@ export default class PieceStatusChangeProcessor
         }
       }
 
+      //aura go bye bye
+      piece.aura = null;
+
       //remove timers for this piece
       this.cardEvaluator.cleanupTimers(piece);
     }
