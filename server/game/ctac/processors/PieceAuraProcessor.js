@@ -27,7 +27,10 @@ export default class PieceAuraProcessor
       return queue.cancel(action);
     }
 
-    piece.auras.push(action);
+    if(piece.aura){
+      this.log.warn('Replacing aura %j on piece %s', piece.aura, action.pieceId);
+    }
+    piece.aura = action;
 
     this.log.info('piece %s got aura %s', action.pieceId, action.name);
     queue.complete(action);

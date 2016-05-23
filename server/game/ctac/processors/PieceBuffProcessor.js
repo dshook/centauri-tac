@@ -1,6 +1,7 @@
 import GamePiece from '../models/GamePiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
+import attributes from '../util/Attributes.js';
 
 /**
  * Attach or remove buffs from a piece
@@ -31,7 +32,6 @@ export default class PieceBuffProcessor
       return queue.cancel(action);
     }
 
-    let attribs = ['attack', 'health', 'movement', 'range'];
     //if we're removing a buff, find it by name, pop it off, and then reverse its stat changes
     if(action.removed){
       let buff = piece.buffs.find(b => b.name === action.name);
@@ -47,7 +47,7 @@ export default class PieceBuffProcessor
         return queue.cancel(action);
       }
 
-      for(let attrib of attribs){
+      for(let attrib of attributes){
         let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
         action[attrib] = buffChange[attrib];
         action[newAttrib] = buffChange[newAttrib];
@@ -57,7 +57,7 @@ export default class PieceBuffProcessor
 
     }else{
 
-      for(let attrib of attribs){
+      for(let attrib of attributes){
         if(action[attrib] == null) continue;
 
         piece[attrib] += action[attrib];

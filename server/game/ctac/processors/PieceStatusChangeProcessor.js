@@ -4,6 +4,7 @@ import PieceStatusChange from '../actions/PieceStatusChange.js';
 import Statuses from '../models/Statuses.js';
 import {fromInt} from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
+import attributes from '../util/Attributes.js';
 import _ from 'lodash';
 
 /**
@@ -47,7 +48,6 @@ export default class PieceStatusChangeProcessor
 
       //back out any buffs on the piece
       if(piece.buffs.length > 0){
-        let attribs = ['attack', 'health', 'movement', 'range'];
 
         for(let b = piece.buffs.length - 1; b >= 0; b--){
           let buff = piece.buffs[b];
@@ -58,7 +58,7 @@ export default class PieceStatusChangeProcessor
             continue;
           }
 
-          for(let attrib of attribs){
+          for(let attrib of attributes){
             let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
             action[attrib] = buffChange[attrib];
             action[newAttrib] = buffChange[newAttrib];

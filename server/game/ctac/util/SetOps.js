@@ -27,6 +27,7 @@ export function Intersection(a, b, equal){
   return results;
 }
 
+// a - b
 export function Difference(a, b, equal){
   var results = [];
 

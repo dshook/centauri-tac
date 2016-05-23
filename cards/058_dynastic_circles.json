@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 58,
+	"name": "Dynastic Circles",
+	"description": "Give +1/+1 to friendly surrounding minions",
+	"cost": 3,
+	"attack": 3,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{ Aura(SELF, Area(Square, 1, SELF) - SELF & FRIENDLY & MINION, 'Dynastic Favor', attack(1), health(1) ) }"
+}

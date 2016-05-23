@@ -378,7 +378,8 @@ export default class CardEvaluator{
                   //set up a new aura for each selected piece that has all the attributes of the aura
                   let aura = new PieceAura(s.id, pieceSelector, auraName);
                   for(let auraAttribute of auraAttributes){
-                    aura[auraAttribute.attribute] = this.selector.eventualNumber(auraAttribute.amount, pieceAction.playerId, pieceSelectorParams);
+                    //specifically don't use eventual number here because it will be evaluated in the aura update
+                    aura[auraAttribute.attribute] = auraAttribute.amount;
                   }
                   this.queue.push(aura);
                 }

@@ -1,5 +1,6 @@
 import Position from './Position.js';
 import Direction from './Direction.js';
+import attributes from '../util/Attributes.js';
 
 export default class GamePiece
 {
@@ -23,7 +24,7 @@ export default class GamePiece
     this.baseTags = [];
     this.tags = [];
     this.buffs = [];
-    this.auras = [];
+    this.aura = null;
     this.statuses = 0;
     this.abilityCharge = 0;
 
@@ -42,9 +43,8 @@ export default class GamePiece
     if(buffIndex === -1) return null;
     this.buffs.splice(buffIndex, 1);
 
-    let attribs = ['attack', 'health', 'movement', 'range'];
     let action = {};
-    for(let attrib of attribs){
+    for(let attrib of attributes){
       if(buff[attrib] == null) continue;
 
       let origStat = this[attrib];

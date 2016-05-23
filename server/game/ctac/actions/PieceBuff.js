@@ -1,12 +1,13 @@
 //Whenever a piece is buffed, or had a buff removed
 export default class PieceBuff
 {
-  constructor(pieceId, name, removed = false)
+  constructor(pieceId, name, removed = false, auraPieceId = null)
   {
     this.id = null;
     this.pieceId = pieceId;
     this.name = name;
     this.removed = removed;
+    this.auraPieceId = auraPieceId;
 
     //changes in stats, not abs amount
     this.attack = null;

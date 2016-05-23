@@ -1,6 +1,7 @@
 import GamePiece from '../models/GamePiece.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import loglevel from 'loglevel-decorator';
+import attributes from '../util/Attributes.js';
 
 /**
  * Handle pieces losing or gaining their current health
@@ -31,9 +32,7 @@ export default class PieceAttributeChangeProcessor
       return queue.cancel(action);
     }
 
-    let attribs = ['attack', 'health', 'movement', 'range'];
-
-    for(let attrib of attribs){
+    for(let attrib of attributes){
       if(action[attrib] == null || piece[attrib] === action[attrib]) continue;
 
       piece[attrib] = action[attrib];
