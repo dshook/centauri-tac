@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
+import {Union, Intersection, Difference} from '../util/SetOps.js';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
@@ -93,7 +93,7 @@ export default class PieceSelector{
         case 'SAVED':
           if(!this.savedPieces) return [];
           //Use an implicit intersection with all pieces in case one of the saved pieces is now gone
-          return this.Intersection(this.allPieces, this.savedPieces, (a,b) => a.id === b.id);
+          return Intersection(this.allPieces, this.savedPieces, (a,b) => a.id === b.id);
           break;
         case 'SILENCE':
           return this.allPieces.filter(p => p.statuses & Statuses.Silence);
@@ -172,61 +172,19 @@ export default class PieceSelector{
 
       switch(selector.op){
         case '|':
-          return this.Union(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Union(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
         case '&':
-          return this.Intersection(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Intersection(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
         case '-':
-          return this.Difference(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Difference(leftResult, rightResult, (a,b) => a.id === b.id);
           break;
       }
 
     }else{
       return leftResult;
     }
-  }
-
-
-  Union(a, b, equal){
-    var results = [];
-    results = results.concat(a);
-
-    for(let bElement of b){
-      if(!_.any(results, res => equal(bElement, res) )) {
-          results.push(bElement);
-      }
-    }
-
-    return results;
-  }
-
-  Intersection(a, b, equal){
-    var results = [];
-
-    for(var i = 0; i < a.length; i++) {
-        var aElement = a[i];
-
-        if(_.any(b, bElement => equal(bElement, aElement) )) {
-            results.push(aElement);
-        }
-    }
-
-    return results;
-  }
-
-  Difference(a, b, equal){
-    var results = [];
-
-    for(var i = 0; i < a.length; i++) {
-        var aElement = a[i];
-
-        if(!_.any(b, bElement => equal(bElement, aElement) )) {
-            results.push(aElement);
-        }
-    }
-
-    return results;
   }
 
   CompareFromString(a, b, op){

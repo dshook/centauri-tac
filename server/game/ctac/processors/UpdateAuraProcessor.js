@@ -8,10 +8,13 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class UpdateAuraProcessor
 {
-  constructor(pieceState, players)
+  constructor(pieceState, cardEvaluator)
   {
     this.pieceState = pieceState;
-    this.players = players;
+    this.cardEvaluator = cardEvaluator;
+
+    //keep track of which minions we've already 'activated'
+    this.auraMinions = [];
   }
 
   /**
@@ -19,6 +22,17 @@ export default class UpdateAuraProcessor
    */
   async handleAction(queue)
   {
-    this.log.info('Gonna update auras someday %s', this.pieceState.pieces.length);
+    //find out newly added minions
+      //add buffs to all selected pieces
+
+    //find removed minions
+      //remove buffs from all selected pieces
+
+    //find remaining minions that still might have moved/changed
+      //find all affected pieces, compare with affected pieces last process
+      //add or remove buffs as necessary
+
+
+    this.log.info('Updated auras');
   }
 }
