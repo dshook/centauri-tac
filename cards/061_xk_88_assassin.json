@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 61,
+	"name": "XK-88 'Assassin'",
+	"description": "Cloak",
+	"cost": 4,
+	"attack": 4,
+	"health": 2,
+	"range": 2,
+	"movement": 3,
+	"statuses": 16,
+	"tags": ["Minion", "XK"]
+}

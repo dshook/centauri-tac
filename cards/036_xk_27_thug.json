@@ -1,11 +1,11 @@
 {
 	"cardTemplateId": 36,
-	"name": "XK-27",
+	"name": "XK-27 'Thug'",
 	"description": "<b>Taunt</b>",
 	"cost": 4,
 	"attack": 4,
-	"health": 4,
+	"health": 2,
 	"movement": 2,
 	"statuses": 8,
-	"tags": ["Minion"]
+	"tags": ["Minion", "XK"]
 }

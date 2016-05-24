@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 62,
+	"name": "XK-101 'El Hefe'",
+	"description": "Your XK's have +2/+3",
+	"cost": 5,
+	"attack": 3,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion", "XK"],
+	"eventcode": "playMinion{ Aura(SELF, Tagged('XK') & FRIENDLY & MINION, 'Bot Brains', attack(2), health(3) ) }"
+}

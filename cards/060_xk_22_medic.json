@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 60,
+	"name": "XK-22 'Medic'",
+	"description": "At the end of your turn your XK's in a large square heal for +2",
+	"cost": 2,
+	"attack": 1,
+	"health": 4,
+	"movement": 2,
+	"tags": ["Minion", "XK"],
+	"eventcode": "playMinion{ endTurnTimer(3, true, Heal(Area(Square, 2, SELF) & Tagged('XK') & FRIENDLY, 2)) }"
+}

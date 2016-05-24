@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 59,
+	"name": "XK-45 'Trooper'",
+	"description": "Your XK's have +1 attack",
+	"cost": 2,
+	"attack": 2,
+	"health": 2,
+	"movement": 2,
+	"tags": ["Minion", "XK"],
+	"eventcode": "playMinion{ Aura(SELF, Tagged('XK') & FRIENDLY & MINION, 'Bot Brawn', attack(1) ) }"
+}

@@ -53,6 +53,11 @@ export default class GamePiece
       //cap at min of 0 to prevent negative attack/movement
       this[attrib] = Math.max(0, this[attrib]);
 
+      //but for health, only lower to min of 1 so you can't kill off a piece by debuff
+      if(attrib === 'health'){
+        this[attrib] = Math.max(1, this[attrib]);
+      }
+
       //update action with new values
       let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
       action[newAttrib] = this[attrib];
