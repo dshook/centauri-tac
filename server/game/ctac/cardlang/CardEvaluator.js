@@ -449,7 +449,11 @@ export default class CardEvaluator{
               }
               break;
             }
-            //startTurnTimer(turns, repeating, ...Actions)
+            //startTurnTimer(turns, repeatingInterval, ...Actions)
+            //turns is a counter that gets decremented each start of the turn and fires when 0
+            //so a turns value of 1 will activate on the start of the following (probably enemy) turn
+            //repeating interval, if truth, determines what the turns counter is reset to every time
+            //the timer activates
             case 'startTurnTimer':
             {
               let timerActions = action.args.slice(2);
@@ -460,16 +464,16 @@ export default class CardEvaluator{
                     piece,
                     card,
                     playerId: pieceAction.playerId,
-                    interval: action.args[0],
+                    interval: action.args[1] || false,
                     timer: action.args[0],
-                    repeating: action.args[1],
                     timerAction: timerAction
                   });
                 }
               }
               break;
             }
-            //endTurnTimer(turns, repeating, ...Actions)
+            //endTurnTimer(turns, repeatingInterval, ...Actions)
+            //see startTurnTimer above ^
             case 'endTurnTimer':
             {
               let timerActions = action.args.slice(2);
@@ -480,9 +484,8 @@ export default class CardEvaluator{
                     piece,
                     card,
                     playerId: pieceAction.playerId,
-                    interval: action.args[0],
+                    interval: action.args[1] || false,
                     timer: action.args[0],
-                    repeating: action.args[1],
                     timerAction: timerAction
                   });
                 }
@@ -516,7 +519,7 @@ export default class CardEvaluator{
 
     //reactivate those that are repeating
     for(let activated of activatedTimers){
-      if(activated.repeating){
+      if(activated.interval){
         activated.timer = activated.interval;
       }
     }
@@ -547,7 +550,7 @@ export default class CardEvaluator{
 
   //Whenever a piece dies that had a repeating turn timer on it we need to remove it
   cleanupTimers(killedPiece){
-    let abandonedFilter = (t) => (t.repeating == true && t.piece && t.piece.id === killedPiece.id);
+    let abandonedFilter = (t) => (t.interval && t.piece && t.piece.id === killedPiece.id);
 
     let abandonedStartTimers = this.startTurnTimers.filter(abandonedFilter);
     if(abandonedStartTimers.length > 0){

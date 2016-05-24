@@ -7,5 +7,5 @@
 	"health": 4,
 	"movement": 2,
 	"tags": ["Minion", "XK"],
-	"eventcode": "playMinion{ endTurnTimer(3, true, Heal(Area(Square, 2, SELF) & Tagged('XK') & FRIENDLY, 2)) }"
+	"eventcode": "playMinion{ endTurnTimer(1, 2, Heal(Area(Square, 2, SELF) & Tagged('XK') & FRIENDLY, 2)) }"
 }

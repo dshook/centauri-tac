@@ -47,13 +47,13 @@
 
 ##Actions
 * move/push piece
-* aura effects
 * transform a minion into another minion
 * choose effects
 * copy minion (into hand or play)
 * move minion into play from deck/unsummon minion from play
 * card cost modification
 * Shuffle into deck
+* ~~aura effects~~
 * ~~discard a card~~
 * ~~add buff~~
 * ~~spawn minion~~
