@@ -43,6 +43,7 @@ namespace ctac
             piece.health = pieceBuff.newHealth ?? piece.health;
             piece.attack = pieceBuff.newAttack ?? piece.attack;
             piece.movement = pieceBuff.newMovement ?? piece.movement;
+            piece.range = pieceBuff.newRange ?? piece.range;
 
             pieceBuffedSignal.Dispatch(pieceBuff);
 

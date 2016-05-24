@@ -46,9 +46,10 @@ export default class PieceHealthChangeProcessor
     piece.health = piece.health + action.change + (action.bonus || 0);
 
     //cap hp at base health and adjust action change amounts
-    if(piece.health > piece.baseHealth){
-      action.change = piece.baseHealth - hpBeforeChange;
-      piece.health = piece.baseHealth;
+    let maxHp = piece.maxBuffedHealth;
+    if(piece.health > maxHp){
+      action.change = maxHp - hpBeforeChange;
+      piece.health = maxHp;
     }
     action.newCurrentHealth = piece.health;
 

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Position from './Position.js';
 import Direction from './Direction.js';
 import attributes from '../util/Attributes.js';
@@ -35,6 +36,30 @@ export default class GamePiece
     this.bornOn = null;
   }
 
+  get maxBuffedHealth(){
+    return this.baseHealth + _.sum(this.buffs, 'health');
+  }
+
+  addBuff(buff){
+    let action = {};
+    for(let attrib of attributes){
+      if(buff[attrib] == null) continue;
+
+      let capAttr = attrib.charAt(0).toUpperCase() + attrib.slice(1);
+
+      let origStat = this[attrib];
+      this[attrib] += buff[attrib];
+
+      //update action with new values
+      let newAttrib = 'new' + capAttr;
+      action[newAttrib] = this[attrib];
+      action[attrib] = action[newAttrib] - origStat;
+    }
+    this.buffs.push(buff);
+
+    return action;
+  }
+
   //requires you to find the buff instance beforehand
   removeBuff(buff){
     if(this.buffs.length === 0) return null;
@@ -46,6 +71,9 @@ export default class GamePiece
     let action = {};
     for(let attrib of attributes){
       if(buff[attrib] == null) continue;
+
+      let capAttr = attrib.charAt(0).toUpperCase() + attrib.slice(1);
+      let baseAttr = 'base' + capAttr;
 
       let origStat = this[attrib];
       this[attrib] -= buff[attrib];
@@ -59,9 +87,10 @@ export default class GamePiece
       }
 
       //update action with new values
-      let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+      let newAttrib = 'new' + capAttr;
       action[newAttrib] = this[attrib];
       action[attrib] = action[newAttrib] - origStat;
+      action[baseAttr] = this[baseAttr];
     }
 
     return action;

@@ -33,6 +33,7 @@ namespace ctac
         public int baseAttack { get; set; }
         public int baseHealth { get; set; }
         public int baseMovement { get; set; }
+        public int? baseRange { get; set; }
 
         public List<PieceBuffModel> buffs { get; set; }
 

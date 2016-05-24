@@ -47,29 +47,20 @@ export default class PieceBuffProcessor
         return queue.cancel(action);
       }
 
-      for(let attrib of attributes){
-        let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-        action[attrib] = buffChange[attrib];
-        action[newAttrib] = buffChange[newAttrib];
-
-        this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+      for(let buffKey in buffChange){
+        action[buffKey] = buffChange[buffKey];
       }
+      this.log.info('un buffing piece %s to %j', piece.id, buffChange);
 
     }else{
 
-      for(let attrib of attributes){
-        if(action[attrib] == null) continue;
+      let buffChange = piece.addBuff(action);
 
-        piece[attrib] += action[attrib];
-
-        //update action with new values
-        let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-        action[newAttrib] = piece[attrib];
-
-        this.log.info('buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
+      for(let buffKey in buffChange){
+        action[buffKey] = buffChange[buffKey];
       }
+      this.log.info('buffing piece %s to %j', piece.id, buffChange);
 
-      piece.buffs.push(action);
     }
 
     if(piece.health <= 0){
