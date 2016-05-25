@@ -2,16 +2,20 @@ import test from 'tape';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
 import PieceBuff from '../game/ctac/actions/PieceBuff.js';
+import MovePiece from '../game/ctac/actions/MovePiece.js';
+import AttackPiece from '../game/ctac/actions/AttackPiece.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
+import Position from '../game/ctac/models/Position.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 
 export default class ProcessorServiceTests
 {
-  constructor(queue, cardDirectory, pieceState)
+  constructor(queue, cardDirectory, pieceState, cardEvaluator)
   {
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
+    this.cardEvaluator = cardEvaluator;
   }
 
   spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
@@ -113,6 +117,39 @@ export default class ProcessorServiceTests
 
       t.equal(piece.health, 2, 'Piece now back down to 2 hp');
       t.equal(piece.buffs.length, 0, 'Piece has no more buffs');
+    });
+
+    //move an unbuffed unit through an aura and make sure it was buffed by the aura _before_ it attacks
+    test('Aura activate on move', async (t) => {
+      t.plan(4);
+      this.queue.init();
+      //reset piece state
+      this.pieceState.pieces = [];
+
+      var piece = this.spawnPiece(this.pieceState, 39, 1);
+      piece.position = new Position(0, 0, 1);
+      piece.bornOn = 1; //fake the waiting for attack
+      t.equal(piece.attack, 1, 'Piece is unbuffed with 1 attack');
+
+      var buffPiece = this.spawnPiece(this.pieceState, 58, 1);
+      buffPiece.position = new Position(2, 0, 0);
+
+      //make sure the aura gets applied
+      this.cardEvaluator.evaluatePieceEvent('playMinion', buffPiece, null, piece.position, null);
+
+      var enemyPiece = this.spawnPiece(this.pieceState, 1, 2);
+      enemyPiece.position = new Position(2, 0, 1);
+
+      t.equal(enemyPiece.health, 30, 'Enemy hero has 30 hp to start');
+
+
+      this.queue.push(new MovePiece(piece.id, new Position(1, 0, 1)));
+      this.queue.push(new AttackPiece(piece.id, enemyPiece.id));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.attack, 2, 'Piece got the buff');
+      t.equal(enemyPiece.health, 28, 'Enemy got hit for 2 damage, not 1');
     });
   }
 }

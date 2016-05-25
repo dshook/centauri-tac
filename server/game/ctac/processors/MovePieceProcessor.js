@@ -3,6 +3,7 @@ import Direction from '../models/Direction.js';
 import Statuses from '../models/Statuses.js';
 import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
+import UpdateAura from '../actions/UpdateAura.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import Constants from '../util/Constants.js';
 import loglevel from 'loglevel-decorator';
@@ -76,6 +77,8 @@ export default class MovePieceProcessor
     queue.complete(action);
     this.log.info('moved piece %s from %s to %s, direction %s',
       action.pieceId, currentPosition, action.to, action.direction);
+
+    queue.pushFront(new UpdateAura());
 
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off

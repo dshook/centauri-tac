@@ -1,5 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
+import UpdateAura from '../actions/UpdateAura.js';
 import loglevel from 'loglevel-decorator';
 import attributes from '../util/Attributes.js';
 import {Intersection, Difference} from '../util/SetOps.js';
@@ -24,8 +25,12 @@ export default class UpdateAuraProcessor
   /**
    * Proc
    */
-  async handleAction(queue)
+  async handleAction(action, queue)
   {
+    if (action != null && !(action instanceof UpdateAura)) {
+      return;
+    }
+
     let auraPieces = this.pieceState.pieces.filter(p => p.aura != null);
 
     //find out newly added pieces
@@ -86,7 +91,7 @@ export default class UpdateAuraProcessor
     for(let s of affectedPieces){
       let buffToRemove = s.buffs.find(b => b.auraPieceId == auraPiece.id);
       let buff = new PieceBuff(s.id, buffToRemove.name, true);
-      queue.push(buff);
+      queue.pushFront(buff);
     }
   }
 
@@ -100,7 +105,7 @@ export default class UpdateAuraProcessor
           buff[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], newAuraPiece.playerId, pieceSelectorParams);
         }
       }
-      queue.push(buff);
+      queue.pushFront(buff);
     }
   }
 }
