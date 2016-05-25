@@ -4,5 +4,6 @@ export default class UpdateAura
   constructor()
   {
     this.id = null;
+    this.serverOnly = true;
   }
 }
