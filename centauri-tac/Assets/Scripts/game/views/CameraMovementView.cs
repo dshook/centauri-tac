@@ -18,7 +18,7 @@ namespace ctac
 
         private RaycastModel raycastModel;
 
-        private bool disableDrag = false;
+        private bool dragEnabled = false;
 
         bool dragging = false;
         float xSpeed = 10f;
@@ -87,7 +87,7 @@ namespace ctac
 
         private void UpdateDragging()
         {
-            if (disableDrag)
+            if (!dragEnabled)
             {
                 dragging = false;
                 return;
@@ -125,7 +125,7 @@ namespace ctac
 
         internal void setDragEnabled(bool selected)
         {
-            disableDrag = selected;
+            dragEnabled = selected;
         }
 
         //Get the intersection between a line and a plane. 

@@ -41,20 +41,20 @@ namespace ctac
 
         private void onCardSelected(CardSelectedModel card)
         {
-            view.setDragEnabled(card != null);
+            view.setDragEnabled(card == null);
         }
 
         private void onStartTarget(TargetModel m)
         {
-            view.setDragEnabled(true);
+            view.setDragEnabled(false);
         }
         private void onSelectTarget(TargetModel c)
         {
-            view.setDragEnabled(false);
+            view.setDragEnabled(true);
         }
         private void onCancelTarget(CardModel c)
         {
-            view.setDragEnabled(false);
+            view.setDragEnabled(true);
         }
 
         private void onPieceSelected(PieceModel p)
