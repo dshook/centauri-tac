@@ -7,7 +7,7 @@ namespace ctac
 {
     public class ClickView : View
     {
-        internal Signal<GameObject> clickSignal = new Signal<GameObject>();
+        internal Signal<GameObject, bool> clickSignal = new Signal<GameObject, bool>();
         RaycastModel raycastModel;
 
         bool active = false;
@@ -22,28 +22,32 @@ namespace ctac
         {
             if (active)
             {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1") || CrossPlatformInputManager.GetButtonUp("Fire1"))
+                if (CrossPlatformInputManager.GetButtonDown("Fire1") )
                 {
-                    TestSelection();
+                    TestSelection(false);
+                }
+                if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+                {
+                    TestSelection(true);
                 }
 
                 //right click et al deselects
                 if (CrossPlatformInputManager.GetButtonDown("Fire2"))
                 {
-                    clickSignal.Dispatch(null);
+                    clickSignal.Dispatch(null, false);
                 }
             }
         }
 
-        void TestSelection()
+        void TestSelection(bool isUp)
         {
             if (raycastModel.worldHit.HasValue)
             {
-                clickSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
+                clickSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject, isUp);
             }
             else
             {
-                clickSignal.Dispatch(null);
+                clickSignal.Dispatch(null, isUp);
             }
         }
 

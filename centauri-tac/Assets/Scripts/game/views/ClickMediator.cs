@@ -9,6 +9,7 @@ namespace ctac
         [Inject] public ClickView view { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public PieceDraggingSignal pieceDragging { get; set; }
 
         [Inject] public AttackPieceSignal attackPiece { get; set; }
         [Inject] public MovePieceSignal movePiece { get; set; }
@@ -50,13 +51,14 @@ namespace ctac
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
         }
 
-        private void onClick(GameObject clickedObject)
+        private void onClick(GameObject clickedObject, bool isUp)
         {
             if (clickedObject != null)
             {
                 if (clickedObject.CompareTag("Piece"))
                 {
                     var pieceView = clickedObject.GetComponent<PieceView>();
+                    pieceDragging.Dispatch(isUp ? null : pieceView.piece);
                     if (cardTarget != null)
                     {
                         debug.Log("Selected target");
@@ -164,6 +166,7 @@ namespace ctac
             else
             {
                 pieceSelected.Dispatch(null);
+                pieceDragging.Dispatch(null);
                 if (cardTarget != null)
                 {
                     debug.Log("Cancelling targeting");
@@ -178,6 +181,10 @@ namespace ctac
                 }
             }
 
+            if (isUp)
+            {
+                pieceDragging.Dispatch(null);
+            }
         }
 
         TargetModel cardTarget { get; set; }

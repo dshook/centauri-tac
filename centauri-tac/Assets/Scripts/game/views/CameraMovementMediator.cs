@@ -9,7 +9,7 @@ namespace ctac
         [Inject] public CameraMovementView view { get; set; }
 
         [Inject] public CardSelectedSignal cardSelected { get; set; }
-        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public PieceDraggingSignal pieceDragging { get; set; }
 
         [Inject] public StartSelectTargetSignal startTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelTarget { get; set; }
@@ -24,7 +24,7 @@ namespace ctac
             startTarget.AddListener(onStartTarget);
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
-            pieceSelected.AddListener(onPieceSelected);
+            pieceDragging.AddListener(onPieceDragging);
 
             view.Init(raycastModel);
         }
@@ -36,7 +36,7 @@ namespace ctac
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
-            pieceSelected.RemoveListener(onPieceSelected);
+            pieceDragging.RemoveListener(onPieceDragging);
         }
 
         private void onCardSelected(CardSelectedModel card)
@@ -57,7 +57,7 @@ namespace ctac
             view.setDragEnabled(true);
         }
 
-        private void onPieceSelected(PieceModel p)
+        private void onPieceDragging(PieceModel p)
         {
             view.setDragEnabled(p == null);
         }

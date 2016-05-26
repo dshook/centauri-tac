@@ -24,6 +24,7 @@ namespace ctac.signals
     [Singleton] public class MapCreatedSignal : Signal { }
 
     [Singleton] public class PieceSelectedSignal : Signal<PieceModel> { }
+    [Singleton] public class PieceDraggingSignal : Signal<PieceModel> { }
 
     [Singleton] public class MovePieceSignal : Signal<PieceModel, Tile> { }
     [Singleton] public class ActionMovePieceSignal : Signal<MovePieceModel, SocketKey> { }
