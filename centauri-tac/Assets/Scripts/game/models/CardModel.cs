@@ -53,6 +53,10 @@ namespace ctac
             return (targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor);
         }
 
+        //have enough mana?
         public bool playable { get; set; }
+        
+        //when the card has been activated and should be going through animation
+        public bool activated { get; set; }
     }
 }

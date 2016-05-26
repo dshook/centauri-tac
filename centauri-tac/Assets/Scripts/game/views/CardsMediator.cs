@@ -80,6 +80,7 @@ namespace ctac
 
         private void onCardActivated(ActivateModel act)
         {
+            act.cardActivated.activated = true;
         }
 
         private void onDestroyCard(int cardId)
@@ -135,8 +136,8 @@ namespace ctac
 
         private void onCardDiscarded(CardModel card)
         {
-            //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
             var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            card.activated = true;
             if (card.playerId == opponentId)
             {
                 animationQueue.Add(new CardsView.DiscardCardAnim()

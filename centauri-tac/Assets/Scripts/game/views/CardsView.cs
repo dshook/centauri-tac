@@ -52,6 +52,7 @@ namespace ctac {
             for(int c = 0; c < opponentCards.Count; c++) 
             {
                 var card = opponentCards[c];
+                if(card.activated) continue;
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 var cardCountOffset = 0 - ((opponentCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
@@ -71,6 +72,7 @@ namespace ctac {
             for(int c = 0; c < playerCards.Count; c++) 
             {
                 var card = playerCards[c];
+                if(card.activated) continue;
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
