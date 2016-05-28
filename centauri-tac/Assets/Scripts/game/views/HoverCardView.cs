@@ -104,7 +104,7 @@ namespace ctac
         internal void showCardFromHand(CardModel cardToShow, Vector3 position)
         {
             rectTransform.SetAnchor(cardAnchor);
-            var displayPosition = new Vector3(position.x, 125f, 39f);
+            var displayPosition = new Vector3(position.x, 125f, 19f);
             showCard(cardToShow, displayPosition);
         }
 

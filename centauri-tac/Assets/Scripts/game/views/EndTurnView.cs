@@ -1,7 +1,7 @@
-using UnityEngine;
 using UnityEngine.UI;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
+using TMPro;
 
 namespace ctac
 {
@@ -11,12 +11,12 @@ namespace ctac
 
         public Button endTurnButton;
 
-        Text buttonText;
+        TextMeshProUGUI buttonText;
 
         internal void init()
         {
             endTurnButton.onClick.AddListener(() => onClick());
-            buttonText = endTurnButton.GetComponentInChildren<Text>();
+            buttonText = endTurnButton.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         void Update()

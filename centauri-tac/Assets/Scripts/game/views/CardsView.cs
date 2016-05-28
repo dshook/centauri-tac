@@ -100,7 +100,7 @@ namespace ctac {
                 }
                 if (hoveredCard != null && card == hoveredCard && (selectedCard == null || hoveredCard != selectedCard.card))
                 {
-                    dest = dest.SetY(dest.y + 50f);
+                    dest = dest.SetY(dest.y + 30f);
                     hoverAccumulator += Time.deltaTime;
 
                     if (hoverAccumulator > CardView.HOVER_DELAY)
