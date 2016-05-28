@@ -1,4 +1,6 @@
-﻿namespace ctac
+﻿using System.Collections.Generic;
+
+namespace ctac
 {
     public static class Constants
     {
@@ -10,5 +12,10 @@
         public static string cardCanvas = "cardCanvas";
         public static string cardCamera = "CardCamera";
         public static string targetPieceTag = "targetPiece";
+
+        public static List<string> eventTags = new List<string>()
+        {
+            "playMinion","death","damaged","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
+        };
     }
 }

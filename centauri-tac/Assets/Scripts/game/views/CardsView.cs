@@ -26,7 +26,7 @@ namespace ctac {
         private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -450, 50);
+        private Vector3 cardCircleCenter = new Vector3(0, -390, 50);
         private Vector3 opponentCardCircleCenter = new Vector3(0, 500, 50);
         private float cardCircleRadius = 420f;
         private float cardAngleSpread = -5f;
@@ -100,7 +100,7 @@ namespace ctac {
                 }
                 if (hoveredCard != null && card == hoveredCard && (selectedCard == null || hoveredCard != selectedCard.card))
                 {
-                    dest = dest.SetY(dest.y + 30f);
+                    dest = dest.SetY(dest.y + 50f);
                     hoverAccumulator += Time.deltaTime;
 
                     if (hoverAccumulator > CardView.HOVER_DELAY)
