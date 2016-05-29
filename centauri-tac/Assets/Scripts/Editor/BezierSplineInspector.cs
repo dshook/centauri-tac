@@ -37,6 +37,9 @@ public class BezierSplineInspector : Editor {
 			spline.AddCurve();
 			EditorUtility.SetDirty(spline);
 		}
+		if (GUILayout.Button("Select Next Point")) {
+            NextPoint();
+		}
 	}
 
 	private void DrawSelectedPointInspector() {
@@ -89,6 +92,13 @@ public class BezierSplineInspector : Editor {
 			Handles.DrawLine(point, point + spline.GetDirection(i / (float)steps) * directionScale);
 		}
 	}
+
+    public void NextPoint()
+    {
+        selectedIndex = (selectedIndex + 1) % spline.ControlPointCount;
+        DrawSelectedPointInspector();
+        SceneView.RepaintAll();
+    }
 
 	private Vector3 ShowPoint (int index) {
 		Vector3 point = handleTransform.TransformPoint(spline.GetControlPoint(index));
