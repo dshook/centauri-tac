@@ -191,6 +191,24 @@ public class BezierSpline : MonoBehaviour {
             EnforceMode(0);
         }
     }
+
+    public float Length(int samplePoints)
+    {
+        float interval = 1f / samplePoints;
+        float sum = 0f;
+        Vector3? lastPos = null;
+        for (int i = 0; i < samplePoints; i++)
+        {
+            var position = GetPoint(interval * i);
+            if (lastPos.HasValue)
+            {
+                sum += Vector3.Distance(position, lastPos.Value);
+            }
+            lastPos = position;
+        }
+
+        return sum;
+    }
     
     public void Reset () {
         points = new Vector3[] {

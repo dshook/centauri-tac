@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TMPro;
+using System.Linq;
 
 [ExecuteInEditMode]
 public class SplineText : MonoBehaviour
 {
 
     public float curveScale = 1.0f;
+    public float characterWidthMult = 0.01f;
     //public float length; // Currently Only Informational
     public BezierSpline vertexCurve;
     public TextMeshPro m_TextComponent;
@@ -59,30 +61,59 @@ public class SplineText : MonoBehaviour
                 float boundsMaxX = m_TextComponent.rectTransform.rect.width * 0.5f;
                 float boundsMinX = -boundsMaxX;
 
+                //centering vars
+                float minVertexX = 0f, maxVertexX = 0f, midVertexX = 0f;
+
+                if (m_TextComponent.alignment == TextAlignmentOptions.Center)
+                {
+                    maxVertexX = vertexPositions.Max(v => v.x);
+                    minVertexX = vertexPositions.Min(v => v.x);
+                    midVertexX = ((maxVertexX - minVertexX) / 2) + minVertexX;
+                }
+
                 for (int i = 0; i < characterCount; i++)
                 {
-                    if (!textInfo.characterInfo[i].isVisible)
+                    var charInfo = textInfo.characterInfo[i];
+                    if (!charInfo.isVisible)
                         continue;
 
-                    int vertexIndex = textInfo.characterInfo[i].vertexIndex;
+                    int vertexIndex = charInfo.vertexIndex;
 
                     // Compute the baseline mid point for each character
-                    Vector3 offsetToMidBaseline = new Vector3((vertexPositions[vertexIndex + 0].x + vertexPositions[vertexIndex + 2].x) / 2, textInfo.characterInfo[i].baseLine);
+                    Vector3 offsetToMidBaseline = new Vector3(
+                        (charInfo.bottomLeft.x  + charInfo.bottomRight.x) / 2, 
+                        textInfo.characterInfo[i].baseLine
+                    );
 
-                    Vector3 c0 = vertexPositions[vertexIndex + 0] - offsetToMidBaseline;
-                    Vector3 c1 = vertexPositions[vertexIndex + 1] - offsetToMidBaseline;
-                    Vector3 c2 = vertexPositions[vertexIndex + 2] - offsetToMidBaseline;
-                    Vector3 c3 = vertexPositions[vertexIndex + 3] - offsetToMidBaseline;
+                    //change vectors from each of the corners to the 'center' point of the character
+                    Vector3 cBL = vertexPositions[vertexIndex + 0] - offsetToMidBaseline;
+                    Vector3 cTL = vertexPositions[vertexIndex + 1] - offsetToMidBaseline;
+                    Vector3 cTR = vertexPositions[vertexIndex + 2] - offsetToMidBaseline;
+                    Vector3 cBR = vertexPositions[vertexIndex + 3] - offsetToMidBaseline;
 
-                    float t = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX);
-                    Vector3 point = transform.InverseTransformPoint(vertexCurve.GetPoint(t)) * curveScale;
+                    float t = 0f;
+                    if (m_TextComponent.alignment == TextAlignmentOptions.Center)
+                    {
+                        //this is essentially spreading out the characters from the middle of the spline
+                        t = 0.5f + (offsetToMidBaseline.x - midVertexX) * characterWidthMult; 
+                    }
+                    else if (m_TextComponent.alignment == TextAlignmentOptions.Justified)
+                    {
+                        t = (0.5f + i) / (float)characterCount;
+                    }
+                    else
+                    {
+                        //find the % of the way through the bounding box this character is
+                        t = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX);
+                    }
+                    Vector3 point = transform.InverseTransformPoint(vertexCurve.GetPoint(t) * curveScale);
                     Vector3 xAxis = transform.InverseTransformDirection(vertexCurve.GetVelocity(t)).normalized;
                     Vector3 yAxis = (Vector3.up - xAxis * xAxis.y).normalized;
 
-                    vertexPositions[vertexIndex + 0] = point + c0.x * xAxis + c0.y * yAxis;
-                    vertexPositions[vertexIndex + 1] = point + c1.x * xAxis + c1.y * yAxis;
-                    vertexPositions[vertexIndex + 2] = point + c2.x * xAxis + c2.y * yAxis;
-                    vertexPositions[vertexIndex + 3] = point + c3.x * xAxis + c3.y * yAxis;
+                    vertexPositions[vertexIndex + 0] = point + cBL.x * xAxis + cBL.y * yAxis;
+                    vertexPositions[vertexIndex + 1] = point + cTL.x * xAxis + cTL.y * yAxis;
+                    vertexPositions[vertexIndex + 2] = point + cTR.x * xAxis + cTR.y * yAxis;
+                    vertexPositions[vertexIndex + 3] = point + cBR.x * xAxis + cBR.y * yAxis;
                 }
 
                 // Upload the mesh with the revised information
