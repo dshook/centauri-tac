@@ -6,8 +6,6 @@ using System.Linq;
 [ExecuteInEditMode]
 public class SplineText : MonoBehaviour
 {
-
-    public float curveScale = 1.0f;
     public float characterWidthMult = 0.01f;
     //public float length; // Currently Only Informational
     public BezierSpline vertexCurve;
@@ -20,21 +18,31 @@ public class SplineText : MonoBehaviour
             m_TextComponent = gameObject.GetComponent<TextMeshPro>();
         if (vertexCurve == null)
             vertexCurve = gameObject.GetComponent<BezierSpline>();
+        UpdateTextPosition();
     }
-    // Use this for initialization
+
     void Start()
     {
-
     }
 
-    // Update is called once per frame
+    private float lastCharWidthMult;
+    private string lastText;
+    private TextAlignmentOptions textAlign;
+
     void Update()
     {
+        if(lastCharWidthMult != characterWidthMult || lastText != m_TextComponent.text || textAlign != m_TextComponent.alignment)
+        {
+            UpdateTextPosition();
+        }
 
+        lastCharWidthMult = characterWidthMult;
+        lastText = m_TextComponent.text;
+        textAlign = m_TextComponent.alignment; 
     }
 
 
-    void OnRenderObject()
+    void UpdateTextPosition()
     {
         // Make sure I have the thigs I need to get the data to deform text
         if (m_TextComponent == null)
@@ -106,7 +114,7 @@ public class SplineText : MonoBehaviour
                         //find the % of the way through the bounding box this character is
                         t = (offsetToMidBaseline.x - boundsMinX) / (boundsMaxX - boundsMinX);
                     }
-                    Vector3 point = transform.InverseTransformPoint(vertexCurve.GetPoint(t) * curveScale);
+                    Vector3 point = transform.InverseTransformPoint(vertexCurve.GetPoint(t));
                     Vector3 xAxis = transform.InverseTransformDirection(vertexCurve.GetVelocity(t)).normalized;
                     Vector3 yAxis = (Vector3.up - xAxis * xAxis.y).normalized;
 
