@@ -55,22 +55,22 @@ namespace ctac {
             if (card.isMinion)
             {
                 //assemble movement and range line
-                var totalLength = 24;
+                var totalLength = 27;
                 var moveLength = card.movement.ToString().Length + 9;
                 var rangeLength = 0;
                 if (card.range.HasValue)
                 {
-                    rangeLength = card.range.ToString().Length + 6;
+                    rangeLength = card.range.ToString().Length + 10;
                 }
-                var spacesNeeded = Math.Max(0, totalLength - moveLength - rangeLength);
-                var moveString = ("<u>" + card.movement + " Movement").PadRight(spacesNeeded, ' ');
+                var spacesNeeded = Math.Max(0, totalLength - rangeLength);
+                var moveString = (card.movement + " Movement").PadRight(spacesNeeded, ' ');
                 if (card.range.HasValue)
                 {
-                    moveString += "Range " + card.range + "</u>";
+                    moveString += "Range " + card.range;
                 }
                 else
                 {
-                    moveString += "</u>";
+                    moveString += "_";
                 }
                 moveRangeText.text = moveString;
 
