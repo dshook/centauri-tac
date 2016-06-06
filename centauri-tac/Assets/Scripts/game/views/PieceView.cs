@@ -256,16 +256,46 @@ namespace ctac {
             public PieceModel piece { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
-            private float moveSpeed = 0.3f;
+            private float moveSpeed = 0.5f;
+            Vector3 curveHeight = new Vector3(0, 1.35f, 0);
+            private BezierSpline moveSpline;
+            private SplineWalker walker;
+            private bool firstRun = true;
 
-            public void Init() { }
+            public void Init()
+            {
+                moveSpline = piece.gameObject.GetComponent<BezierSpline>();
+            }
             public void Update()
             {
-                iTweenExtensions.MoveTo(piece.gameObject, destination, moveSpeed, 0, EaseType.linear);
-                if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
+                if (firstRun)
+                {
+                    firstRun = false;
+
+                    var start = piece.gameObject.transform.position;
+                    var diffVector = start - destination;
+
+                    var secondControl = (diffVector * 0.2f) + curveHeight + start;
+                    var thirdControl = (diffVector * 0.8f) + curveHeight + start;
+
+                    moveSpline.SetControlPoint(0, start);
+                    moveSpline.SetControlPoint(1, secondControl);
+                    moveSpline.SetControlPoint(2, thirdControl);
+                    moveSpline.SetControlPoint(3, destination);
+
+                    walker = piece.gameObject.AddComponent<SplineWalker>();
+                    walker.spline = moveSpline;
+                    walker.duration = moveSpeed;
+                    walker.lookForward = false;
+                    walker.mode = SplineWalkerMode.Once;
+                }
+
+                //if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
+                if(walker.progress > 0.99)
                 {
                     piece.gameObject.transform.position = destination;
                     Complete = true;
+                    Destroy(walker);
                     finishedMoving.Dispatch(piece);
                 }
             }

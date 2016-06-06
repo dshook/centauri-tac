@@ -16,6 +16,7 @@ namespace ctac
     {
         private List<IAnimate> animations = new List<IAnimate>();
         private List<IAnimate> runningAnimations = new List<IAnimate>();
+        private bool stoppedForSync = false;
 
         private float delayAccumulator = 0f;
 
@@ -32,33 +33,35 @@ namespace ctac
                 delayAccumulator -= deltaTime;
                 return;
             }
-            if (animations.Count > 0)
+
+            //queue up animations until we run out or get stopped for a synchronous animation
+            if (animations.Count > 0 && !stoppedForSync)
             {
                 IAnimate anim;
                 do
                 {
                     anim = animations[0];
-                    if (anim.Async)
+                    animations.RemoveAt(0);
+                    runningAnimations.Add(anim);
+                    if (!anim.Async)
                     {
-                        animations.RemoveAt(0);
-                        runningAnimations.Add(anim);
+                        stoppedForSync = true;
                     }
                 } while(anim.Async && animations.Count > 0);
-
-                if (!anim.Async)
-                {
-                    anim.Update();
-                    if (anim.Complete)
-                    {
-                        if(anim.postDelay.HasValue) delayAccumulator = anim.postDelay.Value;
-                        animations.RemoveAt(0);
-                    }
-                }
             }
 
-            foreach (var asyncAnim in runningAnimations)
+            //process all running animations
+            foreach (var anim in runningAnimations)
             {
-                asyncAnim.Update();
+                anim.Update();
+                if (anim.Complete)
+                {
+                    if(anim.postDelay.HasValue) delayAccumulator = anim.postDelay.Value;
+                    if (!anim.Async)
+                    {
+                        stoppedForSync = false;
+                    }
+                }
             }
             runningAnimations.RemoveAll(x => x.Complete);
         }
