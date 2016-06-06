@@ -256,15 +256,15 @@ namespace ctac {
             public PieceModel piece { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
-            private float moveSpeed = 0.5f;
-            Vector3 curveHeight = new Vector3(0, 1.35f, 0);
+            private float moveTime = 0.25f;
+            Vector3 curveHeight = new Vector3(0, 0.30f, 0);
             private BezierSpline moveSpline;
             private SplineWalker walker;
             private bool firstRun = true;
 
             public void Init()
             {
-                moveSpline = piece.gameObject.GetComponent<BezierSpline>();
+                moveSpline = GameObject.Find("PieceMoveSpline").GetComponent<BezierSpline>();
             }
             public void Update()
             {
@@ -273,7 +273,7 @@ namespace ctac {
                     firstRun = false;
 
                     var start = piece.gameObject.transform.position;
-                    var diffVector = start - destination;
+                    var diffVector = destination - start;
 
                     var secondControl = (diffVector * 0.2f) + curveHeight + start;
                     var thirdControl = (diffVector * 0.8f) + curveHeight + start;
@@ -285,7 +285,7 @@ namespace ctac {
 
                     walker = piece.gameObject.AddComponent<SplineWalker>();
                     walker.spline = moveSpline;
-                    walker.duration = moveSpeed;
+                    walker.duration = moveTime;
                     walker.lookForward = false;
                     walker.mode = SplineWalkerMode.Once;
                 }

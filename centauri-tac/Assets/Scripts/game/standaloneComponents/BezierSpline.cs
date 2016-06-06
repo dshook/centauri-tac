@@ -63,12 +63,12 @@ public class BezierSpline : MonoBehaviour {
                 }
             }
             else {
-                if (index > 0) {
-                    points[index - 1] += delta;
-                }
-                if (index + 1 < points.Length) {
-                    points[index + 1] += delta;
-                }
+                //if (index > 0) {
+                //    points[index - 1] += delta;
+                //}
+                //if (index + 1 < points.Length) {
+                //    points[index + 1] += delta;
+                //}
             }
         }
         points[index] = point;
