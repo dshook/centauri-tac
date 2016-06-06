@@ -46,6 +46,15 @@ namespace ctac {
 
         void Update()
         {
+            UpdateText();
+        }
+
+        public void UpdateText()
+        {
+            if (costText == null)
+            {
+                Start();
+            }
             costText.text = card.cost.ToString();
             attackText.text = card.attack + "<size=-90>atk</size>";
             healthText.text = "<size=-90>hp</size>" + card.health;
@@ -56,7 +65,7 @@ namespace ctac {
             {
                 //assemble movement and range line
                 var totalLength = 27;
-                var moveLength = card.movement.ToString().Length + 9;
+                //var moveLength = card.movement.ToString().Length + 9;
                 var rangeLength = 0;
                 if (card.range.HasValue)
                 {

@@ -90,6 +90,7 @@ namespace ctac
             //but reset some key things
             hoverCardView.name = hoverName;
             hoverCardView.card.gameObject = hoverCardView.gameObject;
+            hoverCardView.UpdateText();
 
             rectTransform = hoverCardView.GetComponent<RectTransform>();
 

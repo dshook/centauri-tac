@@ -29,7 +29,7 @@ public class SplineText : MonoBehaviour
     private string lastText;
     private TextAlignmentOptions textAlign;
 
-    void Update()
+    void OnRenderObject()
     {
         if(lastCharWidthMult != characterWidthMult || lastText != m_TextComponent.text || textAlign != m_TextComponent.alignment)
         {
@@ -40,7 +40,6 @@ public class SplineText : MonoBehaviour
         lastText = m_TextComponent.text;
         textAlign = m_TextComponent.alignment; 
     }
-
 
     void UpdateTextPosition()
     {
