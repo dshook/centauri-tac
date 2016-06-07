@@ -90,6 +90,10 @@ namespace ctac {
                 {
                     tribeText.text = tribeTag;
                 }
+                else
+                {
+                    tribeText.text = "";
+                }
             }
             else
             {

@@ -7,5 +7,9 @@
 	"health": 2,
 	"movement": 4,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ Buff(TARGET & FRIENDLY & MINION, 'Power of the Crowd', attack(1), health(2) ) }"
+	"eventcode": "
+		playMinion{
+			Buff(TARGET & FRIENDLY & MINION, 'Power of the Crowd', attack(1), health(2) )
+		}
+	"
 }

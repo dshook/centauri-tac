@@ -7,5 +7,10 @@
 	"health": 3,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "ability(0, 1, 'Swip Swap'){ SetAttribute(SELF, attack, SelectAttribute(SELF, health)) SetAttribute(SELF, health, SelectAttribute(SELF, attack))}"
+	"eventcode": "
+		ability(0, 1, 'Swip Swap'){
+			SetAttribute(SELF, attack, SelectAttribute(SELF, health))
+			SetAttribute(SELF, health, SelectAttribute(SELF, attack))
+		}
+	"
 }
