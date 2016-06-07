@@ -11,14 +11,14 @@ import _ from 'lodash';
  @loglevel
 export default class CardDirectory
 {
-  constructor(directoryPath)
+  constructor()
   {
     this.directory = {};
     this.parser = CardLang.parser;
 
     var cardRequires = {};
 
-    directoryPath = './cards';
+    var directoryPath = './cards';
     fs.readdirSync(directoryPath).map(function (filename) {
       let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
       cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));

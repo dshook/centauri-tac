@@ -13,7 +13,7 @@ export default class CardService
 {
   constructor(app, queue)
   {
-    var cardDirectory = new CardDirectory('../../../../cards');
+    var cardDirectory = new CardDirectory();
 
     app.registerInstance('cardDirectory', cardDirectory);
 

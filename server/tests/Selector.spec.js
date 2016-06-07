@@ -6,12 +6,11 @@ import PieceState from '../game/ctac/models/PieceState.js';
 import Position from '../game/ctac/models/Position.js';
 import Player from 'models/Player';
 import MapState from '../game/ctac/models/MapState.js';
-import requireDir from 'require-dir';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 import cubeland from '../../maps/cubeland.json';
 
 //init the dependencies for the selector
-var cardDirectory = new CardDirectory('../../cards/');
+var cardDirectory = new CardDirectory();
 
 var mapState = new MapState();
 mapState.add(cubeland);

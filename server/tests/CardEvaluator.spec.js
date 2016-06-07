@@ -17,11 +17,10 @@ import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
 import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
 import ActionQueue from 'action-queue';
-import requireDir from 'require-dir';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 
 //init the dependencies for the evaluator and selector
-var cardDirectory = new CardDirectory('../../cards/');
+var cardDirectory = new CardDirectory();
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
     var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
