@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 14,
 	"name": "Macx Marx",
-	"description": "Whenever your opponent draws a card, heal a random friendly character for 3",
+	"description": "When your opponent draws a card, heal a random friendly character for 3",
 	"cost": 4,
 	"attack": 6,
 	"health": 4,
