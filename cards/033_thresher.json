@@ -7,5 +7,10 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ Buff(MINION & TARGET, 'Sickle', attack(2) ) endTurnTimer(1, false, RemoveBuff(SAVED, 'Sickle')) }"
+	"eventcode": "
+		playMinion{
+			Buff(MINION & TARGET, 'Sickle', attack(2) )
+			endTurnTimer(1, false, RemoveBuff(SAVED, 'Sickle'))
+		}
+	"
 }

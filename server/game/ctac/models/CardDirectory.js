@@ -2,6 +2,7 @@ import Card from './Card.js';
 import CardLang from '../../../../lang/cardlang.js';
 import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
+import fs from 'fs';
 import _ from 'lodash';
 
 /**
@@ -10,10 +11,29 @@ import _ from 'lodash';
  @loglevel
 export default class CardDirectory
 {
-  constructor()
+  constructor(directoryPath)
   {
     this.directory = {};
     this.parser = CardLang.parser;
+
+    var cardRequires = {};
+
+    directoryPath = './cards';
+    fs.readdirSync(directoryPath).map(function (filename) {
+      let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
+      cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
+    })
+
+    for(let cardFileName in cardRequires){
+      try{
+        let card = cardRequires[cardFileName];
+        this.add(card);
+      }catch(e){
+        this.log.error('Error registering card ' + cardFileName, e, e.stack);
+        throw e;
+      }
+    }
+    this.log.info('Registered %s cards', Object.keys(this.directory).length);
   }
 
   get cardIds()

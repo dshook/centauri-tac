@@ -7,5 +7,9 @@
 	"health": 3,
 	"movement": 3,
 	"tags": ["Minion", "XK"],
-	"eventcode": "playMinion{ Aura(SELF, Tagged('XK') & FRIENDLY & MINION, 'Bot Brains', attack(2), health(3) ) }"
+	"eventcode": "
+		playMinion{
+			Aura(SELF, Tagged('XK') & FRIENDLY & MINION, 'Bot Brains', attack(2), health(3) )
+		}
+	"
 }

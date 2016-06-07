@@ -21,12 +21,7 @@ import requireDir from 'require-dir';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 
 //init the dependencies for the evaluator and selector
-var cardRequires = requireDir('../../cards/');
-var cardDirectory = new CardDirectory();
-for(let cardFileName in cardRequires){
-  let card = cardRequires[cardFileName];
-  cardDirectory.add(card);
-}
+var cardDirectory = new CardDirectory('../../cards/');
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
     var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);

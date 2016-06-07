@@ -11,13 +11,7 @@ import CardDirectory from '../game/ctac/models/CardDirectory.js';
 import cubeland from '../../maps/cubeland.json';
 
 //init the dependencies for the selector
-var cardRequires = requireDir('../../cards/');
-var cardDirectory = new CardDirectory();
-
-for(let cardFileName in cardRequires){
-  let card = cardRequires[cardFileName];
-  cardDirectory.add(card);
-}
+var cardDirectory = new CardDirectory('../../cards/');
 
 var mapState = new MapState();
 mapState.add(cubeland);

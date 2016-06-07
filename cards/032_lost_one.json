@@ -1,0 +1,16 @@
+{
+	"cardTemplateId": 32,
+	"name": "Lost One",
+	"description": "<b>Play</b>: Give a minion -2 attack this turn",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "
+		playMinion{
+			Buff(MINION & TARGET, 'Help the Needy', attack(-2) )
+			endTurnTimer(1, false, RemoveBuff(SAVED, 'Help the Needy'))
+		}
+	"
+}

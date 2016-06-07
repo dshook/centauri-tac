@@ -1,9 +1,9 @@
 import loglevel from 'loglevel-decorator';
 import CardDirectory from '../models/CardDirectory.js';
 import CardState from '../models/CardState.js';
-import requireDir from 'require-dir';
 import Selector from '../cardlang/Selector.js';
 import CardEvaluator from '../cardlang/CardEvaluator.js';
+import fs from 'fs';
 
 /**
  * Expose the cards and activate card processor
@@ -13,26 +13,15 @@ export default class CardService
 {
   constructor(app, queue)
   {
-      var cardRequires = requireDir('../../../../cards');
-      var cardDirectory = new CardDirectory();
+    var cardDirectory = new CardDirectory('../../../../cards');
 
-      for(let cardFileName in cardRequires){
-        try{
-          let card = cardRequires[cardFileName];
-          cardDirectory.add(card);
-        }catch(e){
-          this.log.error('Error registering card ' + cardFileName, e, e.stack);
-          throw e;
-        }
-      }
-      this.log.info('Registered cards %j', cardDirectory.directory);
-      app.registerInstance('cardDirectory', cardDirectory);
+    app.registerInstance('cardDirectory', cardDirectory);
 
-      //cards in hand indexed by player id
-      var cardState = new CardState();
-      app.registerInstance('cardState', cardState);
+    //cards in hand indexed by player id
+    var cardState = new CardState();
+    app.registerInstance('cardState', cardState);
 
-      app.registerInstance('selector', app.make(Selector));
-      app.registerInstance('cardEvaluator', app.make(CardEvaluator));
+    app.registerInstance('selector', app.make(Selector));
+    app.registerInstance('cardEvaluator', app.make(CardEvaluator));
   }
 }
