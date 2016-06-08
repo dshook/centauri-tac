@@ -11,6 +11,14 @@ export default class AreaSelector{
   //returns an object that defines an area
   //including the type, size, center, if it's based on the cursor or not
   //and a defined area (array of positions) if it's static
+
+  //ex:
+  //Area(Square, size, centerSelector)
+  //Area(Line, size, centerSelector, pivotSelector, isBothDirections)
+  //Cross|Square should be self explanitory,
+  //Line can go any direction diagonal or not
+  //Diagonal is limited to diagonal, not horizontal or vertical
+  //Row is the opposite of diagonal
   Select(selector, controllingPlayerId, pieceSelectorParams){
     //first find the centering piece then all the pieces in the area
     if(selector.area){

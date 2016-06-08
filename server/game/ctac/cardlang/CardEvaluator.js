@@ -15,6 +15,7 @@ import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import PieceAura from '../actions/PieceAura.js';
+import MovePiece from '../actions/MovePiece.js';
 
 /**
  * Evaluate the scripts on cards
@@ -39,7 +40,7 @@ export default class CardEvaluator{
       cardDrawn: {left: 'PLAYER'},
       playSpell: {left: 'PLAYER'}
     };
-    this.targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy'];
+    this.targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy', 'Move'];
     this.targetableEvents = ['playMinion', 'playSpell'];
   }
 
@@ -489,6 +490,20 @@ export default class CardEvaluator{
                     timerAction: timerAction
                   });
                 }
+              }
+              break;
+            }
+            //Move(areaSelector, pieceSelector, isTeleport)
+            case 'Move':
+            {
+              lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[1], pieceSelectorParams);
+              if(lastSelected.length > 1){
+                this.log.warn('Move selected more than one piece to move %j', lastSelected);
+                break;
+              }
+              this.log.info('Move Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length === 1){
+                this.queue.push(new MovePiece(lastSelected[0].id));
               }
               break;
             }
