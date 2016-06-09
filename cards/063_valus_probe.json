@@ -7,5 +7,5 @@
 	"health": 1,
 	"movement": 3,
 	"tags": ["Minion"],
-	"eventcode": "playMinion{ Move(Area(Square, 3, SELF), SELF, 3) }"
+	"eventcode": "playMinion{ Move(SELF, CURSOR & Area(Square, 3, SELF), 3) }"
 }

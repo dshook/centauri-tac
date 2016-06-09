@@ -498,3 +498,57 @@ test('Find Possible abilities', t => {
 
   t.deepEqual(targets, expectedTargets, 'Player 1 ability targets is everyone');
 });
+
+test('Find Possible areas', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  //fill one player hands with some area cards
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  cardState.initPlayer(2);
+  spawnCard(cardState, 1, 49); //id 1
+  // spawnCard(cardState, 1, 3);
+  // spawnCard(cardState, 1, 4);
+  // spawnCard(cardState, 1, 5);
+  // spawnCard(cardState, 1, 6);
+  // spawnCard(cardState, 2, 18); //id 6
+  // spawnCard(cardState, 2, 18); //id 7
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let targets = cardEval.findPossibleAreas(cardState.hands[1], 1);
+
+  let expectedAreas = [
+    {
+      cardId: 1,
+      event: 'playSpell',
+      areaType: 'Cross',
+      size: 99,
+      isCursor: true,
+      isDoubleCursor: false,
+      bothDirections: null,
+      selfCentered: false,
+      centerPosition: null,
+      pivotPosition: null,
+      areaTiles: []
+    }
+  ];
+
+  t.deepEqual(targets, expectedAreas, 'Got back expected areas');
+
+
+  // let otherPlayerTargets = cardEval.findPossibleTargets(cardState.hands[2], 2);
+  // //expecting all minions
+  // let otherExpectedTargets = [
+  //   {cardId: 6, event: 'playMinion', targetPieceIds: [2, 4]},
+  //   {cardId: 7, event: 'playMinion', targetPieceIds: [2, 4]}
+  // ];
+  // t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Player 2 targets are minions');
+});

@@ -493,7 +493,7 @@ export default class CardEvaluator{
               }
               break;
             }
-            //Move(areaSelector, pieceSelector, isTeleport)
+            //Move(pieceSelector, areaSelector, isTeleport)
             case 'Move':
             {
               lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[1], pieceSelectorParams);
@@ -681,14 +681,21 @@ export default class CardEvaluator{
         //try to find areas in any of the actions
         for(let cardEventAction of event.actions){
           if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
-          //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
-          let selector = cardEventAction.args[0];
 
-          areaSelector = this.selector.findSelector(selector, s => s && s.area);
-          if(!areaSelector) continue;
+          for(let arg of cardEventAction.args){
+            //Area selectors will always have a left
+            if(!arg.left) continue;
+
+            areaSelector = this.selector.findSelector(arg, s => s && s.area);
+            //this.log.info('Area selector %j for arg %j', areaSelector, );
+            if(!areaSelector) continue;
+
+            //only allow max of 1 area action per event
+            break;
+          }
 
           //only allow max of 1 area action per event
-          break;
+          if(areaSelector) break;
         }
 
         if(areaSelector){

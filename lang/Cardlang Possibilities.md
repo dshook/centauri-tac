@@ -22,6 +22,7 @@
 * ~~friendly/enemy~~
 * ~~damaged~~
 * ~~damaged~~
+* specific card by id
 
 * ~~tags (battlecry, etc)~~
 * ~~statuses~~
@@ -43,6 +44,7 @@
 * holding card with selector
 * ~~attributes with selector (get enemy hero hp)~~
 * board state (number of minions on board)
+* has minion with selector on the board
 
 
 ##Actions
