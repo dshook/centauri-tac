@@ -12,15 +12,30 @@ export default class AreaSelector{
   //including the type, size, center, if it's based on the cursor or not
   //and a defined area (array of positions) if it's static
 
-  //ex:
+  //ex selecting pieces with areas:
   //Area(Square, size, centerSelector)
   //Area(Line, size, centerSelector, pivotSelector, isBothDirections)
+  //
+  //ex selecting tiles to choose from
+  //CURSOR & Area(...)
+  //
   //Cross|Square should be self explanitory,
   //Line can go any direction diagonal or not
   //Diagonal is limited to diagonal, not horizontal or vertical
   //Row is the opposite of diagonal
   Select(selector, controllingPlayerId, pieceSelectorParams){
-    //first find the centering piece then all the pieces in the area
+    let isCursor = false;
+    let isDoubleCursor = false;
+    let selfCentered = false;
+    let centerPosition = null;
+    let pivotPosition = null;
+
+    //check to see if this is a choose a tile in an area selection
+    if(selector.left === 'CURSOR' && selector.right && selector.right.area){
+      isCursor = true;
+      selector = selector.right;
+    }
+
     if(selector.area){
       let areaType = selector.args[0];
       let size = selector.args[1];
@@ -29,13 +44,9 @@ export default class AreaSelector{
       let pivotSelector = extraParams ? selector.args[3] : null;
       let bothDirections = extraParams ? selector.args[4] : null;
 
-      let isCursor = false;
-      let isDoubleCursor = false;
-      let selfCentered = false;
-      let centerPosition = null;
-      let pivotPosition = null;
       this.log.info('Evaluating area %s size %s, center %s pivot %s'
         , areaType, size, pieceSelectorParams.position, pieceSelectorParams.pivotPosition);
+      //first find the centering piece then all the pieces in the area
       if(centerSelector.left && centerSelector.left === 'CURSOR'){
         isCursor = true;
         if(pieceSelectorParams.position){
@@ -54,6 +65,7 @@ export default class AreaSelector{
         selfCentered = true;
       }
 
+      //check for double cursor (like to select two points for a line)
       if(pivotSelector && pivotSelector.left && pivotSelector.left === 'CURSOR'){
         if(isCursor){
           isDoubleCursor = true;

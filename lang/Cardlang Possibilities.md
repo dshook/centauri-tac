@@ -38,6 +38,7 @@
 ##Randomness
 * ~~random number in list~~
 * ~~random minion, possibly from class or by cost~~
+* random tile within area
 
 ##Conditions - check for AND, OR, Equality
 * Unit is dead (self?)
