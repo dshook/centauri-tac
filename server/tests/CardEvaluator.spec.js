@@ -511,12 +511,8 @@ test('Find Possible areas', t => {
   cardState.initPlayer(1);
   cardState.initPlayer(2);
   spawnCard(cardState, 1, 49); //id 1
-  // spawnCard(cardState, 1, 3);
-  // spawnCard(cardState, 1, 4);
-  // spawnCard(cardState, 1, 5);
-  // spawnCard(cardState, 1, 6);
-  // spawnCard(cardState, 2, 18); //id 6
-  // spawnCard(cardState, 2, 18); //id 7
+  spawnCard(cardState, 1, 51); //id 2
+  spawnCard(cardState, 1, 52); //id 3
 
   t.plan(1);
   let queue = new ActionQueue();
@@ -535,6 +531,32 @@ test('Find Possible areas', t => {
       isDoubleCursor: false,
       bothDirections: null,
       selfCentered: false,
+      centerPosition: null,
+      pivotPosition: null,
+      areaTiles: []
+    },
+    {
+      cardId: 2,
+      event: 'playSpell',
+      areaType: 'Line',
+      size: 7,
+      isCursor: true,
+      isDoubleCursor: true,
+      bothDirections: false,
+      selfCentered: false,
+      centerPosition: null,
+      pivotPosition: null,
+      areaTiles: []
+    },
+    {
+      cardId: 3,
+      event: 'playMinion',
+      areaType: 'Row',
+      size: 3,
+      isCursor: true,
+      isDoubleCursor: false,
+      bothDirections: false,
+      selfCentered: true,
       centerPosition: null,
       pivotPosition: null,
       areaTiles: []
