@@ -416,6 +416,12 @@ namespace ctac
                 {
                     List<Tile> tiles = null;
                     switch (model.area.areaType) {
+                        case AreaType.Square:
+                            tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
+                            break;
+                        case AreaType.Cross:
+                            tiles = mapService.GetCrossTiles(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
+                            break;
                         case AreaType.Line:
                             tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
                             break;
