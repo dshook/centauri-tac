@@ -55,12 +55,15 @@ export default class MovePieceProcessor
       return queue.cancel(action);
     }
 
-    //check height differential
     let currentTile = this.mapState.getTile(piece.position);
     let destinationTile = this.mapState.getTile(action.to)
-    if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
-        this.log.warn('Cannot move piece %j up height diff', piece);
-        return queue.cancel(action);
+
+    //check height differential
+    if(!action.isJump){
+      if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
+          this.log.warn('Cannot move piece %j up height diff', piece);
+          return queue.cancel(action);
+      }
     }
 
     //determine direction piece should be facing to see if rotation is necessary

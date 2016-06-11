@@ -29,11 +29,16 @@ export default class AreaSelector{
     let selfCentered = false;
     let centerPosition = null;
     let pivotPosition = null;
+    let resolvedPosition = null;
 
     //check to see if this is a choose a tile in an area selection
     if(selector.left === 'CURSOR' && selector.right && selector.right.area){
       isCursor = true;
       selector = selector.right;
+      //use pivot position as the 'resolved' position that is the point in the area chosen
+      if(pieceSelectorParams.pivotPosition){
+        resolvedPosition = pieceSelectorParams.pivotPosition;
+      }
     }
 
     if(selector.area){
@@ -135,6 +140,13 @@ export default class AreaSelector{
         }
       }
 
+      //verify selected point in area is actually within the area
+      if(resolvedPosition){
+        if(!areaTiles.find(p => p.tileEquals(resolvedPosition))){
+          throw 'Selected point is not within area';
+        }
+      }
+
       return {
         areaType,
         size,
@@ -144,7 +156,8 @@ export default class AreaSelector{
         selfCentered,
         centerPosition,
         pivotPosition,
-        areaTiles
+        areaTiles,
+        resolvedPosition
       };
     }
   }

@@ -127,6 +127,7 @@ namespace ctac
                 selectingArea != null 
                 && selectingArea.area != null 
                 && selectingArea.area.isCursor 
+                && !selectingArea.area.selfCentered
                 && tile != null
                 && FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile)
                 )

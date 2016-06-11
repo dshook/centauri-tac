@@ -493,17 +493,18 @@ export default class CardEvaluator{
               }
               break;
             }
-            //Move(pieceSelector, areaSelector, isTeleport)
+            //Move(pieceSelector, tile in areaSelector, isTeleport)
             case 'Move':
             {
-              lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[1], pieceSelectorParams);
+              lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
               if(lastSelected.length > 1){
                 this.log.warn('Move selected more than one piece to move %j', lastSelected);
                 break;
               }
               this.log.info('Move Selected %j', lastSelected);
+              let moveTo = this.selector.selectArea(pieceAction.playerId, action.args[1], pieceSelectorParams);
               if(lastSelected && lastSelected.length === 1){
-                this.queue.push(new MovePiece(lastSelected[0].id));
+                this.queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2]));
               }
               break;
             }
@@ -687,7 +688,6 @@ export default class CardEvaluator{
             if(!arg.left) continue;
 
             areaSelector = this.selector.findSelector(arg, s => s && s.area);
-            //this.log.info('Area selector %j for arg %j', areaSelector, );
             if(!areaSelector) continue;
 
             //only allow max of 1 area action per event
