@@ -46,6 +46,10 @@ export default class PieceSelector{
       return this.allPieces.filter(p => p.tags.includes(selector.tag));
     }
 
+    if(selector.id){
+      return this.allPieces.filter(p => p.cardTemplateId == selector.id);
+    }
+
     //base case
     else if(typeof selector == 'string'){
       switch(selector){

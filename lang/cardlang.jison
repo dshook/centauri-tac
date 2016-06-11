@@ -73,6 +73,8 @@
   return 'Area'
 (Tagged)
   return 'Tagged'
+(Id)
+  return 'Id'
 
 //bool
 (true|false)
@@ -193,6 +195,7 @@ targetExpr
   : target -> $1
   | areaExpression -> $1
   | tagExpression -> $1
+  | idExpression -> $1
   | '('comparisonExpression')' -> $2
 ;
 
@@ -233,6 +236,13 @@ tagExpression
   : Tagged'('pText')'
     {{ $$ =
       { tag: $3 }
+    }}
+  ;
+
+idExpression
+  : Id'('eNumber')'
+    {{ $$ =
+      { id: $3 }
     }}
   ;
 //eventually a number, could be random

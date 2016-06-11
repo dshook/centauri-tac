@@ -494,6 +494,22 @@ test('Tag selection', t => {
   t.equal(selection[0], minionSelection[0], 'First element of selections are the same');
 });
 
+test('Id selection', t => {
+  let select =
+    {
+      left: {
+        id: 2
+      }
+    };
+  t.plan(3);
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let selection = selector.selectPieces(1, select, {selfPiece});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 2, '2 Id 2 pieces');
+  t.equal(selection[0].cardTemplateId, 2, 'Got the right Id back');
+});
+
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
   var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
   newPiece.position = position;

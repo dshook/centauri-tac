@@ -22,7 +22,7 @@
 * ~~friendly/enemy~~
 * ~~damaged~~
 * ~~damaged~~
-* specific card by id
+* ~~specific card by id~~
 
 * ~~tags (battlecry, etc)~~
 * ~~statuses~~
