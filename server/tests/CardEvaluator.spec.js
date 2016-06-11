@@ -532,6 +532,7 @@ test('Find Possible areas', t => {
       isDoubleCursor: false,
       bothDirections: null,
       selfCentered: false,
+      stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
       areaTiles: []
@@ -545,6 +546,7 @@ test('Find Possible areas', t => {
       isDoubleCursor: true,
       bothDirections: false,
       selfCentered: false,
+      stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
       areaTiles: []
@@ -558,6 +560,7 @@ test('Find Possible areas', t => {
       isDoubleCursor: false,
       bothDirections: false,
       selfCentered: true,
+      stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
       areaTiles: []
@@ -579,6 +582,7 @@ test('Find Possible areas', t => {
       isDoubleCursor: false,
       bothDirections: null,
       selfCentered: true,
+      stationaryArea: true,
       centerPosition: null,
       pivotPosition: null,
       areaTiles: []
