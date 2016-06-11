@@ -714,6 +714,7 @@ export default class CardEvaluator{
             isDoubleCursor: areaDescrip.isDoubleCursor,
             bothDirections: areaDescrip.bothDirections,
             selfCentered: areaDescrip.selfCentered,
+            stationaryArea: areaDescrip.stationaryArea,
             centerPosition: areaDescrip.centerPosition,
             pivotPosition: areaDescrip.pivotPosition,
             areaTiles: areaDescrip.areaTiles

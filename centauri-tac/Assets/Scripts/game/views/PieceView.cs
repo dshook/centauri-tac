@@ -256,8 +256,11 @@ namespace ctac {
             public PieceModel piece { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
+            public bool isTeleport { get; set; }
+
             private float moveTime = 0.25f;
             Vector3 curveHeight = new Vector3(0, 0.30f, 0);
+            private float curveMult = 1.0f;
             private BezierSpline moveSpline;
             private SplineWalker walker;
             private bool firstRun = true;
@@ -275,8 +278,13 @@ namespace ctac {
                     var start = piece.gameObject.transform.position;
                     var diffVector = destination - start;
 
-                    var secondControl = (diffVector * 0.2f) + curveHeight + start;
-                    var thirdControl = (diffVector * 0.8f) + curveHeight + start;
+                    if (isTeleport)
+                    {
+                        curveMult = 100f;
+                    }
+
+                    var secondControl = (diffVector * 0.2f) + (curveHeight * diffVector.magnitude * curveMult) + start;
+                    var thirdControl = (diffVector * 0.8f) + (curveHeight * diffVector.magnitude * curveMult) + start;
 
                     moveSpline.SetControlPoint(0, start);
                     moveSpline.SetControlPoint(1, secondControl);

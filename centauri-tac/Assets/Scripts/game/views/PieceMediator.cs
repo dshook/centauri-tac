@@ -98,7 +98,8 @@ namespace ctac
                 {
                     piece = view.piece,
                     destination = pieceMoved.to.gameObject.transform.position,
-                    finishedMoving = pieceFinishedMoving
+                    finishedMoving = pieceFinishedMoving,
+                    isTeleport = pieceMoved.isTeleport
                 }
             );
         }

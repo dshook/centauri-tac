@@ -30,11 +30,16 @@ export default class AreaSelector{
     let centerPosition = null;
     let pivotPosition = null;
     let resolvedPosition = null;
+    let stationaryArea = false;
 
     //check to see if this is a choose a tile in an area selection
     if(selector.left === 'CURSOR' && selector.right && selector.right.area){
       isCursor = true;
       selector = selector.right;
+      //indicates that the area is fixed on the center position and not attached to the cursor
+      //and that the cursor is to select a space within the area
+      stationaryArea = true;
+
       //use pivot position as the 'resolved' position that is the point in the area chosen
       if(pieceSelectorParams.pivotPosition){
         resolvedPosition = pieceSelectorParams.pivotPosition;
@@ -154,6 +159,7 @@ export default class AreaSelector{
         isDoubleCursor,
         bothDirections,
         selfCentered,
+        stationaryArea,
         centerPosition,
         pivotPosition,
         areaTiles,

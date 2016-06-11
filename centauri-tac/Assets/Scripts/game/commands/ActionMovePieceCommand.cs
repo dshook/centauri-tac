@@ -43,7 +43,8 @@ namespace ctac
                 piece = piece,
                 to = toTile,
                 change = difference,
-                direction = movePiece.direction
+                direction = movePiece.direction,
+                isTeleport = movePiece.isTeleport
             });
 
             debug.Log( string.Format("Moved piece {0} to {1}", movePiece.pieceId, movePiece.to) , socketKey );
