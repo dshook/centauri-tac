@@ -50,9 +50,10 @@
 
 ##Actions
 * move/push piece
-    - jump to space in radius
+    - ~~jump to space in radius~~
     - hook piece which pulls to closest available tile in line
-    - teleport to arbitrary tile in range
+    - ~~teleport to arbitrary tile in range~~
+    - swap positions with minion
 * transform a minion into another minion
 * choose effects
 * copy minion (into hand or play)
