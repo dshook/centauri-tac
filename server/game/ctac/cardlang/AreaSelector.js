@@ -62,6 +62,9 @@ export default class AreaSelector{
         if(pieceSelectorParams.position){
           centerPosition = pieceSelectorParams.position;
         }
+      }else if(this.selector.doesSelectorUse(centerSelector, 'TARGET') && !pieceSelectorParams.targetPieceId){
+        //can't select a ceter piece on a target without a target id
+        centerPosition = null;
       }else{
         let centerPieces = this.selector.selectPieces(controllingPlayerId, centerSelector, pieceSelectorParams);
         let centerPiece = centerPieces[0];

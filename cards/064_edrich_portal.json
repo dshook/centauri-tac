@@ -4,5 +4,5 @@
 	"description": "Teleport a friendly minion 3 spaces",
 	"cost": 4,
 	"tags": ["Spell"],
-	"eventcode": "playSpell{ Move(TARGET & FRIENDLY & MINION, CURSOR & Area(Square, 3, SELF), true) }"
+	"eventcode": "playSpell{ Move(TARGET & FRIENDLY & MINION, CURSOR & Area(Square, 3, TARGET), true) }"
 }

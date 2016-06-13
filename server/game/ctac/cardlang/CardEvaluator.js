@@ -679,9 +679,13 @@ export default class CardEvaluator{
 
         let isSpell = card.tags.includes('Spell');
         let areaSelector = null;
+        let alsoNeedsTarget = false;
         //try to find areas in any of the actions
         for(let cardEventAction of event.actions){
           if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
+
+          //hacky way to see if the action needs a main target for its selection
+          alsoNeedsTarget = this.selector.doesSelectorUse(cardEventAction.args[0], 'TARGET');
 
           for(let arg of cardEventAction.args){
             //Area selectors will always have a left
@@ -704,14 +708,13 @@ export default class CardEvaluator{
             areaSelector,
             {isSpell: card.tags.includes('Spell')}
           );
-
           areas.push({
             cardId: card.id,
             event: event.event,
             areaType: areaDescrip.areaType,
             size: areaDescrip.size,
             isCursor: areaDescrip.isCursor,
-            isDoubleCursor: areaDescrip.isDoubleCursor,
+            isDoubleCursor: areaDescrip.isDoubleCursor || alsoNeedsTarget,
             bothDirections: areaDescrip.bothDirections,
             selfCentered: areaDescrip.selfCentered,
             stationaryArea: areaDescrip.stationaryArea,
