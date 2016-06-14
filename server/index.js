@@ -10,7 +10,14 @@ require('module').Module._initPaths();
 require('loglevel').setLevel(0);
 
 // compiler hook
-require('babel/register');
+require('babel-polyfill');
+require('babel-register')({
+  plugins: ["babel-plugin-transform-decorators-legacy"],
+  presets: [
+    "es2015-node",
+    "babel-preset-stage-2",
+  ]
+});
 
 // use bluebird instead of native promise
 global.Promise = require('bluebird');

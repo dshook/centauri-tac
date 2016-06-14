@@ -77,7 +77,7 @@ export default class ComponentStore
   /**
    * Resolve the id of a component type from its name
    */
-  @memoize async getTypeIdByName(name: String): ?Number
+  @memoize async getTypeIdByName(name)
   {
     const resp = await this.sql.query(`
       select id from component_types where name = @name`, {name});

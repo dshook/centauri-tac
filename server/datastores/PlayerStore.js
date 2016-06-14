@@ -42,7 +42,7 @@ export default class PlayerStore
   /**
    * Get a single player
    */
-  async getPlayerByEmail(email): ?Player
+  async getPlayerByEmail(email)
   {
     const resp = await this.sql.tquery(Player)(`
         select * from players
@@ -54,7 +54,7 @@ export default class PlayerStore
   /**
    * Create a new player instance
    */
-  async register(email, password): Promise<Player>
+  async register(email, password)
   {
     if (await this.getPlayerByEmail(email)) {
       throw new PlayerStoreError('email already registered');
@@ -77,7 +77,7 @@ export default class PlayerStore
   /**
    * Check password
    */
-  async verify(email, password): Promise<Player>
+  async verify(email, password)
   {
     const player = await this.getPlayerByEmail(email);
 

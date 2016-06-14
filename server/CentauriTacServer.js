@@ -14,7 +14,7 @@ export default class CentauriTacServer
   /**
    * Components is the list of components we actually want to run
    */
-  constructor(components: Array<String>)
+  constructor(components)
   {
     this.components = components;
     this.services = new Set();
