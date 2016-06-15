@@ -3,7 +3,8 @@ export default function rolesMiddleware(allowedRoles)
   return function middleware(client, params, auth)
   {
     if (!auth) {
-      throw new Error('no auth');
+      //this.log.info('no auth');
+      return;
     }
 
     if (!Array.isArray(auth.roles)) {
