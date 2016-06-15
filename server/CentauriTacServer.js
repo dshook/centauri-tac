@@ -20,9 +20,9 @@ export default class CentauriTacServer
     this.services = new Set();
     this.app = new Application();
 
-    process.on('SIGINT', () => this.stop());
+    //process.on('SIGINT', () => this.stop());
     //doesn't work on windows :( https://github.com/remy/nodemon/issues/140
-    process.once('SIGUSR2', () => this.onNodemonRefresh());
+    //process.once('SIGUSR2', () => this.onNodemonRefresh());
   }
 
   /**
