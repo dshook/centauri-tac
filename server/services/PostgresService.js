@@ -27,6 +27,7 @@ export default class PostgresService
 
   async start()
   {
+    this.log.info('connecting to postgres');
     await this.psql.check();
     this.log.info('connection ok');
   }

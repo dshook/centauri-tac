@@ -105,16 +105,16 @@ export default class MapState
     return ret;
   }
 
-  getKingTilesInRadius(center: Position, distance: number){
+  getKingTilesInRadius(center, distance){
     return this.getTilesInRadiusGeneric(center, distance, this.getKingNeighbors.bind(this), this.kingDistance);
   }
 
-  getTilesInRadius(center: Position, distance: number){
+  getTilesInRadius(center, distance){
     return this.getTilesInRadiusGeneric(center, distance, this.getNeighbors.bind(this), this.tileDistance);
   }
 
   //returns [] of positions for circle around center
-  getTilesInRadiusGeneric(center: Position, distance: number, neighborsFunc, distanceFunc)
+  getTilesInRadiusGeneric(center, distance, neighborsFunc, distanceFunc)
   {
     var ret = [];
     var frontier = [];
@@ -153,7 +153,7 @@ export default class MapState
     return ret;
   }
 
-  getNeighbors(center: Position)
+  getNeighbors(center)
   {
     let ret = [];
     let neighborTile = null;
@@ -176,7 +176,7 @@ export default class MapState
     return ret;
   }
 
-  getKingNeighbors(center: Position)
+  getKingNeighbors(center)
   {
     let ret = [];
     let neighborTile = null;
