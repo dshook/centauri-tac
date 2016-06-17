@@ -41,7 +41,7 @@ export default class AuthTokenService
       expires = this.config.tokenExpiresInMinutes)
   {
     const options = {
-      expiresInMinutes: expires,
+      expiresIn: expires + 'm',
     };
 
     const payload = {
