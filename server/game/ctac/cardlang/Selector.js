@@ -34,15 +34,19 @@ export default class Selector{
   selectPieces(controllingPlayerId, selector, pieceSelectorParams){
     //sanity checks first
     if(this.doesSelectorUse(selector, 'TARGET')){
-      //make sure that if it's a target card and there are available targets, one of them is picked
-      var possibleTargets = this.selectPossibleTargets(controllingPlayerId, selector, pieceSelectorParams.isSpell);
-      if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
-        throw new EvalError('You must select a valid target');
-      }
 
-      //if it's a spell (as indicated by no activating piece) and doesn't have any possible targets then reject
-      if(pieceSelectorParams.isSpell && possibleTargets.length === 0){
-        throw new EvalError('You must select a valid target for this spell');
+      //skip TARGET checks for timer actions since the target won't be reselected, and SAVED should be used
+      if(!pieceSelectorParams.isTimer){
+        //make sure that if it's a target card and there are available targets, one of them is picked
+        var possibleTargets = this.selectPossibleTargets(controllingPlayerId, selector, pieceSelectorParams.isSpell);
+        if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
+          throw new EvalError('You must select a valid target');
+        }
+
+        //if it's a spell (as indicated by no activating piece) and doesn't have any possible targets then reject
+        if(pieceSelectorParams.isSpell && possibleTargets.length === 0){
+          throw new EvalError('You must select a valid target for this spell');
+        }
       }
 
       //make sure nothing matches target if one isn't provided

@@ -249,7 +249,8 @@ export default class CardEvaluator{
           savedPieces: pieceAction.savedPieces,
           position: pieceAction.position,
           pivotPosition: pieceAction.pivotPosition,
-          isSpell: !pieceAction.piece
+          isSpell: !pieceAction.piece,
+          isTimer: pieceAction.isTimer || false
         };
         let times = 1;
         if(action.times){
@@ -470,10 +471,16 @@ export default class CardEvaluator{
             case 'startTurnTimer':
             {
               let timerActions = action.args.slice(2);
+              let saved = lastSelected;
+              //if the start turn timer action includes a target piece Id and nothing else is saving pieces,
+              //use the target for the saved pieces
+              if(!saved && pieceSelectorParams.targetPieceId){
+                saved = [{id: pieceSelectorParams.targetPieceId}];
+              }
               if(timerActions && timerActions.length > 0){
                 for(let timerAction of timerActions){
                   this.startTurnTimers.push({
-                    saved: lastSelected,
+                    saved,
                     piece,
                     card,
                     playerId: pieceAction.playerId,
@@ -490,10 +497,14 @@ export default class CardEvaluator{
             case 'endTurnTimer':
             {
               let timerActions = action.args.slice(2);
+              let saved = lastSelected;
+              if(!saved && pieceSelectorParams.targetPieceId){
+                saved = [{id: pieceSelectorParams.targetPieceId}];
+              }
               if(timerActions && timerActions.length > 0){
                 for(let timerAction of timerActions){
                   this.endTurnTimers.push({
-                    saved: lastSelected,
+                    saved,
                     piece,
                     card,
                     playerId: pieceAction.playerId,
@@ -569,7 +580,8 @@ export default class CardEvaluator{
         card: activatedTimer.card,
         savedPieces: activatedTimer.saved,
         playerId: activatedTimer.playerId,
-        action: activatedTimer.timerAction
+        action: activatedTimer.timerAction,
+        isTimer: true
       });
     }
 

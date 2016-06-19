@@ -10,11 +10,11 @@ export default class PieceState
   constructor()
   {
     this.pieces = [];
+    this.nextPieceId = 1;
   }
 
   nextId(){
-    return this.pieces.length == 0 ? 1 :
-      _.max(this.pieces, x => x.id).id + 1;
+    return this.nextPieceId++;
   }
 
   add(newPiece, turn){
@@ -32,7 +32,7 @@ export default class PieceState
     var newPiece = new GamePiece();
 
     //assign the next id to the piece before it's spawned so any actions can reference the piece
-    newPiece.id = this.nextId();
+    newPiece.id = this.nextPieceId;
     newPiece.position = position;
     newPiece.playerId = playerId;
     newPiece.name = cardPlayed.name;
