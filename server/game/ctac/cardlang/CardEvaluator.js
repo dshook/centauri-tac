@@ -40,7 +40,19 @@ export default class CardEvaluator{
       cardDrawn: {left: 'PLAYER'},
       playSpell: {left: 'PLAYER'}
     };
-    this.targetableActions = ['Hit', 'Heal', 'SetAttribute', 'Buff', 'GiveStatus', 'RemoveStatus', 'Charm', 'Destroy', 'Move'];
+    this.targetableActions = [
+      'Hit',
+      'Heal',
+      'SetAttribute',
+      'Buff',
+      'GiveStatus',
+      'RemoveStatus',
+      'Charm',
+      'Destroy',
+      'Move',
+      'startTurnTimer',
+      'endTurnTimer'
+    ];
     this.targetableEvents = ['playMinion', 'playSpell'];
   }
 
@@ -616,17 +628,31 @@ export default class CardEvaluator{
     //try to find TARGETS in any of the actions
     for(let cardEventAction of eventActions){
       if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
-      //ASSUMING ACTION SELECTORS ARE ALWAYS THE FIRST ARG
-      let selector = cardEventAction.args[0];
 
-      if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
+      for(let arg of cardEventAction.args){
 
-      let targetPieceIds = this.selector.selectPossibleTargets(
-        playerId, selector, isSpell
-      ).map(p => p.id);
+        //check for recursive step if arg is another action (for a turn timer for instance)
+        if(arg.action){
+          let recursivePieceIds = this.findActionTargets([arg], playerId, isSpell);
+          if(recursivePieceIds){
+            return recursivePieceIds;
+          }
+        }
 
-      //only allow max of 1 targetable action per event
-      return targetPieceIds;
+        //Selectors will always have a left
+        if(!arg.left) continue;
+
+        let selector = arg;
+
+        if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
+
+        let targetPieceIds = this.selector.selectPossibleTargets(
+          playerId, selector, isSpell
+        ).map(p => p.id);
+
+        //only allow max of 1 targetable action per event
+        return targetPieceIds;
+      }
     }
 
     return null;
