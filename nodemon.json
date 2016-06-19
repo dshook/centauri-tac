@@ -1,10 +1,16 @@
 {
+  "watch": [
+  	"server",
+  	"cards",
+  	"lang"
+  ],
+  "ext": "js json",
   "ignore": [
-    ".git",
+  	".git",
     "node_modules",
     "tasks",
     "web",
-    "centauri-tac",
+    "./centauri-tac",
     "dist"
   ]
 }

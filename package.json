@@ -92,7 +92,7 @@
     "loglevel": "^1.4.0",
     "moment": "^2.10.6",
     "ng-table": "^0.5.4",
-    "nodemon": "^1.4.1",
+    "nodemon": "^1.9.2",
     "partialify": "^3.1.5",
     "pg": "^5.1.0",
     "present": "0.0.6",
