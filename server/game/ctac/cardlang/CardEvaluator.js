@@ -477,11 +477,15 @@ export default class CardEvaluator{
               if(!saved && pieceSelectorParams.targetPieceId){
                 saved = [{id: pieceSelectorParams.targetPieceId}];
               }
+              let attachedPiece = piece;
+              if(!attachedPiece && pieceSelectorParams.targetPieceId){
+                attachedPiece = {id: pieceSelectorParams.targetPieceId};
+              }
               if(timerActions && timerActions.length > 0){
                 for(let timerAction of timerActions){
                   this.startTurnTimers.push({
                     saved,
-                    piece,
+                    piece: attachedPiece,
                     card,
                     playerId: pieceAction.playerId,
                     interval: action.args[1] || false,
@@ -501,11 +505,15 @@ export default class CardEvaluator{
               if(!saved && pieceSelectorParams.targetPieceId){
                 saved = [{id: pieceSelectorParams.targetPieceId}];
               }
+              let attachedPiece = piece;
+              if(!attachedPiece && pieceSelectorParams.targetPieceId){
+                attachedPiece = {id: pieceSelectorParams.targetPieceId};
+              }
               if(timerActions && timerActions.length > 0){
                 for(let timerAction of timerActions){
                   this.endTurnTimers.push({
                     saved,
-                    piece,
+                    piece: attachedPiece,
                     card,
                     playerId: pieceAction.playerId,
                     interval: action.args[1] || false,

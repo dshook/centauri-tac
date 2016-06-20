@@ -62,8 +62,8 @@ export default class PieceHealthChangeProcessor
       this.pieceState.remove(piece.id);
     }
 
-    this.log.info('piece %s %s %s health',
-      action.pieceId, (action.change > 0 ? 'gained' : 'lost'), action.change);
+    this.log.info('piece %s %s %s health, now %s',
+      action.pieceId, (action.change > 0 ? 'gained' : 'lost'), action.change, action.newCurrentHealth);
     queue.complete(action);
   }
 }
