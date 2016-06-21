@@ -93,6 +93,7 @@ namespace ctac
         Square = 2,
         Line = 3,
         Row = 4,
-        Diagonal = 5
+        Diagonal = 5,
+        PiecePosition = 6
     }
 }

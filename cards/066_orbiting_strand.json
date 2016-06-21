@@ -1,0 +1,16 @@
+{
+	"cardTemplateId": 66,
+	"name": "Orbiting Strand",
+	"description": "<b>Ability(1)</b>: Swap positions with another minion",
+	"cost": 3,
+	"attack": 3,
+	"health": 3,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "
+		ability(1, 1, 'Position Orbit'){
+			Move(SELF, TARGET & MINION, true)
+			Move(TARGET & MINION, SELF, true)
+		}
+	"
+}

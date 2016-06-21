@@ -24,6 +24,11 @@ export default class AreaSelector{
   //Diagonal is limited to diagonal, not horizontal or vertical
   //Row is the opposite of diagonal
   Select(selector, controllingPlayerId, pieceSelectorParams){
+    let areaType = null;
+    let size = null;
+    let centerSelector = null;
+    let pivotSelector = null;
+    let bothDirections = null;
     let isCursor = false;
     let isDoubleCursor = false;
     let selfCentered = false;
@@ -31,6 +36,7 @@ export default class AreaSelector{
     let pivotPosition = null;
     let resolvedPosition = null;
     let stationaryArea = false;
+    let areaTiles = [];
 
     //check to see if this is a choose a tile in an area selection
     if(selector.left === 'CURSOR' && selector.right && selector.right.area){
@@ -47,12 +53,12 @@ export default class AreaSelector{
     }
 
     if(selector.area){
-      let areaType = selector.args[0];
-      let size = selector.args[1];
-      let centerSelector = selector.args[2];
+      areaType = selector.args[0];
+      size = selector.args[1];
+      centerSelector = selector.args[2];
       let extraParams = areaType === 'Line' || areaType === 'Diagonal' || areaType === 'Row';
-      let pivotSelector = extraParams ? selector.args[3] : null;
-      let bothDirections = extraParams ? selector.args[4] : null;
+      pivotSelector = extraParams ? selector.args[3] : null;
+      bothDirections = extraParams ? selector.args[4] : null;
 
       this.log.info('Evaluating area %s size %s, center %s pivot %s'
         , areaType, size, pieceSelectorParams.position, pieceSelectorParams.pivotPosition);
@@ -96,8 +102,6 @@ export default class AreaSelector{
       }
 
       this.log.info('Selected center of %s and pivot of %s', centerPosition, pivotPosition);
-
-      let areaTiles = [];
 
       //if we have a defined center, actually resolve what the area tiles are
       //also check for the required pivot position for lines/diagonals
@@ -154,21 +158,31 @@ export default class AreaSelector{
           throw 'Selected point is not within area';
         }
       }
-
-      return {
-        areaType,
-        size,
-        isCursor,
-        isDoubleCursor,
-        bothDirections,
-        selfCentered,
-        stationaryArea,
-        centerPosition,
-        pivotPosition,
-        areaTiles,
-        resolvedPosition
-      };
+    }else if(selector.left){
+      this.log.info('Evaluating area for normal piece selector %j', selector);
+      //area position from normal piece selector.  Use first found piece
+      let selectedPieces = this.selector.selectPieces(controllingPlayerId, selector, pieceSelectorParams);
+      if(selectedPieces.length > 0){
+        let firstPiece = selectedPieces[0];
+        resolvedPosition = firstPiece.position;
+        areaType = 'PiecePosition';
+        size = 1;
+      }
     }
+
+    return {
+      areaType,
+      size,
+      isCursor,
+      isDoubleCursor,
+      bothDirections,
+      selfCentered,
+      stationaryArea,
+      centerPosition,
+      pivotPosition,
+      areaTiles,
+      resolvedPosition
+    };
   }
 
 }

@@ -37,6 +37,7 @@ namespace ctac
             Vector2 difference = toTileCoords - piece.tilePosition;
             var toTile = map.tiles[toTileCoords];
             piece.tilePosition = toTileCoords;
+            piece.hasMoved = true;
 
             pieceMove.Dispatch(new PieceMovedModel()
             {

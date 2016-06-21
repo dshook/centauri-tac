@@ -27,7 +27,7 @@
 * ~~tags (battlecry, etc)~~
 * ~~statuses~~
 * zones (play, deck, hand, secret, graveyard)
-* cardtype (~~minion~~, ~~hero~~, weapons, spell, secret)
+* cardtype (~~minion~~, ~~hero~~, weapons, ~~spell~~, secret)
 
 ##Areas
 * ~~cross~~
@@ -53,7 +53,7 @@
     - ~~jump to space in radius~~
     - hook piece which pulls to closest available tile in line
     - ~~teleport to arbitrary tile in range~~
-    - swap positions with minion
+    - ~~swap positions with minion~~
 * transform a minion into another minion
 * choose effects
 * copy minion (into hand or play)
