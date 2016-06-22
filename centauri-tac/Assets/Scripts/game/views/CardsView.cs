@@ -55,7 +55,7 @@ namespace ctac {
                 if(card.activated) continue;
                 var rectTransform = card.gameObject.GetComponent<RectTransform>();
                 var cardCountOffset = 0 - ((opponentCards.Count - 1) / 2) + c;
-                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
+                rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f + cardCountOffset * cardAngleSpread));
                 rectTransform.Rotate(Vector3.up, 180f, Space.Self);
 
                 dest = PointOnCircle(cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, opponentCardCircleCenter);
@@ -199,7 +199,7 @@ namespace ctac {
                 {
                     animTime = 0.3f;
                     dest = opponentDest;
-                    iTweenExtensions.RotateTo(card.gameObject, new Vector3(0, 180f, 0), animTime, 0, EaseType.easeOutCubic);
+                    iTweenExtensions.RotateTo(card.gameObject, new Vector3(0, 180, 180), animTime, 0, EaseType.easeOutCubic);
                 }
                 else
                 {
