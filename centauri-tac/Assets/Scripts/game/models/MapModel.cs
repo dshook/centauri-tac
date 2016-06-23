@@ -34,6 +34,7 @@ namespace ctac
         public GameObject gameObject { get; set; }
         public TileHighlightStatus highlightStatus;
         public bool showPieceRotation { get; set; }
+        public GameObject indicator { get; set; }
     }
 
     [Flags]

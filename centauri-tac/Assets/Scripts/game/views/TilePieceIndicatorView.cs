@@ -6,10 +6,10 @@ namespace ctac
 {
     public class TilePieceIndicatorView : View
     {
-        private Color enemyColor = new Color(1.0f, .2f, .2f);
-        private Color friendlyColor = new Color(0.0f, 1f, .6f);
+        private Color enemyColor = new Color(.8f, .0f, .0f, .6f);
+        private Color friendlyColor = new Color(0.0f, 0.8f, .0f, .6f);
 
-        private float borderWidth = 0.5f;
+        //private float borderWidth = 0.5f;
 
         internal void init()
         {
@@ -24,15 +24,17 @@ namespace ctac
         {
             foreach (var tile in tiles)
             {
+                if (tile.indicator == null)
+                {
+                    tile.indicator = tile.gameObject.transform.FindChild("Indicator").gameObject;
+                }
                 ClearTile(tile);
             }
         }
 
         internal void ClearTile(Tile tile)
         {
-            var renderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
-
-            renderer.material.SetFloat("_BorderWidth", 0f);
+            tile.indicator.SetActive(false);
         }
 
         internal void SetFriendly(List<Tile> tiles)
@@ -63,10 +65,11 @@ namespace ctac
 
         internal void SetColor(Tile tile, Color color)
         {
-            var renderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
+            var renderer = tile.indicator.GetComponent<MeshRenderer>();
 
-            renderer.material.SetColor("_RimColor", color);
-            renderer.material.SetFloat("_BorderWidth", borderWidth);
+            //renderer.material.SetColor("_RimColor", color);
+            renderer.material.color = color;
+            tile.indicator.SetActive(true);
         }
 
     }
