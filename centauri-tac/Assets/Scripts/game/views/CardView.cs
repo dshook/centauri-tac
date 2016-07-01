@@ -64,7 +64,7 @@ namespace ctac {
             if (card.isMinion)
             {
                 //assemble movement and range line
-                var totalLength = 27;
+                var totalLength = 20;
                 //var moveLength = card.movement.ToString().Length + 9;
                 var rangeLength = 0;
                 if (card.range.HasValue)
