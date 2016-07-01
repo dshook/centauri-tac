@@ -1,83 +1,518 @@
 {
-
-	"name": "cubeland",
-	"maxPlayers": 2,
-	"tiles": [
-		{"transform":{"x":0,"y":"0.24","z":0}},
-        {"transform":{"x":0,"y":"0.08","z":1}},
-        {"transform":{"x":0,"y":"0.39","z":2}},
-        {"transform":{"x":0,"y":"0.45","z":3}},
-        {"transform":{"x":0,"y":"0.87","z":4}},
-        {"transform":{"x":0,"y":"0.60","z":5}},
-        {"transform":{"x":0,"y":"0.42","z":6}},
-        {"transform":{"x":0,"y":"0.37","z":7}},
-        {"transform":{"x":1,"y":"0.55","z":0}},
-        {"transform":{"x":1,"y":"0.28","z":1}},
-        {"transform":{"x":1,"y":"0.44","z":2}},
-        {"transform":{"x":1,"y":"0.19","z":3}},
-        {"transform":{"x":1,"y":"0.29","z":4}},
-        {"transform":{"x":1,"y":"0.75","z":5}},
-        {"transform":{"x":1,"y":"0.29","z":6}},
-        {"transform":{"x":1,"y":"0.38","z":7}},
-        {"transform":{"x":2,"y":"0.93","z":0}},
-        {"transform":{"x":2,"y":"0.10","z":1}},
-        {"transform":{"x":2,"y":"0.24","z":2}},
-        {"transform":{"x":2,"y":"0.37","z":3}},
-        {"transform":{"x":2,"y":"0.33","z":4}},
-        {"transform":{"x":2,"y":"0.69","z":5}},
-        {"transform":{"x":2,"y":"0.18","z":6}},
-        {"transform":{"x":2,"y":"0.27","z":7}},
-        {"transform":{"x":3,"y":"0.23","z":0}},
-        {"transform":{"x":3,"y":"0.20","z":1}},
-        {"transform":{"x":3,"y":"0.17","z":2}},
-        {"transform":{"x":3,"y":"0.14","z":3}},
-        {"transform":{"x":3,"y":"0.91","z":4}},
-        {"transform":{"x":3,"y":"0.11","z":5}},
-        {"transform":{"x":3,"y":"0.44","z":6}},
-        {"transform":{"x":3,"y":"0.17","z":7}},
-        {"transform":{"x":4,"y":"0.02","z":0}},
-        {"transform":{"x":4,"y":"0.31","z":1}},
-        {"transform":{"x":4,"y":"0.13","z":2}},
-        {"transform":{"x":4,"y":"0.52","z":3}},
-        {"transform":{"x":4,"y":"0.64","z":4}},
-        {"transform":{"x":4,"y":"0.53","z":5}},
-        {"transform":{"x":4,"y":"0.19","z":6}},
-        {"transform":{"x":4,"y":"0.46","z":7}},
-        {"transform":{"x":5,"y":"0.35","z":0}},
-        {"transform":{"x":5,"y":"0.19","z":1}},
-        {"transform":{"x":5,"y":"0.26","z":2}},
-        {"transform":{"x":5,"y":"0.24","z":3}},
-        {"transform":{"x":5,"y":"0.48","z":4}},
-        {"transform":{"x":5,"y":"0.58","z":5}},
-        {"transform":{"x":5,"y":"0.32","z":6}},
-        {"transform":{"x":5,"y":"0.57","z":7}},
-        {"transform":{"x":6,"y":"0.65","z":0}},
-        {"transform":{"x":6,"y":"0.06","z":1}},
-        {"transform":{"x":6,"y":"0.42","z":2}},
-        {"transform":{"x":6,"y":"0.16","z":3}},
-        {"transform":{"x":6,"y":"0.02","z":4}},
-        {"transform":{"x":6,"y":"0.40","z":5}},
-        {"transform":{"x":6,"y":"0.45","z":6}},
-        {"transform":{"x":6,"y":"0.26","z":7}},
-        {"transform":{"x":7,"y":"0.09","z":0}},
-        {"transform":{"x":7,"y":"0.82","z":1}},
-        {"transform":{"x":7,"y":"0.03","z":2}},
-        {"transform":{"x":7,"y":"0.07","z":3}},
-        {"transform":{"x":7,"y":"0.52","z":4}},
-        {"transform":{"x":7,"y":"0.12","z":5}},
-        {"transform":{"x":7,"y":"0.39","z":6}},
-        {"transform":{"x":7,"y":"0.38","z":7}}
-	]
+    "name": "cubeland",
+    "maxPlayers": 2,
+    "tiles": [
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.258,
+                "z": 0
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.768,
+                "z": 1
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.455,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.055,
+                "z": 3
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.217,
+                "z": 4
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.821,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.3,
+                "z": 6
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 0,
+                "y": 0.883,
+                "z": 7
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.179,
+                "z": 0
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.751,
+                "z": 1
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.574,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.433,
+                "z": 3
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.713,
+                "z": 4
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.477,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.66,
+                "z": 6
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 1,
+                "y": 0.524,
+                "z": 7
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.672,
+                "z": 0
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.714,
+                "z": 1
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.07,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.865,
+                "z": 3
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.256,
+                "z": 4
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.014,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.441,
+                "z": 6
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 2,
+                "y": 0.71,
+                "z": 7
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.477,
+                "z": 0
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.514,
+                "z": 1
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.184,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.862,
+                "z": 3
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.46,
+                "z": 4
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.045,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.328,
+                "z": 6
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 3,
+                "y": 0.678,
+                "z": 7
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0,
+                "z": 0
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.376,
+                "z": 1
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.386,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.844,
+                "z": 3
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.285,
+                "z": 4
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.745,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.293,
+                "z": 6
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 4,
+                "y": 0.791,
+                "z": 7
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.828,
+                "z": 0
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.467,
+                "z": 1
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.698,
+                "z": 2
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.407,
+                "z": 3
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.548,
+                "z": 4
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.534,
+                "z": 5
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.803,
+                "z": 6
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 5,
+                "y": 0.42,
+                "z": 7
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.339,
+                "z": 0
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.564,
+                "z": 1
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.096,
+                "z": 2
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.425,
+                "z": 3
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.562,
+                "z": 4
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.41,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.104,
+                "z": 6
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 6,
+                "y": 0.521,
+                "z": 7
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.469,
+                "z": 0
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.745,
+                "z": 1
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.112,
+                "z": 2
+            },
+            "material": "clay"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.568,
+                "z": 3
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.495,
+                "z": 4
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.777,
+                "z": 5
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.77,
+                "z": 6
+            },
+            "material": "sand"
+        },
+        {
+            "transform": {
+                "x": 7,
+                "y": 0.533,
+                "z": 7
+            },
+            "material": "clay"
+        }
+    ]
 }
-
-
-
-
-
-
-
-
-
-
-
-

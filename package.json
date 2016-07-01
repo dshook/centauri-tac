@@ -18,6 +18,7 @@
     "migrate-down": "db-migrate down -c 1",
     "dbreset": "db-migrate reset",
     "prestart": "npm run migrate && npm run build",
+    "build-map": "node ./tasks/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js"
   },
   "browser": {

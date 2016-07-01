@@ -12,6 +12,7 @@ namespace ctac
     public class TileImport
     {
         public TileImportPosition transform;
+        public string material { get; set; }
     }
 
     public class TileImportPosition

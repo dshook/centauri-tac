@@ -25,6 +25,12 @@ namespace ctac
         {
             var mapTilePrefab = Resources.Load("Tile") as GameObject;
 
+            var mapMaterials = new Dictionary<string, Material>();
+            mapMaterials["clay"] = Resources.Load("Materials/tiles/tile_clay") as Material;
+            mapMaterials["grass"] = Resources.Load("Materials/tiles/tile_grass") as Material;
+            mapMaterials["rock"] = Resources.Load("Materials/tiles/tile_rock") as Material;
+            mapMaterials["sand"] = Resources.Load("Materials/tiles/tile_sand") as Material;
+
             var goMap = GameObject.Find("Map");
             if (goMap != null)
             {
@@ -48,6 +54,13 @@ namespace ctac
                 ) as GameObject;
                 newTileGO.transform.parent = goMap.transform;
 
+                //set up material
+                var tileRenderer = newTileGO.transform.Find("cube").GetComponent<MeshRenderer>();
+                tileRenderer.material = mapMaterials[t.material];
+                var tileVarietyColor = Random.Range(0.85f, 1);
+                tileRenderer.material.color = new Color(tileVarietyColor, tileVarietyColor, tileVarietyColor);
+
+                //position and set up map references
                 var position = new Vector2(t.transform.x, t.transform.z);
                 var newTile = new Tile() {
                         gameObject = newTileGO,

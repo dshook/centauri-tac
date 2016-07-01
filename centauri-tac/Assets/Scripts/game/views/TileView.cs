@@ -19,12 +19,15 @@ namespace ctac {
         private Color invisible = new Color(0f, 0f, 0f, 0f);
         private Color tint;
 
+        private Color originalColor;
+
         void Start()
         {
             if (tile != null)
             {
                 meshRenderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
                 arrows = tile.gameObject.transform.FindChild("Arrows").gameObject;
+                originalColor = meshRenderer.material.color;
             }
         }
 
@@ -36,27 +39,27 @@ namespace ctac {
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.FriendlyTauntArea))
             {
                 tint = friendlyTauntTint;
-                meshRenderer.material.color = Color.white - tint;
+                meshRenderer.material.color = originalColor - tint;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.EnemyTauntArea))
             {
                 tint = tint + enemyTauntTint;
-                meshRenderer.material.color = Color.white - tint;
+                meshRenderer.material.color = originalColor - tint;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
             {
                 tint = tint + attackRangeTint;
-                meshRenderer.material.color = Color.white - tint;
+                meshRenderer.material.color = originalColor - tint;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
             {
                 tint = tint + hoverTint;
-                meshRenderer.material.color = Color.white - tint;
+                meshRenderer.material.color = originalColor - tint;
             }
             else if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
             {
                 tint = tint + pathFindTint;
-                meshRenderer.material.color = Color.white - tint;
+                meshRenderer.material.color = originalColor - tint;
             }
 
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))
@@ -79,7 +82,7 @@ namespace ctac {
 
             if (tile.highlightStatus == TileHighlightStatus.None)
             {
-                meshRenderer.material.color = Color.white;
+                meshRenderer.material.color = originalColor;
             }
 
             if (tile.showPieceRotation)
