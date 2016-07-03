@@ -1,7 +1,9 @@
 ﻿using ctac.signals;
+using ctac.util;
 using strange.extensions.mediation.impl;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace ctac {
@@ -22,8 +24,8 @@ namespace ctac {
         private Vector3 dest;
 
         private Vector2 cardDimensions = new Vector2(156, 258.2f);
-        private Color32 playableCardColor = new Color32(0, 53, 223, 255);
-        private Color32 unPlayableCardColor = new Color32(21, 21, 21, 255);
+        private Material cardGlowMat = null;
+        private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
         private Vector3 cardCircleCenter = new Vector3(0, -390, 50);
@@ -40,11 +42,21 @@ namespace ctac {
             this.playerCards = playerCards;
             this.opponentCards = opponentCards;
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
+
         }
 
         void Update()
         {
             if(playerCards == null || opponentCards == null) return;
+
+            //set up card cost glowing material first time
+            if (cardGlowMat == null && playerCards.Count > 1)
+            {
+                cardOutlineMat = playerCards[0].cardView.costText.fontSharedMaterial;
+                cardGlowMat = new Material(cardOutlineMat);
+                cardGlowMat.SetFloat(ShaderUtilities.ID_GlowPower, 0.4f);
+                cardGlowMat.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.0f);
+            }
 
             //position opponents cards
             //might need to DRY it up sometime but rule of three still holds
@@ -116,11 +128,11 @@ namespace ctac {
 
                 if (card.playable)
                 {
-                    card.cardView.costText.outlineColor = playableCardColor;
+                    card.cardView.costText.fontMaterial = cardGlowMat;
                 }
-                else
+                else if(cardOutlineMat != null)
                 {
-                    card.cardView.costText.outlineColor = unPlayableCardColor;
+                    card.cardView.costText.fontMaterial = cardOutlineMat;
                 }
             }
         }
