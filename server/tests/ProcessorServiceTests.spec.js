@@ -200,7 +200,7 @@ export default class ProcessorServiceTests
       t.equal(piece.attack, 1, 'Piece got transformed attack');
       t.equal(piece.cardTemplateId, 38, 'Piece got new template Id');
 
-      t.ok(this.cardEvaluator.startTurnTimers.includes(t => t.piece && t.piece.id === piece.id),
+      t.ok(this.cardEvaluator.startTurnTimers.find(t => t.piece && t.piece.id === piece.id),
         'Start turn timer was copied for transformed piece');
     });
   }

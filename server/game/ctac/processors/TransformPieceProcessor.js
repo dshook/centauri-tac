@@ -51,7 +51,7 @@ export default class TransformPieceProcessor
 
     action.updatedPiece = piece;
 
-    this.cardEvaluator.updateTransformedPiece(piece);
+    this.cardEvaluator.updateTransformedPiece(piece, transformPiece);
 
     //TOOD: update card eval with copied turn timers
 
