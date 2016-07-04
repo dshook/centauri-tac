@@ -158,7 +158,7 @@ export default class ProcessorServiceTests
     });
 
     test('Transform action from card', async (t) => {
-      t.plan(6);
+      t.plan(9);
       this.setupTest();
 
       this.queue.push(new SpawnPiece(1, null, 28, new Position(0,0,0)));
@@ -173,7 +173,10 @@ export default class ProcessorServiceTests
       await this.queue.processUntilDone();
 
       t.ok(!(piece.statuses & Statuses.Shield), 'Shield was removed');
-      t.equal(piece.attack, 2, 'Piece got transformed attack');
+      t.equal(piece.cardTemplateId, 59, 'Piece got new template Id');
+      t.equal(piece.attack, 3, 'Piece got transformed & buffed attack');
+      t.equal(piece.health, 2, 'Piece got health');
+      t.equal(piece.movement, 2, 'Piece got movement');
       t.ok(piece.tags.includes('XK'), 'Piece got new tags');
       t.ok(piece.aura, 'Piece copied aura');
 
@@ -195,7 +198,7 @@ export default class ProcessorServiceTests
       await this.queue.processUntilDone();
 
       t.equal(piece.attack, 1, 'Piece got transformed attack');
-      t.equal(piece.cardTemplateId, 38, 'Piece got new tags');
+      t.equal(piece.cardTemplateId, 38, 'Piece got new template Id');
 
       t.ok(this.cardEvaluator.startTurnTimers.includes(t => t.piece && t.piece.id === piece.id),
         'Start turn timer was copied for transformed piece');
