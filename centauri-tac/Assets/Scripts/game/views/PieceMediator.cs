@@ -16,6 +16,7 @@ namespace ctac
         [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
         [Inject] public PieceBuffSignal pieceBuffed { get; set; }
         [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
+        [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -44,6 +45,7 @@ namespace ctac
             pieceHpChanged.AddListener(onHealthChange);
             pieceAttrChanged.AddListener(onAttrChange);
             pieceStatusChanged.AddListener(onStatusChange);
+            pieceTransformed.AddListener(onTransformed);
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
             turnEnded.AddListener(onTurnEnded);
@@ -67,6 +69,7 @@ namespace ctac
             pieceAttrChanged.RemoveListener(onAttrChange);
             pieceBuffed.RemoveListener(onBuffed);
             pieceStatusChanged.RemoveListener(onStatusChange);
+            pieceTransformed.RemoveListener(onTransformed);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
             turnEnded.RemoveListener(onTurnEnded);
             pieceDied.RemoveListener(onPieceDied);
@@ -281,6 +284,36 @@ namespace ctac
                     }
                 );
             }
+        }
+
+        public void onTransformed(TransformPieceModel transformed)
+        {
+            if(transformed.pieceId != view.piece.id) return;
+
+            animationQueue.Add(
+                new PieceView.UpdateTextAnim()
+                {
+                    text = view.attackText,
+                    textGO = view.attackGO,
+                    current = view.piece.attack,
+                    original = view.piece.baseAttack,
+                    change = -1, 
+                    animFinished = pieceTextAnimFinished,
+                    piece = view.piece
+                }
+            );
+            animationQueue.Add(
+                new PieceView.UpdateTextAnim()
+                {
+                    text = view.healthText,
+                    textGO = view.healthGO,
+                    current = view.piece.health,
+                    original = view.piece.baseHealth,
+                    change = -1, 
+                    animFinished = pieceTextAnimFinished,
+                    piece = view.piece
+                }
+            );
         }
 
         private void onAnimFinished(PieceModel pieceModel)

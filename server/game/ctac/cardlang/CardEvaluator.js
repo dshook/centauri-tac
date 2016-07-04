@@ -51,6 +51,7 @@ export default class CardEvaluator{
       'Charm',
       'Destroy',
       'Move',
+      'Transform',
       'startTurnTimer',
       'endTurnTimer'
     ];

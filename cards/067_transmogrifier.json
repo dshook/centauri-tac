@@ -1,0 +1,10 @@
+{
+	"cardTemplateId": 67,
+	"name": "Transmogrifier",
+	"description": "Transform a minion into a 0/1 box",
+	"cost": 3,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{
+		Transform(TARGET & MINION, 68, false) }
+	"
+}

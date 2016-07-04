@@ -85,6 +85,7 @@ export default class PieceState
     dest.statuses = src.statuses;
     dest.baseStatuses = src.baseStatuses;
     dest.abilityCharge = src.abilityCharge;
+    dest.buffs = _.cloneDeep(src.buffs);
 
     //copy aura but maintain dest piece Id
     dest.aura = _.cloneDeep(src.aura);

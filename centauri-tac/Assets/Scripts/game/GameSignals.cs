@@ -106,5 +106,7 @@ namespace ctac.signals
     [Singleton] public class ActionSetPlayerResourceSignal : Signal<SetPlayerResourceModel> { }
     [Singleton] public class PlayerResourceSetSignal : Signal<SetPlayerResourceModel> { }
 
+    [Singleton] public class PieceTransformedSignal : Signal<TransformPieceModel> { }
+    [Singleton] public class ActionTransformPieceSignal : Signal<TransformPieceModel, SocketKey> { }
 }
 

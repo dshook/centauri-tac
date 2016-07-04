@@ -26,13 +26,13 @@ export default class SpawnDeckProcessor
     //give players some cards and init decks and hands
     let deckCards = 30;
     var playableCards = this.cardDirectory.getByTag(['Minion', 'Spell']);
-    let cardIds = _.map(playableCards, (m) => m.cardTemplateId);
+    let cardIds = playableCards.filter(c => !c.uncollectible).map(m => m.cardTemplateId);
 
     let playerId = action.playerId;
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be most of your deck
-    let testingCards = [66];
+    let testingCards = [67];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);

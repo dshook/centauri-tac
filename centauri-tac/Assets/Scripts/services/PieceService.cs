@@ -9,6 +9,7 @@ namespace ctac
     public interface IPieceService
     {
         PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null);
+        void CopyPropertiesFromPiece(PieceModel src, PieceModel dest);
     }
 
     public class PieceService : IPieceService
@@ -111,6 +112,24 @@ namespace ctac
             piecesModel.Pieces.Add(pieceModel);
 
             return pieceModel;
+        }
+
+        public void CopyPropertiesFromPiece(PieceModel src, PieceModel dest)
+        {
+            dest.name = src.name;
+            dest.cardTemplateId = src.cardTemplateId;
+            dest.attack = src.attack;
+            dest.baseAttack = src.baseAttack;
+            dest.health = src.health;
+            dest.baseHealth = src.baseHealth;
+            dest.movement = src.movement;
+            dest.baseMovement = src.movement;
+            dest.range = src.range;
+            dest.baseRange = src.baseRange;
+            dest.tags = src.tags;
+            dest.statuses = src.statuses;
+            dest.buffs = src.buffs;
+
         }
     }
 }

@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 68,
+	"name": "Box",
+	"description": "",
+	"cost": 1,
+	"attack": 0,
+	"health": 1,
+	"movement": 0,
+	"uncollectible": true,
+	"tags": ["Minion"]
+}
