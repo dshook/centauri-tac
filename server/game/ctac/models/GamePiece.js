@@ -27,6 +27,7 @@ export default class GamePiece
     this.buffs = [];
     this.aura = null;
     this.statuses = 0;
+    this.baseStatuses = 0;
     this.abilityCharge = 0;
 
     //piece has moved or attacked this turn?

@@ -49,14 +49,10 @@
 
 
 ##Actions
-* move/push piece
-    - ~~jump to space in radius~~
-    - hook piece which pulls to closest available tile in line
-    - ~~teleport to arbitrary tile in range~~
-    - ~~swap positions with minion~~
 * transform a minion into another minion
 * choose effects
 * copy minion (into hand or play)
+* Add code to targets (give x minions this deathrattle)
 * move minion into play from deck/unsummon minion from play
 * card cost modification
 * Shuffle into deck
@@ -73,6 +69,11 @@
 * ~~Hit for damage~~
 * ~~draw card~~
 * ~~Heal target~~
+* move/push piece
+    - ~~jump to space in radius~~
+    - hook piece which pulls to closest available tile in line
+    - ~~teleport to arbitrary tile in range~~
+    - ~~swap positions with minion~~
 
 ##Counters
 * mana spent for card

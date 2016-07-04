@@ -46,7 +46,7 @@
   return 'selectAttr'
 
 // actions
-(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move)
+(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform)
   return 'action'
 
 // actions about players

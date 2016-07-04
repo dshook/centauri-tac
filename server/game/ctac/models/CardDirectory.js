@@ -2,6 +2,7 @@ import Card from './Card.js';
 import CardLang from '../../../../lang/cardlang.js';
 import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
+import deepFreeze from 'deep-freeze';
 import fs from 'fs';
 import _ from 'lodash';
 
@@ -62,7 +63,7 @@ export default class CardDirectory
       c.events = null;
     }
 
-    this.directory[c.cardTemplateId] = c;
+    this.directory[c.cardTemplateId] = deepFreeze(c);
   }
 
   getByTag(tags){

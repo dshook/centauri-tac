@@ -16,6 +16,7 @@ import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import PieceAura from '../actions/PieceAura.js';
 import MovePiece from '../actions/MovePiece.js';
+import TransformPiece from '../actions/TransformPiece.js';
 
 /**
  * Evaluate the scripts on cards
@@ -539,6 +540,31 @@ export default class CardEvaluator{
               }
               break;
             }
+            //Transform(pieceSelector, cardTemplateId, targetPieceSelector)
+            //Transforms the piece selector pieces into either the cardTemplateId if it's a valid minion ID,
+            //otherwise, use the targetPieceSelector to find the first minion to copy props from
+            case 'Transform':
+            {
+              lastSelected = this.selector.selectPieces(pieceAction.playerId, action.args[0], pieceSelectorParams);
+              this.log.info('Transform Selected %j', lastSelected);
+              let cardTemplateId = action.args[1];
+              let targetPieceSelector = action.args[2];
+
+              let transformPieceId = null;
+              if(targetPieceSelector){
+                let transformPieces = this.selector.selectPieces(pieceAction.playerId, targetPieceSelector, pieceSelectorParams);
+                if(transformPieces && transformPieces.length > 0){
+                  transformPieceId = transformPieces[0].id;
+                }
+              }
+
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  this.queue.push(new TransformPiece(s.id, cardTemplateId, transformPieceId));
+                }
+              }
+              break;
+            }
           }
         }
       }
@@ -550,6 +576,32 @@ export default class CardEvaluator{
       throw e;
     }
     return true;
+  }
+
+  //When a piece is transformed there's some state maintenance to do
+  updateTransformedPiece(piece, copiedPiece){
+    //First, cleanup any timers associated with the old piece
+    this.cleanupTimers(piece);
+
+    //if we're copying an active piece, duplicate any existing timers but maintain the new piece Id
+    if(copiedPiece){
+      let copiedEndTurnTimers = this.endTurnTimers.filter(t => t.piece && t.piece.id === copiedPiece.id);
+      let copiedStartTurnTimers = this.startTurnTimers.filter(t => t.piece && t.piece.id === copiedPiece.id);
+
+      for(let copiedEndTurnTimer of copiedEndTurnTimers){
+        let clonedTimer = _.cloneDeep(copiedEndTurnTimer);
+        clonedTimer.piece = piece;
+        clonedTimer.playerId = piece.playerId; //Not sure if this is really needed or might cause an issue
+        this.endTurnTimers.push(clonedTimer);
+      }
+
+      for(let copiedStartTurnTimer of copiedStartTurnTimers){
+        let clonedTimer = _.cloneDeep(copiedStartTurnTimer);
+        clonedTimer.piece = piece;
+        clonedTimer.playerId = piece.playerId; //see above
+        this.startTurnTimers.push(clonedTimer);
+      }
+    }
   }
 
   //Tick down all the timers in the array. When the metaphorical bomb ticks down remove it from

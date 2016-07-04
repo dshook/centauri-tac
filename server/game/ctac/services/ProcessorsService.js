@@ -19,6 +19,7 @@ import SpawnDeckProcessor from '../processors/SpawnDeckProcessor.js';
 import PlaySpellProcessor from '../processors/PlaySpellProcessor.js';
 import RotatePieceProcessor from '../processors/RotatePieceProcessor.js';
 import UpdateAuraProcessor from '../processors/UpdateAuraProcessor.js';
+import TransformPieceProcessor from '../processors/TransformPieceProcessor.js';
 
 /**
  * Add action processors to the queue
@@ -48,6 +49,7 @@ export default class TurnService
     queue.addProcessor(DiscardCardProcessor);
     queue.addProcessor(PlaySpellProcessor);
     queue.addProcessor(RotatePieceProcessor);
+    queue.addProcessor(TransformPieceProcessor);
 
     //add update aura to the end of all process complete
     queue.addPostCompleteProcessor(UpdateAuraProcessor);

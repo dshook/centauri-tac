@@ -9,6 +9,10 @@ export default class PieceState
 {
   constructor()
   {
+    this.reset();
+  }
+
+  reset(){
     this.pieces = [];
     this.nextPieceId = 1;
   }
@@ -35,29 +39,63 @@ export default class PieceState
     newPiece.id = this.nextPieceId;
     newPiece.position = position;
     newPiece.playerId = playerId;
-    newPiece.name = cardPlayed.name;
-    newPiece.cardTemplateId = cardTemplateId;
-    newPiece.events = _.cloneDeep(cardPlayed.events);
-    newPiece.attack = cardPlayed.attack;
-    newPiece.health = cardPlayed.health;
-    newPiece.baseAttack = cardPlayed.attack;
-    newPiece.baseHealth = cardPlayed.health;
-    newPiece.movement = cardPlayed.movement;
-    newPiece.baseMovement = cardPlayed.movement;
-    newPiece.range = cardPlayed.range || null;
-    newPiece.baseRange = cardPlayed.range || null;
-    newPiece.baseTags = cardPlayed.tags;
-    newPiece.tags = cardPlayed.tags;
-    newPiece.statuses = cardPlayed.statuses || 0;
-    newPiece.baseStatuses = cardPlayed.statuses || 0;
 
-    newPiece.hasMoved = !(newPiece.statuses & Statuses.Charge) && newPiece.range === null;
-    newPiece.hasAttacked = !(newPiece.statuses & Statuses.Charge);
+    this.copyPropertiesFromCard(newPiece, cardPlayed);
+
+    this.setInitialMoveAttackStatus(newPiece);
 
     //server only tracking vars
     newPiece.bornOn = null;
 
     return newPiece;
+  }
+
+  copyPropertiesFromCard(piece, card){
+    piece.name = card.name;
+    piece.cardTemplateId = card.cardTemplateId;
+    piece.events = _.cloneDeep(card.events);
+    piece.attack = card.attack;
+    piece.health = card.health;
+    piece.baseAttack = card.attack;
+    piece.baseHealth = card.health;
+    piece.movement = card.movement;
+    piece.baseMovement = card.movement;
+    piece.range = card.range || null;
+    piece.baseRange = card.range || null;
+    piece.baseTags = _.cloneDeep(card.tags);
+    piece.tags = _.cloneDeep(card.tags);
+    piece.statuses = card.statuses || 0;
+    piece.baseStatuses = card.statuses || 0;
+  }
+
+  copyPropertiesFromPiece(src, dest){
+    dest.name = src.name;
+    dest.cardTemplateId = src.cardTemplateId;
+    dest.events = _.cloneDeep(src.events);
+    dest.attack = src.attack;
+    dest.baseAttack = src.baseAttack;
+    dest.health = src.health;
+    dest.baseHealth = src.baseHealth;
+    dest.movement = src.movement;
+    dest.baseMovement = src.movement;
+    dest.range = src.range;
+    dest.baseRange = src.baseRange;
+    dest.tags = _.cloneDeep(src.tags);
+    dest.baseTags = _.cloneDeep(src.tags);
+    dest.statuses = src.statuses;
+    dest.baseStatuses = src.baseStatuses;
+    dest.abilityCharge = src.abilityCharge;
+
+    //copy aura but maintain dest piece Id
+    dest.aura = _.cloneDeep(src.aura);
+    if(dest.aura){
+      dest.aura.pieceId = dest.id;
+    }
+  }
+
+  setInitialMoveAttackStatus(piece){
+    piece.hasMoved = !(piece.statuses & Statuses.Charge) && piece.range === null;
+    piece.hasAttacked = !(piece.statuses & Statuses.Charge);
   }
 
   remove(id){
