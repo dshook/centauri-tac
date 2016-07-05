@@ -46,11 +46,13 @@
 * ~~attributes with selector (get enemy hero hp)~~
 * board state (number of minions on board)
 * has minion with selector on the board
+* conditional buff, like enrage
 
 
 ##Actions
 * choose effects
 * copy minion (into hand or play)
+* Add card to hand by id
 * Add code to targets (give x minions this deathrattle)
 * move minion into play from deck/unsummon minion from play
 * card cost modification
