@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
-//gross
-import Enum from '../../../../lib/enum';
+import Enum from 'enum';
 
 var Direction = Enum({
   North: 1,
@@ -31,7 +30,7 @@ export function directionOf(dir1, dir2){
       return 'facing';
       break;
     default:
-      throw 'Invalid Direction to face dir1 ' + dir1 + ' dir2' + dir2;
+      throw 'Invalid Direction to face dir1 ' + dir1 + ' dir2 ' + dir2;
   }
 }
 
