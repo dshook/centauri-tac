@@ -3,9 +3,6 @@ import DrawCard from '../actions/DrawCard.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class DrawCardProcessor
 {

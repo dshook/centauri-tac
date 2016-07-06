@@ -3,9 +3,6 @@ import PlaySpell from '../actions/PlaySpell.js';
 import loglevel from 'loglevel-decorator';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class PlaySpellProcessor
 {

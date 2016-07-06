@@ -5,7 +5,7 @@ import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
 /**
- * Handle pieces losing or gaining their current health
+ * Handle pieces getting k.o'd
  */
 @loglevel
 export default class PieceDestroyedProcessor

@@ -3,9 +3,6 @@ import Card from '../models/Card.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class SpawnDeckProcessor
 {
@@ -32,7 +29,7 @@ export default class SpawnDeckProcessor
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be most of your deck
-    let testingCards = [67,69,38,59];
+    let testingCards = [70];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);

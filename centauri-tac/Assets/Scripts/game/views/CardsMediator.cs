@@ -22,6 +22,7 @@ namespace ctac
         [Inject] public CardDrawnSignal cardDrawn { get; set; }
         [Inject] public CardDrawShownSignal cardDrawShown { get; set; }
         [Inject] public CardDiscardedSignal cardDiscarded { get; set; }
+        [Inject] public CardGivenSignal cardGiven { get; set; }
         [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
@@ -42,6 +43,7 @@ namespace ctac
             destroyCard.AddListener(onDestroyCard);
             cardDestroyed.AddListener(onCardDestroyed);
             cardDrawn.AddListener(onCardDrawn);
+            cardGiven.AddListener(onCardGiven);
             cardDrawShown.AddListener(onCardDrawnShown);
             cardDiscarded.AddListener(onCardDiscarded);
             turnEnded.AddListener(onTurnEnded);
@@ -57,6 +59,7 @@ namespace ctac
             activateCard.RemoveListener(onCardActivated);
             cardDestroyed.RemoveListener(onCardDestroyed);
             cardDrawn.RemoveListener(onCardDrawn);
+            cardGiven.RemoveListener(onCardGiven);
             cardDrawShown.RemoveListener(onCardDrawnShown);
             cardDiscarded.RemoveListener(onCardDiscarded);
             turnEnded.RemoveListener(onTurnEnded);
@@ -108,23 +111,28 @@ namespace ctac
         {
             //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
             var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-            if (card.playerId == opponentId)
+            var isOpponent = card.playerId == opponentId;
+            animationQueue.Add(new CardsView.DrawCardAnim()
             {
-                animationQueue.Add(new CardsView.DrawCardAnim()
-                {
-                    card = card,
-                    cardDrawn = cardDrawShown,
-                    isOpponentCard = true
-                });
-            }
-            else
+                card = card,
+                cardDrawn = cardDrawShown,
+                isOpponentCard = isOpponent
+            });
+        }
+
+        private void onCardGiven(CardModel card)
+        {
+            //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
+            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            var isOpponent = card.playerId == opponentId;
+
+            animationQueue.Add(new CardsView.GiveCardAnim()
             {
-                animationQueue.Add(new CardsView.DrawCardAnim()
-                {
-                    card = card,
-                    cardDrawn = cardDrawShown
-                });
-            }
+                card = card,
+                isOpponentCard = isOpponent 
+            });
+
+            onCardDrawn(card);
         }
 
         private void onCardDrawnShown(CardModel card)

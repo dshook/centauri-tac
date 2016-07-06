@@ -52,18 +52,18 @@ namespace ctac
 
             for (var c = 0; c < spawnDeck.cards; c++)
             {
-                var newPiece = GameObject.Instantiate(
+                var newCard = GameObject.Instantiate(
                     cardPrefab,
                     spawnPosition,
                     Quaternion.identity
                 ) as GameObject;
-                newPiece.transform.SetParent(DeckGO.transform, false);
-                newPiece.name = "Player " + spawnDeck.playerId + " Card " + c;
+                newCard.transform.SetParent(DeckGO.transform, false);
+                newCard.name = "Player " + spawnDeck.playerId + " Card " + c;
 
                 var cardModel = new CardModel()
                 {
                     playerId = spawnDeck.playerId,
-                    gameObject = newPiece
+                    gameObject = newCard
                 };
 
                 decks.Cards.Add(cardModel);

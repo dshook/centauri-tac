@@ -227,6 +227,44 @@ namespace ctac {
             }
         }
 
+        public class GiveCardAnim : IAnimate
+        {
+            private float animTime = 0.5f;
+
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return animTime; } }
+
+            public CardModel card { get; set; }
+            public bool isOpponentCard { get; set; }
+
+            private RectTransform rectTransform;
+
+            public void Init() {
+                var midScreen = new Vector3(0.5f, 0.5f, 0);
+
+                rectTransform = card.gameObject.GetComponent<RectTransform>();
+                rectTransform.anchorMax = midScreen;
+                rectTransform.anchorMin = midScreen;
+                rectTransform.anchoredPosition3D = midScreen;
+                if (isOpponentCard)
+                {
+                    rectTransform.localRotation = Quaternion.Euler(new Vector3(0, 180, 180));
+                }
+                else
+                {
+                    rectTransform.localRotation = Quaternion.identity;
+                }
+                rectTransform.localScale = Vector3.zero;
+                rectTransform.pivot = midScreen;
+            }
+            public void Update()
+            {
+                iTweenExtensions.ScaleTo(card.gameObject, Vector3.one, animTime, 0f, EaseType.easeInOutQuint);
+                Complete = true;
+            }
+        }
+
         public class DiscardCardAnim : IAnimate
         {
             public bool Complete { get; set; }

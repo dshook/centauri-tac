@@ -3,7 +3,7 @@ import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
 /**
- * Handle playing a card
+ * Handle getting temporary or permanent energy
  */
 @loglevel
 export default class PlayerResourceProcessor

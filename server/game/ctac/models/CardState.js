@@ -28,10 +28,17 @@ export default class CardState
     return newCard.id;
   }
 
+  addToHand(playerId, card){
+    if(!card.id){
+      card.id = this.nextId++;
+    }
+    this.hands[playerId].push(card);
+  }
+
   //transfer card from deck to hand and return drawn card
   drawCard(playerId){
     let cardDrawn = this.decks[playerId].splice(0, 1)[0];
-    this.hands[playerId].push(cardDrawn);
+    this.addToHand(playerId, cardDrawn);
     return cardDrawn;
   }
 

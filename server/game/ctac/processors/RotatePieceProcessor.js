@@ -3,9 +3,6 @@ import Direction from '../models/Direction.js';
 import RotatePiece from '../actions/RotatePiece.js';
 import loglevel from 'loglevel-decorator';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class RotatePieceProcessor
 {

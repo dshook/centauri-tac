@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 70,
+	"name": "Energy Shard",
+	"description": "<b>Death</b>: Add a credit to your hand",
+	"cost": 2,
+	"attack": 1,
+	"health": 1,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "death{ GiveCard(PLAYER, 44) }
+	"
+}

@@ -4,9 +4,6 @@ import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class DiscardCardProcessor
 {

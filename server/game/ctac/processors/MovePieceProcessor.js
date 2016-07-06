@@ -8,9 +8,6 @@ import AttackPiece from '../actions/AttackPiece.js';
 import Constants from '../util/Constants.js';
 import loglevel from 'loglevel-decorator';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class MovePieceProcessor
 {

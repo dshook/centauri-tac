@@ -5,6 +5,7 @@ import Position from '../models/Position.js';
 import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import DiscardCard from '../actions/DiscardCard.js';
+import GiveCard from '../actions/GiveCard.js';
 import Message from '../actions/Message.js';
 import CharmPiece from '../actions/CharmPiece.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
@@ -564,6 +565,13 @@ export default class CardEvaluator{
                   this.queue.push(new TransformPiece(s.id, cardTemplateId, transformPieceId));
                 }
               }
+              break;
+            }
+            //GiveCard(PlayerSelector, cardTemplateId)
+            case 'GiveCard':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              this.queue.push(new GiveCard(playerSelector, action.args[1]));
               break;
             }
           }

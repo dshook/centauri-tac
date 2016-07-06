@@ -2,9 +2,7 @@ import GamePiece from '../models/GamePiece.js';
 import CharmPiece from '../actions/CharmPiece.js';
 import loglevel from 'loglevel-decorator';
 
-/**
- * Handle the PassTurn action
- */
+//Take control of a piece
 @loglevel
 export default class CharmPieceProcessor
 {

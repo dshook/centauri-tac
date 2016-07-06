@@ -4,9 +4,6 @@ import SetPlayerResource from '../actions/SetPlayerResource.js';
 import Message from '../actions/Message.js';
 import loglevel from 'loglevel-decorator';
 
-/**
- * Handle the PassTurn action
- */
 @loglevel
 export default class SpawnPieceProcessor
 {

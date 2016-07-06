@@ -50,7 +50,7 @@
   return 'action'
 
 // actions about players
-(DrawCard|Discard|ChangeEnergy)
+(DrawCard|Discard|ChangeEnergy|GiveCard)
   return 'action'
 
 //timer actions

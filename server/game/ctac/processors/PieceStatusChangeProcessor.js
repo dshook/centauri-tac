@@ -6,9 +6,6 @@ import loglevel from 'loglevel-decorator';
 import attributes from '../util/Attributes.js';
 import _ from 'lodash';
 
-/**
- * Handle pieces losing or gaining their current health
- */
 @loglevel
 export default class PieceStatusChangeProcessor
 {
