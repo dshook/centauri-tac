@@ -52,11 +52,11 @@
 ##Actions
 * choose effects
 * copy minion (into hand or play)
-* Add card to hand by id
 * Add code to targets (give x minions this deathrattle)
 * move minion into play from deck/unsummon minion from play
 * card cost modification
 * Shuffle into deck
+* ~~Add card to hand by id~~
 * ~~transform a minion into another minion~~
 * ~~aura effects~~
 * ~~discard a card~~

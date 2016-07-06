@@ -387,6 +387,31 @@ test('Find Possible spell targets with TechResist', t => {
 
 });
 
+test('Find Possible targets for eventual number', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  spawnCard(cardState, 1, 71);
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let targets = cardEval.findPossibleTargets(cardState.hands[1], 1);
+  //expecting friendly minions
+  let expectedTargets = [
+    {cardId: 1, event: 'playSpell', targetPieceIds: [2]}
+  ];
+
+  t.deepEqual(targets, expectedTargets, 'Got targets for eventual number');
+});
+
 test('Spawn a piece', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1);

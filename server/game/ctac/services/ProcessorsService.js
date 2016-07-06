@@ -12,6 +12,7 @@ import PieceBuffProcessor from '../processors/PieceBuffProcessor.js';
 import PieceAuraProcessor from '../processors/PieceAuraProcessor.js';
 import SpawnPieceProcessor from '../processors/SpawnPieceProcessor.js';
 import GiveCardProcessor from '../processors/GiveCardProcessor.js';
+import ShuffleToDeckProcessor from '../processors/ShuffleToDeckProcessor.js';
 import ActivateCardProcessor from '../processors/ActivateCardProcessor.js';
 import ActivateAbilityProcessor from '../processors/ActivateAbilityProcessor.js';
 import DrawCardProcessor from '../processors/DrawCardProcessor.js';
@@ -43,6 +44,7 @@ export default class TurnService
     queue.addProcessor(PieceAuraProcessor);
     queue.addProcessor(SpawnPieceProcessor);
     queue.addProcessor(GiveCardProcessor);
+    queue.addProcessor(ShuffleToDeckProcessor);
 
     queue.addProcessor(SpawnDeckProcessor);
     queue.addProcessor(ActivateCardProcessor);

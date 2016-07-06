@@ -6,6 +6,7 @@ import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import DiscardCard from '../actions/DiscardCard.js';
 import GiveCard from '../actions/GiveCard.js';
+import ShuffleToDeck from '../actions/ShuffleToDeck.js';
 import Message from '../actions/Message.js';
 import CharmPiece from '../actions/CharmPiece.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
@@ -53,6 +54,8 @@ export default class CardEvaluator{
       'Destroy',
       'Move',
       'Transform',
+      'GiveCard',
+      'ShuffleToDeck',
       'startTurnTimer',
       'endTurnTimer'
     ];
@@ -313,7 +316,7 @@ export default class CardEvaluator{
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
               this.queue.push(new SetPlayerResource(
                 playerSelector,
-                this.selector.eventualNumber(action.args[1]),
+                this.selector.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams),
                 action.args[2],
                 action.args[3]
               ));
@@ -571,7 +574,16 @@ export default class CardEvaluator{
             case 'GiveCard':
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              this.queue.push(new GiveCard(playerSelector, action.args[1]));
+              let cardId = this.selector.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams);
+              this.queue.push(new GiveCard(playerSelector, cardId));
+              break;
+            }
+            //ShuffleToDeck(PlayerSelector, cardTemplateId)
+            case 'ShuffleToDeck':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              let cardId = this.selector.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams);
+              this.queue.push(new ShuffleToDeck(playerSelector, cardId));
               break;
             }
           }
@@ -720,10 +732,14 @@ export default class CardEvaluator{
           }
         }
 
-        //Selectors will always have a left
-        if(!arg.left) continue;
-
         let selector = arg;
+
+        if(arg.attributeSelector){
+          selector = arg.attributeSelector;
+        }
+
+        //Selectors should always have a left
+        if(!selector.left) continue;
 
         if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
 

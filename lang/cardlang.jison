@@ -50,7 +50,7 @@
   return 'action'
 
 // actions about players
-(DrawCard|Discard|ChangeEnergy|GiveCard)
+(DrawCard|Discard|ChangeEnergy|GiveCard|ShuffleToDeck)
   return 'action'
 
 //timer actions
@@ -58,7 +58,7 @@
   return 'action'
 
 //attributes
-(health|attack|movement|range)
+(health|attack|movement|range|cardTemplateId)
   return 'attribute'
 
 //statuses

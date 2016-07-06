@@ -17,6 +17,9 @@ namespace ctac
         public DeckSpawnedSignal deckSpawned { get; set; }
 
         [Inject]
+        public ShuffleToDeckSignal shuffleToDeck { get; set; }
+
+        [Inject]
         public TurnEndedSignal turnEnded { get; set; }
 
         [Inject]
@@ -26,6 +29,7 @@ namespace ctac
         {
             turnEnded.AddListener(onTurnEnded);
             deckSpawned.AddListener(onDeckSpawned);
+            shuffleToDeck.AddListener(onShuffleToDeck);
         }
 
         public override void onRemove()
@@ -33,9 +37,15 @@ namespace ctac
             base.onRemove();
             turnEnded.RemoveListener(onTurnEnded);
             deckSpawned.RemoveListener(onDeckSpawned);
+            shuffleToDeck.RemoveListener(onShuffleToDeck);
         }
 
         private void onDeckSpawned(SpawnDeckModel deck)
+        {
+            updateDecks();
+        }
+
+        private void onShuffleToDeck(CardModel card)
         {
             updateDecks();
         }

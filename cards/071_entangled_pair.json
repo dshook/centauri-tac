@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 71,
+	"name": "Entangled Pair",
+	"description": "Shuffle a pair of a friendly minion into your deck",
+	"cost": 1,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{
+		ShuffleToDeck(PLAYER, SelectAttribute(TARGET & FRIENDLY & MINION, cardTemplateId)) * 2
+	}
+	"
+}

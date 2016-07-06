@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import Random from '../util/Random.js';
 
 /**
  * Current players hands and decks indexed by player id
@@ -19,11 +20,16 @@ export default class CardState
     this.millState[playerId] = 0;
   }
 
-  addToDeck(playerId, newCard){
+  addToDeck(playerId, newCard, randomPosition = false){
     let deck = this.decks[playerId];
     newCard.id = this.nextId++;
 
-    deck.push(newCard);
+    if(randomPosition){
+      let index = Random.Range(0, deck.length - 1);
+      deck.splice(index, 0, newCard);
+    }else{
+      deck.push(newCard);
+    }
 
     return newCard.id;
   }

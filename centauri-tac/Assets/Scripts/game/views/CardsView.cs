@@ -126,7 +126,7 @@ namespace ctac {
                 rectTransform.pivot = anchorPosition;
                 rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
 
-                if (card.playable)
+                if (card.playable && cardGlowMat != null)
                 {
                     card.cardView.costText.fontMaterial = cardGlowMat;
                 }
