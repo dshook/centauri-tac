@@ -1,9 +1,9 @@
 var fs = require('fs');
 var outputFile = './maps/cubeland.json';
 
-var mapXSize = 8;
-var mapZSize = 8;
-var tileSet = ['clay', 'sand'];
+var mapXSize = 10;
+var mapZSize = 10;
+var tileSet = ['grass', 'rock', 'clay'];
 
 function random(min, max) {
   if (max == null) {
