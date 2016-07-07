@@ -65,7 +65,7 @@ namespace ctac {
             {
                 var card = opponentCards[c];
                 if(card.activated) continue;
-                var rectTransform = card.gameObject.GetComponent<RectTransform>();
+                var rectTransform = card.rectTransform;
                 var cardCountOffset = 0 - ((opponentCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f + cardCountOffset * cardAngleSpread));
                 rectTransform.Rotate(Vector3.up, 180f, Space.Self);
@@ -85,7 +85,7 @@ namespace ctac {
             {
                 var card = playerCards[c];
                 if(card.activated) continue;
-                var rectTransform = card.gameObject.GetComponent<RectTransform>();
+                var rectTransform = card.rectTransform;
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
@@ -243,7 +243,7 @@ namespace ctac {
             public void Init() {
                 var midScreen = new Vector3(0.5f, 0.5f, 0);
 
-                rectTransform = card.gameObject.GetComponent<RectTransform>();
+                rectTransform = card.rectTransform;
                 rectTransform.anchorMax = midScreen;
                 rectTransform.anchorMin = midScreen;
                 rectTransform.anchoredPosition3D = midScreen;

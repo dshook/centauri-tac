@@ -45,13 +45,8 @@ namespace ctac
             ) as GameObject;
             cardGameObject.name = "Player " + cardGiven.playerId + " Card " + cardGiven.cardId;
 
-            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
-            cardGameObject.transform.SetParent(cardParent.transform);
-
-            newCardModel.gameObject = cardGameObject;
-            var cardView = cardGameObject.AddComponent<CardView>();
-            cardView.card = newCardModel;
-            newCardModel.cardView = cardView;
+            newCardModel.SetupGameObject(cardGameObject);
+            newCardModel.SetCardInPlay(contextView);
 
             cardGivenSignal.Dispatch(newCardModel);
 

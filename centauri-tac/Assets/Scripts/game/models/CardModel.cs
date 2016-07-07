@@ -23,6 +23,8 @@ namespace ctac
         [JsonIgnore]
         public GameObject gameObject { get; set; }
         [JsonIgnore]
+        public RectTransform rectTransform { get; set; }
+        [JsonIgnore]
         public CardView cardView { get; set; }
 
         [JsonIgnore]
@@ -58,5 +60,21 @@ namespace ctac
         
         //when the card has been activated and should be going through animation
         public bool activated { get; set; }
+
+        //moves the card from being under deck control to in play under card canvas
+        public void SetCardInPlay(GameObject contextView)
+        {
+            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
+            gameObject.transform.SetParent(cardParent.transform);
+        }
+
+        public void SetupGameObject(GameObject cardGameObject)
+        {
+            gameObject = cardGameObject;
+            rectTransform = cardGameObject.GetComponent<RectTransform>();
+            var cardView = cardGameObject.AddComponent<CardView>();
+            cardView.card = this;
+            this.cardView = cardView;
+        }
     }
 }

@@ -50,13 +50,8 @@ namespace ctac
             decks.Cards.Remove(deckCard);
             deckCard.gameObject = null;
 
-            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
-            cardGameObject.transform.SetParent(cardParent.transform);
-
-            newCardModel.gameObject = cardGameObject;
-            var cardView = cardGameObject.AddComponent<CardView>();
-            cardView.card = newCardModel;
-            newCardModel.cardView = cardView;
+            newCardModel.SetupGameObject(cardGameObject);
+            newCardModel.SetCardInPlay(contextView);
 
             cardDrawn.Dispatch(newCardModel);
 

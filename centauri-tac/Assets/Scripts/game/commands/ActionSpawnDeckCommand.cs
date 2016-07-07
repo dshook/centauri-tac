@@ -63,7 +63,8 @@ namespace ctac
                 var cardModel = new CardModel()
                 {
                     playerId = spawnDeck.playerId,
-                    gameObject = newCard
+                    gameObject = newCard,
+                    rectTransform = newCard.GetComponent<RectTransform>()
                 };
 
                 decks.Cards.Add(cardModel);

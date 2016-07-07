@@ -62,15 +62,17 @@ namespace ctac
             view.UpdatePositions(playerCards, opponentCards);
         }
 
+        private List<CardModel> emptyList = new List<CardModel>();
+
         private List<CardModel> GetPlayerCards()
         {
-            if(decks == null || decks.Cards == null) return new List<CardModel>();
+            if(decks == null || decks.Cards == null) return emptyList;
             return decks.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
         }
 
         private List<CardModel> GetOpponentCards()
         {
-            if(decks == null || decks.Cards == null) return new List<CardModel>();
+            if(decks == null || decks.Cards == null) return emptyList;
             return decks.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
         }
     }

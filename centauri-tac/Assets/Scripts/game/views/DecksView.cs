@@ -41,7 +41,7 @@ namespace ctac {
                 card.gameObject.transform.SetParent(DeckGO.transform, false);
             }
 
-            var rectTransform = card.gameObject.GetComponent<RectTransform>();
+            var rectTransform = card.rectTransform;
             rectTransform.anchorMax = anchorPosition;
             rectTransform.anchorMin = anchorPosition;
             rectTransform.anchoredPosition3D = baseCardOffset + new Vector3(c * 0.3f, 0, 0);

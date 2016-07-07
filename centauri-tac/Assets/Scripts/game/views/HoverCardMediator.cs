@@ -38,7 +38,7 @@ namespace ctac
         {
             if (card != null)
             {
-                var hoveredCardRect = card.gameObject.GetComponent<RectTransform>();
+                var hoveredCardRect = card.rectTransform;
                 var position = hoveredCardRect.anchoredPosition3D;
                 view.showCardFromHand(card, position);
             }

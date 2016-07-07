@@ -48,14 +48,9 @@ namespace ctac
                 Quaternion.identity
             ) as GameObject;
             cardGameObject.name = "Player " + cardGiven.playerId + " Card " + cardGiven.cardId;
+            newCardModel.rectTransform = cardGameObject.GetComponent<RectTransform>();
 
-            var cardModel = new CardModel()
-            {
-                playerId = cardGiven.playerId,
-                gameObject = cardGameObject
-            };
-
-            decks.Cards.Add(cardModel);
+            decks.Cards.Add(newCardModel);
 
             cardGivenSignal.Dispatch(newCardModel);
 
