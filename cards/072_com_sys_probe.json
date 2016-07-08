@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 72,
+	"name": "COM-SYS Probe",
+	"description": "If you have another minion, gain +1 attack and +1 movement",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		Count(FRIENDLY & MINION) > 1 && Buff(SELF, 'Ally Boost', attack(1), movement(1) )
+	}
+	"
+}

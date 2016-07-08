@@ -14,6 +14,7 @@ import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
+import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
 import ActionQueue from 'action-queue';
@@ -639,4 +640,39 @@ test('Find Possible areas', t => {
     }
   ];
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Got back expected areas for move');
+});
+
+test('Conditional Action', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1);
+  spawnPiece(pieceStateMix, 2, 1);
+  spawnPiece(pieceStateMix, 1, 2);
+  spawnPiece(pieceStateMix, 2, 2);
+
+  t.plan(3);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let testBot = spawnPiece(pieceStateMix, 72, 1);
+
+  cardEval.evaluatePieceEvent('playMinion', testBot, 1);
+
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.ok(queue._actions[0] instanceof PieceBuff, 'First action is Piece Buff');
+
+  //now without any minions shouldn't get the buff
+  let sparsePieceState = new PieceState();
+  spawnPiece(sparsePieceState, 1, 1);
+  spawnPiece(sparsePieceState, 1, 2);
+
+  queue = new ActionQueue();
+  selector = new Selector(players, sparsePieceState);
+  cardEval = new CardEvaluator(queue, selector, sparsePieceState, mapState);
+
+  testBot = spawnPiece(pieceStateMix, 72, 1);
+
+  cardEval.evaluatePieceEvent('playMinion', testBot, 1);
+
+  t.equal(queue._actions.length, 0, '0 Actions in the queue for unmet condition');
 });

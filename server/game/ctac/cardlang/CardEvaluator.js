@@ -258,6 +258,15 @@ export default class CardEvaluator{
           isSpell: !pieceAction.piece,
           isTimer: pieceAction.isTimer || false
         };
+
+        //check to see if we should even do this action
+        if(action.condition){
+          let compareResult = this.selector.compareExpression(action.condition, this.pieceState, pieceAction.playerId, pieceSelectorParams)
+          if(compareResult.length === 0){
+            continue;
+          }
+        }
+
         let times = 1;
         if(action.times){
           times = this.selector.eventualNumber(action.times, pieceAction.playerId, pieceSelectorParams);
