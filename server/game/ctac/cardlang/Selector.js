@@ -126,7 +126,7 @@ export default class Selector{
       }
       return 0;
     }else if(input.count){
-      let selectedPieces = this.selectPieces(controllingPlayerId, input.attributeSelector, pieceSelectorParams);
+      let selectedPieces = this.selectPieces(controllingPlayerId, input.selector, pieceSelectorParams);
       return selectedPieces.length;
     }
     return input;

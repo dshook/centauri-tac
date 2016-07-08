@@ -510,6 +510,44 @@ test('Id selection', t => {
   t.equal(selection[0].cardTemplateId, 2, 'Got the right Id back');
 });
 
+test('Eventual numbers', t => {
+  t.plan(3);
+  let randomList = {
+    eNumber: true,
+    randList: [1, 2, 3]
+  };
+
+  let selector = new Selector(players, pieceStateMix, mapState);
+
+  let randNumber = selector.eventualNumber(randomList, 1, {selfPiece});
+  t.ok(randomList.randList.includes(randNumber), 'Got back a random number in array ' + randNumber);
+
+  let attributeSelector = {
+    eNumber: true,
+    attributeSelector: {
+      left: "ENEMY",
+      op: "&",
+      right: "HERO"
+    },
+    attribute: "health"
+  };
+  let heroHp = selector.eventualNumber(attributeSelector, 1, {selfPiece});
+  t.equal(heroHp, 30, 'Got back the hero hp');
+
+  let countSelector = {
+    eNumber: true,
+    count: true,
+    selector: {
+      left: "ENEMY",
+      op: "&",
+      right: "MINION"
+    }
+  };
+  let enemyCount = selector.eventualNumber(countSelector, 1, {selfPiece});
+  t.equal(enemyCount, 2, 'Got right number of enemies');
+
+});
+
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
   var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
   newPiece.position = position;
