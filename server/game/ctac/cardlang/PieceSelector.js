@@ -130,42 +130,8 @@ export default class PieceSelector{
     }
 
     //first check if this is a compare expression
-    //The compare expressions can only have 1 depth so evaluate both the left and right here and return the result
-    //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
     if(selector.compareExpression){
-      let leftResult, rightResult;
-
-      if(selector.left.attributeSelector){
-        leftResult = this.selector.selectPieces(this.controllingPlayerId, selector.left.attributeSelector, this.pieceSelectorParams);
-      }else{
-        leftResult = this.selector.eventualNumber(selector.left, this.controllingPlayerId, this.pieceSelectorParams);
-      }
-
-      if(selector.right.attributeSelector){
-        rightResult = this.selector.selectPieces(this.controllingPlayerId, selector.right.attributeSelector, this.pieceSelectorParams);
-      }else{
-        rightResult = this.selector.eventualNumber(selector.right, this.controllingPlayerId, this.pieceSelectorParams);
-      }
-
-      let leftIsArray = Array.isArray(leftResult);
-      let rightIsArray = Array.isArray(rightResult);
-      if(leftIsArray && rightIsArray){
-        throw 'Cannot use two attribute selectors in a comparison expression';
-      }else if(!leftIsArray && !rightIsArray){
-        //two number case
-        let compareResult = this.CompareFromString(leftResult, rightResult, selector.op);
-        if(compareResult){
-          return this.allPieces;
-        }else{
-          return [];
-        }
-      }else{
-        //one number, one piece array case.  Iterate and compare attributes
-        let array = leftIsArray ? leftResult : rightResult;
-        let number = leftIsArray ? rightResult : leftResult;
-        let attribute = leftIsArray ? selector.left.attribute : selector.right.attribute;
-        return this.allPieces.filter(p => this.CompareFromString(p[attribute], number, selector.op));
-      }
+      return this.selector.compareExpression(selector, this.allPieces, this.controllingPlayerId, this.pieceSelectorParams);
     }
 
     //ordinary case of recursing the piece selections
@@ -188,28 +154,6 @@ export default class PieceSelector{
 
     }else{
       return leftResult;
-    }
-  }
-
-  CompareFromString(a, b, op){
-    switch(op){
-      case '<':
-        return a < b;
-        break;
-      case '>':
-        return a > b;
-        break;
-      case '>=':
-        return a >= b;
-        break;
-      case '<=':
-        return a <= b;
-        break;
-      case '==':
-        return a === b;
-        break;
-      default:
-        throw 'Invalid comparison operator ' + op;
     }
   }
 }

@@ -100,6 +100,7 @@
 '*'    return '*'
 '='    return '='
 '|'    return '|'
+'&&'   return '&&'
 '&'    return '&'
 '-'    return '-'
 '<'    return '<'
@@ -107,6 +108,7 @@
 '>'    return '>'
 '>='   return '>='
 '=='   return '=='
+
 
 
 <<EOF>>               return 'EOF'
@@ -121,6 +123,7 @@
 %left '|'
 %left '&'
 %left '-'
+%left '&&'
 
 %start events
 
@@ -162,6 +165,14 @@ actionargs
   | action '('arguments')' '*' eNumber
   {{ $$ =
     { action: $1, args: $3, times: $6 }
+  }}
+  | comparisonExpression '&&' action '('arguments')'
+  {{ $$ =
+    { condition: $1, action: $3, args: $5 }
+  }}
+  | comparisonExpression '&&' action '('arguments')' '*' eNumber
+  {{ $$ =
+    { condition: $1, action: $3, args: $5, times: $8 }
   }}
   ;
 

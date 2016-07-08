@@ -131,5 +131,67 @@ export default class Selector{
     }
     return input;
   }
+
+  //Evaluates a compare expression
+  //The compare expressions can only have 1 depth so evaluate both the left and right here and return the result
+  //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
+  //can be coerced to a bool by looking if there were pieces returned or not
+  compareExpression(selector, pieces, controllingPlayerId, pieceSelectorParams){
+    let leftResult, rightResult;
+
+    if(selector.left.attributeSelector){
+      leftResult = this.selectPieces(controllingPlayerId, selector.left.attributeSelector, pieceSelectorParams);
+    }else{
+      leftResult = this.eventualNumber(selector.left, controllingPlayerId, pieceSelectorParams);
+    }
+
+    if(selector.right.attributeSelector){
+      rightResult = this.selectPieces(controllingPlayerId, selector.right.attributeSelector, pieceSelectorParams);
+    }else{
+      rightResult = this.eventualNumber(selector.right, controllingPlayerId, pieceSelectorParams);
+    }
+
+    let leftIsArray = Array.isArray(leftResult);
+    let rightIsArray = Array.isArray(rightResult);
+    if(leftIsArray && rightIsArray){
+      throw 'Cannot use two attribute selectors in a comparison expression';
+    }else if(!leftIsArray && !rightIsArray){
+      //two number case
+      let compareResult = this.CompareFromString(leftResult, rightResult, selector.op);
+      if(compareResult){
+        return pieces;
+      }else{
+        return [];
+      }
+    }else{
+      //one number, one piece array case.  Iterate and compare attributes
+      let array = leftIsArray ? leftResult : rightResult;
+      let number = leftIsArray ? rightResult : leftResult;
+      let attribute = leftIsArray ? selector.left.attribute : selector.right.attribute;
+      return pieces.filter(p => this.CompareFromString(p[attribute], number, selector.op));
+    }
+  }
+
+  CompareFromString(a, b, op){
+    switch(op){
+      case '<':
+        return a < b;
+        break;
+      case '>':
+        return a > b;
+        break;
+      case '>=':
+        return a >= b;
+        break;
+      case '<=':
+        return a <= b;
+        break;
+      case '==':
+        return a === b;
+        break;
+      default:
+        throw 'Invalid comparison operator ' + op;
+    }
+  }
 }
 

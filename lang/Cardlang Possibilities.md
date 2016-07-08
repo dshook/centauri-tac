@@ -44,9 +44,8 @@
 * Unit is dead (self?)
 * holding card with selector
 * ~~attributes with selector (get enemy hero hp)~~
-* board state (number of minions on board)
-* has minion with selector on the board
-* conditional buff, like enrage
+* enumber expression (more than 3 minions on board)
+* conditional buff, like enrage (add condition expression to buff)
 
 
 ##Actions
@@ -80,6 +79,4 @@
 ##Counters
 * mana spent for card
 * minions died 
-* Count pieces with selector
-* Aggregation functions, sum/count all Attribute of selected pieces
-
+* ~~Count pieces with selector~~

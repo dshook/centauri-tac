@@ -675,3 +675,53 @@ test('Count eNum selector', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Conditional action', t => {
+  t.plan(1);
+
+  let input = `
+    playSpell{ Count(FRIENDLY & MINION) > 1 && DrawCard(PLAYER) Discard(OPPONENT)}
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playSpell",
+      "actions": [
+        {
+          "condition": {
+            "compareExpression": true,
+            "left": {
+              "eNumber": true,
+              "count": true,
+              "selector": {
+                "left": "FRIENDLY",
+                "op": "&",
+                "right": "MINION"
+              }
+            },
+            "op": ">",
+            "right": 1
+          },
+          "action": "DrawCard",
+          "args": [
+            {
+              "left": "PLAYER"
+            }
+          ]
+        },
+        {
+          "action": "Discard",
+          "args": [
+            {
+              "left": "OPPONENT"
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
