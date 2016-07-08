@@ -125,6 +125,9 @@ export default class Selector{
         return firstPiece[input.attribute];
       }
       return 0;
+    }else if(input.count){
+      let selectedPieces = this.selectPieces(controllingPlayerId, input.attributeSelector, pieceSelectorParams);
+      return selectedPieces.length;
     }
     return input;
   }

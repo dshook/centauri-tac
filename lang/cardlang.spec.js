@@ -638,3 +638,40 @@ test('Tag selection', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Count eNum selector', t => {
+  t.plan(1);
+
+  let input = `
+    playSpell{DrawCard(PLAYER) * Count(ENEMY & MINION) }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playSpell",
+      "actions": [
+        {
+          "action": "DrawCard",
+          "args": [
+            {
+              "left": "PLAYER"
+            }
+          ],
+          "times": {
+            "eNumber": true,
+            "count": true,
+            "selector": {
+              "left": "ENEMY",
+              "op": "&",
+              "right": "MINION"
+            }
+          }
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});

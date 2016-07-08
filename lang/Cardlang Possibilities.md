@@ -80,5 +80,6 @@
 ##Counters
 * mana spent for card
 * minions died 
+* Count pieces with selector
 * Aggregation functions, sum/count all Attribute of selected pieces
 

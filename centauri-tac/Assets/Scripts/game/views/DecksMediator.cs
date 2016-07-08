@@ -47,6 +47,7 @@ namespace ctac
 
         private void onShuffleToDeck(CardModel card)
         {
+            //TODO: Better animation
             updateDecks();
         }
 

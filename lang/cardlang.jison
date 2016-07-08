@@ -42,8 +42,11 @@
 (Random)
   return 'random'
 
+//eventual number stuff
 (SelectAttribute)
   return 'selectAttr'
+(Count)
+  return 'count'
 
 // actions
 (SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform)
@@ -252,6 +255,8 @@ eNumber
      { $$ = { eNumber: true, randList: $3 }; }
   | selectAttr'('possibleRandSelector','attribute')'
      { $$ = { eNumber: true, attributeSelector: $3, attribute: $5 }; }
+  | count'('possibleRandSelector')'
+     { $$ = { eNumber: true, count: true, selector: $3 }; }
   ;
 
 numberList
