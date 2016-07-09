@@ -15,7 +15,7 @@ namespace ctac
         public bool currentPlayerHasControl { get; set; }
 
         public bool hasMoved { get; set; }
-        public bool hasAttacked { get; set; }
+        public int attackCount { get; set; }
 
         public List<string> tags { get; set; }
         public Statuses statuses { get; set; }
@@ -36,6 +36,14 @@ namespace ctac
         public int? baseRange { get; set; }
 
         public List<PieceBuffModel> buffs { get; set; }
+
+        public int maxAttacks
+        {
+            get
+            {
+                return FlagsHelper.IsSet(statuses, Statuses.DyadStrike) ? 2 : 1;
+            }
+        }
 
     }
 

@@ -44,7 +44,7 @@ namespace ctac
             foreach (var piece in piecesModel.Pieces)
             {
                 piece.hasMoved = false;
-                piece.hasAttacked = false;
+                piece.attackCount = 0;
                 if (piece.playerId == opponentId)
                 {
                     piece.currentPlayerHasControl = false;

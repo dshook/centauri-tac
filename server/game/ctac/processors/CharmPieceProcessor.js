@@ -34,7 +34,10 @@ export default class CharmPieceProcessor
       return queue.cancel(action);
     }
 
+    //switch side, and init new piece
     piece.playerId = newPlayer.id;
+    this.pieceState.setInitialMoveAttackStatus(piece);
+
     action.newPlayerId = piece.playerId;
 
     queue.complete(action);

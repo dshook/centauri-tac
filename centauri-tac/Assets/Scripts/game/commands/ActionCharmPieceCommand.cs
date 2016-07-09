@@ -18,6 +18,8 @@ namespace ctac
 
         [Inject]
         public IDebugService debug { get; set; }
+        [Inject]
+        public IPieceService pieceService { get; set; }
 
         public override void Execute()
         {
@@ -26,8 +28,8 @@ namespace ctac
             var piece = pieces.Piece(charmedPiece.pieceId);
             piece.playerId = charmedPiece.newPlayerId;
             piece.currentPlayerHasControl = gameTurns.currentPlayerId == piece.playerId;
-            piece.hasAttacked = true;
-            piece.hasMoved = true;
+
+            pieceService.SetInitialMoveAttackStatus(piece);
 
             pieceCharmed.Dispatch(charmedPiece);
 

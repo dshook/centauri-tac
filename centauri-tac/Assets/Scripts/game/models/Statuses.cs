@@ -14,6 +14,7 @@ namespace ctac
       TechResist = 32,
       Root = 64,
       Charge = 128,
-      CantAttack = 256
+      CantAttack = 256,
+      DyadStrike = 512
     }
 }

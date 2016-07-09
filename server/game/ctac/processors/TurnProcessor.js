@@ -36,12 +36,12 @@ export default class TurnProcessor
       }
     }
 
-    //incriment piece ability charges
+    //incriment piece ability charges and reset counter
     let playerPieces = this.pieceState.pieces.filter(x => x.playerId === action.to);
     for(let piece of playerPieces){
       piece.abilityCharge++;
       piece.hasMoved = false;
-      piece.hasAttacked = false;
+      piece.attackCount = 0;
     }
 
     this.cardEvaluator.evaluatePlayerEvent('turnEnd', action.from);

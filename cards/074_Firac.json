@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 74,
+	"name": "Firac",
+	"description": "<b>Dyad Strike</b>",
+	"cost": 3,
+	"attack": 2,
+	"health": 4,
+	"movement": 3,
+	"statuses": 512,
+	"tags": ["Minion"]
+}

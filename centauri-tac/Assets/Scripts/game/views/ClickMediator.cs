@@ -86,7 +86,7 @@ namespace ctac
                     {
                         if (
                             selectedPiece != null
-                            && !selectedPiece.hasAttacked
+                            && selectedPiece.attackCount < selectedPiece.maxAttacks
                             && selectedPiece.attack > 0
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack)

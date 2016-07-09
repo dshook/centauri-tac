@@ -78,8 +78,10 @@ export default class MovePieceProcessor
     piece.position = action.to;
     piece.direction = action.direction;
     piece.hasMoved = true;
+
+    //ranged pieces can't move and attack on the same turn
     if(piece.range != null){
-      piece.hasAttacked = true;
+      piece.attackCount++;
     }
 
     queue.complete(action);

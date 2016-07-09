@@ -32,7 +32,7 @@ export default class GamePiece
 
     //piece has moved or attacked this turn?
     this.hasMoved = false;
-    this.hasAttacked = false;
+    this.attackCount = 0;
 
     this.bornOn = null;
   }

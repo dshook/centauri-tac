@@ -27,7 +27,7 @@ namespace ctac
         {
             if (!processedActions.Verify(attackedPiece.id)) return;
 
-            pieces.Piece(attackedPiece.attackingPieceId).hasAttacked = true;
+            pieces.Piece(attackedPiece.attackingPieceId).attackCount++;
 
             pieceAttacked.Dispatch(attackedPiece);
 

@@ -38,7 +38,7 @@ namespace ctac
             //ranged can't move and attack
             if (pieceMoved.range.HasValue)
             {
-                pieceMoved.hasAttacked = true;
+                pieceMoved.attackCount++;
             }
         }
     }

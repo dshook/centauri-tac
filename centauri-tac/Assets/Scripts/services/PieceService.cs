@@ -10,6 +10,7 @@ namespace ctac
     {
         PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null);
         void CopyPropertiesFromPiece(PieceModel src, PieceModel dest);
+        void SetInitialMoveAttackStatus(PieceModel piece);
     }
 
     public class PieceService : IPieceService
@@ -101,9 +102,9 @@ namespace ctac
                 tags = spawnedPiece.tags,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses,
-                hasMoved = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge) && cardTemplate.range == null,
-                hasAttacked = !FlagsHelper.IsSet(cardTemplate.statuses, Statuses.Charge)
             };
+
+            SetInitialMoveAttackStatus(pieceModel);
 
             var pieceView = newPiece.AddComponent<PieceView>();
             pieceView.piece = pieceModel;
@@ -129,7 +130,12 @@ namespace ctac
             dest.tags = src.tags;
             dest.statuses = src.statuses;
             dest.buffs = src.buffs;
+        }
 
+        public void SetInitialMoveAttackStatus(PieceModel piece)
+        {
+            piece.hasMoved = !FlagsHelper.IsSet(piece.statuses, Statuses.Charge) && piece.range == null;
+            piece.attackCount = FlagsHelper.IsSet(piece.statuses, Statuses.Charge) ? 0 : 1;
         }
     }
 }

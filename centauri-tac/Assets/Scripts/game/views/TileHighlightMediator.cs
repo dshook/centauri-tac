@@ -288,7 +288,7 @@ namespace ctac
             //attacking enemy at range
             if (
                 selectedPiece != null
-                && !selectedPiece.hasAttacked
+                && selectedPiece.attackCount < selectedPiece.maxAttacks
                 && piece != null
                 && piece != selectedPiece
                 && selectedPiece.range.HasValue

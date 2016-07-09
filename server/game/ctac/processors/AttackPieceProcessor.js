@@ -76,6 +76,12 @@ export default class AttackPieceProcessor
       return queue.cancel(action);
     }
 
+    let maxAttacks = (attacker.statuses & Statuses.DyadStrike) ? 2 : 1;
+    if(attacker.attackCount >= maxAttacks){
+      this.log.warn('Piece %s has already attacked', attacker.id);
+      return queue.cancel(action);
+    }
+
     //determine direction piece should be facing to see if rotation is necessary
     let targetDirection = faceDirection(target.position, attacker.position);
     action.direction = targetDirection;
@@ -97,7 +103,7 @@ export default class AttackPieceProcessor
       queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
     }
 
-    attacker.hasAttacked = true;
+    attacker.attackCount++;
     if(attacker.range != null){
       attacker.hasMoved = true;
     }

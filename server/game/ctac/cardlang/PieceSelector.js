@@ -123,6 +123,9 @@ export default class PieceSelector{
         case 'CANTATTACK':
           return this.allPieces.filter(p => p.statuses & Statuses.CantAttack);
           break;
+        case 'DYADSTRIKE':
+          return this.allPieces.filter(p => p.statuses & Statuses.DyadStrike);
+          break;
         default:
           throw 'Invalid piece type selector ' + selector;
       }
