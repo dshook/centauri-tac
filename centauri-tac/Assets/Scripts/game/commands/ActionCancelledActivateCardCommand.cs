@@ -16,6 +16,9 @@ namespace ctac
         public PiecesModel pieces { get; set; }
 
         [Inject]
+        public CardsModel cards { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -27,6 +30,10 @@ namespace ctac
             {
                 pieceDied.Dispatch(phantomPiece);
             }
+
+            //reset activated flag
+            var card = cards.Cards.FirstOrDefault(c => c.id == activateCancelled.cardInstanceId);
+            card.activated = false;
         }
     }
 }
