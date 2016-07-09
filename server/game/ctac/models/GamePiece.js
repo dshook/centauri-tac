@@ -29,6 +29,7 @@ export default class GamePiece
     this.statuses = 0;
     this.baseStatuses = 0;
     this.abilityCharge = 0;
+    this.armor = 0;
 
     //piece has moved or attacked this turn?
     this.hasMoved = false;

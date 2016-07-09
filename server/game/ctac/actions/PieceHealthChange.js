@@ -10,5 +10,6 @@ export default class PieceHealthChange
     this.bonusMsg = bonusMsg || null;
 
     this.newCurrentHealth = null;
+    this.newCurrentArmor = null;
   }
 }

@@ -43,7 +43,20 @@ export default class PieceHealthChangeProcessor
       queue.push(new PieceStatusChange(piece.id, null, Statuses.Shield));
     }
 
-    piece.health = piece.health + action.change + (action.bonus || 0);
+    let healthChange = action.change + (action.bonus || 0);
+    let remainingArmor = 0;
+    //take off armor first on damage
+    if(piece.armor > 0 && healthChange < 0){
+      remainingArmor = piece.armor + healthChange;
+      if(remainingArmor < 0){
+        piece.armor = 0;
+        healthChange = remainingArmor;
+      }else{
+        piece.armor = remainingArmor;
+      }
+    }
+
+    piece.health = piece.health + healthChange;
 
     //cap hp at base health and adjust action change amounts
     let maxHp = piece.maxBuffedHealth;
@@ -52,9 +65,14 @@ export default class PieceHealthChangeProcessor
       piece.health = maxHp;
     }
     action.newCurrentHealth = piece.health;
+    action.newCurrentArmor = piece.armor;
 
     if(action.change < 0){
       this.cardEvaluator.evaluatePieceEvent('damaged', piece);
+    }
+
+    if(action.change > 0){
+      this.cardEvaluator.evaluatePieceEvent('healed', piece);
     }
 
     if(piece.health <= 0){

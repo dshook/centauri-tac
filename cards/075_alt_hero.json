@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 75,
+	"name": "Alt Hero",
+	"description": "<b>Ability(2):</b> Gain 2 Armor",
+	"cost": 0,
+	"attack": 0,
+	"health": 30,
+	"movement": 2,
+	"tags": ["Hero"],
+	"eventcode": "ability(2, 1, 'Reinforce'){ GiveArmor(SELF, 2)  }"
+}

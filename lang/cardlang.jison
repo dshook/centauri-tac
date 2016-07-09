@@ -8,7 +8,7 @@
 \s+ /* skip whitespace */
 
 //piece events
-(playMinion|death|damaged|attacks|ability)
+(playMinion|death|damaged|attacks|ability|healed)
   return 'event'
 
 //player events
@@ -49,7 +49,7 @@
   return 'count'
 
 // actions
-(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform)
+(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor)
   return 'action'
 
 // actions about players
@@ -61,7 +61,7 @@
   return 'action'
 
 //attributes
-(health|attack|movement|range|cardTemplateId)
+(health|attack|movement|range|cardTemplateId|armor)
   return 'attribute'
 
 //statuses
