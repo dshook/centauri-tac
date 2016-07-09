@@ -39,6 +39,7 @@
 * ~~random number in list~~
 * ~~random minion, possibly from class or by cost~~
 * random tile within area
+* random minion to spawn from cardId array or selector
 
 ##Conditions - check for AND, OR, Equality
 * Unit is dead (self?)
@@ -51,7 +52,8 @@
 ##Actions
 * choose effects
 * Add code to targets (give x minions this deathrattle)
-* move minion into play from deck/unsummon minion from play
+* move minion into play from deck
+* unsummon minion from play
 * card cost modification
 * ~~Shuffle into deck~~
 * ~~copy minion (into hand or play)~~

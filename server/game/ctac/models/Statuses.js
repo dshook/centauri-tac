@@ -10,7 +10,8 @@ var Statuses = Enum({
   Cloak     : 16,
   TechResist: 32,
   Root      : 64,
-  Charge    : 128
+  Charge    : 128,
+  CantAttack: 256
 });
 export default Statuses;
 

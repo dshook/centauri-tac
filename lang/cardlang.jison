@@ -36,7 +36,7 @@
   return 'target'
 
 //status selectors
-(SILENCE|SHIELD|PARALYZE|TAUNT|CLOAK|TECHRESIST|ROOTED)
+(SILENCE|SHIELD|PARALYZE|TAUNT|CLOAK|TECHRESIST|ROOTED|CANTATTACK)
   return 'target'
 
 (Random)
@@ -65,7 +65,7 @@
   return 'attribute'
 
 //statuses
-(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root)
+(Silence|Shield|Paralyze|Taunt|Cloak|TechResist|Root|CantAttack)
   return 'status'
 
 //areas

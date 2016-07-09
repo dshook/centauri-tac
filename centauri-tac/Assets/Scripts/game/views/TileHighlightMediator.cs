@@ -182,6 +182,7 @@ namespace ctac
             //set movement and tile selected highlights
             if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
                 || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
+                || selectedPiece.movement <= 0
             ) {
                 return;
             }

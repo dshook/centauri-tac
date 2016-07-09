@@ -58,7 +58,7 @@ export default class AttackPieceProcessor
         return queue.cancel(action);
     }
 
-    if(attacker.statuses & Statuses.Paralyze){
+    if(attacker.statuses & Statuses.Paralyze || attacker.statuses & Statuses.CantAttack){
       this.log.warn('Cannot attack with piece %s with status %s', attacker.id, attacker.statuses);
       return queue.cancel(action);
     }

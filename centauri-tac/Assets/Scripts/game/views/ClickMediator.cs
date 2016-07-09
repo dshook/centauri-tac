@@ -89,6 +89,7 @@ namespace ctac
                             && !selectedPiece.hasAttacked
                             && selectedPiece.attack > 0
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                            && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack)
                             && !FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)
                             && mapService.isHeightPassable(
                                   mapService.Tile(selectedPiece.tilePosition),
@@ -155,6 +156,7 @@ namespace ctac
                         FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
                         && selectedPiece != null
                         && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
+                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack)
                         && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
                         )
                     {

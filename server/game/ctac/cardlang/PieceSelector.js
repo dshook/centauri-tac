@@ -120,6 +120,9 @@ export default class PieceSelector{
         case 'ROOT':
           return this.allPieces.filter(p => p.statuses & Statuses.Rooted);
           break;
+        case 'CANTATTACK':
+          return this.allPieces.filter(p => p.statuses & Statuses.CantAttack);
+          break;
         default:
           throw 'Invalid piece type selector ' + selector;
       }

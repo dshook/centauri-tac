@@ -101,6 +101,7 @@ namespace ctac {
                 && piece.currentPlayerHasControl && !piece.hasMoved
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
+                && piece.movement > 0
             )
             {
                 meshRenderer.material.SetColor("_OutlineColor", Color.green);
@@ -111,6 +112,7 @@ namespace ctac {
                 && piece.currentPlayerHasControl 
                 && !piece.hasAttacked && piece.attack > 0
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
+                && !FlagsHelper.IsSet(piece.statuses, Statuses.CantAttack)
                 && enemiesInRange
             ) {
                 meshRenderer.material.SetColor("_OutlineColor", Color.cyan);
