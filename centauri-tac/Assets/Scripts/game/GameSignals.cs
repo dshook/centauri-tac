@@ -50,6 +50,9 @@ namespace ctac.signals
     [Singleton] public class ActionPieceBuffSignal : Signal<PieceBuffModel, SocketKey> { }
     [Singleton] public class PieceBuffSignal : Signal<PieceBuffModel> { }
 
+    [Singleton] public class ActionPieceArmorChangeSignal : Signal<PieceArmorChangeModel, SocketKey> { }
+    [Singleton] public class PieceArmorChangedSignal : Signal<PieceArmorChangeModel> { }
+
     [Singleton] public class ActionPlaySpellSignal : Signal<PlaySpellModel> { }
 
     [Singleton] public class PieceHoverSignal : Signal<PieceModel> { }

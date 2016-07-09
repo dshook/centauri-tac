@@ -19,7 +19,7 @@ import PieceBuff from '../actions/PieceBuff.js';
 import PieceAura from '../actions/PieceAura.js';
 import MovePiece from '../actions/MovePiece.js';
 import TransformPiece from '../actions/TransformPiece.js';
-import ArmorChange from '../actions/ArmorChange.js';
+import PieceArmorChange from '../actions/PieceArmorChange.js';
 
 /**
  * Evaluate the scripts on cards
@@ -603,7 +603,7 @@ export default class CardEvaluator{
               this.log.info('Give Armor Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new ArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams)));
+                  this.queue.push(new PieceArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceAction.playerId, pieceSelectorParams)));
                 }
               }
               break;

@@ -88,7 +88,7 @@ export default class ProcessorServiceTests
 
     test('Armor piece health change', async (t) => {
 
-      t.plan(6);
+      t.plan(7);
       this.setupTest();
 
       var piece = this.spawnPiece(this.pieceState, 1, 1);
@@ -111,6 +111,35 @@ export default class ProcessorServiceTests
       t.equal(piece.health, beforeHealth + damage + armor, 'Piece was damaged, but armor took the hit');
       t.equal(piece.armor, 0, 'No more armor');
       t.equal(hpChangeAction.newCurrentArmor, 0, 'Action armor is 0');
+      t.equal(hpChangeAction.newCurrentHealth, 29, 'Action hp is 29');
+    });
+
+    test('Armor piece health change with armor remaining', async (t) => {
+
+      t.plan(7);
+      this.setupTest();
+
+      var piece = this.spawnPiece(this.pieceState, 1, 1);
+      const beforeHealth = piece.health;
+      const damage = -2;
+      const armor = 3;
+      piece.armor = armor;
+
+      this.queue.push(new PieceHealthChange(piece.id, damage));
+
+      await this.queue.processUntilDone();
+
+      const generatedActions = this.queue.iterateCompletedSince();
+      let actions = [...generatedActions];
+
+      const hpChangeAction = actions[0];
+      t.equal(actions.length, 1, '1 Actions Processed');
+      t.ok(hpChangeAction instanceof PieceHealthChange, 'First Action is piece health change');
+      t.equal(hpChangeAction.change, damage, 'Action change is equal to damage');
+      t.equal(piece.health, beforeHealth, 'Piece was not damaged');
+      t.equal(piece.armor, armor + damage, 'Armor remaining');
+      t.equal(hpChangeAction.newCurrentArmor, armor + damage, 'Action armor also remaining');
+      t.equal(hpChangeAction.newCurrentHealth, beforeHealth, 'Action hp unchanged');
     });
 
     test('Silence removes statuses', async (t) => {

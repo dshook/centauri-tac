@@ -17,6 +17,7 @@ namespace ctac
         [Inject] public PieceBuffSignal pieceBuffed { get; set; }
         [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
         [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
+        [Inject] public PieceArmorChangedSignal pieceArmorChanged { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -46,6 +47,7 @@ namespace ctac
             pieceAttrChanged.AddListener(onAttrChange);
             pieceStatusChanged.AddListener(onStatusChange);
             pieceTransformed.AddListener(onTransformed);
+            pieceArmorChanged.AddListener(onArmorChange);
             pieceBuffed.AddListener(onBuffed);
             pieceTextAnimFinished.AddListener(onAnimFinished);
             turnEnded.AddListener(onTurnEnded);
@@ -69,6 +71,7 @@ namespace ctac
             pieceAttrChanged.RemoveListener(onAttrChange);
             pieceBuffed.RemoveListener(onBuffed);
             pieceStatusChanged.RemoveListener(onStatusChange);
+            pieceArmorChanged.RemoveListener(onArmorChange);
             pieceTransformed.RemoveListener(onTransformed);
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
             turnEnded.RemoveListener(onTurnEnded);
@@ -165,6 +168,41 @@ namespace ctac
                     piece = view.piece
                 }
             );
+
+            if (hpChange.armorChange != 0)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateArmorAnim()
+                    {
+                        text = view.armorText,
+                        textGO = view.armorGO,
+                        textBG = view.armorBG,
+                        current = view.piece.armor,
+                        change = hpChange.armorChange,
+                        piece = view.piece
+                    }
+                );
+            }
+        }
+
+        public void onArmorChange(PieceArmorChangeModel armorChange)
+        {
+            if(armorChange.pieceId != view.piece.id) return;
+
+            if (armorChange.change != 0)
+            {
+                animationQueue.Add(
+                    new PieceView.UpdateArmorAnim()
+                    {
+                        text = view.armorText,
+                        textGO = view.armorGO,
+                        textBG = view.armorBG,
+                        current = view.piece.armor,
+                        change = armorChange.change,
+                        piece = view.piece
+                    }
+                );
+            }
         }
 
         public void onAttrChange(PieceAttributeChangeModel attrChange)

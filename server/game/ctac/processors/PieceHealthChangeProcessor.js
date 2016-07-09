@@ -53,6 +53,7 @@ export default class PieceHealthChangeProcessor
         healthChange = remainingArmor;
       }else{
         piece.armor = remainingArmor;
+        healthChange = 0;
       }
     }
 
@@ -67,11 +68,11 @@ export default class PieceHealthChangeProcessor
     action.newCurrentHealth = piece.health;
     action.newCurrentArmor = piece.armor;
 
-    if(action.change < 0){
+    if(healthChange < 0){
       this.cardEvaluator.evaluatePieceEvent('damaged', piece);
     }
 
-    if(action.change > 0){
+    if(healthChange > 0){
       this.cardEvaluator.evaluatePieceEvent('healed', piece);
     }
 

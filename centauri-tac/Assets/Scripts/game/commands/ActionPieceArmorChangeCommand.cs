@@ -3,16 +3,16 @@ using ctac.signals;
 
 namespace ctac
 {
-    public class ActionPieceHealthChangeCommand : Command
+    public class ActionPieceArmorChangeCommand : Command
     {
         [Inject]
         public SocketKey socketKey { get; set; }
 
         [Inject]
-        public PieceHealthChangeModel pieceChanged { get; set; }
+        public PieceArmorChangeModel pieceChanged { get; set; }
 
         [Inject]
-        public PieceHealthChangedSignal healthChanged { get; set; }
+        public PieceArmorChangedSignal healthChanged { get; set; }
 
         [Inject]
         public PiecesModel pieces { get; set; }
@@ -28,14 +28,11 @@ namespace ctac
             if (!processedActions.Verify(pieceChanged.id)) return;
 
             var piece = pieces.Piece(pieceChanged.pieceId);
-            piece.health = pieceChanged.newCurrentHealth;
-
-            pieceChanged.armorChange = pieceChanged.newCurrentArmor - piece.armor;
-            piece.armor = pieceChanged.newCurrentArmor;
+            piece.armor = pieceChanged.newArmor;
 
             healthChanged.Dispatch(pieceChanged);
 
-            debug.Log( string.Format("Piece {0} {1} {2} health", pieceChanged.pieceId, (pieceChanged.change > 0 ? "gained" : "lost"), pieceChanged.change) , socketKey );
+            debug.Log( string.Format("Piece {0} {1} {2} armor", pieceChanged.pieceId, (pieceChanged.change > 0 ? "gained" : "lost"), pieceChanged.change) , socketKey );
         }
     }
 }

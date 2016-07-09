@@ -1,4 +1,4 @@
-export default class ArmorChange
+export default class PieceArmorChange
 {
   constructor(pieceId, change)
   {

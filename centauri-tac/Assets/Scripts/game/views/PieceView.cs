@@ -13,8 +13,10 @@ namespace ctac {
 
         public GameObject attackGO;
         public GameObject healthGO;
+        public GameObject armorGO;
         public TextMeshPro attackText;
         public TextMeshPro healthText;
+        public TextMeshPro armorText;
         public GameObject damageSplat;
         public TextMeshPro damageSplatText;
         public TextMeshPro damageSplatBonusText;
@@ -22,6 +24,7 @@ namespace ctac {
         public GameObject cloak;
         public GameObject paralyze;
         public GameObject root;
+        public GameObject armorBG;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -49,8 +52,10 @@ namespace ctac {
             textContainer = faceCameraContainer.transform.FindChild("TextContainer").gameObject;
             attackGO = textContainer.transform.FindChild("Attack").gameObject;
             healthGO = textContainer.transform.FindChild("Health").gameObject;
+            armorGO = textContainer.transform.FindChild("Armor").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
+            armorText = armorGO.GetComponent<TextMeshPro>();
             damageSplat = faceCameraContainer.transform.FindChild("DamageSplat").gameObject;
             damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
             damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
@@ -58,6 +63,7 @@ namespace ctac {
             cloak = faceCameraContainer.transform.FindChild("Cloak").gameObject;
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
             root = faceCameraContainer.transform.FindChild("Root").gameObject;
+            armorBG = faceCameraContainer.transform.FindChild("Armor").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -382,6 +388,50 @@ namespace ctac {
                 }
                 Complete = true;
                 animFinished.Dispatch(piece);
+            }
+        }
+
+        public class UpdateArmorAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceModel piece { get; set; }
+            public GameObject textGO { get; set; }
+            public GameObject textBG { get; set; }
+            public TextMeshPro text { get; set; }
+            public int current { get; set; }
+            public int change { get; set; }
+            private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
+
+            public void Init() { }
+            public void Update()
+            {
+                if(text == null) return;
+
+                text.text = current.ToString();
+
+                //enable stuff if just getting armor for the first time
+                if (!textGO.activeSelf && current != 0)
+                {
+                    textGO.SetActive(true);
+                    iTweenExtensions.ScaleTo(textBG, Vector3.one, 0.5f, 0, EaseType.easeOutElastic);
+                }
+
+                if (change != 0)
+                {
+                    iTweenExtensions.PunchScale(textGO, punchSize, 1.5f, 0);
+                }
+
+                //disable stuff if no more armor
+                if (textGO.activeSelf && current == 0)
+                {
+                    textGO.SetActive(false);
+                    iTweenExtensions.ScaleTo(textBG, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
+                }
+
+                Complete = true;
             }
         }
 

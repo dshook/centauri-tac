@@ -1,5 +1,5 @@
 import GamePiece from '../models/GamePiece.js';
-import ArmorChange from '../actions/ArmorChange.js';
+import PieceArmorChange from '../actions/PieceArmorChange.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 
@@ -7,7 +7,7 @@ import _ from 'lodash';
  * Handle pieces losing or gaining armor
  */
 @loglevel
-export default class ArmorChangeProcessor
+export default class PieceArmorChangeProcessor
 {
   constructor(pieceState, cardEvaluator)
   {
@@ -17,7 +17,7 @@ export default class ArmorChangeProcessor
 
   async handleAction(action, queue)
   {
-    if (!(action instanceof ArmorChange)) {
+    if (!(action instanceof PieceArmorChange)) {
       return;
     }
 

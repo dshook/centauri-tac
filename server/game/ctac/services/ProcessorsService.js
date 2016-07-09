@@ -22,7 +22,7 @@ import PlaySpellProcessor from '../processors/PlaySpellProcessor.js';
 import RotatePieceProcessor from '../processors/RotatePieceProcessor.js';
 import UpdateAuraProcessor from '../processors/UpdateAuraProcessor.js';
 import TransformPieceProcessor from '../processors/TransformPieceProcessor.js';
-import ArmorChangeProcessor from '../processors/ArmorChangeProcessor.js';
+import PieceArmorChangeProcessor from '../processors/PieceArmorChangeProcessor.js';
 
 /**
  * Add action processors to the queue
@@ -55,7 +55,7 @@ export default class TurnService
     queue.addProcessor(PlaySpellProcessor);
     queue.addProcessor(RotatePieceProcessor);
     queue.addProcessor(TransformPieceProcessor);
-    queue.addProcessor(ArmorChangeProcessor);
+    queue.addProcessor(PieceArmorChangeProcessor);
 
     //add update aura to the end of all process complete
     queue.addPostCompleteProcessor(UpdateAuraProcessor);

@@ -47,10 +47,10 @@ export default class CentauriTacGame
       this.queue.push(new PassTurn(startingId));
 
       // spawn game pieces for two players
-      var heroUnit = this.cardDirectory.getByTag('Hero')[0];
+      var heroes = this.cardDirectory.getByTag('Hero');
       if(this.players.length === 2){
-        this.queue.push(new SpawnPiece(this.players[0].id, null, heroUnit.cardTemplateId, new Position(2, 0, 4), null, Direction.South));
-        this.queue.push(new SpawnPiece(this.players[1].id, null, heroUnit.cardTemplateId, new Position(5, 0, 2), null, Direction.West));
+        this.queue.push(new SpawnPiece(this.players[0].id, null, heroes[0].cardTemplateId, new Position(2, 0, 4), null, Direction.South));
+        this.queue.push(new SpawnPiece(this.players[1].id, null, heroes[1].cardTemplateId, new Position(5, 0, 2), null, Direction.West));
       }
 
       //spawn both player decks and init hands
