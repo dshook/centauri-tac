@@ -64,12 +64,12 @@ namespace ctac {
             if (card.isMinion)
             {
                 //assemble movement and range line
-                var totalLength = 20;
+                var totalLength = 12;
                 //var moveLength = card.movement.ToString().Length + 9;
                 var rangeLength = 0;
                 if (card.range.HasValue)
                 {
-                    rangeLength = card.range.ToString().Length + 10;
+                    rangeLength = card.range.ToString().Length - 3;
                 }
                 var spacesNeeded = Math.Max(0, totalLength - rangeLength);
                 var moveString = (card.movement + " Movement").PadRight(spacesNeeded, ' ');
@@ -79,7 +79,8 @@ namespace ctac {
                 }
                 else
                 {
-                    moveString += "_";
+                    //append fancy whitespace character to the end so the underline extends the width of the card
+                    moveString += "	";
                 }
                 moveRangeText.text = moveString;
 
