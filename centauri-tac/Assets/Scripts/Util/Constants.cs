@@ -15,7 +15,7 @@ namespace ctac
 
         public static List<string> eventTags = new List<string>()
         {
-            "playMinion","death","damaged","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
+            "playMinion","death","damaged","healed","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
         };
     }
 }

@@ -1,9 +1,6 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
-using ctac;
-using UnityStandardAssets.CrossPlatformInput;
-using System.Linq;
 
 namespace ctac
 {
@@ -22,9 +19,11 @@ namespace ctac
         //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
         private Vector2 bottomLeftAnchor = new Vector2(0, 0);
         private RectTransform rectTransform;
+        private CardDirectory cardDirectory;
 
-        internal void init()
+        internal void init(CardDirectory cardDirectory)
         {
+            this.cardDirectory = cardDirectory;
             //init the hover card that's hidden most of the time
             var cardPrefab = Resources.Load("Card") as GameObject;
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
@@ -82,14 +81,8 @@ namespace ctac
             active = newActive;
         }
 
-        //private float hoverDelay = 0.5f;
-        internal void showCard(CardModel cardToShow, Vector3 position)
+        internal void showCard(Vector3 position)
         {
-            //copy over props from hovered to hover
-            cardToShow.CopyProperties(hoverCardView.card);
-            //but reset some key things
-            hoverCardView.name = hoverName;
-            hoverCardView.card.gameObject = hoverCardView.gameObject;
             hoverCardView.UpdateText();
 
             rectTransform = hoverCardView.GetComponent<RectTransform>();
@@ -104,13 +97,24 @@ namespace ctac
 
         internal void showCardFromHand(CardModel cardToShow, Vector3 position)
         {
+            //copy over props from hovered to hover
+            cardToShow.CopyProperties(hoverCardView.card);
+            //but reset some key things
+            hoverCardView.name = hoverName;
+            hoverCardView.card.gameObject = hoverCardView.gameObject;
+
             rectTransform.SetAnchor(cardAnchor);
             var displayPosition = new Vector3(position.x, 125f, 19f);
-            showCard(cardToShow, displayPosition);
+            showCard(displayPosition);
         }
 
-        internal void showCardWorld(CardModel cardToShow, Vector3 worldPosition)
+        internal void showPieceCardWorld(PieceModel piece, Vector3 worldPosition)
         {
+            CopyPieceToCard(piece, hoverCardView.card);
+            hoverCardView.card.linkedPiece = piece;
+
+            hoverCardView.UpdateBuffsDisplay();
+
             Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
             var hWidth = rectTransform.sizeDelta;
@@ -128,10 +132,26 @@ namespace ctac
             {
                 if (onScreen(screenPos + offset, hWidth))
                 {
-                    showCard(cardToShow, screenPos + offset);
+                    showCard(screenPos + offset);
                     break;
                 }
             }
+        }
+
+        private void CopyPieceToCard(PieceModel src, CardModel dest)
+        {
+            var templateCard = cardDirectory.Card(src.cardTemplateId);
+            dest.cardTemplateId = src.cardTemplateId;
+            dest.playerId = src.playerId;
+            dest.name = templateCard.name;
+            dest.description = templateCard.description;
+            dest.cost = templateCard.cost;
+            dest.attack = src.attack;
+            dest.health = src.health;
+            dest.movement = src.movement;
+            dest.range = src.range;
+            dest.tags = src.tags;
+            dest.statuses = src.statuses;
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)
@@ -147,6 +167,7 @@ namespace ctac
         internal void hideCard()
         {
             cardVisible = false;
+            //hoverCardView.card.linkedPiece = null;
             hoverCardView.gameObject.SetActive(false);
         }
     }

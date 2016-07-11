@@ -21,7 +21,7 @@ namespace ctac
 
         public override void OnRegister()
         {
-            view.init();
+            view.init(cardDirectory);
             cardHovered.AddListener(onCardHovered);
             cardSelected.AddListener(onCardSelected);
             pieceHovered.AddListener(onPieceHovered);
@@ -57,8 +57,7 @@ namespace ctac
         {
             if (piece != null)
             {
-                var card = cardDirectory.Card(piece.cardTemplateId);
-                view.showCardWorld(card, piece.gameObject.transform.position);
+                view.showPieceCardWorld(piece, piece.gameObject.transform.position);
             }
             else
             {

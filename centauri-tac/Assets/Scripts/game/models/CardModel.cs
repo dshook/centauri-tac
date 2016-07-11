@@ -27,6 +27,10 @@ namespace ctac
         [JsonIgnore]
         public CardView cardView { get; set; }
 
+        //If this card is representing an in play piece
+        [JsonIgnore]
+        public PieceModel linkedPiece { get; set; }
+
         [JsonIgnore]
         public bool isMinion
         {

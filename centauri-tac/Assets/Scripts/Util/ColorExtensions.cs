@@ -20,5 +20,10 @@ namespace ctac.util
             }
             return new Color32(r, g, b, a);
         }
+
+        public static string ToHex(this Color32 c)
+        {
+            return "#" + c.r.ToString("X2") + c.g.ToString("X2") + c.b.ToString("X2");
+        }
     }
 }
