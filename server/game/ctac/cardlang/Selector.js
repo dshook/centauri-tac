@@ -31,14 +31,18 @@ export default class Selector{
   }
 
   //select one or more pieces
-  selectPieces(controllingPlayerId, selector, pieceSelectorParams){
+  selectPieces(selector, pieceSelectorParams){
     //sanity checks first
     if(this.doesSelectorUse(selector, 'TARGET')){
 
       //skip TARGET checks for timer actions since the target won't be reselected, and SAVED should be used
       if(!pieceSelectorParams.isTimer){
         //make sure that if it's a target card and there are available targets, one of them is picked
-        var possibleTargets = this.selectPossibleTargets(controllingPlayerId, selector, pieceSelectorParams.isSpell);
+        var possibleTargets = this.selectPossibleTargets(
+          pieceSelectorParams.controllingPlayerId,
+          selector,
+          pieceSelectorParams.isSpell
+        );
         if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
           throw new EvalError('You must select a valid target');
         }
@@ -57,7 +61,7 @@ export default class Selector{
 
     //for now, only way to get a single piece from a selector is from random
     if(selector.random && selector.selector){
-      let selection = this.selectPieces(controllingPlayerId, selector.selector, pieceSelectorParams);
+      let selection = this.selectPieces(selector.selector, pieceSelectorParams);
       if(selection && selection.length > 0){
         return [_.sample(selection)];
       }
@@ -65,13 +69,12 @@ export default class Selector{
     }
     return new PieceSelector(
       this,
-      controllingPlayerId,
       pieceSelectorParams
     ).Select(selector);
   }
 
-  selectArea(controllingPlayerId, selector, pieceSelectorParams){
-    return this.areaSelector.Select(selector, controllingPlayerId, pieceSelectorParams);
+  selectArea(selector, pieceSelectorParams){
+    return this.areaSelector.Select(selector, pieceSelectorParams);
   }
 
   selectPossibleTargets(controllingPlayerId, selector, isSpell){
@@ -80,7 +83,7 @@ export default class Selector{
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
 
-    return new PieceSelector(this, controllingPlayerId, {isSpell})
+    return new PieceSelector(this, {isSpell, controllingPlayerId})
       .Select(selector);
   }
 
@@ -115,18 +118,18 @@ export default class Selector{
   }
 
   //can either be an ordinary number, or something that evaluates to a number
-  eventualNumber(input, controllingPlayerId, pieceSelectorParams){
+  eventualNumber(input, pieceSelectorParams){
     if(input.randList){
       return _.sample(input.randList);
     }else if(input.attributeSelector){
-      let selectedPieces = this.selectPieces(controllingPlayerId, input.attributeSelector, pieceSelectorParams);
+      let selectedPieces = this.selectPieces(input.attributeSelector, pieceSelectorParams);
       if(selectedPieces.length > 0){
         let firstPiece = selectedPieces[0];
         return firstPiece[input.attribute];
       }
       return 0;
     }else if(input.count){
-      let selectedPieces = this.selectPieces(controllingPlayerId, input.selector, pieceSelectorParams);
+      let selectedPieces = this.selectPieces(input.selector, pieceSelectorParams);
       return selectedPieces.length;
     }
     return input;
@@ -136,19 +139,19 @@ export default class Selector{
   //The compare expressions can only have 1 depth so evaluate both the left and right here and return the result
   //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
   //can be coerced to a bool by looking if there were pieces returned or not
-  compareExpression(selector, pieces, controllingPlayerId, pieceSelectorParams){
+  compareExpression(selector, pieces, pieceSelectorParams){
     let leftResult, rightResult;
 
     if(selector.left.attributeSelector){
-      leftResult = this.selectPieces(controllingPlayerId, selector.left.attributeSelector, pieceSelectorParams);
+      leftResult = this.selectPieces(selector.left.attributeSelector, pieceSelectorParams);
     }else{
-      leftResult = this.eventualNumber(selector.left, controllingPlayerId, pieceSelectorParams);
+      leftResult = this.eventualNumber(selector.left, pieceSelectorParams);
     }
 
     if(selector.right.attributeSelector){
-      rightResult = this.selectPieces(controllingPlayerId, selector.right.attributeSelector, pieceSelectorParams);
+      rightResult = this.selectPieces(selector.right.attributeSelector, pieceSelectorParams);
     }else{
-      rightResult = this.eventualNumber(selector.right, controllingPlayerId, pieceSelectorParams);
+      rightResult = this.eventualNumber(selector.right, pieceSelectorParams);
     }
 
     let leftIsArray = Array.isArray(leftResult);

@@ -23,7 +23,7 @@ export default class AreaSelector{
   //Line can go any direction diagonal or not
   //Diagonal is limited to diagonal, not horizontal or vertical
   //Row is the opposite of diagonal
-  Select(selector, controllingPlayerId, pieceSelectorParams){
+  Select(selector, pieceSelectorParams){
     let areaType = null;
     let size = null;
     let centerSelector = null;
@@ -72,7 +72,7 @@ export default class AreaSelector{
         //can't select a ceter piece on a target without a target id
         centerPosition = null;
       }else{
-        let centerPieces = this.selector.selectPieces(controllingPlayerId, centerSelector, pieceSelectorParams);
+        let centerPieces = this.selector.selectPieces(centerSelector, pieceSelectorParams);
         let centerPiece = centerPieces[0];
         if(centerPiece){
           centerPosition = centerPiece.position;
@@ -94,7 +94,7 @@ export default class AreaSelector{
           pivotPosition = pieceSelectorParams.pivotPosition;
         }
       }else if(pivotSelector){
-        let pivotPieces = this.selector.selectPieces(controllingPlayerId, pivotSelector, pieceSelectorParams);
+        let pivotPieces = this.selector.selectPieces(pivotSelector, pieceSelectorParams);
         let pivotPiece = pivotPieces[0];
         if(pivotPiece){
           pivotPosition = pivotPiece.position;
@@ -161,7 +161,7 @@ export default class AreaSelector{
     }else if(selector.left){
       this.log.info('Evaluating area for normal piece selector %j', selector);
       //area position from normal piece selector.  Use first found piece
-      let selectedPieces = this.selector.selectPieces(controllingPlayerId, selector, pieceSelectorParams);
+      let selectedPieces = this.selector.selectPieces(selector, pieceSelectorParams);
       if(selectedPieces.length > 0){
         let firstPiece = selectedPieces[0];
         resolvedPosition = firstPiece.position;

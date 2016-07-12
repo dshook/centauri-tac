@@ -4,8 +4,7 @@ import {Union, Intersection, Difference} from '../util/SetOps.js';
 
 //Recursive piece selector that takes the selector args from cardlang
 export default class PieceSelector{
-  constructor(selector, controllingPlayerId, pieceSelectorParams
-  ){
+  constructor(selector, pieceSelectorParams){
     //Include the activating piece in all pieces if it isn't there
     //This comes into affect when activating a piece that's not part of the pieces state yet
     //but should be evaluated as such
@@ -17,7 +16,7 @@ export default class PieceSelector{
 
     this.mapState = selector.mapState;
 
-    this.controllingPlayerId = controllingPlayerId;
+    this.controllingPlayerId = pieceSelectorParams.controllingPlayerId;
     this.selector = selector;
     this.pieceSelectorParams = pieceSelectorParams;
 
@@ -33,7 +32,7 @@ export default class PieceSelector{
     //area case
     //first find the centering piece then all the pieces in the area
     if(selector.area){
-      let areaDescrip = this.selector.selectArea(this.controllingPlayerId, selector, this.pieceSelectorParams);
+      let areaDescrip = this.selector.selectArea(selector, this.pieceSelectorParams);
 
       if(areaDescrip.areaTiles.length > 0){
         return this.allPieces.filter(p => areaDescrip.areaTiles.some(t => t.tileEquals(p.position)));
@@ -137,7 +136,7 @@ export default class PieceSelector{
 
     //first check if this is a compare expression
     if(selector.compareExpression){
-      return this.selector.compareExpression(selector, this.allPieces, this.controllingPlayerId, this.pieceSelectorParams);
+      return this.selector.compareExpression(selector, this.allPieces, this.pieceSelectorParams);
     }
 
     //ordinary case of recursing the piece selections

@@ -41,11 +41,12 @@ export default class UpdateAuraProcessor
       let aura = newAuraPiece.aura;
       let pieceSelectorParams = {
         selfPiece: newAuraPiece,
+        controllingPlayerId: newAuraPiece.playerId,
         activatingPiece: newAuraPiece,
         position: newAuraPiece.position,
         isSpell: false
       };
-      var selected = this.selector.selectPieces(newAuraPiece.playerId, aura.pieceSelector, pieceSelectorParams);
+      var selected = this.selector.selectPieces(aura.pieceSelector, pieceSelectorParams);
       //set up a new buff for each selected piece that has all the attributes of the buff
       this.addBuffs(queue, newAuraPiece, selected, pieceSelectorParams);
     }
@@ -66,11 +67,12 @@ export default class UpdateAuraProcessor
       let aura = remainingPiece.aura;
       let pieceSelectorParams = {
         selfPiece: remainingPiece,
+        controllingPlayerId: remainingPiece.playerId,
         activatingPiece: remainingPiece,
         position: remainingPiece.position,
         isSpell: false
       };
-      var selected = this.selector.selectPieces(remainingPiece.playerId, aura.pieceSelector, pieceSelectorParams);
+      var selected = this.selector.selectPieces(aura.pieceSelector, pieceSelectorParams);
 
       var previouslySelected = this.pieceState.pieces.filter(p => p.buffs.some(b => b.auraPieceId == remainingPiece.id));
 
@@ -102,7 +104,7 @@ export default class UpdateAuraProcessor
       let buff = new PieceBuff(s.id, aura.name, false, newAuraPiece.id);
       for(let buffAttribute of attributes){
         if(aura[buffAttribute]){
-          buff[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], newAuraPiece.playerId, pieceSelectorParams);
+          buff[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], pieceSelectorParams);
         }
       }
       queue.pushFront(buff);
