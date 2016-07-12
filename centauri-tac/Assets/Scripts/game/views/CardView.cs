@@ -182,14 +182,23 @@ namespace ctac {
             var singleLineHeight = 30f;
             var doubleLineHeight = 50f;
             var bottomPadding = 5f;
-            var buffs = card.linkedPiece.buffs;
 
-            for (int i = 0; i < buffs.Count; i++)
+            //since buff name is unique, group by the name and only show totals
+            var groupedBuffs = card.linkedPiece.buffs
+                .Where(b => !b.removed)
+                .GroupBy(b => b.name)
+                .Select(b => new
+                {
+                    name = b.Key,
+                    attack = b.Sum(s => s.attack),
+                    health = b.Sum(s => s.health),
+                    movement = b.Sum(s => s.movement),
+                    range = b.Sum(s => s.range),
+                }).ToArray();
+
+            for (int i = 0; i < groupedBuffs.Length; i++)
             {
-                var buff = buffs[i];
-                if (buff.removed) {
-                    continue;
-                }
+                var buff = groupedBuffs[i];
                 var currentBuffNameText = buffNameText;
                 var currentBuffAbilityText = buffAbilityText;
                 if (i > 0)
@@ -217,20 +226,20 @@ namespace ctac {
                 var twoLines = false;
                 //js would actually be better at building this string
                 string buffAttrTxt = "";
-                if (buff.attack.HasValue)
+                if (buff.attack.HasValue && buff.attack != 0)
                 {
                     buffAttrTxt = buff.attack.Value.ToString(numberFormat) + " Attack ";
                 }
-                if (buff.health.HasValue)
+                if (buff.health.HasValue && buff.health != 0)
                 {
                     buffAttrTxt += buff.health.Value.ToString(numberFormat) + " Health ";
                 }
-                if (buff.movement.HasValue)
+                if (buff.movement.HasValue && buff.movement != 0)
                 {
                     twoLines = true;
                     buffAttrTxt += "\n" + buff.movement.Value.ToString(numberFormat) + " Movement ";
                 }
-                if (buff.range.HasValue)
+                if (buff.range.HasValue && buff.range != 0)
                 {
                     buffAttrTxt += buff.range.Value.ToString(numberFormat) + " Range ";
                     if (buff.attack.HasValue && buff.health.HasValue)
