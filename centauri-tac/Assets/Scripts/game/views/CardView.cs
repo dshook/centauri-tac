@@ -160,6 +160,8 @@ namespace ctac {
 
         public void UpdateBuffsDisplay()
         {
+            if(buffsPanel == null) return;
+
             if (card.linkedPiece == null || card.linkedPiece.buffs == null || card.linkedPiece.buffs.Count == 0)
             {
                 buffsPanel.SetActive(false);
@@ -172,13 +174,14 @@ namespace ctac {
             for(int t = 0; t < buffsPanel.transform.childCount; t++)
             {
                 if (t > 2) {
-                    Destroy(buffsPanel.transform.GetChild(t));
+                    Destroy(buffsPanel.transform.GetChild(t).gameObject);
                 }
             }
 
             var buffTextHeight = 0f;
-            var singleLineHeight = 80f;
-            var doubleLineHeight = 111f;
+            var singleLineHeight = 30f;
+            var doubleLineHeight = 50f;
+            var bottomPadding = 5f;
             var buffs = card.linkedPiece.buffs;
 
             for (int i = 0; i < buffs.Count; i++)
@@ -195,12 +198,15 @@ namespace ctac {
                     var newBuffName = Instantiate(buffName);
                     var newBuffAbility = Instantiate(buffAbility);
 
+                    newBuffName.transform.SetParent(buffsPanel.transform, false);
+                    newBuffAbility.transform.SetParent(buffsPanel.transform, false);
+
                     newBuffName.name = "BuffName " + i;
                     newBuffAbility.name = "BuffAbility " + i;
 
                     //move the new text down (by subtracting) since coords are based on middle of the card
-                    newBuffName.transform.position = newBuffName.transform.position.SetY(-buffTextHeight);
-                    newBuffAbility.transform.position = newBuffAbility.transform.position.SetY(-buffTextHeight);
+                    newBuffName.transform.localPosition = buffName.transform.localPosition + new Vector3(0, -buffTextHeight, 0);
+                    newBuffAbility.transform.localPosition = buffAbility.transform.localPosition + new Vector3(0, -buffTextHeight, 0);
 
                     currentBuffNameText = newBuffName.GetComponent<TextMeshPro>();
                     currentBuffAbilityText = newBuffAbility.GetComponent<TextMeshPro>();
@@ -238,7 +244,7 @@ namespace ctac {
                 buffTextHeight += twoLines ? doubleLineHeight : singleLineHeight;
             }
 
-            buffBg.transform.localScale = buffBg.transform.localScale.SetY(buffTextHeight);
+            buffBg.transform.localScale = buffBg.transform.localScale.SetY(buffTextHeight * 2 + bottomPadding);
         }
 
         public static readonly float HOVER_DELAY = 0.5f;
