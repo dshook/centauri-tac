@@ -26,15 +26,17 @@ namespace ctac
 
         float rotateTimer = 0f;
 
+        float zoomLevel = 1f;
+
         public void Init(RaycastModel rm)
         {
             raycastModel = rm;
+            Camera.main.orthographicSize = CameraOrthoSize();
         }
 
         void Update()
         {
-            var s_baseOrthographicSize = Screen.height / 96.0f / 2.0f;
-            Camera.main.orthographicSize = s_baseOrthographicSize;
+            Camera.main.orthographicSize = Mathf.Lerp(CameraOrthoSize(), Camera.main.orthographicSize, 0.5f);
 
             rotateTimer += Time.deltaTime;
 
@@ -47,7 +49,22 @@ namespace ctac
                 RotateCamera(false);
             }
 
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                ZoomInOut(true);
+            }
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                ZoomInOut(false);
+            }
+
             UpdateDragging();
+        }
+
+        private float CameraOrthoSize()
+        {
+            //Adjust camera zoom based on screen size and zoom level
+            return (Screen.height / 96.0f / 2.0f) * zoomLevel;
         }
 
         Vector3 rotateWorldPosition = Vector3.zero;
@@ -83,6 +100,21 @@ namespace ctac
             //finish any left-over
             if (step > 1.0)
                 Camera.main.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
+        }
+
+        private float camMax = 1.7f;
+        private float camMin = 0.6f;
+        private float zoomSpeed = 0.10f;
+        private void ZoomInOut(bool zoomIn)
+        {
+            if (zoomIn)
+            {
+                zoomLevel = Math.Max(camMin, zoomLevel - zoomSpeed);
+            }
+            else
+            {
+                zoomLevel = Math.Min(camMax, zoomLevel + zoomSpeed);
+            }
         }
 
         private void UpdateDragging()
