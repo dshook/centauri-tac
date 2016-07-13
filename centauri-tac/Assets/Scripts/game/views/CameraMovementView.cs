@@ -137,7 +137,7 @@ namespace ctac
                 mouseDiff = mousePos - dragOrigin;
 
                 //TODO: speed is still not right
-                amountToMove.Set(-mouseDiff.x * xSpeed, -mouseDiff.y * ySpeed, 0);
+                amountToMove.Set(-mouseDiff.x * xSpeed * zoomLevel, -mouseDiff.y * ySpeed * zoomLevel, 0);
                 amountToMove = Camera.main.transform.rotation * amountToMove;
                 move = camOrigin + amountToMove;
 
