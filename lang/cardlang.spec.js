@@ -725,3 +725,49 @@ test('Conditional action', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Attach code', t => {
+  t.plan(1);
+
+  let input = `
+    playSpell{
+      AttachCode(TARGET, death{ Hit(ENEMY,1) } )
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playSpell",
+      "actions": [
+        {
+          "action": "AttachCode",
+          "args": [
+            {
+              "left": "TARGET"
+            },
+            [
+              {
+                "event": "death",
+                "actions": [
+                  {
+                    "action": "Hit",
+                    "args": [
+                      {
+                        "left": "ENEMY"
+                      },
+                      1
+                    ]
+                  }
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});

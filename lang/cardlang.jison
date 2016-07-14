@@ -49,7 +49,7 @@
   return 'count'
 
 // actions
-(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor)
+(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor|AttachCode)
   return 'action'
 
 // actions about players
@@ -130,12 +130,12 @@
 %% /* language grammar */
 
 events
-  : c EOF {return $1;}
+  : eventList EOF {return $1;}
 ;
 
-c
-  : c pEvent
-     { $$ = $c; $$.push($pEvent); }
+eventList
+  : eventList pEvent
+     { $$ = $eventList; $$.push($pEvent); }
   | pEvent
      { $$ = [$pEvent]; }
   ;
@@ -193,6 +193,7 @@ argument_item
   | pText -> $1
   | pBool -> $1
   | actionargs -> $1
+  | eventList -> $1
   ;
 
 possibleRandSelector
