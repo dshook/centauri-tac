@@ -7,6 +7,7 @@
 
 \s+ /* skip whitespace */
 
+//Events are things to be reacted to, like an action that happens when a piece is damaged
 //piece events
 (playMinion|death|damaged|attacks|ability|healed)
   return 'event'
@@ -15,6 +16,7 @@
 (cardDrawn|turnEnd|turnStart|playSpell|cardDiscarded)
   return 'event'
 
+//Targets are who the actions affect
 // player targets
 (PLAYER|OPPONENT)
   return 'target'

@@ -20,6 +20,7 @@ import PieceAura from '../actions/PieceAura.js';
 import MovePiece from '../actions/MovePiece.js';
 import TransformPiece from '../actions/TransformPiece.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
+import AttachCode from '../actions/AttachCode.js';
 
 /**
  * Evaluate the scripts on cards
@@ -39,6 +40,7 @@ export default class CardEvaluator{
       playMinion: {left: 'SELF'},
       death: {left: 'SELF'},
       damaged: {left: 'SELF'},
+      healed: {left: 'SELF'},
       attacks: {left: 'SELF'},
       ability: {left: 'SELF'},
       cardDrawn: {left: 'PLAYER'},
@@ -606,6 +608,19 @@ export default class CardEvaluator{
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
                   this.queue.push(new PieceArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
+                }
+              }
+              break;
+            }
+            //AttachCode(pieceSelector, eventList)
+            //Second arg is like a top level event list node that will get merged into the selected pieces events
+            case 'AttachCode':
+            {
+              lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
+              this.log.info('Attach Code Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  this.queue.push(new AttachCode(s.id, action.args[1]));
                 }
               }
               break;

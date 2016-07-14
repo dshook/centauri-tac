@@ -23,6 +23,7 @@ import RotatePieceProcessor from '../processors/RotatePieceProcessor.js';
 import UpdateAuraProcessor from '../processors/UpdateAuraProcessor.js';
 import TransformPieceProcessor from '../processors/TransformPieceProcessor.js';
 import PieceArmorChangeProcessor from '../processors/PieceArmorChangeProcessor.js';
+import AttachCodeProcessor from '../processors/AttachCodeProcessor.js';
 
 /**
  * Add action processors to the queue
@@ -56,6 +57,7 @@ export default class TurnService
     queue.addProcessor(RotatePieceProcessor);
     queue.addProcessor(TransformPieceProcessor);
     queue.addProcessor(PieceArmorChangeProcessor);
+    queue.addProcessor(AttachCodeProcessor);
 
     //add update aura to the end of all process complete
     queue.addPostCompleteProcessor(UpdateAuraProcessor);

@@ -6,6 +6,7 @@ import TransformPiece from '../game/ctac/actions/TransformPiece.js';
 import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import MovePiece from '../game/ctac/actions/MovePiece.js';
 import AttackPiece from '../game/ctac/actions/AttackPiece.js';
+import AttachCode from '../game/ctac/actions/AttachCode.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
 import Position from '../game/ctac/models/Position.js';
 import Statuses from '../game/ctac/models/Statuses.js';
@@ -258,6 +259,52 @@ export default class ProcessorServiceTests
 
       t.ok(this.cardEvaluator.startTurnTimers.find(t => t.piece && t.piece.id === piece.id),
         'Start turn timer was copied for transformed piece');
+    });
+
+    test('Attach code', async (t) => {
+      this.setupTest();
+
+      //spawn pieces with incompatable events, existing events, and no events
+      var pieceWithIncompatableDamagedEvent = this.spawnPiece(this.pieceState, 12, 1);
+      var pieceWithDamagedEvent = this.spawnPiece(this.pieceState, 11, 1);
+      var pieceNothing = this.spawnPiece(this.pieceState, 8, 1);
+
+      let newCode = [
+        {
+          "event": "damaged",
+          "actions": [
+            {
+              "action": "Hit",
+              "args": [
+                {
+                  "left": "ENEMY"
+                },
+                1
+              ]
+            }
+          ]
+        }
+      ];
+
+      let attach0 = new AttachCode(pieceWithIncompatableDamagedEvent.id, newCode );
+      let attach1 = new AttachCode(pieceWithDamagedEvent.id, newCode );
+      let attach2 = new AttachCode(pieceNothing.id, newCode );
+
+      this.queue.push(attach0);
+      this.queue.push(attach1);
+      this.queue.push(attach2);
+
+      await this.queue.processUntilDone();
+
+      t.plan(3);
+      t.deepEqual(pieceNothing.events, newCode
+        , 'Piece with nothing gained new code');
+
+      t.equal(pieceWithDamagedEvent.events[0].actions.length, 2
+        , 'Piece with damaged event got new action');
+
+      t.deepEqual(pieceWithIncompatableDamagedEvent.events[1], newCode[0]
+        , 'Piece with incompatable event got added as another event')
     });
   }
 }
