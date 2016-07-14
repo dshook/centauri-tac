@@ -117,5 +117,7 @@ namespace ctac.signals
 
     [Singleton] public class PieceTransformedSignal : Signal<TransformPieceModel> { }
     [Singleton] public class ActionTransformPieceSignal : Signal<TransformPieceModel, SocketKey> { }
+
+    [Singleton] public class ActionAttachCodeSignal : Signal<AttachCodeModel, SocketKey> { }
 }
 
