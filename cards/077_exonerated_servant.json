@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 77,
+	"name": "Exonerated Servant",
+	"description": "Can't Attack until damage is taken",
+	"cost": 3,
+	"attack": 5,
+	"health": 5,
+	"movement": 3,
+	"statuses": 256,
+	"tags": ["Minion"],
+	"eventcode": "damaged{ GiveStatus(SELF, Silence ) }"
+}

@@ -81,8 +81,6 @@ export default class CardEvaluator{
 
     //first look through all the pieces on the board to see if any have actions on this event
     for(let piece of pieces){
-      if(piece.statuses & Statuses.Silence) continue;
-
       if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
@@ -139,8 +137,6 @@ export default class CardEvaluator{
 
     //look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
-      if(piece.statuses & Statuses.Silence) continue;
-
       if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one
@@ -198,8 +194,6 @@ export default class CardEvaluator{
 
     //then look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
-      if(piece.statuses & Statuses.Silence) continue;
-
       if(!piece.events || piece.events.length === 0) continue;
 
       //find all actions for this event, there could be more than one

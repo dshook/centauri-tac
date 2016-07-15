@@ -64,8 +64,9 @@ export default class PieceStatusChangeProcessor
         }
       }
 
-      //aura go bye bye
+      //aura and events go bye bye
       piece.aura = null;
+      piece.events = null;
 
       //remove timers for this piece
       this.cardEvaluator.cleanupTimers(piece);

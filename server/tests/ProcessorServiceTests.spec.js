@@ -143,18 +143,19 @@ export default class ProcessorServiceTests
       t.equal(hpChangeAction.newCurrentHealth, beforeHealth, 'Action hp unchanged');
     });
 
-    test('Silence removes statuses', async (t) => {
-      t.plan(2);
+    test('Silence removes statuses and clears events', async (t) => {
+      t.plan(3);
       this.setupTest();
 
-      var piece = this.spawnPiece(this.pieceState, 28, 1);
-      t.ok(piece.statuses & Statuses.Shield, 'Piece has Shield');
+      var piece = this.spawnPiece(this.pieceState, 77, 1);
+      t.ok(piece.statuses & Statuses.CantAttack, 'Piece has Status');
 
       this.queue.push(new PieceStatusChange(piece.id, Statuses.Silence));
 
       await this.queue.processUntilDone();
 
-      t.ok(!(piece.statuses & Statuses.Shield), 'Shield was removed');
+      t.ok(!(piece.statuses & Statuses.CantAttack), 'Status was removed');
+      t.equal(piece.events, null, 'Events were removed');
 
     });
 
