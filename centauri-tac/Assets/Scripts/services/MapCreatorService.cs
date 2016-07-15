@@ -30,6 +30,7 @@ namespace ctac
             mapMaterials["grass"] = Resources.Load("Materials/tiles/tile_grass") as Material;
             mapMaterials["rock"] = Resources.Load("Materials/tiles/tile_rock") as Material;
             mapMaterials["sand"] = Resources.Load("Materials/tiles/tile_sand") as Material;
+            mapMaterials["water"] = Resources.Load("Materials/tiles/tile_water") as Material;
 
             var goMap = GameObject.Find("Map");
             if (goMap != null)
@@ -65,7 +66,8 @@ namespace ctac
                 var newTile = new Tile() {
                         gameObject = newTileGO,
                         position = position,
-                        fullPosition = fullPosition
+                        fullPosition = fullPosition,
+                        unpassable = t.unpassable
                     };
                 mapModel.tiles.Add(position, newTile );
 

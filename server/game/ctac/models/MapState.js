@@ -25,7 +25,8 @@ export default class MapState
     for(let tile of map.tiles){
       this.tiles.push(
         new Tile(
-          new Position(tile.transform.x, tile.transform.y, tile.transform.z)
+          new Position(tile.transform.x, tile.transform.y, tile.transform.z),
+          tile.unpassable
         )
       );
     }

@@ -398,8 +398,8 @@ namespace ctac
         {
             var ret = GetNeighbors(center.position);
 
-            //filter tiles that are too high/low to move to
-            ret = ret.Where(t => isHeightPassable(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
+            //filter tiles that are too high/low to move to & are passable
+            ret = ret.Where(t => !t.Value.unpassable && isHeightPassable(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 

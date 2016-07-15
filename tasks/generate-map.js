@@ -3,7 +3,7 @@ var outputFile = './maps/cubeland.json';
 
 var mapXSize = 11;
 var mapZSize = 11;
-var tileSet = ['grass', 'rock', 'clay'];
+var tileSet = ['grass', 'rock', 'clay', 'water'];
 var center = {x: Math.floor(mapXSize / 2), z: Math.floor(mapZSize / 2)};
 
 function random(min, max) {
@@ -32,17 +32,21 @@ for(var x = 0; x < mapXSize; x++){
   for(var z = 0; z < mapZSize; z++){
     var position = {x, z};
     var distFromCenter = tileDistance(position, center);
-    position.y = (distFromCenter * 0.1).toFixed(3);
-    var material = 'grass';
+    position.y = (distFromCenter * distFromCenter * 0.01).toFixed(3);
+    var material = 'water';
+    if(distFromCenter > 1){
+      material = 'sand';
+    }
     if(distFromCenter > 2){
-      material = 'clay';
+      material = 'grass';
     }
     if(distFromCenter > 5){
       material = 'rock';
     }
     tiles.push({
       transform: position,
-      material: material
+      material: material,
+      unpassable: material === 'water'
     });
   }
 }

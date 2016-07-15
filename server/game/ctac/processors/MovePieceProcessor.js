@@ -5,6 +5,7 @@ import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
 import UpdateAura from '../actions/UpdateAura.js';
 import AttackPiece from '../actions/AttackPiece.js';
+import Message from '../actions/Message.js';
 import Constants from '../util/Constants.js';
 import loglevel from 'loglevel-decorator';
 
@@ -63,6 +64,14 @@ export default class MovePieceProcessor
     let currentTile = this.mapState.getTile(piece.position);
     let destinationTile = this.mapState.getTile(action.to)
 
+    if(destinationTile.unpassable){
+      this.log.warn('Cannot move piece %s to unpassable tile %s', piece.id, destinationTile.position);
+      queue.cancel(action);
+      this.cancelUpcomingMoves(queue, piece);
+      queue.push(new Message("That tile doesn't look safe!"));
+      return;
+    }
+
     //check height differential
     if(!action.isJump){
       if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
@@ -108,20 +117,24 @@ export default class MovePieceProcessor
         )
       {
         this.log.info('Unit %j stepped onto a taunt area of %j', piece, tauntPiece);
-        //cancel any upcoming move actions
-        let upcomingQueue = queue.peek();
-        for(let upcomingAction of upcomingQueue){
-          if((upcomingAction instanceof MovePiece) && upcomingAction.pieceId == piece.id){
-            queue.cancel(upcomingAction);
-          }else if((upcomingAction instanceof AttackPiece) && upcomingAction.attackingPieceId == piece.id){
-            queue.cancel(upcomingAction);
-          }else{
-            break;
-          }
-        }
+        //cancel any upcoming move actions so we don't move past the taunt
+        this.cancelUpcomingMoves(queue, piece);
 
         //add implicit attack action
         queue.push(new AttackPiece(piece.id, tauntPiece.id, true));
+        break;
+      }
+    }
+  }
+
+  cancelUpcomingMoves(queue, piece){
+    let upcomingQueue = queue.peek();
+    for(let upcomingAction of upcomingQueue){
+      if((upcomingAction instanceof MovePiece) && upcomingAction.pieceId == piece.id){
+        queue.cancel(upcomingAction);
+      }else if((upcomingAction instanceof AttackPiece) && upcomingAction.attackingPieceId == piece.id){
+        queue.cancel(upcomingAction);
+      }else{
         break;
       }
     }

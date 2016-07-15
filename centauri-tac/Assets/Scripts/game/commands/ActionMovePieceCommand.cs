@@ -39,6 +39,12 @@ namespace ctac
             piece.tilePosition = toTileCoords;
             piece.hasMoved = true;
 
+            //ranged can't move and attack
+            if (piece.range.HasValue)
+            {
+                piece.attackCount++;
+            }
+
             pieceMove.Dispatch(new PieceMovedModel()
             {
                 piece = piece,

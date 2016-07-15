@@ -2,9 +2,10 @@
 export default class Tile
 {
 
-  constructor(position)
+  constructor(position, unpassable)
   {
     this.position = position;
+    this.unpassable = unpassable;
   }
 
 }

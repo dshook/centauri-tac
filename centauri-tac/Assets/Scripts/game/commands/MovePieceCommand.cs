@@ -32,14 +32,6 @@ namespace ctac
             //format for server
             var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();
             socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = pieceMoved.id, route = serverPath });
-
-            pieceMoved.hasMoved = true;
-
-            //ranged can't move and attack
-            if (pieceMoved.range.HasValue)
-            {
-                pieceMoved.attackCount++;
-            }
         }
     }
 }
