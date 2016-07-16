@@ -10,6 +10,7 @@ export default class GamePiece
     this.id = null;
     this.cardTemplateId = null;
     this.name = null;
+    this.description = null;
     this.playerId = null;
     this.position = new Position();
     this.direction = Direction.South;

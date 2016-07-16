@@ -51,9 +51,6 @@ export default class CardDirectory
       try{
         let cardEvents = this.parser.parse(card.eventcode);
         c.events = cardEvents;
-
-        //copy over each event as a tag
-        c.tags = c.tags.concat(_.map(c.events, 'event'));
       }catch(e){
         this.log.error('Error parsing card text %s %s', card.events, e);
         //throw again so you don't run the server with a bad card

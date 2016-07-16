@@ -33,10 +33,6 @@ namespace ctac {
         public GameObject eventIcon;
         public GameObject model;
         private GameObject textContainer;
-        //list of event tags to show icon on minion for 
-        private static List<string> eventTags = new List<string>() {
-            "damaged", "attacks", "cardDrawn", "turnEnd", "turnStart", "playSpell"
-        };
         public bool targetCandidate = false;
         public bool enemiesInRange = false;
 
@@ -75,18 +71,10 @@ namespace ctac {
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
 
-            //set icon visibility based on tags
-            if (piece.tags.Contains("death"))
-            {
-                circleBg.SetActive(true);
-                deathIcon.SetActive(true);
-            }
-            var eventTagCount = piece.tags.Join(eventTags, p => p, e => e, (p, e) => p).Count();
-            if (eventTagCount > 0)
-            {
-                circleBg.SetActive(true);
-                eventIcon.SetActive(true);
-            }
+            circleBg.SetActive(false);
+            deathIcon.SetActive(false);
+            eventIcon.SetActive(false);
+
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
         }
@@ -166,6 +154,21 @@ namespace ctac {
             else
             {
                 root.transform.localScale = Vector3.zero;
+            }
+
+            circleBg.SetActive(false);
+            deathIcon.SetActive(false);
+            eventIcon.SetActive(false);
+            //event icons
+            if (piece.hasDeathEvent)
+            {
+                circleBg.SetActive(true);
+                deathIcon.SetActive(true);
+            }
+            else if (piece.hasEvent)
+            {
+                circleBg.SetActive(true);
+                eventIcon.SetActive(true);
             }
         }
 

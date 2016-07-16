@@ -884,6 +884,36 @@ export default class CardEvaluator{
     return areas;
   }
 
+  //Get a list of pieces with events/death events to send to the client
+  findEventedPieces(){
+    let eventedPieces = [];
+
+    for(let piece of this.pieceState.pieces){
+      if(!piece.events) continue;
+
+      let deathEvent = piece.events.find(e => e.event === 'death');
+      if(deathEvent != null){
+        eventedPieces.push({pieceId: piece.id, event: 'd'});
+      }
+
+      //don't highlight pieces with the default playMinion action
+      //ones with other args should be shown though
+      let otherEvent = piece.events.find(e => e.event !== 'playMinion' || e.args);
+      if(otherEvent != null){
+        eventedPieces.push({pieceId: piece.id, event: 'e'});
+      }
+
+      //also show repeating timers
+      let repeatingStartTimer = this.startTurnTimers.find(t => t.piece.id === piece.id && t.interval);
+      let repeatingEndTimer = this.endTurnTimers.find(t => t.piece.id === piece.id && t.interval);
+      if(repeatingStartTimer || repeatingEndTimer){
+        eventedPieces.push({pieceId: piece.id, event: 't'});
+      }
+    }
+
+    return eventedPieces;
+  }
+
   //Gets the event selector for the card event.  By convention this is the 0th arg that's a selector
   //but the 0th arg doesn't have to be a selector
   eventSelector(cardEvent){

@@ -68,12 +68,7 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.tags.includes('Hero'));
           break;
         case 'BASIC':
-          let basicBitches = this.allPieces.filter(p =>
-            p.baseTags.length === 1
-            && (p.baseTags.includes('Hero') || p.baseTags.includes('Minion'))
-            && p.baseStatuses === 0
-          );
-          return basicBitches;
+          return this.allPieces.filter(p => !p.description);
           break;
         case 'DAMAGED':
           return this.allPieces.filter(p => p.health < p.baseHealth);

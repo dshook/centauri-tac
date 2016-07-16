@@ -52,6 +52,7 @@ export default class PieceState
 
   copyPropertiesFromCard(piece, card){
     piece.name = card.name;
+    piece.description = card.description;
     piece.cardTemplateId = card.cardTemplateId;
     piece.events = _.cloneDeep(card.events);
     piece.attack = card.attack;

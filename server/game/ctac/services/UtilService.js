@@ -21,9 +21,10 @@ class PossibleActions
     this.pieceState = pieceState;
   }
 
-  //look through the current players hand for any cards needing a TARGET
-  //and through pieces for possible abilities
+  //end of processing client data update
   findPossibleActions(){
+    //look through the current players hand for any cards needing a TARGET
+    //and through pieces for possible abilities
     let targets = this.cardEvaluator.findPossibleTargets(
       this.cardState.hands[this.turnState.currentPlayerId],
       this.turnState.currentPlayerId
@@ -36,11 +37,13 @@ class PossibleActions
       this.cardState.hands[this.turnState.currentPlayerId],
       this.turnState.currentPlayerId
     );
+    let eventedPieces = this.cardEvaluator.findEventedPieces();
     return {
       playerId: this.turnState.currentPlayerId,
       targets,
       areas,
-      abilities
+      abilities,
+      eventedPieces
     };
   }
 }

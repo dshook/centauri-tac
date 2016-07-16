@@ -38,6 +38,9 @@ namespace ctac
 
         public List<PieceBuffModel> buffs { get; set; }
 
+        public bool hasDeathEvent { get; set; }
+        public bool hasEvent { get; set; }
+
         public int maxAttacks
         {
             get
