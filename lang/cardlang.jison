@@ -34,7 +34,7 @@
   return 'target'
 
 // selectors
-(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC)
+(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC|CARD)
   return 'target'
 
 //status selectors

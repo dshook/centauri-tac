@@ -179,9 +179,9 @@ namespace ctac {
             }
 
             var buffTextHeight = 0f;
-            var singleLineHeight = 30f;
+            var singleLineHeight = 35f;
             var doubleLineHeight = 50f;
-            var bottomPadding = 5f;
+            var bottomPadding = 10f;
 
             //since buff name is unique, group by the name and only show totals
             var groupedBuffs = card.linkedPiece.buffs
