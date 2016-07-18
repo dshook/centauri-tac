@@ -3,15 +3,14 @@ import PieceAura from '../actions/PieceAura.js';
 import loglevel from 'loglevel-decorator';
 
 /**
- * Attach an aura to a piece
+ * Attach an aura to a piece, update aura processor takes care of the rest
  */
 @loglevel
 export default class PieceAuraProcessor
 {
-  constructor(pieceState, cardEvaluator)
+  constructor(pieceState)
   {
     this.pieceState = pieceState;
-    this.cardEvaluator = cardEvaluator;
   }
 
   async handleAction(action, queue)

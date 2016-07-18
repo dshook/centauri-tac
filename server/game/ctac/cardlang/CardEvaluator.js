@@ -17,6 +17,7 @@ import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import PieceAura from '../actions/PieceAura.js';
+import CardAura from '../actions/CardAura.js';
 import MovePiece from '../actions/MovePiece.js';
 import TransformPiece from '../actions/TransformPiece.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
@@ -405,6 +406,30 @@ export default class CardEvaluator{
                 for(let s of lastSelected){
                   //set up a new aura for each selected piece that has all the attributes of the aura
                   let aura = new PieceAura(s.id, pieceSelector, auraName);
+                  for(let auraAttribute of auraAttributes){
+                    //specifically don't use eventual number here because it will be evaluated in the aura update
+                    aura[auraAttribute.attribute] = auraAttribute.amount;
+                  }
+                  this.queue.push(aura);
+                }
+              }
+              break;
+            }
+            //CardAura(auraPieceSelector, cardSelector, auraName, attribute(amount), ...moreAttributes)
+            //to clarify further: first piece selector is who to attach the aura to,
+            //second one is which cards are affected by the aura.
+            case 'CardAura':
+            {
+              lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
+              this.log.info('Card Aura Selected %j', lastSelected);
+              let cardSelector = action.args[1];
+              let auraName = action.args[2];
+              let auraAttributes = action.args.slice(3);
+
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  //set up a new aura for each selected piece that has all the attributes of the aura
+                  let aura = new CardAura(s.id, cardSelector, auraName);
                   for(let auraAttribute of auraAttributes){
                     //specifically don't use eventual number here because it will be evaluated in the aura update
                     aura[auraAttribute.attribute] = auraAttribute.amount;

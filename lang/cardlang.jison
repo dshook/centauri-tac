@@ -34,7 +34,7 @@
   return 'target'
 
 // selectors
-(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC|CARD)
+(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC)
   return 'target'
 
 //status selectors
@@ -51,7 +51,7 @@
   return 'count'
 
 // actions
-(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor|AttachCode)
+(SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor|AttachCode|CardAura)
   return 'action'
 
 // actions about players
@@ -63,7 +63,7 @@
   return 'action'
 
 //attributes
-(health|attack|movement|range|cardTemplateId|armor)
+(health|attack|movement|range|cardTemplateId|armor|cost)
   return 'attribute'
 
 //statuses
