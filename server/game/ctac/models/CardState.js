@@ -20,9 +20,31 @@ export default class CardState
     this.millState[playerId] = 0;
   }
 
+  get cards(){
+    let allCards = [];
+    for(let playerId in this.hands){
+      allCards = allCards.concat(this.hands[playerId]).concat(this.decks[playerId]);
+    }
+    return allCards;
+  }
+
+  card(cardId){
+    for(let playerId in this.hands){
+      let foundInHand = this.hands[playerId].find(c => c.id === cardId);
+      if(foundInHand) return foundInHand;
+
+      let foundInDeck = this.decks[playerId].find(c => c.id === cardId);
+      if(foundInDeck) return foundInDeck;
+    }
+    return null;
+  }
+
   addToDeck(playerId, newCard, randomPosition = false){
     let deck = this.decks[playerId];
     newCard.id = this.nextId++;
+    newCard.playerId = playerId; //ensure correct playerId
+    newCard.inDeck = true;
+    newCard.inHand = false;
 
     if(randomPosition){
       let index = Random.Range(0, deck.length - 1);
@@ -38,6 +60,9 @@ export default class CardState
     if(!card.id){
       card.id = this.nextId++;
     }
+    card.playerId = playerId; //ensure correct playerId
+    card.inDeck = false;
+    card.inHand = true;
     this.hands[playerId].push(card);
   }
 
@@ -59,6 +84,8 @@ export default class CardState
       //something went wrong so return null for an error to be thrown later
       return null;
     }
+    removed.inDeck = false;
+    removed.inHand = false;
     return removed[0];
   }
 }

@@ -2,7 +2,9 @@ import test from 'tape';
 import Selector from '../game/ctac/cardlang/Selector.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 import GamePiece from '../game/ctac/models/GamePiece.js';
+import Card from '../game/ctac/models/Card.js';
 import PieceState from '../game/ctac/models/PieceState.js';
+import CardState from '../game/ctac/models/CardState.js';
 import Position from '../game/ctac/models/Position.js';
 import Player from 'models/Player';
 import MapState from '../game/ctac/models/MapState.js';
@@ -46,6 +48,28 @@ spawnPiece(statusPieces, 1, 2);
 spawnPiece(statusPieces, 2, 2);
 spawnPiece(statusPieces, 28, 2);
 
+//each player gets 2 minions, 2 spells, and then draws one of each into hand
+var cardStateMix = new CardState();
+cardStateMix.initPlayer(1);
+cardStateMix.initPlayer(2);
+spawnCard(cardStateMix, 2, 1);
+spawnCard(cardStateMix, 40, 1);
+spawnCard(cardStateMix, 3, 1);
+spawnCard(cardStateMix, 50, 1);
+spawnCard(cardStateMix, 2, 2);
+spawnCard(cardStateMix, 40, 2);
+spawnCard(cardStateMix, 3, 2);
+spawnCard(cardStateMix, 50, 2);
+
+cardStateMix.drawCard(1);
+cardStateMix.drawCard(1);
+cardStateMix.drawCard(2);
+cardStateMix.drawCard(2);
+
+var noCards = new CardState();
+noCards.initPlayer(1);
+noCards.initPlayer(2);
+
 test('Select Player', t => {
   t.plan(2);
   let selector = new Selector(players, heroesOnly, mapState);
@@ -62,7 +86,7 @@ test('Select a piece', t => {
   let selectorTemplate = {
     random: true,
     selector:{
-      left : 'Selector.spec.js'
+      left : '' //replaced
     }
   };
   let selectors = [
@@ -552,10 +576,90 @@ test('Eventual numbers', t => {
 
 });
 
+test('Card Basic Selections', t => {
+  t.plan(6);
+  let select =
+    {
+      left: 'FRIENDLY'
+    };
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix);
+  let selection = selector.selectCards(select, {controllingPlayerId: 1});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 4, 'Got only friendly Cards');
+  t.ok(selection[0] instanceof Card, 'First element is a card');
+  t.equal(selection[0].playerId, 1, 'First card is for the right player');
+
+  let emptySelector = new Selector(players, pieceStateMix, mapState, noCards);
+  let emptySelection = emptySelector.selectCards(select, {controllingPlayerId: 1});
+  t.ok(Array.isArray(emptySelection), 'Got back an Array');
+  t.equal(emptySelection.length, 0, 'Got nothin');
+});
+
+test('Adv Card Selections', t => {
+  t.plan(12);
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix);
+  let fMinions = selector.selectCards({
+      left: 'DECK',
+      op: '&',
+      right: 'MINION'
+    }, {controllingPlayerId: 1});
+
+  t.equal(fMinions.length, 2, 'Got only friendly Minions');
+  t.equal(fMinions[0].playerId, 1, 'First card is for the right player');
+  t.equal(fMinions[1].playerId, 2, 'Second card is for the right player');
+  t.ok(fMinions[0].tags.includes('Minion'), 'First card is a minion');
+
+  let eMinions = selector.selectCards({
+      left: 'ENEMY',
+      op: '-',
+      right: 'SPELL'
+    }, {controllingPlayerId: 1});
+  t.equal(eMinions.length, 2, 'Got only enemy Minions');
+  t.equal(eMinions[0].playerId, 2, 'First card is for the right player');
+  t.ok(eMinions[0].tags.includes('Minion'), 'First card is a minion');
+
+  let tagged = selector.selectCards({
+      left: {
+        tag: 'Minion'
+      }
+    }, {controllingPlayerId: 1});
+  t.equal(tagged.length, 4, 'Got tagged minions in hand');
+  t.ok(tagged[0].tags.includes('Minion'), 'First tagged is minion');
+
+  let unions = selector.selectCards({
+      left: 'DECK',
+      op: '|',
+      right: 'HAND'
+    }, {controllingPlayerId: 1});
+  t.equal(unions.length, 8, 'Got union of all cards');
+
+  let fHandUnion = selector.selectCards({
+      left: 'FRIENDLY',
+      op: '|',
+      right: 'HAND'
+    }, {controllingPlayerId: 1});
+  t.equal(fHandUnion.length, 6, 'Should get all friendly cards + 2 in other hand');
+
+  let exclusive = selector.selectCards({
+      left: 'DECK',
+      op: '&',
+      right: 'HAND'
+    }, {controllingPlayerId: 1});
+  t.equal(exclusive.length, 0, 'Got nothin for both hand and deck');
+});
+
 function spawnPiece(pieceState, cardTemplateId, playerId, position){
   var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
   newPiece.position = position;
 
   pieceState.add(newPiece);
   return newPiece;
+}
+
+function spawnCard(cardState, cardTemplateId, playerId, addToHand){
+  let cardClone = cardDirectory.newFromId(cardTemplateId);
+  cardState.addToDeck(playerId, cardClone);
+
+  return cardClone;
 }

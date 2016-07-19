@@ -2,13 +2,15 @@ import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 import EvalError from './EvalError.js';
 import PieceSelector from './PieceSelector.js';
+import CardSelector from './CardSelector.js';
 import AreaSelector from './AreaSelector.js';
 
 @loglevel
 export default class Selector{
-  constructor(players, pieceState, mapState){
+  constructor(players, pieceState, mapState, cardState){
     this.players = players;
     this.pieceState = pieceState;
+    this.cardState = cardState;
     this.areaSelector = new AreaSelector(this, mapState);
   }
 
@@ -70,6 +72,22 @@ export default class Selector{
     return new PieceSelector(
       this,
       pieceSelectorParams
+    ).Select(selector);
+  }
+
+  //similar to select pieces but a more limited set of selections
+  selectCards(selector, cardSelectorParams){
+    //for now, only way to get a single card from a selector is from random
+    if(selector.random && selector.selector){
+      let selection = this.selectCards(selector.selector, cardSelectorParams);
+      if(selection && selection.length > 0){
+        return [_.sample(selection)];
+      }
+      return [];
+    }
+    return new CardSelector(
+      this,
+      cardSelectorParams
     ).Select(selector);
   }
 

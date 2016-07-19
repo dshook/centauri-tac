@@ -1,7 +1,6 @@
 import GamePiece from '../models/GamePiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
-import attributes from '../util/Attributes.js';
 
 /**
  * Attach or remove buffs from a piece
