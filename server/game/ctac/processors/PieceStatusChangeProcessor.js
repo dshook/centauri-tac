@@ -1,10 +1,7 @@
-import GamePiece from '../models/GamePiece.js';
-import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
 import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
 import attributes from '../util/Attributes.js';
-import _ from 'lodash';
 
 @loglevel
 export default class PieceStatusChangeProcessor

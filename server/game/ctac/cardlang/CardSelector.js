@@ -1,4 +1,3 @@
-import loglevel from 'loglevel-decorator';
 import {Union, Intersection, Difference} from '../util/SetOps.js';
 
 //Recursive card selector that takes the selector args from cardlang

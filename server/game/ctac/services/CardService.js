@@ -3,7 +3,6 @@ import CardDirectory from '../models/CardDirectory.js';
 import CardState from '../models/CardState.js';
 import Selector from '../cardlang/Selector.js';
 import CardEvaluator from '../cardlang/CardEvaluator.js';
-import fs from 'fs';
 
 /**
  * Expose the cards and activate card processor

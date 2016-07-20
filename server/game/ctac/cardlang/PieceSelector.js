@@ -1,5 +1,4 @@
 import Statuses from '../models/Statuses.js';
-import loglevel from 'loglevel-decorator';
 import {Union, Intersection, Difference} from '../util/SetOps.js';
 
 //Recursive piece selector that takes the selector args from cardlang

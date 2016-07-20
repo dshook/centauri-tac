@@ -1,7 +1,6 @@
 import test from 'tape';
 import CardEvaluator from '../game/ctac/cardlang/CardEvaluator.js';
 import Selector from '../game/ctac/cardlang/Selector.js';
-import GamePiece from '../game/ctac/models/GamePiece.js';
 import PieceState from '../game/ctac/models/PieceState.js';
 import CardState from '../game/ctac/models/CardState.js';
 import Card from '../game/ctac/models/Card.js';

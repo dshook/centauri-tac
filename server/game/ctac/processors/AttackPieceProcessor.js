@@ -1,9 +1,7 @@
-import GamePiece from '../models/GamePiece.js';
 import Statuses from '../models/Statuses.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
-import Constants from '../util/Constants.js';
 import {directionOf, faceDirection} from '../models/Direction.js';
 import loglevel from 'loglevel-decorator';
 

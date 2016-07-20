@@ -1,4 +1,3 @@
-import test from 'tape';
 import Application from 'billy';
 import ActionQueue from 'action-queue';
 import Player from 'models/Player';

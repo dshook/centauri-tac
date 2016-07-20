@@ -35,6 +35,7 @@ export default class CentauriTacServer
     this.app.registerInstance('packageData', require('../package.json'));
 
     // Add all needed services for components
+    this.log.info(`using components ${this.components.join(',')}`);
     this.components.forEach(x => this._processComponent(x));
 
     // register all needed services
@@ -96,8 +97,6 @@ export default class CentauriTacServer
    */
   _processComponent(c)
   {
-    this.log.info(`using component ${c}`);
-
     const entry = manifest[c];
     if (!entry) {
       throw new Error(`no manifest entry for ${c}`);

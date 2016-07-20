@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import Direction from '../models/Direction.js';
 import RotatePiece from '../actions/RotatePiece.js';
 import loglevel from 'loglevel-decorator';

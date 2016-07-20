@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceAura from '../actions/PieceAura.js';
 import loglevel from 'loglevel-decorator';
 

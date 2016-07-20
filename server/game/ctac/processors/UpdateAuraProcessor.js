@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import CardBuff from '../actions/CardBuff.js';
 import PieceAura from '../actions/PieceAura.js';
@@ -68,7 +67,6 @@ export default class UpdateAuraProcessor
     //find removed pieces
     let removedPieces = Difference(this.auraPieces, auraPieces, (a,b) => a.id === b.id);
     for(let oldAuraPiece of removedPieces){
-      let aura = oldAuraPiece.aura;
       let affectedPieces = this.pieceState.pieces.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
       //remove buffs from all piece that had a buff from that piece
       this.removeBuffs(queue, oldAuraPiece, affectedPieces, PieceBuff);
@@ -126,7 +124,6 @@ export default class UpdateAuraProcessor
     //find removed pieces
     let removedPieces = Difference(this.cardAuraPieces, cardAuraPieces, (a,b) => a.id === b.id);
     for(let oldAuraPiece of removedPieces){
-      let aura = oldAuraPiece.aura;
       let affectedPieces = this.pieceState.pieces.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
       //remove buffs from all piece that had a buff from that piece
       this.removeBuffs(queue, oldAuraPiece, affectedPieces, CardBuff);

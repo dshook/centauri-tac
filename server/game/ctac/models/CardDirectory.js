@@ -1,6 +1,5 @@
 import Card from './Card.js';
 import CardLang from '../../../../lang/cardlang.js';
-import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
 import deepFreeze from 'deep-freeze';
 import fs from 'fs';

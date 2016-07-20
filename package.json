@@ -19,7 +19,8 @@
     "dbreset": "db-migrate reset",
     "prestart": "npm run migrate && npm run build",
     "build-map": "node ./tasks/generate-map.js",
-    "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js"
+    "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
+    "lint": "eslint server/**"
   },
   "browser": {
     "angular": "./node_modules/angular/angular.js",

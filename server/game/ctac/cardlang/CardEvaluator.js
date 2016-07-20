@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
 import EvalError from './EvalError.js';
-import Position from '../models/Position.js';
 import Statuses from '../models/Statuses.js';
 import DrawCard from '../actions/DrawCard.js';
 import DiscardCard from '../actions/DiscardCard.js';
@@ -858,7 +857,6 @@ export default class CardEvaluator{
         let event = card.events.find(e => e.event === targetEvent);
         if(!event) continue;
 
-        let isSpell = card.tags.includes('Spell');
         let areaSelector = null;
         let alsoNeedsTarget = false;
         //try to find areas in any of the actions

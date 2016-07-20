@@ -1,5 +1,3 @@
-import Position from '../models/Position.js';
-
 export default class ActivateAbility
 {
   constructor(pieceId, targetPieceId)

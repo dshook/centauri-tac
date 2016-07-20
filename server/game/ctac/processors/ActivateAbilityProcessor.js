@@ -1,11 +1,7 @@
-import GamePiece from '../models/GamePiece.js';
-import SpawnPiece from '../actions/SpawnPiece.js';
-import PlaySpell from '../actions/PlaySpell.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import Message from '../actions/Message.js';
 import ActivateAbility from '../actions/ActivateAbility.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Handle a piece using an ability

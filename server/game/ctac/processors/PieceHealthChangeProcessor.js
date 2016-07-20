@@ -1,9 +1,7 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
 import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Handle pieces losing or gaining their current health

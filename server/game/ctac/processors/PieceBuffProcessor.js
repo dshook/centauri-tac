@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
 

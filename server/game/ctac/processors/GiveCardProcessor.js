@@ -1,6 +1,5 @@
 import GiveCard from '../actions/GiveCard.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 @loglevel
 export default class GiveCardProcessor

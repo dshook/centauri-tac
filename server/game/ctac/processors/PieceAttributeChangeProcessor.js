@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceAttributeChange from '../actions/PieceAttributeChange.js';
 import loglevel from 'loglevel-decorator';
 import attributes from '../util/Attributes.js';

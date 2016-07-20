@@ -7,7 +7,6 @@ import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import MovePiece from '../game/ctac/actions/MovePiece.js';
 import AttackPiece from '../game/ctac/actions/AttackPiece.js';
 import AttachCode from '../game/ctac/actions/AttachCode.js';
-import GamePiece from '../game/ctac/models/GamePiece.js';
 import Position from '../game/ctac/models/Position.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 

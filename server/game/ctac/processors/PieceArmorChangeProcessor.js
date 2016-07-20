@@ -1,7 +1,5 @@
-import GamePiece from '../models/GamePiece.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Handle pieces losing or gaining armor

@@ -1,12 +1,9 @@
-import GamePiece from '../models/GamePiece.js';
-import Direction from '../models/Direction.js';
 import Statuses from '../models/Statuses.js';
 import {faceDirection} from '../models/Direction.js';
 import MovePiece from '../actions/MovePiece.js';
 import UpdateAura from '../actions/UpdateAura.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import Message from '../actions/Message.js';
-import Constants from '../util/Constants.js';
 import loglevel from 'loglevel-decorator';
 
 @loglevel

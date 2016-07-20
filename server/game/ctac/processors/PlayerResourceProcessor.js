@@ -1,6 +1,5 @@
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Handle getting temporary or permanent energy

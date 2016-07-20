@@ -1,6 +1,5 @@
 import ShuffleToDeck from '../actions/ShuffleToDeck.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 @loglevel
 export default class ShuffleToDeckProcessor

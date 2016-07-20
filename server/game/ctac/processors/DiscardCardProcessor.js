@@ -1,6 +1,4 @@
-import GamePiece from '../models/GamePiece.js';
 import DiscardCard from '../actions/DiscardCard.js';
-import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 

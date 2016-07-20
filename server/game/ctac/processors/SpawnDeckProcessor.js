@@ -1,5 +1,4 @@
 import SpawnDeck from '../actions/SpawnDeck.js';
-import Card from '../models/Card.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
 

@@ -1,6 +1,5 @@
 import Message from '../actions/Message.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Processor for all the actions that only need clientside processing

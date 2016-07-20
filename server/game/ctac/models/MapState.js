@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import Position from './Position.js';
 import Tile from './Tile.js';
 import loglevel from 'loglevel-decorator';

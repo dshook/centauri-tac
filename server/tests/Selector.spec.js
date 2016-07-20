@@ -22,7 +22,6 @@ var player2 = new Player(2);
 var players = [player1, player2];
 
 //dummy activating and self pieces
-var activatingPiece = new GamePiece();
 var selfPiece = new GamePiece();
 
 //various setups for game state

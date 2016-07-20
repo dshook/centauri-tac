@@ -1,10 +1,8 @@
-import GamePiece from '../models/GamePiece.js';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import PlaySpell from '../actions/PlaySpell.js';
 import Message from '../actions/Message.js';
 import ActivateCard from '../actions/ActivateCard.js';
 import loglevel from 'loglevel-decorator';
-import _ from 'lodash';
 
 /**
  * Handle playing a card

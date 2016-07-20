@@ -1,4 +1,3 @@
-import GamePiece from '../models/GamePiece.js';
 import DrawCard from '../actions/DrawCard.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import loglevel from 'loglevel-decorator';
