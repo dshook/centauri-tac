@@ -30,6 +30,11 @@ namespace ctac
 
             var card = cards.Card(cardBuff.cardId);
 
+            if (card == null)
+            {
+                debug.LogWarning("Could not find card to buff " + cardBuff.cardId, socketKey);
+                return;
+            }
             if (cardBuff.removed)
             {
                 var buff = card.buffs.FirstOrDefault(x => x.name == cardBuff.name);

@@ -336,7 +336,7 @@ export default class ProcessorServiceTests
 
     //spawn a piece with a card aura and make sure it takes affect
     test('Card Aura', async (t) => {
-      t.plan(3);
+      t.plan(6);
       this.setupTest();
 
       this.spawnCards();
@@ -352,6 +352,16 @@ export default class ProcessorServiceTests
 
       t.equal(playerSpell.cost, 0, 'Spell got buffed');
       t.equal(playerSpell.buffs.length, 1, 'Buffs were added');
+
+      //now kill and make sure it's removed
+      let pieceId = piece.id;
+      this.queue.push(new PieceHealthChange(pieceId, -2));
+
+      await this.queue.processUntilDone();
+
+      t.ok(!this.pieceState.piece(pieceId), 'Piece was killed');
+      t.equal(playerSpell.cost, 1, 'Spell has normal cost again');
+      t.equal(playerSpell.buffs.length, 0, 'Buffs were removed');
     });
   }
 }

@@ -124,9 +124,9 @@ export default class UpdateAuraProcessor
     //find removed pieces
     let removedPieces = Difference(this.cardAuraPieces, cardAuraPieces, (a,b) => a.id === b.id);
     for(let oldAuraPiece of removedPieces){
-      let affectedPieces = this.pieceState.pieces.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
+      let affectedCards = this.cardState.cards.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
       //remove buffs from all piece that had a buff from that piece
-      this.removeBuffs(queue, oldAuraPiece, affectedPieces, CardBuff);
+      this.removeBuffs(queue, oldAuraPiece, affectedCards, CardBuff);
     }
 
     //find remaining pieces that still might have moved/changed
@@ -159,7 +159,7 @@ export default class UpdateAuraProcessor
   removeBuffs(queue, auraPiece, affectedPieces, Buff){
     for(let s of affectedPieces){
       let buffToRemove = s.buffs.find(b => b.auraPieceId == auraPiece.id);
-      let buff = new Buff(s.id, buffToRemove.name, true);
+      let buff = new Buff(s.id, buffToRemove.name, true, auraPiece.id);
       queue.pushFront(buff);
     }
   }
