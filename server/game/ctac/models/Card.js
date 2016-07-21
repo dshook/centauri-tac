@@ -7,6 +7,7 @@ export default class Card
     this.name = null;
     this.description = null;
     this.cost = null;
+    this.baseCost = null;
     this.attack = null;
     this.health = null;
     this.movement = null;

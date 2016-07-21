@@ -1,1 +1,1 @@
-export default ['attack', 'health', 'movement', 'range'];
+export default ['attack', 'health', 'movement', 'range', 'cost'];

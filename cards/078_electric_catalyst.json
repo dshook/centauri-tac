@@ -1,0 +1,13 @@
+{
+	"cardTemplateId": 78,
+	"name": "Electric Catalyst",
+	"description": "Your spells cost 1 less",
+	"cost": 2,
+	"attack": 2,
+	"health": 2,
+	"movement": 2,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		CardAura(SELF, FRIENDLY & HAND & SPELL, 'Electric Fire', cost(-1) )
+	}"
+}

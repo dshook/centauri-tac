@@ -46,6 +46,9 @@ export default class CardDirectory
     //copy props over to proper object
     for(var k in card) c[k] = card[k];
 
+    //base prop(s)
+    c.baseCost = c.cost;
+
     if(card.eventcode){
       try{
         let cardEvents = this.parser.parse(card.eventcode);
@@ -73,6 +76,9 @@ export default class CardDirectory
     //clone into new card
     var cardClone = new Card();
     for(var k in directoryCard) cardClone[k]=directoryCard[k];
+
+    //gotta clone so we get new object ref that isn't frozen
+    cardClone.buffs = _.cloneDeep(directoryCard.buffs);
 
     return cardClone;
   }

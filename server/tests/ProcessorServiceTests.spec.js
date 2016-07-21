@@ -12,17 +12,44 @@ import Statuses from '../game/ctac/models/Statuses.js';
 
 export default class ProcessorServiceTests
 {
-  constructor(queue, cardDirectory, pieceState, cardEvaluator)
+  constructor(queue, cardDirectory, pieceState, cardEvaluator, cardState)
   {
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
+    this.cardState = cardState;
   }
 
   setupTest(){
     this.queue.init();
     this.pieceState.reset();
+    this.cardState.initPlayer(1);
+    this.cardState.initPlayer(2);
+  }
+
+  spawnCards(){
+    //each player gets 2 minions, 2 spells, and then draws one of each into hand
+    this.spawnCard(this.cardState, 2, 1);
+    this.spawnCard(this.cardState, 40, 1);
+    this.spawnCard(this.cardState, 3, 1);
+    this.spawnCard(this.cardState, 50, 1);
+    this.spawnCard(this.cardState, 2, 2);
+    this.spawnCard(this.cardState, 40, 2);
+    this.spawnCard(this.cardState, 3, 2);
+    this.spawnCard(this.cardState, 50, 2);
+
+    this.cardState.drawCard(1);
+    this.cardState.drawCard(1);
+    this.cardState.drawCard(2);
+    this.cardState.drawCard(2);
+  }
+
+  spawnCard(cardState, cardTemplateId, playerId, addToHand){
+    let cardClone = this.cardDirectory.newFromId(cardTemplateId);
+    cardState.addToDeck(playerId, cardClone);
+
+    return cardClone;
   }
 
   spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
@@ -305,6 +332,26 @@ export default class ProcessorServiceTests
 
       t.deepEqual(pieceWithIncompatableDamagedEvent.events[1], newCode[0]
         , 'Piece with incompatable event got added as another event')
+    });
+
+    //spawn a piece with a card aura and make sure it takes affect
+    test('Card Aura', async (t) => {
+      t.plan(3);
+      this.setupTest();
+
+      this.spawnCards();
+      let playerSpell = this.cardState.hands[1][1];
+      t.equal(playerSpell.cost, 1, 'Found spell with normal cost');
+
+      let piece = this.spawnPiece(this.pieceState, 78, 1);
+
+      //make sure the aura gets applied
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece, null, piece.position, null);
+
+      await this.queue.processUntilDone();
+
+      t.equal(playerSpell.cost, 0, 'Spell got buffed');
+      t.equal(playerSpell.buffs.length, 1, 'Buffs were added');
     });
   }
 }
