@@ -12,6 +12,7 @@ namespace ctac
         public string name { get; set; }
         public string description { get; set; }
         public int cost { get; set; }
+        public int baseCost { get; set; }
         public int attack { get; set; }
         public int health { get; set; }
         public int movement { get; set; }
@@ -19,6 +20,8 @@ namespace ctac
 
         public List<string> tags { get; set; }
         public Statuses statuses { get; set; }
+
+        public List<CardBuffModel> buffs { get; set; }
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }

@@ -24,6 +24,7 @@ namespace ctac
         [Inject] public CardDiscardedSignal cardDiscarded { get; set; }
         [Inject] public CardGivenSignal cardGiven { get; set; }
         [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
+        [Inject] public CardBuffSignal cardBuffed { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -46,6 +47,7 @@ namespace ctac
             cardGiven.AddListener(onCardGiven);
             cardDrawShown.AddListener(onCardDrawnShown);
             cardDiscarded.AddListener(onCardDiscarded);
+            cardBuffed.AddListener(onBuff);
             turnEnded.AddListener(onTurnEnded);
             playerResourceSet.AddListener(onPlayerResourceSet);
         }
@@ -63,6 +65,7 @@ namespace ctac
             cardDrawShown.RemoveListener(onCardDrawnShown);
             cardDiscarded.RemoveListener(onCardDiscarded);
             turnEnded.RemoveListener(onTurnEnded);
+            cardBuffed.AddListener(onBuff);
             playerResourceSet.RemoveListener(onPlayerResourceSet);
         }
 
@@ -162,6 +165,25 @@ namespace ctac
                     card = card,
                     destroyCard = destroyCard
                 });
+            }
+        }
+
+        private void onBuff(CardBuffModel cardBuff)
+        {
+            var card = cards.Card(cardBuff.cardId);
+
+            if (cardBuff.cost != null)
+            {
+                animationQueue.Add(
+                    new CardView.UpdateTextAnim()
+                    {
+                        text = card.cardView.costText,
+                        textGO = card.cardView.costGO,
+                        current = card.cost,
+                        original = card.baseCost,
+                        change = cardBuff.cost.Value
+                    }
+                );
             }
         }
 

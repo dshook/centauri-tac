@@ -86,6 +86,9 @@ namespace ctac {
             nameText.text = card.name;
             descriptionText.text = card.description;
 
+            if      (card.cost > card.baseCost) { costText.color = Color.red; }
+            else if (card.cost < card.baseCost) { costText.color = Color.green; }
+
             if (card.isMinion)
             {
                 moveRangeUnderline.SetActive(true);
@@ -156,6 +159,7 @@ namespace ctac {
             healthText.color = Color.black;
             moveText.color = Color.black;
             rangeText.color = Color.black;
+            costText.color = Color.white;
         }
 
         public void UpdateBuffsDisplay()
@@ -257,5 +261,44 @@ namespace ctac {
         }
 
         public static readonly float HOVER_DELAY = 0.5f;
+
+        public class UpdateTextAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public GameObject textGO { get; set; }
+            public TextMeshPro text { get; set; }
+            public int current { get; set; }
+            public int original { get; set; }
+            public int change { get; set; }
+            private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
+
+            public void Init() { }
+            public void Update()
+            {
+                if (text == null) return;
+
+                text.text = current.ToString();
+                if (change != 0)
+                {
+                    iTweenExtensions.PunchScale(textGO, punchSize, 1.5f, 0);
+                }
+                if (current > original)
+                {
+                    text.color = Color.red;
+                }
+                else if (current < original)
+                {
+                    text.color = Color.green;
+                }
+                else
+                {
+                    text.color = Color.white;
+                }
+                Complete = true;
+            }
+        }
     }
 }

@@ -25,12 +25,14 @@ namespace ctac
                     name = cardTemplate.name,
                     description = cardTemplate.description,
                     cost = cardTemplate.cost,
+                    baseCost = cardTemplate.cost,
                     attack = cardTemplate.attack,
                     health = cardTemplate.health,
                     movement = cardTemplate.movement,
                     range = cardTemplate.range,
                     tags = cardTemplate.tags,
-                    playable = false
+                    playable = false,
+                    buffs = new List<CardBuffModel>()
                 };
         }
     }
