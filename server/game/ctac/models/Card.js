@@ -35,6 +35,11 @@ export default class Card
       let origStat = this[attrib];
       this[attrib] += buff[attrib];
 
+      //cap cost at 0
+      if(attrib === 'cost'){
+        this[attrib] = Math.max(0, this[attrib]);
+      }
+
       //update action with new values
       let newAttrib = 'new' + capAttr;
       action[newAttrib] = this[attrib];
