@@ -49,6 +49,8 @@
   return 'selectAttr'
 (Count)
   return 'count'
+(CardCount)
+  return 'cardCount'
 
 // actions
 (SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor|AttachCode|CardAura)
@@ -271,6 +273,8 @@ eNumber
      { $$ = { eNumber: true, attributeSelector: $3, attribute: $5 }; }
   | count'('possibleRandSelector')'
      { $$ = { eNumber: true, count: true, selector: $3 }; }
+  | cardCount'('possibleRandSelector')'
+     { $$ = { eNumber: true, cardCount: true, selector: $3 }; }
   ;
 
 numberList

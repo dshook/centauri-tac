@@ -149,6 +149,9 @@ export default class Selector{
     }else if(input.count){
       let selectedPieces = this.selectPieces(input.selector, pieceSelectorParams);
       return selectedPieces.length;
+    }else if(input.cardCount){
+      let selectedCards = this.selectCards(input.selector, pieceSelectorParams);
+      return selectedCards.length;
     }
     return input;
   }

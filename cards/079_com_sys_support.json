@@ -1,0 +1,15 @@
+{
+	"cardTemplateId": 79,
+	"name": "COM-SYS Support",
+	"description": "If you are holding another minion, gain +1/+2",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		CardCount(FRIENDLY & MINION & HAND) > 1
+		&& Buff(SELF, 'Ally Boost', attack(1), health(2) )
+	}
+	"
+}
