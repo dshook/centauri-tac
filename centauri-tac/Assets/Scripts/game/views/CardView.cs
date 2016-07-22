@@ -66,12 +66,12 @@ namespace ctac {
             tribeText = tribe.GetComponent<TextMeshPro>();
             buffNameText = buffName.GetComponent<TextMeshPro>();
             buffAbilityText = buffAbility.GetComponent<TextMeshPro>();
-
+        
+            UpdateText();
         }
 
         void Update()
         {
-            UpdateText();
         }
 
         public void UpdateText()

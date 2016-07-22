@@ -113,6 +113,7 @@ namespace ctac
             CopyPieceToCard(piece, hoverCardView.card);
             hoverCardView.card.linkedPiece = piece;
 
+            hoverCardView.UpdateText();
             hoverCardView.UpdateBuffsDisplay();
 
             Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
