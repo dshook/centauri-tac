@@ -81,5 +81,5 @@
 ##Counters
 * mana spent for card
 * minions died 
-* cards in player hand
+* ~~cards in player hand~~
 * ~~Count pieces with selector~~
