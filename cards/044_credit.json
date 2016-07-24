@@ -4,5 +4,6 @@
 	"description": "Gain 1 energy for this turn",
 	"cost": 0,
 	"tags": ["Spell"],
+	"uncollectible": true,
 	"eventcode": "playSpell{ ChangeEnergy(PLAYER, 1, false, true) }"
 }

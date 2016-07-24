@@ -675,3 +675,38 @@ test('Conditional Action', t => {
 
   t.equal(queue._actions.length, 0, '0 Actions in the queue for unmet condition');
 });
+
+test('Find condition met cards', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  //fill one player hands with some area cards
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  spawnCard(cardState, 1, 49); //id 1
+  spawnCard(cardState, 1, 72); //id 2
+
+  t.plan(2);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let conditionals = cardEval.findMetConditionCards(cardState.hands[1], 1);
+  let expectedConditionals = [
+    {
+      cardId: 2,
+    }
+  ];
+
+  t.deepEqual(conditionals, expectedConditionals, 'Card 2 met the activate condition');
+
+  let noPieceState = new PieceState();
+  let emptySelector = new Selector(players, noPieceState);
+  let emptyCardEval = new CardEvaluator(queue, emptySelector, noPieceState, mapState);
+
+  let noConditionals = emptyCardEval.findMetConditionCards(cardState.hands[1], 1);
+  t.deepEqual(noConditionals, [], 'Nothing met activate criteria');
+});

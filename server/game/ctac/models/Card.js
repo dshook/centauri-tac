@@ -24,6 +24,14 @@ export default class Card
     return this.tags.indexOf(tag) != -1;
   }
 
+  get isSpell(){
+    return this.tags.includes('Spell');
+  }
+
+  get isMinion(){
+    return this.tags.includes('Minion');
+  }
+
   //only cost supported right now
   addBuff(buff){
     let action = {};

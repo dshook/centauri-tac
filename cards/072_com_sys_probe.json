@@ -8,7 +8,7 @@
 	"movement": 3,
 	"tags": ["Minion"],
 	"eventcode": "playMinion{
-		Count(FRIENDLY & MINION) > 1 && Buff(SELF, 'Ally Boost', attack(1), movement(1) )
+		Count(FRIENDLY & MINION - SELF) > 0 && Buff(SELF, 'Ally Boost', attack(1), movement(1) )
 	}
 	"
 }

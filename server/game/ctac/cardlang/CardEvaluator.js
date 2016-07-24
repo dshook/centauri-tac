@@ -759,7 +759,7 @@ export default class CardEvaluator{
         let event = card.events.find(e => e.event === targetEvent);
         if(!event) continue;
 
-        let targetPieceIds = this.findActionTargets(event.actions, playerId, card.tags.includes('Spell'));
+        let targetPieceIds = this.findActionTargets(event.actions, playerId, card.isSpell);
         if(targetPieceIds){
           targets.push({
             cardId: card.id,
@@ -884,7 +884,7 @@ export default class CardEvaluator{
         if(areaSelector){
           let areaDescrip = this.selector.selectArea(
             areaSelector,
-            {isSpell: card.tags.includes('Spell'), controllingPlayerId: playerId}
+            {isSpell: card.isSpell, controllingPlayerId: playerId}
           );
           areas.push({
             cardId: card.id,
@@ -935,6 +935,42 @@ export default class CardEvaluator{
     }
 
     return eventedPieces;
+  }
+
+  //look through cards for any that have a condition, and if it's met
+  //   [
+  //     {cardId: 2}
+  //   ]
+  findMetConditionCards(cards, playerId){
+    let conditionals = [];
+
+    for(let card of cards){
+      if(!card.events) continue;
+
+      for(let event of card.events){
+
+        //try to find conditionals in any of the actions
+        for(let cardEventAction of event.actions){
+          if(!cardEventAction.condition) continue;
+
+          let pieceSelectorParams = {
+            controllingPlayerId: card.playerId,
+            isSpell: card.isSpell,
+            isTimer: false
+          };
+
+          let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams)
+          this.log.info('Compare result %j, selectorParams %j', compareResult, pieceSelectorParams);
+          if(compareResult.length === 0){
+            continue;
+          }
+
+          conditionals.push({cardId: card.id});
+        }
+      }
+    }
+
+    return conditionals;
   }
 
   //Gets the event selector for the card event.  By convention this is the 0th arg that's a selector
