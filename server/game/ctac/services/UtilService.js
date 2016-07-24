@@ -37,13 +37,18 @@ class PossibleActions
       this.cardState.hands[this.turnState.currentPlayerId],
       this.turnState.currentPlayerId
     );
+    let metCondition = this.cardEvaluator.findMetConditionCards(
+      this.cardState.hands[this.turnState.currentPlayerId],
+      this.turnState.currentPlayerId
+    );
     let eventedPieces = this.cardEvaluator.findEventedPieces();
     return {
       playerId: this.turnState.currentPlayerId,
       targets,
       areas,
       abilities,
-      eventedPieces
+      eventedPieces,
+      metCondition
     };
   }
 }
