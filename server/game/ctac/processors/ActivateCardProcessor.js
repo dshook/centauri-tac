@@ -68,7 +68,7 @@ export default class ActivateCardProcessor
     //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
     if(cardPlayed.isMinion){
       queue.push(new SpawnPiece(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId, null, action.pivotPosition));
-    }else if(cardPlayed.isMinion){
+    }else if(cardPlayed.isSpell){
       queue.push(new PlaySpell(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId, action.pivotPosition));
     }else{
       throw 'Card played must be either a minion or a spell';

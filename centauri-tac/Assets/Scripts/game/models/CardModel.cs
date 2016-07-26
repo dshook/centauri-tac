@@ -23,12 +23,17 @@ namespace ctac
 
         public List<CardBuffModel> buffs { get; set; }
 
+
         [JsonIgnore]
         public GameObject gameObject { get; set; }
         [JsonIgnore]
         public RectTransform rectTransform { get; set; }
         [JsonIgnore]
         public CardView cardView { get; set; }
+
+        //If this card has a condition, and it is met
+        [JsonIgnore]
+        public bool metCondition { get; set; }
 
         //If this card is representing an in play piece
         [JsonIgnore]

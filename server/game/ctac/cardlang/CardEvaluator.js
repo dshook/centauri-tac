@@ -960,7 +960,6 @@ export default class CardEvaluator{
           };
 
           let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams)
-          this.log.info('Compare result %j, selectorParams %j', compareResult, pieceSelectorParams);
           if(compareResult.length === 0){
             continue;
           }

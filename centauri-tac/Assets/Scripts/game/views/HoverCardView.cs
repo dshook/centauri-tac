@@ -153,6 +153,7 @@ namespace ctac
             dest.range = src.range;
             dest.tags = src.tags;
             dest.statuses = src.statuses;
+            dest.metCondition = false;
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)
