@@ -42,7 +42,7 @@
 * random minion to spawn from cardId array or selector
 
 ##Conditions - check for AND, OR, Equality
-* Unit is dead (self?)
+* Unit is dead (self? "deal x damage, if it killed it..")
 * ~~holding card with selector~~
 * ~~attributes with selector (get enemy hero hp)~~
 * ~~enumber expression (more than 3 minions on board)~~

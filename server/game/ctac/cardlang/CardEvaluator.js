@@ -21,6 +21,7 @@ import MovePiece from '../actions/MovePiece.js';
 import TransformPiece from '../actions/TransformPiece.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
 import AttachCode from '../actions/AttachCode.js';
+import UnsummonPiece from '../actions/UnsummonPiece.js';
 
 /**
  * Evaluate the scripts on cards
@@ -639,6 +640,18 @@ export default class CardEvaluator{
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
                   this.queue.push(new AttachCode(s.id, action.args[1]));
+                }
+              }
+              break;
+            }
+            //Unsummon(pieceSelector)
+            case 'Unsummon':
+            {
+              lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
+              this.log.info('Unsummon Selected %j', lastSelected);
+              if(lastSelected && lastSelected.length > 0){
+                for(let s of lastSelected){
+                  this.queue.push(new UnsummonPiece(s.id));
                 }
               }
               break;

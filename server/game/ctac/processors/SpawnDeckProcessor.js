@@ -28,7 +28,7 @@ export default class SpawnDeckProcessor
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be most of your deck
-    let testingCards = [79];
+    let testingCards = [80];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);

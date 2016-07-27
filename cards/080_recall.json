@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 80,
+	"name": "Recall",
+	"description": "Return a minion to its owners hand",
+	"cost": 3,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{
+		Unsummon(TARGET & MINION)
+	}
+	"
+}
