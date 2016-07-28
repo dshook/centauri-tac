@@ -38,7 +38,13 @@ export default class SpawnPieceProcessor
     var newPiece = this.pieceState.newFromCard(this.cardDirectory, action.cardTemplateId, action.playerId, action.position);
     newPiece.direction = action.direction;
 
-    if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, action.targetPieceId, action.position, action.pivotPosition)){
+    if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, {
+      targetPieceId: action.targetPieceId,
+      position: action.position,
+      piviotPosition: action.pivotPosition,
+      chooseCardTemplateId: action.chooseCardTemplateId
+      })
+    ){
       action.pieceId = this.pieceState.add(newPiece, this.turnState.currentTurn);
       action.tags = newPiece.tags;
 

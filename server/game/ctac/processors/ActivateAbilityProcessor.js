@@ -56,7 +56,7 @@ export default class ActivateAbilityProcessor
       return queue.cancel(action);
     }
 
-    if(this.cardEvaluator.evaluatePieceEvent('ability', piece, action.targetPieceId)){
+    if(this.cardEvaluator.evaluatePieceEvent('ability', piece, {targetPieceId: action.targetPieceId})){
       queue.complete(action);
 
       //use up all the ability charge on the piece

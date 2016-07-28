@@ -5,7 +5,7 @@ import Direction from '../models/Direction.js';
  */
 export default class SpawnPiece
 {
-  constructor(playerId, cardInstanceId, cardTemplateId, position, targetPieceId, direction, pivotPosition)
+  constructor(playerId, cardInstanceId, cardTemplateId, position, targetPieceId, direction, pivotPosition, chooseCardTemplateId)
   {
     this.cardInstanceId = cardInstanceId;
     this.cardTemplateId = cardTemplateId;
@@ -17,6 +17,7 @@ export default class SpawnPiece
     this.direction = direction || Direction.South;
 
     this.pivotPosition = pivotPosition ? new Position(pivotPosition.x, pivotPosition.y, pivotPosition.z) : null;
+    this.chooseCardTemplateId = chooseCardTemplateId;
 
     this.pieceId = null;
     this.tags = null;

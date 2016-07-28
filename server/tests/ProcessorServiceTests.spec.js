@@ -224,7 +224,7 @@ export default class ProcessorServiceTests
       buffPiece.position = new Position(2, 0, 0);
 
       //make sure the aura gets applied
-      this.cardEvaluator.evaluatePieceEvent('playMinion', buffPiece, null, piece.position, null);
+      this.cardEvaluator.evaluatePieceEvent('playMinion', buffPiece, {position: piece.position});
 
       var enemyPiece = this.spawnPiece(this.pieceState, 1, 2);
       enemyPiece.position = new Position(2, 0, 1);
@@ -346,7 +346,7 @@ export default class ProcessorServiceTests
       let piece = this.spawnPiece(this.pieceState, 78, 1);
 
       //make sure the aura gets applied
-      this.cardEvaluator.evaluatePieceEvent('playMinion', piece, null, piece.position, null);
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece, {position: piece.position});
 
       await this.queue.processUntilDone();
 

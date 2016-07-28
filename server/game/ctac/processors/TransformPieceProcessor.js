@@ -33,7 +33,7 @@ export default class TransformPieceProcessor
         this.pieceState.setInitialMoveAttackStatus(piece);
 
         //Fire off the play minion event for the newly transformed piece to ensure things like aura's are set up
-        this.cardEvaluator.evaluatePieceEvent('playMinion', piece, null, piece.position, null);
+        this.cardEvaluator.evaluatePieceEvent('playMinion', piece, {position: piece.position});
       }
     }
 

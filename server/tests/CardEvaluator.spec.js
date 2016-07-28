@@ -257,7 +257,7 @@ test('Targeting minions', t => {
 
   let testBot = spawnPiece(pieceStateMix, 17, 1, true);
 
-  cardEval.evaluatePieceEvent('playMinion', testBot, 4);
+  cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 4});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
@@ -280,7 +280,7 @@ test('Targeting invalid', t => {
   let testBot = spawnPiece(pieceStateMix, 19, 1, true);
 
   //the syndicate requires a friendly minion, this is not so we should get a message back
-  let evalReturn = cardEval.evaluatePieceEvent('playMinion', testBot, 3);
+  let evalReturn = cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 3});
 
   t.equal(evalReturn, false, 'Eval returned false for invalid target');
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
@@ -462,7 +462,7 @@ test('Give Status', t => {
 
   let testBot = spawnPiece(pieceStateMix, 29, 1);
 
-  cardEval.evaluatePieceEvent('playMinion', testBot, 2);
+  cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 2});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceStatusChange, 'First action is Piece Status change');
@@ -655,7 +655,7 @@ test('Conditional Action', t => {
 
   let testBot = spawnPiece(pieceStateMix, 72, 1);
 
-  cardEval.evaluatePieceEvent('playMinion', testBot, 1);
+  cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 1});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.ok(queue._actions[0] instanceof PieceBuff, 'First action is Piece Buff');
@@ -671,7 +671,7 @@ test('Conditional Action', t => {
 
   testBot = spawnPiece(pieceStateMix, 72, 1);
 
-  cardEval.evaluatePieceEvent('playMinion', testBot, 1);
+  cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 1});
 
   t.equal(queue._actions.length, 0, '0 Actions in the queue for unmet condition');
 });

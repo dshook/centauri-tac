@@ -45,7 +45,7 @@ export default class ActivateCardProcessor
     }
 
     //check to make sure the card was played in a valid spot
-    if(cardPlayed.hasTag('Minion')){
+    if(cardPlayed.isMinion){
       let playerHero = this.pieceState.hero(action.playerId);
       let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
       if(kingDist > 1){
@@ -63,13 +63,29 @@ export default class ActivateCardProcessor
         queue.push(new Message('You must play your minions close to your hero!'));
         return queue.cancel(action, true);
       }
-    }
 
-    //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
-    if(cardPlayed.isMinion){
-      queue.push(new SpawnPiece(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId, null, action.pivotPosition));
+      //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
+      queue.push(new SpawnPiece(
+        action.playerId,
+        action.cardInstanceId,
+        cardPlayed.cardTemplateId,
+        action.position,
+        action.targetPieceId,
+        null,
+        action.pivotPosition,
+        action.chooseCardTemplateId
+      ));
+
     }else if(cardPlayed.isSpell){
-      queue.push(new PlaySpell(action.playerId, action.cardInstanceId, cardPlayed.cardTemplateId, action.position, action.targetPieceId, action.pivotPosition));
+      queue.push(new PlaySpell(
+        action.playerId,
+        action.cardInstanceId,
+        cardPlayed.cardTemplateId,
+        action.position,
+        action.targetPieceId,
+        action.pivotPosition,
+        action.chooseCardTemplateId
+      ));
     }else{
       throw 'Card played must be either a minion or a spell';
     }

@@ -34,7 +34,8 @@ export default class PlaySpellProcessor
       playerId: action.playerId,
       targetPieceId: action.targetPieceId,
       position: action.position,
-      pivotPosition: action.pivotPosition
+      pivotPosition: action.pivotPosition,
+      chooseCardTemplateId: action.chooseCardTemplateId
     })){
 
       this.cardState.playCard(action.playerId, action.cardInstanceId);

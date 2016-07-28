@@ -22,6 +22,7 @@ import TransformPiece from '../actions/TransformPiece.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
 import AttachCode from '../actions/AttachCode.js';
 import UnsummonPiece from '../actions/UnsummonPiece.js';
+import Choose from '../actions/Choose.js';
 
 /**
  * Evaluate the scripts on cards
@@ -68,9 +69,11 @@ export default class CardEvaluator{
   }
 
   //evaluate an event that directly relates to a piece, i.e. the piece dies
-  evaluatePieceEvent(event, activatingPiece, targetPieceId, position, pivotPosition){
+  evaluatePieceEvent(event, activatingPiece, pieceEventParams){
     this.log.info('Eval piece event %s activating piece: %j', event, activatingPiece);
     let evalActions = [];
+
+    let {targetPieceId, position, pivotPosition, chooseCardTemplateId} = pieceEventParams || {};
 
     if(event === 'death'){
       this.cleanupTimers(activatingPiece);
@@ -112,7 +115,8 @@ export default class CardEvaluator{
               playerId: activatingPiece.playerId,
               position,
               pivotPosition,
-              action: cardEventAction
+              action: cardEventAction,
+              chooseCardTemplateId
             });
           }
         }
@@ -174,7 +178,7 @@ export default class CardEvaluator{
   }
 
   //when a spell is played
-  evaluateSpellEvent(event, {spellCard, playerId, targetPieceId, position, pivotPosition}){
+  evaluateSpellEvent(event, {spellCard, playerId, targetPieceId, position, pivotPosition, chooseCardTemplateId}){
     this.log.info('Eval spell event %s with spell %s player: %s', event, spellCard.name, playerId);
 
     let evalActions = [];
@@ -189,7 +193,8 @@ export default class CardEvaluator{
           playerId,
           position,
           pivotPosition,
-          action: cardEventAction
+          action: cardEventAction,
+          chooseCardTemplateId
         });
       }
     }
@@ -222,7 +227,8 @@ export default class CardEvaluator{
               playerId: piece.playerId,
               action: cardEventAction,
               position,
-              pivotPosition
+              pivotPosition,
+              chooseCardTemplateId
             });
           }
         }
@@ -655,6 +661,12 @@ export default class CardEvaluator{
                   this.queue.push(new UnsummonPiece(s.id));
                 }
               }
+              break;
+            }
+            //Choose(cardTemplateId1, cardTemplateId2)
+            case 'Choose':
+            {
+              this.queue.push(new Choose(action.args[0], action.args[1], pieceAction.chooseCardTemplateId));
               break;
             }
           }

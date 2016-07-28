@@ -4,7 +4,7 @@ import Position from '../models/Position.js';
  */
 export default class ActivateCard
 {
-  constructor(playerId, cardInstanceId, position, targetPieceId, pivotPosition)
+  constructor(playerId, cardInstanceId, position, targetPieceId, pivotPosition, chooseCardTemplateId)
   {
     //which specific card was activated
     this.cardInstanceId = cardInstanceId;
@@ -16,5 +16,8 @@ export default class ActivateCard
 
     //used for area selections
     this.pivotPosition = pivotPosition ? new Position(pivotPosition.x, pivotPosition.y, pivotPosition.z) : null;
+
+    //choose one
+    this.chooseCardTemplateId = chooseCardTemplateId;
   }
 }
