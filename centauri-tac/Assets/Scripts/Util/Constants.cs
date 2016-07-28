@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ctac
 {
@@ -12,6 +13,8 @@ namespace ctac
         public static string cardCanvas = "cardCanvas";
         public static string cardCamera = "CardCamera";
         public static string targetPieceTag = "targetPiece";
+
+        public static Vector3 cardSpawnPosition = new Vector3(10000,10000, 0);
 
         public static List<string> eventTags = new List<string>()
         {

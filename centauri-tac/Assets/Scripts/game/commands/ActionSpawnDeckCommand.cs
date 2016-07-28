@@ -41,8 +41,6 @@ namespace ctac
             }
         }
 
-        private Vector3 spawnPosition = new Vector3(10000,10000, 0);
-
         public override void Execute()
         {
             if (!processedActions.Verify(spawnDeck.id)) return;
@@ -54,7 +52,7 @@ namespace ctac
             {
                 var newCard = GameObject.Instantiate(
                     cardPrefab,
-                    spawnPosition,
+                    Constants.cardSpawnPosition,
                     Quaternion.identity
                 ) as GameObject;
                 newCard.transform.SetParent(DeckGO.transform, false);

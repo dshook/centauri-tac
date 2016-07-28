@@ -459,5 +459,36 @@ namespace ctac {
                 }
             }
         }
+
+        public class UnsummonAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+            public PieceDiedSignal pieceDied { get; set; }
+
+            private Vector3 destPosition { get; set; }
+            private Vector3 endOffset = new Vector3(0, 5f, 0);
+            private float dropTime = 0.7f;
+
+            public void Init()
+            {
+                destPosition = piece.gameObject.transform.position + endOffset;
+            }
+            public void Update()
+            {
+                iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeOutQuart);
+
+                if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
+                {
+                    piece.gameObject.transform.position = destPosition;
+
+                    Complete = true;
+                    pieceDied.Dispatch(piece.piece);
+                }
+            }
+        }
     }
 }

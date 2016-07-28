@@ -60,6 +60,7 @@ export default class CardEvaluator{
       'Transform',
       'GiveCard',
       'ShuffleToDeck',
+      'Unsummon',
       'startTurnTimer',
       'endTurnTimer'
     ];

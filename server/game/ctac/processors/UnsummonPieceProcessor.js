@@ -5,10 +5,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class UnsummonPieceProcessor
 {
-  constructor(pieceState, cardState)
+  constructor(pieceState, cardState, cardDirectory)
   {
     this.pieceState = pieceState;
     this.cardState = cardState;
+    this.cardDirectory = cardDirectory;
   }
 
   /**
