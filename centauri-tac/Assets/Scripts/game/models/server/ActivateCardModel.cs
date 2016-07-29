@@ -8,5 +8,6 @@
         public PositionModel position { get; set; }
         public PositionModel pivotPosition { get; set; }
         public int? targetPieceId { get; set; }
+        public int? chooseCardTemplateId { get; set; }
     }
 }

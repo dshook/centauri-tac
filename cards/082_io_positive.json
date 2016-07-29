@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 82,
+	"name": "Io Positive",
+	"description": "Gain +1/+1",
+	"cost": 0,
+	"tags": ["Spell"],
+	"uncollectible": true,
+	"eventcode": "playSpell{
+		Buff(SELF, 'Io Positive', attack(1), health(1))
+	}
+	"
+}

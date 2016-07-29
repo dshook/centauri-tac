@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 81,
+	"name": "Io Duality",
+	"description": "<b>Choose:</b> Gain +1/+1 or give a minion -1/-1",
+	"cost": 3,
+	"attack": 2,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		Choose(82, 83)
+	}
+	"
+}

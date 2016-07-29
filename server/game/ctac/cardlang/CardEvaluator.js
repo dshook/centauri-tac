@@ -178,7 +178,9 @@ export default class CardEvaluator{
   }
 
   //when a spell is played
-  evaluateSpellEvent(event, {spellCard, playerId, targetPieceId, position, pivotPosition, chooseCardTemplateId}){
+  evaluateSpellEvent(event,
+    {spellCard, playerId, targetPieceId, position, pivotPosition, chooseCardTemplateId, activatingPiece, selfPiece}
+  ){
     this.log.info('Eval spell event %s with spell %s player: %s', event, spellCard.name, playerId);
 
     let evalActions = [];
@@ -188,7 +190,7 @@ export default class CardEvaluator{
     if(spellActions.length > 0){
       for(let cardEventAction of spellActions[0].actions){
         evalActions.push({
-          piece: null,
+          piece: selfPiece || null,
           card: spellCard,
           playerId,
           position,
@@ -235,7 +237,7 @@ export default class CardEvaluator{
       }
     }
 
-    return this.processActions(evalActions, null, targetPieceId);
+    return this.processActions(evalActions, activatingPiece || null, targetPieceId);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
@@ -666,7 +668,19 @@ export default class CardEvaluator{
             //Choose(cardTemplateId1, cardTemplateId2)
             case 'Choose':
             {
-              this.queue.push(new Choose(action.args[0], action.args[1], pieceAction.chooseCardTemplateId));
+              this.queue.push(new Choose(
+                action.args[0],
+                action.args[1],
+                pieceAction.chooseCardTemplateId,
+                {
+                  playerId: pieceAction.playerId,
+                  activatingPiece: pieceSelectorParams.activatingPiece,
+                  selfPiece: pieceSelectorParams.selfPiece,
+                  targetPieceId: pieceSelectorParams.targetPieceId,
+                  position: pieceSelectorParams.position,
+                  pivotPosition: pieceSelectorParams.pivotPosition
+                }
+              ));
               break;
             }
           }

@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 83,
+	"name": "Io Negative",
+	"description": "Give a minion -1/-1",
+	"cost": 0,
+	"tags": ["Spell"],
+	"uncollectible": true,
+	"eventcode": "playSpell{
+		Buff(TARGET & MINION, 'Io Positive', attack(-1), health(-1))
+	}
+	"
+}
