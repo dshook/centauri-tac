@@ -947,6 +947,54 @@ export default class CardEvaluator{
     return areas;
   }
 
+  //Find cards that have a choice, and tell the client what the choices are, as well as possible targets
+  //for each of the choices
+  //TODO: in the future add possibility to do different areas
+  //   [
+  //     {cardId: 2, choices: [{ cardTemplateId: 1, targets: <return from findPossibleTargets>  } ] }
+  //   ]
+  findChooseCards(cards, playerId, cardDirectory){
+    let choices = [];
+
+    for(let card of cards){
+      if(!card.events) continue;
+
+      //targetable events also applies to choices
+      for(let targetEvent of this.targetableEvents){
+        let event = card.events.find(e => e.event === targetEvent);
+        if(!event) continue;
+
+        let choice = event.actions.find(a => a.action === 'Choose');
+        if(!choice) continue;
+
+        let chooseCardIds = [choice.args[0], choice.args[1]];
+        let cardChoices = [];
+
+        //since the directory cards won't have id's we have to find the targets individually
+        //to associate them properly
+        for(let chooseCardId of chooseCardIds){
+          let directoryCard = cardDirectory.directory[chooseCardId];
+
+          //   [
+          //     {cardId: 2, event: 'x', targetPieceIds: [4,5,6]}
+          //   ]
+          let targets = this.findPossibleTargets([directoryCard], playerId);
+          cardChoices.push({
+            cardTemplateId: chooseCardId,
+            targets
+          });
+        }
+
+        choices.push({
+          cardId: card.id,
+          choices: cardChoices
+        });
+      }
+    }
+
+    return choices;
+  }
+
   //Get a list of pieces with events/death events to send to the client
   findEventedPieces(){
     let eventedPieces = [];
