@@ -710,3 +710,40 @@ test('Find condition met cards', t => {
   let noConditionals = emptyCardEval.findMetConditionCards(cardState.hands[1], 1);
   t.deepEqual(noConditionals, [], 'Nothing met activate criteria');
 });
+
+test('Find choose cards', {objectPrintDepth: 9}, t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1); //id 1
+  spawnPiece(pieceStateMix, 2, 1); //id 2
+  spawnPiece(pieceStateMix, 1, 2); //id 3
+  spawnPiece(pieceStateMix, 2, 2); //id 4
+
+  //fill one player hands with a target card and some other random ones to try to catch other errors
+  let cardState = new CardState();
+  cardState.initPlayer(1);
+  cardState.initPlayer(2);
+  spawnCard(cardState, 1, 81); //id 1
+  spawnCard(cardState, 1, 3);
+  spawnCard(cardState, 2, 8); //id 6
+  spawnCard(cardState, 2, 9); //id 7
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let choices = cardEval.findChooseCards(cardState.hands[1], 1, cardDirectory);
+  //expecting enemy characters
+  let expectedChoices = [
+    {
+      cardId: 1,
+      choices: [
+        {cardTemplateId: 82, targets: []},
+        {cardTemplateId: 83, targets: {cardId: null, event: 'playSpell', targetPieceIds: [2, 4]}}
+      ]
+    }
+  ];
+
+  t.deepEqual(choices, expectedChoices, 'Player 1 choices are enemy characters');
+
+});
