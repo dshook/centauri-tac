@@ -738,7 +738,7 @@ test('Find choose cards', {objectPrintDepth: 9}, t => {
     {
       cardId: 1,
       choices: [
-        {cardTemplateId: 82, targets: []},
+        {cardTemplateId: 82, targets: null},
         {cardTemplateId: 83, targets: {cardId: null, event: 'playSpell', targetPieceIds: [2, 4]}}
       ]
     }

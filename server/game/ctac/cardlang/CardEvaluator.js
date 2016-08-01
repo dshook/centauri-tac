@@ -981,7 +981,7 @@ export default class CardEvaluator{
           let targets = this.findPossibleTargets([directoryCard], playerId);
           cardChoices.push({
             cardTemplateId: chooseCardId,
-            targets: targets.length > 0 ? targets[0] : []
+            targets: targets.length > 0 ? targets[0] : null
           });
         }
 

@@ -11,6 +11,7 @@ namespace ctac
         public Dictionary<int, List<AreaTarget>> possibleAreas = new Dictionary<int, List<AreaTarget>>();
         public Dictionary<int, List<MetCondition>> metConditions = new Dictionary<int, List<MetCondition>>();
         public List<EventedPiece> eventedPieces = new List<EventedPiece>();
+        public Dictionary<int, List<ChoiceCard>> chooseCards = new Dictionary<int, List<ChoiceCard>>();
 
         public void Update(PossibleActions newActions)
         {
@@ -19,6 +20,7 @@ namespace ctac
             possibleAreas[newActions.playerId] = newActions.areas;
             eventedPieces = newActions.eventedPieces;
             metConditions[newActions.playerId] = newActions.metConditions;
+            chooseCards[newActions.playerId] = newActions.chooseCards;
         }
 
         /// <summary>
@@ -58,6 +60,7 @@ namespace ctac
         public List<AreaTarget> areas { get; set; }
         public List<EventedPiece> eventedPieces { get; set; }
         public List<MetCondition> metConditions { get; set; }
+        public List<ChoiceCard> chooseCards { get; set; }
     }
 
     public class ActionTarget
@@ -102,6 +105,18 @@ namespace ctac
     public class MetCondition
     {
         public int cardId { get; set; }
+    }
+
+    public class ChoiceCard
+    {
+        public int cardId { get; set; }
+        public List<Choice> choices { get; set; }
+    }
+
+    public class Choice
+    {
+        public int cardTemplateId { get; set; }
+        public List<ActionTarget> targets { get; set; }
     }
 
     public enum AreaType

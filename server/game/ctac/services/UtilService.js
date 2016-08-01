@@ -14,11 +14,12 @@ export default class UtilService
 
 class PossibleActions
 {
-  constructor(cardEvaluator, cardState, turnState, pieceState){
+  constructor(cardEvaluator, cardState, turnState, pieceState, cardDirectory){
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
     this.turnState = turnState;
     this.pieceState = pieceState;
+    this.cardDirectory = cardDirectory;
   }
 
   //end of processing client data update
@@ -42,13 +43,19 @@ class PossibleActions
       this.turnState.currentPlayerId
     );
     let eventedPieces = this.cardEvaluator.findEventedPieces();
+    let chooseCards = this.cardEvaluator.findChooseCards(
+      this.cardState.hands[this.turnState.currentPlayerId],
+      this.turnState.currentPlayerId,
+      this.cardDirectory
+    );
     return {
       playerId: this.turnState.currentPlayerId,
       targets,
       areas,
       abilities,
       eventedPieces,
-      metConditions
+      metConditions,
+      chooseCards
     };
   }
 }
