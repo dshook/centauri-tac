@@ -65,7 +65,7 @@ namespace ctac
 
     public class ActionTarget
     {
-        public int cardId { get; set; }
+        public int? cardId { get; set; }
         public string @event { get; set; }
         public List<int> targetPieceIds { get; set; }
     }
@@ -116,7 +116,7 @@ namespace ctac
     public class Choice
     {
         public int cardTemplateId { get; set; }
-        public List<ActionTarget> targets { get; set; }
+        public ActionTarget targets { get; set; }
     }
 
     public enum AreaType
