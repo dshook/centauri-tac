@@ -67,6 +67,11 @@ namespace ctac
             return (targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor);
         }
 
+        public bool isChoose(PossibleActionsModel possibleActions)
+        {
+            return possibleActions.GetChoiceCards(playerId, id) != null;
+        }
+
         //have enough mana?
         public bool playable { get; set; }
         

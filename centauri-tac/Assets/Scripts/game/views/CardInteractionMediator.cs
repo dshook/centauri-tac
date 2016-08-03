@@ -18,6 +18,8 @@ namespace ctac
         [Inject] public SelectTargetSignal selectTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
+        [Inject] public StartChooseSignal startChoose { get; set; }
+
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
@@ -106,7 +108,15 @@ namespace ctac
 
                     var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
 
-                    if (draggedCard.needsTargeting(possibleActions))
+                    if (draggedCard.isChoose(possibleActions))
+                    {
+                        startChoose.Dispatch(new ChooseModel()
+                        {
+                            choosingCard = draggedCard,
+                            choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
+                        });
+                    }
+                    else if (draggedCard.needsTargeting(possibleActions))
                     {
                         var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
                         var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);

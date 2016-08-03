@@ -50,6 +50,13 @@ namespace ctac
 
             return possibleAreas[playerId].FirstOrDefault(x => x.cardId == cardId);
         }
+
+        public ChoiceCard GetChoiceCards(int playerId, int cardId)
+        {
+            if (!chooseCards.ContainsKey(playerId)){ return null; }
+
+            return chooseCards[playerId].FirstOrDefault(x => x.cardId == cardId);
+        }
     }
 
     public class PossibleActions
