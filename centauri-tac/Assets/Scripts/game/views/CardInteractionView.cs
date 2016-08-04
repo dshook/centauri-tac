@@ -97,11 +97,11 @@ namespace ctac
             {
                 hit = true;
                 activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
-                clickSignal.Dispatch(null, Vector3.zero);
             }
             else
             {
                 activateSignal.Dispatch(null);
+                clickSignal.Dispatch(null, Vector3.zero);
             }
             //implicitly stop dragging after activating since we only test activation when we want to stop dragging
             draggedObject = null;

@@ -25,6 +25,7 @@ namespace ctac
         [Inject] public CardGivenSignal cardGiven { get; set; }
         [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
         [Inject] public CardBuffSignal cardBuffed { get; set; }
+        [Inject] public CancelChooseSignal cancelChoose { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -50,6 +51,7 @@ namespace ctac
             cardBuffed.AddListener(onBuff);
             turnEnded.AddListener(onTurnEnded);
             playerResourceSet.AddListener(onPlayerResourceSet);
+            cancelChoose.AddListener(onCancelChoose);
         }
 
         public override void onRemove()
@@ -67,6 +69,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
             cardBuffed.AddListener(onBuff);
             playerResourceSet.RemoveListener(onPlayerResourceSet);
+            cancelChoose.RemoveListener(onCancelChoose);
         }
 
         private void onCardSelected(CardSelectedModel cardModel)
@@ -107,6 +110,7 @@ namespace ctac
         private void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
+            Destroy(card.gameObject);
             view.init(PlayerCards(), OpponentCards());
         }
 
@@ -234,6 +238,31 @@ namespace ctac
                     card.playable = false;
                 }
             }
+        }
+
+        private void onCancelChoose(ChooseModel chooseModel)
+        {
+            debug.Log("Choice Cancelled " + (chooseModel == null ? "without" : "with"));
+
+            //nothing to cancel
+            if (chooseModel == null)
+            {
+                return;
+            }
+
+            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
+
+            var leftCard = cardParent.FindChild("Left Choice Card");
+            var rightCard = cardParent.FindChild("Right Choice Card");
+
+            if (leftCard == null || rightCard == null)
+            {
+                debug.LogError("Couldn't find one of the choice cards in cancel");
+                return;
+            }
+            Destroy(leftCard.gameObject);
+            Destroy(rightCard.gameObject);
+
         }
     }
 }

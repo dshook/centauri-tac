@@ -38,13 +38,13 @@ namespace ctac
                 rightSpawnPosition,
                 Quaternion.identity
             ) as GameObject;
-            leftGameObject.name = "Left Choice Card ";
+            leftGameObject.name = "Left Choice Card";
             var rightGameObject = GameObject.Instantiate(
                 cardPrefab,
                 rightSpawnPosition,
                 Quaternion.identity
             ) as GameObject;
-            rightGameObject.name = "Right Choice Card ";
+            rightGameObject.name = "Right Choice Card";
 
             leftCardModel.SetupGameObject(leftGameObject);
             leftCardModel.SetCardInPlay(contextView);

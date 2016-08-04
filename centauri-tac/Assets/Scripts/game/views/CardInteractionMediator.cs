@@ -19,6 +19,7 @@ namespace ctac
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public StartChooseSignal startChoose { get; set; }
+        [Inject] public CancelChooseSignal cancelChoose { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
@@ -34,6 +35,9 @@ namespace ctac
 
         //for card targeting
         private TargetModel startTargetModel;
+
+        //and for card choosing
+        private ChooseModel chooseModel;
 
         public override void OnRegister()
         {
@@ -90,6 +94,8 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
+                cancelChoose.Dispatch(chooseModel);
+                chooseModel = null;
             }
         }
 
@@ -110,11 +116,13 @@ namespace ctac
 
                     if (draggedCard.isChoose(possibleActions))
                     {
-                        startChoose.Dispatch(new ChooseModel()
+                        chooseModel = new ChooseModel()
                         {
                             choosingCard = draggedCard,
                             choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
-                        });
+                        };
+                        debug.Log("Starting choose");
+                        startChoose.Dispatch(chooseModel);
                     }
                     else if (draggedCard.needsTargeting(possibleActions))
                     {
@@ -144,13 +152,18 @@ namespace ctac
                     }
                     else
                     {
-                        activateCard.Dispatch(new ActivateModel() {
+                        activateCard.Dispatch(new ActivateModel()
+                        {
                             cardActivated = draggedCard,
                             position = gameTile.position,
                             optionalTarget = null
                         });
                     }
                 }
+            }
+            else
+            {
+                cardSelected.Dispatch(null);
             }
         }
 
