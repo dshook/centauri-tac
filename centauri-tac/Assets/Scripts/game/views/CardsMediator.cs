@@ -244,12 +244,6 @@ namespace ctac
         {
             debug.Log("Choice Cancelled " + (chooseModel == null ? "without" : "with"));
 
-            //nothing to cancel
-            if (chooseModel == null)
-            {
-                return;
-            }
-
             var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
 
             var leftCard = cardParent.FindChild("Left Choice Card");
@@ -262,6 +256,7 @@ namespace ctac
             }
             Destroy(leftCard.gameObject);
             Destroy(rightCard.gameObject);
+
 
         }
     }

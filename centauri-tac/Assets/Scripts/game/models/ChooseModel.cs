@@ -8,6 +8,8 @@ namespace ctac
 
         public ChoiceCard choices { get; set; }
 
+        public Tile cardDeployPosition { get; set; }
+
         public int? chosenTemplateId { get; set; }
 
         //if choose also needs a target

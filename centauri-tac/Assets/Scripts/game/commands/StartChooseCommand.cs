@@ -1,5 +1,6 @@
 using strange.extensions.command.impl;
 using strange.extensions.context.api;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ctac
@@ -13,11 +14,13 @@ namespace ctac
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
 
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public IPieceService pieceService { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
-        [Inject]
-        public CardDirectory cardDirectory { get; set; }
+        [Inject] public CardDirectory cardDirectory { get; set; }
+        [Inject] public MapModel map { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0.5f);
         private Vector3 rightSpawnPosition = new Vector3(0, 0, 0);
@@ -55,7 +58,29 @@ namespace ctac
             SetCardXPos(leftCardModel, -140f);
             SetCardXPos(rightCardModel, 140f);
 
-            //cardGivenSignal.Dispatch(leftCardModel);
+
+            //spawn phantom piece if needed
+            //should dedupe with StartSelectTargetCommand if happens again
+            if (chooseModel.choosingCard.isMinion)
+            {
+                var spawnedPiece = new SpawnPieceModel
+                {
+                    cardTemplateId = chooseModel.choosingCard.cardTemplateId,
+                    pieceId = -1,
+                    playerId = chooseModel.choosingCard.playerId,
+                    position = chooseModel.cardDeployPosition.position.ToPositionModel(),
+                    tags = new List<string>() { Constants.targetPieceTag },
+                    direction = Direction.South
+                };
+
+                var pieceModel = pieceService.CreatePiece(spawnedPiece);
+                animationQueue.Add(new PieceView.SpawnAnim()
+                {
+                    piece = pieceModel.gameObject.GetComponent<PieceView>(),
+                    map = map,
+                    mapService = mapService
+                });
+            }
 
             debug.Log(string.Format("Choices setup"));
         }

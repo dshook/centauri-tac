@@ -22,6 +22,8 @@ namespace ctac
         [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
 
+        [Inject] public StartChooseSignal startChoose { get; set; }
+
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -36,6 +38,7 @@ namespace ctac
             cancelSelectTarget.AddListener(onCancelSelectTarget);
             selectTarget.AddListener(onSelectTarget);
             startSelectTarget.AddListener(onStartTarget);
+            startChoose.AddListener(onStartChoose);
 
             cancelSelectAbilityTarget.AddListener(onAbilityCancelSelectTarget);
             selectAbilityTarget.AddListener(onAbilitySelectTarget);
@@ -50,6 +53,7 @@ namespace ctac
             cancelSelectTarget.RemoveListener(onCancelSelectTarget);
             selectTarget.RemoveListener(onSelectTarget);
             startSelectTarget.RemoveListener(onStartTarget);
+            startChoose.RemoveListener(onStartChoose);
 
             cancelSelectAbilityTarget.RemoveListener(onAbilityCancelSelectTarget);
             selectAbilityTarget.RemoveListener(onAbilitySelectTarget);
@@ -126,6 +130,11 @@ namespace ctac
         }
 
         private void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
+        {
+            view.disable();
+        }
+
+        private void onStartChoose(ChooseModel c)
         {
             view.disable();
         }

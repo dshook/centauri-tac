@@ -94,7 +94,10 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
-                cancelChoose.Dispatch(chooseModel);
+                if (chooseModel != null)
+                {
+                    cancelChoose.Dispatch(chooseModel);
+                }
                 chooseModel = null;
             }
         }
@@ -119,6 +122,7 @@ namespace ctac
                         chooseModel = new ChooseModel()
                         {
                             choosingCard = draggedCard,
+                            cardDeployPosition = gameTile,
                             choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
                         };
                         debug.Log("Starting choose");
