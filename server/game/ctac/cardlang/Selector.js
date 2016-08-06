@@ -41,8 +41,6 @@ export default class Selector{
       if(!pieceSelectorParams.isTimer){
         //make sure that if it's a target card and there are available targets, one of them is picked
         var possibleTargets = this.selectPossibleTargets(selector, pieceSelectorParams );
-        this.log.info('Target select pieces found %j', possibleTargets);
-        this.log.info('Target select piece params %j', pieceSelectorParams);
         if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
           throw new EvalError('You must select a valid target');
         }
