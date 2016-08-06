@@ -34,7 +34,6 @@ export default class CardEvaluator{
     this.selector = selector;
     this.pieceState = pieceState;
     this.mapState = mapState;
-    this.log.info('piece state %j', pieceState);
     this.startTurnTimers = [];
     this.endTurnTimers = [];
 
@@ -841,7 +840,7 @@ export default class CardEvaluator{
         if(!this.selector.doesSelectorUse(selector, 'TARGET')) continue;
 
         let targetPieceIds = this.selector.selectPossibleTargets(
-          playerId, selector, isSpell
+          selector, {controllingPlayerId: playerId, isSpell}
         ).map(p => p.id);
 
         //only allow max of 1 targetable action per event

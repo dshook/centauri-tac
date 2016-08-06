@@ -6,7 +6,7 @@
 	"tags": ["Spell"],
 	"uncollectible": true,
 	"eventcode": "playSpell{
-		Buff(TARGET & MINION, 'Io Positive', attack(-1), health(-1))
+		Buff(TARGET & MINION - SELF, 'Io Negative', attack(-1), health(-1))
 	}
 	"
 }

@@ -276,7 +276,7 @@ test('Possible Targets', t => {
   };
 
   let selector = new Selector(players, pieceStateMix, mapState);
-  let nonTargetSelection = selector.selectPossibleTargets(1, nonTargetSelect);
+  let nonTargetSelection = selector.selectPossibleTargets(nonTargetSelect, {controllingPlayerId: 1});
 
   t.ok(Array.isArray(nonTargetSelection), 'Got back an Array');
   t.equal(nonTargetSelection.length, 0, 'Nothing to target here');
@@ -288,7 +288,7 @@ test('Possible Targets', t => {
     }
   };
 
-  let randoTargetSelection = selector.selectPossibleTargets(1, randomNonTarget);
+  let randoTargetSelection = selector.selectPossibleTargets(randomNonTarget, {controllingPlayerId: 1});
 
   t.ok(Array.isArray(randoTargetSelection), 'Got back an Array');
   t.equal(randoTargetSelection.length, 0, 'Nothing to target here');
@@ -299,7 +299,7 @@ test('Possible Targets', t => {
     right: 'TARGET'
   };
 
-  let targetSelect = selector.selectPossibleTargets(1, targetSelector);
+  let targetSelect = selector.selectPossibleTargets(targetSelector, {controllingPlayerId: 1});
 
   t.ok(Array.isArray(targetSelect), 'Got back an Array');
   t.equal(targetSelect.length, 3, 'Got back 3 targets');

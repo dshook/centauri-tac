@@ -40,11 +40,9 @@ export default class Selector{
       //skip TARGET checks for timer actions since the target won't be reselected, and SAVED should be used
       if(!pieceSelectorParams.isTimer){
         //make sure that if it's a target card and there are available targets, one of them is picked
-        var possibleTargets = this.selectPossibleTargets(
-          pieceSelectorParams.controllingPlayerId,
-          selector,
-          pieceSelectorParams.isSpell
-        );
+        var possibleTargets = this.selectPossibleTargets(selector, pieceSelectorParams );
+        this.log.info('Target select pieces found %j', possibleTargets);
+        this.log.info('Target select piece params %j', pieceSelectorParams);
         if(possibleTargets.length > 0 && !possibleTargets.find(p => p.id === pieceSelectorParams.targetPieceId)){
           throw new EvalError('You must select a valid target');
         }
@@ -95,13 +93,19 @@ export default class Selector{
     return this.areaSelector.Select(selector, pieceSelectorParams);
   }
 
-  selectPossibleTargets(controllingPlayerId, selector, isSpell){
+  //Run a piece selection with limited parameters to see what minions could be part of a target selection
+  selectPossibleTargets(selector, pieceSelectorParams){
     //Random TARGET is not happening
     if(selector.random) return [];
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
-
-    return new PieceSelector(this, {isSpell, controllingPlayerId})
+    //only use these specific selection params
+    let selectionParams = {
+      isSpell: pieceSelectorParams.isSpell,
+      controllingPlayerId: pieceSelectorParams.controllingPlayerId,
+      selfPiece: pieceSelectorParams.selfPiece
+    }
+    return new PieceSelector(this, selectionParams)
       .Select(selector);
   }
 
