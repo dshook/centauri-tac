@@ -26,6 +26,7 @@ namespace ctac
         [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
         [Inject] public CardBuffSignal cardBuffed { get; set; }
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
+        [Inject] public CardChosenSignal cardChosen { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -51,7 +52,9 @@ namespace ctac
             cardBuffed.AddListener(onBuff);
             turnEnded.AddListener(onTurnEnded);
             playerResourceSet.AddListener(onPlayerResourceSet);
-            cancelChoose.AddListener(onCancelChoose);
+
+            cancelChoose.AddListener(cleanupChooseCards);
+            cardChosen.AddListener(cleanupChooseCards);
         }
 
         public override void onRemove()
@@ -69,7 +72,9 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
             cardBuffed.AddListener(onBuff);
             playerResourceSet.RemoveListener(onPlayerResourceSet);
-            cancelChoose.RemoveListener(onCancelChoose);
+
+            cancelChoose.RemoveListener(cleanupChooseCards);
+            cardChosen.RemoveListener(cleanupChooseCards);
         }
 
         private void onCardSelected(CardSelectedModel cardModel)
@@ -240,7 +245,7 @@ namespace ctac
             }
         }
 
-        private void onCancelChoose(ChooseModel chooseModel)
+        private void cleanupChooseCards(ChooseModel chooseModel)
         {
             debug.Log("Choice Cancelled " + (chooseModel == null ? "without" : "with"));
 

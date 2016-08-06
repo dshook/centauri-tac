@@ -8,6 +8,7 @@ namespace ctac
 
         public ChoiceCard choices { get; set; }
 
+        //tile piece is played on, if it's a piece ofc
         public Tile cardDeployPosition { get; set; }
 
         public int? chosenTemplateId { get; set; }

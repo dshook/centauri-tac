@@ -38,7 +38,11 @@ namespace ctac
 
             if (hoverHit.HasValue)
             {
-                hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                //check to see if the hit object has been destroyed in the meantime
+                if (hoverHit.Value.collider != null)
+                {
+                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                }
             }
             else
             {

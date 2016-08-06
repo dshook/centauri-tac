@@ -34,6 +34,9 @@ namespace ctac
             var leftCardModel = cardDirectory.NewFromTemplate(998, leftChoice.cardTemplateId, chooseModel.choosingCard.playerId);
             var rightCardModel = cardDirectory.NewFromTemplate(998, rightChoice.cardTemplateId, chooseModel.choosingCard.playerId);
 
+            leftCardModel.tags.Add(Constants.chooseCardTag);
+            rightCardModel.tags.Add(Constants.chooseCardTag);
+
             var cardPrefab = Resources.Load("Card") as GameObject;
 
             var leftGameObject = GameObject.Instantiate(

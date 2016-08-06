@@ -28,8 +28,7 @@ export default class ChooseProcessor
     }
 
     //find card choice in directory
-    let cardPlayed = this.cardDirectory[action.selectedChoice];
-    this.log.info('chose card %s', cardPlayed.name);
+    let cardPlayed = this.cardDirectory.directory[action.selectedChoice];
     if(!cardPlayed){
       this.log.error('Cannot find card %s for choice', action.selectedChoice);
       return queue.cancel(action);
@@ -38,6 +37,7 @@ export default class ChooseProcessor
       this.log.error('Choice cards must be spells :) %s', cardPlayed.name);
       return queue.cancel(action);
     }
+    this.log.info('chose card %s', cardPlayed.name);
 
     if(this.cardEvaluator.evaluateSpellEvent('playSpell', {
       spellCard: cardPlayed,

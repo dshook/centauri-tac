@@ -20,6 +20,7 @@ namespace ctac
 
         [Inject] public StartChooseSignal startChoose { get; set; }
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
+        [Inject] public CardChosenSignal cardChosen { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
@@ -66,6 +67,25 @@ namespace ctac
                 if (clickedObject.CompareTag("Card"))
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
+
+                    if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
+                    {
+                        chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
+                        cardChosen.Dispatch(chooseModel);
+                        if (chooseModel.chooseFulfilled)
+                        {
+                            activateCard.Dispatch(new ActivateModel()
+                            {
+                                cardActivated = chooseModel.choosingCard,
+                                optionalTarget = null,
+                                position = chooseModel.cardDeployPosition.position,
+                                pivotPosition = null,
+                                chooseCardTemplateId = chooseModel.chosenTemplateId
+                            });
+                            chooseModel = null;
+                        }
+                        return;
+                    }
 
                     if (cardView.card.isSpell)
                     {

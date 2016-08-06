@@ -9,6 +9,7 @@ namespace ctac
         public PieceModel optionalTarget { get; set; }
         public Vector2? position { get; set; }
         public Vector2? pivotPosition { get; set; }
+        public int? chooseCardTemplateId { get; set; }
     }
 
     public class ActivateCardCommand : Command
@@ -30,7 +31,8 @@ namespace ctac
                     cardInstanceId = cActivate.cardActivated.id,
                     position = cActivate.position == null ? null : cActivate.position.Value.ToPositionModel(),
                     pivotPosition = cActivate.pivotPosition == null ? null : cActivate.pivotPosition.Value.ToPositionModel(),
-                    targetPieceId = cActivate.optionalTarget != null ? cActivate.optionalTarget.id : (int?)null
+                    targetPieceId = cActivate.optionalTarget != null ? cActivate.optionalTarget.id : (int?)null,
+                    chooseCardTemplateId = cActivate.chooseCardTemplateId
                 }
             );
         }
