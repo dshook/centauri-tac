@@ -1,6 +1,7 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using System.Linq;
 
 namespace ctac
 {
@@ -84,6 +85,21 @@ namespace ctac
                             });
                             chooseModel = null;
                         }
+                        else
+                        {
+                            var selected = chooseModel.choices.choices
+                                .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
+                            //if the choice isn't fulfilled yet it must mean it needs targets
+                            startTargetModel = new TargetModel()
+                            {
+                                targetingCard = chooseModel.choosingCard,
+                                cardDeployPosition = chooseModel.cardDeployPosition,
+                                targets = selected.targets,
+                                area = null // not supported yet
+                            };
+                            Invoke("StartSelectTargets", 0.10f);
+                            return;
+                        }
                         return;
                     }
 
@@ -114,11 +130,16 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
-                if (chooseModel != null)
+
+                //only cancel if we're not targeting with a choose
+                if (startTargetModel == null)
                 {
-                    cancelChoose.Dispatch(chooseModel);
+                    if (chooseModel != null)
+                    {
+                        cancelChoose.Dispatch(chooseModel);
+                    }
+                    chooseModel = null;
                 }
-                chooseModel = null;
             }
         }
 
@@ -200,6 +221,12 @@ namespace ctac
         private void onTargetCancel(CardModel card)
         {
             startTargetModel = null;
+            if (chooseModel != null)
+            {
+                debug.Log("Cancelling choose from target cancel");
+                cancelChoose.Dispatch(chooseModel);
+            }
+            chooseModel = null;
         }
 
         private void onSelectedTarget(TargetModel targetModel)
@@ -210,9 +237,11 @@ namespace ctac
                     targetModel.cardDeployPosition.position : 
                     targetModel.selectedPosition,
                 pivotPosition = targetModel.selectedPivotPosition,
-                optionalTarget = targetModel.selectedPiece
+                optionalTarget = targetModel.selectedPiece,
+                chooseCardTemplateId = chooseModel == null ? null : chooseModel.chosenTemplateId
             });
             startTargetModel = null;
+            chooseModel = null;
             cardSelected.Dispatch(null);
         }
 

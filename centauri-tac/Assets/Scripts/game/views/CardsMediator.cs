@@ -247,7 +247,7 @@ namespace ctac
 
         private void cleanupChooseCards(ChooseModel chooseModel)
         {
-            debug.Log("Choice Cancelled " + (chooseModel == null ? "without" : "with"));
+            debug.Log("Cleanup on aisle choose card");
 
             var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
 
@@ -256,7 +256,7 @@ namespace ctac
 
             if (leftCard == null || rightCard == null)
             {
-                debug.LogError("Couldn't find one of the choice cards in cancel");
+                debug.Log("Couldn't find one of the choice cards in cancel");
                 return;
             }
             Destroy(leftCard.gameObject);
