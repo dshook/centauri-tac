@@ -1,5 +1,6 @@
 using strange.extensions.command.impl;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ctac
 {
@@ -16,10 +17,22 @@ namespace ctac
         public AnimationQueueModel animationQueue { get; set; }
         [Inject]
         public MapModel map { get; set; }
+        [Inject]
+        public PiecesModel pieces { get; set; }
+
 
         public override void Execute()
         {
             if(startTargetModel.targetingCard.isSpell) return;
+
+            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));
+
+            if (phantomPiece != null)
+            {
+                //skip spawning if there's already the phantom piece out, like in a choose action
+                debug.Log("Phantom piece already spawned");
+                return;
+            }
 
             var spawnedPiece = new SpawnPieceModel
             {
