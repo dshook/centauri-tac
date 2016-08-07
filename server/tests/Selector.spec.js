@@ -361,6 +361,53 @@ test('Selector with comparison expression', t => {
   t.ok(selection[0].attack < 3, 'Attack is less than selector specified');
 });
 
+test('Raw Comparison expression', t => {
+  t.plan(2);
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let compareNumbers =
+    {
+      compareExpression: true,
+      left: 3,
+      op: "<",
+      right: 3
+    };
+
+  let compareNumberResult = selector.compareExpression(
+    compareNumbers, pieceStateMix, {selfPiece, controllingPlayerId: 1}
+  );
+  t.equal(compareNumberResult.length, 0, 'Compare returned nothing');
+
+  let compareTwoAttribute =
+    {
+      compareExpression: true,
+      left: {
+        eNumber: true,
+        attributeSelector: {
+          left: "ENEMY",
+          op: "&",
+          right: "MINION"
+        },
+        attribute: "attack"
+      },
+      op: "<",
+      right: {
+        eNumber: true,
+        attributeSelector: {
+          left: "ENEMY",
+          op: "&",
+          right: "MINION"
+        },
+        attribute: "health"
+      }
+    };
+  t.throws(() =>
+    selector.compareExpression(
+      compareTwoAttribute, pieceStateMix, {selfPiece, controllingPlayerId: 1}
+    )
+    , 'Compare throws on two attribute selectors that return arrays'
+  );
+});
+
 var pieceStatePositions = new PieceState();
 spawnPiece(pieceStatePositions, 1, 1, new Position(0, 0, 0));
 spawnPiece(pieceStatePositions, 1, 2, new Position(0, 0, 1));
