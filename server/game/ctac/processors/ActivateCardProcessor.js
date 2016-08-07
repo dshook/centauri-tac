@@ -29,12 +29,12 @@ export default class ActivateCardProcessor
 
     //find card in hand
     let cardPlayed = this.cardState.hands[action.playerId].find(c => c.id === action.cardInstanceId);
-    this.log.info('found card %s', cardPlayed.name);
     if(!cardPlayed){
       this.log.warn('Cannot find card %s in player %s\'s hand', action.cardInstanceId, action.player);
       queue.push(new Message('Cards must be in your hand to play them!'));
       return queue.cancel(action, true);
     }
+    this.log.info('found card %s', cardPlayed.name);
 
     //check to see if they have enough energy to play
     if(cardPlayed.cost > this.playerResourceState.get(action.playerId)){

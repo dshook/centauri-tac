@@ -7,6 +7,7 @@ import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import MovePiece from '../game/ctac/actions/MovePiece.js';
 import AttackPiece from '../game/ctac/actions/AttackPiece.js';
 import AttachCode from '../game/ctac/actions/AttachCode.js';
+import ActivateCard from '../game/ctac/actions/ActivateCard.js';
 import Position from '../game/ctac/models/Position.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 
@@ -45,7 +46,7 @@ export default class ProcessorServiceTests
     this.cardState.drawCard(2);
   }
 
-  spawnCard(cardState, cardTemplateId, playerId, addToHand){
+  spawnCard(cardState, cardTemplateId, playerId){
     let cardClone = this.cardDirectory.newFromId(cardTemplateId);
     cardState.addToDeck(playerId, cardClone);
 
@@ -362,6 +363,40 @@ export default class ProcessorServiceTests
       t.ok(!this.pieceState.piece(pieceId), 'Piece was killed');
       t.equal(playerSpell.cost, 1, 'Spell has normal cost again');
       t.equal(playerSpell.buffs.length, 0, 'Buffs were removed');
+    });
+
+    //spawn a piece with choices and make sure it takes effect
+    test('Choose Card', async (t) => {
+      t.plan(4);
+      this.setupTest();
+
+      //spawn a hero for the activate card
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(0, 0, 1);
+
+      //draw two choose card to hand
+      this.spawnCard(this.cardState, 81, 1);
+      this.spawnCard(this.cardState, 81, 1);
+      let firstChooseCard  = this.cardState.drawCard(1);
+      let secondChooseCard = this.cardState.drawCard(1);
+
+      //now activate it
+      this.queue.push(new ActivateCard(1, firstChooseCard.id, new Position(0,0,0), null, null, 82));
+
+      await this.queue.processUntilDone();
+
+      let piece = this.pieceState.piece(2);
+      t.equal(piece.cardTemplateId, 81, 'Found the choose piece');
+      t.equal(piece.buffs.length, 1, 'Piece Got a buff');
+
+      //now use the other choice, with the first piece as the target
+      this.queue.push(new ActivateCard(1, secondChooseCard.id, new Position(1,0,1), piece.id, null, 83));
+
+      await this.queue.processUntilDone();
+
+      let secondChoosePiece = this.pieceState.piece(3);
+      t.equal(secondChoosePiece.cardTemplateId, 81, 'Found the second choose piece');
+      t.equal(piece.buffs.length, 2, 'First Piece Got another (de)buff');
     });
   }
 }

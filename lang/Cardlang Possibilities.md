@@ -50,7 +50,7 @@
 
 
 ##Actions
-* choose effects
+* ~~choose effects~~
 * ~~unsummon minion from play~~
 * ~~card cost modification~~
 * ~~Add code to targets (give x minions this deathrattle)~~
