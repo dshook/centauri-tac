@@ -771,3 +771,49 @@ test('Attach code', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Conditional expression as arg', t => {
+  t.plan(1);
+
+  let input = `
+  playMinion{
+    Buff(SELF, SelectAttribute(SELF, health) > 2, cost(-2) )
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "action": "Buff",
+          "args": [
+            {
+              "left": "SELF"
+            },
+            {
+              "compareExpression": true,
+              "left": {
+                "eNumber": true,
+                "attributeSelector": {
+                  "left": "SELF"
+                },
+                "attribute": "health"
+              },
+              "op": ">",
+              "right": 2
+            },
+            {
+              "attribute": "cost",
+              "amount": -2
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});

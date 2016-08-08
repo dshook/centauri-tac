@@ -196,6 +196,7 @@ argument_item
   | eNumber -> $1
   | pText -> $1
   | pBool -> $1
+  | comparisonExpression -> $1
   | actionargs -> $1
   | eventList -> $1
   ;
