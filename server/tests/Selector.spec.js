@@ -362,7 +362,7 @@ test('Selector with comparison expression', t => {
 });
 
 test('Raw Comparison expression', t => {
-  t.plan(2);
+  t.plan(3);
   let selector = new Selector(players, pieceStateMix, mapState);
   let compareNumbers =
     {
@@ -400,11 +400,40 @@ test('Raw Comparison expression', t => {
         attribute: "health"
       }
     };
-  t.throws(() =>
-    selector.compareExpression(
-      compareTwoAttribute, pieceStateMix, {selfPiece, controllingPlayerId: 1}
-    )
-    , 'Compare throws on two attribute selectors that return arrays'
+  t.equal(
+    selector.compareExpression(compareTwoAttribute, pieceStateMix, {selfPiece, controllingPlayerId: 1} ).length
+    , 0
+    , 'Compare on two attribute selectors with more than one piece returns empty'
+  );
+
+  let compareTwoAttributeSingle =
+    {
+      compareExpression: true,
+      left: {
+        eNumber: true,
+        attributeSelector: {
+          left: "ENEMY",
+          op: "&",
+          right: "HERO"
+        },
+        attribute: "attack"
+      },
+      op: "<",
+      right: {
+        eNumber: true,
+        attributeSelector: {
+          left: "ENEMY",
+          op: "&",
+          right: "HERO"
+        },
+        attribute: "health"
+      }
+    };
+
+  t.equal(
+    selector.compareExpression(compareTwoAttributeSingle, pieceStateMix, {selfPiece, controllingPlayerId: 1} )
+    , pieceStateMix
+    , 'Compare on two single pieces returns the pieces back'
   );
 });
 

@@ -161,6 +161,7 @@ export default class Selector{
   //Evaluates a compare expression
   //The compare expressions can only have 1 depth so evaluate both the left and right here and return the result
   //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
+  //if two attribute selectors are used, they must resolve to 1 piece on each side of the comparison
   //can be coerced to a bool by looking if there were pieces returned or not
   compareExpression(selector, pieces, pieceSelectorParams){
     let leftResult, rightResult;
@@ -180,7 +181,19 @@ export default class Selector{
     let leftIsArray = Array.isArray(leftResult);
     let rightIsArray = Array.isArray(rightResult);
     if(leftIsArray && rightIsArray){
-      throw 'Cannot use two attribute selectors in a comparison expression';
+      //if either side doesn't have exactly one piece then we can't compare
+      if(leftResult.length != 1 || rightResult.length != 1){
+        return [];
+      }
+      //for single pieces on both sides find the attributes and compare
+      let lVal = leftResult[0][selector.left.attribute];
+      let rVal = rightResult[0][selector.right.attribute];
+      let compareResult = this.CompareFromString(lVal, rVal, selector.op);
+      if(compareResult){
+        return pieces;
+      }else{
+        return [];
+      }
     }else if(!leftIsArray && !rightIsArray){
       //two number case
       let compareResult = this.CompareFromString(leftResult, rightResult, selector.op);
