@@ -44,6 +44,38 @@ export default class GamePiece
   }
 
   addBuff(buff){
+    let action = this.addBuffStats(buff);
+    this.buffs.push(buff);
+
+    return action;
+  }
+
+  //requires you to find the buff instance beforehand
+  removeBuff(buff){
+    if(this.buffs.length === 0) return null;
+
+    let buffIndex = this.buffs.indexOf(buff);
+    if(buffIndex === -1) return null;
+    this.buffs.splice(buffIndex, 1);
+
+    return this.removeBuffStats(buff);
+  }
+
+  enableBuff(buff){
+    if(buff.enabled) return;
+
+    buff.enabled = true;
+    return this.addBuffStats(buff);
+  }
+
+  disableBuff(buff){
+    if(!buff.enabled) return;
+
+    buff.enabled = false;
+    return this.removeBuffStats(buff);
+  }
+
+  addBuffStats(buff){
     let action = {};
     for(let attrib of attributes){
       if(buff[attrib] == null) continue;
@@ -58,19 +90,10 @@ export default class GamePiece
       action[newAttrib] = this[attrib];
       action[attrib] = action[newAttrib] - origStat;
     }
-    this.buffs.push(buff);
-
-    return action;
+    return action
   }
 
-  //requires you to find the buff instance beforehand
-  removeBuff(buff){
-    if(this.buffs.length === 0) return null;
-
-    let buffIndex = this.buffs.indexOf(buff);
-    if(buffIndex === -1) return null;
-    this.buffs.splice(buffIndex, 1);
-
+  removeBuffStats(buff){
     let action = {};
     for(let attrib of attributes){
       if(buff[attrib] == null) continue;

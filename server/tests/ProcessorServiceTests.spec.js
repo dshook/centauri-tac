@@ -398,5 +398,33 @@ export default class ProcessorServiceTests
       t.equal(secondChoosePiece.cardTemplateId, 81, 'Found the second choose piece');
       t.equal(piece.buffs.length, 2, 'First Piece Got another (de)buff');
     });
+
+    //spawn a piece with a conditional buff and make sure it turns off and on right
+    test('Conditional Buff', async (t) => {
+      t.plan(6);
+      this.setupTest();
+
+      this.spawnCards();
+
+      let piece = this.spawnPiece(this.pieceState, 85, 1);
+
+      //make sure the buff gets applied
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece);
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.attack, 1, 'Still normal stats');
+      t.equal(piece.buffs.length, 1, 'Got buff though');
+      t.equal(piece.buffs[0].enabled, false, 'Buff is not enabled');
+
+      //now for the damage to activate the buff
+      this.queue.push(new PieceHealthChange(piece.id, -1));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.attack, 3, 'Attack was buffed');
+      t.equal(piece.buffs.length, 1, 'Buff is still there');
+      t.equal(piece.buffs[0].enabled, true, 'Buff is enabled');
+    });
   }
 }

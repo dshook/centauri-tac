@@ -379,18 +379,26 @@ export default class CardEvaluator{
 
               break;
             }
-            //Buff(pieceSelector, buffName, attribute(amount), ...moreAttributes)
+            //Buff(pieceSelector, buffName, [optional condition expression], attribute(amount), ...moreAttributes)
             case 'Buff':
             {
               let buffName = action.args[1];
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Buff Selected %j', lastSelected);
-              let buffAttributes = action.args.slice(2);
+
+              let attributeIndex = 2;
+              let condition = null;
+              if(action.args[2] && action.args[2].compareExpression){
+                attributeIndex = 3;
+                condition = action.args[2];
+              }
+              let buffAttributes = action.args.slice(attributeIndex);
 
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
                   //set up a new buff for each selected piece that has all the attributes of the buff
                   let buff = new PieceBuff(s.id, buffName, false);
+                  buff.condition = condition;
                   for(let buffAttribute of buffAttributes){
                     buff[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
                   }

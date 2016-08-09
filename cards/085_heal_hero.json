@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 85,
+	"name": "Heal Hero",
+	"description": "<b>Ability(2):</b> Heal 2 HP",
+	"cost": 0,
+	"attack": 0,
+	"health": 30,
+	"movement": 2,
+	"tags": ["Hero"],
+	"eventcode": "ability(2, 1, 'Heal'){ Heal(TARGET, 2)  }"
+}

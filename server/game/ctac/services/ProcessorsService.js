@@ -2,26 +2,28 @@ import loglevel from 'loglevel-decorator';
 import requireDir from 'require-dir';
 
 import UpdateAuraProcessor from '../processors/UpdateAuraProcessor.js';
+import UpdateBuffsProcessor from '../processors/UpdateBuffsProcessor.js';
 
 /**
  * Add action processors to the queue
  */
 @loglevel
-export default class TurnService
+export default class ProcessorsService
 {
   constructor(app, queue)
   {
     var processors = requireDir('../processors/');
+    let skip = ['NoOpProcessor', 'UpdateAuraProcessor', 'UpdateBuffsProcessor'];
     for(let processor in processors){
-      if(processor === 'NoOpProcessor' || processor === 'UpdateAuraProcessor'){
-        continue;
-      }
+      if(skip.includes(processor)) continue;
+
       let ctor = processors[processor].default;
       queue.addProcessor(ctor);
       //this.log.info('Registered processor %s type %s', processor, typeof ctor);
     }
 
-    //add update aura to the end of all process complete
+    //update buffs and auras after queue is complete
+    queue.addPostCompleteProcessor(UpdateBuffsProcessor);
     queue.addPostCompleteProcessor(UpdateAuraProcessor);
   }
 }

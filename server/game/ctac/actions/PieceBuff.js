@@ -9,6 +9,10 @@ export default class PieceBuff
     this.removed = removed;
     this.auraPieceId = auraPieceId;
 
+    //compare expression that tells when the buff should be enabled or not
+    this.condition = null;
+    this.enabled = true;
+
     //changes in stats, not abs amount
     this.attack = null;
     this.health = null;

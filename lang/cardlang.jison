@@ -65,7 +65,7 @@
   return 'action'
 
 //attributes
-(health|attack|movement|range|cardTemplateId|armor|cost)
+(health|attack|movement|range|cardTemplateId|armor|cost|baseHealth|baseAttack|baseMovement|baseRange)
   return 'attribute'
 
 //statuses
