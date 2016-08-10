@@ -65,8 +65,7 @@ export default class ProcessorServiceTests
   async start()
   {
     test('Normal piece health change', async (t) => {
-
-      t.plan(4);
+      t.plan(5);
       this.setupTest();
 
       var piece = this.spawnPiece(this.pieceState, 1, 1);
@@ -77,7 +76,7 @@ export default class ProcessorServiceTests
 
       await this.queue.processUntilDone();
 
-      const generatedActions = this.queue.iterateCompletedSince();
+      let generatedActions = this.queue.iterateCompletedSince();
       let actions = [...generatedActions];
 
       const hpChangeAction = actions[0];
@@ -86,6 +85,12 @@ export default class ProcessorServiceTests
       t.equal(hpChangeAction.change, damage, 'Action change is equal to damage');
       t.equal(piece.health, beforeHealth + damage, 'Piece was damaged');
 
+      const heal = 4;
+      this.queue.push(new PieceHealthChange(piece.id, heal));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.health, piece.maxBuffedHealth, 'Piece returned to undamaged state');
     });
 
     test('Shield piece health change', async (t) => {
@@ -401,7 +406,7 @@ export default class ProcessorServiceTests
 
     //spawn a piece with a conditional buff and make sure it turns off and on right
     test('Conditional Buff', async (t) => {
-      t.plan(6);
+      t.plan(8);
       this.setupTest();
 
       this.spawnCards();
@@ -423,6 +428,8 @@ export default class ProcessorServiceTests
       await this.queue.processUntilDone();
 
       t.equal(piece.attack, 3, 'Attack was buffed');
+      t.equal(piece.health, 2, 'Health Damage');
+      t.equal(piece.maxBuffedHealth, 3, 'Max Buffed health is still 3');
       t.equal(piece.buffs.length, 1, 'Buff is still there');
       t.equal(piece.buffs[0].enabled, true, 'Buff is enabled');
     });

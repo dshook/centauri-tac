@@ -40,7 +40,7 @@ export default class GamePiece
   }
 
   get maxBuffedHealth(){
-    return this.baseHealth + _.sum(this.buffs, 'health');
+    return this.baseHealth + _.sumBy(this.buffs, 'health');
   }
 
   addBuff(buff){
