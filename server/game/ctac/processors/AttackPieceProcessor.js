@@ -82,7 +82,7 @@ export default class AttackPieceProcessor
 
     //determine direction piece should be facing to see if rotation is necessary
     let targetDirection = faceDirection(target.position, attacker.position);
-    action.direction = targetDirection;
+    attacker.direction = action.direction = targetDirection;
 
     let facingDirection = directionOf(targetDirection, target.direction);
 
@@ -113,9 +113,9 @@ export default class AttackPieceProcessor
 
     this.cardEvaluator.evaluatePieceEvent('attacks', attacker);
 
-    this.log.info('piece %s (%s/%s) attacked %s (%s/%s)',
+    this.log.info('piece %s (%s/%s) attacked %s (%s/%s) direction %s',
       attacker.id, attacker.attack, attacker.health,
-      target.id, target.attack, target.health);
+      target.id, target.attack, target.health, targetDirection);
     queue.complete(action);
   }
 }

@@ -9,6 +9,7 @@ import AttackPiece from '../game/ctac/actions/AttackPiece.js';
 import AttachCode from '../game/ctac/actions/AttachCode.js';
 import ActivateCard from '../game/ctac/actions/ActivateCard.js';
 import Position from '../game/ctac/models/Position.js';
+import Direction from '../game/ctac/models/Direction.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 
 export default class ProcessorServiceTests
@@ -432,6 +433,38 @@ export default class ProcessorServiceTests
       t.equal(piece.maxBuffedHealth, 3, 'Max Buffed health is still 3');
       t.equal(piece.buffs.length, 1, 'Buff is still there');
       t.equal(piece.buffs[0].enabled, true, 'Buff is enabled');
+    });
+
+    //walk around and make sure you face the right direction
+    test('Directions', async (t) => {
+      t.plan(4);
+      this.setupTest();
+
+      var piece = this.spawnPiece(this.pieceState, 7, 1);
+      piece.position = new Position(0, 0, 0);
+      piece.bornOn = -100; //fake the waiting for attack
+      piece.attackCount = 0;
+
+      let enemy = this.spawnPiece(this.pieceState, 7, 2);
+      enemy.position = new Position(1, 0, 1);
+
+      //this.cardEvaluator.evaluatePieceEvent('playMinion', piece, {position: piece.position});
+
+      t.equal(piece.direction, Direction.South, 'Start facing south');
+
+      this.queue.push(new MovePiece(piece.id, new Position(1, 0, 0)));
+      await this.queue.processUntilDone();
+      t.equal(piece.direction, Direction.East, 'Move to the east');
+
+      this.queue.push(new MovePiece(piece.id, new Position(2, 0, 0)));
+      this.queue.push(new MovePiece(piece.id, new Position(2, 0, 1)));
+      await this.queue.processUntilDone();
+      t.equal(piece.direction, Direction.North, 'Now up to North');
+
+      this.queue.push(new AttackPiece(piece.id, enemy.id));
+      await this.queue.processUntilDone();
+      t.equal(piece.direction, Direction.West, 'Attack west');
+
     });
   }
 }
