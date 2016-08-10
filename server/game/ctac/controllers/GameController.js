@@ -156,6 +156,7 @@ export default class GameController
   @on('actionComplete')
   async actionComplete(action)
   {
+    //this.log.info('sending action %s', action.constructor.name);
     for (const player of this.players) {
       // disconnceted played
       if (!player.client) {

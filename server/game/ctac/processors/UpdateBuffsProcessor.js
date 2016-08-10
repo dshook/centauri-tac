@@ -1,7 +1,5 @@
 import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
-import attributes from '../util/Attributes.js';
-import {Intersection, Difference} from '../util/SetOps.js';
 
 /**
  * Update all buffs with a condition
@@ -63,7 +61,7 @@ export default class UpdateBuffsProcessor
   //the buffs generated here shouldn't go through the normal piece buff processor,
   //but need to be sent to the client, so we add them to the front of the queue and then complete
   autoCompleteAction(action, queue){
+    action.alreadyComplete = true;
     queue.pushFront(action);
-    queue.complete(action);
   }
 }

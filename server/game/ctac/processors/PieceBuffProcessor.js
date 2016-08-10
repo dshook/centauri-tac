@@ -7,16 +7,22 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class PieceBuffProcessor
 {
-  constructor(pieceState, cardEvaluator)
+  constructor(pieceState, cardEvaluator, selector)
   {
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
+    this.selector = selector;
   }
 
   async handleAction(action, queue)
   {
     if (!(action instanceof PieceBuff)) {
       return;
+    }
+
+    if(action.alreadyComplete){
+      this.log.info('buff already complete');
+      return queue.complete(action);
     }
 
     let piece = this.pieceState.piece(action.pieceId);
@@ -53,6 +59,24 @@ export default class PieceBuffProcessor
     }else{
 
       let buffChange = piece.addBuff(action);
+
+      //if the buff has a condition and the condition is not met then disable it immediately
+      //and don't send it to the client
+      if(action.condition){
+        let buffConditionResult = this.selector.compareExpression(
+          action.condition,
+          this.pieceState.pieces,
+          {
+            selfPiece: piece,
+            controllingPlayerId: piece.playerId
+          }
+        );
+        if(buffConditionResult.length === 0){
+          this.log.info("piece %s didn't meet buff condition", piece.id, buffChange);
+          piece.disableBuff(action);
+          action.serverOnly = true;
+        }
+      }
 
       for(let buffKey in buffChange){
         action[buffKey] = buffChange[buffKey];
