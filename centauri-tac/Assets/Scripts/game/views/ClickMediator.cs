@@ -70,6 +70,7 @@ namespace ctac
                         {
                             selectTarget.Dispatch(cardTarget);
                             cardTarget = null;
+                            pieceSelected.Dispatch(null);
                         }
                     }
                     else if (abilityTarget != null)
@@ -77,8 +78,9 @@ namespace ctac
                         debug.Log("Selected ability target");
                         selectAbilityTarget.Dispatch(abilityTarget, pieceView.piece);
                         abilityTarget = null;
+                        pieceSelected.Dispatch(null);
                     }
-                    else if (pieceView.piece.currentPlayerHasControl)
+                    else if (pieceView.piece.currentPlayerHasControl && !isUp)
                     {
                         pieceSelected.Dispatch(pieceView.piece);
                     }
@@ -86,6 +88,7 @@ namespace ctac
                     {
                         if (
                             selectedPiece != null
+                            && selectedPiece.id != pieceView.piece.id
                             && selectedPiece.attackCount < selectedPiece.maxAttacks
                             && selectedPiece.attack > 0
                             && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)

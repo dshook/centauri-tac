@@ -16,6 +16,8 @@ export default class Choose
     }
   )
   {
+    this.serverOnly = true;
+
     this.id = null;
     this.choice1 = choice1;
     this.choice2 = choice2;

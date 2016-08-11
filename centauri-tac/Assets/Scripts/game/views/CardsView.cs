@@ -193,14 +193,14 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
-            public float? postDelay { get { return 0.5f; } }
+            public float? postDelay { get { return 0.2f; } }
 
             public CardDrawShownSignal cardDrawn { get; set; }
             public CardModel card { get; set; }
             public bool isOpponentCard { get; set; }
 
             //dev speed
-            private float animTime = 0.5f;
+            private float animTime = 0.2f;
             private Vector3 opponentDest = new Vector3(0, 150, 50);
 
             public void Init() { }

@@ -36,6 +36,11 @@ export default class AttackPieceProcessor
       return queue.cancel(action);
     }
 
+    if(attacker.id === target.id){
+      this.log.warn('Stop hitting yourself!');
+      return queue.cancel(action);
+    }
+
     let targetDistance = Number.MAX_VALUE;
     if(action.isTauntAttack || attacker.range != null){
       targetDistance = this.mapState.kingDistance(attacker.position, target.position);
