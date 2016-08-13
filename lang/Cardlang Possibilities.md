@@ -46,7 +46,7 @@
 * ~~holding card with selector~~
 * ~~attributes with selector (get enemy hero hp)~~
 * ~~enumber expression (more than 3 minions on board)~~
-* conditional buff, like enrage (add condition expression to buff)
+* ~~conditional buff, like enrage (add condition expression to buff)~~
 
 
 ##Actions
