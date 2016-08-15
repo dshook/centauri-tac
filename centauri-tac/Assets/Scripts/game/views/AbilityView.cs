@@ -51,7 +51,7 @@ namespace ctac
                 buttonRect.pivot = Vector2.up;
 
                 var vertPosition = -((buttonHeight * index) + buttonMargin);
-                buttonRect.anchoredPosition3D = new Vector3(0, vertPosition, 0);
+                buttonRect.anchoredPosition3D = new Vector3(14, vertPosition, 0);
 
                 index++;
             }
