@@ -1,7 +1,8 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
+using System.Collections;
+using UnityEngine;
 
 namespace ctac
 {
@@ -16,25 +17,41 @@ namespace ctac
         [Inject] public CardsModel cards { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
+        [Inject] public StartGameSettledSignal onStartSettled { get; set; }
 
         [Inject] public ISocketService socket { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+
+        bool startSettled = false;
 
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onTurnClicked);
             turnEnded.AddListener(onTurnEnded);
+            onStartSettled.AddListener(onStartSet);
             view.init();
+
+            //Really ghetto way to delay the button looking for updates
+            StartCoroutine(WaitAndStart(8.0f));
+        }
+
+        IEnumerator WaitAndStart(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            debug.Log("Start settled");
+            onStartSettled.Dispatch();
         }
 
         public override void onRemove()
         {
             view.clickSignal.RemoveListener(onTurnClicked);
             turnEnded.RemoveListener(onTurnEnded);
+            onStartSettled.RemoveListener(onStartSet);
         }
 
         public void Update()
         {
-            if (cards.Cards.Count > 0)
+            if (startSettled)
             {
                 view.updatePlayable(
                     cards.Cards.Any(x => x.playerId == gameTurn.currentPlayerId && x.playable)
@@ -60,6 +77,10 @@ namespace ctac
             view.onTurnEnded(text);
         }
 
+        private void onStartSet()
+        {
+            startSettled = true;
+        }
     }
 }
 

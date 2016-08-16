@@ -199,6 +199,7 @@ namespace ctac
         private void onTurnEnded(GameTurnModel turns)
         {
             view.init(PlayerCards(), OpponentCards());
+            UpdateCardsPlayableStatus(cards.Cards);
         }
 
         private List<CardModel> PlayerCards()
