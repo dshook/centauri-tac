@@ -36,13 +36,14 @@ namespace ctac
             
             var hoverHit = raycastModel.cardCanvasHit;
 
-            if (hoverHit.HasValue)
+            //check to see if a card in a hand has been hovered
+            //also check to see if the hit object has been destroyed in the meantime
+            if (hoverHit.HasValue 
+                && hoverHit.Value.collider != null
+                && hoverHit.Value.collider.gameObject.transform.parent.name == "cardCanvas"
+            )
             {
-                //check to see if the hit object has been destroyed in the meantime
-                if (hoverHit.Value.collider != null)
-                {
-                    hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
-                }
+                hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
             }
             else
             {

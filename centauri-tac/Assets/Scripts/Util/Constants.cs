@@ -5,7 +5,7 @@ namespace ctac
 {
     public static class Constants
     {
-        public static float cameraRaycastDist = 30f;
+        public static float cameraRaycastDist = 100f;
 
         //can't move up more than this change in height
         public static float heightDeltaThreshold = 0.75f;

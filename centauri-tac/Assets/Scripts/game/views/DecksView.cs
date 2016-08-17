@@ -7,7 +7,7 @@ namespace ctac {
     {
         private Vector3 baseCardOffset = new Vector3(24, 0, 0);
         private Vector2 anchorPosition = new Vector2(1, 0.5f);
-        private Quaternion baseRotation = Quaternion.Euler(0, 306, 90);
+        private Quaternion baseRotation = Quaternion.Euler(0, 180, -90);
         private GameObject DeckGO;
         private GameObject OpponentDeckGO;
 
@@ -44,7 +44,7 @@ namespace ctac {
             var rectTransform = card.rectTransform;
             rectTransform.anchorMax = anchorPosition;
             rectTransform.anchorMin = anchorPosition;
-            rectTransform.anchoredPosition3D = baseCardOffset + new Vector3(c * 0.3f, 0, 0);
+            rectTransform.anchoredPosition3D = baseCardOffset + new Vector3(c * 0.3f, 0, c);
             rectTransform.localRotation = baseRotation;
             rectTransform.localScale = Vector3.one;
             rectTransform.pivot = anchorPosition;
