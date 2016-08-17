@@ -32,7 +32,7 @@ namespace ctac
             view.init();
 
             //Really ghetto way to delay the button looking for updates
-            StartCoroutine(WaitAndStart(8.0f));
+            StartCoroutine(WaitAndStart(10.0f));
         }
 
         IEnumerator WaitAndStart(float waitTime)

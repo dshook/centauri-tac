@@ -7,7 +7,7 @@ namespace ctac {
     {
         private Vector3 baseCardOffset = new Vector3(24, 0, 0);
         private Vector2 anchorPosition = new Vector2(1, 0.5f);
-        private Quaternion baseRotation = Quaternion.Euler(0, 295, 90);
+        private Quaternion baseRotation = Quaternion.Euler(0, 306, 90);
         private GameObject DeckGO;
         private GameObject OpponentDeckGO;
 
