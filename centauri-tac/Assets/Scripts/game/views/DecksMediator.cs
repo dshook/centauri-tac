@@ -22,8 +22,8 @@ namespace ctac
         [Inject]
         public TurnEndedSignal turnEnded { get; set; }
 
-        [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
 
         public override void OnRegister()
         {
@@ -68,13 +68,17 @@ namespace ctac
         private List<CardModel> GetPlayerCards()
         {
             if(decks == null || decks.Cards == null) return emptyList;
-            return decks.Cards.Where(c => c.playerId == gameTurn.currentPlayerId).ToList();
+            return decks.Cards
+                .Where(c => c.playerId != players.OpponentId(gameTurn.currentPlayerId))
+                .ToList();
         }
 
         private List<CardModel> GetOpponentCards()
         {
             if(decks == null || decks.Cards == null) return emptyList;
-            return decks.Cards.Where(c => c.playerId != gameTurn.currentPlayerId).ToList();
+            return decks.Cards
+                .Where(c => c.playerId == players.OpponentId(gameTurn.currentPlayerId))
+                .ToList();
         }
     }
 }
