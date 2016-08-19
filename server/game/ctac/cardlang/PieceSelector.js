@@ -61,10 +61,10 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.playerId != this.controllingPlayerId);
           break;
         case 'MINION':
-          return this.allPieces.filter(p => p.tags.includes('Minion'));
+          return this.allPieces.filter(p => p.isMinion);
           break;
         case 'HERO':
-          return this.allPieces.filter(p => p.tags.includes('Hero'));
+          return this.allPieces.filter(p => p.isHero);
           break;
         case 'BASIC':
           return this.allPieces.filter(p => !p.description);

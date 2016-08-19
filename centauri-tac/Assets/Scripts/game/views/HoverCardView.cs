@@ -7,6 +7,8 @@ namespace ctac
     public class HoverCardView : View
     {
         internal Signal<GameObject> pieceHover = new Signal<GameObject>();
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
 
         float timer = 0f;
         bool cardVisible = false;
@@ -25,7 +27,7 @@ namespace ctac
         {
             this.cardDirectory = cardDirectory;
             //init the hover card that's hidden most of the time
-            var cardPrefab = Resources.Load("Card") as GameObject;
+            var cardPrefab = loader.Load("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
 
             var hoverCardGO = GameObject.Instantiate(

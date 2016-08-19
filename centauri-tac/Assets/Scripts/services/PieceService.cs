@@ -39,21 +39,10 @@ namespace ctac
         [Inject]
         public MapModel map { get; set; }
 
-        private GameObject _piecePrefab { get; set; }
-        private GameObject piecePrefab
-        {
-            get
-            {
-                if (_piecePrefab == null)
-                {
-                    _piecePrefab = Resources.Load("Piece") as GameObject;
-                }
-                return _piecePrefab;
-            }
-        }
-
         public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null)
         {
+            var piecePrefab = resourceLoader.Load("Piece");
+
             //position is x and z from server, and y based on the map
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;
 
@@ -63,21 +52,6 @@ namespace ctac
                 Quaternion.identity
             ) as GameObject;
             newPiece.transform.parent = contextView.transform;
-
-            //set up display
-            try
-            {
-                //var animationController = resourceLoader.LoadPieceRAC(spawnedPiece.cardTemplateId);
-
-                //var animator = newPiece.GetComponentInChildren<Animator>();
-                //animator.runtimeAnimatorController = animationController;
-                //animator.Play("Idle");
-
-            }
-            catch (Exception ex)
-            {
-                debug.LogError("Could not load resources for id " + spawnedPiece.cardTemplateId + " " + ex.ToString());
-            }
 
             var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);

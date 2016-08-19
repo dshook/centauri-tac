@@ -1008,6 +1008,7 @@ export default class CardEvaluator{
 
     for(let piece of this.pieceState.pieces){
       if(!piece.events) continue;
+      if(piece.isHero) continue;
 
       let deathEvent = piece.events.find(e => e.event === 'death');
       if(deathEvent != null){

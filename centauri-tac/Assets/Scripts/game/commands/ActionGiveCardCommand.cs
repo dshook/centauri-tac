@@ -12,6 +12,8 @@ namespace ctac
 
         [Inject]
         public IDebugService debug { get; set; }
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
 
         [Inject]
         public GiveCardModel cardGiven { get; set; }
@@ -36,7 +38,7 @@ namespace ctac
 
             var newCardModel = cardDirectory.NewFromTemplate(cardGiven.cardId, cardGiven.cardTemplateId, cardGiven.playerId);
 
-            var cardPrefab = Resources.Load("Card") as GameObject;
+            var cardPrefab = loader.Load("Card");
 
             var cardGameObject = GameObject.Instantiate(
                 cardPrefab,

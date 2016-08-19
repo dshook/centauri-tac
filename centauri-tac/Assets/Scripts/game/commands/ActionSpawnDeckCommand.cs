@@ -24,27 +24,17 @@ namespace ctac
 
         [Inject]
         public IDebugService debug { get; set; }
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
         
-        private GameObject _cardPrefab { get; set; }
-        private GameObject cardPrefab
-        {
-            get
-            {
-                if (_cardPrefab == null)
-                {
-                    _cardPrefab = Resources.Load("Card") as GameObject;
-                }
-                return _cardPrefab;
-            }
-        }
-
         public override void Execute()
         {
             if (!processedActions.Verify(spawnDeck.id)) return;
 
+            var cardPrefab = loader.Load("Card");
             //holding area that all cards go into to start with until the deck mediator sorts them out
             var DeckGO = GameObject.Find("Deck");
 

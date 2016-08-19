@@ -26,6 +26,10 @@ namespace ctac {
         public GameObject root;
         public GameObject armorBG;
 
+        public GameObject hpBarContainer;
+        public GameObject hpBar;
+        public GameObject hpBarfill;
+
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
         public GameObject circleBg;
@@ -60,6 +64,10 @@ namespace ctac {
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
             root = faceCameraContainer.transform.FindChild("Root").gameObject;
             armorBG = faceCameraContainer.transform.FindChild("Armor").gameObject;
+
+            hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
+            hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
+            hpBarfill = hpBarContainer.transform.FindChild("hpbarfill").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -170,6 +178,12 @@ namespace ctac {
                 circleBg.SetActive(true);
                 eventIcon.SetActive(true);
             }
+        }
+
+
+        private void InitHpBar()
+        {
+
         }
 
         public void UpdateTurn(int newPlayerId)

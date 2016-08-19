@@ -34,6 +34,9 @@ namespace ctac
         public IDebugService debug { get; set; }
         [Inject]
         public IPieceService pieceService { get; set; }
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
+
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
 
@@ -64,7 +67,7 @@ namespace ctac
 
 
             var newCardModel = cardDirectory.NewFromTemplate(unsummonedPiece.cardId, piece.cardTemplateId, piece.playerId);
-            GameObject cardPrefab = Resources.Load("Card") as GameObject;
+            GameObject cardPrefab = loader.Load("Card");
             var DeckGO = GameObject.Find("Deck");
 
 

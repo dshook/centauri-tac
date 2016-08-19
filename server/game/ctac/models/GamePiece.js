@@ -42,6 +42,13 @@ export default class GamePiece
   get maxBuffedHealth(){
     return this.baseHealth + _.sumBy(this.buffs, 'health');
   }
+  get isHero(){
+    return this.tags.includes('Hero');
+  }
+
+  get isMinion(){
+    return this.tags.includes('Minion');
+  }
 
   addBuff(buff){
     let action = this.addBuffStats(buff);

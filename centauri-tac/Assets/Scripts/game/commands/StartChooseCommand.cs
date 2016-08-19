@@ -17,6 +17,7 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IMapService mapService { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -37,7 +38,7 @@ namespace ctac
             leftCardModel.tags.Add(Constants.chooseCardTag);
             rightCardModel.tags.Add(Constants.chooseCardTag);
 
-            var cardPrefab = Resources.Load("Card") as GameObject;
+            var cardPrefab = loader.Load("Card");
 
             var leftGameObject = GameObject.Instantiate(
                 cardPrefab,
