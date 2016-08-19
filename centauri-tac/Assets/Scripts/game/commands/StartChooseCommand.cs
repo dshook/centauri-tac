@@ -38,7 +38,7 @@ namespace ctac
             leftCardModel.tags.Add(Constants.chooseCardTag);
             rightCardModel.tags.Add(Constants.chooseCardTag);
 
-            var cardPrefab = loader.Load("Card");
+            var cardPrefab = loader.Load<GameObject>("Card");
 
             var leftGameObject = GameObject.Instantiate(
                 cardPrefab,

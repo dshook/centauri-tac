@@ -38,7 +38,7 @@ namespace ctac
 
             var newCardModel = cardDirectory.NewFromTemplate(cardGiven.cardId, cardGiven.cardTemplateId, cardGiven.playerId);
 
-            var cardPrefab = loader.Load("Card");
+            var cardPrefab = loader.Load<GameObject>("Card");
 
             var cardGameObject = GameObject.Instantiate(
                 cardPrefab,

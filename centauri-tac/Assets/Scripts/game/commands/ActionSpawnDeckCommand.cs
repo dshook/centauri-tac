@@ -34,7 +34,7 @@ namespace ctac
         {
             if (!processedActions.Verify(spawnDeck.id)) return;
 
-            var cardPrefab = loader.Load("Card");
+            var cardPrefab = loader.Load<GameObject>("Card");
             //holding area that all cards go into to start with until the deck mediator sorts them out
             var DeckGO = GameObject.Find("Deck");
 

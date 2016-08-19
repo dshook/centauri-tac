@@ -1,5 +1,6 @@
 ﻿using ctac.signals;
 using strange.extensions.mediation.impl;
+using SVGImporter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ using UnityEngine;
 namespace ctac {
     public class PieceView : View
     {
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
+
         public PieceModel piece { get; set; }
 
         public GameObject attackGO;
@@ -29,6 +33,9 @@ namespace ctac {
         public GameObject hpBarContainer;
         public GameObject hpBar;
         public GameObject hpBarfill;
+        public SVGAsset hpBarSvg;
+        public SVGAsset hpBarSvgEnemy;
+        public SVGRenderer hpBarSvgRenderer;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -42,6 +49,7 @@ namespace ctac {
 
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
+        private float hpBarFillFullWidth = 0f;
 
         public int currentTurnPlayerId;
 
@@ -68,6 +76,9 @@ namespace ctac {
             hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.FindChild("hpbarfill").gameObject;
+            hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
+            hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
+            hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -85,6 +96,8 @@ namespace ctac {
 
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
+
+            InitHpBar();
         }
 
         void Update()
@@ -183,7 +196,15 @@ namespace ctac {
 
         private void InitHpBar()
         {
+            //first measure the existing editor hp bar fill so we can then use that as a divisor
+            var rectTransform = hpBarfill.GetComponent<RectTransform>();
+            hpBarFillFullWidth = rectTransform.sizeDelta.x;
 
+            //gotta swap out the bar if it's an enemy for now
+            if (currentTurnPlayerId != piece.playerId)
+            {
+                hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
+            }
         }
 
         public void UpdateTurn(int newPlayerId)

@@ -67,7 +67,7 @@ namespace ctac
 
 
             var newCardModel = cardDirectory.NewFromTemplate(unsummonedPiece.cardId, piece.cardTemplateId, piece.playerId);
-            GameObject cardPrefab = loader.Load("Card");
+            GameObject cardPrefab = loader.Load<GameObject>("Card");
             var DeckGO = GameObject.Find("Deck");
 
 

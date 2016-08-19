@@ -27,7 +27,7 @@ namespace ctac
         {
             this.cardDirectory = cardDirectory;
             //init the hover card that's hidden most of the time
-            var cardPrefab = loader.Load("Card");
+            var cardPrefab = loader.Load<GameObject>("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
 
             var hoverCardGO = GameObject.Instantiate(

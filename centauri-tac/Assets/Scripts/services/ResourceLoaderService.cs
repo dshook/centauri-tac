@@ -6,7 +6,7 @@ namespace ctac
     public interface IResourceLoaderService
     {
         RuntimeAnimatorController LoadPieceRAC(int pieceId);
-        GameObject Load(string resource);
+        T Load<T>(string resource) where T : class;
     }
 
     public class ResourceLoaderService : IResourceLoaderService
@@ -24,14 +24,14 @@ namespace ctac
             return animationController;
         }
 
-        private Dictionary<string, GameObject> GOCache = new Dictionary<string, GameObject>();
-        public GameObject Load(string resource)
+        private Dictionary<string, object> GOCache = new Dictionary<string, object>();
+        public T Load<T>(string resource) where T : class
         {
             if (GOCache.ContainsKey(resource))
             {
-                return GOCache[resource];
+                return (T)GOCache[resource];
             }
-            var go = Resources.Load(resource) as GameObject;
+            var go = Resources.Load(resource) as T;
             GOCache[resource] = go;
 
             return go;

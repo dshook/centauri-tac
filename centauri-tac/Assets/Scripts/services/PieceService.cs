@@ -41,7 +41,7 @@ namespace ctac
 
         public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null)
         {
-            var piecePrefab = resourceLoader.Load("Piece");
+            var piecePrefab = resourceLoader.Load<GameObject>("Piece");
 
             //position is x and z from server, and y based on the map
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;
