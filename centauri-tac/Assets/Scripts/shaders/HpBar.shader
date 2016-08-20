@@ -6,7 +6,8 @@
         _LineColor("Line Color", Color) = (0, 0, 1, 1)
         _LineWidth("Line Width", Range(0.0, 0.5)) = 0.05
         _Slope("Slope", Range(0.0, 1.0)) = 0.5
-        _Hp("HP", Range(0, 20)) = 2
+        _StartOffset("Start Offset", Range(0.0, 1.0)) = 0.5
+        _Hp("HP", Int) = 2
     }
     SubShader
     {
@@ -67,15 +68,25 @@
             float4 _Color;
             float4 _LineColor;
             float _Slope;
+            float _StartOffset;
             int _Hp;
 
             fixed4 frag (Frag i) : SV_Target
             {
                 fixed4 c = _Color;
+                //invert coords
                 i.uv = 1 - i.uv;
-                float2 p = -1.0 + 1.0 * i.uv;
-                c += drawLine(p, float2(0.2, 0), float2(0.3, 1), _Color, _LineColor);
-                c += drawLine(p, float2(0.4, 0), float2(0.5, 1), _Color, _LineColor);
+                float2 p = i.uv - 1.0;
+
+                float spacing = (1.0 - _Slope - _StartOffset) / _Hp;
+
+                for(int i = 0; i < _Hp; i++){
+                    float xPos = i * spacing + _StartOffset;
+                    c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), _Color, _LineColor);
+                }
+                //draw final line
+                float xPos = _Hp * spacing + _StartOffset;
+                c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), _Color, _LineColor);
 
                 return c;
             }
