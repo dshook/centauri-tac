@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using ctac.util;
 
 namespace ctac {
     public class PieceView : View
@@ -49,7 +50,10 @@ namespace ctac {
 
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
+
         private float hpBarFillFullWidth = 0f;
+        private Vector3 hpBarInitPosition;
+        private float hpBarFillScale = 0f;
 
         public int currentTurnPlayerId;
 
@@ -75,7 +79,7 @@ namespace ctac {
 
             hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
-            hpBarfill = hpBarContainer.transform.FindChild("hpbarfill").gameObject;
+            hpBarfill = hpBarContainer.transform.FindChild("HpBarFill").gameObject;
             hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
             hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
             hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
@@ -199,6 +203,9 @@ namespace ctac {
             //first measure the existing editor hp bar fill so we can then use that as a divisor
             var rectTransform = hpBarfill.GetComponent<RectTransform>();
             hpBarFillFullWidth = rectTransform.sizeDelta.x;
+            hpBarFillScale = rectTransform.localScale.x; //should be same for both x & y
+            hpBarInitPosition = rectTransform.anchoredPosition3D;
+            var eachBarWidth = hpBarFillFullWidth / piece.baseHealth;
 
             //gotta swap out the bar if it's an enemy for now
             if (currentTurnPlayerId != piece.playerId)
@@ -210,6 +217,16 @@ namespace ctac {
         public void UpdateTurn(int newPlayerId)
         {
             currentTurnPlayerId = newPlayerId;
+
+            //gotta swap out the bar if it's an enemy for now
+            if (currentTurnPlayerId != piece.playerId)
+            {
+                hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
+            }
+            else
+            {
+                hpBarSvgRenderer.vectorGraphics = hpBarSvg;
+            }
         }
 
         public class SpawnAnim : IAnimate
