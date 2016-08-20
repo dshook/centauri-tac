@@ -74,11 +74,20 @@
             fixed4 frag (Frag i) : SV_Target
             {
                 fixed4 c = _Color;
-                //invert coords
+                float spacing = (1.0 - _Slope - _StartOffset) / _Hp;
+
+                //cut off beginning section
+                if(i.uv.x - _StartOffset - (i.uv.y * _Slope) + _LineWidth < 0){
+                    return fixed4(0,0,0,0);
+                }
+
+                if(i.uv.x + _StartOffset + ((1 - i.uv.y) * _Slope) - (_LineWidth * 2) > 1){
+                    return fixed4(0,0,0,0);
+                }
+
+                //invert coords for line
                 i.uv = 1 - i.uv;
                 float2 p = i.uv - 1.0;
-
-                float spacing = (1.0 - _Slope - _StartOffset) / _Hp;
 
                 for(int i = 0; i < _Hp; i++){
                     float xPos = i * spacing + _StartOffset;
