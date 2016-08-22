@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ctac
@@ -46,6 +47,14 @@ namespace ctac
             get
             {
                 return FlagsHelper.IsSet(statuses, Statuses.DyadStrike) ? 2 : 1;
+            }
+        }
+
+        public int maxBuffedHealth
+        {
+            get
+            {
+                return baseHealth + (buffs.Sum(s => s.health) ?? 0);
             }
         }
 

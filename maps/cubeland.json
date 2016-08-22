@@ -26,7 +26,7 @@
                 "z": 2,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -35,7 +35,7 @@
                 "z": 3,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -53,7 +53,7 @@
                 "z": 5,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -62,7 +62,7 @@
                 "z": 6,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -80,7 +80,7 @@
                 "z": 8,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -98,7 +98,7 @@
                 "z": 10,
                 "y": "1.000"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -116,7 +116,7 @@
                 "z": 1,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -143,7 +143,7 @@
                 "z": 4,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -161,7 +161,7 @@
                 "z": 6,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -179,7 +179,7 @@
                 "z": 8,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -188,7 +188,7 @@
                 "z": 9,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -206,7 +206,7 @@
                 "z": 0,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -215,7 +215,7 @@
                 "z": 1,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -224,7 +224,7 @@
                 "z": 2,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -233,7 +233,7 @@
                 "z": 3,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -251,7 +251,7 @@
                 "z": 5,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -260,7 +260,7 @@
                 "z": 6,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -269,7 +269,7 @@
                 "z": 7,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -278,7 +278,7 @@
                 "z": 8,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -287,7 +287,7 @@
                 "z": 9,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -296,7 +296,7 @@
                 "z": 10,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -305,7 +305,7 @@
                 "z": 0,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -314,7 +314,7 @@
                 "z": 1,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -323,7 +323,7 @@
                 "z": 2,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -341,7 +341,7 @@
                 "z": 4,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -359,7 +359,7 @@
                 "z": 6,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -368,7 +368,7 @@
                 "z": 7,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -377,7 +377,7 @@
                 "z": 8,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -395,7 +395,7 @@
                 "z": 10,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -413,7 +413,7 @@
                 "z": 1,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -422,7 +422,7 @@
                 "z": 2,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -467,7 +467,7 @@
                 "z": 7,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -485,7 +485,7 @@
                 "z": 9,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -494,7 +494,7 @@
                 "z": 10,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -503,7 +503,7 @@
                 "z": 0,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -512,7 +512,7 @@
                 "z": 1,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -521,7 +521,7 @@
                 "z": 2,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -593,7 +593,7 @@
                 "z": 10,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -602,7 +602,7 @@
                 "z": 0,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -611,7 +611,7 @@
                 "z": 1,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -629,7 +629,7 @@
                 "z": 3,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -683,7 +683,7 @@
                 "z": 9,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -692,7 +692,7 @@
                 "z": 10,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -719,7 +719,7 @@
                 "z": 2,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -764,7 +764,7 @@
                 "z": 7,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -773,7 +773,7 @@
                 "z": 8,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -782,7 +782,7 @@
                 "z": 9,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -809,7 +809,7 @@
                 "z": 1,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -827,7 +827,7 @@
                 "z": 3,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -836,7 +836,7 @@
                 "z": 4,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -845,7 +845,7 @@
                 "z": 5,
                 "y": "0.090"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -854,7 +854,7 @@
                 "z": 6,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -863,7 +863,7 @@
                 "z": 7,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -872,7 +872,7 @@
                 "z": 8,
                 "y": "0.360"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -881,7 +881,7 @@
                 "z": 9,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -917,7 +917,7 @@
                 "z": 2,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -935,7 +935,7 @@
                 "z": 4,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -944,7 +944,7 @@
                 "z": 5,
                 "y": "0.160"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -953,7 +953,7 @@
                 "z": 6,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "rock",
             "unpassable": false
         },
         {
@@ -971,7 +971,7 @@
                 "z": 8,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -1016,7 +1016,7 @@
                 "z": 2,
                 "y": "0.640"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -1025,7 +1025,7 @@
                 "z": 3,
                 "y": "0.490"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -1043,7 +1043,7 @@
                 "z": 5,
                 "y": "0.250"
             },
-            "material": "grass",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -1079,7 +1079,7 @@
                 "z": 9,
                 "y": "0.810"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         },
         {
@@ -1088,7 +1088,7 @@
                 "z": 10,
                 "y": "1.000"
             },
-            "material": "rock",
+            "material": "clay",
             "unpassable": false
         }
     ]

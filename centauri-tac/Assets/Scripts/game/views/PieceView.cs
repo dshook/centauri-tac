@@ -37,6 +37,9 @@ namespace ctac {
         public SVGAsset hpBarSvg;
         public SVGAsset hpBarSvgEnemy;
         public SVGRenderer hpBarSvgRenderer;
+        public MeshRenderer hpBarFillRenderer;
+        private Color32 hpBarFillFriendlyColor = ColorExtensions.HexToColor("#65ACFF");
+        private Color32 hpBarFillEnemyColor = ColorExtensions.HexToColor("#FF4949");
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -50,10 +53,6 @@ namespace ctac {
 
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
-
-        private float hpBarFillFullWidth = 0f;
-        private Vector3 hpBarInitPosition;
-        private float hpBarFillScale = 0f;
 
         public int currentTurnPlayerId;
 
@@ -80,6 +79,7 @@ namespace ctac {
             hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.FindChild("HpBarFill").gameObject;
+            hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
             hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
             hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
             hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
@@ -101,7 +101,7 @@ namespace ctac {
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
 
-            InitHpBar();
+            UpdateHpBar();
         }
 
         void Update()
@@ -198,19 +198,24 @@ namespace ctac {
         }
 
 
-        private void InitHpBar()
+        private const int hpBarHpCuttoff = 14;
+        public void UpdateHpBar()
         {
-            //first measure the existing editor hp bar fill so we can then use that as a divisor
-            var rectTransform = hpBarfill.GetComponent<RectTransform>();
-            hpBarFillFullWidth = rectTransform.sizeDelta.x;
-            hpBarFillScale = rectTransform.localScale.x; //should be same for both x & y
-            hpBarInitPosition = rectTransform.anchoredPosition3D;
-            var eachBarWidth = hpBarFillFullWidth / piece.baseHealth;
-
             //gotta swap out the bar if it's an enemy for now
+            var fillColor = hpBarFillFriendlyColor;
             if (currentTurnPlayerId != piece.playerId)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
+                fillColor = hpBarFillEnemyColor;
+            }
+
+            hpBarFillRenderer.material.SetColor("_Color", fillColor);
+            hpBarFillRenderer.material.SetInt("_CurrentHp", piece.health);
+            hpBarFillRenderer.material.SetInt("_MaxHp", piece.maxBuffedHealth);
+
+            if (piece.baseHealth > hpBarHpCuttoff)
+            {
+                hpBarFillRenderer.material.SetColor("_LineColor", fillColor);
             }
         }
 
@@ -222,10 +227,21 @@ namespace ctac {
             if (currentTurnPlayerId != piece.playerId)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
+                hpBarFillRenderer.material.SetColor("_Color", hpBarFillEnemyColor);
+
+                if (piece.baseHealth > hpBarHpCuttoff)
+                {
+                    hpBarFillRenderer.material.SetColor("_LineColor", hpBarFillEnemyColor);
+                }
             }
             else
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvg;
+                hpBarFillRenderer.material.SetColor("_Color", hpBarFillFriendlyColor);
+                if (piece.baseHealth > hpBarHpCuttoff)
+                {
+                    hpBarFillRenderer.material.SetColor("_LineColor", hpBarFillFriendlyColor);
+                }
             }
         }
 
@@ -486,6 +502,22 @@ namespace ctac {
                     iTweenExtensions.ScaleTo(textBG, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
                 }
 
+                Complete = true;
+            }
+        }
+
+        public class UpdateHpBarAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+
+            public void Init() { }
+            public void Update()
+            {
+                piece.UpdateHpBar();
                 Complete = true;
             }
         }

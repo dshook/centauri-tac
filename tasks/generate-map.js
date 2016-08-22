@@ -38,10 +38,10 @@ for(var x = 0; x < mapXSize; x++){
       material = 'sand';
     }
     if(distFromCenter > 2){
-      material = 'grass';
+      material = sample(['grass', 'rock']);
     }
-    if(distFromCenter > 5){
-      material = 'rock';
+    if(distFromCenter > 4){
+      material = sample(['rock', 'clay']);
     }
     tiles.push({
       transform: position,

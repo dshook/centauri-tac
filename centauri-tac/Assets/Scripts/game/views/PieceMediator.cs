@@ -128,12 +128,23 @@ namespace ctac
         {
             if(rotatePiece.pieceId != view.piece.id) return;
 
-            //TODO: Add more animation
             animationQueue.Add(
                 new PieceView.RotateAnim()
                 {
                     piece = view,
                     destAngle = DirectionAngle.angle[rotatePiece.direction]
+                }
+            );
+        }
+
+        public void onCharmed(CharmPieceModel charm)
+        {
+            if (charm.pieceId != view.piece.id) return;
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
                 }
             );
         }
@@ -183,6 +194,13 @@ namespace ctac
                     }
                 );
             }
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
+                }
+            );
         }
 
         public void onArmorChange(PieceArmorChangeModel armorChange)
@@ -241,6 +259,13 @@ namespace ctac
                     }
                 );
             }
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
+                }
+            );
         }
 
         public void onBuffed(PieceBuffModel pieceBuff)
@@ -278,6 +303,13 @@ namespace ctac
                     }
                 );
             }
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
+                }
+            );
         }
 
         public void onStatusChange(PieceStatusChangeModel pieceStatusChange)
@@ -322,6 +354,13 @@ namespace ctac
                     }
                 );
             }
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
+                }
+            );
         }
 
         public void onTransformed(TransformPieceModel transformed)
@@ -350,6 +389,13 @@ namespace ctac
                     change = -1, 
                     animFinished = pieceTextAnimFinished,
                     piece = view.piece
+                }
+            );
+
+            animationQueue.Add(
+                new PieceView.UpdateHpBarAnim()
+                {
+                    piece = view
                 }
             );
         }
