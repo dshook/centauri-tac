@@ -51,6 +51,7 @@ namespace ctac
             ) as GameObject;
             cardGameObject.name = "Player " + cardGiven.playerId + " Card " + cardGiven.cardId;
             newCardModel.rectTransform = cardGameObject.GetComponent<RectTransform>();
+            newCardModel.gameObject = cardGameObject;
 
             decks.Cards.Add(newCardModel);
 
