@@ -27,6 +27,7 @@ namespace ctac
         [Inject] public CardBuffSignal cardBuffed { get; set; }
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
         [Inject] public CardChosenSignal cardChosen { get; set; }
+        [Inject] public ServerQueueProcessEnd qpc { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -52,6 +53,7 @@ namespace ctac
             cardBuffed.AddListener(onBuff);
             turnEnded.AddListener(onTurnEnded);
             playerResourceSet.AddListener(onPlayerResourceSet);
+            qpc.AddListener(onQueueProcessComplete);
 
             cancelChoose.AddListener(cleanupChooseCards);
             cardChosen.AddListener(cleanupChooseCards);
@@ -72,6 +74,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
             cardBuffed.AddListener(onBuff);
             playerResourceSet.RemoveListener(onPlayerResourceSet);
+            qpc.RemoveListener(onQueueProcessComplete);
 
             cancelChoose.RemoveListener(cleanupChooseCards);
             cardChosen.RemoveListener(cleanupChooseCards);
@@ -200,6 +203,16 @@ namespace ctac
         {
             view.init(PlayerCards(), OpponentCards());
             UpdateCardsPlayableStatus(cards.Cards);
+        }
+
+        private void onQueueProcessComplete(int t)
+        {
+            //update text on all cards when the queue completes to catch updates 
+            //to playable status, cost, etc
+            foreach (var card in cards.Cards)
+            {
+                card.cardView.UpdateText();
+            }
         }
 
         private List<CardModel> PlayerCards()

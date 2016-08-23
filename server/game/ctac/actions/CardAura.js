@@ -2,6 +2,8 @@ export default class CardAura
 {
   constructor(pieceId, cardSelector, name)
   {
+    this.serverOnly = true;
+
     this.id = null;
     this.pieceId = pieceId;
     this.cardSelector = cardSelector;
