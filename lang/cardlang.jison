@@ -52,6 +52,10 @@
 (CardCount)
   return 'cardCount'
 
+//stats that change throughout the game
+(COMBOCOUNT)
+  return 'stat'
+
 // actions
 (SetAttribute|Hit|Heal|Buff|RemoveBuff|Spawn|GiveStatus|RemoveStatus|Charm|Destroy|Aura|Move|Transform|GiveArmor|AttachCode|CardAura|Unsummon|Choose)
   return 'action'
@@ -276,6 +280,8 @@ eNumber
      { $$ = { eNumber: true, count: true, selector: $3 }; }
   | cardCount'('possibleRandSelector')'
      { $$ = { eNumber: true, cardCount: true, selector: $3 }; }
+  | stat
+     { $$ = { stat: true, path: $1 }; }
   ;
 
 numberList

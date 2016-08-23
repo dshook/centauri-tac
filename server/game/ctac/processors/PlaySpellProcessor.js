@@ -41,6 +41,7 @@ export default class PlaySpellProcessor
       this.cardState.playCard(action.playerId, action.cardInstanceId);
       queue.complete(action);
       queue.push(new SetPlayerResource(action.playerId, -playedCard.cost));
+      this.statsState.stats['COMBOCOUNT']++;
       this.log.info('played spell %s for player %s at %s target %s',
         playedCard.name, action.playerId, action.position, action.targetPieceId);
     }else{

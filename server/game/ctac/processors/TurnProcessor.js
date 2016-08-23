@@ -6,13 +6,14 @@ import DrawCard from '../actions/DrawCard.js';
  */
 export default class TurnProcessor
 {
-  constructor(turnState, players, playerResourceState, cardEvaluator, pieceState)
+  constructor(turnState, players, playerResourceState, cardEvaluator, pieceState, statsState)
   {
     this.turnState = turnState;
     this.players = players;
     this.playerResourceState = playerResourceState;
     this.cardEvaluator = cardEvaluator;
     this.pieceState = pieceState;
+    this.statsState = statsState;
   }
 
   /**
@@ -51,6 +52,9 @@ export default class TurnProcessor
     action.toPlayerMaxResources = this.playerResourceState.incriment(action.to, 1);
     action.toPlayerResources = this.playerResourceState.refill(action.to);
     action.currentTurn = currentTurn;
+
+    //update stats
+    this.statsState.stats['COMBOCOUNT'] = 0;
 
     //and finally eval the new turn
     this.cardEvaluator.evaluatePlayerEvent('turnStart', action.to);

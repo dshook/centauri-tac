@@ -5,7 +5,7 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class SpawnPieceProcessor
 {
-  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, turnState)
+  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, turnState, statsState)
   {
     this.pieceState = pieceState;
     this.players = players;
@@ -13,6 +13,7 @@ export default class SpawnPieceProcessor
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
     this.turnState = turnState;
+    this.statsState = statsState;
   }
 
   /**
@@ -54,6 +55,8 @@ export default class SpawnPieceProcessor
           this.log.error('Card id %s was not found in player %s\'s hand', action.cardInstanceId, action.playerId);
           return queue.cancel(action, true);
         }
+
+        this.statsState.stats['COMBOCOUNT']++;
       }
 
       queue.complete(action);

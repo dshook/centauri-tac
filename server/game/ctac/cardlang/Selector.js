@@ -7,11 +7,12 @@ import AreaSelector from './AreaSelector.js';
 
 @loglevel
 export default class Selector{
-  constructor(players, pieceState, mapState, cardState){
+  constructor(players, pieceState, mapState, cardState, statsState){
     this.players = players;
     this.pieceState = pieceState;
     this.cardState = cardState;
     this.areaSelector = new AreaSelector(this, mapState);
+    this.statsState = statsState;
   }
 
   selectPlayer(controllingPlayerId, selector){
@@ -154,6 +155,8 @@ export default class Selector{
     }else if(input.cardCount){
       let selectedCards = this.selectCards(input.selector, pieceSelectorParams);
       return selectedCards.length;
+    }else if(input.stat){
+      return this.statsState.stats[input.path];
     }
     return input;
   }
