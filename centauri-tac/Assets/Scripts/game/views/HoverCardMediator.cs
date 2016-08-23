@@ -1,7 +1,5 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
-using System.Linq;
 
 namespace ctac
 {
@@ -34,6 +32,8 @@ namespace ctac
             pieceHovered.RemoveListener(onPieceHovered);
         }
 
+        private bool hoveringCard = false;
+
         private void onCardHovered(CardModel card)
         {
             if (card != null)
@@ -41,10 +41,12 @@ namespace ctac
                 var hoveredCardRect = card.rectTransform;
                 var position = hoveredCardRect.anchoredPosition3D;
                 view.showCardFromHand(card, position);
+                hoveringCard = true;
             }
             else
             {
                 view.hideCard();
+                hoveringCard = false;
             }
         }
 
@@ -55,11 +57,14 @@ namespace ctac
 
         private void onPieceHovered(PieceModel piece)
         {
+            //hovering cards takes priority so don't hide/show if we're hovering from a card
+            if(hoveringCard) return;
+
             if (piece != null)
             {
                 view.showPieceCardWorld(piece, piece.gameObject.transform.position);
             }
-            else
+            else 
             {
                 view.hideCard();
             }
