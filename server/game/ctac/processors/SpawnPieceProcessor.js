@@ -62,7 +62,10 @@ export default class SpawnPieceProcessor
       queue.complete(action);
       this.log.info('spawned piece %s for player %s at %s',
         action.cardTemplateId, action.playerId, action.position);
-      queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
+
+      if(action.cardInstanceId !== null){
+        queue.push(new SetPlayerResource(action.playerId, -cardPlayed.cost));
+      }
     }else{
       //be sure to emit the cancel event so the client can respond
       this.log.info('Spawned piece %s for player %s SCRUBBED',
