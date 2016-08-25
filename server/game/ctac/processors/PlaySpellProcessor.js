@@ -5,13 +5,14 @@ import SetPlayerResource from '../actions/SetPlayerResource.js';
 @loglevel
 export default class PlaySpellProcessor
 {
-  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState)
+  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, statsState)
   {
     this.pieceState = pieceState;
     this.players = players;
     this.cardDirectory = cardDirectory;
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
+    this.statsState = statsState;
   }
 
   /**

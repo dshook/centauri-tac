@@ -8,8 +8,8 @@
 	"movement": 3,
 	"tags": ["Minion"],
 	"eventcode": "playMinion{
-		COMBOCOUNT == 0 && Hit(ENEMY & MINION, 1)
-		COMBOCOUNT > 0 && Hit(ENEMY & MINION, 2)
+		COMBOCOUNT == 0 && Hit(TARGET & ENEMY & MINION, 1)
+		COMBOCOUNT > 0 && Hit(TARGET & ENEMY & MINION, 2)
 	}
 	"
 }

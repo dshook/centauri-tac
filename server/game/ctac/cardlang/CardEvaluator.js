@@ -1034,6 +1034,7 @@ export default class CardEvaluator{
   }
 
   //look through cards for any that have a condition, and if it's met
+  //If a card has multiple conditions, only send if the last one is met so combo cards will highlight properly
   //   [
   //     {cardId: 2}
   //   ]
@@ -1046,22 +1047,24 @@ export default class CardEvaluator{
       for(let event of card.events){
 
         //try to find conditionals in any of the actions
-        for(let cardEventAction of event.actions){
-          if(!cardEventAction.condition) continue;
+        let conditions = event.actions.filter(a => a.condition);
+        if(conditions.length == 0) continue;
 
-          let pieceSelectorParams = {
-            controllingPlayerId: card.playerId,
-            isSpell: card.isSpell,
-            isTimer: false
-          };
+        //only consider the last condition to send to the client (Combo)
+        let cardEventAction = conditions[conditions.length - 1];
 
-          let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams)
-          if(compareResult.length === 0){
-            continue;
-          }
+        let pieceSelectorParams = {
+          controllingPlayerId: card.playerId,
+          isSpell: card.isSpell,
+          isTimer: false
+        };
 
-          conditionals.push({cardId: card.id});
+        let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams);
+        if(compareResult.length === 0){
+          continue;
         }
+
+        conditionals.push({cardId: card.id});
       }
     }
 
