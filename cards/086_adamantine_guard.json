@@ -1,0 +1,15 @@
+{
+	"cardTemplateId": 86,
+	"name": "Adamantine Guard",
+	"description": "Deal 1 damage to an enemy minion. <b>Combo</b>: Deal 2",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		COMBOCOUNT == 0 && Hit(ENEMY & MINION, 1)
+		COMBOCOUNT > 0 && Hit(ENEMY & MINION, 2)
+	}
+	"
+}

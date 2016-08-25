@@ -817,3 +817,66 @@ test('Conditional expression as arg', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Double Conditional expression', t => {
+  t.plan(1);
+
+  let input = `
+    playMinion{
+      COMBOCOUNT == 0 && Hit(ENEMY & MINION, 1)
+      COMBOCOUNT > 0 && Hit(ENEMY & MINION, 2)
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "condition": {
+            "compareExpression": true,
+            "left": {
+              "stat": true,
+              "path": "COMBOCOUNT"
+            },
+            "op": "==",
+            "right": 0
+          },
+          "action": "Hit",
+          "args": [
+            {
+              "left": "ENEMY",
+              "op": "&",
+              "right": "MINION"
+            },
+            1
+          ]
+        },
+        {
+          "condition": {
+            "compareExpression": true,
+            "left": {
+              "stat": true,
+              "path": "COMBOCOUNT"
+            },
+            "op": ">",
+            "right": 0
+          },
+          "action": "Hit",
+          "args": [
+            {
+              "left": "ENEMY",
+              "op": "&",
+              "right": "MINION"
+            },
+            2
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+});
