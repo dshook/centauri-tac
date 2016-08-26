@@ -17,8 +17,7 @@ namespace ctac
         [Inject]
         public CardDirectory cardDirectory { get; set; }
 
-        [Inject]
-        public IDebugService debug { get; set; }
+        //[Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
@@ -45,19 +44,20 @@ namespace ctac
                 var position = hoveredCardRect.anchoredPosition3D;
                 view.showCardFromHand(card, position);
                 hoveringCard = true;
-                debug.Log("Hovering from card");
+                //debug.Log("Hovering from card");
             }
             else
             {
                 view.hideCard();
                 hoveringCard = false;
-                debug.Log("Hiding from card");
+                //debug.Log("Hiding from card");
             }
         }
 
         private void onCardSelected(CardSelectedModel card)
         {
             view.setActive(card == null);
+            //debug.Log("Setting hover view " + (card == null ? "active" : "inactive"));
         }
 
         private void onPieceHovered(PieceModel piece)
@@ -68,12 +68,12 @@ namespace ctac
             if (piece != null)
             {
                 view.showPieceCardWorld(piece, piece.gameObject.transform.position);
-                debug.Log("Hovering from piece");
+                //debug.Log("Hovering from piece");
             }
             else 
             {
                 view.hideCard();
-                debug.Log("Hiding from piece");
+                //debug.Log("Hiding from piece");
             }
         }
 

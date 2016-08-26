@@ -9,6 +9,8 @@ namespace ctac
         internal Signal<GameObject> pieceHover = new Signal<GameObject>();
         [Inject]
         public IResourceLoaderService loader { get; set; }
+        [Inject]
+        public IDebugService debug { get; set; }
 
         float timer = 0f;
         bool cardVisible = false;
@@ -115,7 +117,6 @@ namespace ctac
             CopyPieceToCard(piece, hoverCardView.card);
             hoverCardView.card.linkedPiece = piece;
 
-            hoverCardView.UpdateText();
             hoverCardView.UpdateBuffsDisplay();
 
             Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
@@ -138,6 +139,11 @@ namespace ctac
                     showCard(screenPos + offset);
                     break;
                 }
+            }
+
+            if (!cardVisible)
+            {
+                debug.LogWarning("No where to show hover card");
             }
         }
 

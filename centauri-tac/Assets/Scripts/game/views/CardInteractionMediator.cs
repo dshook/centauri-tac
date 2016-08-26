@@ -48,6 +48,7 @@ namespace ctac
             view.hoverSignal.AddListener(onHover);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
+            activateCard.AddListener(onCardActivated);
             view.init(raycastModel);
         }
 
@@ -57,6 +58,7 @@ namespace ctac
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
             selectTarget.RemoveListener(onSelectedTarget);
+            activateCard.RemoveListener(onCardActivated);
             cancelSelectTarget.RemoveListener(onTargetCancel);
         }
 
@@ -145,70 +147,68 @@ namespace ctac
 
         private void onActivate(GameObject activated)
         {
-            if (activated != null && draggedCard != null)
-            {
-                if (activated.CompareTag("Tile"))
-                {
-                    //check for appropriate resources
-                    if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
-                    {
-                        message.Dispatch(new MessageModel() { message = "Not enough energy to play!" }, new SocketKey(turns.currentTurnClientId, "game"));
-                        return;
-                    }
-
-                    var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
-
-                    if (draggedCard.isChoose(possibleActions))
-                    {
-                        chooseModel = new ChooseModel()
-                        {
-                            choosingCard = draggedCard,
-                            cardDeployPosition = gameTile,
-                            choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
-                        };
-                        debug.Log("Starting choose");
-                        startChoose.Dispatch(chooseModel);
-                    }
-                    else if (draggedCard.needsTargeting(possibleActions))
-                    {
-                        var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
-                        var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
-
-                        var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
-                        if (area != null && area.selfCentered)
-                        {
-                            selectedPosition = gameTile.position;
-                        }
-                        var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
-
-                        //record state we need to maintain for subsequent clicks then dispatch the start target
-                        startTargetModel = new TargetModel()
-                        {
-                            targetingCard = draggedCard,
-                            cardDeployPosition = gameTile,
-                            targets = targets,
-                            area = area,
-                            selectedPosition = selectedPosition,
-                            selectedPivotPosition = pivotPosition
-                        };
-
-                        //delay sending off the start select target signal till the card deselected event has cleared
-                        Invoke("StartSelectTargets", 0.10f);
-                    }
-                    else
-                    {
-                        activateCard.Dispatch(new ActivateModel()
-                        {
-                            cardActivated = draggedCard,
-                            position = gameTile.position,
-                            optionalTarget = null
-                        });
-                    }
-                }
-            }
-            else
+            if (activated == null || draggedCard == null)
             {
                 cardSelected.Dispatch(null);
+            }
+
+            if (activated.CompareTag("Tile"))
+            {
+                //check for appropriate resources
+                if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
+                {
+                    message.Dispatch(new MessageModel() { message = "Not enough energy to play!" }, new SocketKey(turns.currentTurnClientId, "game"));
+                    return;
+                }
+
+                var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
+
+                if (draggedCard.isChoose(possibleActions))
+                {
+                    chooseModel = new ChooseModel()
+                    {
+                        choosingCard = draggedCard,
+                        cardDeployPosition = gameTile,
+                        choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
+                    };
+                    debug.Log("Starting choose");
+                    startChoose.Dispatch(chooseModel);
+                }
+                else if (draggedCard.needsTargeting(possibleActions))
+                {
+                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
+                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
+
+                    var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
+                    if (area != null && area.selfCentered)
+                    {
+                        selectedPosition = gameTile.position;
+                    }
+                    var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
+
+                    //record state we need to maintain for subsequent clicks then dispatch the start target
+                    startTargetModel = new TargetModel()
+                    {
+                        targetingCard = draggedCard,
+                        cardDeployPosition = gameTile,
+                        targets = targets,
+                        area = area,
+                        selectedPosition = selectedPosition,
+                        selectedPivotPosition = pivotPosition
+                    };
+
+                    //delay sending off the start select target signal till the card deselected event has cleared
+                    Invoke("StartSelectTargets", 0.10f);
+                }
+                else
+                {
+                    activateCard.Dispatch(new ActivateModel()
+                    {
+                        cardActivated = draggedCard,
+                        position = gameTile.position,
+                        optionalTarget = null
+                    });
+                }
             }
         }
 
@@ -227,6 +227,7 @@ namespace ctac
                 cancelChoose.Dispatch(chooseModel);
             }
             chooseModel = null;
+            cardSelected.Dispatch(null);
         }
 
         private void onSelectedTarget(TargetModel targetModel)
@@ -242,6 +243,10 @@ namespace ctac
             });
             startTargetModel = null;
             chooseModel = null;
+        }
+
+        private void onCardActivated(ActivateModel a)
+        {
             cardSelected.Dispatch(null);
         }
 
