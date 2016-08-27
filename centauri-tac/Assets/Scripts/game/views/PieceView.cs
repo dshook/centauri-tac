@@ -38,8 +38,8 @@ namespace ctac {
         public SVGAsset hpBarSvgEnemy;
         public SVGRenderer hpBarSvgRenderer;
         public MeshRenderer hpBarFillRenderer;
-        private Color32 hpBarFillFriendlyColor = ColorExtensions.HexToColor("#65ACFF");
-        private Color32 hpBarFillEnemyColor = ColorExtensions.HexToColor("#FF4949");
+        private Color32 hpBarFillFriendlyColor = Colors.friendlyColor;
+        private Color32 hpBarFillEnemyColor = Colors.enemyColor;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;

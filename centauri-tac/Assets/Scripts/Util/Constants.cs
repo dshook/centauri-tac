@@ -14,6 +14,7 @@ namespace ctac
         public static string cardCamera = "CardCamera";
         public static string targetPieceTag = "targetPiece";
         public static string chooseCardTag = "chooseCard";
+        public static string historyTileTag = "HistoryTile";
 
         public static Vector3 cardSpawnPosition = new Vector3(10000,10000, 0);
 

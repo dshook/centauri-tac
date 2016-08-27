@@ -1,60 +1,74 @@
 using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using SVGImporter;
 
 namespace ctac
 {
     public class HistoryView : View
     {
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
+
+        [Inject]
+        public GameTurnModel turns { get; set; }
+
         private GameObject historyPanel;
         private GameObject historyTilePrefab;
 
         private List<AbilityTarget> abilities;
 
-        private float buttonHeight = 34f;
-        private float buttonMargin = 2.5f;
-        private float panelHeightPerButton = 36.5f;
+        private float panelTop = 333f;
+        private float buttonHeight = 33f;
+
+        private int itemCount = 0;
+        private Dictionary<HistoryMediator.HistoryItemType, SVGAsset> iconMap;
 
         internal void init()
         {
             historyPanel = this.gameObject;
             historyTilePrefab = Resources.Load("UI/HistoryTile") as GameObject;
 
-            historyPanel.transform.DestroyChildren();
-        }
-
-        public void UpdateAbilities(int playerId, List<AbilityTarget> newAbilities)
-        {
-            abilities = newAbilities;
-            historyPanel.transform.DestroyChildren();
-            BuildPanel();
-        }
-
-        private void BuildPanel()
-        {
-            var abilityRect = historyPanel.GetComponent<RectTransform>();
-            abilityRect.sizeDelta = new Vector2(abilityRect.sizeDelta.x, (panelHeightPerButton * abilities.Count) + buttonMargin);
-
-            var index = 0;
-            foreach (var ability in abilities)
+            iconMap = new Dictionary<HistoryMediator.HistoryItemType, SVGAsset>()
             {
-                var newButton = GameObject.Instantiate(historyTilePrefab);
-                newButton.transform.SetParent(historyPanel.transform, false);
+                { HistoryMediator.HistoryItemType.Attack, loader.Load<SVGAsset>("UI/history icon attack")},
+                { HistoryMediator.HistoryItemType.CardPlayed, loader.Load<SVGAsset>("UI/history icon card")},
+                { HistoryMediator.HistoryItemType.Event, loader.Load<SVGAsset>("UI/history icon event")},
+                { HistoryMediator.HistoryItemType.MinionPlayed, loader.Load<SVGAsset>("UI/history icon minion card")},
+            };
 
-                var buttonRect = newButton.GetComponent<RectTransform>();
-                var abilityButtonView = newButton.GetComponent<AbilityButtonView>();
+            historyPanel.transform.DestroyChildren();
+        }
 
-                abilityButtonView.ability = ability;
-                buttonRect.anchorMin = Vector2.up;
-                buttonRect.anchorMax = Vector2.up;
-                buttonRect.pivot = Vector2.up;
-
-                var vertPosition = -((buttonHeight * index) + buttonMargin);
-                buttonRect.anchoredPosition3D = new Vector3(14, vertPosition, 0);
-
-                index++;
+        public void AddItem(HistoryMediator.HistoryItem item)
+        {
+            itemCount++;
+            //animate everything down
+            for (int t = 0; t < historyPanel.transform.childCount; t++)
+            {
+                var tile = historyPanel.transform.GetChild(t).gameObject;
+                iTweenExtensions.MoveTo(
+                    tile,
+                    tile.transform.position.SetY(tile.transform.position.y - buttonHeight),
+                    1f,
+                    0f
+                );
             }
+
+            //pop in new button at top
+            var newButton = GameObject.Instantiate(historyTilePrefab);
+            newButton.transform.SetParent(historyPanel.transform, false);
+            var buttonRect = newButton.GetComponent<RectTransform>();
+            buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
+
+            var borderGo = newButton.transform.FindChild("Border").gameObject;
+            var cardGo = newButton.transform.FindChild("Card").gameObject;
+
+            var borderSvg = borderGo.GetComponent<SVGImage>();
+            var cardSvg = cardGo.GetComponent<SVGImage>();
+
+            cardSvg.vectorGraphics = iconMap[item.type];
+            borderSvg.color = item.initiatingPlayerId == turns.currentPlayerId ? Colors.friendlyColor : Colors.enemyColor;
         }
 
     }
