@@ -683,7 +683,7 @@ test('Find condition met cards', t => {
   spawnPiece(pieceStateMix, 1, 2); //id 3
   spawnPiece(pieceStateMix, 2, 2); //id 4
 
-  //fill one player hands with some area cards
+  //fill one player hands with some condition cards
   let cardState = new CardState();
   cardState.initPlayer(1);
   spawnCard(cardState, 1, 49); //id 1
