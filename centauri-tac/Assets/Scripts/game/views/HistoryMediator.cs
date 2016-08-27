@@ -29,6 +29,8 @@ namespace ctac
 
         private void onSpawnPiece(PieceModel piece)
         {
+            if(piece.isHero) return;
+
             pushHistory(new HistoryItem()
             {
                 type = HistoryItemType.MinionPlayed,

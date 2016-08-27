@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -55,6 +56,24 @@ namespace ctac
             get
             {
                 return baseHealth + (buffs.Sum(s => s.health) ?? 0);
+            }
+        }
+
+        [JsonIgnore]
+        public bool isMinion
+        {
+            get
+            {
+                return tags.Contains("Minion");
+            }
+        }
+
+        [JsonIgnore]
+        public bool isHero
+        {
+            get
+            {
+                return tags.Contains("Hero");
             }
         }
 

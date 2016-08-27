@@ -61,6 +61,9 @@ namespace ctac
             var buttonRect = newButton.GetComponent<RectTransform>();
             buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
 
+            newButton.transform.localScale = Vector3.zero;
+            iTweenExtensions.ScaleTo(newButton, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
+
             var borderGo = newButton.transform.FindChild("Border").gameObject;
             var cardGo = newButton.transform.FindChild("Card").gameObject;
 
