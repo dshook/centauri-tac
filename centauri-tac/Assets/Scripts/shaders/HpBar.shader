@@ -48,7 +48,8 @@
 
             float antiAlias(float x) {
                 float width = 0.999 - _LineWidth;
-                return (x-(width-2.0/_ScreenParams.y))*(_ScreenParams.y/2.0);
+                float blur = 6.0;
+                return (x-(width-blur/_ScreenParams.y))*(_ScreenParams.y/blur);
             }
 
             float4 drawLine( in float2 p, in float2 a, in float2 b, in float4 bgColor, in float4 lineColor)
