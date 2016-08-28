@@ -10,12 +10,15 @@ namespace ctac
         public HistoryView view { get; set; }
 
         [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public CardsModel cards { get; set; }
 
         [Inject] public ServerQueueProcessStart qps { get; set; }
         [Inject] public ServerQueueProcessEnd qpc { get; set; }
 
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
         [Inject] public ActionPlaySpellSignal spellPlayed { get; set; }
+        [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
@@ -28,6 +31,7 @@ namespace ctac
             qpc.AddListener(onQpc);
             spawnPiece.AddListener(onSpawnPiece);
             spellPlayed.AddListener(onSpellPlayed);
+            pieceAttacked.AddListener(onPieceAttacked);
             turnEnded.AddListener(onTurnEnd);
         }
 
@@ -36,6 +40,7 @@ namespace ctac
             qpc.RemoveListener(onQpc);
             spawnPiece.RemoveListener(onSpawnPiece);
             spellPlayed.RemoveListener(onSpellPlayed);
+            pieceAttacked.RemoveListener(onPieceAttacked);
             turnEnded.RemoveListener(onTurnEnd);
         }
 
@@ -89,6 +94,15 @@ namespace ctac
             if (players.OpponentId(turn.currentPlayerId) != turn.currentPlayerId)
             {
                 view.UpdatePlayerColors();
+            }
+        }
+
+        private void onPieceAttacked(AttackPieceModel atk)
+        {
+            if (currentItem == null)
+            {
+                var attacker = pieces.Piece(atk.attackingPieceId);
+                CreateCurrent(HistoryItemType.Attack, attacker.playerId);
             }
         }
 

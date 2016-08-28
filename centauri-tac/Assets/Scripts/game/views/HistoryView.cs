@@ -16,13 +16,12 @@ namespace ctac
         private GameObject historyPanel;
         private GameObject historyTilePrefab;
 
-        private List<AbilityTarget> abilities;
-
         private float panelTop = 333f;
         private float buttonHeight = 33f;
 
         private const int maxItems = 9;
         private Dictionary<HistoryMediator.HistoryItemType, SVGAsset> iconMap;
+        private Vector3 scaleOutVec = new Vector3(1, 0, 1);
 
         private List<HistoryIcon> icons = new List<HistoryIcon>();
         private class HistoryIcon
@@ -64,15 +63,6 @@ namespace ctac
                 );
             }
 
-            //check for popping the end off
-            if (icons.Count > maxItems)
-            {
-                var toRemove = icons[0];
-                iTweenExtensions.ScaleTo(toRemove.card, Vector3.zero, 1f, 0f, EaseType.easeOutQuad);
-                Destroy(toRemove.card, 1f);
-                icons.Remove(toRemove);
-            }
-
             //pop in new button at top
             var newButton = GameObject.Instantiate(historyTilePrefab);
             newButton.transform.SetParent(historyPanel.transform, false);
@@ -100,6 +90,15 @@ namespace ctac
                 card = cardGo,
                 cardSvg = cardSvg
             });
+
+            //check for popping the end off
+            if (icons.Count > maxItems)
+            {
+                var toRemove = icons[0];
+                iTweenExtensions.ScaleTo(toRemove.historyTile, scaleOutVec, 1f, 0f, EaseType.easeInCirc);
+                Destroy(toRemove.historyTile, 1f);
+                icons.Remove(toRemove);
+            }
         }
 
         //Swip swap all the colors
