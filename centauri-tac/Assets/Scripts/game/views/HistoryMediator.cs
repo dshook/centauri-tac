@@ -15,33 +15,72 @@ namespace ctac
         [Inject] public ServerQueueProcessEnd qpc { get; set; }
 
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
+        [Inject] public ActionPlaySpellSignal spellPlayed { get; set; }
+
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
         private List<HistoryItem> history = new List<HistoryItem>();
+        private HistoryItem currentItem = null;
 
         public override void OnRegister()
         {
             view.init();
+            qpc.AddListener(onQpc);
             spawnPiece.AddListener(onSpawnPiece);
+            spellPlayed.AddListener(onSpellPlayed);
             turnEnded.AddListener(onTurnEnd);
         }
 
         public override void onRemove()
         {
+            qpc.RemoveListener(onQpc);
             spawnPiece.RemoveListener(onSpawnPiece);
+            spellPlayed.RemoveListener(onSpellPlayed);
             turnEnded.RemoveListener(onTurnEnd);
+        }
+
+        //Generally how the history processor work is by listening for relavent events as they come in
+        //If they're the first in the queue process then they'll make a new current item, otherwise they'll
+        //attach themselves to the current one.  Then when the queue processing is complete we'll push the
+        //built up item
+        private void onQpc(int t)
+        {
+            if (currentItem != null)
+            {
+                pushHistory(currentItem);
+                currentItem = null;
+            }
+        }
+
+        private void CreateCurrent(HistoryItemType type, int player)
+        {
+            currentItem = new HistoryItem()
+            {
+                type = type,
+                initiatingPlayerId = player,
+                piecesAffected = new List<PieceModel>(),
+                cardsAffected = new List<CardModel>()
+            };
         }
 
         private void onSpawnPiece(PieceModel piece)
         {
             if(piece.isHero) return;
 
-            pushHistory(new HistoryItem()
+            if (currentItem == null)
             {
-                type = HistoryItemType.MinionPlayed,
-                initiatingPlayerId = piece.playerId,
-                piecesAffected = new List<PieceModel>() { piece }
-            });
+                CreateCurrent(HistoryItemType.MinionPlayed, piece.playerId);
+            }
+            currentItem.piecesAffected.Add(piece);
+        }
+
+        private void onSpellPlayed(PlaySpellModel spell)
+        {
+            if (currentItem == null)
+            {
+                CreateCurrent(HistoryItemType.CardPlayed, spell.playerId);
+            }
+            //currentItem.cardsAffected.Add(spell.cardInstanceId);
         }
 
         private void onTurnEnd(GameTurnModel turn)
