@@ -21,8 +21,19 @@ namespace ctac
         private float panelTop = 333f;
         private float buttonHeight = 33f;
 
-        private int itemCount = 0;
+        private const int maxItems = 9;
         private Dictionary<HistoryMediator.HistoryItemType, SVGAsset> iconMap;
+
+        private List<HistoryIcon> icons = new List<HistoryIcon>();
+        private class HistoryIcon
+        {
+            public GameObject historyTile { get; set; }
+            public RectTransform rectT { get; set; }
+            public GameObject border { get; set; }
+            public GameObject card { get; set; }
+            public SVGImage borderSvg { get; set; }
+            public SVGImage cardSvg { get; set; }
+        }
 
         internal void init()
         {
@@ -42,17 +53,24 @@ namespace ctac
 
         public void AddItem(HistoryMediator.HistoryItem item)
         {
-            itemCount++;
             //animate everything down
-            for (int t = 0; t < historyPanel.transform.childCount; t++)
+            foreach (var icon in icons)
             {
-                var tile = historyPanel.transform.GetChild(t).gameObject;
                 iTweenExtensions.MoveTo(
-                    tile,
-                    tile.transform.position.SetY(tile.transform.position.y - buttonHeight),
+                    icon.historyTile,
+                    icon.historyTile.transform.position.SetY(icon.historyTile.transform.position.y - buttonHeight),
                     1f,
                     0f
                 );
+            }
+
+            //check for popping the end off
+            if (icons.Count > maxItems)
+            {
+                var toRemove = icons[0];
+                iTweenExtensions.ScaleTo(toRemove.card, Vector3.zero, 1f, 0f, EaseType.easeOutQuad);
+                Destroy(toRemove.card, 1f);
+                icons.Remove(toRemove);
             }
 
             //pop in new button at top
@@ -72,7 +90,27 @@ namespace ctac
 
             cardSvg.vectorGraphics = iconMap[item.type];
             borderSvg.color = item.initiatingPlayerId == turns.currentPlayerId ? Colors.friendlyColor : Colors.enemyColor;
+
+            icons.Add(new HistoryIcon()
+            {
+                historyTile = newButton,
+                rectT = buttonRect,
+                border = borderGo,
+                borderSvg = borderSvg,
+                card = cardGo,
+                cardSvg = cardSvg
+            });
         }
+
+        //Swip swap all the colors
+        public void UpdatePlayerColors()
+        {
+            foreach (var icon in icons)
+            {
+                icon.borderSvg.color = icon.borderSvg.color == Colors.friendlyColor ? Colors.enemyColor : Colors.friendlyColor;
+            }
+        }
+
 
     }
 }

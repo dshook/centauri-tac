@@ -1023,8 +1023,8 @@ export default class CardEvaluator{
       }
 
       //also show repeating timers
-      let repeatingStartTimer = this.startTurnTimers.find(t => t.piece.id === piece.id && t.interval);
-      let repeatingEndTimer = this.endTurnTimers.find(t => t.piece.id === piece.id && t.interval);
+      let repeatingStartTimer = this.startTurnTimers.find(t => t.piece && t.piece.id === piece.id && t.interval);
+      let repeatingEndTimer = this.endTurnTimers.find(t => t.piece && t.piece.id === piece.id && t.interval);
       if(repeatingStartTimer || repeatingEndTimer){
         eventedPieces.push({pieceId: piece.id, event: 't'});
       }
