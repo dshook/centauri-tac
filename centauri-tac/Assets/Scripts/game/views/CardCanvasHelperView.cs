@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -28,6 +27,11 @@ namespace ctac {
         public Vector3 WorldToViewportPoint(Vector3 position)
         {
             return cardCamera.WorldToViewportPoint(position);
+        }
+
+        public Vector3 ViewportToWorld(Vector3 viewportPoint)
+        {
+            return cardCamera.ViewportToWorldPoint(viewportPoint);
         }
 
         public Vector3 MouseToWorld(float z)

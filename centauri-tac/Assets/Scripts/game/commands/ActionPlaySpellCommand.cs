@@ -18,10 +18,7 @@ namespace ctac
         {
             if(!processedActions.Verify(cardActivated.id)) return;
 
-            if (cardActivated.cardInstanceId.HasValue)
-            {
-                destroyCard.Dispatch(cardActivated.cardInstanceId.Value);
-            }
+            destroyCard.Dispatch(cardActivated.cardInstanceId);
         }
     }
 }

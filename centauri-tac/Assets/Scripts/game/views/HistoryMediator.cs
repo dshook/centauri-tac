@@ -85,7 +85,8 @@ namespace ctac
             {
                 CreateCurrent(HistoryItemType.CardPlayed, spell.playerId);
             }
-            //currentItem.cardsAffected.Add(spell.cardInstanceId);
+            var card = cards.Card(spell.cardInstanceId);
+            currentItem.cardsAffected.Add(CopyCard(card));
         }
 
         private void onTurnEnd(GameTurnModel turn)
