@@ -1,6 +1,5 @@
 ﻿using ctac.util;
 using strange.extensions.mediation.impl;
-using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -9,6 +8,7 @@ namespace ctac {
     public class CardView : View
     {
         public CardModel card { get; set; }
+        public RectTransform rectTransform { get; set; }
 
         public GameObject displayWrapper;
         public GameObject costGO;
@@ -37,6 +37,11 @@ namespace ctac {
 
         public TextMeshPro buffNameText;
         public TextMeshPro buffAbilityText;
+
+        protected override void Awake()
+        {
+            rectTransform = GetComponent<RectTransform>();
+        }
 
         protected override void Start()
         {

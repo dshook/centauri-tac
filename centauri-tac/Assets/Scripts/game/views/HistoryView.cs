@@ -20,18 +20,14 @@ namespace ctac
         private float buttonHeight = 33f;
 
         private const int maxItems = 9;
-        private Dictionary<HistoryMediator.HistoryItemType, SVGAsset> iconMap;
+        private Dictionary<HistoryItemType, SVGAsset> iconMap;
         private Vector3 scaleOutVec = new Vector3(1, 0, 1);
 
         private List<HistoryIcon> icons = new List<HistoryIcon>();
         private class HistoryIcon
         {
             public GameObject historyTile { get; set; }
-            public RectTransform rectT { get; set; }
-            public GameObject border { get; set; }
-            public GameObject card { get; set; }
             public SVGImage borderSvg { get; set; }
-            public SVGImage cardSvg { get; set; }
         }
 
         internal void init()
@@ -39,18 +35,18 @@ namespace ctac
             historyPanel = this.gameObject;
             historyTilePrefab = Resources.Load("UI/HistoryTile") as GameObject;
 
-            iconMap = new Dictionary<HistoryMediator.HistoryItemType, SVGAsset>()
+            iconMap = new Dictionary<HistoryItemType, SVGAsset>()
             {
-                { HistoryMediator.HistoryItemType.Attack, loader.Load<SVGAsset>("UI/history icon attack")},
-                { HistoryMediator.HistoryItemType.CardPlayed, loader.Load<SVGAsset>("UI/history icon card")},
-                { HistoryMediator.HistoryItemType.Event, loader.Load<SVGAsset>("UI/history icon event")},
-                { HistoryMediator.HistoryItemType.MinionPlayed, loader.Load<SVGAsset>("UI/history icon minion card")},
+                { HistoryItemType.Attack, loader.Load<SVGAsset>("UI/history icon attack")},
+                { HistoryItemType.CardPlayed, loader.Load<SVGAsset>("UI/history icon card")},
+                { HistoryItemType.Event, loader.Load<SVGAsset>("UI/history icon event")},
+                { HistoryItemType.MinionPlayed, loader.Load<SVGAsset>("UI/history icon minion card")},
             };
 
             historyPanel.transform.DestroyChildren();
         }
 
-        public void AddItem(HistoryMediator.HistoryItem item)
+        public void AddItem(HistoryItem item)
         {
             //animate everything down
             foreach (var icon in icons)
@@ -64,16 +60,18 @@ namespace ctac
             }
 
             //pop in new button at top
-            var newButton = GameObject.Instantiate(historyTilePrefab);
-            newButton.transform.SetParent(historyPanel.transform, false);
-            var buttonRect = newButton.GetComponent<RectTransform>();
+            var newTile = GameObject.Instantiate(historyTilePrefab);
+            newTile.transform.SetParent(historyPanel.transform, false);
+            var buttonRect = newTile.GetComponent<RectTransform>();
             buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
+            var view = newTile.GetComponent<HistoryTileView>();
+            view.item = item;
 
-            newButton.transform.localScale = Vector3.zero;
-            iTweenExtensions.ScaleTo(newButton, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
+            newTile.transform.localScale = Vector3.zero;
+            iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
 
-            var borderGo = newButton.transform.FindChild("Border").gameObject;
-            var cardGo = newButton.transform.FindChild("Card").gameObject;
+            var borderGo = newTile.transform.FindChild("Border").gameObject;
+            var cardGo = newTile.transform.FindChild("Card").gameObject;
 
             var borderSvg = borderGo.GetComponent<SVGImage>();
             var cardSvg = cardGo.GetComponent<SVGImage>();
@@ -83,12 +81,8 @@ namespace ctac
 
             icons.Add(new HistoryIcon()
             {
-                historyTile = newButton,
-                rectT = buttonRect,
-                border = borderGo,
-                borderSvg = borderSvg,
-                card = cardGo,
-                cardSvg = cardSvg
+                historyTile = newTile,
+                borderSvg = borderSvg
             });
 
             //check for popping the end off

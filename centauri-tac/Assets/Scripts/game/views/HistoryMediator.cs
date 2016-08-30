@@ -76,7 +76,7 @@ namespace ctac
             {
                 CreateCurrent(HistoryItemType.MinionPlayed, piece.playerId);
             }
-            currentItem.piecesAffected.Add(piece);
+            currentItem.piecesAffected.Add(CopyPiece(piece));
         }
 
         private void onSpellPlayed(PlaySpellModel spell)
@@ -112,22 +112,22 @@ namespace ctac
             view.AddItem(h);
         }
 
-        public class HistoryItem
+        private PieceModel CopyPiece(PieceModel src)
         {
-            public HistoryItemType type { get; set; }
-            public int initiatingPlayerId { get; set; }
-            public List<PieceModel> piecesAffected { get; set; }
-            public List<CardModel> cardsAffected { get; set; }
-
+            var dst = new PieceModel();
+            src.CopyProperties(dst);
+            dst.gameObject = null;  //don't need the original game object here
+            return dst;
         }
 
-        public enum HistoryItemType
+        private CardModel CopyCard(CardModel src)
         {
-            Attack,
-            MinionPlayed,
-            CardPlayed,
-            Event
+            var dst = new CardModel();
+            src.CopyProperties(dst);
+            dst.gameObject = null;  //don't need the original game object here
+            return dst;
         }
+
     }
 }
 

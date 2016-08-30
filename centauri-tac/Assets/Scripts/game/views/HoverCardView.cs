@@ -22,7 +22,6 @@ namespace ctac
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
         //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
         private Vector2 bottomLeftAnchor = new Vector2(0, 0);
-        private RectTransform rectTransform;
         private CardDirectory cardDirectory;
 
         internal void init(CardDirectory cardDirectory)
@@ -61,9 +60,6 @@ namespace ctac
             hoverCardView = hoverCardGO.AddComponent<CardView>();
             hoverCardView.card = hoverCardModel;
 
-            rectTransform = hoverCardView.GetComponent<RectTransform>();
-
-
             hoverCardGO.SetActive(false);
         }
 
@@ -89,9 +85,7 @@ namespace ctac
         {
             hoverCardView.UpdateText();
 
-            rectTransform = hoverCardView.GetComponent<RectTransform>();
-
-            rectTransform.anchoredPosition3D = position;
+            hoverCardView.rectTransform.anchoredPosition3D = position;
 
             //hide card so it reshows after the delay
             hideCard();
@@ -107,7 +101,7 @@ namespace ctac
             hoverCardView.name = hoverName;
             hoverCardView.card.gameObject = hoverCardView.gameObject;
 
-            rectTransform.SetAnchor(cardAnchor);
+            hoverCardView.rectTransform.SetAnchor(cardAnchor);
             var displayPosition = new Vector3(position.x, 125f, 19f);
             showCard(displayPosition);
         }
@@ -121,8 +115,8 @@ namespace ctac
 
             Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
 
-            var hWidth = rectTransform.sizeDelta;
-            rectTransform.SetAnchor(bottomLeftAnchor);
+            var hWidth = hoverCardView.rectTransform.sizeDelta;
+            hoverCardView.rectTransform.SetAnchor(bottomLeftAnchor);
             //screenPos = screenPos.SetZ(0);
 
             var offsets = new[] {
