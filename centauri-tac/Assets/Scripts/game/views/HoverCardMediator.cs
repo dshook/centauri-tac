@@ -14,14 +14,11 @@ namespace ctac
         [Inject]
         public PieceHoverSignal pieceHovered { get; set; }
 
-        [Inject]
-        public CardDirectory cardDirectory { get; set; }
-
         //[Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
-            view.init(cardDirectory);
+            view.init();
             cardHovered.AddListener(onCardHovered);
             cardSelected.AddListener(onCardSelected);
             pieceHovered.AddListener(onPieceHovered);

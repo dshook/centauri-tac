@@ -11,6 +11,8 @@ namespace ctac
         public IResourceLoaderService loader { get; set; }
         [Inject]
         public IDebugService debug { get; set; }
+        [Inject]
+        public IPieceService pieceService { get; set; }
 
         float timer = 0f;
         bool cardVisible = false;
@@ -24,9 +26,8 @@ namespace ctac
         private Vector2 bottomLeftAnchor = new Vector2(0, 0);
         private CardDirectory cardDirectory;
 
-        internal void init(CardDirectory cardDirectory)
+        internal void init()
         {
-            this.cardDirectory = cardDirectory;
             //init the hover card that's hidden most of the time
             var cardPrefab = loader.Load<GameObject>("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
@@ -108,7 +109,7 @@ namespace ctac
 
         internal void showPieceCardWorld(PieceModel piece, Vector3 worldPosition)
         {
-            CopyPieceToCard(piece, hoverCardView.card);
+            pieceService.CopyPieceToCard(piece, hoverCardView.card);
             hoverCardView.card.linkedPiece = piece;
 
             hoverCardView.UpdateBuffsDisplay();
@@ -139,23 +140,6 @@ namespace ctac
             {
                 debug.LogWarning("No where to show hover card");
             }
-        }
-
-        private void CopyPieceToCard(PieceModel src, CardModel dest)
-        {
-            var templateCard = cardDirectory.Card(src.cardTemplateId);
-            dest.cardTemplateId = src.cardTemplateId;
-            dest.playerId = src.playerId;
-            dest.name = templateCard.name;
-            dest.description = templateCard.description;
-            dest.cost = templateCard.cost;
-            dest.attack = src.attack;
-            dest.health = src.health;
-            dest.movement = src.movement;
-            dest.range = src.range;
-            dest.tags = src.tags;
-            dest.statuses = src.statuses;
-            dest.metCondition = false;
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)

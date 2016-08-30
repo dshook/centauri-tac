@@ -8,9 +8,10 @@ namespace ctac
     {
         [Inject]
         public IResourceLoaderService loader { get; set; }
+        [Inject]
+        public IPieceService pieceService { get; set; }
 
         private CardView hoveringCard;
-        private RectTransform rectTransform;
         private CardCanvasHelperView cardCanvasHelper;
 
         public HistoryItem item { get; set; }
@@ -18,15 +19,23 @@ namespace ctac
         protected override void Start()
         {
             base.Start();
-            rectTransform = GetComponent<RectTransform>();
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (item != null && item.cardsAffected.Count > 0)
+            if (item != null)
             {
-                hoveringCard = showCard(item.cardsAffected[0], transform.position);
+                if (item.cardsAffected.Count > 0)
+                {
+                    hoveringCard = showCard(item.cardsAffected[0], transform.position);
+                }
+                else if (item.piecesAffected.Count > 0)
+                {
+                    var pieceCard = new CardModel();
+                    pieceService.CopyPieceToCard(item.piecesAffected[0], pieceCard);
+                    hoveringCard = showCard(pieceCard, transform.position);
+                }
             }
         }
 

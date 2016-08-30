@@ -61,6 +61,7 @@ namespace ctac
             {
                 string cardText = File.ReadAllText(file);
                 var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
+                cardTemplate.baseCost = cardTemplate.cost;
                 cardDirectory.directory.Add(cardTemplate);
                 numberOfCards++;
             }
