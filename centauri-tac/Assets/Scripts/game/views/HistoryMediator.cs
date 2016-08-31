@@ -19,6 +19,7 @@ namespace ctac
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
         [Inject] public ActionPlaySpellSignal spellPlayed { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
+        [Inject] public PieceHealthChangedSignal pieceHealthChange { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
@@ -32,6 +33,7 @@ namespace ctac
             spawnPiece.AddListener(onSpawnPiece);
             spellPlayed.AddListener(onSpellPlayed);
             pieceAttacked.AddListener(onPieceAttacked);
+            pieceHealthChange.AddListener(onPieceHealthChanged);
             turnEnded.AddListener(onTurnEnd);
         }
 
@@ -41,6 +43,7 @@ namespace ctac
             spawnPiece.RemoveListener(onSpawnPiece);
             spellPlayed.RemoveListener(onSpellPlayed);
             pieceAttacked.RemoveListener(onPieceAttacked);
+            pieceHealthChange.RemoveListener(onPieceHealthChanged);
             turnEnded.RemoveListener(onTurnEnd);
         }
 
@@ -63,8 +66,7 @@ namespace ctac
             {
                 type = type,
                 initiatingPlayerId = player,
-                piecesAffected = new List<PieceModel>(),
-                cardsAffected = new List<CardModel>()
+                healthChanges = new List<HistoryHealthChange>()
             };
         }
 
@@ -76,7 +78,7 @@ namespace ctac
             {
                 CreateCurrent(HistoryItemType.MinionPlayed, piece.playerId);
             }
-            currentItem.piecesAffected.Add(CopyPiece(piece));
+            currentItem.triggeringPiece = CopyPiece(piece);
         }
 
         private void onSpellPlayed(PlaySpellModel spell)
@@ -86,7 +88,7 @@ namespace ctac
                 CreateCurrent(HistoryItemType.CardPlayed, spell.playerId);
             }
             var card = cards.Card(spell.cardInstanceId);
-            currentItem.cardsAffected.Add(CopyCard(card));
+            currentItem.triggeringCard = CopyCard(card);
         }
 
         private void onTurnEnd(GameTurnModel turn)
@@ -100,11 +102,28 @@ namespace ctac
 
         private void onPieceAttacked(AttackPieceModel atk)
         {
+            var attacker = pieces.Piece(atk.attackingPieceId);
             if (currentItem == null)
             {
-                var attacker = pieces.Piece(atk.attackingPieceId);
                 CreateCurrent(HistoryItemType.Attack, attacker.playerId);
             }
+            currentItem.triggeringPiece = attacker;
+        }
+
+        private void onPieceHealthChanged(PieceHealthChangeModel phcm)
+        {
+            //should be encapsulated under some other event
+            if (currentItem == null)
+            {
+                return;
+            }
+
+            var piece = pieces.Piece(phcm.pieceId);
+            currentItem.healthChanges.Add(new HistoryHealthChange()
+            {
+                originalPiece = piece,
+                healthChange = phcm
+            });
         }
 
         private void pushHistory(HistoryItem h)

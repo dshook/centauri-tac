@@ -1,4 +1,6 @@
 using strange.extensions.mediation.impl;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,8 +13,8 @@ namespace ctac
         [Inject]
         public IPieceService pieceService { get; set; }
 
-        private CardView hoveringCard;
         private CardCanvasHelperView cardCanvasHelper;
+        private List<CardView> hoveringCards = new List<CardView>();
 
         public HistoryItem item { get; set; }
 
@@ -26,30 +28,54 @@ namespace ctac
         {
             if (item != null)
             {
-                if (item.cardsAffected.Count > 0)
+                if (item.triggeringCard != null)
                 {
-                    hoveringCard = showCard(item.cardsAffected[0], transform.position);
+                    hoveringCards.Add(showCard(item.triggeringCard, Vector3.zero));
                 }
-                else if (item.piecesAffected.Count > 0)
+                else if (item.triggeringPiece != null)
                 {
                     var pieceCard = new CardModel();
-                    pieceService.CopyPieceToCard(item.piecesAffected[0], pieceCard);
-                    hoveringCard = showCard(pieceCard, transform.position);
+                    pieceService.CopyPieceToCard(item.triggeringPiece, pieceCard);
+                    hoveringCards.Add(showCard(pieceCard, Vector3.zero));
+                }
+
+                var xOffset = 190f;
+                var damageSplat = loader.Load<GameObject>("DamageSplat");
+                for (int i = 0; i < item.healthChanges.Count; i++)
+                {
+                    var healthChange = item.healthChanges[i];
+                    var pieceCard = new CardModel();
+                    pieceService.CopyPieceToCard(healthChange.originalPiece, pieceCard);
+                    var healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0));
+                    hoveringCards.Add(healthChangeCard);
+
+                    //set up damage splat
+                    var dmgSplat = Instantiate(damageSplat);
+                    dmgSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
+                    var text = dmgSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
+                    var bonusText = dmgSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
+
+                    text.text = healthChange.healthChange.change.ToString();
+                    bonusText.text = healthChange.healthChange.bonus + " " + healthChange.healthChange.bonusMsg;
                 }
             }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (hoveringCard != null)
+            if (hoveringCards.Count > 0)
             {
-                Destroy(hoveringCard.card.gameObject);
-                hoveringCard = null;
+                for (int i = 0; i < hoveringCards.Count; i++)
+                {
+                    Destroy(hoveringCards[i].card.gameObject);
+                }
+                hoveringCards.Clear();
             }
         }
 
-        internal CardView showCard(CardModel cardToShow, Vector3 position)
+        internal CardView showCard(CardModel cardToShow, Vector3 positionOffset)
         {
+            var selfPos = transform.position;
             var hoverCardView = CreateHoverCard();
 
             var hoverGo = hoverCardView.card.gameObject;
@@ -62,10 +88,11 @@ namespace ctac
 
             //now for the fun positioning
 
-            Vector2 viewportPos = Camera.main.WorldToViewportPoint(position);
+            Vector2 viewportPos = Camera.main.WorldToViewportPoint(selfPos);
             Vector2 cardCanvasPos = cardCanvasHelper.ViewportToWorld(viewportPos);
             var hWidth = hoverCardView.rectTransform.sizeDelta;
-            var displayPosition = new Vector3(cardCanvasPos.x + hWidth.x, cardCanvasPos.y + (hWidth.y * 0.75f), position.z);
+            var displayPosition = new Vector3(cardCanvasPos.x + hWidth.x, cardCanvasPos.y + (hWidth.y * 0.75f), selfPos.z);
+            displayPosition = displayPosition + positionOffset;
 
             hoverCardView.rectTransform.SetAnchor(Vector2.zero);
             hoverCardView.rectTransform.anchoredPosition3D = displayPosition;
