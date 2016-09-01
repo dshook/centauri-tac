@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class PieceHealthChangeModel
+    public class PieceHealthChangeModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
         public int change { get; set; }
         public int? bonus { get; set; }

@@ -1,10 +1,11 @@
+import BaseAction from './BaseAction.js';
 import {fromInt} from '../models/Direction.js';
 
-export default class RotatePiece
+export default class RotatePiece extends BaseAction
 {
   constructor(pieceId, direction)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
     this.direction = fromInt(direction);
   }

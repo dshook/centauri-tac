@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class AttachCodeModel
+    public class AttachCodeModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
     }
 }

@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class CardBuffModel
+    public class CardBuffModel : BaseAction
     {
-        public int id { get; set; }
         public int cardId { get; set; }
         public string name { get; set; }
         public bool removed { get; set; }

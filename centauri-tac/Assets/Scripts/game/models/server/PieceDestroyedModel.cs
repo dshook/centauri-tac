@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class PieceDestroyedModel
+    public class PieceDestroyedModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
     }
 }

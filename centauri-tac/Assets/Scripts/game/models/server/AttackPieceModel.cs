@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class AttackPieceModel
+    public class AttackPieceModel : BaseAction
     {
-        public int id { get; set; }
         public int attackingPieceId { get; set; }
         public int targetPieceId { get; set; }
         public Direction direction { get; set; }

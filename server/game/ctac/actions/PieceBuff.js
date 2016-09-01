@@ -1,8 +1,11 @@
+import BaseAction from './BaseAction.js';
+
 //Whenever a piece is buffed, or had a buff removed
-export default class PieceBuff
+export default class PieceBuff extends BaseAction
 {
   constructor(pieceId, name, removed = false, auraPieceId = null)
   {
+    super();
     this.id = null;
     this.pieceId = pieceId;
     this.name = name;

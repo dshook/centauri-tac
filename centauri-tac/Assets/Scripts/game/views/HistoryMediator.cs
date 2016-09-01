@@ -13,8 +13,8 @@ namespace ctac
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public CardsModel cards { get; set; }
 
-        [Inject] public ServerQueueProcessStart qps { get; set; }
         [Inject] public ServerQueueProcessEnd qpc { get; set; }
+        [Inject] public ActionPassTurnSignal passTurn { get; set; }
 
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
         [Inject] public ActionPlaySpellSignal spellPlayed { get; set; }
@@ -68,6 +68,15 @@ namespace ctac
                 initiatingPlayerId = player,
                 healthChanges = new List<HistoryHealthChange>()
             };
+        }
+
+        //set up an event action here for any timers that trigger stuff between the turns
+        private void onPassTurn(PassTurnModel pass)
+        {
+            if (currentItem == null)
+            {
+                //CreateCurrent(HistoryItemType.Event, );
+            }
         }
 
         private void onSpawnPiece(PieceModel piece)

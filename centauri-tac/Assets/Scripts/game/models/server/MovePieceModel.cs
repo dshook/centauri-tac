@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class MovePieceModel
+    public class MovePieceModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
         public PositionModel to { get; set; }
         public Direction direction { get; set; }

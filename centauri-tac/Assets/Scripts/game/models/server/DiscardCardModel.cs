@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class DiscardCardModel
+    public class DiscardCardModel : BaseAction
     {
-        public int id { get; set; }
         public int cardId { get; set; }
         public int playerId { get; set; }
     }

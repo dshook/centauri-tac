@@ -1,10 +1,12 @@
+import BaseAction from './BaseAction.js';
+
 //Whenever a piece's stats change, which is an unsilencable effect
 //Note that this will change the base stats as well
-export default class PieceAttributeChange
+export default class PieceAttributeChange extends BaseAction
 {
   constructor(pieceId)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
 
     this.attack = null;

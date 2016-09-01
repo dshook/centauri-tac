@@ -1,9 +1,11 @@
+import BaseAction from './BaseAction.js';
 import Position from '../models/Position.js';
 
-export default class PlaySpell
+export default class PlaySpell extends BaseAction
 {
   constructor(playerId, cardInstanceId, cardTemplateId, position, targetPieceId, pivotPosition, chooseCardTemplateId)
   {
+    super();
     this.cardInstanceId = cardInstanceId;
     this.cardTemplateId = cardTemplateId;
     this.playerId = playerId;

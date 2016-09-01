@@ -244,6 +244,9 @@ export default class CardEvaluator{
   // activatingPiece -> optional piece that will be used for SELF selections
   // targetPieceId -> id of piece that's been targeted by spell/playMinion event
   processActions(evalActions, activatingPiece, targetPieceId){
+    //actions to be added to the real queue
+    let queue = [];
+
     try{
       //see Spawn
       let spawnLocations = [];
@@ -293,7 +296,7 @@ export default class CardEvaluator{
               this.log.info('Charm Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new CharmPiece(s.id));
+                  queue.push(new CharmPiece(s.id));
                 }
               }
               break;
@@ -305,7 +308,7 @@ export default class CardEvaluator{
               this.log.info('Destroyed Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceDestroyed(s.id));
+                  queue.push(new PieceDestroyed(s.id));
                 }
               }
               break;
@@ -315,14 +318,14 @@ export default class CardEvaluator{
             case 'Discard':
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              this.queue.push(new DiscardCard(playerSelector));
+              queue.push(new DiscardCard(playerSelector));
               break;
             }
             //DrawCard(playerSelector)
             case 'DrawCard':
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              this.queue.push(new DrawCard(playerSelector));
+              queue.push(new DrawCard(playerSelector));
               break;
             }
             //ChangeEnergy(playerSelector, amount, permanent, full)
@@ -331,7 +334,7 @@ export default class CardEvaluator{
             case 'ChangeEnergy':
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              this.queue.push(new SetPlayerResource(
+              queue.push(new SetPlayerResource(
                 playerSelector,
                 this.selector.eventualNumber(action.args[1], pieceSelectorParams),
                 action.args[2],
@@ -346,7 +349,7 @@ export default class CardEvaluator{
               this.log.info('Hit Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceHealthChange(s.id, -this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
+                  queue.push(new PieceHealthChange(s.id, -this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
                 }
               }
               break;
@@ -358,7 +361,7 @@ export default class CardEvaluator{
               this.log.info('Heal Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceHealthChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
+                  queue.push(new PieceHealthChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
                 }
               }
               break;
@@ -373,7 +376,7 @@ export default class CardEvaluator{
                   let phc = new PieceAttributeChange(s.id);
                   //set up the appropriate attribute change from args, i.e. attack = 1
                   phc[action.args[1]] = this.selector.eventualNumber(action.args[2], pieceSelectorParams);
-                  this.queue.push(phc);
+                  queue.push(phc);
                 }
               }
 
@@ -402,7 +405,7 @@ export default class CardEvaluator{
                   for(let buffAttribute of buffAttributes){
                     buff[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
                   }
-                  this.queue.push(buff);
+                  queue.push(buff);
                 }
               }
               break;
@@ -426,7 +429,7 @@ export default class CardEvaluator{
                     //specifically don't use eventual number here because it will be evaluated in the aura update
                     aura[auraAttribute.attribute] = auraAttribute.amount;
                   }
-                  this.queue.push(aura);
+                  queue.push(aura);
                 }
               }
               break;
@@ -450,7 +453,7 @@ export default class CardEvaluator{
                     //specifically don't use eventual number here because it will be evaluated in the aura update
                     aura[auraAttribute.attribute] = auraAttribute.amount;
                   }
-                  this.queue.push(aura);
+                  queue.push(aura);
                 }
               }
               break;
@@ -465,7 +468,7 @@ export default class CardEvaluator{
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
                   let buff = new PieceBuff(s.id, buffName, true);
-                  this.queue.push(buff);
+                  queue.push(buff);
                 }
               }
               break;
@@ -486,7 +489,7 @@ export default class CardEvaluator{
                 let position = _.sample(possiblePositions);
                 spawnLocations.push(position);
                 let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
-                this.queue.push(spawn);
+                queue.push(spawn);
               }else{
                 this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
               }
@@ -501,7 +504,7 @@ export default class CardEvaluator{
               this.log.info('Give Status Selected %j status %s', lastSelected, action.args[1]);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
+                  queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
                 }
               }
               break;
@@ -513,7 +516,7 @@ export default class CardEvaluator{
               this.log.info('Remove Status Selected %j status %s', lastSelected, action.args[1]);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));
+                  queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));
                 }
               }
               break;
@@ -590,7 +593,7 @@ export default class CardEvaluator{
               this.log.info('Move Selected %j', lastSelected);
               let moveTo = this.selector.selectArea(action.args[1], pieceSelectorParams);
               if(lastSelected && lastSelected.length === 1){
-                this.queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2]));
+                queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2]));
               }
               break;
             }
@@ -614,7 +617,7 @@ export default class CardEvaluator{
 
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new TransformPiece(s.id, cardTemplateId, transformPieceId));
+                  queue.push(new TransformPiece(s.id, cardTemplateId, transformPieceId));
                 }
               }
               break;
@@ -624,7 +627,7 @@ export default class CardEvaluator{
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
               let cardId = this.selector.eventualNumber(action.args[1], pieceSelectorParams);
-              this.queue.push(new GiveCard(playerSelector, cardId));
+              queue.push(new GiveCard(playerSelector, cardId));
               break;
             }
             //ShuffleToDeck(PlayerSelector, cardTemplateId)
@@ -632,7 +635,7 @@ export default class CardEvaluator{
             {
               let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
               let cardId = this.selector.eventualNumber(action.args[1], pieceSelectorParams);
-              this.queue.push(new ShuffleToDeck(playerSelector, cardId));
+              queue.push(new ShuffleToDeck(playerSelector, cardId));
               break;
             }
             //GiveArmor(pieceSelector, amount)
@@ -642,7 +645,7 @@ export default class CardEvaluator{
               this.log.info('Give Armor Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new PieceArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
+                  queue.push(new PieceArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
                 }
               }
               break;
@@ -655,7 +658,7 @@ export default class CardEvaluator{
               this.log.info('Attach Code Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new AttachCode(s.id, action.args[1]));
+                  queue.push(new AttachCode(s.id, action.args[1]));
                 }
               }
               break;
@@ -667,7 +670,7 @@ export default class CardEvaluator{
               this.log.info('Unsummon Selected %j', lastSelected);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  this.queue.push(new UnsummonPiece(s.id));
+                  queue.push(new UnsummonPiece(s.id));
                 }
               }
               break;
@@ -675,7 +678,7 @@ export default class CardEvaluator{
             //Choose(cardTemplateId1, cardTemplateId2)
             case 'Choose':
             {
-              this.queue.push(new Choose(
+              queue.push(new Choose(
                 action.args[0],
                 action.args[1],
                 pieceAction.chooseCardTemplateId,
@@ -695,10 +698,17 @@ export default class CardEvaluator{
       }
     }catch(e){
       if(e instanceof EvalError){
-        this.queue.push(new Message(e.message));
+        queue.push(new Message(e.message));
         return false;
       }
       throw e;
+    }
+
+    //blast through all the items we need to add to the queue and associate the activating piece with them
+    //mainly for the client
+    for(let action of queue){
+      action.activatingPieceId = activatingPiece ? activatingPiece.id : null;
+      this.queue.push(action);
     }
     return true;
   }

@@ -1,8 +1,10 @@
-export default class AttachCode
+import BaseAction from './BaseAction.js';
+
+export default class AttachCode extends BaseAction
 {
   constructor(pieceId, eventList)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
 
     this.eventList = eventList;

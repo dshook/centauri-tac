@@ -1,6 +1,6 @@
 ﻿namespace ctac
 {
-    public class RotatePieceModel
+    public class RotatePieceModel : BaseAction
     {
         public RotatePieceModel(int pieceId, Direction direction)
         {
@@ -8,7 +8,6 @@
             this.direction = direction;
         }
 
-        public int id { get; set; }
         public int pieceId { get; set; }
         public Direction direction { get; set; }
     }

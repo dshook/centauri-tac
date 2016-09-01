@@ -1,5 +1,7 @@
+import BaseAction from './BaseAction.js';
+
 //choose wisely
-export default class Choose
+export default class Choose extends BaseAction
 {
   //lots o stuff to save and essentially proxy back to the choice evaluation
   constructor(
@@ -16,9 +18,9 @@ export default class Choose
     }
   )
   {
+    super();
     this.serverOnly = true;
 
-    this.id = null;
     this.choice1 = choice1;
     this.choice2 = choice2;
     this.selectedChoice = selectedChoice;

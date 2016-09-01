@@ -1,8 +1,10 @@
-export default class PieceArmorChange
+import BaseAction from './BaseAction.js';
+
+export default class PieceArmorChange extends BaseAction
 {
   constructor(pieceId, change)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
     this.change = change;
 

@@ -1,8 +1,10 @@
-export default class CharmPiece
+import BaseAction from './BaseAction.js';
+
+export default class CharmPiece extends BaseAction
 {
   constructor(pieceId)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
 
     this.newPlayerId = null;

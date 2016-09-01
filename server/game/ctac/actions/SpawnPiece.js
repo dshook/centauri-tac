@@ -1,12 +1,14 @@
+import BaseAction from './BaseAction.js';
 import Position from '../models/Position.js';
 import Direction from '../models/Direction.js';
 /**
  * Spawn a piece for a player
  */
-export default class SpawnPiece
+export default class SpawnPiece extends BaseAction
 {
   constructor(playerId, cardInstanceId, cardTemplateId, position, targetPieceId, direction, pivotPosition, chooseCardTemplateId)
   {
+    super();
     this.cardInstanceId = cardInstanceId;
     this.cardTemplateId = cardTemplateId;
     this.playerId = playerId;

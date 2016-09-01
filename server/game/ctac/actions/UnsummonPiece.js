@@ -1,8 +1,10 @@
-export default class UnsummonPiece
+import BaseAction from './BaseAction.js';
+
+export default class UnsummonPiece extends BaseAction
 {
   constructor(pieceId)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
 
     //new card id for returned to hand

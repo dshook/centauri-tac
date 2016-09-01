@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class SpawnDeckModel
+    public class SpawnDeckModel : BaseAction
     {
-        public int id { get; set; }
         public int playerId { get; set; }
         public int cards { get; set; }
     }

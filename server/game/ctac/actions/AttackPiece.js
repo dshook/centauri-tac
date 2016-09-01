@@ -1,11 +1,13 @@
+import BaseAction from './BaseAction.js';
+
 /**
  * Attack dat
  */
-export default class AttackPiece
+export default class AttackPiece extends BaseAction
 {
   constructor(attackingPieceId, targetPieceId, isTauntAttack = false)
   {
-    this.id = null;
+    super();
     this.attackingPieceId = attackingPieceId;
     this.targetPieceId = targetPieceId;
     this.isTauntAttack = isTauntAttack;

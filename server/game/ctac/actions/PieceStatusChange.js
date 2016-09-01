@@ -1,11 +1,13 @@
+import BaseAction from './BaseAction.js';
+
 /**
  * Whenever a piece loses or gains a status
  */
-export default class PieceStatusChange
+export default class PieceStatusChange extends BaseAction
 {
   constructor(pieceId, add, remove)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
     this.add = add;
     this.remove = remove;

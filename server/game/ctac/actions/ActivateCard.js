@@ -1,11 +1,13 @@
+import BaseAction from './BaseAction.js';
 import Position from '../models/Position.js';
 /**
  * Plays a card
  */
-export default class ActivateCard
+export default class ActivateCard extends BaseAction
 {
   constructor(playerId, cardInstanceId, position, targetPieceId, pivotPosition, chooseCardTemplateId)
   {
+    super();
     //which specific card was activated
     this.cardInstanceId = cardInstanceId;
     this.playerId = playerId;

@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class ActivateCardModel
+    public class ActivateCardModel : BaseAction
     {
-        public int id { get; set; }
         public int playerId { get; set; }
         public int cardInstanceId { get; set; }
         public PositionModel position { get; set; }

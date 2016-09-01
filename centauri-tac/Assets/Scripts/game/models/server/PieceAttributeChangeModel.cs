@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class PieceAttributeChangeModel
+    public class PieceAttributeChangeModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
 
         public int? attack { get; set; }

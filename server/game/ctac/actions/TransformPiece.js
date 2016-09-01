@@ -1,11 +1,13 @@
+import BaseAction from './BaseAction.js';
+
 /**
  * I'm CHAANNNGGINGG!
  */
-export default class TransformPiece
+export default class TransformPiece extends BaseAction
 {
   constructor(pieceId, cardTemplateId, transformPieceId)
   {
-    this.id = null;
+    super();
     this.pieceId = pieceId;
     this.cardTemplateId = cardTemplateId;
     this.transformPieceId = transformPieceId;

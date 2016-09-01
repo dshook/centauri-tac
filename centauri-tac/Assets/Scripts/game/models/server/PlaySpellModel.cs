@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class PlaySpellModel
+    public class PlaySpellModel : BaseAction
     {
-        public int id { get; set; }
         public int cardInstanceId { get; set; }
         public int cardTemplateId { get; set; }
         public int playerId { get; set; }

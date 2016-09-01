@@ -1,8 +1,7 @@
 ﻿namespace ctac
 {
-    public class PieceBuffModel
+    public class PieceBuffModel : BaseAction
     {
-        public int id { get; set; }
         public int pieceId { get; set; }
         public string name { get; set; }
         public bool removed { get; set; }
