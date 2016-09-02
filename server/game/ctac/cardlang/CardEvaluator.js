@@ -592,6 +592,17 @@ export default class CardEvaluator{
               }
               this.log.info('Move Selected %j', lastSelected);
               let moveTo = this.selector.selectArea(action.args[1], pieceSelectorParams);
+
+              if(!moveTo || !moveTo.resolvedPosition){
+                this.log.warn("Move didn't resolve to a position %j", moveTo);
+                break;
+              }
+
+              //preemptively check for colliding piece so the action can be scrubbed early
+              if(this.pieceState.pieceAt(moveTo.resolvedPosition.x, moveTo.resolvedPosition.z)){
+                throw new EvalError("You can't move on top of another piece!");
+              }
+
               if(lastSelected && lastSelected.length === 1){
                 queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2]));
               }
@@ -698,7 +709,7 @@ export default class CardEvaluator{
       }
     }catch(e){
       if(e instanceof EvalError){
-        queue.push(new Message(e.message));
+        this.queue.push(new Message(e.message));
         return false;
       }
       throw e;
