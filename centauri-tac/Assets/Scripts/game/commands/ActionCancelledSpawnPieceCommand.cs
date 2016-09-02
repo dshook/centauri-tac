@@ -16,6 +16,9 @@ namespace ctac
         public PiecesModel pieces { get; set; }
 
         [Inject]
+        public CardsModel cards { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -26,6 +29,16 @@ namespace ctac
             if (phantomPiece != null)
             {
                 pieceDied.Dispatch(phantomPiece);
+            }
+
+            //reactivate card if needed
+            if (pieceSpawnCancelled.cardInstanceId.HasValue)
+            {
+                var card = cards.Card(pieceSpawnCancelled.cardInstanceId.Value);
+                if (card != null)
+                {
+                    card.activated = false;
+                }
             }
         }
     }

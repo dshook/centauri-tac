@@ -279,6 +279,13 @@ namespace ctac {
             }
             public void Update()
             {
+                //weird case if the piece died while spawning like the phantom piece when the action gets cancelled
+                if (piece == null || piece.gameObject == null)
+                {
+                    Complete = true;
+                    return;
+                }
+
                 iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeInQuart);
 
                 if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
