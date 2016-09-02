@@ -42,7 +42,7 @@ export default class SpawnPieceProcessor
     if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, {
       targetPieceId: action.targetPieceId,
       position: action.position,
-      piviotPosition: action.pivotPosition,
+      pivotPosition: action.pivotPosition,
       chooseCardTemplateId: action.chooseCardTemplateId
       })
     ){
