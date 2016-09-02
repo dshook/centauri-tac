@@ -92,6 +92,9 @@ export default class GamePiece
       let origStat = this[attrib];
       this[attrib] += buff[attrib];
 
+      //cap at min of 0 to prevent negative attack/movement
+      this[attrib] = Math.max(0, this[attrib]);
+
       //update action with new values
       let newAttrib = 'new' + capAttr;
       action[newAttrib] = this[attrib];

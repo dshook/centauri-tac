@@ -49,6 +49,15 @@ namespace ctac
         }
 
         [JsonIgnore]
+        public bool isHero
+        {
+            get
+            {
+                return tags.Contains("Hero");
+            }
+        }
+
+        [JsonIgnore]
         public bool isSpell
         {
             get

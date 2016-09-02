@@ -97,7 +97,7 @@ namespace ctac {
             if (card.metCondition) { descriptionText.color = ColorExtensions.HexToColor("740000"); }
             else { descriptionText.color = Color.black; }
 
-            if (card.isMinion)
+            if (card.isMinion || card.isHero)
             {
                 moveRangeUnderline.SetActive(true);
 
@@ -126,6 +126,10 @@ namespace ctac {
                 if (card.range.HasValue)
                 {
                     rangeText.text = "Range " + colorWrap(card.range.Value, rangeColor);
+                }
+                else
+                {
+                    rangeText.text = "";
                 }
 
                 //check for tribes
