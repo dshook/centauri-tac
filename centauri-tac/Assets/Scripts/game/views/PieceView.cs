@@ -306,6 +306,11 @@ namespace ctac {
                         tileBounce.waveDuration = (tileBounce.waveDuration * pieceDuration) + .2f;
                     }
 
+                    var remainingTween = piece.gameObject.GetComponent<iTween>();
+                    if (remainingTween != null)
+                    {
+                        Destroy(remainingTween);
+                    }
                     Complete = true;
                 }
             }

@@ -53,6 +53,7 @@ namespace ctac
                 Quaternion.identity
             ) as GameObject;
             newPiece.transform.parent = contextView.transform;
+            newPiece.name = "Piece " + spawnedPiece.pieceId;
 
             var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
