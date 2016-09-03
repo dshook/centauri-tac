@@ -24,7 +24,7 @@ module.exports = function gruntfile(grunt) {
           'angular-resource',
           'angular-ui-bootstrap',
           'angular-ui-router',
-          'babel/polyfill',
+          'babel-polyfill',
           'bluebird',
           'core-decorators',
           'debug',
