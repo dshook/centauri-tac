@@ -12,6 +12,8 @@ namespace ctac
 
         [Inject]
         public GameTurnModel turns { get; set; }
+        [Inject]
+        public GamePlayersModel players { get; set; }
 
         private GameObject historyPanel;
         private GameObject historyTilePrefab;
@@ -77,7 +79,7 @@ namespace ctac
             var cardSvg = cardGo.GetComponent<SVGImage>();
 
             cardSvg.vectorGraphics = iconMap[item.type];
-            borderSvg.color = item.initiatingPlayerId == turns.currentPlayerId ? Colors.friendlyColor : Colors.enemyColor;
+            borderSvg.color = item.initiatingPlayerId != players.OpponentId(turns.currentPlayerId) ? Colors.friendlyColor : Colors.enemyColor;
 
             icons.Add(new HistoryIcon()
             {

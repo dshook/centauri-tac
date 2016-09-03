@@ -103,7 +103,7 @@ namespace ctac
         private void onTurnEnd(GameTurnModel turn)
         {
             //for hotseat mode update the colors each turn to reflect the current player
-            if (players.OpponentId(turn.currentPlayerId) != turn.currentPlayerId)
+            if (players.isHotseat)
             {
                 view.UpdatePlayerColors();
             }

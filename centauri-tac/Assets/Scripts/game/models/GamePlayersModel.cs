@@ -35,11 +35,18 @@ namespace ctac
             return players.FirstOrDefault(x => x.id == playerId);
         }
 
+        public bool isHotseat
+        {
+            get
+            {
+                return players.Count(x => x.isLocal) > 1;
+            }
+        }
+
         public int OpponentId(int currentTurnPlayerId)
         {
             PlayerModel opponent;
-            //hotseat mode
-            if (players.Count(x => x.isLocal) > 1)
+            if (isHotseat)
             {
                 opponent = players.FirstOrDefault(p => p.id != currentTurnPlayerId);
             }
