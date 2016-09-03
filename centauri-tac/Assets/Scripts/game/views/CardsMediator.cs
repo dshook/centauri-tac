@@ -239,7 +239,8 @@ namespace ctac
         {
             foreach (var card in cards)
             {
-                if (playerResources.resources.ContainsKey(card.playerId) 
+                if ( card.playerId == gameTurn.currentPlayerId
+                   && playerResources.resources.ContainsKey(card.playerId) 
                    && card.cost <= playerResources.resources[card.playerId])
                 {
                     //Check for spells that need targets but don't have any

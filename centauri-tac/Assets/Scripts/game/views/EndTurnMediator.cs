@@ -55,7 +55,7 @@ namespace ctac
             {
                 var opponentId = players.OpponentId(gameTurn.currentPlayerId);
                 view.updatePlayable(
-                    gameTurn.currentPlayerId != opponentId &&
+                    gameTurn.currentPlayerId == opponentId || 
                     cards.Cards.Any(x => x.playerId != opponentId && x.playable)
                 );
             }
