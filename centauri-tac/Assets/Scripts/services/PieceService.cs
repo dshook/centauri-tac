@@ -83,7 +83,7 @@ namespace ctac
 
             var pieceView = newPiece.AddComponent<PieceView>();
             pieceView.piece = pieceModel;
-            pieceView.currentTurnPlayerId = turnModel.currentPlayerId;
+            pieceView.opponentId = opponentId;
 
             piecesModel.Pieces.Add(pieceModel);
 

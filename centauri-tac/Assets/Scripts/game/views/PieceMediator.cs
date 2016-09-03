@@ -35,6 +35,7 @@ namespace ctac
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public IMapService mapService { get; set; }
 
@@ -450,7 +451,8 @@ namespace ctac
 
         private void onTurnEnded(GameTurnModel turns)
         {
-            view.UpdateTurn(turns.currentPlayerId);
+            var opponentId = players.OpponentId(turns.currentPlayerId);
+            view.UpdateTurn(opponentId);
         }
 
         private void onPieceDied(PieceModel p)

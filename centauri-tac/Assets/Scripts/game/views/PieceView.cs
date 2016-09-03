@@ -54,7 +54,7 @@ namespace ctac {
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
 
-        public int currentTurnPlayerId;
+        public int opponentId;
 
         protected override void Start()
         {
@@ -116,7 +116,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                currentTurnPlayerId == piece.playerId 
+                opponentId != piece.playerId 
                 && piece.currentPlayerHasControl && !piece.hasMoved
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
@@ -127,7 +127,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                currentTurnPlayerId == piece.playerId 
+                opponentId != piece.playerId 
                 && piece.currentPlayerHasControl 
                 && piece.attackCount < piece.maxAttacks 
                 && piece.attack > 0
@@ -203,7 +203,7 @@ namespace ctac {
         {
             //gotta swap out the bar if it's an enemy for now
             var fillColor = hpBarFillFriendlyColor;
-            if (currentTurnPlayerId != piece.playerId)
+            if (opponentId == piece.playerId)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 fillColor = hpBarFillEnemyColor;
@@ -219,12 +219,12 @@ namespace ctac {
             }
         }
 
-        public void UpdateTurn(int newPlayerId)
+        public void UpdateTurn(int newOpponentId)
         {
-            currentTurnPlayerId = newPlayerId;
+            opponentId = newOpponentId;
 
             //gotta swap out the bar if it's an enemy for now
-            if (currentTurnPlayerId != piece.playerId)
+            if (opponentId == piece.playerId)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 hpBarFillRenderer.material.SetColor("_Color", hpBarFillEnemyColor);
