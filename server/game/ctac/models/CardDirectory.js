@@ -18,7 +18,8 @@ export default class CardDirectory
 
     var cardRequires = {};
 
-    var directoryPath = './cards';
+    //NAS-T  required for heroku it seems
+    var directoryPath = __dirname + '/../../../../cards';
     fs.readdirSync(directoryPath).map(function (filename) {
       let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
       cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));

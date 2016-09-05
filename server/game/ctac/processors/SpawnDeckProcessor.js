@@ -32,7 +32,9 @@ export default class SpawnDeckProcessor
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
-      if(c % 3 == 0) randCardId = _.sample(testingCards);
+      if(testingCards.length && c % 3 == 0){
+        randCardId = _.sample(testingCards);
+      }
 
       //add the credit at the right spot
       if(action.startingPlayerId != playerId && action.initialDrawAmount - 1 === c){
