@@ -55,6 +55,7 @@ namespace ctac {
         private float outlineWidth = 3f;
 
         public int opponentId;
+        public int currentTurnPlayerId;
 
         protected override void Start()
         {
@@ -116,7 +117,8 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                opponentId != piece.playerId 
+                opponentId != piece.playerId
+                && currentTurnPlayerId == piece.playerId
                 && piece.currentPlayerHasControl && !piece.hasMoved
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
@@ -128,6 +130,7 @@ namespace ctac {
             }
             else if (
                 opponentId != piece.playerId 
+                && currentTurnPlayerId == piece.playerId
                 && piece.currentPlayerHasControl 
                 && piece.attackCount < piece.maxAttacks 
                 && piece.attack > 0
@@ -219,9 +222,10 @@ namespace ctac {
             }
         }
 
-        public void UpdateTurn(int newOpponentId)
+        public void UpdateTurn(int newOpponentId, int newCurrentTurnPlayerId)
         {
             opponentId = newOpponentId;
+            currentTurnPlayerId = newCurrentTurnPlayerId;
 
             //gotta swap out the bar if it's an enemy for now
             if (opponentId == piece.playerId)

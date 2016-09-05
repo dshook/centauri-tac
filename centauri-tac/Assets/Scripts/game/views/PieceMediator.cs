@@ -452,7 +452,7 @@ namespace ctac
         private void onTurnEnded(GameTurnModel turns)
         {
             var opponentId = players.OpponentId(turns.currentPlayerId);
-            view.UpdateTurn(opponentId);
+            view.UpdateTurn(opponentId, turns.currentPlayerId);
         }
 
         private void onPieceDied(PieceModel p)
