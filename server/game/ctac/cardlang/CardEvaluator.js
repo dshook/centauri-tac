@@ -483,7 +483,9 @@ export default class CardEvaluator{
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
               possiblePositions = _.chain(possiblePositions)
                 .filter(p => (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
-                  && !spawnLocations.find(s => s.equals(p)))
+                  && !spawnLocations.find(s => s.equals(p))
+                  && !this.mapState.getTile(p).unpassable
+                )
                 .value();
               if(possiblePositions.length > 0){
                 let position = _.sample(possiblePositions);
