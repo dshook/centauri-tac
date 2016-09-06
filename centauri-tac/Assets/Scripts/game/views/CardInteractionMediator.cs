@@ -150,6 +150,7 @@ namespace ctac
             if (activated == null || draggedCard == null)
             {
                 cardSelected.Dispatch(null);
+                return;
             }
 
             if (activated.CompareTag("Tile"))
