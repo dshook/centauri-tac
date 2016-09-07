@@ -20,17 +20,19 @@ namespace ctac
 
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
+        private Canvas canvas { get; set; }
 
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
         //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
-        private Vector2 bottomLeftAnchor = new Vector2(0, 0);
-        private CardDirectory cardDirectory;
+        private Vector2 topLeftAnchor = new Vector2(0, 1);
+        private Vector2 topLeftOffset = new Vector2(12f, -12f);
 
         internal void init()
         {
             //init the hover card that's hidden most of the time
             var cardPrefab = loader.Load<GameObject>("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
+            canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
 
             var hoverCardGO = GameObject.Instantiate(
                 cardPrefab,
@@ -114,32 +116,11 @@ namespace ctac
 
             hoverCardView.UpdateBuffsDisplay();
 
-            Vector2 screenPos = Camera.main.WorldToScreenPoint(worldPosition);
-
+            hoverCardView.rectTransform.SetAnchor(topLeftAnchor);
             var hWidth = hoverCardView.rectTransform.sizeDelta;
-            hoverCardView.rectTransform.SetAnchor(bottomLeftAnchor);
-            //screenPos = screenPos.SetZ(0);
+            var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (topLeftOffset * canvas.scaleFactor);
 
-            var offsets = new[] {
-                new Vector2(-hWidth.x, 0),
-                new Vector2(hWidth.x, 0),
-                new Vector2(0, -hWidth.y * .75f),
-                new Vector2(0, hWidth.y * .75f)
-            };
-
-            foreach (var offset in offsets)
-            {
-                if (onScreen(screenPos + offset, hWidth))
-                {
-                    showCard(screenPos + offset);
-                    break;
-                }
-            }
-
-            if (!cardVisible)
-            {
-                debug.LogWarning("No where to show hover card");
-            }
+            showCard(position);
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)
