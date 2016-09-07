@@ -14,19 +14,22 @@ namespace ctac
         [Inject] public GameTurnModel gameTurn { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
 
-
-        Vector3 opponentDeckPosition = new Vector3(-14.7f, 69.3f, 0);
-        Vector3 friendlyDeckPosition = new Vector3(-14.7f, -86.5f, 0);
+        Vector3 offset = new Vector3(-85f, 0, 0);
+        private GameObject DeckGO;
+        private GameObject OpponentDeckGO;
 
         TextMeshProUGUI text;
         GameObject displayWrapper;
         RectTransform rectTransform;
+
 
         protected override void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
             displayWrapper = transform.Find("DisplayWrapper").gameObject;
             text = displayWrapper.GetComponentInChildren<TextMeshProUGUI>();
+            DeckGO = GameObject.Find("Deck");
+            OpponentDeckGO = GameObject.Find("OpponentDeck");
         }
 
 
@@ -46,14 +49,16 @@ namespace ctac
             if (hoverOpponent)
             {
                 displayWrapper.SetActive(true);
-                rectTransform.anchoredPosition3D = opponentDeckPosition;
+                rectTransform.SetParent(OpponentDeckGO.transform, false);
+                rectTransform.anchoredPosition3D = offset;
                 text.text = decks.Cards.Count(c => c.playerId == players.OpponentId(gameTurn.currentPlayerId)).ToString();
             }
 
             if (hoverDeck)
             {
                 displayWrapper.SetActive(true);
-                rectTransform.anchoredPosition3D = friendlyDeckPosition;
+                rectTransform.SetParent(DeckGO.transform, false);
+                rectTransform.anchoredPosition3D = offset;
                 text.text = decks.Cards.Count(c => c.playerId != players.OpponentId(gameTurn.currentPlayerId)).ToString();
             }
 
