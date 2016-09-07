@@ -2,6 +2,7 @@ using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using UnityEngine;
 using SVGImporter;
+using UnityEngine.UI;
 
 namespace ctac
 {
@@ -19,11 +20,11 @@ namespace ctac
         private GameObject historyTilePrefab;
 
         private float panelTop = 333f;
-        private float buttonHeight = 33f;
 
         private const int maxItems = 9;
         private Dictionary<HistoryItemType, SVGAsset> iconMap;
         private Vector3 scaleOutVec = new Vector3(1, 0, 1);
+        private Canvas canvas { get; set; }
 
         private List<HistoryIcon> icons = new List<HistoryIcon>();
         private class HistoryIcon
@@ -36,6 +37,7 @@ namespace ctac
         {
             historyPanel = this.gameObject;
             historyTilePrefab = Resources.Load("UI/HistoryTile") as GameObject;
+            canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
 
             iconMap = new Dictionary<HistoryItemType, SVGAsset>()
             {
@@ -50,6 +52,17 @@ namespace ctac
 
         public void AddItem(HistoryItem item)
         {
+
+            //pop in new button at top
+            var newTile = GameObject.Instantiate(historyTilePrefab);
+            newTile.transform.SetParent(historyPanel.transform, false);
+            var buttonRect = newTile.GetComponent<RectTransform>();
+            buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
+            var view = newTile.GetComponent<HistoryTileView>();
+            view.item = item;
+            float buttonHeight = buttonRect.sizeDelta.y * 1.3f * canvas.scaleFactor; 
+            newTile.transform.localScale = Vector3.zero;
+
             //animate everything down
             foreach (var icon in icons)
             {
@@ -61,15 +74,6 @@ namespace ctac
                 );
             }
 
-            //pop in new button at top
-            var newTile = GameObject.Instantiate(historyTilePrefab);
-            newTile.transform.SetParent(historyPanel.transform, false);
-            var buttonRect = newTile.GetComponent<RectTransform>();
-            buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
-            var view = newTile.GetComponent<HistoryTileView>();
-            view.item = item;
-
-            newTile.transform.localScale = Vector3.zero;
             iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
 
             var borderGo = newTile.transform.FindChild("Border").gameObject;
