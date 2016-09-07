@@ -2,12 +2,15 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ctac
 {
     public class TileHighlightView : View
     {
         internal Signal<GameObject> tileHover = new Signal<GameObject>();
+
+        [Inject] public MapModel map { get; set; }
 
         Tile hoveredTile = null;
         Tile selectedTile = null;
@@ -58,7 +61,7 @@ namespace ctac
         }
 
         private Dictionary<TileHighlightStatus, List<Tile>> tileStatuses = new Dictionary<TileHighlightStatus, List<Tile>>();
-        internal void toggleTileFlags(List<Tile> tiles, TileHighlightStatus status)
+        internal void toggleTileFlags(List<Tile> tiles, TileHighlightStatus status, bool dimTiles = false)
         {
             List<Tile> toggledTiles;
             
@@ -76,6 +79,36 @@ namespace ctac
                 foreach (var tile in tiles)
                 {
                     FlagsHelper.Set(ref tile.highlightStatus, status);
+                }
+            }
+
+            //dim all tiles NOT in the tiles list
+            if (dimTiles)
+            {
+                List<Tile> dimmedTiles;
+                if (tileStatuses.TryGetValue(TileHighlightStatus.Dimmed, out dimmedTiles) && dimmedTiles != null && dimmedTiles.Count > 0)
+                {
+                    foreach (var tile in dimmedTiles)
+                    {
+                        FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.Dimmed);
+                    }
+                }
+                List<Tile> toDim;
+                if (tiles == null)
+                {
+                    toDim = null;
+                }
+                else
+                {
+                    toDim = map.tileList.Except(tiles).ToList();
+                }
+                tileStatuses[TileHighlightStatus.Dimmed] = toDim;
+                if (toDim != null)
+                {
+                    foreach (var tile in toDim)
+                    {
+                        FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.Dimmed);
+                    }
                 }
             }
         }

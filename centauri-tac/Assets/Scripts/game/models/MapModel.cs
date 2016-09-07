@@ -51,7 +51,8 @@ namespace ctac
         AttackRange = 64,
         FriendlyTauntArea = 128,
         EnemyTauntArea = 256,
-        TargetTile = 512
+        TargetTile = 512,
+        Dimmed = 1024
     }
 }
 

@@ -205,7 +205,7 @@ namespace ctac
         {
             if (cardModel == null)
             {
-                view.toggleTileFlags(null, TileHighlightStatus.Selected);
+                view.toggleTileFlags(null, TileHighlightStatus.Selected, true);
                 return;
             }
 
@@ -220,7 +220,7 @@ namespace ctac
                         && mapService.isHeightPassable(t, mapService.Tile(playerHero.tilePosition))
                     )
                     .ToList();
-                view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected);
+                view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected, true);
             }
         }
 

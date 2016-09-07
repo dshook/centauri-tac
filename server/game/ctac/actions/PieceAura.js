@@ -6,6 +6,7 @@ export default class PieceAura extends BaseAction
   constructor(pieceId, pieceSelector, name)
   {
     super();
+    this.serverOnly = true;
     this.id = null;
     this.pieceId = pieceId;
     this.pieceSelector = pieceSelector;
