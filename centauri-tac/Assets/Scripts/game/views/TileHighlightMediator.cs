@@ -169,6 +169,7 @@ namespace ctac
                 view.onTileSelected(null);
                 view.toggleTileFlags(null, TileHighlightStatus.Movable);
                 view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 return;
             }
 
@@ -278,9 +279,9 @@ namespace ctac
             }
             else
             {
-                view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 if (selectedPiece == null)
                 {
+                    view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                     view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
                 }
             }
@@ -411,7 +412,7 @@ namespace ctac
 
         private void updateSelectHighlights(TargetModel model)
         {
-            view.toggleTileFlags(null, TileHighlightStatus.TargetTile);
+            view.toggleTileFlags(null, TileHighlightStatus.TargetTile, true);
             if (model != null && model.area != null)
             {
                 if (model.selectedPosition.HasValue)
@@ -434,11 +435,11 @@ namespace ctac
                             tiles = mapService.GetDiagonalTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
                             break;
                     }
-                    view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile);
+                    view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile, true);
                 }
                 else
                 {
-                    view.toggleTileFlags(map.tileList, TileHighlightStatus.TargetTile);
+                    view.toggleTileFlags(map.tileList, TileHighlightStatus.TargetTile, true);
                 }
             }
         }
