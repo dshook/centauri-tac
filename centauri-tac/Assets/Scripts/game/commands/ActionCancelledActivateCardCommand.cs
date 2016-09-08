@@ -33,7 +33,11 @@ namespace ctac
 
             //reset activated flag
             var card = cards.Cards.FirstOrDefault(c => c.id == activateCancelled.cardInstanceId);
-            card.activated = false;
+            if (card != null)
+            {
+                debug.LogWarning("Couldn't find a card to reactivate on cancelled activate");
+                card.activated = false;
+            }
         }
     }
 }

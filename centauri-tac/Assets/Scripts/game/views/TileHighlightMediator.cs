@@ -167,7 +167,7 @@ namespace ctac
             {
                 this.selectedPiece = null;
                 view.onTileSelected(null);
-                view.toggleTileFlags(null, TileHighlightStatus.Movable);
+                view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
                 view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 return;
@@ -198,7 +198,7 @@ namespace ctac
                 var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
                 //take out the central one
                 moveTiles.Remove(gameTile.position);
-                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable);
+                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable, true);
             }
         }
 
@@ -245,12 +245,8 @@ namespace ctac
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
                 )
             {
-                if (piece.attack <= 0)
-                {
-                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
-                }
                 //check for ranged units first since they can't move and attack
-                else if (piece.range.HasValue && piece.attack > 0)
+                if (piece.range.HasValue && piece.attack > 0)
                 {
                     var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
                     view.toggleTileFlags(attackRangeTiles.Values.ToList(), TileHighlightStatus.AttackRange);
@@ -261,11 +257,16 @@ namespace ctac
 
                     var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
                     var moveTiles = movePositions.Values.ToList();
-                    var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
-                    var attackTiles = attackPositions.Values.ToList();
 
-                    //find diff to get just attack tiles
-                    attackTiles = attackTiles.Except(moveTiles).ToList();
+                    List<Tile> attackTiles = null;
+                    if (piece.attack > 0)
+                    {
+                        var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
+                        attackTiles = attackPositions.Values.ToList();
+
+                        //find diff to get just attack tiles
+                        attackTiles = attackTiles.Except(moveTiles).ToList();
+                    }
 
                     //take out the central one
                     var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
@@ -273,7 +274,7 @@ namespace ctac
 
                     //TODO: take friendly units out of move and untargetable enemies like Cloak
 
-                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange);
+                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
                     view.toggleTileFlags(attackTiles, TileHighlightStatus.AttackRange);
                 }
             }
@@ -281,7 +282,7 @@ namespace ctac
             {
                 if (selectedPiece == null)
                 {
-                    view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
+                    view.toggleTileFlags(null, TileHighlightStatus.MoveRange, true);
                     view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
                 }
             }

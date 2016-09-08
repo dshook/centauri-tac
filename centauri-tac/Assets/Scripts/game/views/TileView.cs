@@ -11,10 +11,10 @@ namespace ctac {
         public Color enemyTauntTint = new Color(0f, .15f, .0f, .4f);
         public Color selectColor = new Color(.4f, .9f, .4f);
         public Color moveColor = new Color(.4f, .4f, .9f);
-        public Color moveRangeColor = new Color(.1f, .1f, 1f);
+        public Color moveRangeColor = new Color(1f, 1f, 1f, 0f);
         public Color attackRangeTint = new Color(1f, .1f, .1f);
         public Color attackColor = new Color(.9f, .4f, .4f);
-        public Color dimmedColor = ColorExtensions.HexToColor("#cccccc");
+        public Color dimmedColor = ColorExtensions.HexToColor("#aaaaaa");
 
         private MeshRenderer meshRenderer = null;
         private GameObject arrows = null;
