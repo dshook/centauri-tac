@@ -38,6 +38,7 @@ namespace ctac
 
         private PieceModel selectedPiece = null;
         private TargetModel selectingArea = null;
+        private bool isDeployingPiece = false;
 
         public override void OnRegister()
         {
@@ -207,12 +208,12 @@ namespace ctac
             if (cardModel == null)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.Selected, true);
+                isDeployingPiece = false;
                 return;
             }
 
             if (!cardModel.card.isSpell)
             {
-
                 //find play radius depending on the card
                 var playerHero = pieces.Hero(cardModel.card.playerId);
                 List<Tile> playableTiles = map.tileList
@@ -222,6 +223,7 @@ namespace ctac
                     )
                     .ToList();
                 view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected, true);
+                isDeployingPiece = true;
             }
         }
 
@@ -239,6 +241,8 @@ namespace ctac
 
         private void onPieceHover(PieceModel piece)
         {
+            if(isDeployingPiece) return;
+
             if (piece != null 
                 && selectedPiece == null 
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
