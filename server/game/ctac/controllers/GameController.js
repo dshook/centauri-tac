@@ -242,6 +242,7 @@ export default class GameController
   _sendAction(player, action, cancelled = false)
   {
     if(action.serverOnly) return;
+    if(action.private && action.playerId && action.playerId !== player.id) return;
 
     const verb = cancelled ? 'actionCancelled:' : 'action:';
     player.client.send(verb + action.constructor.name, action);
