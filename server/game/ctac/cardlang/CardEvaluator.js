@@ -114,6 +114,7 @@ export default class CardEvaluator{
               playerId: activatingPiece.playerId,
               position,
               pivotPosition,
+              targetPieceId,
               action: cardEventAction,
               chooseCardTemplateId
             });
@@ -122,7 +123,7 @@ export default class CardEvaluator{
       }
     }
 
-    return this.processActions(evalActions, activatingPiece, targetPieceId);
+    return this.processActions(evalActions, activatingPiece, activatingPiece.playerId);
 
   }
 
@@ -173,7 +174,7 @@ export default class CardEvaluator{
       }
     }
 
-    return this.processActions(evalActions);
+    return this.processActions(evalActions, null, playerId);
   }
 
   //when a spell is played
@@ -194,6 +195,7 @@ export default class CardEvaluator{
           playerId,
           position,
           pivotPosition,
+          targetPieceId,
           action: cardEventAction,
           chooseCardTemplateId
         });
@@ -229,6 +231,7 @@ export default class CardEvaluator{
               action: cardEventAction,
               position,
               pivotPosition,
+              targetPieceId,
               chooseCardTemplateId
             });
           }
@@ -236,14 +239,14 @@ export default class CardEvaluator{
       }
     }
 
-    return this.processActions(evalActions, activatingPiece || null, targetPieceId);
+    return this.processActions(evalActions, activatingPiece || null, playerId);
   }
 
   //Process all actions that have been selected in the evaluation phase into actual queue actions
   // evalActions -> array of actions to be eval'd, with playerId's of the controlling player (current turn player)
   // activatingPiece -> optional piece that will be used for SELF selections
-  // targetPieceId -> id of piece that's been targeted by spell/playMinion event
-  processActions(evalActions, activatingPiece, targetPieceId){
+  // activatingPlayerId -> id of the player that fired all this off (generally the current turn player)
+  processActions(evalActions, activatingPiece, activatingPlayerId){
     //actions to be added to the real queue
     let queue = [];
 
@@ -262,7 +265,7 @@ export default class CardEvaluator{
           selfPiece: piece,
           controllingPlayerId: pieceAction.playerId,
           activatingPiece,
-          targetPieceId,
+          targetPieceId: pieceAction.targetPieceId,
           savedPieces: pieceAction.savedPieces,
           position: pieceAction.position,
           pivotPosition: pieceAction.pivotPosition,
@@ -711,7 +714,7 @@ export default class CardEvaluator{
       }
     }catch(e){
       if(e instanceof EvalError){
-        this.queue.push(new Message(e.message));
+        this.queue.push(new Message(e.message, activatingPlayerId));
         return false;
       }
       throw e;

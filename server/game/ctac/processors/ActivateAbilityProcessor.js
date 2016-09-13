@@ -28,7 +28,6 @@ export default class ActivateAbilityProcessor
     var piece = this.pieceState.piece(action.pieceId);
     if(!piece){
       this.log.warn('Cannot use ability of piece %s when it is not in play', action.pieceId);
-      queue.push(new Message('Piece Must be on the board to use an ability!'));
       return queue.cancel(action);
     }
 
@@ -45,14 +44,14 @@ export default class ActivateAbilityProcessor
     if(abilityCost > this.playerResourceState.get(piece.playerId)){
       this.log.warn('Not enough resources for player %s to use ability %j'
         , piece.playerId, ability);
-      queue.push(new Message('You don\'t have enough energy to activate the ability!'));
+      queue.push(new Message('You don\'t have enough energy to activate the ability!', piece.playerId));
       return queue.cancel(action);
     }
 
     if(piece.abilityCharge < abilityChargeTime){
       this.log.warn('Ability not charged. Pice abilityCharge %s need %s'
         , piece.abilityCharge, abilityChargeTime);
-      queue.push(new Message('Ability needs time to charge!'));
+      queue.push(new Message('Ability needs time to charge!', piece.playerId));
       return queue.cancel(action);
     }
 

@@ -65,7 +65,7 @@ export default class MovePieceProcessor
       this.log.warn('Cannot move piece %s to unpassable tile %s', piece.id, destinationTile.position);
       queue.cancel(action);
       this.cancelUpcomingMoves(queue, piece);
-      queue.push(new Message("That tile doesn't look safe!"));
+      queue.push(new Message("That tile doesn't look safe!", piece.playerId));
       return;
     }
 
