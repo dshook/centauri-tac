@@ -46,6 +46,7 @@ namespace ctac {
         public GameObject circleBg;
         public GameObject deathIcon;
         public GameObject eventIcon;
+        public GameObject rangeIcon;
         public GameObject model;
         private GameObject textContainer;
         public bool targetCandidate = false;
@@ -89,6 +90,7 @@ namespace ctac {
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
+            rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
 
             meshRenderer = model.GetComponentInChildren<MeshRenderer>();
 
@@ -98,6 +100,7 @@ namespace ctac {
             circleBg.SetActive(false);
             deathIcon.SetActive(false);
             eventIcon.SetActive(false);
+            rangeIcon.SetActive(false);
 
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
@@ -187,6 +190,7 @@ namespace ctac {
             circleBg.SetActive(false);
             deathIcon.SetActive(false);
             eventIcon.SetActive(false);
+            rangeIcon.SetActive(false);
             //event icons
             if (piece.hasDeathEvent)
             {
@@ -197,6 +201,12 @@ namespace ctac {
             {
                 circleBg.SetActive(true);
                 eventIcon.SetActive(true);
+            }
+            else if (piece.range.HasValue)
+            {
+                //TODO: need to do something better for ranged units that also have events
+                circleBg.SetActive(true);
+                rangeIcon.SetActive(true);
             }
         }
 
