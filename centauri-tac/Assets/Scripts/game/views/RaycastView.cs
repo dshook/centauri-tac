@@ -42,7 +42,7 @@ namespace ctac
             {
                 if (objectHit.collider.gameObject.CompareTag("Piece"))
                 {
-                    model.piece = objectHit.collider.gameObject.GetComponent<PieceView>();
+                    model.piece = objectHit.collider.gameObject.GetComponentInParent<PieceView>();
                 }
                 else
                 {

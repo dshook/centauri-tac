@@ -57,7 +57,7 @@ namespace ctac
             {
                 if (clickedObject.CompareTag("Piece"))
                 {
-                    var pieceView = clickedObject.GetComponent<PieceView>();
+                    var pieceView = clickedObject.GetComponentInParent<PieceView>();
                     pieceDragging.Dispatch(isUp ? null : pieceView.piece);
                     if (cardTarget != null)
                     {
