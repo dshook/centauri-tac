@@ -4,10 +4,8 @@ using System.Linq;
 
 namespace ctac
 {
-    public class PieceMediator : Mediator
+    public class PiecesMediator : Mediator
     {
-        [Inject] public PieceView view { get; set; }
-
         [Inject] public PieceMovedSignal pieceMoved { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
         [Inject] public PieceRotatedSignal pieceRotated { get; set; }
@@ -90,7 +88,7 @@ namespace ctac
         public void onMove(PieceMovedModel pieceMoved)
         {
             checkEnemiesInRange();
-            if (pieceMoved.piece != view.piece) return;
+            var view = pieceMoved.piece.pieceView;
 
             animationQueue.Add(
                 new PieceView.RotateAnim()
@@ -113,7 +111,10 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
-            if(attackPiece.attackingPieceId != view.piece.id) return;
+            var piece = pieces.Piece(attackPiece.attackingPieceId);
+            if(piece == null) return;
+
+            var view = piece.pieceView;
 
             //TODO: Add more animation
             animationQueue.Add(
@@ -127,12 +128,13 @@ namespace ctac
 
         public void onRotated(RotatePieceModel rotatePiece)
         {
-            if(rotatePiece.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(rotatePiece.pieceId);
+            if(piece == null) return;
 
             animationQueue.Add(
                 new PieceView.RotateAnim()
                 {
-                    piece = view,
+                    piece = piece.pieceView,
                     destAngle = DirectionAngle.angle[rotatePiece.direction]
                 }
             );
@@ -140,20 +142,23 @@ namespace ctac
 
         public void onCharmed(CharmPieceModel charm)
         {
-            if (charm.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(charm.pieceId);
+            if(piece == null) return;
 
             animationQueue.Add(
                 new PieceView.UpdateHpBarAnim()
                 {
-                    piece = view
+                    piece = piece.pieceView
                 }
             );
         }
 
         public void onHealthChange(PieceHealthChangeModel hpChange)
         {
-            if (hpChange.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(hpChange.pieceId);
+            if(piece == null) return;
 
+            var view = piece.pieceView;
             view.piece.health = hpChange.newCurrentHealth;
 
             animationQueue.Add(
@@ -206,7 +211,10 @@ namespace ctac
 
         public void onArmorChange(PieceArmorChangeModel armorChange)
         {
-            if(armorChange.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(armorChange.pieceId);
+            if(piece == null) return;
+
+            var view = piece.pieceView;
 
             if (armorChange.change != 0)
             {
@@ -226,6 +234,11 @@ namespace ctac
 
         public void onAttrChange(PieceAttributeChangeModel attrChange)
         {
+            var piece = pieces.Piece(attrChange.pieceId);
+            if(piece == null) return;
+
+            var view = piece.pieceView;
+
             if(attrChange.pieceId != view.piece.id) return;
             //we don't actually know change in this case, but pass in -1 to always show
             //the punch size
@@ -271,7 +284,10 @@ namespace ctac
 
         public void onBuffed(PieceBuffModel pieceBuff)
         {
-            if(pieceBuff.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(pieceBuff.pieceId);
+            if(piece == null) return;
+
+            var view = piece.pieceView;
 
             if (pieceBuff.attack != null)
             {
@@ -315,8 +331,10 @@ namespace ctac
 
         public void onStatusChange(PieceStatusChangeModel pieceStatusChange)
         {
-            if(pieceStatusChange.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(pieceStatusChange.pieceId);
+            if(piece == null) return;
 
+            var view = piece.pieceView;
 
             //Animate?
             view.circleBg.SetActive(false);
@@ -366,7 +384,10 @@ namespace ctac
 
         public void onTransformed(TransformPieceModel transformed)
         {
-            if(transformed.pieceId != view.piece.id) return;
+            var piece = pieces.Piece(transformed.pieceId);
+            if(piece == null) return;
+
+            var view = piece.pieceView;
 
             animationQueue.Add(
                 new PieceView.UpdateTextAnim()
@@ -403,8 +424,6 @@ namespace ctac
 
         private void onAnimFinished(PieceModel pieceModel)
         {
-            if(pieceModel != view.piece) return;
-
             if (pieceModel.health <= 0)
             {
                 animationQueue.Add(
@@ -419,40 +438,59 @@ namespace ctac
 
         private void onStartSelectTarget(TargetModel model)
         {
-            if (model.targets != null && model.targets.targetPieceIds.Contains(view.piece.id))
+            if (model.targets != null )
             {
-                view.targetCandidate = true;
+                var selected = pieces.Pieces.Where(p => model.targets.targetPieceIds.Contains(p.id));
+                foreach (var piece in selected)
+                {
+                    piece.pieceView.targetCandidate = true;
+                }
             }
         }
         private void onTargetSelected(TargetModel c)
         {
-            view.targetCandidate = false;
+            disableTargetCandidate();
         }
         private void onTargetCancel(CardModel card)
         {
-            view.targetCandidate = false;
+            foreach (var piece in pieces.Pieces)
+            {
+                piece.pieceView.targetCandidate = false;
+            }
         }
 
         private void onStartSelectAbilityTarget(StartAbilityTargetModel model)
         {
-            if (model.targets.targetPieceIds.Contains(view.piece.id))
+            var selected = pieces.Pieces.Where(p => model.targets.targetPieceIds.Contains(p.id));
+            foreach (var piece in selected)
             {
-                view.targetCandidate = true;
+                piece.pieceView.targetCandidate = true;
             }
         }
         private void onTargetAbilitySelected(StartAbilityTargetModel c, PieceModel m)
         {
-            view.targetCandidate = false;
+            disableTargetCandidate();
         }
         private void onTargetAbilityCancel(PieceModel card)
         {
-            view.targetCandidate = false;
+            disableTargetCandidate();
+        }
+
+        private void disableTargetCandidate()
+        {
+            foreach (var piece in pieces.Pieces)
+            {
+                piece.pieceView.targetCandidate = false;
+            }
         }
 
         private void onTurnEnded(GameTurnModel turns)
         {
             var opponentId = players.OpponentId(turns.currentPlayerId);
-            view.UpdateTurn(opponentId, turns.currentPlayerId);
+            foreach (var piece in pieces.Pieces)
+            {
+                piece.pieceView.UpdateTurn(opponentId, turns.currentPlayerId);
+            }
         }
 
         private void onPieceDied(PieceModel p)
@@ -462,15 +500,20 @@ namespace ctac
 
         private void checkEnemiesInRange()
         {
-            var pieceLocation = view.piece.tilePosition;
-            var neighbors = mapService.GetNeighbors(pieceLocation);
-            neighbors = neighbors.Where(t => mapService.isHeightPassable(t.Value, mapService.Tile(pieceLocation)))
-                .ToDictionary(k => k.Key, v => v.Value);
+            foreach (var piece in pieces.Pieces)
+            {
+                var view = piece.pieceView;
 
-            view.enemiesInRange = pieces.Pieces.Any(p => 
-                p.playerId != view.piece.playerId
-                && neighbors.ContainsKey(p.tilePosition)
-            );
+                var pieceLocation = view.piece.tilePosition;
+                var neighbors = mapService.GetNeighbors(pieceLocation);
+                neighbors = neighbors.Where(t => mapService.isHeightPassable(t.Value, mapService.Tile(pieceLocation)))
+                    .ToDictionary(k => k.Key, v => v.Value);
+
+                view.enemiesInRange = pieces.Pieces.Any(p =>
+                    p.playerId != view.piece.playerId
+                    && neighbors.ContainsKey(p.tilePosition)
+                );
+            }
         }
     }
 }

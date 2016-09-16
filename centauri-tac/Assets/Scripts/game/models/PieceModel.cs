@@ -77,6 +77,22 @@ namespace ctac
             }
         }
 
+        [JsonIgnore]
+        private PieceView _pieceView;
+
+        [JsonIgnore]
+        public PieceView pieceView
+        {
+            get
+            {
+                if (_pieceView == null && gameObject != null)
+                {
+                    _pieceView = gameObject.GetComponent<PieceView>();
+                }
+                return _pieceView;
+            }
+        }
+
     }
 
 }
