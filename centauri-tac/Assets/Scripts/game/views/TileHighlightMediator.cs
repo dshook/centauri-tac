@@ -240,6 +240,7 @@ namespace ctac
             updateTauntTiles(piece);
             view.onTileSelected(null);
             view.toggleTileFlags(null, TileHighlightStatus.Movable);
+            setAttackRangeTiles(null);
             onPieceHover(null);
         }
 
@@ -257,7 +258,7 @@ namespace ctac
                 if (piece.range.HasValue && piece.attack > 0)
                 {
                     var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
-                    setAttackRangeTiles(attackRangeTiles.Values.ToList(), false);
+                    setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
                 }
                 else
                 {
@@ -283,7 +284,7 @@ namespace ctac
                     //TODO: take friendly units out of move and untargetable enemies like Cloak
 
                     view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
-                    setAttackRangeTiles(attackTiles, false);
+                    setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
                 }
             }
             else
