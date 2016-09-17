@@ -1,15 +1,14 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using SVGImporter;
+using ctac.util;
 
 namespace ctac
 {
     public class TilePieceIndicatorialView : View
     {
-        public PiecesModel pieces { get; set; }
-
-        //private Color enemyColor = ColorExtensions.HexToColor("FF0000");
-        //private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
+        private Color enemyColor = ColorExtensions.HexToColor("FF0000");
+        private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
 
         private new SVGRenderer renderer;
         private TileView tile;
@@ -26,18 +25,6 @@ namespace ctac
 
         void Update()
         {
-            //update status
-            if (FlagsHelper.IsSet(tile.tile.highlightStatus, TileHighlightStatus.AttackRange)
-                && pieces != null
-                && pieces.PieceAt(tile.tile.position) != null)
-            {
-                if (!active) SetStatus(true);
-            }
-            else
-            {
-                SetStatus(false);
-            }
-
             if(!active) return;
 
             //rotate and bounce scale
@@ -46,11 +33,14 @@ namespace ctac
             transform.localScale = Vector3.Lerp(minSize, maxSize, scaleFactor);
         }
 
-        internal void SetStatus(bool newStatus)
+        public void SetStatus(bool newStatus, bool? isEnemy = null)
         {
             active = newStatus;
-
             renderer.enabled = active;
+            if (isEnemy.HasValue)
+            {
+                renderer.color = isEnemy.Value ? enemyColor : friendlyColor;
+            }
         }
 
         internal void SetColor(Color color)

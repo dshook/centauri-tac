@@ -36,6 +36,19 @@ namespace ctac
         public bool showPieceRotation { get; set; }
         public bool unpassable { get; set; }
         public GameObject indicator { get; set; }
+
+        private TilePieceIndicatorialView _pieceIndicatorView;
+        public TilePieceIndicatorialView pieceIndicatorView
+        {
+            get
+            {
+                if (_pieceIndicatorView == null && gameObject != null)
+                {
+                    _pieceIndicatorView = gameObject.GetComponentInChildren<TilePieceIndicatorialView>();
+                }
+                return _pieceIndicatorView;
+            }
+        }
     }
 
     [Flags]

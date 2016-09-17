@@ -21,9 +21,6 @@ namespace ctac
         [Inject]
         public MapModel mapModel { get; set; }
 
-        [Inject]
-        public PiecesModel pieces { get; set; }
-
         public void CreateMap(MapImportModel map)
         {
             var mapTilePrefab = Resources.Load("Tile") as GameObject;
@@ -79,7 +76,6 @@ namespace ctac
 
                 var indicator = newTileGO.transform.Find("Indicator").gameObject;
                 var indicatorView = indicator.AddComponent<TilePieceIndicatorialView>();
-                indicatorView.pieces = pieces;
             }
 
             mapCreated.Dispatch();

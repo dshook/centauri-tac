@@ -158,7 +158,8 @@ namespace ctac
                 }
                 if (tiles != null)
                 {
-                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
+                    //TODO: find out from area if it can hit friendlies
+                    setAttackRangeTiles(tiles, true);
                 }
             }
         }
@@ -172,7 +173,7 @@ namespace ctac
                 this.selectedPiece = null;
                 view.onTileSelected(null);
                 view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
-                view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                setAttackRangeTiles(null);
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 return;
             }
@@ -181,7 +182,7 @@ namespace ctac
             if (selectedPiece.range.HasValue)
             {
                 var attackTiles = mapService.GetTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
-                view.toggleTileFlags(attackTiles.Values.ToList(), TileHighlightStatus.AttackRange);
+                setAttackRangeTiles(attackTiles.Values.ToList(), false);
             }
 
             //set movement and tile selected highlights
@@ -256,7 +257,7 @@ namespace ctac
                 if (piece.range.HasValue && piece.attack > 0)
                 {
                     var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
-                    view.toggleTileFlags(attackRangeTiles.Values.ToList(), TileHighlightStatus.AttackRange);
+                    setAttackRangeTiles(attackRangeTiles.Values.ToList(), false);
                 }
                 else
                 {
@@ -282,7 +283,7 @@ namespace ctac
                     //TODO: take friendly units out of move and untargetable enemies like Cloak
 
                     view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
-                    view.toggleTileFlags(attackTiles, TileHighlightStatus.AttackRange);
+                    setAttackRangeTiles(attackTiles, false);
                 }
             }
             else
@@ -290,7 +291,7 @@ namespace ctac
                 if (selectedPiece == null)
                 {
                     view.toggleTileFlags(null, TileHighlightStatus.MoveRange, true);
-                    view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+                    setAttackRangeTiles(null);
                 }
             }
 
@@ -393,7 +394,7 @@ namespace ctac
                 selectingArea = model;
                 if(area.areaTiles.Count > 0){
                     var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
-                    view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
+                    setAttackRangeTiles(tiles, true);
                 }
             }
             updateSelectHighlights(model);
@@ -406,14 +407,14 @@ namespace ctac
 
         private void onCancelSelectTarget(CardModel card)
         {
-            view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+            setAttackRangeTiles(null);
             selectingArea = null;
             updateSelectHighlights(null);
         }
 
         private void onSelectTarget(TargetModel card)
         {
-            view.toggleTileFlags(null, TileHighlightStatus.AttackRange);
+            setAttackRangeTiles(null);
             selectingArea = null;
             updateSelectHighlights(null);
         }
@@ -450,6 +451,28 @@ namespace ctac
                     view.toggleTileFlags(map.tileList, TileHighlightStatus.TargetTile, true);
                 }
             }
+        }
+
+        //Special method for attack range so we can also set the piece indicator view up properly
+        private void setAttackRangeTiles(List<Tile> tiles, bool highlightFriendly = true)
+        {
+            foreach (var tile in map.tileList)
+            {
+                tile.pieceIndicatorView.SetStatus(false);
+            }
+            if (tiles != null)
+            {
+                foreach (var tile in tiles)
+                {
+                    var occupying = pieces.PieceAt(tile.position);
+                    if(occupying != null && (highlightFriendly || !occupying.currentPlayerHasControl))
+                    {
+                        tile.pieceIndicatorView.SetStatus(true, !occupying.currentPlayerHasControl);
+                    }
+
+                }
+            }
+            view.toggleTileFlags(tiles, TileHighlightStatus.AttackRange);
         }
     }
 }
