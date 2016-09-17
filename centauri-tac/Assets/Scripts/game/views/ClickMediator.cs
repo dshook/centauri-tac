@@ -211,7 +211,16 @@ namespace ctac
 
         private void onPieceSelected(PieceModel pieceSelected)
         {
+            if (selectedPiece != null)
+            {
+                selectedPiece.isSelected = false;
+            }
             selectedPiece = pieceSelected;
+
+            if (selectedPiece != null)
+            {
+                selectedPiece.isSelected = true;
+            }
         }
 
         private bool updateTarget(Tile tile)

@@ -11,7 +11,6 @@ namespace ctac
         private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
 
         private new SVGRenderer renderer;
-        private TileView tile;
         private bool active = false;
 
         private Vector3 minSize = new Vector3(0.85f, 0.85f, 1);
@@ -20,7 +19,6 @@ namespace ctac
         protected override void Start()
         {
             renderer = GetComponent<SVGRenderer>();
-            tile = GetComponentInParent<TileView>();
         }
 
         void Update()

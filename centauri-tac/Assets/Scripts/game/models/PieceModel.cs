@@ -42,7 +42,9 @@ namespace ctac
 
         public bool hasDeathEvent { get; set; }
         public bool hasEvent { get; set; }
+        public bool isSelected { get; set; }
 
+        [JsonIgnore]
         public int maxAttacks
         {
             get
@@ -51,6 +53,7 @@ namespace ctac
             }
         }
 
+        [JsonIgnore]
         public int maxBuffedHealth
         {
             get

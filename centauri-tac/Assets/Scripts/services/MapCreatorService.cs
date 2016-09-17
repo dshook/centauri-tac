@@ -75,7 +75,7 @@ namespace ctac
                 newTileGO.GetComponent<TileView>().tile = newTile;
 
                 var indicator = newTileGO.transform.Find("Indicator").gameObject;
-                var indicatorView = indicator.AddComponent<TilePieceIndicatorialView>();
+                indicator.AddComponent<TilePieceIndicatorialView>();
             }
 
             mapCreated.Dispatch();

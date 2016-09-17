@@ -54,6 +54,10 @@ namespace ctac {
 
         private MeshRenderer meshRenderer;
         private float outlineWidth = 3f;
+        private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
+        private Color moveOutlineColor = ColorExtensions.HexToColor("63FF32");
+        private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
+        private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
         public int opponentId;
         public int currentTurnPlayerId;
@@ -116,7 +120,12 @@ namespace ctac {
 
             if (targetCandidate)
             {
-                meshRenderer.material.SetColor("_OutlineColor", Color.magenta);
+                meshRenderer.material.SetColor("_OutlineColor", targetOutlineColor);
+                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+            }
+            else if (piece.isSelected)
+            {
+                meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
@@ -128,26 +137,27 @@ namespace ctac {
                 && piece.movement > 0
             )
             {
-                meshRenderer.material.SetColor("_OutlineColor", Color.green);
+                meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                opponentId != piece.playerId 
+                opponentId != piece.playerId
                 && currentTurnPlayerId == piece.playerId
-                && piece.currentPlayerHasControl 
-                && piece.attackCount < piece.maxAttacks 
+                && piece.currentPlayerHasControl
+                && piece.attackCount < piece.maxAttacks
                 && piece.attack > 0
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
                 && !FlagsHelper.IsSet(piece.statuses, Statuses.CantAttack)
                 && enemiesInRange
-            ) {
-                meshRenderer.material.SetColor("_OutlineColor", Color.cyan);
+            )
+            {
+                meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else
             {
                 meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                meshRenderer.material.SetFloat("_Outline", 0.5f);
+                meshRenderer.material.SetFloat("_Outline", 1f);
             }
 
             //statuses
