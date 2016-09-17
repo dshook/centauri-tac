@@ -35,6 +35,7 @@ namespace ctac
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         private PieceModel selectedPiece = null;
         private TargetModel selectingArea = null;
@@ -164,6 +165,8 @@ namespace ctac
 
         private void onPieceSelected(PieceModel selectedPiece)
         {
+            if(isDeployingPiece) return;
+
             if (selectedPiece == null)
             {
                 this.selectedPiece = null;
