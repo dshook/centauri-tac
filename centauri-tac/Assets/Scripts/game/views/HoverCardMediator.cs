@@ -54,6 +54,7 @@ namespace ctac
         private void onCardSelected(CardSelectedModel card)
         {
             view.setActive(card == null);
+            view.hideCard();
             //debug.Log("Setting hover view " + (card == null ? "active" : "inactive"));
         }
 

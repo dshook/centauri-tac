@@ -9,6 +9,8 @@ using UnityEngine;
 namespace ctac {
     public class CardsView : View
     {
+        //[Inject] public IDebugService debug { get; set; }
+
         //should only be the current players cards
         private List<CardModel> playerCards { get; set; }
         private List<CardModel> opponentCards { get; set; }
@@ -92,12 +94,13 @@ namespace ctac {
                 dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
                 dest = dest.SetZ(dest.z + (-1.5f * c));
 
-                if (selectedCard != null && card == selectedCard.card)
+                //drag the selected card with the cursor
+                if (selectedCard != null && card.id == selectedCard.card.id)
                 {
                     var dragPos = cardCanvasHelper.MouseToWorld(dest.z);
                     dragPos = new Vector3(dragPos.x + selectedCard.point.x, dragPos.y + selectedCard.point.y, dragPos.z);
                     dragPos = dragPos.SetY(dragPos.y + cardDimensions.y / 2);
-                    //var destWorldPos = cardCanvasHelper.RectTransformToWorld(rectTransform, dest);
+
                     var dragDist = Vector3.Distance(dragPos, dest);
                     if (dragDist < maxDragDistance || !selectedNeedsArrow)
                     {
@@ -110,6 +113,7 @@ namespace ctac {
                         dest = dest.SetY(dest.y + 30f);
                     }
                 }
+                //show the hover card on top of where the actual card is after a delay
                 if (hoveredCard != null && card == hoveredCard && (selectedCard == null || hoveredCard != selectedCard.card))
                 {
                     dest = dest.SetY(dest.y + 30f);
@@ -152,6 +156,10 @@ namespace ctac {
         {
             selectedCard = card;
             selectedNeedsArrow = needsArrow;
+            if (hoveredCard != null)
+            {
+                hoveredCard.cardView.displayWrapper.SetActive(true);
+            }
         }
 
         internal void onCardHovered(CardModel card)

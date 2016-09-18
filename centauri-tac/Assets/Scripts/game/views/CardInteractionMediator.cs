@@ -71,6 +71,7 @@ namespace ctac
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
 
+                    //Choose card interactions
                     if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
                     {
                         chooseModel.chosenTemplateId = cardView.card.cardTemplateId;

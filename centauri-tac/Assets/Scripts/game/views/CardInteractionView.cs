@@ -2,7 +2,6 @@ using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using UnityStandardAssets.CrossPlatformInput;
-using System.Linq;
 
 namespace ctac
 {
