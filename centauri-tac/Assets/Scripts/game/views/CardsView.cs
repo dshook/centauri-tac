@@ -82,7 +82,7 @@ namespace ctac {
             }
 
             //and now players cards
-            cardAngleSpread = -13f + (0.8f * playerCards.Count);
+            cardAngleSpread = -16f + (1.2f * playerCards.Count);
             for(int c = 0; c < playerCards.Count; c++) 
             {
                 var card = playerCards[c];
