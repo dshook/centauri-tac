@@ -19,6 +19,7 @@ namespace ctac {
         private bool selectedNeedsArrow { get; set; }
         private CardModel hoveredCard { get; set; }
         private CardCanvasHelperView cardCanvasHelper;
+        private Canvas canvas { get; set; }
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0);
         private Vector2 opponentAnchorPosition = new Vector2(0.5f, 1);
@@ -44,7 +45,7 @@ namespace ctac {
             this.playerCards = playerCards;
             this.opponentCards = opponentCards;
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
-
+            canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
         }
 
         void Update()
@@ -97,9 +98,9 @@ namespace ctac {
                 //drag the selected card with the cursor
                 if (selectedCard != null && card.id == selectedCard.card.id)
                 {
-                    var dragPos = cardCanvasHelper.MouseToWorld(dest.z);
-                    dragPos = new Vector3(dragPos.x + selectedCard.point.x, dragPos.y + selectedCard.point.y, dragPos.z);
-                    dragPos = dragPos.SetY(dragPos.y + cardDimensions.y / 2);
+                    var mouseWorld = cardCanvasHelper.MouseToWorld(dest.z);
+                    var dragPos = new Vector3(mouseWorld.x + selectedCard.point.x, mouseWorld.y + selectedCard.point.y, mouseWorld.z);
+                    dragPos = dragPos.SetY(dragPos.y + cardDimensions.y * canvas.scaleFactor);
 
                     var dragDist = Vector3.Distance(dragPos, dest);
                     if (dragDist < maxDragDistance || !selectedNeedsArrow)
