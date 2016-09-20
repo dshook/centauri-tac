@@ -31,8 +31,8 @@ namespace ctac {
         private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -390, 50);
-        private Vector3 opponentCardCircleCenter = new Vector3(0, 500, 50);
+        private Vector3 cardCircleCenter = new Vector3(0, -390, -5);
+        private Vector3 opponentCardCircleCenter = new Vector3(0, 500, -5);
         private float cardCircleRadius = 420f;
         private float cardAngleSpread = -5f;
 
@@ -74,7 +74,7 @@ namespace ctac {
                 rectTransform.Rotate(Vector3.up, 180f, Space.Self);
 
                 dest = PointOnCircle(cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, opponentCardCircleCenter);
-                dest = dest.SetZ(dest.z + (-1.5f * c));
+                dest = dest.SetZ(dest.z + (-1.0f * c));
 
                 rectTransform.anchorMax = opponentAnchorPosition;
                 rectTransform.anchorMin = opponentAnchorPosition;
@@ -93,7 +93,7 @@ namespace ctac {
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
                 dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
-                dest = dest.SetZ(dest.z + (-1.5f * c));
+                dest = dest.SetZ(dest.z + (-1.0f * c));
 
                 //drag the selected card with the cursor
                 if (selectedCard != null && card.id == selectedCard.card.id)
@@ -210,12 +210,13 @@ namespace ctac {
 
             //dev speed
             private float animTime = 0.2f;
-            private Vector3 opponentDest = new Vector3(0, 150, 50);
+            private Vector3 opponentDest = new Vector3(0, 150, -12f);
+            private Vector3 playerDest = new Vector3(0, 0, -12f);
 
             public void Init() { }
             public void Update()
             {
-                Vector3 dest = Vector3.zero;
+                Vector3 dest = playerDest;
                 if (isOpponentCard)
                 {
                     animTime = 0.3f;

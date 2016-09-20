@@ -17,6 +17,7 @@ namespace ctac
         float timer = 0f;
         bool cardVisible = false;
         bool active = true;
+        float zPos = -5f;
 
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
@@ -105,7 +106,7 @@ namespace ctac
             hoverCardView.card.gameObject = hoverCardView.gameObject;
 
             hoverCardView.rectTransform.SetAnchor(cardAnchor);
-            var displayPosition = new Vector3(position.x, 125f, 19f);
+            var displayPosition = new Vector3(position.x, 125f, zPos - 11f);
             showCard(displayPosition);
         }
 
@@ -120,7 +121,7 @@ namespace ctac
             var hWidth = hoverCardView.rectTransform.sizeDelta;
             var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (topLeftOffset * canvas.scaleFactor);
 
-            showCard(position);
+            showCard(new Vector3(position.x, position.y, zPos));
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)
