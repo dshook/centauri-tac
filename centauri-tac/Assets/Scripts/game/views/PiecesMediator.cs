@@ -16,6 +16,7 @@ namespace ctac
         [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
         [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
         [Inject] public PieceArmorChangedSignal pieceArmorChanged { get; set; }
+        [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -51,6 +52,7 @@ namespace ctac
             pieceTextAnimFinished.AddListener(onAnimFinished);
             turnEnded.AddListener(onTurnEnded);
             pieceDied.AddListener(onPieceDied);
+            pieceCharmed.AddListener(onCharmed);
 
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
@@ -75,6 +77,7 @@ namespace ctac
             pieceTextAnimFinished.RemoveListener(onAnimFinished);
             turnEnded.RemoveListener(onTurnEnded);
             pieceDied.RemoveListener(onPieceDied);
+            pieceCharmed.RemoveListener(onCharmed);
 
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);

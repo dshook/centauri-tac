@@ -231,6 +231,10 @@ namespace ctac {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 fillColor = hpBarFillEnemyColor;
             }
+            else
+            {
+                hpBarSvgRenderer.vectorGraphics = hpBarSvg;
+            }
 
             hpBarFillRenderer.material.SetColor("_Color", fillColor);
             hpBarFillRenderer.material.SetInt("_CurrentHp", piece.health);
