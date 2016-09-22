@@ -26,10 +26,13 @@ namespace ctac
 
         public void UpdateAbilities(int playerId, List<AbilityTarget> newAbilities)
         {
-            //have to do a diff sort of algorithm... delete ability buttons for pieces no longer there, and create new ones
+            //have to do a diff sort of algorithm... 
+            //delete ability buttons for pieces no longer there, and create new ones
+            //as well as update ones that haven't changed so they get new ability data
             var newPieceIds = newAbilities.Select(a => a.pieceId);
             var existingPieceIds = abilities.Select(a => a.pieceId);
             var pieceIdsToDelete = existingPieceIds.Except(newPieceIds).ToList();
+            var pieceIdsRemaining = existingPieceIds.Join(newPieceIds, a => a, b => b, (a, b) => a).ToList();
             abilities.RemoveAll(a => pieceIdsToDelete.Contains(a.pieceId));
 
             for (int i = abilityPanel.transform.childCount - 1; i >= 0; i--)
@@ -39,6 +42,10 @@ namespace ctac
                 if (pieceIdsToDelete.Contains(abilityButtonView.ability.pieceId))
                 {
                     GameObject.Destroy(child);
+                }
+                if (pieceIdsRemaining.Contains(abilityButtonView.ability.pieceId))
+                {
+                    abilityButtonView.ability = newAbilities.FirstOrDefault(a => a.pieceId == abilityButtonView.ability.pieceId);
                 }
             }
 
