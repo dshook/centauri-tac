@@ -66,9 +66,9 @@ namespace ctac
             //animate everything down
             foreach (var icon in icons)
             {
-                iTweenExtensions.MoveTo(
+                iTweenExtensions.MoveToLocal(
                     icon.historyTile,
-                    icon.historyTile.transform.position.SetY(icon.historyTile.transform.position.y - buttonHeight),
+                    icon.historyTile.transform.localPosition.AddY(-buttonHeight),
                     1f,
                     0f
                 );

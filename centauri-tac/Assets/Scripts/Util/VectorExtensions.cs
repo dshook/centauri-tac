@@ -46,5 +46,20 @@ namespace ctac
             vec.Set(vec.x, vec.y, value);
             return vec;
         }
+
+        public static Vector3 AddX(this Vector3 vec, float amt)
+        {
+            return new Vector3(vec.x + amt, vec.y);
+        }
+
+        public static Vector3 AddY(this Vector3 vec, float amt)
+        {
+            return new Vector3(vec.x, vec.y + amt);
+        }
+        
+        public static Vector3 Add(this Vector3 vec, float xAmt, float yAmt)
+        {
+            return new Vector3(vec.x + xAmt, vec.y + yAmt);
+        }
     }
 }
