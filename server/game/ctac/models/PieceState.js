@@ -63,6 +63,8 @@ export default class PieceState
     piece.baseMovement = card.movement;
     piece.range = card.range || null;
     piece.baseRange = card.range || null;
+    piece.spellDamage = card.spellDamage || null;
+    piece.baseSpellDamage = card.spellDamage || null;
     piece.baseTags = _.cloneDeep(card.tags);
     piece.tags = _.cloneDeep(card.tags);
     piece.statuses = card.statuses || 0;
@@ -81,6 +83,8 @@ export default class PieceState
     dest.baseMovement = src.movement;
     dest.range = src.range;
     dest.baseRange = src.baseRange;
+    dest.spellDamage = src.spellDamage;
+    dest.baseSpellDamage = src.baseSpellDamage;
     dest.tags = _.cloneDeep(src.tags);
     dest.baseTags = _.cloneDeep(src.tags);
     dest.statuses = src.statuses;

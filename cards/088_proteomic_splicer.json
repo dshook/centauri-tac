@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 88,
+	"name": "Proteomic Splicer",
+	"description": "<b>Spell Damage</b> 1",
+	"cost": 2,
+	"attack": 1,
+	"health": 2,
+	"movement": 3,
+	"spellDamage": 1,
+	"tags": ["Minion"]
+}

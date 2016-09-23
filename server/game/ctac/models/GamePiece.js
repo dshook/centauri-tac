@@ -22,6 +22,8 @@ export default class GamePiece
     this.baseMovement = null;
     this.range = null;
     this.baseRange = null;
+    this.spellDamage = null;
+    this.baseSpellDamage = null;
     this.events = null;
     this.baseTags = [];
     this.tags = [];

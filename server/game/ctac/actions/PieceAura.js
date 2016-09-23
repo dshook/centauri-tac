@@ -17,5 +17,6 @@ export default class PieceAura extends BaseAction
     this.health = null;
     this.movement = null;
     this.range = null;
+    this.spellDamage = null;
   }
 }

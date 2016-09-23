@@ -31,7 +31,13 @@ export default class PieceBuffProcessor
       this.log.warn('Cannot find piece to buff for id %s', action.pieceId);
       return queue.cancel(action);
     }
-    if(!action.removed && action.attack == null && action.health == null && action.movement == null && action.range == null){
+    if(!action.removed
+      && action.attack == null
+      && action.health == null
+      && action.movement == null
+      && action.range == null
+      && action.spellDamage == null
+    ){
       this.log.warn('No attributes to change for piece %s', action.pieceId);
       return queue.cancel(action);
     }

@@ -12,6 +12,7 @@ export default class Card
     this.health = null;
     this.movement = null;
     this.range = null;
+    this.spellDamage = null;
     this.tags = [];
     this.buffs = [];
     this.statuses = 0;

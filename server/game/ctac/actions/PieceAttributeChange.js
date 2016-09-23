@@ -9,15 +9,17 @@ export default class PieceAttributeChange extends BaseAction
     super();
     this.pieceId = pieceId;
 
-    this.attack = null;
-    this.health = null;
-    this.movement = null;
-    this.range = null;
+    this.attack      = null;
+    this.health      = null;
+    this.movement    = null;
+    this.range       = null;
+    this.spellDamage = null;
 
     //set by processor
-    this.baseAttack = null;
-    this.baseHealth = null;
-    this.baseMovement = null;
-    this.baseRange = null;
+    this.baseAttack      = null;
+    this.baseHealth      = null;
+    this.baseMovement    = null;
+    this.baseRange       = null;
+    this.baseSpellDamage = null;
   }
 }

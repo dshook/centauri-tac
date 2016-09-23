@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 87,
+	"name": "Cacophonous Shout",
+	"description": "Deal 4 damage randomly split between all enemies",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(Random(ENEMY), 1) * 4 }"
+}
