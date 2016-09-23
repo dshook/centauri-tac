@@ -348,11 +348,16 @@ export default class CardEvaluator{
             //Hit(pieceSelector, damageAmount)
             case 'Hit':
             {
+              let spellDamageBonus = 0;
+              if(pieceSelectorParams.isSpell){
+                spellDamageBonus = this.pieceState.totalSpellDamage(pieceSelectorParams.controllingPlayerId);
+              }
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
-              this.log.info('Hit Selected %j', lastSelected);
+              let damage = -(this.selector.eventualNumber(action.args[1], pieceSelectorParams) + spellDamageBonus);
+              this.log.info('Hit Selected %s pieces damage %s (+%s)', lastSelected.length, -(damage - spellDamageBonus), spellDamageBonus);
               if(lastSelected && lastSelected.length > 0){
                 for(let s of lastSelected){
-                  queue.push(new PieceHealthChange(s.id, -this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
+                  queue.push(new PieceHealthChange(s.id, damage));
                 }
               }
               break;

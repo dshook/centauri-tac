@@ -124,4 +124,11 @@ export default class PieceState
   hero(playerId){
     return this.pieces.find(x => x.playerId == playerId && x.tags[0] === 'Hero');
   }
+
+  totalSpellDamage(playerId){
+    return this.pieces
+      .filter(x => x.playerId == playerId && x.spellDamage)
+      .map(p => p.spellDamage)
+      .reduce((a, b) => { return a + b; }, 0);
+  }
 }
