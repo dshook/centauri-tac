@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 21,
 	"name": "Neocrosis",
-	"description": "Deal 1 damage to all enemies.",
+	"description": "Deal {1} damage to all enemies.",
 	"cost": 2,
 	"tags": ["Spell"],
 	"eventcode": "playSpell{ Hit(ENEMY, 1) }"

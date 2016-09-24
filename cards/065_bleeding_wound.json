@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 65,
 	"name": "Bleeding Wound",
-	"description": "At the start of every turn, target enemy minion takes 1 damage",
+	"description": "At the start of every turn, target enemy minion takes {1} damage",
 	"cost": 2,
 	"tags": ["Spell"],
 	"eventcode": "playSpell{
