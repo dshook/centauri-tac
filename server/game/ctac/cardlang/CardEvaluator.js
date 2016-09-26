@@ -285,6 +285,11 @@ export default class CardEvaluator{
         if(action.times){
           times = this.selector.eventualNumber(action.times, pieceSelectorParams);
         }
+        let totalSpellDamage = this.pieceState.totalSpellDamage(pieceSelectorParams.controllingPlayerId);
+        //for multi cast spells use spell damage as additional times instead of additional damage
+        if(pieceSelectorParams.isSpell && times > 1 && totalSpellDamage > 0){
+          times += totalSpellDamage;
+        }
 
         let actionTriggerer = piece ? `piece ${piece.name}` : `spell ${pieceAction.card.name}`;
         this.log.info('Evaluating action %s for %s %s %s'
@@ -349,8 +354,9 @@ export default class CardEvaluator{
             case 'Hit':
             {
               let spellDamageBonus = 0;
-              if(pieceSelectorParams.isSpell){
-                spellDamageBonus = this.pieceState.totalSpellDamage(pieceSelectorParams.controllingPlayerId);
+              //apply spell damage only for one time cast spells
+              if(pieceSelectorParams.isSpell && times === 1){
+                spellDamageBonus = totalSpellDamage;
               }
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               let damage = -(this.selector.eventualNumber(action.args[1], pieceSelectorParams) + spellDamageBonus);
