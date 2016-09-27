@@ -41,7 +41,7 @@ namespace ctac
                 }
 
                 //show all damage/heal events
-                var xOffset = 190f;
+                var xOffset = 180f;
                 var damageSplat = loader.Load<GameObject>("DamageSplat");
                 var deathOverlay = loader.Load<GameObject>("DeathOverlay");
                 for (int i = 0; i < item.healthChanges.Count; i++)
@@ -112,7 +112,7 @@ namespace ctac
             Vector2 viewportPos = Camera.main.WorldToViewportPoint(selfPos);
             Vector2 cardCanvasPos = cardCanvasHelper.ViewportToWorld(viewportPos);
             var hWidth = hoverCardView.rectTransform.sizeDelta;
-            var displayPosition = new Vector3(cardCanvasPos.x + hWidth.x, cardCanvasPos.y + (hWidth.y * 0.75f), selfPos.z);
+            var displayPosition = new Vector3(cardCanvasPos.x + hWidth.x, cardCanvasPos.y + (hWidth.y * 0.75f), -5f);
             displayPosition = displayPosition + positionOffset;
 
             hoverCardView.rectTransform.SetAnchor(Vector2.zero);

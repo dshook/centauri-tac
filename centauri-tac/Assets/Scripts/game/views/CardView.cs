@@ -74,6 +74,8 @@ namespace ctac {
             buffNameText = buffName.GetComponent<TextMeshPro>();
             buffAbilityText = buffAbility.GetComponent<TextMeshPro>();
         
+            //hopefully this won't cause any issues updating the text with 0 spell damage
+            //it should get updated shortly after on queue process completion
             UpdateText(0);
         }
 
