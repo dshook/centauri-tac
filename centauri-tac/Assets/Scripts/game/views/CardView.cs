@@ -169,7 +169,7 @@ namespace ctac {
                         string replacement = number.ToString();
                         if (currentSpellDamage > 0)
                         {
-                            replacement = (number + currentSpellDamage).ToString();
+                            replacement = string.Format("*{0}*", number + currentSpellDamage);
                         }
                         
                         descrip = descrip.ReplaceAt(capture.Index, capture.Length, replacement);
