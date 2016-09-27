@@ -12,6 +12,7 @@ namespace ctac
         public Dictionary<int, List<MetCondition>> metConditions = new Dictionary<int, List<MetCondition>>();
         public List<EventedPiece> eventedPieces = new List<EventedPiece>();
         public Dictionary<int, List<ChoiceCard>> chooseCards = new Dictionary<int, List<ChoiceCard>>();
+        public Dictionary<int, int> spellDamage = new Dictionary<int, int>();
 
         public void Update(PossibleActions newActions)
         {
@@ -21,6 +22,7 @@ namespace ctac
             eventedPieces = newActions.eventedPieces;
             metConditions[newActions.playerId] = newActions.metConditions;
             chooseCards[newActions.playerId] = newActions.chooseCards;
+            spellDamage[newActions.playerId] = newActions.spellDamage;
         }
 
         /// <summary>
@@ -57,11 +59,19 @@ namespace ctac
 
             return chooseCards[playerId].FirstOrDefault(x => x.cardId == cardId);
         }
+
+        public int GetSpellDamage(int playerId)
+        {
+            if(!spellDamage.ContainsKey(playerId)) return 0;
+            
+            return spellDamage[playerId];
+        }
     }
 
     public class PossibleActions
     {
         public int playerId { get; set; }
+        public int spellDamage { get; set; }
         public List<ActionTarget> targets { get; set; }
         public List<AbilityTarget> abilities { get; set; }
         public List<AreaTarget> areas { get; set; }

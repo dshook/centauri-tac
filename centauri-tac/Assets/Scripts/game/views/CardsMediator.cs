@@ -211,7 +211,7 @@ namespace ctac
             //to playable status, cost, etc
             foreach (var card in cards.Cards)
             {
-                card.cardView.UpdateText();
+                card.cardView.UpdateText(possibleActions.GetSpellDamage(card.playerId));
             }
         }
 

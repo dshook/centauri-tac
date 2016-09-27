@@ -61,7 +61,7 @@ namespace ctac
                     {
                         card.metCondition = true;
                         //kinda nasty, probably will chage with introduction of glow though
-                        card.cardView.UpdateText();
+                        card.cardView.UpdateText(possibleActions.GetSpellDamage(turns.currentPlayerId));
                     }
                 }
             }

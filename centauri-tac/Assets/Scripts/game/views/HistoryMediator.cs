@@ -12,6 +12,7 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public CardsModel cards { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public ServerQueueProcessEnd qpc { get; set; }
         [Inject] public ActionPassTurnSignal passTurn { get; set; }
@@ -66,6 +67,7 @@ namespace ctac
             {
                 type = type,
                 initiatingPlayerId = player,
+                spellDamage = possibleActions.GetSpellDamage(player),
                 healthChanges = new List<HistoryHealthChange>()
             };
         }

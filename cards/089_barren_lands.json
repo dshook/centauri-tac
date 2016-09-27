@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 89,
+	"name": "Barren Lands",
+	"description": "Deal {1} damage to all friendlies and {2} damage to all enemies",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(FRIENDLY, 1) Hit(ENEMY, 2) }"
+}

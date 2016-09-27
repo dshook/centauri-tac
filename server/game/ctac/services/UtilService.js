@@ -50,6 +50,7 @@ class PossibleActions
     );
     return {
       playerId: this.turnState.currentPlayerId,
+      spellDamage: this.pieceState.totalSpellDamage(this.turnState.currentPlayerId),
       targets,
       areas,
       abilities,

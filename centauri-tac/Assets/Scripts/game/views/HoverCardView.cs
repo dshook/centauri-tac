@@ -85,9 +85,9 @@ namespace ctac
             active = newActive;
         }
 
-        internal void showCard(Vector3 position)
+        internal void showCard(Vector3 position, int spellDamage)
         {
-            hoverCardView.UpdateText();
+            hoverCardView.UpdateText(spellDamage);
 
             hoverCardView.rectTransform.anchoredPosition3D = position;
 
@@ -97,7 +97,7 @@ namespace ctac
             cardVisible = true;
         }
 
-        internal void showCardFromHand(CardModel cardToShow, Vector3 position)
+        internal void showCardFromHand(CardModel cardToShow, Vector3 position, int spellDamage)
         {
             //copy over props from hovered to hover
             cardToShow.CopyProperties(hoverCardView.card);
@@ -107,10 +107,10 @@ namespace ctac
 
             hoverCardView.rectTransform.SetAnchor(cardAnchor);
             var displayPosition = new Vector3(position.x, 125f, zPos - 11f);
-            showCard(displayPosition);
+            showCard(displayPosition, spellDamage);
         }
 
-        internal void showPieceCardWorld(PieceModel piece, Vector3 worldPosition)
+        internal void showPieceCardWorld(PieceModel piece, Vector3 worldPosition, int spellDamage)
         {
             pieceService.CopyPieceToCard(piece, hoverCardView.card);
             hoverCardView.card.linkedPiece = piece;
@@ -121,7 +121,7 @@ namespace ctac
             var hWidth = hoverCardView.rectTransform.sizeDelta;
             var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (topLeftOffset * canvas.scaleFactor);
 
-            showCard(new Vector3(position.x, position.y, zPos));
+            showCard(new Vector3(position.x, position.y, zPos), spellDamage);
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)

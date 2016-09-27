@@ -1,6 +1,8 @@
 ﻿using ctac.util;
 using strange.extensions.mediation.impl;
+using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
@@ -72,14 +74,14 @@ namespace ctac {
             buffNameText = buffName.GetComponent<TextMeshPro>();
             buffAbilityText = buffAbility.GetComponent<TextMeshPro>();
         
-            UpdateText();
+            UpdateText(0);
         }
 
         void Update()
         {
         }
 
-        public void UpdateText()
+        public void UpdateText(int currentSpellDamage)
         {
             if (costText == null)
             {
@@ -146,12 +148,34 @@ namespace ctac {
             }
             else
             {
+                //must be a spell
                 moveRangeUnderline.SetActive(false);
                 moveText.text = "";
                 rangeText.text = "";
                 attackText.text = "";
                 healthText.text = "";
                 tribeText.text = "";
+
+                //update spell damage text
+                string descrip = card.description;
+                var numberMatches = Regex.Matches(descrip, @"\{\d+\}");
+                for(int m = numberMatches.Count - 1; m >= 0; m--) 
+                {
+                    Match match = numberMatches[m];
+                    for(int c = 0; c < match.Captures.Count; c++)
+                    {
+                        Capture capture = match.Captures[c];
+                        int number = Int32.Parse(capture.Value.Replace("{", "").Replace("}", ""));
+                        string replacement = number.ToString();
+                        if (currentSpellDamage > 0)
+                        {
+                            replacement = (number + currentSpellDamage).ToString();
+                        }
+                        
+                        descrip = descrip.ReplaceAt(capture.Index, capture.Length, replacement);
+                    }
+                }
+                descriptionText.text = descrip;
             }
         }
 

@@ -31,13 +31,13 @@ namespace ctac
                 //show main card/piece as a card
                 if (item.triggeringCard != null)
                 {
-                    hoveringCards.Add(showCard(item.triggeringCard, Vector3.zero));
+                    hoveringCards.Add(showCard(item.triggeringCard, Vector3.zero, item.spellDamage));
                 }
                 else if (item.triggeringPiece != null)
                 {
                     var pieceCard = new CardModel();
                     pieceService.CopyPieceToCard(item.triggeringPiece, pieceCard);
-                    hoveringCards.Add(showCard(pieceCard, Vector3.zero));
+                    hoveringCards.Add(showCard(pieceCard, Vector3.zero, item.spellDamage));
                 }
 
                 //show all damage/heal events
@@ -58,7 +58,7 @@ namespace ctac
                     {
                         var pieceCard = new CardModel();
                         pieceService.CopyPieceToCard(healthChange.originalPiece, pieceCard);
-                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0));
+                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), item.spellDamage);
                         hoveringCards.Add(healthChangeCard);
                     }
 
@@ -94,7 +94,7 @@ namespace ctac
             }
         }
 
-        internal CardView showCard(CardModel cardToShow, Vector3 positionOffset)
+        internal CardView showCard(CardModel cardToShow, Vector3 positionOffset, int spellDamage)
         {
             var selfPos = transform.position;
             var hoverCardView = CreateHoverCard();
@@ -105,7 +105,7 @@ namespace ctac
             cardToShow.CopyProperties(hoverCardView.card);
             hoverCardView.card.gameObject = hoverGo;
 
-            hoverCardView.UpdateText();
+            hoverCardView.UpdateText(spellDamage);
 
             //now for the fun positioning
 

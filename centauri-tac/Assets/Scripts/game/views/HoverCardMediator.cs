@@ -10,6 +10,7 @@ namespace ctac
         
         [Inject] public CardHoveredSignal cardHovered { get; set; }
         [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject]
         public PieceHoverSignal pieceHovered { get; set; }
@@ -39,7 +40,7 @@ namespace ctac
             {
                 var hoveredCardRect = card.rectTransform;
                 var position = hoveredCardRect.anchoredPosition3D;
-                view.showCardFromHand(card, position);
+                view.showCardFromHand(card, position, possibleActions.GetSpellDamage(card.playerId));
                 hoveringCard = true;
                 //debug.Log("Hovering from card");
             }
@@ -65,7 +66,7 @@ namespace ctac
 
             if (piece != null)
             {
-                view.showPieceCardWorld(piece, piece.gameObject.transform.position);
+                view.showPieceCardWorld(piece, piece.gameObject.transform.position, possibleActions.GetSpellDamage(piece.playerId));
                 //debug.Log("Hovering from piece");
             }
             else 
