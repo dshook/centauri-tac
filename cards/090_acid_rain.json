@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 90,
+	"name": "Acid Rain",
+	"description": "Deal 1 damage to all characters {3} times",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(CHARACTER, 1) * 3 }"
+}

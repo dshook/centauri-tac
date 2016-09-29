@@ -597,11 +597,11 @@ test('Tag selection', t => {
   t.equal(selection[0], minionSelection[0], 'First element of selections are the same');
 });
 
-test('Id selection', t => {
+test('Template Id selection', t => {
   let select =
     {
       left: {
-        id: 2
+        templateId: 2
       }
     };
   t.plan(3);
@@ -611,6 +611,23 @@ test('Id selection', t => {
   t.ok(Array.isArray(selection), 'Got back an Array');
   t.equal(selection.length, 2, '2 Id 2 pieces');
   t.equal(selection[0].cardTemplateId, 2, 'Got the right Id back');
+});
+
+test('Piece Id selection', t => {
+  let select =
+    {
+      left: {
+        pieceIds: [2, 3]
+      }
+    };
+  t.plan(4);
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let selection = selector.selectPieces(select, {selfPiece, controllingPlayerId: 1});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 2, '2 Id 2 pieces');
+  t.equal(selection[0].id, 2, 'Got the right first Id back');
+  t.equal(selection[1].id, 3, 'Got the right second Id back');
 });
 
 test('Eventual numbers', t => {

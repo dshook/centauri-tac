@@ -43,6 +43,8 @@
 
 (Random)
   return 'random'
+(PieceIds)
+  return 'pieceIds'
 
 //eventual number stuff
 (SelectAttribute)
@@ -218,7 +220,8 @@ targetExpr
   : target -> $1
   | areaExpression -> $1
   | tagExpression -> $1
-  | idExpression -> $1
+  | templateIdExpression -> $1
+  | pieceIdsExpression -> $1
   | '('comparisonExpression')' -> $2
 ;
 
@@ -262,10 +265,19 @@ tagExpression
     }}
   ;
 
-idExpression
+//piece by card template Id
+templateIdExpression
   : Id'('eNumber')'
     {{ $$ =
-      { id: $3 }
+      { templateId: $3 }
+    }}
+  ;
+
+//by piece instance Id
+pieceIdsExpression
+  : pieceIds'('numberList')'
+    {{ $$ =
+      { pieceIds: $3 }
     }}
   ;
 //eventually a number, could be random
