@@ -33,12 +33,13 @@ export default class PieceHealthChangeProcessor
     }
 
     let hpBeforeChange = piece.health;
+    let removeShield = false;
 
     //check for shield and nullify damage
     if((piece.statuses & Statuses.Shield) == Statuses.Shield){
       action.change = 0;
       action.bonus = 0;
-      queue.push(new PieceStatusChange(piece.id, null, Statuses.Shield));
+      removeShield = true;
     }
 
     let healthChange = action.change + (action.bonus || 0);
@@ -82,5 +83,8 @@ export default class PieceHealthChangeProcessor
     this.log.info('piece %s %s %s health, now %s',
       action.pieceId, (action.change > 0 ? 'gained' : 'lost'), action.change, action.newCurrentHealth);
     queue.complete(action);
+    if(removeShield){
+      queue.pushFront(new PieceStatusChange(piece.id, null, Statuses.Shield));
+    }
   }
 }

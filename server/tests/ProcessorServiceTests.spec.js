@@ -6,6 +6,7 @@ import TransformPiece from '../game/ctac/actions/TransformPiece.js';
 import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import MovePiece from '../game/ctac/actions/MovePiece.js';
 import AttackPiece from '../game/ctac/actions/AttackPiece.js';
+import PlaySpell from '../game/ctac/actions/PlaySpell.js';
 import AttachCode from '../game/ctac/actions/AttachCode.js';
 import ActivateCard from '../game/ctac/actions/ActivateCard.js';
 import Position from '../game/ctac/models/Position.js';
@@ -465,6 +466,28 @@ export default class ProcessorServiceTests
       await this.queue.processUntilDone();
       t.equal(piece.direction, Direction.West, 'Attack west');
 
+    });
+
+    test('Repeating damage not overkilling', async (t) => {
+      t.plan(2);
+      this.setupTest();
+
+      var piece = this.spawnPiece(this.pieceState, 28, 1);
+
+      this.spawnCard(this.cardState, 87, 2);
+      var card = this.cardState.drawCard(2);
+
+      this.queue.push(new PlaySpell(2, card.id, card.cardTemplateId, null, null, null, null ));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.health, 0, 'Piece died');
+
+      const generatedActions = this.queue.iterateCompletedSince();
+      let actions = [...generatedActions];
+
+      let hpChangeActions = actions.filter(a => a instanceof PieceHealthChange);
+      t.equal(hpChangeActions.length, 3, 'There were only 3 hp change actions instead of the full 4');
     });
   }
 }
