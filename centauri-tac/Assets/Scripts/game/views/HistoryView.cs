@@ -62,6 +62,7 @@ namespace ctac
             view.item = item;
             float buttonHeight = buttonRect.sizeDelta.y * 1.3f * canvas.scaleFactor; 
             newTile.transform.localScale = Vector3.zero;
+            iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
 
             //animate everything down
             foreach (var icon in icons)
@@ -73,8 +74,6 @@ namespace ctac
                     0f
                 );
             }
-
-            iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
 
             var borderGo = newTile.transform.FindChild("Border").gameObject;
             var cardGo = newTile.transform.FindChild("Card").gameObject;
