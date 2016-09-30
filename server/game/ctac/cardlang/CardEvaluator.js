@@ -1181,7 +1181,7 @@ export default class CardEvaluator{
   addPieceDamageTaken(pieceDamages, pieceId, damage){
     let pieceStatus = pieceDamages[pieceId];
     let piece = this.pieceState.piece(pieceId);
-    if(!piece) return false;
+    if(!piece || !pieceStatus) return false;
 
     if(((piece.statuses & Statuses.Shield) == Statuses.Shield) && !pieceStatus.shieldRemoved){
       pieceStatus.shieldRemoved = true;
