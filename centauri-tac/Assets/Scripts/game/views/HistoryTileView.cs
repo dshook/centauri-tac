@@ -58,7 +58,7 @@ namespace ctac
                     {
                         var pieceCard = new CardModel();
                         pieceService.CopyPieceToCard(healthChange.originalPiece, pieceCard);
-                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), item.spellDamage);
+                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), 0);
                         hoveringCards.Add(healthChangeCard);
                     }
 
@@ -104,6 +104,7 @@ namespace ctac
             //copy over props from hovered to hover
             cardToShow.CopyProperties(hoverCardView.card);
             hoverCardView.card.gameObject = hoverGo;
+            hoverGo.name = "Hover Card for " + hoverCardView.card.id;
 
             hoverCardView.UpdateText(spellDamage);
 
