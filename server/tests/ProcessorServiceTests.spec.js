@@ -469,7 +469,7 @@ export default class ProcessorServiceTests
     });
 
     test('Repeating damage not overkilling', async (t) => {
-      t.plan(2);
+      t.plan(3);
       this.setupTest();
 
       var piece = this.spawnPiece(this.pieceState, 28, 1);
