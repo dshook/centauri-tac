@@ -11,6 +11,7 @@ namespace ctac {
     {
         public CardModel card { get; set; }
         public RectTransform rectTransform { get; set; }
+        public int? staticSpellDamage = null;
 
         public GameObject displayWrapper;
         public GameObject costGO;
@@ -76,7 +77,8 @@ namespace ctac {
         
             //hopefully this won't cause any issues updating the text with 0 spell damage
             //it should get updated shortly after on queue process completion
-            UpdateText(0);
+            //Pass in the staticSpellDamage to override though for history view sort of stuff
+            UpdateText(staticSpellDamage ?? 0);
         }
 
         void Update()

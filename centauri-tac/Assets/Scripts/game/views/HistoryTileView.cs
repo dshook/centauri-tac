@@ -104,6 +104,7 @@ namespace ctac
             //copy over props from hovered to hover
             cardToShow.CopyProperties(hoverCardView.card);
             hoverCardView.card.gameObject = hoverGo;
+            hoverCardView.staticSpellDamage = spellDamage;
             hoverGo.name = "Hover Card for " + hoverCardView.card.id;
 
             hoverCardView.UpdateText(spellDamage);
