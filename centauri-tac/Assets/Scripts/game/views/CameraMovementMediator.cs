@@ -15,6 +15,8 @@ namespace ctac
         [Inject] public CancelSelectTargetSignal cancelTarget { get; set; }
         [Inject] public SelectTargetSignal targetSelected { get; set; }
 
+        [Inject] public HistoryHoverSignal historyHover { get; set; }
+
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
@@ -25,6 +27,7 @@ namespace ctac
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
             pieceDragging.AddListener(onPieceDragging);
+            historyHover.AddListener(onHistoryHover);
 
             view.Init(raycastModel);
         }
@@ -60,6 +63,11 @@ namespace ctac
         private void onPieceDragging(PieceModel p)
         {
             view.setDragEnabled(p == null);
+        }
+
+        private void onHistoryHover(bool h)
+        {
+            view.zoomEnabled = !h;
         }
     }
 }

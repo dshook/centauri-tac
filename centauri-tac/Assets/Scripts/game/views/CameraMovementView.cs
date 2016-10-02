@@ -19,6 +19,7 @@ namespace ctac
         private RaycastModel raycastModel;
 
         private bool dragEnabled = false;
+        public bool zoomEnabled = true;
 
         bool dragging = false;
         float xSpeed = 10f;
@@ -49,13 +50,16 @@ namespace ctac
                 RotateCamera(false);
             }
 
-            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
+            if (zoomEnabled)
             {
-                ZoomInOut(true);
-            }
-            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
-            {
-                ZoomInOut(false);
+                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
+                {
+                    ZoomInOut(true);
+                }
+                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
+                {
+                    ZoomInOut(false);
+                }
             }
 
             UpdateDragging();

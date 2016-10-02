@@ -129,6 +129,8 @@ namespace ctac.signals
 
     [Singleton] public class ActionAttachCodeSignal : Signal<AttachCodeModel, SocketKey> { }
 
+    [Singleton] public class HistoryHoverSignal : Signal<bool> { }
+
     [Singleton] public class StartGameSettledSignal : Signal { }
 }
 

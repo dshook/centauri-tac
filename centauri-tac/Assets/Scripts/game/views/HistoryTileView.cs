@@ -1,8 +1,10 @@
+using ctac.signals;
 using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac
 {
@@ -17,6 +19,10 @@ namespace ctac
         private List<CardView> hoveringCards = new List<CardView>();
 
         public HistoryItem item { get; set; }
+        private bool hovering = false;
+
+        [Inject] public HistoryHoverSignal historyHoverSignal { get; set; }
+
 
         protected override void Start()
         {
@@ -24,10 +30,34 @@ namespace ctac
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
         }
 
+        void Update()
+        {
+            const float scrollAmt = 20f;
+            if (hovering && hoveringCards.Count > 1)
+            {
+                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
+                {
+                    for (int c = 1; c < hoveringCards.Count; c++)
+                    {
+                        hoveringCards[c].transform.localPosition = hoveringCards[c].transform.localPosition.AddX(scrollAmt);
+                    }
+                }
+                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
+                {
+                    for (int c = 1; c < hoveringCards.Count; c++)
+                    {
+                        hoveringCards[c].transform.localPosition = hoveringCards[c].transform.localPosition.AddX(-scrollAmt);
+                    }
+                }
+            }
+        }
+
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (item != null)
             {
+                hovering = true;
+                historyHoverSignal.Dispatch(true);
                 //show main card/piece as a card
                 if (item.triggeringCard != null)
                 {
@@ -84,6 +114,8 @@ namespace ctac
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            historyHoverSignal.Dispatch(false);
+            hovering = false;
             if (hoveringCards.Count > 0)
             {
                 for (int i = 0; i < hoveringCards.Count; i++)

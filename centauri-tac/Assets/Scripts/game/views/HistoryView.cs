@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SVGImporter;
 using UnityEngine.UI;
+using strange.extensions.signal.impl;
+using ctac.signals;
 
 namespace ctac
 {
@@ -11,10 +13,9 @@ namespace ctac
         [Inject]
         public IResourceLoaderService loader { get; set; }
 
-        [Inject]
-        public GameTurnModel turns { get; set; }
-        [Inject]
-        public GamePlayersModel players { get; set; }
+        [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
+
 
         private GameObject historyPanel;
         private GameObject historyTilePrefab;
@@ -60,6 +61,7 @@ namespace ctac
             buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
             var view = newTile.GetComponent<HistoryTileView>();
             view.item = item;
+            //view.HistoryHoverSignal = HistoryHoverSignal;
             float buttonHeight = buttonRect.sizeDelta.y * 1.3f * canvas.scaleFactor; 
             newTile.transform.localScale = Vector3.zero;
             iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
