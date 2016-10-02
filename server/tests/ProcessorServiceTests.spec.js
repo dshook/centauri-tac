@@ -488,6 +488,7 @@ export default class ProcessorServiceTests
 
       let hpChangeActions = actions.filter(a => a instanceof PieceHealthChange);
       t.equal(hpChangeActions.length, 3, 'There were only 3 hp change actions instead of the full 4');
+      t.equal(actions.filter(a => a instanceof PieceStatusChange).length, 1, 'Shield was also removed');
     });
   }
 }
