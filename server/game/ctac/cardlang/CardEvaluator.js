@@ -264,7 +264,7 @@ export default class CardEvaluator{
         let pieceSelectorParams = {
           selfPiece: piece,
           controllingPlayerId: pieceAction.playerId,
-          activatingPiece,
+          activatingPiece: activatingPiece || pieceAction.activatingPiece || null,
           targetPieceId: pieceAction.targetPieceId,
           savedPieces: pieceAction.savedPieces,
           position: pieceAction.position,
@@ -762,6 +762,11 @@ export default class CardEvaluator{
             }
           }
         }
+        //blast through all the items we need to add to the queue and associate the activating piece with them
+        //mainly for the client.  Done each loop so that the activating piece can be included in the action we're on
+        for(let action of queue){
+          action.activatingPieceId = pieceSelectorParams.activatingPiece ? pieceSelectorParams.activatingPiece.id : null;
+        }
       }
     }catch(e){
       if(e instanceof EvalError){
@@ -771,10 +776,7 @@ export default class CardEvaluator{
       throw e;
     }
 
-    //blast through all the items we need to add to the queue and associate the activating piece with them
-    //mainly for the client
     for(let action of queue){
-      action.activatingPieceId = activatingPiece ? activatingPiece.id : null;
       this.queue.push(action);
     }
     return true;
@@ -839,6 +841,7 @@ export default class CardEvaluator{
     for(let activatedTimer of activatedTimers){
       activatedEvents.push({
         piece: activatedTimer.piece,
+        activatingPiece: activatedTimer.piece,
         card: activatedTimer.card,
         savedPieces: activatedTimer.saved,
         playerId: activatedTimer.playerId,
