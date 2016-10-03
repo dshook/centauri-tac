@@ -1,15 +1,23 @@
 using strange.extensions.mediation.impl;
+using System;
 using TMPro;
+using UnityEngine;
 
 namespace ctac
 {
     public class PlayerResourceView : View
     {
-        public TextMeshProUGUI energyText;
+        public TextMeshProUGUI currentEnergyText;
+        public TextMeshProUGUI maxEnergyText;
+        public MeshRenderer fillRenderer;
 
         internal void init()
         {
-            energyText = GetComponentInChildren<TextMeshProUGUI>();
+            currentEnergyText = transform.FindChild("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
+            maxEnergyText = transform.FindChild("MaxEnergyText").GetComponent<TextMeshProUGUI>();
+
+            var energyBar = GameObject.Find("EnergyContainer").gameObject;
+            fillRenderer = energyBar.transform.FindChild("EnergyBarFill").GetComponent<MeshRenderer>();
         }
 
         void Update()
@@ -18,9 +26,13 @@ namespace ctac
 
         internal void updateText(int resource, int max)
         {
-            if (energyText != null)
+            if (currentEnergyText != null)
             {
-                energyText.text = string.Format("Energy {0} / {1}", resource, max);
+                currentEnergyText.text = string.Format("{0}", resource);
+                maxEnergyText.text = string.Format("{0}", max);
+                fillRenderer.material.SetInt("_CurrentHp", resource);
+                fillRenderer.material.SetInt("_MaxHp", Math.Max(max, resource));
+
             }
         }
     }
