@@ -1,13 +1,13 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ctac
 {
     public class HistoryMediator : Mediator
     {
-        [Inject]
-        public HistoryView view { get; set; }
+        [Inject] public HistoryView view { get; set; }
 
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -15,17 +15,18 @@ namespace ctac
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public ServerQueueProcessEnd qpc { get; set; }
-        [Inject] public ActionPassTurnSignal passTurn { get; set; }
 
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
-        [Inject] public ActionPlaySpellSignal spellPlayed { get; set; }
+        [Inject] public SpellPlayedSignal spellPlayed { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
         [Inject] public PieceHealthChangedSignal pieceHealthChange { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
+        [Inject] public IDebugService debug { get; set; }
+
         private List<HistoryItem> history = new List<HistoryItem>();
-        private HistoryItem currentItem = null;
+        private Dictionary<int?, HistoryItem> currentItems = new Dictionary<int?, HistoryItem>();
 
         public override void OnRegister()
         {
@@ -54,51 +55,60 @@ namespace ctac
         //built up item
         private void onQpc(int t)
         {
-            if (currentItem != null)
+            if (currentItems.Count > 0)
             {
-                pushHistory(currentItem);
-                currentItem = null;
+                pushHistory(currentItems.Values.ToList());
+                currentItems.Clear();
             }
         }
 
-        private void CreateCurrent(HistoryItemType type, int player)
+        /// <summary>
+        /// Get or create the current history item for the activating piece Id which the history items are grouped by
+        /// If one doesn't exist, create it with the player and type passed
+        /// </summary>
+        private HistoryItem GetCurrent(int? activatingPieceId, HistoryItemType type, int player)
         {
-            currentItem = new HistoryItem()
+            if (!activatingPieceId.HasValue)
+            {
+                //Dictionary can't store null values as keys so hack it to sentinal
+                activatingPieceId = -1;
+            }
+            if (currentItems.ContainsKey(activatingPieceId))
+            {
+                return currentItems[activatingPieceId];
+            }
+            var currentItem = new HistoryItem()
             {
                 type = type,
                 initiatingPlayerId = player,
                 spellDamage = possibleActions.GetSpellDamage(player),
                 healthChanges = new List<HistoryHealthChange>()
             };
+            currentItems[activatingPieceId] = currentItem;
+            return currentItem;
         }
 
-        //set up an event action here for any timers that trigger stuff between the turns
-        private void onPassTurn(PassTurnModel pass)
+        private void onSpawnPiece(PieceSpawnedModel pieceSpawned)
         {
-            if (currentItem == null)
-            {
-                //CreateCurrent(HistoryItemType.Event, );
-            }
+            if(pieceSpawned.piece.isHero) return;
+
+            var currentItem = GetCurrent(
+                pieceSpawned.spawnPieceAction.activatingPieceId, 
+                HistoryItemType.MinionPlayed, 
+                pieceSpawned.piece.playerId
+            );
+
+            currentItem.triggeringPiece = CopyPiece(pieceSpawned.piece);
         }
 
-        private void onSpawnPiece(PieceModel piece)
+        private void onSpellPlayed(SpellPlayedModel spellPlayed)
         {
-            if(piece.isHero) return;
-
-            if (currentItem == null)
-            {
-                CreateCurrent(HistoryItemType.MinionPlayed, piece.playerId);
-            }
-            currentItem.triggeringPiece = CopyPiece(piece);
-        }
-
-        private void onSpellPlayed(PlaySpellModel spell)
-        {
-            if (currentItem == null)
-            {
-                CreateCurrent(HistoryItemType.CardPlayed, spell.playerId);
-            }
-            var card = cards.Card(spell.cardInstanceId);
+            var currentItem = GetCurrent(
+                spellPlayed.playSpellAction.activatingPieceId, 
+                HistoryItemType.CardPlayed, 
+                spellPlayed.playSpellAction.playerId
+            );
+            var card = cards.Card(spellPlayed.playSpellAction.cardInstanceId);
             currentItem.triggeringCard = CopyCard(card);
         }
 
@@ -114,22 +124,25 @@ namespace ctac
         private void onPieceAttacked(AttackPieceModel atk)
         {
             var attacker = pieces.Piece(atk.attackingPieceId);
-            if (currentItem == null)
-            {
-                CreateCurrent(HistoryItemType.Attack, attacker.playerId);
-            }
+            var currentItem = GetCurrent(atk.activatingPieceId, HistoryItemType.Attack, attacker.playerId);
             currentItem.triggeringPiece = attacker;
         }
 
         private void onPieceHealthChanged(PieceHealthChangeModel phcm)
         {
-            //should be encapsulated under some other event
-            if (currentItem == null)
+            var piece = CopyPiece(pieces.Piece(phcm.pieceId));
+            //should be encapsulated under some other event, but could be from an event or deathrattle
+            var currentItem = GetCurrent(phcm.activatingPieceId, HistoryItemType.Event, piece.playerId);
+            //if (currentItem.initiatingPlayerId == -1)
+            //{
+            //    debug.LogWarning("Skipping piece health change with no current history item for " + phcm.activatingPieceId);
+            //    return;
+            //}
+            if (currentItem.triggeringPiece == null && phcm.activatingPieceId.HasValue)
             {
-                return;
+                currentItem.triggeringPiece = CopyPiece(pieces.Piece(phcm.activatingPieceId.Value));
             }
 
-            var piece = pieces.Piece(phcm.pieceId);
             currentItem.healthChanges.Add(new HistoryHealthChange()
             {
                 originalPiece = piece,
@@ -137,10 +150,13 @@ namespace ctac
             });
         }
 
-        private void pushHistory(HistoryItem h)
+        private void pushHistory(List<HistoryItem> items)
         {
-            history.Add(h);
-            view.AddItem(h);
+            history.AddRange(items);
+            foreach (var item in items)
+            {
+                view.AddItem(item);
+            }
         }
 
         private PieceModel CopyPiece(PieceModel src)

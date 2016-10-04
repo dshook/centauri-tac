@@ -57,6 +57,7 @@ namespace ctac.signals
     [Singleton] public class PieceArmorChangedSignal : Signal<PieceArmorChangeModel> { }
 
     [Singleton] public class ActionPlaySpellSignal : Signal<PlaySpellModel> { }
+    [Singleton] public class SpellPlayedSignal : Signal<SpellPlayedModel> { }
 
     [Singleton] public class PieceHoverSignal : Signal<PieceModel> { }
 
@@ -68,7 +69,7 @@ namespace ctac.signals
     [Singleton] public class TurnEndedSignal : Signal<GameTurnModel> { }
 
     [Singleton] public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
-    [Singleton] public class PieceSpawnedSignal : Signal<PieceModel> { }
+    [Singleton] public class PieceSpawnedSignal : Signal<PieceSpawnedModel> { }
     [Singleton] public class ActionCancelledSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
 
     [Singleton] public class PieceDiedSignal : Signal<PieceModel> { }

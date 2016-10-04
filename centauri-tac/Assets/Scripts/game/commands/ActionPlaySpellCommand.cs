@@ -13,12 +13,16 @@ namespace ctac
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
-        
+
+        [Inject]
+        public SpellPlayedSignal spellPlayed { get; set; }
+
         public override void Execute()
         {
             if(!processedActions.Verify(cardActivated.id)) return;
 
             destroyCard.Dispatch(cardActivated.cardInstanceId);
+            spellPlayed.Dispatch(new SpellPlayedModel() { playSpellAction = cardActivated });
         }
     }
 }

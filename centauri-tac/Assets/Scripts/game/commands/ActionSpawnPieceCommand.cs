@@ -62,7 +62,7 @@ namespace ctac
                 });
             }
 
-            pieceSpawned.Dispatch(pieceModel);
+            pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = spawnedPiece, piece = pieceModel });
             debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.cardTemplateId, spawnedPiece.playerId), socketKey);
         }
     }

@@ -14,6 +14,7 @@ namespace ctac
     {
         public HistoryItemType type { get; set; }
         public int initiatingPlayerId { get; set; }
+        public int? activatingPieceId { get; set; }
         public int spellDamage { get; set; } //what the spell damage was at the time
         public PieceModel triggeringPiece { get; set; }
         public CardModel triggeringCard { get; set; }

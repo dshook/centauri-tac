@@ -327,7 +327,7 @@ namespace ctac
             updateTauntTiles();
         }
 
-        private void onPieceSpawn(PieceModel piece)
+        private void onPieceSpawn(PieceSpawnedModel piece)
         {
             updateTauntTiles();
         }

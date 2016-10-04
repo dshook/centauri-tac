@@ -25,6 +25,7 @@ export default class SpawnPieceProcessor
       return;
     }
 
+
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
     //check if played in an unoccupied spot
@@ -38,6 +39,12 @@ export default class SpawnPieceProcessor
 
     var newPiece = this.pieceState.newFromCard(this.cardDirectory, action.cardTemplateId, action.playerId, action.position);
     newPiece.direction = action.direction;
+
+    //For pieces that spawn from cards and don't have an activating piece Id set already, set it to itself
+    //So the client can group together battlecry actions
+    if(!action.activatingPieceId){
+      action.activatingPieceId = newPiece.id;
+    }
 
     if(this.cardEvaluator.evaluatePieceEvent('playMinion', newPiece, {
       targetPieceId: action.targetPieceId,
