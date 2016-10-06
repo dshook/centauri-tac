@@ -19,6 +19,7 @@ namespace ctac
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
         [Inject] public SpellPlayedSignal spellPlayed { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
+        [Inject] public PieceBuffSignal pieceBuff { get; set; }
         [Inject] public PieceHealthChangedSignal pieceHealthChange { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
@@ -82,7 +83,7 @@ namespace ctac
                 type = type,
                 initiatingPlayerId = player,
                 spellDamage = possibleActions.GetSpellDamage(player),
-                healthChanges = new List<HistoryHealthChange>()
+                pieceChanges = new List<HistoryPieceChange>(),
             };
             currentItems[activatingPieceId] = currentItem;
             return currentItem;
@@ -121,6 +122,24 @@ namespace ctac
             }
         }
 
+        private void onPieceBuff(PieceBuffModel pieceBuff)
+        {
+            var piece = CopyPiece(pieces.Piece(pieceBuff.pieceId));
+            var currentItem = GetCurrent(pieceBuff.activatingPieceId, HistoryItemType.Event, piece.playerId);
+
+            if (currentItem.triggeringPiece == null && pieceBuff.activatingPieceId.HasValue)
+            {
+                currentItem.triggeringPiece = CopyPiece(pieces.Piece(pieceBuff.activatingPieceId.Value));
+            }
+
+            currentItem.pieceChanges.Add(new HistoryBuff()
+            {
+                type = HistoryPieceChangeType.HistoryBuff,
+                originalPiece = piece,
+                buff = pieceBuff
+            });
+        }
+
         private void onPieceAttacked(AttackPieceModel atk)
         {
             var attacker = pieces.Piece(atk.attackingPieceId);
@@ -133,18 +152,15 @@ namespace ctac
             var piece = CopyPiece(pieces.Piece(phcm.pieceId));
             //should be encapsulated under some other event, but could be from an event or deathrattle
             var currentItem = GetCurrent(phcm.activatingPieceId, HistoryItemType.Event, piece.playerId);
-            //if (currentItem.initiatingPlayerId == -1)
-            //{
-            //    debug.LogWarning("Skipping piece health change with no current history item for " + phcm.activatingPieceId);
-            //    return;
-            //}
+
             if (currentItem.triggeringPiece == null && phcm.activatingPieceId.HasValue)
             {
                 currentItem.triggeringPiece = CopyPiece(pieces.Piece(phcm.activatingPieceId.Value));
             }
 
-            currentItem.healthChanges.Add(new HistoryHealthChange()
+            currentItem.pieceChanges.Add(new HistoryHealthChange()
             {
+                type = HistoryPieceChangeType.HealthChange,
                 originalPiece = piece,
                 healthChange = phcm
             });

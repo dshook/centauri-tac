@@ -74,39 +74,43 @@ namespace ctac
                 var xOffset = 180f;
                 var damageSplat = loader.Load<GameObject>("DamageSplat");
                 var deathOverlay = loader.Load<GameObject>("DeathOverlay");
-                for (int i = 0; i < item.healthChanges.Count; i++)
+                for (int i = 0; i < item.pieceChanges.Count; i++)
                 {
-                    var healthChange = item.healthChanges[i];
+                    var pieceChange = item.pieceChanges[i];
 
                     CardView healthChangeCard = null;
                     //if the hp change is about the triggering piece reuse that card instead of making a new one
-                    if (item.triggeringPiece != null && healthChange.originalPiece.id == item.triggeringPiece.id)
+                    if (item.triggeringPiece != null && pieceChange.originalPiece.id == item.triggeringPiece.id)
                     {
                         healthChangeCard = hoveringCards[0];
                     }
                     else
                     {
                         var pieceCard = new CardModel();
-                        pieceService.CopyPieceToCard(healthChange.originalPiece, pieceCard);
+                        pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard);
                         healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), 0);
                         hoveringCards.Add(healthChangeCard);
                     }
 
-                    //death vs damage
-                    if (healthChange.originalPiece.health <= 0)
+                    if (pieceChange.type == HistoryPieceChangeType.HealthChange)
                     {
-                        var deathSplat = Instantiate(deathOverlay);
-                        deathSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
-                    }
-                    else
-                    {
-                        var dmgSplat = Instantiate(damageSplat);
-                        dmgSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
-                        var text = dmgSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
-                        var bonusText = dmgSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
+                        var hpChange = (HistoryHealthChange)pieceChange;
+                        //death vs damage
+                        if (pieceChange.originalPiece.health <= 0)
+                        {
+                            var deathSplat = Instantiate(deathOverlay);
+                            deathSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
+                        }
+                        else
+                        {
+                            var dmgSplat = Instantiate(damageSplat);
+                            dmgSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
+                            var text = dmgSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
+                            var bonusText = dmgSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
 
-                        text.text = healthChange.healthChange.change.ToString();
-                        bonusText.text = healthChange.healthChange.bonus + " " + healthChange.healthChange.bonusMsg;
+                            text.text = hpChange.healthChange.change.ToString();
+                            bonusText.text = hpChange.healthChange.bonus + " " + hpChange.healthChange.bonusMsg;
+                        }
                     }
                 }
             }
