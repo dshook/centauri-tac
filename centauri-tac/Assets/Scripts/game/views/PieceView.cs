@@ -22,9 +22,6 @@ namespace ctac {
         public TextMeshPro attackText;
         public TextMeshPro healthText;
         public TextMeshPro armorText;
-        public GameObject damageSplat;
-        public TextMeshPro damageSplatText;
-        public TextMeshPro damageSplatBonusText;
         public GameObject shield;
         public GameObject cloak;
         public GameObject paralyze;
@@ -73,9 +70,6 @@ namespace ctac {
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
             armorText = armorGO.GetComponent<TextMeshPro>();
-            damageSplat = faceCameraContainer.transform.FindChild("DamageSplat").gameObject;
-            damageSplatText = damageSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
-            damageSplatBonusText = damageSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
             shield = faceCameraContainer.transform.FindChild("Shield").gameObject;
             cloak = faceCameraContainer.transform.FindChild("Cloak").gameObject;
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
@@ -433,11 +427,11 @@ namespace ctac {
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
-            public float? postDelay { get { return null; } }
+            public float? postDelay { get { return 0.3f; } }
 
-            public GameObject damageSplat { get; set; }
-            public TextMeshPro text { get; set; }
-            public TextMeshPro bonusText { get; set; }
+            public Transform parent { get; set; }
+            public GameObject numberSplat { get; set; }
+
             public int damageTaken { get; set; }
             public int? bonus { get; set; }
             public string bonusMsg { get; set; }
@@ -445,16 +439,20 @@ namespace ctac {
             public void Init() { }
             public void Update()
             {
-                text.text = Math.Abs(damageTaken).ToString();
-                iTweenExtensions.ScaleTo(damageSplat, Vector3.one, 0.5f, 0);
-                iTweenExtensions.ScaleTo(damageSplat, Vector3.zero, 0.8f, 1);
+                var newNumberSplat = Instantiate(numberSplat, parent, true) as GameObject;
+                newNumberSplat.transform.localPosition = new Vector3(0, 0.5f, -0.5f);
+                var view = newNumberSplat.GetComponent<NumberSplatView>();
+                view.numberText = Math.Abs(damageTaken).ToString();
+                view.type = NumberSplatView.TextType.Damage;
+                view.animate = true;
+
                 if (bonus.HasValue && bonus != 0)
                 {
-                    bonusText.text = Math.Abs(bonus.Value).ToString() + " " + bonusMsg;
+                    view.bonusText = Math.Abs(bonus.Value).ToString(); //+ " " + bonusMsg;
                 }
                 else
                 {
-                    bonusText.text = "";
+                    view.bonusText = "";
                 }
                 Complete = true;
             }

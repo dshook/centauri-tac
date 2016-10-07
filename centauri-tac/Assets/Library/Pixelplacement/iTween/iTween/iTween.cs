@@ -37,6 +37,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using TMPro;
 #endregion
 
 /// <summary>
@@ -544,7 +545,7 @@ public class iTween : MonoBehaviour{
 	}	
 
 	/// <summary>
-	/// Changes a GameObject's alpha value over time with FULL customization options.  If a GUIText or GUITexture component is attached, it will become the target of the animation. Identical to using ColorTo and using the "a" parameter.
+	/// Changes a GameObject's alpha value over time with FULL customization options.  If a GUIText, TMP, or GUITexture component is attached, it will become the target of the animation. Identical to using ColorTo and using the "a" parameter.
 	/// </summary>
 	/// <param name="alpha">
 	/// A <see cref="System.Single"/> or <see cref="System.Double"/> for the final alpha value of the animation.
@@ -599,7 +600,7 @@ public class iTween : MonoBehaviour{
 	}		
 	
 	/// <summary>
-	/// Changes a GameObject's color values instantly then returns them to the provided properties over time with MINIMUM customization options.  If a GUIText or GUITexture component is attached, it will become the target of the animation.
+	/// Changes a GameObject's color values instantly then returns them to the provided properties over time with MINIMUM customization options.  If a GUIText, TMP, or GUITexture component is attached, it will become the target of the animation.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
@@ -701,6 +702,10 @@ public class iTween : MonoBehaviour{
 		//set tempColor and base fromColor:
 		if(target.GetComponent<GUITexture>()){
 			tempColor=fromColor=target.GetComponent<GUITexture>().color;	
+		}else if(target.GetComponent<TextMeshPro>()){
+			tempColor=fromColor=target.GetComponent<TextMeshPro>().color;
+		}else if(target.GetComponent<TextMeshProUGUI>()){
+			tempColor=fromColor=target.GetComponent<TextMeshProUGUI>().color;
 		}else if(target.GetComponent<GUIText>()){
 			tempColor=fromColor=target.GetComponent<GUIText>().material.color;
 		}else if(target.GetComponent<Renderer>()){
@@ -739,6 +744,10 @@ public class iTween : MonoBehaviour{
 		//apply fromColor:
 		if(target.GetComponent<GUITexture>()){
 			target.GetComponent<GUITexture>().color=fromColor;	
+		}else if(target.GetComponent<TextMeshPro>()){
+			target.GetComponent<TextMeshPro>().color=fromColor;	
+		}else if(target.GetComponent<TextMeshProUGUI>()){
+			target.GetComponent<TextMeshProUGUI>().color=fromColor;	
 		}else if(target.GetComponent<GUIText>()){
 			target.GetComponent<GUIText>().material.color=fromColor;
 		}else if(target.GetComponent<Renderer>()){
@@ -757,7 +766,7 @@ public class iTween : MonoBehaviour{
 	}		
 	
 	/// <summary>
-	/// Changes a GameObject's color values over time with MINIMUM customization options.  If a GUIText or GUITexture component is attached, they will become the target of the animation.
+	/// Changes a GameObject's color values over time with MINIMUM customization options.  If a GUIText, TMP, or GUITexture component is attached, they will become the target of the animation.
 	/// </summary>
 	/// <param name="target">
 	/// A <see cref="GameObject"/> to be the target of the animation.
@@ -3329,6 +3338,12 @@ public class iTween : MonoBehaviour{
 		if(GetComponent<GUITexture>()){
 			colors = new Color[1,3];
 			colors[0,0] = colors[0,1] = GetComponent<GUITexture>().color;
+		}else if(GetComponent<TextMeshPro>()){
+			colors = new Color[1,3];
+			colors[0,0] = colors[0,1] = GetComponent<TextMeshPro>().color;
+		}else if(GetComponent<TextMeshProUGUI>()){
+			colors = new Color[1,3];
+			colors[0,0] = colors[0,1] = GetComponent<TextMeshProUGUI>().color;
 		}else if(GetComponent<GUIText>()){
 			colors = new Color[1,3];
 			colors[0,0] = colors[0,1] = GetComponent<GUIText>().material.color;
@@ -4105,6 +4120,10 @@ public class iTween : MonoBehaviour{
 		if(GetComponent<GUITexture>()){
 			//guiTexture.color=colors[2];
 			GetComponent<GUITexture>().color=colors[0,2];
+		}else if(GetComponent<TextMeshPro>()){
+			GetComponent<TextMeshPro>().color=colors[0,2];
+		}else if(GetComponent<TextMeshProUGUI>()){
+			GetComponent<TextMeshProUGUI>().color=colors[0,2];
 		}else if(GetComponent<GUIText>()){
 			//guiText.material.color=colors[2];
 			GetComponent<GUIText>().material.color=colors[0,2];
@@ -4123,6 +4142,10 @@ public class iTween : MonoBehaviour{
 			if(GetComponent<GUITexture>()){
 				//guiTexture.color=colors[1];
 				GetComponent<GUITexture>().color=colors[0,1];
+			}else if(GetComponent<TextMeshPro>()){
+				GetComponent<TextMeshPro>().color=colors[0,1];
+			}else if(GetComponent<TextMeshProUGUI>()){
+				GetComponent<TextMeshProUGUI>().color=colors[0,1];
 			}else if(GetComponent<GUIText>()){
 				//guiText.material.color=colors[1];
 				GetComponent<GUIText>().material.color=colors[0,1];
@@ -4852,6 +4875,10 @@ public class iTween : MonoBehaviour{
 			colors[0] = colors[1] = target.GetComponent<GUITexture>().color;
 		}else if(target.GetComponent<GUIText>()){
 			colors[0] = colors[1] = target.GetComponent<GUIText>().material.color;
+		}else if(target.GetComponent<TextMeshPro>()){
+			colors[0] = colors[1] = target.GetComponent<TextMeshPro>().color;
+		}else if(target.GetComponent<TextMeshProUGUI>()){
+			colors[0] = colors[1] = target.GetComponent<TextMeshProUGUI>().color;
 		}else if(target.GetComponent<Renderer>()){
 			colors[0] = colors[1] = target.GetComponent<Renderer>().material.color;
 		}else if(target.GetComponent<Light>()){
@@ -4887,6 +4914,10 @@ public class iTween : MonoBehaviour{
 			target.GetComponent<GUITexture>().color=colors[3];
 		}else if(target.GetComponent<GUIText>()){
 			target.GetComponent<GUIText>().material.color=colors[3];
+		}else if(target.GetComponent<TextMeshPro>()){
+			target.GetComponent<TextMeshPro>().color=colors[3];
+		}else if(target.GetComponent<TextMeshProUGUI>()){
+			target.GetComponent<TextMeshProUGUI>().color=colors[3];
 		}else if(target.GetComponent<Renderer>()){
 			target.GetComponent<Renderer>().material.color=colors[3];
 		}else if(target.GetComponent<Light>()){

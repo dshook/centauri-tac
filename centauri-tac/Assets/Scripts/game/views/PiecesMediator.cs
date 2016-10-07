@@ -1,6 +1,7 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
@@ -37,6 +38,7 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public IMapService mapService { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
 
         public override void OnRegister()
         {
@@ -164,14 +166,14 @@ namespace ctac
             var view = piece.pieceView;
             view.piece.health = hpChange.newCurrentHealth;
 
+            var numberSplat = loader.Load<GameObject>("NumberSplat");
             animationQueue.Add(
                 new PieceView.TakeDamageAnim()
                 {
-                    text = view.damageSplatText,
-                    bonusText = view.damageSplatBonusText,
+                    parent = piece.pieceView.faceCameraContainer.transform,
                     bonus = hpChange.bonus,
                     bonusMsg = hpChange.bonusMsg,
-                    damageSplat = view.damageSplat,
+                    numberSplat = numberSplat,
                     damageTaken = hpChange.change
                 }
             );
