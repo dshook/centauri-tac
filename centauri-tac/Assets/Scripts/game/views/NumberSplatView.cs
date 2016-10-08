@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using System;
+using ctac.util;
 
 namespace ctac {
     public class NumberSplatView : MonoBehaviour
@@ -18,6 +19,12 @@ namespace ctac {
         private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1);
         private Color transparent = new Color(0,0,0,0);
 
+        private Color damageColor = ColorExtensions.HexToColor("FD0000");
+        private Color damageColorBot = ColorExtensions.HexToColor("470000");
+
+        private Color healColor = ColorExtensions.HexToColor("00F00B");
+        private Color healColorBot = ColorExtensions.HexToColor("006504");
+
         void Start()
         {
             damageSplatGo = transform.FindChild("Text").gameObject;
@@ -25,7 +32,23 @@ namespace ctac {
             damageSplatBonusGo = transform.FindChild("Bonus").gameObject;
             damageSplatBonusText = damageSplatBonusGo.GetComponent<TextMeshPro>();
 
-            damageSplatText.text = change.ToString();
+            //damage vs heal
+            if (change <= 0)
+            {
+                damageSplatText.color = damageColor;
+                damageSplatBonusText.color = damageColor;
+                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, damageColorBot, damageColorBot);
+                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, damageColorBot, damageColorBot);
+            }
+            else
+            {
+                damageSplatText.color = healColor;
+                damageSplatBonusText.color = healColor;
+                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, healColorBot, healColorBot);
+                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, healColorBot, healColorBot);
+            }
+
+            damageSplatText.text = string.Format("{0:+#;-#;0}", change);
 
             if (bonus.HasValue && bonus != 0)
             {
