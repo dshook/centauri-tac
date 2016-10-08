@@ -167,6 +167,7 @@ export default class CardEvaluator{
             evalActions.push({
               piece: piece,
               playerId: piece.playerId,
+              activatingPiece: piece,
               action: cardEventAction
             });
           }

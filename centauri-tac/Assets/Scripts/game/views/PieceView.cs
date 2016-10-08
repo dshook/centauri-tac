@@ -426,7 +426,7 @@ namespace ctac {
         public class TakeDamageAnim : IAnimate
         {
             public bool Complete { get; set; }
-            public bool Async { get { return false; } }
+            public bool Async { get { return true; } }
             public float? postDelay { get { return 0.3f; } }
 
             public Transform parent { get; set; }
