@@ -1,26 +1,21 @@
 ﻿using UnityEngine;
 using TMPro;
+using System;
 
 namespace ctac {
     public class NumberSplatView : MonoBehaviour
     {
-        public enum TextType
-        {
-            Damage,
-            Heal
-        }
-
         private GameObject damageSplatGo;
         private TextMeshPro damageSplatText;
         private GameObject damageSplatBonusGo;
         private TextMeshPro damageSplatBonusText;
 
-        public string numberText { get; set; }
+        public int change { get; set; }
+        public int? bonus { get; set; }
         public string bonusText { get; set; }
-        public TextType type { get; set; }
         public bool animate { get; set; }
 
-        private Vector3 punchSize = new Vector3(3.3f, 3.3f, 1);
+        private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1);
         private Color transparent = new Color(0,0,0,0);
 
         void Start()
@@ -30,16 +25,24 @@ namespace ctac {
             damageSplatBonusGo = transform.FindChild("Bonus").gameObject;
             damageSplatBonusText = damageSplatBonusGo.GetComponent<TextMeshPro>();
 
-            damageSplatText.text = numberText;
-            damageSplatBonusText.text = bonusText;
+            damageSplatText.text = change.ToString();
+
+            if (bonus.HasValue && bonus != 0)
+            {
+                damageSplatBonusText.text = Math.Abs(bonus.Value).ToString(); //+ " " + bonusText;
+            }
+            else
+            {
+                damageSplatBonusText.text = "";
+            }
 
             if (animate)
             {
-                iTweenExtensions.PunchScale(gameObject, punchSize, 0.8f, 0);
+                iTweenExtensions.PunchScale(gameObject, punchSize, 0.3f, 0);
                 //iTweenExtensions.ScaleTo(gameObject, Vector3.zero, 1.0f, 0.5f);
                 iTweenExtensions.ColorTo(damageSplatGo, transparent, 1f, 0.0f);
-                iTweenExtensions.ColorTo(damageSplatBonusGo, transparent, 1f, 0.0f);
-                iTweenExtensions.MoveToLocal(gameObject, Vector3.up, 2.5f, 0.0f);
+                iTweenExtensions.ColorTo(damageSplatBonusGo, transparent, 1.5f, 0.0f);
+                iTweenExtensions.MoveToLocal(gameObject, Vector3.up, 3.5f, 0.0f);
             }
         }
 

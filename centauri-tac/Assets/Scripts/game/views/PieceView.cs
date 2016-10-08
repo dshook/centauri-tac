@@ -432,7 +432,7 @@ namespace ctac {
             public Transform parent { get; set; }
             public GameObject numberSplat { get; set; }
 
-            public int damageTaken { get; set; }
+            public int change { get; set; }
             public int? bonus { get; set; }
             public string bonusMsg { get; set; }
 
@@ -442,18 +442,11 @@ namespace ctac {
                 var newNumberSplat = Instantiate(numberSplat, parent, true) as GameObject;
                 newNumberSplat.transform.localPosition = new Vector3(0, 0.5f, -0.5f);
                 var view = newNumberSplat.GetComponent<NumberSplatView>();
-                view.numberText = Math.Abs(damageTaken).ToString();
-                view.type = NumberSplatView.TextType.Damage;
+                view.change = change;
+                view.bonus = bonus;
+                view.bonusText = bonusMsg;
                 view.animate = true;
 
-                if (bonus.HasValue && bonus != 0)
-                {
-                    view.bonusText = Math.Abs(bonus.Value).ToString(); //+ " " + bonusMsg;
-                }
-                else
-                {
-                    view.bonusText = "";
-                }
                 Complete = true;
             }
         }

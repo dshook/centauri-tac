@@ -174,7 +174,7 @@ namespace ctac
                     bonus = hpChange.bonus,
                     bonusMsg = hpChange.bonusMsg,
                     numberSplat = numberSplat,
-                    damageTaken = hpChange.change
+                    change = hpChange.change
                 }
             );
 

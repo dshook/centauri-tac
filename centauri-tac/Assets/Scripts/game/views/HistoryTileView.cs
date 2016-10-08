@@ -110,14 +110,10 @@ namespace ctac
                             newNumberSplat.transform.localScale = new Vector3(140, 140, 1);
                             newNumberSplat.transform.localRotation = Quaternion.Euler(Vector3.zero);
                             var view = newNumberSplat.GetComponent<NumberSplatView>();
-                            view.numberText = hpChange.healthChange.change.ToString();
-                            view.type = NumberSplatView.TextType.Damage;
+                            view.change = hpChange.healthChange.change;
+                            view.bonus = hpChange.healthChange.bonus;
+                            view.bonusText = hpChange.healthChange.bonusMsg;
                             view.animate = false;
-
-                            if (hpChange.healthChange.bonus.HasValue && hpChange.healthChange.bonus != 0)
-                            {
-                                view.bonusText = Math.Abs(hpChange.healthChange.bonus.Value).ToString(); 
-                            }
                         }
                     }
                 }
