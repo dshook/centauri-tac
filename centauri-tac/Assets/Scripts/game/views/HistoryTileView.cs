@@ -1,5 +1,6 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -72,7 +73,7 @@ namespace ctac
 
                 //show all damage/heal events
                 var xOffset = 180f;
-                var damageSplat = loader.Load<GameObject>("DamageSplat");
+                var numberSplat = loader.Load<GameObject>("NumberSplat");
                 var deathOverlay = loader.Load<GameObject>("DeathOverlay");
                 for (int i = 0; i < item.pieceChanges.Count; i++)
                 {
@@ -103,13 +104,20 @@ namespace ctac
                         }
                         else
                         {
-                            var dmgSplat = Instantiate(damageSplat);
-                            dmgSplat.transform.SetParent(healthChangeCard.displayWrapper.transform, false);
-                            var text = dmgSplat.transform.FindChild("Text").GetComponent<TextMeshPro>();
-                            var bonusText = dmgSplat.transform.FindChild("Bonus").GetComponent<TextMeshPro>();
+                            //plop down the number splat scaled up and reset to the right position
+                            var newNumberSplat = Instantiate(numberSplat, healthChangeCard.displayWrapper.transform, false) as GameObject;
+                            newNumberSplat.transform.localPosition = new Vector3(0, 40.5f, -0.5f);
+                            newNumberSplat.transform.localScale = new Vector3(140, 140, 1);
+                            newNumberSplat.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                            var view = newNumberSplat.GetComponent<NumberSplatView>();
+                            view.numberText = hpChange.healthChange.change.ToString();
+                            view.type = NumberSplatView.TextType.Damage;
+                            view.animate = false;
 
-                            text.text = hpChange.healthChange.change.ToString();
-                            bonusText.text = hpChange.healthChange.bonus + " " + hpChange.healthChange.bonusMsg;
+                            if (hpChange.healthChange.bonus.HasValue && hpChange.healthChange.bonus != 0)
+                            {
+                                view.bonusText = Math.Abs(hpChange.healthChange.bonus.Value).ToString(); 
+                            }
                         }
                     }
                 }
