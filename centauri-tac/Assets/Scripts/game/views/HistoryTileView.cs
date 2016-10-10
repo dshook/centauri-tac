@@ -15,9 +15,13 @@ namespace ctac
         public IResourceLoaderService loader { get; set; }
         [Inject]
         public IPieceService pieceService { get; set; }
+        [Inject]
+        public IDebugService debug { get; set; }
 
         private CardCanvasHelperView cardCanvasHelper;
-        private List<CardView> hoveringCards = new List<CardView>();
+        //All the currently hovering cards indexed by either the piece or card Id they're for.  Piece Id's have their sign flipped
+        //so the Id's don't collied with cards
+        private Dictionary<int, CardView> hoveringCards = new Dictionary<int, CardView>();
 
         public HistoryItem item { get; set; }
         private bool hovering = false;
@@ -36,18 +40,27 @@ namespace ctac
             const float scrollAmt = 20f;
             if (hovering && hoveringCards.Count > 1)
             {
+                bool scrollLeft = false;
+                bool scrollRight = false;
                 if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    for (int c = 1; c < hoveringCards.Count; c++)
-                    {
-                        hoveringCards[c].transform.localPosition = hoveringCards[c].transform.localPosition.AddX(scrollAmt);
-                    }
+                    scrollRight = true;
                 }
                 if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    for (int c = 1; c < hoveringCards.Count; c++)
+                    scrollLeft = true;
+                }
+                if (scrollLeft || scrollRight)
+                {
+                    foreach (var key in hoveringCards)
                     {
-                        hoveringCards[c].transform.localPosition = hoveringCards[c].transform.localPosition.AddX(-scrollAmt);
+                        //skip the anchoring hovered card for the triggering piece or card
+                        if (
+                            (item.triggeringCard != null && key.Key == item.triggeringCard.id)
+                            || (item.triggeringPiece != null && key.Key == -item.triggeringPiece.id)
+                        ) { continue; }
+
+                        hoveringCards[key.Key].transform.localPosition = hoveringCards[key.Key].transform.localPosition.AddX(scrollLeft ? -scrollAmt : scrollAmt);
                     }
                 }
             }
@@ -62,13 +75,13 @@ namespace ctac
                 //show main card/piece as a card
                 if (item.triggeringCard != null)
                 {
-                    hoveringCards.Add(showCard(item.triggeringCard, Vector3.zero, item.spellDamage));
+                    hoveringCards[item.triggeringCard.id] = showCard(item.triggeringCard, Vector3.zero, item.spellDamage);
                 }
                 else if (item.triggeringPiece != null)
                 {
                     var pieceCard = new CardModel();
                     pieceService.CopyPieceToCard(item.triggeringPiece, pieceCard);
-                    hoveringCards.Add(showCard(pieceCard, Vector3.zero, item.spellDamage));
+                    hoveringCards[-item.triggeringPiece.id] = showCard(pieceCard, Vector3.zero, item.spellDamage);
                 }
 
                 //show all damage/heal events
@@ -80,17 +93,18 @@ namespace ctac
                     var pieceChange = item.pieceChanges[i];
 
                     CardView healthChangeCard = null;
-                    //if the hp change is about the triggering piece reuse that card instead of making a new one
-                    if (item.triggeringPiece != null && pieceChange.originalPiece.id == item.triggeringPiece.id)
+                    //if the hp change is about an existing hovered card, reuse that card instead of making a new one
+                    if (pieceChange.originalPiece != null && hoveringCards.ContainsKey(-pieceChange.originalPiece.id))
                     {
-                        healthChangeCard = hoveringCards[0];
+                        healthChangeCard = hoveringCards[-pieceChange.originalPiece.id];
                     }
                     else
                     {
                         var pieceCard = new CardModel();
                         pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard);
                         healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), 0);
-                        hoveringCards.Add(healthChangeCard);
+
+                        hoveringCards[-pieceChange.originalPiece.id] = healthChangeCard;
                     }
 
                     if (pieceChange.type == HistoryPieceChangeType.HealthChange)
@@ -126,9 +140,9 @@ namespace ctac
             hovering = false;
             if (hoveringCards.Count > 0)
             {
-                for (int i = 0; i < hoveringCards.Count; i++)
+                foreach(var key in hoveringCards) 
                 {
-                    Destroy(hoveringCards[i].card.gameObject);
+                    Destroy(hoveringCards[key.Key].card.gameObject);
                 }
                 hoveringCards.Clear();
             }
