@@ -55,8 +55,7 @@ namespace ctac
         {
 
             //pop in new button at top
-            var newTile = GameObject.Instantiate(historyTilePrefab);
-            newTile.transform.SetParent(historyPanel.transform, false);
+            var newTile = Instantiate(historyTilePrefab, historyPanel.transform, false) as GameObject;
             var buttonRect = newTile.GetComponent<RectTransform>();
             buttonRect.anchoredPosition3D = new Vector3(18.5f, panelTop, 0);
             var view = newTile.GetComponent<HistoryTileView>();
