@@ -37,7 +37,7 @@ namespace ctac
         internal void init()
         {
             historyPanel = this.gameObject;
-            historyTilePrefab = Resources.Load("UI/HistoryTile") as GameObject;
+            historyTilePrefab = loader.Load<GameObject>("UI/HistoryTile");
             canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
 
             iconMap = new Dictionary<HistoryItemType, SVGAsset>()

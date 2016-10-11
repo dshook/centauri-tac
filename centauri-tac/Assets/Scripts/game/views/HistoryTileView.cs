@@ -2,6 +2,7 @@ using ctac.signals;
 using strange.extensions.mediation.impl;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,6 +23,8 @@ namespace ctac
         //All the currently hovering cards indexed by either the piece or card Id they're for.  Piece Id's have their sign flipped
         //so the Id's don't collied with cards
         private Dictionary<int, CardView> hoveringCards = new Dictionary<int, CardView>();
+        //same structure for how many change things we put on top of the card we can use for positioning
+        private Dictionary<int, int> changeCounts = new Dictionary<int, int>();
 
         public HistoryItem item { get; set; }
         private bool hovering = false;
@@ -91,6 +94,18 @@ namespace ctac
                 for (int i = 0; i < item.pieceChanges.Count; i++)
                 {
                     var pieceChange = item.pieceChanges[i];
+                    changeCounts[pieceChange.originalPiece.id] = 
+                        changeCounts.ContainsKey(pieceChange.originalPiece.id) 
+                        ? changeCounts[pieceChange.originalPiece.id] + 1 
+                        : 1;
+                    var pieceChangeCount = changeCounts[pieceChange.originalPiece.id];
+                    var totalPieceChangeCount = item.pieceChanges.Where(p => p.originalPiece.id == pieceChange.originalPiece.id).Count();
+
+                    //gonna cap out the piece changes we can show so we don't end up with horribly broken UI in rare cases
+                    if (pieceChangeCount > 6)
+                    {
+                        continue;
+                    }
 
                     CardView healthChangeCard = null;
                     //if the hp change is about an existing hovered card, reuse that card instead of making a new one
@@ -120,7 +135,8 @@ namespace ctac
                         {
                             //plop down the number splat scaled up and reset to the right position
                             var newNumberSplat = Instantiate(numberSplat, healthChangeCard.displayWrapper.transform, false) as GameObject;
-                            newNumberSplat.transform.localPosition = new Vector3(0, 40.5f, -0.5f);
+                            var yPos = totalPieceChangeCount == 1 ? 40.5f : 120 - (pieceChangeCount * 40f);
+                            newNumberSplat.transform.localPosition = new Vector3(0, yPos, -2.0f);
                             newNumberSplat.transform.localScale = new Vector3(140, 140, 1);
                             newNumberSplat.transform.localRotation = Quaternion.Euler(Vector3.zero);
                             var view = newNumberSplat.GetComponent<NumberSplatView>();
@@ -146,6 +162,7 @@ namespace ctac
                 }
                 hoveringCards.Clear();
             }
+            changeCounts.Clear();
         }
 
         internal CardView showCard(CardModel cardToShow, Vector3 positionOffset, int spellDamage)
