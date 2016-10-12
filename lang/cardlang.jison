@@ -63,7 +63,7 @@
   return 'action'
 
 // actions about players
-(DrawCard|Discard|ChangeEnergy|GiveCard|ShuffleToDeck)
+(DrawCard|Discard|ChangeEnergy|GiveCard|ShuffleToDeck|ChargeUp)
   return 'action'
 
 //timer actions
