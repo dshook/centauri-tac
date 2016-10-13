@@ -2,6 +2,8 @@ using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
+using UnityEngine;
 
 namespace ctac
 {
@@ -60,7 +62,7 @@ namespace ctac
         {
             if (currentItems.Count > 0)
             {
-                pushHistory(currentItems.Values.ToList());
+                StartCoroutine("pushHistory", currentItems.Values.ToList());
                 currentItems.Clear();
             }
         }
@@ -168,12 +170,13 @@ namespace ctac
             });
         }
 
-        private void pushHistory(List<HistoryItem> items)
+        private IEnumerator pushHistory(List<HistoryItem> items)
         {
             history.AddRange(items);
             foreach (var item in items)
             {
                 view.AddItem(item);
+                yield return new WaitForSeconds(1f);
             }
         }
 
