@@ -37,6 +37,7 @@ namespace ctac
             spellPlayed.AddListener(onSpellPlayed);
             pieceAttacked.AddListener(onPieceAttacked);
             pieceHealthChange.AddListener(onPieceHealthChanged);
+            pieceBuff.AddListener(onPieceBuff);
             turnEnded.AddListener(onTurnEnd);
         }
 
@@ -47,6 +48,7 @@ namespace ctac
             spellPlayed.RemoveListener(onSpellPlayed);
             pieceAttacked.RemoveListener(onPieceAttacked);
             pieceHealthChange.RemoveListener(onPieceHealthChanged);
+            pieceBuff.AddListener(onPieceBuff);
             turnEnded.RemoveListener(onTurnEnd);
         }
 

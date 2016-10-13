@@ -250,6 +250,7 @@ export default class CardEvaluator{
   processActions(evalActions, activatingPiece, activatingPlayerId){
     //actions to be added to the real queue
     let queue = [];
+    let queueIndex = 0;
 
     try{
       let spawnLocations = []; //see Spawn
@@ -765,7 +766,10 @@ export default class CardEvaluator{
         }
         //blast through all the items we need to add to the queue and associate the activating piece with them
         //mainly for the client.  Done each loop so that the activating piece can be included in the action we're on
-        for(let action of queue){
+        //the queue index is persisted across the piece action loop so we only go over each item once with the appropriate
+        //pieceSelectorParams
+        for(queueIndex; queueIndex < queue.length; queueIndex++){
+          let action = queue[queueIndex];
           action.activatingPieceId = pieceSelectorParams.activatingPiece ? pieceSelectorParams.activatingPiece.id : null;
         }
       }

@@ -9,19 +9,21 @@ import AttackPiece from '../game/ctac/actions/AttackPiece.js';
 import PlaySpell from '../game/ctac/actions/PlaySpell.js';
 import AttachCode from '../game/ctac/actions/AttachCode.js';
 import ActivateCard from '../game/ctac/actions/ActivateCard.js';
+import PassTurn from '../game/ctac/actions/PassTurn.js';
 import Position from '../game/ctac/models/Position.js';
 import Direction from '../game/ctac/models/Direction.js';
 import Statuses from '../game/ctac/models/Statuses.js';
 
 export default class ProcessorServiceTests
 {
-  constructor(queue, cardDirectory, pieceState, cardEvaluator, cardState)
+  constructor(queue, cardDirectory, pieceState, cardEvaluator, cardState, turnState)
   {
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
+    this.turnState = turnState;
   }
 
   setupTest(){
@@ -29,6 +31,7 @@ export default class ProcessorServiceTests
     this.pieceState.reset();
     this.cardState.initPlayer(1);
     this.cardState.initPlayer(2);
+    this.turnState.passTurnTo(1);
   }
 
   spawnCards(){
@@ -489,6 +492,40 @@ export default class ProcessorServiceTests
       let hpChangeActions = actions.filter(a => a instanceof PieceHealthChange);
       t.equal(hpChangeActions.length, 3, 'There were only 3 hp change actions instead of the full 4');
       t.equal(actions.filter(a => a instanceof PieceStatusChange).length, 1, 'Shield was also removed');
+    });
+
+    test('Activating piece on timer events', async (t) => {
+      t.plan(6);
+      this.setupTest();
+
+      this.spawnCards();
+
+      let piece1 = this.spawnPiece(this.pieceState, 38, 1);
+      let piece2 = this.spawnPiece(this.pieceState, 38, 1);
+
+      //make sure the timers get set up
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece1);
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece2);
+
+      await this.queue.processUntilDone();
+
+      t.equal(this.cardEvaluator.startTurnTimers.length, 2, 'Timers were added');
+
+      //pass the turn to player 2 then back to 1
+      this.queue.push(new PassTurn(2, 1));
+      this.queue.push(new PassTurn(1, 2));
+      await this.queue.processUntilDone();
+
+      const generatedActions = this.queue.iterateCompletedSince();
+      let actions = [...generatedActions];
+
+      let buffActions = actions.filter(a => a instanceof PieceBuff);
+
+      t.equal(buffActions.length, 2, 'A buff action for each of the pieces');
+      t.equal(buffActions[0].pieceId, piece1.id, 'First buff action is for first piece');
+      t.equal(buffActions[0].activatingPieceId, piece1.id, 'First buff activating piece');
+      t.equal(buffActions[1].activatingPieceId, piece2.id, 'Second buff action is for second piece');
+      t.equal(buffActions[1].pieceId, piece2.id, 'Second buff activating piece');
     });
   }
 }

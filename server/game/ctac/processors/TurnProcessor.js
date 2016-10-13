@@ -1,9 +1,11 @@
+import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 import DrawCard from '../actions/DrawCard.js';
 
 /**
  * Handle the PassTurn action
  */
+@loglevel
 export default class TurnProcessor
 {
   constructor(turnState, players, playerResourceState, cardEvaluator, pieceState, statsState)
@@ -31,6 +33,7 @@ export default class TurnProcessor
       const toOkay = this.players.some(x => x.id === action.to);
 
       if (!fromOkay || !toOkay) {
+        this.log.warn("Couldn't find either the from or to player");
         return queue.cancel(action);
       }
     }
