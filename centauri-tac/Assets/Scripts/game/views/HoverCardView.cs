@@ -112,8 +112,7 @@ namespace ctac
 
         internal void showPieceCardWorld(PieceModel piece, Vector3 worldPosition, int spellDamage)
         {
-            pieceService.CopyPieceToCard(piece, hoverCardView.card);
-            hoverCardView.card.linkedPiece = piece;
+            pieceService.CopyPieceToCard(piece, hoverCardView.card, true);
 
             hoverCardView.UpdateBuffsDisplay();
 

@@ -11,7 +11,7 @@ namespace ctac
         PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null);
         void CopyPropertiesFromPiece(PieceModel src, PieceModel dest);
         void SetInitialMoveAttackStatus(PieceModel piece);
-        void CopyPieceToCard(PieceModel src, CardModel dest);
+        void CopyPieceToCard(PieceModel src, CardModel dest, bool link);
     }
 
     public class PieceService : IPieceService
@@ -109,7 +109,7 @@ namespace ctac
             dest.buffs = src.buffs;
         }
 
-        public void CopyPieceToCard(PieceModel src, CardModel dest)
+        public void CopyPieceToCard(PieceModel src, CardModel dest, bool link)
         {
             var templateCard = cardDirectory.Card(src.cardTemplateId);
             dest.cardTemplateId = src.cardTemplateId;
@@ -125,6 +125,11 @@ namespace ctac
             dest.tags = src.tags;
             dest.statuses = src.statuses;
             dest.metCondition = false;
+
+            if (link)
+            {
+                dest.linkedPiece = src;
+            }
         }
 
         public void SetInitialMoveAttackStatus(PieceModel piece)

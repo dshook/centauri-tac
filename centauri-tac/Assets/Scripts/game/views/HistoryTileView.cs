@@ -83,7 +83,7 @@ namespace ctac
                 else if (item.triggeringPiece != null)
                 {
                     var pieceCard = new CardModel();
-                    pieceService.CopyPieceToCard(item.triggeringPiece, pieceCard);
+                    pieceService.CopyPieceToCard(item.triggeringPiece, pieceCard, true);
                     hoveringCards[-item.triggeringPiece.id] = showCard(pieceCard, Vector3.zero, item.spellDamage);
                 }
 
@@ -116,7 +116,7 @@ namespace ctac
                     else
                     {
                         var pieceCard = new CardModel();
-                        pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard);
+                        pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard, true);
                         healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), 0);
 
                         hoveringCards[-pieceChange.originalPiece.id] = healthChangeCard;
@@ -179,6 +179,7 @@ namespace ctac
             hoverGo.name = "Hover Card for " + hoverCardView.card.id;
 
             hoverCardView.UpdateText(spellDamage);
+            hoverCardView.UpdateBuffsDisplay();
 
             //now for the fun positioning
 
