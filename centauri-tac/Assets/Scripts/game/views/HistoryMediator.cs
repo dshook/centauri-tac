@@ -21,8 +21,17 @@ namespace ctac
         [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
         [Inject] public SpellPlayedSignal spellPlayed { get; set; }
         [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
-        [Inject] public PieceBuffSignal pieceBuff { get; set; }
         [Inject] public PieceHealthChangedSignal pieceHealthChange { get; set; }
+
+        [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
+        [Inject] public ActionPieceDestroyedSignal pieceDestroyed { get; set; }
+        [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
+        [Inject] public PieceBuffSignal pieceBuff { get; set; }
+        [Inject] public PieceStatusChangeSignal pieceStatusChange { get; set; }
+        [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
+        [Inject] public PieceArmorChangedSignal pieceArmorChange { get; set; }
+        [Inject] public ActionAttachCodeSignal pieceCodeAttached { get; set; }
+        [Inject] public PieceUnsummonedSignal pieceUnsummoned { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
@@ -30,6 +39,7 @@ namespace ctac
 
         private List<HistoryItem> history = new List<HistoryItem>();
         private Dictionary<int?, HistoryItem> currentItems = new Dictionary<int?, HistoryItem>();
+
 
         public override void OnRegister()
         {
@@ -39,8 +49,17 @@ namespace ctac
             spellPlayed.AddListener(onSpellPlayed);
             pieceAttacked.AddListener(onPieceAttacked);
             pieceHealthChange.AddListener(onPieceHealthChanged);
-            pieceBuff.AddListener(onPieceBuff);
             turnEnded.AddListener(onTurnEnd);
+
+            pieceCharmed.AddListener(onCharmed);
+            pieceDestroyed.AddListener(onDestroyed);
+            pieceAttrChanged.AddListener(onAttrChange);
+            pieceBuff.AddListener(onPieceBuff);
+            pieceStatusChange.AddListener(onStatusChange);
+            pieceTransformed.AddListener(onTransformed);
+            pieceArmorChange.AddListener(onArmor);
+            pieceCodeAttached.AddListener(onCode);
+            pieceUnsummoned.AddListener(onUnsummon);
         }
 
         public override void onRemove()
@@ -50,8 +69,17 @@ namespace ctac
             spellPlayed.RemoveListener(onSpellPlayed);
             pieceAttacked.RemoveListener(onPieceAttacked);
             pieceHealthChange.RemoveListener(onPieceHealthChanged);
-            pieceBuff.AddListener(onPieceBuff);
             turnEnded.RemoveListener(onTurnEnd);
+
+            pieceCharmed.RemoveListener(onCharmed);
+            pieceDestroyed.RemoveListener(onDestroyed);
+            pieceAttrChanged.RemoveListener(onAttrChange);
+            pieceBuff.RemoveListener(onPieceBuff);
+            pieceStatusChange.RemoveListener(onStatusChange);
+            pieceTransformed.RemoveListener(onTransformed);
+            pieceArmorChange.RemoveListener(onArmor);
+            pieceCodeAttached.RemoveListener(onCode);
+            pieceUnsummoned.RemoveListener(onUnsummon);
         }
 
         //Generally how the history processor work is by listening for relavent events as they come in
@@ -168,6 +196,56 @@ namespace ctac
                 originalPiece = piece,
                 healthChange = phcm
             });
+        }
+
+        private void addGenericHistory(int pieceId, int? activatingPieceId)
+        {
+            var piece = CopyPiece(pieces.Piece(pieceId));
+            var currentItem = GetCurrent(activatingPieceId, HistoryItemType.Event, piece.playerId);
+
+            if (currentItem.triggeringPiece == null && activatingPieceId.HasValue)
+            {
+                currentItem.triggeringPiece = CopyPiece(pieces.Piece(activatingPieceId.Value));
+            }
+
+            currentItem.pieceChanges.Add(new GenericPieceChange()
+            {
+                type = HistoryPieceChangeType.Generic,
+                originalPiece = piece
+            });
+        }
+
+        public void onCharmed(CharmPieceModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onDestroyed(PieceDestroyedModel m, SocketKey k)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onAttrChange(PieceAttributeChangeModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onStatusChange(PieceStatusChangeModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onTransformed(TransformPieceModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onArmor(PieceArmorChangeModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onCode(AttachCodeModel m, SocketKey k)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
+        }
+        public void onUnsummon(UnsummonPieceModel m)
+        {
+            addGenericHistory(m.pieceId, m.activatingPieceId);
         }
 
         private IEnumerator pushHistory(List<HistoryItem> items)

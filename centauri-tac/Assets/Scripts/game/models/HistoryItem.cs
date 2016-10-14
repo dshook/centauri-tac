@@ -30,7 +30,8 @@ namespace ctac
     public enum HistoryPieceChangeType
     {
         HealthChange,
-        HistoryBuff
+        HistoryBuff,
+        Generic
     }
 
     public class HistoryHealthChange : HistoryPieceChange
@@ -41,5 +42,9 @@ namespace ctac
     public class HistoryBuff : HistoryPieceChange
     {
         public PieceBuffModel buff { get; set; }
+    }
+
+    public class GenericPieceChange : HistoryPieceChange
+    {
     }
 }
