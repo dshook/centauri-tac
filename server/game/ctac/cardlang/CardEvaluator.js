@@ -640,7 +640,7 @@ export default class CardEvaluator{
               }
               break;
             }
-            //Move(pieceSelector, tile in areaSelector, isTeleport)
+            //Move(pieceSelector, tile in areaSelector, isTeleport, ignoreCollisionCheck)
             case 'Move':
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
@@ -657,7 +657,8 @@ export default class CardEvaluator{
               }
 
               //preemptively check for colliding piece so the action can be scrubbed early
-              if(this.pieceState.pieceAt(moveTo.resolvedPosition.x, moveTo.resolvedPosition.z)){
+              let ignoreCollisionCheck = action.args[3] || false;
+              if(!ignoreCollisionCheck && this.pieceState.pieceAt(moveTo.resolvedPosition.x, moveTo.resolvedPosition.z)){
                 throw new EvalError("You can't move on top of another piece!");
               }
 

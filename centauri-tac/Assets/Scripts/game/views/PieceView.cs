@@ -364,7 +364,7 @@ namespace ctac {
         public class MoveAnim : IAnimate
         {
             public bool Complete { get; set; }
-            public bool Async { get { return false; } }
+            public bool Async { get { return isTeleport; } }
             public float? postDelay { get { return null; } }
 
             public PieceModel piece { get; set; }

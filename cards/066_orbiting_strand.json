@@ -9,8 +9,8 @@
 	"tags": ["Minion"],
 	"eventcode": "
 		ability(1, 1, 'Position Orbit'){
-			Move(SELF, TARGET & MINION, true)
-			Move(TARGET & MINION, SELF, true)
+			Move(SELF, TARGET & MINION, true, true)
+			Move(TARGET & MINION, SELF, true, true)
 		}
 	"
 }
