@@ -36,7 +36,7 @@ namespace ctac
             //assuming overdraw
             if (!cardDraw.overdrew) { return; }
 
-            var newCardModel = cardDirectory.NewFromTemplate(cardDraw.cardId, cardDraw.cardTemplateId, cardDraw.playerId);
+            var newCardModel = cardDirectory.NewFromTemplate(cardDraw.cardId.Value, cardDraw.cardTemplateId.Value, cardDraw.playerId);
 
             var deckCard = decks.Cards.FirstOrDefault(x => x.playerId == cardDraw.playerId); 
             var cardGameObject = deckCard.gameObject; 

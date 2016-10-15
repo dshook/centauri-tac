@@ -37,7 +37,7 @@ namespace ctac
         {
             if (!processedActions.Verify(cardDraw.id)) return;
 
-            var newCardModel = cardDirectory.NewFromTemplate(cardDraw.cardId, cardDraw.cardTemplateId, cardDraw.playerId);
+            var newCardModel = cardDirectory.NewFromTemplate(cardDraw.cardId.Value, cardDraw.cardTemplateId.Value, cardDraw.playerId);
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))
             {
