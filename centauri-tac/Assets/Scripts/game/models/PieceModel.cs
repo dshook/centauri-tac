@@ -81,6 +81,15 @@ namespace ctac
         }
 
         [JsonIgnore]
+        public bool canAttack
+        {
+            get
+            {
+                return attackCount < maxAttacks;
+            }
+        }
+
+        [JsonIgnore]
         private PieceView _pieceView;
 
         [JsonIgnore]

@@ -181,8 +181,15 @@ namespace ctac
             //check for attack range tiles
             if (selectedPiece.range.HasValue)
             {
-                var attackTiles = mapService.GetTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
-                setAttackRangeTiles(attackTiles.Values.ToList(), false);
+                if (selectedPiece.canAttack)
+                {
+                    var attackTiles = mapService.GetTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
+                    setAttackRangeTiles(attackTiles.Values.ToList(), false);
+                }
+                else
+                {
+                    setAttackRangeTiles(null, false);
+                }
             }
 
             //set movement and tile selected highlights

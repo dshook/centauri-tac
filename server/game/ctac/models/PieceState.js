@@ -101,7 +101,7 @@ export default class PieceState
 
   setInitialMoveAttackStatus(piece){
     piece.hasMoved = !(piece.statuses & Statuses.Charge) && piece.range === null;
-    piece.attackCount = (piece.statuses & Statuses.Charge) ? 0 : 1;
+    piece.attackCount = (piece.statuses & Statuses.Charge) ? 0 : 9;
   }
 
   remove(id){

@@ -135,7 +135,7 @@ namespace ctac
         public void SetInitialMoveAttackStatus(PieceModel piece)
         {
             piece.hasMoved = !FlagsHelper.IsSet(piece.statuses, Statuses.Charge) && piece.range == null;
-            piece.attackCount = FlagsHelper.IsSet(piece.statuses, Statuses.Charge) ? 0 : 1;
+            piece.attackCount = FlagsHelper.IsSet(piece.statuses, Statuses.Charge) ? 0 : 9;
         }
     }
 }
