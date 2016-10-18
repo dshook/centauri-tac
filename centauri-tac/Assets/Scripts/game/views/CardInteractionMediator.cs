@@ -29,6 +29,7 @@ namespace ctac
         [Inject] public MapModel map { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
 
         private CardModel draggedCard = null;
 
@@ -260,7 +261,7 @@ namespace ctac
                 if (hoveredObject.CompareTag("Card"))
                 {
                     var cardView = hoveredObject.GetComponent<CardView>();
-                    if (cardView != null && cardView != lastHoveredCard )
+                    if (cardView != null && cardView != lastHoveredCard && players.OpponentId(turns.currentPlayerId) != cardView.card.playerId )
                     {
                         //break out and don't hover if it hasn't been added to the hand of cards yet
                         if (!cards.Cards.Contains(cardView.card))
