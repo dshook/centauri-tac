@@ -42,6 +42,8 @@ namespace ctac
 
         public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null)
         {
+            GameObject pieceModelResource = resourceLoader.Load<GameObject>("Models/" + spawnedPiece.cardTemplateId + "/prefab");
+
             var piecePrefab = resourceLoader.Load<GameObject>("Piece");
 
             //position is x and z from server, and y based on the map
@@ -54,6 +56,16 @@ namespace ctac
             ) as GameObject;
             newPiece.transform.parent = contextView.transform;
             newPiece.name = "Piece " + spawnedPiece.pieceId;
+
+            //Set up new model if we have one
+            if (pieceModelResource != null)
+            {
+                var pieceModelChild = newPiece.transform.FindChild("Model");
+                pieceModelChild.DestroyChildren();
+                var newModelInstance = GameObject.Instantiate(pieceModelResource, pieceModelChild, false) as GameObject;
+                newModelInstance.transform.localPosition = Vector3.zero;
+                newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
+            }
 
             var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
