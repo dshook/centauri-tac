@@ -19,6 +19,7 @@ import PieceAura from '../actions/PieceAura.js';
 import CardAura from '../actions/CardAura.js';
 import MovePiece from '../actions/MovePiece.js';
 import TransformPiece from '../actions/TransformPiece.js';
+import ChargeUp from '../actions/ChargeUp.js';
 import PieceArmorChange from '../actions/PieceArmorChange.js';
 import AttachCode from '../actions/AttachCode.js';
 import UnsummonPiece from '../actions/UnsummonPiece.js';
@@ -349,6 +350,17 @@ export default class CardEvaluator{
                 this.selector.eventualNumber(action.args[1], pieceSelectorParams),
                 action.args[2],
                 action.args[3]
+              ));
+              break;
+            }
+            //ChargeUp(playerSelector, amount)
+            //Change a players charge by amount
+            case 'ChargeUp':
+            {
+              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              queue.push(new ChargeUp(
+                playerSelector,
+                this.selector.eventualNumber(action.args[1], pieceSelectorParams)
               ));
               break;
             }

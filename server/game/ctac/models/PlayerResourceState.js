@@ -12,12 +12,14 @@ export default class PlayerResourceState
     //map from playerId -> resource
     this.resources = {};
     this.maxResources = {};
+    this.charges = {};
   }
 
   init(playerId){
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;
       this.maxResources[playerId] = 0;
+      this.charges[playerId] = 0;
     }
   }
 
