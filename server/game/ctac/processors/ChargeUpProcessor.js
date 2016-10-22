@@ -4,9 +4,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ChargeUpProcessor
 {
-  constructor(playerResourceState)
+  constructor(playerResourceState, cardEvaluator)
   {
     this.playerResourceState = playerResourceState;
+    this.cardEvaluator = cardEvaluator;
   }
   /**
    * Proc
@@ -19,6 +20,8 @@ export default class ChargeUpProcessor
 
     this.playerResourceState.charges[action.playerId] += action.change;
     action.charge = this.playerResourceState.charges[action.playerId];
+
+    this.cardEvaluator.evaluatePlayerEvent('chargeChange', action.playerId);
 
     queue.complete(action);
     this.log.info('player %s got %s charge, now at %s',

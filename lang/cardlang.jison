@@ -13,7 +13,7 @@
   return 'event'
 
 //player events
-(cardDrawn|turnEnd|turnStart|playSpell|cardDiscarded)
+(cardDrawn|turnEnd|turnStart|playSpell|cardDiscarded|chargeChange)
   return 'event'
 
 //Targets are who the actions affect
@@ -53,6 +53,10 @@
   return 'count'
 (CardCount)
   return 'cardCount'
+
+//Player resource eNumbers
+(Charges|Resources)
+  return 'resource'
 
 //stats that change throughout the game
 (COMBOCOUNT)
@@ -293,6 +297,8 @@ eNumber
      { $$ = { eNumber: true, cardCount: true, selector: $3 }; }
   | stat
      { $$ = { stat: true, path: $1 }; }
+  | resource'('possibleRandSelector')'
+     { $$ = { resource: $1, selector: $3 }; }
   ;
 
 numberList

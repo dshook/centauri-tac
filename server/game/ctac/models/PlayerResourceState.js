@@ -49,4 +49,10 @@ export default class PlayerResourceState
   getMax(playerId){
     return this.maxResources[playerId];
   }
+
+  getByPath(resourceKey, playerId){
+    if(!this[resourceKey]) return null;
+
+    return this[resourceKey][playerId];
+  }
 }

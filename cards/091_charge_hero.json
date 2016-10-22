@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 91,
+	"name": "Charge Hero",
+	"description": "<b>Ability(2):</b> Gain a Charge. At 3 charges deal 4 damage to surrounding enemies.",
+	"cost": 0,
+	"attack": 0,
+	"health": 30,
+	"movement": 2,
+	"tags": ["Hero"],
+	"eventcode": "
+		ability(2, 1, 'Charge Up'){ ChargeUp(PLAYER, 1)  }
+		chargeChange{ Charges(PLAYER) >= 3 && Hit(Area(Square, 1, SELF), 4) }
+	"
+}
