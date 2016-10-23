@@ -9,6 +9,9 @@
 	"tags": ["Hero"],
 	"eventcode": "
 		ability(2, 1, 'Charge Up'){ ChargeUp(PLAYER, 1)  }
-		chargeChange{ Charges(PLAYER) >= 3 && Hit(Area(Square, 1, SELF), 4) }
+		chargeChange{
+			Charges(PLAYER) >= 3 &&
+			Hit(Area(Square, 1, SELF), 4)
+		}
 	"
 }
