@@ -61,7 +61,7 @@ namespace ctac
             if (pieceModelResource != null)
             {
                 var pieceModelChild = newPiece.transform.FindChild("Model");
-                pieceModelChild.DestroyChildren();
+                pieceModelChild.DestroyChildren(true);
                 var newModelInstance = GameObject.Instantiate(pieceModelResource, pieceModelChild, false) as GameObject;
                 newModelInstance.transform.localPosition = Vector3.zero;
                 newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
