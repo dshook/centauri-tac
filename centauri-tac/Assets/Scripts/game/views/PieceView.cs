@@ -50,7 +50,7 @@ namespace ctac {
         public bool enemiesInRange = false;
 
         private MeshRenderer meshRenderer;
-        private float outlineWidth = 3f;
+        private float outlineWidth = 0.02f;
         private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
         private Color moveOutlineColor = ColorExtensions.HexToColor("63FF32");
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
@@ -151,7 +151,7 @@ namespace ctac {
             else
             {
                 meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                meshRenderer.material.SetFloat("_Outline", 1f);
+                meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
 
             //statuses
