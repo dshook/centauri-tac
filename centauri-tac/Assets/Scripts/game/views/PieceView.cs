@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using ctac.util;
+using HighlightingSystem;
 
 namespace ctac {
     public class PieceView : View
@@ -50,7 +51,8 @@ namespace ctac {
         public bool enemiesInRange = false;
 
         private MeshRenderer meshRenderer;
-        private float outlineWidth = 0.02f;
+        private Highlighter highlight;
+        private float outlineWidth = 0.01f;
         private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
         private Color moveOutlineColor = ColorExtensions.HexToColor("63FF32");
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
@@ -91,6 +93,7 @@ namespace ctac {
             rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
 
             meshRenderer = model.GetComponentInChildren<MeshRenderer>();
+            highlight = model.GetComponentInChildren<Highlighter>();
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -114,11 +117,13 @@ namespace ctac {
 
             if (targetCandidate)
             {
+                highlight.ConstantOn(targetOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", targetOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
+                highlight.ConstantOn(selectedOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
@@ -131,6 +136,7 @@ namespace ctac {
                 && piece.movement > 0
             )
             {
+                highlight.ConstantOn(moveOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
@@ -145,11 +151,13 @@ namespace ctac {
                 && enemiesInRange
             )
             {
+                highlight.ConstantOn(attackOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else
             {
+                highlight.ConstantOff();
                 meshRenderer.material.SetColor("_OutlineColor", Color.black);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
