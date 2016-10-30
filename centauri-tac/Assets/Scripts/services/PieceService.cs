@@ -64,7 +64,7 @@ namespace ctac
                 pieceModelChild.DestroyChildren(true);
                 var newModelInstance = GameObject.Instantiate(pieceModelResource, pieceModelChild, false) as GameObject;
                 newModelInstance.transform.localPosition = Vector3.zero;
-                newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
+                //newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
             }
 
             var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
