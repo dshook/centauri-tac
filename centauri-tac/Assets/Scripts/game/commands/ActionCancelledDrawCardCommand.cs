@@ -15,6 +15,9 @@ namespace ctac
         public IDebugService debug { get; set; }
 
         [Inject]
+        public ICardService cardService { get; set; }
+
+        [Inject]
         public DrawCardModel cardDraw { get; set; }
         [Inject]
         public SocketKey socketKey { get; set; }
@@ -43,7 +46,7 @@ namespace ctac
             decks.Cards.Remove(deckCard);
             deckCard.gameObject = null;
 
-            newCardModel.SetupGameObject(cardGameObject);
+            cardService.SetupGameObject(newCardModel, cardGameObject);
             newCardModel.SetCardInPlay(contextView);
 
             animationQueue.Add(new CardsView.OverdrawCardAnim()

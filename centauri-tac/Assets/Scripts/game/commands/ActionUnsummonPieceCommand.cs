@@ -35,7 +35,7 @@ namespace ctac
         [Inject]
         public IPieceService pieceService { get; set; }
         [Inject]
-        public IResourceLoaderService loader { get; set; }
+        public ICardService cardService { get; set; }
 
         [Inject(ContextKeys.CONTEXT_VIEW)]
         public GameObject contextView { get; set; }
@@ -66,25 +66,15 @@ namespace ctac
             );
 
 
-            var newCardModel = cardDirectory.NewFromTemplate(unsummonedPiece.cardId, piece.cardTemplateId, piece.playerId);
-            GameObject cardPrefab = loader.Load<GameObject>("Card");
             var DeckGO = GameObject.Find("Deck");
+            var newCardModel = cardDirectory.NewFromTemplate(unsummonedPiece.cardId, piece.cardTemplateId, piece.playerId);
 
+            cardService.CreateCard(newCardModel, DeckGO.transform);
 
-            var newCard = GameObject.Instantiate(
-                cardPrefab,
-                Constants.cardSpawnPosition,
-                Quaternion.identity
-            ) as GameObject;
-            newCard.transform.SetParent(DeckGO.transform, false);
-            newCard.name = "Player " + piece.playerId + " Card " + unsummonedPiece.cardId;
-
-
-            newCardModel.SetupGameObject(newCard);
+            cardService.SetupGameObject(newCardModel, newCardModel.gameObject);
             newCardModel.SetCardInPlay(contextView);
 
             cardDrawn.Dispatch(newCardModel);
-
 
             debug.Log(string.Format("Piece {0} charmed", unsummonedPiece.pieceId), socketKey);
         }

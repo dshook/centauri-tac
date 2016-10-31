@@ -75,6 +75,7 @@ namespace ctac
             injectionBinder.Bind<IMapCreatorService>().To<MapCreatorService>().ToSingleton();
             injectionBinder.Bind<IMapService>().To<MapService>().ToSingleton();
             injectionBinder.Bind<IResourceLoaderService>().To<ResourceLoaderService>().ToSingleton();
+            injectionBinder.Bind<ICardService>().To<CardService>().ToSingleton();
             injectionBinder.Bind<IPieceService>().To<PieceService>().ToSingleton();
 
             //bind views to mediators

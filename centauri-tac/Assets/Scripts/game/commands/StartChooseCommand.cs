@@ -17,7 +17,7 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IMapService mapService { get; set; }
-        [Inject] public IResourceLoaderService loader { get; set; }
+        [Inject] public ICardService cardService { get; set; }
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -38,25 +38,19 @@ namespace ctac
             leftCardModel.tags.Add(Constants.chooseCardTag);
             rightCardModel.tags.Add(Constants.chooseCardTag);
 
-            var cardPrefab = loader.Load<GameObject>("Card");
+            cardService.CreateCard(leftCardModel, null, rightSpawnPosition);
+            cardService.CreateCard(rightCardModel, null, rightSpawnPosition);
 
-            var leftGameObject = GameObject.Instantiate(
-                cardPrefab,
-                rightSpawnPosition,
-                Quaternion.identity
-            ) as GameObject;
+            var leftGameObject = leftCardModel.gameObject;
+            var rightGameObject = rightCardModel.gameObject;
+
             leftGameObject.name = "Left Choice Card";
-            var rightGameObject = GameObject.Instantiate(
-                cardPrefab,
-                rightSpawnPosition,
-                Quaternion.identity
-            ) as GameObject;
             rightGameObject.name = "Right Choice Card";
 
-            leftCardModel.SetupGameObject(leftGameObject);
+            cardService.SetupGameObject(leftCardModel, leftGameObject);
             leftCardModel.SetCardInPlay(contextView);
 
-            rightCardModel.SetupGameObject(rightGameObject);
+            cardService.SetupGameObject(rightCardModel, rightGameObject);
             rightCardModel.SetCardInPlay(contextView);
 
             SetCardXPos(leftCardModel, -140f);

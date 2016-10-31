@@ -93,14 +93,5 @@ namespace ctac
             var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
             gameObject.transform.SetParent(cardParent.transform);
         }
-
-        public void SetupGameObject(GameObject cardGameObject)
-        {
-            gameObject = cardGameObject;
-            rectTransform = cardGameObject.GetComponent<RectTransform>();
-            var cardView = cardGameObject.AddComponent<CardView>();
-            cardView.card = this;
-            this.cardView = cardView;
-        }
     }
 }

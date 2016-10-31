@@ -1,15 +1,11 @@
 using strange.extensions.command.impl;
 using ctac.signals;
 using UnityEngine;
-using strange.extensions.context.api;
 
 namespace ctac
 {
     public class ActionSpawnDeckCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
         [Inject]
         public SpawnDeckModel spawnDeck { get; set; }
 
@@ -25,7 +21,7 @@ namespace ctac
         [Inject]
         public IDebugService debug { get; set; }
         [Inject]
-        public IResourceLoaderService loader { get; set; }
+        public ICardService cardService { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
@@ -34,26 +30,17 @@ namespace ctac
         {
             if (!processedActions.Verify(spawnDeck.id)) return;
 
-            var cardPrefab = loader.Load<GameObject>("Card");
             //holding area that all cards go into to start with until the deck mediator sorts them out
             var DeckGO = GameObject.Find("Deck");
 
             for (var c = 0; c < spawnDeck.cards; c++)
             {
-                var newCard = GameObject.Instantiate(
-                    cardPrefab,
-                    Constants.cardSpawnPosition,
-                    Quaternion.identity
-                ) as GameObject;
-                newCard.transform.SetParent(DeckGO.transform, false);
-                newCard.name = "Player " + spawnDeck.playerId + " Card " + c;
-
                 var cardModel = new CardModel()
                 {
                     playerId = spawnDeck.playerId,
-                    gameObject = newCard,
-                    rectTransform = newCard.GetComponent<RectTransform>()
                 };
+
+                cardService.CreateCard(cardModel, DeckGO.transform);
 
                 decks.Cards.Add(cardModel);
             }

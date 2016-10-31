@@ -1,9 +1,7 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
@@ -12,6 +10,8 @@ namespace ctac
 {
     public class HistoryTileView : View, IPointerEnterHandler, IPointerExitHandler
     {
+        [Inject]
+        public ICardService cardService { get; set; }
         [Inject]
         public IResourceLoaderService loader { get; set; }
         [Inject]
@@ -168,12 +168,14 @@ namespace ctac
         internal CardView showCard(CardModel cardToShow, Vector3 positionOffset, int spellDamage)
         {
             var selfPos = transform.position;
-            var hoverCardView = CreateHoverCard();
+            //copy over props from hovered to hover
+            var hoverCardModel = new CardModel();
+            cardToShow.CopyProperties(hoverCardModel);
+
+            var hoverCardView = CreateHoverCard(hoverCardModel);
 
             var hoverGo = hoverCardView.card.gameObject;
 
-            //copy over props from hovered to hover
-            cardToShow.CopyProperties(hoverCardView.card);
             hoverCardView.card.gameObject = hoverGo;
             hoverCardView.staticSpellDamage = spellDamage;
             hoverGo.name = "Hover Card for " + hoverCardView.card.id;
@@ -195,17 +197,14 @@ namespace ctac
             return hoverCardView;
         }
 
-        private CardView CreateHoverCard()
+        private CardView CreateHoverCard(CardModel hoverCardModel)
         {
-            var cardPrefab = loader.Load<GameObject>("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
 
-            var hoverCardGO = GameObject.Instantiate(
-                cardPrefab,
-                new Vector3(10000,10000, 0),
-                Quaternion.identity
-            ) as GameObject;
-            hoverCardGO.transform.SetParent(cardCanvas.transform, false);
+            hoverCardModel.playerId = -1;
+
+            cardService.CreateCard(hoverCardModel, cardCanvas.transform, new Vector3(10000,10000, 0));
+            var hoverCardGO = hoverCardModel.gameObject;
 
             //disable all colliders so you can't hover the hover
             foreach (var collider in hoverCardGO.GetComponentsInChildren<BoxCollider>())
@@ -217,12 +216,6 @@ namespace ctac
                 collider.enabled = false;
             }
 
-            //set up fake card model
-            var hoverCardModel = new CardModel()
-            {
-                playerId = -1,
-                gameObject = hoverCardGO
-            };
 
             var hoverCardView = hoverCardGO.AddComponent<CardView>();
             hoverCardView.card = hoverCardModel;

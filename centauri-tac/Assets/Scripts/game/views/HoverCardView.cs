@@ -8,7 +8,7 @@ namespace ctac
     {
         internal Signal<GameObject> pieceHover = new Signal<GameObject>();
         [Inject]
-        public IResourceLoaderService loader { get; set; }
+        public ICardService cardService { get; set; }
         [Inject]
         public IDebugService debug { get; set; }
         [Inject]
@@ -30,17 +30,18 @@ namespace ctac
 
         internal void init()
         {
-            //init the hover card that's hidden most of the time
-            var cardPrefab = loader.Load<GameObject>("Card");
             var cardCanvas = GameObject.Find(Constants.cardCanvas);
             canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
+            //set up fake card model
+            var hoverCardModel = new CardModel()
+            {
+                playerId = -1,
+            };
 
-            var hoverCardGO = GameObject.Instantiate(
-                cardPrefab,
-                new Vector3(10000,10000, 0),
-                Quaternion.identity
-            ) as GameObject;
-            hoverCardGO.transform.SetParent(cardCanvas.transform, false);
+            //init the hover card that's hidden most of the time
+            cardService.CreateCard(hoverCardModel, cardCanvas.transform, new Vector3(10000,10000, 0));
+            var hoverCardGO = hoverCardModel.gameObject;
+
             hoverCardGO.name = hoverName;
             hoverCardGO.tag = "HoverCard";
 
@@ -53,13 +54,6 @@ namespace ctac
             {
                 collider.enabled = false;
             }
-
-            //set up fake card model
-            var hoverCardModel = new CardModel()
-            {
-                playerId = -1,
-                gameObject = hoverCardGO
-            };
 
             hoverCardView = hoverCardGO.AddComponent<CardView>();
             hoverCardView.card = hoverCardModel;

@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		_MainTex("Texture", 2D) = "white" {}
+		_MainTex("Texture", 2D) = "transparent" {}
 		_DisplaceTex("Displacement Texture", 2D) = "white" {}
 	}
 	SubShader

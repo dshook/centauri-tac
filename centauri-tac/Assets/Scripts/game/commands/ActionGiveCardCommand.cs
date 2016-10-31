@@ -13,7 +13,7 @@ namespace ctac
         [Inject]
         public IDebugService debug { get; set; }
         [Inject]
-        public IResourceLoaderService loader { get; set; }
+        public ICardService cardService { get; set; }
 
         [Inject]
         public GiveCardModel cardGiven { get; set; }
@@ -38,16 +38,9 @@ namespace ctac
 
             var newCardModel = cardDirectory.NewFromTemplate(cardGiven.cardId, cardGiven.cardTemplateId, cardGiven.playerId);
 
-            var cardPrefab = loader.Load<GameObject>("Card");
+            cardService.CreateCard(newCardModel, null, spawnPosition);
 
-            var cardGameObject = GameObject.Instantiate(
-                cardPrefab,
-                spawnPosition,
-                Quaternion.identity
-            ) as GameObject;
-            cardGameObject.name = "Player " + cardGiven.playerId + " Card " + cardGiven.cardId;
-
-            newCardModel.SetupGameObject(cardGameObject);
+            cardService.SetupGameObject(newCardModel, newCardModel.gameObject);
             newCardModel.SetCardInPlay(contextView);
 
             cardGivenSignal.Dispatch(newCardModel);

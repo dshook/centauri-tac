@@ -7,13 +7,10 @@ namespace ctac
 {
     public class ActionShuffleToDeckCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
         [Inject]
         public IDebugService debug { get; set; }
         [Inject]
-        public IResourceLoaderService loader { get; set; }
+        public ICardService cardService { get; set; }
 
         [Inject]
         public ShuffleToDeckModel cardGiven { get; set; }
@@ -30,7 +27,6 @@ namespace ctac
         [Inject]
         public DecksModel decks { get; set; }
 
-
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
@@ -42,16 +38,8 @@ namespace ctac
 
             var newCardModel = cardDirectory.NewFromTemplate(cardGiven.cardId, cardGiven.cardTemplateId, cardGiven.playerId);
 
-            var cardPrefab = loader.Load<GameObject>("Card");
-
-            var cardGameObject = GameObject.Instantiate(
-                cardPrefab,
-                spawnPosition,
-                Quaternion.identity
-            ) as GameObject;
-            cardGameObject.name = "Player " + cardGiven.playerId + " Card " + cardGiven.cardId;
-            newCardModel.rectTransform = cardGameObject.GetComponent<RectTransform>();
-            newCardModel.gameObject = cardGameObject;
+            var DeckGO = GameObject.Find("Deck");
+            cardService.CreateCard(newCardModel, DeckGO.transform, spawnPosition);
 
             decks.Cards.Add(newCardModel);
 
