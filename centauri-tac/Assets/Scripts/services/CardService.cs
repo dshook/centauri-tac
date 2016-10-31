@@ -5,8 +5,8 @@ namespace ctac
     public interface ICardService
     {
         CardModel CreateCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null);
-
         void SetupGameObject(CardModel model, GameObject cardGameObject);
+        void UpdateCardArt(CardModel model);
     }
 
     public class CardService : ICardService
@@ -37,14 +37,7 @@ namespace ctac
 
             if (cardModel.cardTemplateId != 0)
             {
-                //set there is art to setup
-                var render = loader.Load<Texture>("Models/" + cardModel.cardTemplateId + "/render");
-                if (render != null)
-                {
-                    var art = newCard.transform.FindChild("Art").gameObject;
-                    var artRenderer = art.GetComponent<MeshRenderer>();
-                    artRenderer.material.SetTexture("_MainTex", render);
-                }
+                UpdateCardArt(cardModel);
             }
 
             return cardModel;
@@ -57,15 +50,24 @@ namespace ctac
             var cardView = cardGameObject.AddComponent<CardView>();
             cardView.card = model;
             model.cardView = cardView;
+            
+            UpdateCardArt(model);
+        }
 
+        public void UpdateCardArt(CardModel model)
+        {
             //set there is art to setup
             var render = loader.Load<Texture>("Models/" + model.cardTemplateId + "/render");
+            var displayWrapper = model.gameObject.transform.FindChild("DisplayWrapper").gameObject;
+            var art = displayWrapper.transform.FindChild("Art").gameObject;
+            var artRenderer = art.GetComponent<MeshRenderer>();
             if (render != null)
             {
-                var displayWrapper = cardGameObject.transform.FindChild("DisplayWrapper").gameObject;
-                var art = displayWrapper.transform.FindChild("Art").gameObject;
-                var artRenderer = art.GetComponent<MeshRenderer>();
                 artRenderer.material.SetTexture("_MainTex", render);
+            }
+            else
+            {
+                artRenderer.material.SetTexture("_MainTex", null);
             }
         }
     }

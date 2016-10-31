@@ -82,6 +82,7 @@ namespace ctac
         internal void showCard(Vector3 position, int spellDamage)
         {
             hoverCardView.UpdateText(spellDamage);
+            cardService.UpdateCardArt(hoverCardView.card);
 
             hoverCardView.rectTransform.anchoredPosition3D = position;
 
