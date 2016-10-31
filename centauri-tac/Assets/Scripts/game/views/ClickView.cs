@@ -5,9 +5,17 @@ using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac
 {
+    public class ClickModel
+    {
+        public GameObject clickedObject { get; set; }
+        public Tile tile { get; set; }
+        public PieceView piece { get; set; }
+        public bool isUp { get; set; }
+    }
+
     public class ClickView : View
     {
-        internal Signal<GameObject, bool> clickSignal = new Signal<GameObject, bool>();
+        internal Signal<ClickModel> clickSignal = new Signal<ClickModel>();
         RaycastModel raycastModel;
 
         bool active = false;
@@ -34,7 +42,7 @@ namespace ctac
                 //right click et al deselects
                 if (CrossPlatformInputManager.GetButtonDown("Fire2"))
                 {
-                    clickSignal.Dispatch(null, false);
+                    clickSignal.Dispatch(new ClickModel() { isUp = false });
                 }
             }
         }
@@ -43,11 +51,16 @@ namespace ctac
         {
             if (raycastModel.worldHit.HasValue)
             {
-                clickSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject, isUp);
+                clickSignal.Dispatch(new ClickModel() {
+                    clickedObject = raycastModel.worldHit.Value.collider.gameObject,
+                    piece = raycastModel.piece,
+                    tile = raycastModel.tile,
+                    isUp = isUp
+                });
             }
             else
             {
-                clickSignal.Dispatch(null, isUp);
+                clickSignal.Dispatch(new ClickModel() { isUp = isUp });
             }
         }
 

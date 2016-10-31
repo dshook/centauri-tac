@@ -51,14 +51,14 @@ namespace ctac
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
         }
 
-        private void onClick(GameObject clickedObject, bool isUp)
+        private void onClick(ClickModel clickModel)
         {
-            if (clickedObject != null)
+            if (clickModel.clickedObject != null)
             {
-                if (clickedObject.CompareTag("Piece"))
+                if (clickModel.piece)
                 {
-                    var pieceView = clickedObject.GetComponentInParent<PieceView>();
-                    pieceDragging.Dispatch(isUp ? null : pieceView.piece);
+                    var pieceView = clickModel.piece;
+                    pieceDragging.Dispatch(clickModel.isUp ? null : pieceView.piece);
                     if (cardTarget != null)
                     {
                         debug.Log("Selected target");
@@ -80,7 +80,7 @@ namespace ctac
                         abilityTarget = null;
                         pieceSelected.Dispatch(null);
                     }
-                    else if (pieceView.piece.currentPlayerHasControl && !isUp)
+                    else if (pieceView.piece.currentPlayerHasControl && !clickModel.isUp)
                     {
                         pieceSelected.Dispatch(pieceView.piece);
                     }
@@ -113,27 +113,27 @@ namespace ctac
 
                 //selected should never be null but check anyways
                 if (selectedPiece != null && selectedPiece.playerId == turns.currentPlayerId) {
-                    if (clickedObject.CompareTag("RotateSouth"))
+                    if (clickModel.clickedObject.CompareTag("RotateSouth"))
                     {
                         rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
                     }
-                    if (clickedObject.CompareTag("RotateWest"))
+                    if (clickModel.clickedObject.CompareTag("RotateWest"))
                     {
                         rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
                     }
-                    if (clickedObject.CompareTag("RotateNorth"))
+                    if (clickModel.clickedObject.CompareTag("RotateNorth"))
                     {
                         rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
                     }
-                    if (clickedObject.CompareTag("RotateEast"))
+                    if (clickModel.clickedObject.CompareTag("RotateEast"))
                     {
                         rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
                     }
                 }
 
-                if (clickedObject.CompareTag("Tile"))
+                if (clickModel.tile != null)
                 {
-                    var gameTile = map.tiles.Get(clickedObject.transform.position.ToTileCoordinates());
+                    var gameTile = clickModel.tile;
 
                     if (cardTarget != null && cardTarget.area != null)
                     {
@@ -186,7 +186,7 @@ namespace ctac
                 }
             }
 
-            if (isUp)
+            if (clickModel.isUp)
             {
                 pieceDragging.Dispatch(null);
             }
