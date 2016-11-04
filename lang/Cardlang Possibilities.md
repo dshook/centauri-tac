@@ -71,6 +71,7 @@
 * ~~Hit for damage~~
 * ~~draw card~~
 * ~~Heal target~~
+* pick mechanic
 * move/push piece
     - ~~jump to space in radius~~
     - hook piece which pulls to closest available tile in line
