@@ -51,8 +51,8 @@ export default class PlayerResourceState
   }
 
   getByPath(resourceKey, playerId){
-    if(!this[resourceKey]) return null;
-
-    return this[resourceKey][playerId];
+    let fixedKey = resourceKey.charAt(0).toLowerCase() + resourceKey.slice(1);
+    if(!this[fixedKey]) return null;
+    return this[fixedKey][playerId];
   }
 }

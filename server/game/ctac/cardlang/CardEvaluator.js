@@ -46,7 +46,8 @@ export default class CardEvaluator{
       attacks: {left: 'SELF'},
       ability: {left: 'SELF'},
       cardDrawn: {left: 'PLAYER'},
-      playSpell: {left: 'PLAYER'}
+      playSpell: {left: 'PLAYER'},
+      chargeChange: {left: 'PLAYER'}
     };
     this.targetableActions = [
       'Hit',
