@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 92,
+	"name": "Symbiote Harvester",
+	"description": "Can't Move or Attack. Spawn a 2/1 at the end of your turn.",
+	"cost": 2,
+	"attack": 1,
+	"health": 3,
+	"movement": 0,
+	"spellDamage": 0,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		endTurnTimer(1, 2, Spawn(8, 1))
+	}"
+}
