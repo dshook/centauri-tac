@@ -5,11 +5,11 @@ public class RandomRotate : MonoBehaviour
 {
     public Vector3 rotation = Vector3.zero;
 
-    private Quaternion originalRotation;
+    //private Quaternion originalRotation;
 
     void Start()
     {
-        originalRotation = transform.rotation;
+        //originalRotation = transform.rotation;
     }
 
     void Update()

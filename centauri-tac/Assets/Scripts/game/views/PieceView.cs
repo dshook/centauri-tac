@@ -65,7 +65,16 @@ namespace ctac {
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
             faceCameraContainer = piece.gameObject.transform.FindChild("FaceCameraContainer").gameObject;
-            textContainer = faceCameraContainer.transform.FindChild("TextContainer").gameObject;
+
+            hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
+            hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
+            hpBarfill = hpBarContainer.transform.FindChild("HpBarFill").gameObject;
+            hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
+            hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
+            hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
+            hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
+
+            textContainer = hpBarContainer.transform.FindChild("TextContainer").gameObject;
             attackGO = textContainer.transform.FindChild("Attack").gameObject;
             healthGO = textContainer.transform.FindChild("Health").gameObject;
             armorGO = textContainer.transform.FindChild("Armor").gameObject;
@@ -77,14 +86,6 @@ namespace ctac {
             paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
             root = faceCameraContainer.transform.FindChild("Root").gameObject;
             armorBG = faceCameraContainer.transform.FindChild("Armor").gameObject;
-
-            hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
-            hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
-            hpBarfill = hpBarContainer.transform.FindChild("HpBarFill").gameObject;
-            hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
-            hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
-            hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
-            hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
             circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
@@ -105,6 +106,22 @@ namespace ctac {
 
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
+
+            //find top of the mesh and adjust the hpbar to be just above it
+            Vector3[] verts = model.GetComponentInChildren<MeshFilter>().sharedMesh.vertices;
+            Vector3 topVertex = new Vector3(0, float.NegativeInfinity, 0);
+            for (int i = 0; i < verts.Length; i++)
+            {
+                //Vector3 vert = transform.TransformPoint(verts[i]);
+                Vector3 vert = verts[i];
+                if (vert.y > topVertex.y)
+                {
+                    topVertex = vert;
+                }
+            }
+            hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(
+                topVertex.y * 1.5f + 0.9f
+            );
 
             UpdateHpBar();
         }
