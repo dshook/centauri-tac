@@ -141,6 +141,7 @@ export default class ComponentManager
       // build component entry
       const entry = new Component();
       entry.httpServer = router;
+      entry.server = this.server;
       entry.restServer = rest;
       entry.sockServer = sockServer;
 

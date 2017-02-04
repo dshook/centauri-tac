@@ -12,6 +12,7 @@ import GamelistService from './services/GamelistService.js';
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import PortalComponent from './components/PortalComponent.js';
+import LogComponent from './components/LogComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import DispatchComponent from './components/DispatchComponent.js';
@@ -85,6 +86,14 @@ export default {
    */
   portal: {
     TComponent: PortalComponent,
+    services: [
+      ...common,
+    ],
+  },
+
+  //Client log view
+  log: {
+    TComponent: LogComponent,
     services: [
       ...common,
     ],

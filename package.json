@@ -90,6 +90,8 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^18.1.0",
     "grunt-tape": "0.0.2",
+    "hogan": "^1.0.2",
+    "hogan-express": "^0.5.2",
     "jsonwebtoken": "^7.0.1",
     "load-grunt-tasks": "^3.2.0",
     "lodash": "^4.13.1",
