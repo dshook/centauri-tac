@@ -10,9 +10,9 @@
       <div class="table-filters form-inline">
 
         <div class=" btn-toolbar">
-          <button 
-            ng-repeat="option in vm.logFilterOptions" 
-            class="{{ vm.buttonClass(option) }}" 
+          <button
+            ng-repeat="option in vm.logFilterOptions"
+            class="{{ vm.buttonClass(option) }}"
             ng-click="vm.toggleFilter(option)">
             {{option}}
           </button>
@@ -27,7 +27,7 @@
               <tr>
                   <th ng-repeat="(logKey, logGroup) in vm.filteredLog" colspan="4">
                    {{ logKey }}
-                  </th> 
+                  </th>
               </tr>
               <tr>
                 <th ng-if="0" ng-repeat-start="(logKey, logGroup) in vm.filteredLog"></th>
@@ -40,7 +40,7 @@
             </thead>
             <tbody>
               <tr ng-repeat="logRow in vm.filteredLog.General ">
-                <td ng-if="0" 
+                <td ng-if="0"
                   ng-repeat-start="(logKey, logGroup) in vm.filteredLog"
                 ></td>
                   <td

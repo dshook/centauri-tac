@@ -81,6 +81,7 @@
     "express": "^4.13.3",
     "express-jwt": "^3.4.0",
     "font-awesome": "^4.4.0",
+    "fs-promise": "^1.0.0",
     "grunt": "^1.0.1",
     "grunt-browserify": "^5.0.0",
     "grunt-cli": "^1.2.0",

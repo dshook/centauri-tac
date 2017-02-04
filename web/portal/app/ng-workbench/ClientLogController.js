@@ -40,10 +40,10 @@ export default class ClientLogController
   }
 
   filterLog(){
-    this.filterDirty = false;    
+    this.filterDirty = false;
     var catchAll = 'General';
 
-    var groupedLogs = _.groupBy( 
+    var groupedLogs = _.groupBy(
       this.log.filter(x => x && this.filter[x.level] ),
       (x) => x.key ? x.key.clientId : catchAll
     );
@@ -51,7 +51,7 @@ export default class ClientLogController
     //ensure the default catch all group that may have been filtered out
     if(!groupedLogs[catchAll]){
       groupedLogs[catchAll] = [];
-    } 
+    }
     //nasty ass add to new object so object properties will be sorted
     var tmp = {};
     var groupedLogKeys = Object.keys(groupedLogs).sort();
@@ -64,7 +64,7 @@ export default class ClientLogController
     }
     groupedLogs = tmp;
 
-    //"fill out" all the groups of logs based on timestamps 
+    //"fill out" all the groups of logs based on timestamps
     //so they can be displayed as one table
     for(let logKey in groupedLogs){
       for(let l = 0; l < groupedLogs[logKey].length; l++){
@@ -122,8 +122,8 @@ export default class ClientLogController
   buttonClass(level){
     if(!level) return '';
     return 'btn' +
-      (this.filter[level] ? ' active' : '' ) + 
-      ' btn-' + this.levelClass(level);    
+      (this.filter[level] ? ' active' : '' ) +
+      ' btn-' + this.levelClass(level);
   }
 
   labelClass(level){
@@ -132,6 +132,7 @@ export default class ClientLogController
       (this.levelClass(level) ? ' label-' + this.levelClass(level) : '');
   }
 
+  //add to new prop log.levelClass
   levelClass(level){
     if(!level) return '';
     level = level.toLowerCase();
@@ -145,9 +146,8 @@ export default class ClientLogController
       case 'error':
         return 'danger';
       default:
-        return '';      
+        return '';
     }
-
   }
 
   @ngApply async refresh()

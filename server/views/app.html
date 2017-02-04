@@ -1,3 +1,56 @@
-<div>
-  Hi from app {{key}}
+<div class="container-fluid">
+  <h2>
+    Log
+  </h2>
+
+  <table class="table table-striped table-limitsize" >
+    <thead>
+      <tr>
+        {{#groupedLogs.clients}}
+          <th colspan="4" class="column-edge">
+            {{ . }}
+          </th>
+        {{/groupedLogs.clients}}
+      </tr>
+      <tr>
+        {{#groupedLogs.clients}}
+          <th>Timestamp</th>
+          <th>Level</th>
+          <th>Component</th>
+          <th class="column-edge">Message</th>
+        {{/groupedLogs.clients}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#groupedLogs.orderedLogs}}
+        <tr>
+          {{#clients}}
+            <td>
+              {{#timestamp}}
+              <span class="unimportant">
+                {{ parentTimestamp }}
+              </span>
+              {{/timestamp}}
+            </td>
+
+            <td>
+              {{#level}}
+              <span class="label label-{{levelClass}}">{{ level }}</span>
+              {{/level}}
+            </td>
+
+            <td>
+              {{#key}}
+                <span class="unimportant">{{ key.componentName  }}</span>
+              {{/key}}
+            </td>
+
+            <td class="limit column-edge">
+              {{ message }}
+            </td>
+          {{/clients}}
+        </tr>
+      {{/groupedLogs.orderedLogs}}
+    </tbody>
+  </table>
 </div>
