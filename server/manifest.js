@@ -11,13 +11,11 @@ import GamelistService from './services/GamelistService.js';
 
 import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
-import PortalComponent from './components/PortalComponent.js';
 import LogComponent from './components/LogComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import DispatchComponent from './components/DispatchComponent.js';
 import MatchmakerComponent from './components/MatchmakerComponent.js';
-import ClientlogComponent from './components/ClientlogComponent.js';
 
 // common things for all backend components
 const common = [
@@ -35,13 +33,6 @@ export default {
 
   matchmaker: {
     TComponent: MatchmakerComponent,
-    services: [
-      ...common,
-    ],
-  },
-
-  clientlog: {
-    TComponent: ClientlogComponent,
     services: [
       ...common,
     ],
@@ -78,16 +69,6 @@ export default {
       PostgresService,
       DatastoreService,
       GamelistService,
-    ],
-  },
-
-  /**
-   * View status of the servers
-   */
-  portal: {
-    TComponent: PortalComponent,
-    services: [
-      ...common,
     ],
   },
 

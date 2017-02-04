@@ -29,7 +29,7 @@ export default class PortalComponent
         let clientLog = await fsp.readJson(process.env.CLIENT_LOG);
         let logs = clientLog.map(c => ClientLog.fromJSON(c));
         let groupedLogs = this.groupLog(logs);
-        this.log.info('groupedLogs', groupedLogs);
+        //this.log.info('groupedLogs', groupedLogs);
 
         res.render('app', {groupedLogs});
       }catch(e){

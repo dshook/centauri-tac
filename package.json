@@ -8,37 +8,23 @@
     "url": "git+https://github.com/dshook/centauri-tac.git"
   },
   "scripts": {
-    "dev": "grunt ct app:portal --dev=true",
     "dev-server": "npm run migrate && nodemon ./server",
     "start": "node ./server",
-    "build": "grunt ct app:portal",
     "test": "node tests | tap-spec",
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
     "dbreset": "db-migrate reset",
-    "prestart": "npm install && npm run migrate",
+    "prestart": "yarn && npm run migrate",
     "build-map": "node ./util/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
     "lint": "eslint server/**"
-  },
-  "browser": {
-    "angular": "./node_modules/angular/angular.js",
-    "ng-table": "./node_modules/ng-table/dist/ng-table.js"
-  },
-  "browserify-shim": {
-    "angular": "angular"
-  },
-  "browserify": {
-    "transform": [
-      "partialify"
-    ]
   },
   "contributors": [
     "Dillon Shook <dshook@alumni.nmt.edu> (http://dillonshook.com)",
     "Brandon Valosek <bvalosek@gmail.com> (https://bvalosek.com)"
   ],
-  "license": "Copyright Dillon Shook 2016",
+  "license": "Copyright Dillon Shook 2017",
   "bugs": {
     "url": "https://github.com/dshook/centauri-tac/issues"
   },
@@ -48,12 +34,6 @@
   "homepage": "https://github.com/dshook/centauri-tac#readme",
   "dependencies": {
     "aliasify": "^1.7.2",
-    "angular": "^1.4.5",
-    "angular-cookies": "^1.4.5",
-    "angular-moment": "^0.10.3",
-    "angular-resource": "^1.4.5",
-    "angular-ui-bootstrap": "^0.13.4",
-    "angular-ui-router": "^0.2.15",
     "babel-core": "^6.9.1",
     "babel-eslint": "^7.1.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -61,17 +41,12 @@
     "babel-preset-es2015-node": "^6.1.0",
     "babel-preset-stage-2": "^6.5.0",
     "babel-register": "^6.9.0",
-    "babelify": "^6.3.0",
     "bcrypt": "^0.8.7",
     "billy": "^1.7.3",
     "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
-    "bootstrap": "^3.3.5",
-    "browserify": "^11.0.1",
-    "browserify-shim": "^3.8.10",
     "chalk": "^1.1.1",
     "compression": "^1.5.2",
-    "cookie-parser": "^1.3.5",
     "core-decorators": "^0.2.0",
     "cors": "^2.7.1",
     "db-migrate": "^0.9.25",
@@ -80,27 +55,15 @@
     "eslint": "^3.15.0",
     "express": "^4.13.3",
     "express-jwt": "^3.4.0",
-    "font-awesome": "^4.4.0",
     "fs-promise": "^1.0.0",
-    "grunt": "^1.0.1",
-    "grunt-browserify": "^5.0.0",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-less": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-eslint": "^18.1.0",
-    "grunt-tape": "0.0.2",
     "hogan": "^1.0.2",
     "hogan-express": "^0.5.2",
     "jsonwebtoken": "^7.0.1",
-    "load-grunt-tasks": "^3.2.0",
     "lodash": "^4.13.1",
     "loglevel": "^1.4.0",
     "moment": "^2.10.6",
     "ng-table": "^0.5.4",
     "nodemon": "^1.9.2",
-    "partialify": "^3.1.5",
     "pg": "^5.1.0",
     "present": "0.0.6",
     "request": "^2.61.0",
