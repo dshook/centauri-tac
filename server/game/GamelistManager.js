@@ -7,11 +7,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GamelistManager
 {
-  constructor(messenger, games, eventEmitter, componentManager)
+  constructor(messenger, games, emitter, componentManager)
   {
     this.messenger = messenger;
     this.games = games;
-    this.eventEmitter = eventEmitter;
+    this.emitter = emitter;
     this.componentManager = componentManager;
   }
 
@@ -30,7 +30,7 @@ export default class GamelistManager
     }
 
     // instantiates game on the game host
-    await this.eventEmitter.emit('game', game);
+    await this.emitter.emit('game', game);
 
     // have host join the game (will fire update events)
     await this.playerJoin(playerId, game.id);
@@ -140,7 +140,7 @@ export default class GamelistManager
 
     // kill the game on the server
     const game = await this.games.getActive(null, gameId);
-    await this.eventEmitter.emit('game/shutdown', {gameId: game.id});
+    await this.emitter.emit('game/shutdown', {gameId: game.id});
 
     // remove from registry
     await this.games.remove(gameId);

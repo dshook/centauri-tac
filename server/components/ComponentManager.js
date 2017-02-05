@@ -15,7 +15,7 @@ export default class ComponentManager
 {
   constructor(
       app,
-      eventEmitter,
+      emitter,
       eventBinder,
       httpServer,
       httpConfig,
@@ -26,7 +26,7 @@ export default class ComponentManager
     this.config = httpConfig;
     this.cConfig = componentsConfig;
     this.app = app;
-    this.eventEmitter = eventEmitter;
+    this.emitter = emitter;
     this.eventBinder = eventBinder;
 
     //this.eventBinder.bindInstance(this);
