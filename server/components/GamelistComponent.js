@@ -30,11 +30,9 @@ export default class GamelistComponent
   }
 
   /**
-   * Clean up DB
+   * Clean up DB, TODO: figure out if anything is needed now
    */
   async cleanup()
   {
-    await this.games.removeZombieGamePlayers();
-    await this.games.removeZombieGames();
   }
 }

@@ -5,7 +5,6 @@ import SockHarness from 'sock-harness';
 import cors from 'cors';
 import SocketServer from 'socket-server';
 import Component from 'models/Component';
-import {rpc} from 'sock-harness';
 import TokenRPC from '../api/TokenRPC.js';
 
 /**
@@ -15,32 +14,24 @@ import TokenRPC from '../api/TokenRPC.js';
 export default class ComponentManager
 {
   constructor(
-      messenger,
       app,
+      eventEmitter,
+      eventBinder,
       httpServer,
       httpConfig,
-      netClient,
-      componentsConfig,
-      packageData,
+      componentsConfig
     )
   {
-    this.version = packageData.version;
     this.server = httpServer;
     this.config = httpConfig;
     this.cConfig = componentsConfig;
     this.app = app;
-    this.net = netClient;
-    this.messenger = messenger;
+    this.eventEmitter = eventEmitter;
+    this.eventBinder = eventBinder;
 
-    this._components = [];
-
-    this.net.bindInstance(this);
-
-    this.pingMaps = new Map();
+    //this.eventBinder.bindInstance(this);
 
     this.registered = new Map();
-
-    this.net.on('open', (...a) => this._onConnect(...a));
   }
 
   /**
@@ -56,47 +47,11 @@ export default class ComponentManager
   }
 
   /**
-   * POST to master server and ping occasionally
+   * Get Instance of component
    */
-  async register(component)
+  getComponent(name, T)
   {
-    this.log.info('registering %s component on %s',
-        component.type.name, component.realm);
-
-    await this.net.sendCommand('master', 'registerComponent', {component});
-
-    // make sure it worked
-    await this.net.recvCommand('component');
-  }
-
-  /**
-   * Cleanup all components in the registry
-   */
-  async shutdown()
-  {
-    this.log.info('going down!');
-
-    for (const c of this._components) {
-      await this.net.sendCommand('master', 'markComponentInactive', c.id);
-    }
-
-    this.log.info('deregistered all managed components');
-  }
-
-  /**
-   * Whenever master sends us a new component we're in charge of
-   */
-  @rpc.command('master', 'component')
-  recvComponent(client, {component})
-  {
-    this._components.push(component);
-    this.log.info('now managing %s, %s components total recv from master',
-        component.type.name, this._components.length);
-
-    // setup pings
-    // TODO: have this be configurable
-    setInterval(() => this.net.sendCommand(
-          'master', 'pingComponent', component.id), 5000);
+    return this.registered.get(name);
   }
 
   /**
@@ -121,7 +76,7 @@ export default class ComponentManager
       wss.pingInterval = this.cConfig.serverPingInterval;
       this.log.info('ping interval set to %s', wss.pingInterval);
       const sockServer = new SockHarness(wss, U => this.app.make(U));
-      sockServer.addPlugin(c => this._onHandler(c));
+      //sockServer.addPlugin(c => this._onHandler(c));
       sockServer.addHandler(TokenRPC);
 
       // rest endpoint
@@ -145,15 +100,7 @@ export default class ComponentManager
       entry.restServer = rest;
       entry.sockServer = sockServer;
 
-      entry.httpURL = publicURL;
-      entry.restURL = publicURL + '/rest';
-      entry.wsURL = publicURL
-        .replace(/^http/, 'ws')
-        .replace(/\/rest$/, '');
-
       entry.type = {name};
-      entry.realm = this.cConfig.realm;
-      entry.version = this.version;
       entry.typeName = name;
       entry.isActive = true;
 
@@ -162,10 +109,6 @@ export default class ComponentManager
       await component.start(entry);
       this.log.info('started component %s', name);
 
-      // master registers itself
-      if (name !== 'master') {
-        await this.register(entry);
-      }
     }
   }
 

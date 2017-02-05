@@ -32,7 +32,6 @@ export default class CentauriTacServer
   {
     // meta / component configs
     this.app.registerInstance('componentsConfig', new ComponentsConfig());
-    this.app.registerInstance('packageData', require('../package.json'));
 
     // Add all needed services for components
     this.log.info(`using components ${this.components.join(',')}`);

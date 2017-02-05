@@ -7,11 +7,12 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GamelistManager
 {
-  constructor(messenger, games, netClient)
+  constructor(messenger, games, eventEmitter, componentManager)
   {
     this.messenger = messenger;
     this.games = games;
-    this.net = netClient;
+    this.eventEmitter = eventEmitter;
+    this.componentManager = componentManager;
   }
 
   /**
@@ -19,20 +20,17 @@ export default class GamelistManager
    */
   async createNewGame(name, playerId)
   {
-    // get an available game server
-    const component = await this.net.getComponent('game');
-
     // registers the game
-    const game = await this.games.create(name, component.id, playerId);
+    const game = await this.games.create(name, playerId);
 
     if(game == null){
       this.log.info('Could not create game for %s component: %s player: %s'
-        ,name, component.id, playerId);
+        ,name, playerId);
       return null;
     }
 
     // instantiates game on the game host
-    await this.net.post(component, 'game', game);
+    await this.eventEmitter.emit('game', game);
 
     // have host join the game (will fire update events)
     await this.playerJoin(playerId, game.id);
@@ -142,7 +140,7 @@ export default class GamelistManager
 
     // kill the game on the server
     const game = await this.games.getActive(null, gameId);
-    await this.net.post(game.component, 'game/shutdown', {gameId: game.id});
+    await this.eventEmitter.emit('game/shutdown', {gameId: game.id});
 
     // remove from registry
     await this.games.remove(gameId);

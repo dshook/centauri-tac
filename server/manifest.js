@@ -4,26 +4,22 @@ import DatastoreService from './services/DatastoreService.js';
 import HashService from './services/HashService.js';
 import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
-import NetClientService from './services/NetClientService.js';
-import MessengerService from './services/MessengerService.js';
 import GameService from './services/GameService.js';
 import GamelistService from './services/GamelistService.js';
+import EventService from './services/EventService.js';
 
-import MasterComponent from './components/MasterComponent.js';
 import AuthComponent from './components/AuthComponent.js';
 import LogComponent from './components/LogComponent.js';
 import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
-import DispatchComponent from './components/DispatchComponent.js';
 import MatchmakerComponent from './components/MatchmakerComponent.js';
 
 // common things for all backend components
 const common = [
+  EventService,
   HttpService,
   HttpTransportService,
   AuthTokenService,
-  NetClientService,
-  MessengerService,
 ];
 
 /**
@@ -33,16 +29,6 @@ export default {
 
   matchmaker: {
     TComponent: MatchmakerComponent,
-    services: [
-      ...common,
-    ],
-  },
-
-  /**
-   * Runs game instances
-   */
-  dispatch: {
-    TComponent: DispatchComponent,
     services: [
       ...common,
     ],
@@ -77,18 +63,6 @@ export default {
     TComponent: LogComponent,
     services: [
       ...common,
-    ],
-  },
-
-  /**
-   * Central service registry
-   */
-  master: {
-    TComponent: MasterComponent,
-    services: [
-      ...common,
-      PostgresService,
-      DatastoreService,
     ],
   },
 

@@ -1,7 +1,5 @@
 import loglevel from 'loglevel-decorator';
 import Game from 'models/Game';
-import Component from 'models/Component';
-import ComponentType from 'models/ComponentType';
 import Player from 'models/Player';
 import GameState from 'models/GameState';
 import hrtime from 'hrtime-log-decorator';
@@ -25,12 +23,8 @@ export default class GameStore
   {
     let sql = `
 
-      select g.*, c.*, t.*, p.*, s.*, counts.current_player_count
+      select g.*, p.*, s.*, counts.current_player_count
       from games as g
-      join components c
-        on g.game_component_id = c.id
-      join component_types t
-        on c.component_type_id = t.id
       join players p
         on g.host_player_id = p.id
       left join game_states s
@@ -48,22 +42,15 @@ export default class GameStore
 
     const params = {};
 
-    if (realm !== null) {
-      sql += ' and c.realm = @realm ';
-      params.realm = realm;
-    }
-
     if (id !== null) {
       sql += ' and g.id = @id ';
       params.id = id;
     }
 
-    const models = [Game, Component, ComponentType, Player, GameState];
+    const models = [Game, Player, GameState];
 
     const resp = await this.sql.tquery(...models)(sql, params,
       (g, c, t, p, gs, cpc) => {
-        g.component = c;
-        g.component.type = t;
         g.hostPlayer = p;
         g.state = gs;
         g.currentPlayerCount = 0 | cpc['current_player_count'];
@@ -212,68 +199,21 @@ export default class GameStore
   }
 
   /**
-   * Remove players from dead games
-   */
-  async removeZombieGamePlayers()
-  {
-    const resp = await this.sql.query(`
-
-        delete from game_players
-        where game_id in
-          (select g.id from games g
-            join components c
-              on g.game_component_id = c.id
-            where not c.is_active)
-        returning game_id as id
-
-    `);
-
-    const count = resp.toArray().length;
-
-    if (count) {
-      this.log.info('cleaned up %s zombie game players', count);
-    }
-  }
-
-  /**
-   * Remove all empty games on dead compnoents
-   */
-  async removeZombieGames()
-  {
-    const resp = await this.sql.query(`
-
-        delete from games
-        where game_component_id in
-          (select id from components c where not c.is_active)
-        and id not in
-          (select distinct game_id as id from game_players)
-        returning id
-
-    `);
-
-    const ids = resp.toArray();
-
-    if (ids.length) {
-      this.log.info('cleaned up %s empty zombie games', ids.length);
-    }
-  }
-
-  /**
    * Create an entry for a game
    */
   @hrtime('created new game in %d ms')
-  async create(name, componentId, hostId, maxPlayerCount = 2)
+  async create(name, hostId, maxPlayerCount = 2)
   {
     const resp = await this.sql.query(`
 
         insert into games
           (name, game_component_id, host_player_id, max_player_count)
         values
-          (@name, @componentId, @hostId, @maxPlayerCount)
+          (@name, 0, @hostId, @maxPlayerCount)
         returning id
 
       `,
-      {name, componentId, hostId, maxPlayerCount});
+      {name, hostId, maxPlayerCount});
 
     const {id} = resp.firstOrNull();
 

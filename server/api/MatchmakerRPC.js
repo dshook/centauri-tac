@@ -1,7 +1,7 @@
 import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
 import roles from '../middleware/rpc/roles.js';
-import {dispatch} from 'rpc-messenger';
+import {on} from 'emitter-binder';
 
 /**
  * RPC handler for the matchmaker component
@@ -48,7 +48,7 @@ export default class MatchmakerRPC
   /**
    * If a player is conencted, inform them of their current game
    */
-  @dispatch.on('game:current')
+  @on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
     if (game) {
@@ -66,7 +66,7 @@ export default class MatchmakerRPC
   /**
    * broadcast status
    */
-  @dispatch.on('matchmaker:status')
+  @on('matchmaker:status')
   _status(status)
   {
     for (const c of this.clients) {

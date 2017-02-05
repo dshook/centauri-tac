@@ -1,7 +1,7 @@
 import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
-import {dispatch} from 'rpc-messenger';
 import roles from '../middleware/rpc/roles.js';
+import {on} from 'emitter-binder';
 
 /**
  * RPC handler for the gamelist component
@@ -34,8 +34,7 @@ export default class GamelistRPC
   /**
    * A game component is informing us of a state change
    */
-  @rpc.command('update:state')
-  @rpc.middleware(roles(['component']))
+  @on('update:state')
   async updateState(client, {gameId, stateId})
   {
     await this.manager.setGameState(gameId, stateId);
@@ -44,8 +43,7 @@ export default class GamelistRPC
   /**
    * A game component is switching the allow join param
    */
-  @rpc.command('update:allowJoin')
-  @rpc.middleware(roles(['component']))
+  @on('update:allowJoin')
   async updateAllowJoin(client, {gameId, allowJoin})
   {
     await this.manager.setAllowJoin(gameId, allowJoin);
@@ -54,8 +52,7 @@ export default class GamelistRPC
   /**
    * Client wants to create a game
    */
-  @rpc.command('create')
-  @rpc.middleware(roles(['player']))
+  @on('create')
   async createGame(client, {name}, auth)
   {
     const playerId = auth.sub.id;
@@ -65,8 +62,7 @@ export default class GamelistRPC
   /**
    * Component is building a game for a set of players
    */
-  @rpc.command('createFor')
-  @rpc.middleware(roles(['component']))
+  @on('createFor')
   async createGameFor(client, {name, playerIds})
   {
     const [host, ...others] = playerIds;
@@ -81,8 +77,7 @@ export default class GamelistRPC
   /**
    * A game component is informing us that a player has joined
    */
-  @rpc.command('playerJoined')
-  @rpc.middleware(roles(['component']))
+  @on('playerJoined')
   async playerJoined(client, {gameId, playerId})
   {
     this.manager.playerJoin(playerId, gameId);
@@ -91,8 +86,7 @@ export default class GamelistRPC
   /**
    * A game component is informing us that a player has parted
    */
-  @rpc.command('playerParted')
-  @rpc.middleware(roles(['component']))
+  @on('playerParted')
   async playerParted(client, {gameId, playerId})
   {
     this.manager.playerPart(playerId, gameId);
@@ -101,7 +95,7 @@ export default class GamelistRPC
   /**
    * Send game update to all connected
    */
-  @dispatch.on('game')
+  @on('game')
   _broadcastGame(game)
   {
     for (const c of this.clients) {
@@ -112,7 +106,7 @@ export default class GamelistRPC
   /**
    * Send game remove to all connected
    */
-  @dispatch.on('game:remove')
+  @on('game:remove')
   _broadcastRemoveGame(gameId)
   {
     for (const c of this.clients) {
@@ -123,7 +117,7 @@ export default class GamelistRPC
   /**
    * If a player is conencted, inform them of their current game
    */
-  @dispatch.on('game:current')
+  @on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
     for (const c of this.clients) {
