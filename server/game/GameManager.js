@@ -7,10 +7,10 @@ import GameHost from './GameHost.js';
 @loglevel
 export default class GameManager
 {
-  constructor(netClient)
+  constructor(emitter)
   {
     this.hosts = [];
-    this.net = netClient;
+    this.emitter = emitter;
 
     // all {client, playerId, gameId} across all games
     this.clients = [];
@@ -30,7 +30,7 @@ export default class GameManager
     this.log.info('player %s joining game %s', playerId, gameId);
 
     // tell gamelist we've a new player
-    await this.net.sendCommand('gamelist', 'playerJoined', {gameId, playerId});
+    await this.emitter.emit('playerJoined', {gameId, playerId});
 
     // master list
     this.clients.push({client, playerId, gameId});
@@ -62,7 +62,7 @@ export default class GameManager
     // remove from master list
     this.clients.splice(index, 1);
 
-    await this.net.sendCommand('gamelist', 'playerParted', {gameId, playerId});
+    await this.emitter.emit('playerParted', {gameId, playerId});
   }
 
   /**
@@ -72,7 +72,7 @@ export default class GameManager
   {
     this.log.info('creating new game %s %s', game.id, game.name);
 
-    const host = new GameHost(game, this.net);
+    const host = new GameHost(game, this.emitter);
     await host.startInstance();
     this.hosts.push(host);
 
@@ -81,7 +81,7 @@ export default class GameManager
     // inform server our state has changed to staging
     const gameId = game.id;
     const stateId = 2;
-    await this.net.sendCommand('gamelist', 'update:state', {gameId, stateId});
+    await this.emitter.emit('update:state', {gameId, stateId});
   }
 
   /**

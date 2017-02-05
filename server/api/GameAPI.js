@@ -24,16 +24,5 @@ export default class GameAPI
     const game = Game.fromJSON(req.body);
     await this.manager.create(game);
   }
-
-  /**
-   * Shutdown a game
-   */
-  @route.post('/shutdown')
-  @middleware(roles(['component']))
-  async shutdown(req)
-  {
-    const {gameId} = req.body;
-    await this.manager.shutdown(gameId);
-  }
 }
 

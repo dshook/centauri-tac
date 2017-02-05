@@ -7,12 +7,12 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GamelistManager
 {
-  constructor(messenger, games, emitter, componentManager)
+  constructor(games, emitter, componentManager, gameManager)
   {
-    this.messenger = messenger;
     this.games = games;
     this.emitter = emitter;
     this.componentManager = componentManager;
+    this.gameManager = gameManager;
   }
 
   /**
@@ -51,7 +51,7 @@ export default class GamelistManager
       return;
     }
 
-    await this.messenger.emit('game:current', {game: null, playerId});
+    await this.emitter.emit('game:current', {game: null, playerId});
 
     const game = await this.games.getActive(null, id);
 
@@ -75,7 +75,7 @@ export default class GamelistManager
     }
 
     // Otherwise just broadcast updated model
-    await this.messenger.emit('game', game);
+    await this.emitter.emit('game', game);
   }
 
   /**
@@ -87,7 +87,7 @@ export default class GamelistManager
 
     // if player is already in a game, KICK EM OUT
     if (currentGameId && currentGameId !== gameId) {
-      this.log.info('player %s already in %s, kicking', playerId, gameId);
+      this.log.warn('player %s already in %s, kicking', playerId, gameId);
       await this.playerPart(playerId);
     }
 
@@ -96,8 +96,8 @@ export default class GamelistManager
 
     // Fire update events
     const game = await this.games.getActive(null, gameId);
-    await this.messenger.emit('game:current', {game, playerId});
-    await this.messenger.emit('game', game);
+    await this.emitter.emit('game:current', {game, playerId});
+    await this.emitter.emit('game', game);
   }
 
   /**
@@ -109,7 +109,7 @@ export default class GamelistManager
 
     // broadcast updated game info
     const game = await this.games.getActive(null, gameId);
-    await this.messenger.emit('game', game);
+    await this.emitter.emit('game', game);
   }
 
   /**
@@ -121,7 +121,7 @@ export default class GamelistManager
 
     // broadcast updated game info
     const game = await this.games.getActive(null, gameId);
-    await this.messenger.emit('game', game);
+    await this.emitter.emit('game', game);
   }
 
   /**
@@ -140,13 +140,13 @@ export default class GamelistManager
 
     // kill the game on the server
     const game = await this.games.getActive(null, gameId);
-    await this.emitter.emit('game/shutdown', {gameId: game.id});
+    await this.gameManager.shutdown(game.id);
 
     // remove from registry
     await this.games.remove(gameId);
 
     // announce
-    await this.messenger.emit('game:remove', gameId);
+    await this.emitter.emit('game:remove', gameId);
   }
 
   /**
@@ -163,7 +163,7 @@ export default class GamelistManager
 
     // broadcast updated game info via gamelist
     const game = await this.games.getActive(null, gameId);
-    await this.messenger.emit('game', game);
+    await this.emitter.emit('game', game);
   }
 
   /**

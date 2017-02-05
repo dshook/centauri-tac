@@ -13,7 +13,6 @@ export default class GamelistRPC
   {
     this.manager = gamelistManager;
     this.games = games;
-    this.realm = componentsConfig.realm;
 
     this.clients = new Set();
   }
@@ -25,7 +24,7 @@ export default class GamelistRPC
   @rpc.middleware(roles(['player']))
   async sendGamelist(client)
   {
-    const games = await this.games.getActive(this.realm);
+    const games = await this.games.getActive();
     for (const g of games) {
       client.send('game', g);
     }
@@ -62,7 +61,7 @@ export default class GamelistRPC
   /**
    * Component is building a game for a set of players
    */
-  @on('createFor')
+  @on('gamelist:createFor')
   async createGameFor(client, {name, playerIds})
   {
     const [host, ...others] = playerIds;

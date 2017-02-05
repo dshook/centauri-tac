@@ -16,10 +16,10 @@ export default class GameStore
   }
 
   /**
-   * Active games on realm (or a single one)
+   * Active games on (or a single one)
    */
   @hrtime('queried games in %s ms')
-  async getActive(realm = null, id = null)
+  async getActive(id = null)
   {
     let sql = `
 

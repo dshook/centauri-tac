@@ -23,7 +23,7 @@ export default class MatchmakerRPC
   async queuePlayer(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.matchmaker.queuePlayer(playerId);
+    await this.matchmaker.queuePlayer(playerId, client);
   }
 
   /**

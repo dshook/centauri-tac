@@ -8,14 +8,14 @@ import {EventEmitter} from 'events';
 @loglevel
 export default class HostManager extends EventEmitter
 {
-  constructor(app, binder, game, net)
+  constructor(app, binder, game, emitter)
   {
     super();
 
     this.app = app;
     this.binder = binder;
     this.game = game;
-    this.net = net;
+    this.emitter = emitter;
 
     binder.addEmitter(this);
 
@@ -32,7 +32,7 @@ export default class HostManager extends EventEmitter
     this.game.stateId = stateId;
 
     const gameId = this.game.id;
-    await this.net.sendCommand('gamelist', 'update:state', {gameId, stateId});
+    await this.emitter.emit('update:state', {gameId, stateId});
 
     this.emit('gameState', stateId);
   }
@@ -47,8 +47,8 @@ export default class HostManager extends EventEmitter
     this.game.allowJoin = allowJoin;
 
     const gameId = this.game.id;
-    await this.net.sendCommand(
-        'gamelist', 'update:allowJoin', {gameId, allowJoin});
+    await this.emitter.emit(
+        'update:allowJoin', {gameId, allowJoin});
 
     this.emit('gameAllowJoin', allowJoin);
   }

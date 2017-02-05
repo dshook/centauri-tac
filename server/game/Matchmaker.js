@@ -10,12 +10,12 @@ const READY = 2;
 @loglevel
 export default class Matchmaker
 {
-  constructor(messenger, netClient)
+  constructor(emitter, gamelistManager)
   {
-    this.messenger = messenger;
-    this.net = netClient;
+    this.emitter = emitter;
+    this.gamelistManager = gamelistManager;
 
-    setInterval(() => this._processQueue(), 1000);
+    setInterval(() => this._processQueue(), 500);
 
     this.queue = [];
   }
@@ -23,7 +23,7 @@ export default class Matchmaker
   /**
    * Enter a player into the queue
    */
-  async queuePlayer(playerId)
+  async queuePlayer(playerId, client)
   {
     if (this.queue.find(x => x === playerId)) {
       this.log.info('not adding player %s, already in the queue');
@@ -36,8 +36,7 @@ export default class Matchmaker
     this.log.info('player %s waiting, %s in queue', playerId, this.queue.length);
     await this._emitStatus();
 
-    const {game} = await this.net.post(
-        'gamelist', 'game/currentGame', {playerId});
+    const game = await this.gamelistManager.getCurrentGame(playerId);
 
     // if the player's already in a game, send it on but them boot em put
     if (!game) {
@@ -47,7 +46,7 @@ export default class Matchmaker
       _.remove(this.queue, x => x === entry);
       this.log.info('player %s already in game %s, removing from queue',
           playerId, game.id);
-      this.messenger.emit('game:current', {playerId, game});
+      client.send('game:current', {playerId, game});
     }
 
     await this._emitStatus();
@@ -97,7 +96,7 @@ export default class Matchmaker
     // boom
     const name = '(automatch)';
     this.log.info('match found! creating game for %s', playerIds.join(','));
-    await this.net.sendCommand('gamelist', 'createFor', {name, playerIds});
+    await this.emitter.emit('gamelist:createFor', {name, playerIds});
   }
 
   /**
@@ -105,7 +104,7 @@ export default class Matchmaker
    */
   async _emitStatus()
   {
-    await this.messenger.emit('matchmaker:status', {
+    await this.emitter.emit('matchmaker:status', {
       queuedPlayers: this.queue.length,
     });
   }

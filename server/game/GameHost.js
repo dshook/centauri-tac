@@ -21,13 +21,13 @@ import UtilService from './ctac/services/UtilService.js';
 @loglevel
 export default class GameHost extends EventEmitter
 {
-  constructor(game, net)
+  constructor(game, emitter)
   {
     super();
 
     this.log.info('created new GameHost for game %s', game.id);
     this.game = game;
-    this.net = net;
+    this.emitter = emitter;
 
     // Relay emitted events to instance
     this.binder = new AggregateBinder();
@@ -53,7 +53,7 @@ export default class GameHost extends EventEmitter
     app.registerInstance('binder', this.binder);
     app.registerInstance('game', this.game);
 
-    const manager = new HostManager(app, this.binder, this.game, this.net);
+    const manager = new HostManager(app, this.binder, this.game, this.emitter);
     app.registerInstance('host', manager);
 
     // TODO: pull this out to configs
