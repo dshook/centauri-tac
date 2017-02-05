@@ -36,8 +36,6 @@ export default class GameStore
           group by game_id) as counts
         on g.id = counts.game_id
 
-      where c.is_active
-
     `;
 
     const params = {};
@@ -50,7 +48,7 @@ export default class GameStore
     const models = [Game, Player, GameState];
 
     const resp = await this.sql.tquery(...models)(sql, params,
-      (g, c, t, p, gs, cpc) => {
+      (g, p, gs, cpc) => {
         g.hostPlayer = p;
         g.state = gs;
         g.currentPlayerCount = 0 | cpc['current_player_count'];
@@ -207,9 +205,9 @@ export default class GameStore
     const resp = await this.sql.query(`
 
         insert into games
-          (name, game_component_id, host_player_id, max_player_count)
+          (name, host_player_id, max_player_count)
         values
-          (@name, 0, @hostId, @maxPlayerCount)
+          (@name, @hostId, @maxPlayerCount)
         returning id
 
       `,
@@ -217,7 +215,20 @@ export default class GameStore
 
     const {id} = resp.firstOrNull();
 
-    const game = await this.getActive(null, id);
+    const game = await this.getActive(id);
     return game;
+  }
+
+  /**
+   * Clean up zombie games hanging around with no players in them
+   */
+  async cleanupGames()
+  {
+    await this.sql.query(`
+      DELETE
+      FROM games G
+      WHERE (SELECT count(*) FROM game_players GP WHERE G.id = GP.game_id) = 0
+        AND G.registered < NOW() - INTERVAL '5 minutes'
+    `);
   }
 }

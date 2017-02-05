@@ -1,7 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import GamelistRPC from '../api/GamelistRPC.js';
 
-//const CLEANUP_INTERVAL = 120 * 1000;
+const CLEANUP_INTERVAL = 30 * 1000;
 
 /**
  * Game server component that provides lists of running games
@@ -12,7 +12,7 @@ export default class GamelistComponent
   constructor(games)
   {
     this.games = games;
-    //setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
+    setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
   }
 
   /**
@@ -31,5 +31,7 @@ export default class GamelistComponent
    */
   async cleanup()
   {
+    this.log.info('Cleanup up Games');
+    this.games.cleanupGames();
   }
 }

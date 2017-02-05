@@ -7,9 +7,6 @@
         public int id { get; set; }
         public string name { get; set; }
         public int maxPlayerCount { get; set; }
-        public int currentPlayerCount { get; set; }
-        public int componentId { get; set; }
-        public Component component { get; set; }
         public int hostPlayerId { get; set; }
         public HostPlayer hostPlayer { get; set; }
         public string registered { get; set; }
