@@ -8,7 +8,9 @@ export default class EventService
 {
   constructor(app)
   {
-    app.registerSingleton('emitter', EventEmitter);
-    app.registerSingleton('eventBinder', EmitterBinder);
+    let emitter = new EventEmitter();
+    app.registerInstance('emitter', emitter);
+    let binder = new EmitterBinder(emitter);
+    app.registerInstance('eventBinder', binder);
   }
 }

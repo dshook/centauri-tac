@@ -29,8 +29,6 @@ export default class ComponentManager
     this.emitter = emitter;
     this.eventBinder = eventBinder;
 
-    //this.eventBinder.bindInstance(this);
-
     this.registered = new Map();
   }
 
@@ -75,7 +73,7 @@ export default class ComponentManager
       const wss = new SocketServer(raw, prefix);
       wss.pingInterval = this.cConfig.serverPingInterval;
       this.log.info('ping interval set to %s', wss.pingInterval);
-      const sockServer = new SockHarness(wss, U => this.app.make(U));
+      const sockServer = new SockHarness(wss, U => this.app.make(U), this.eventBinder);
       //sockServer.addPlugin(c => this._onHandler(c));
       sockServer.addHandler(TokenRPC);
 
@@ -103,6 +101,8 @@ export default class ComponentManager
       entry.type = {name};
       entry.typeName = name;
       entry.isActive = true;
+
+      this.eventBinder.bindInstance(entry);
 
       // Let the component boot up
       this.log.info('starting component %s at %s', name, publicURL);
