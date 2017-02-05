@@ -2,8 +2,8 @@ using strange.extensions.signal.impl;
 
 namespace ctac.signals
 {
-    public class ComponentsFetchedSignal : Signal { }
-    public class FetchComponentsSignal : Signal { }
+    [Singleton]
+    public class ServerAuthSignal : Signal { }
 
     [Singleton]
     public class TryLoginSignal : Signal<Credentials> { }

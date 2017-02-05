@@ -10,42 +10,19 @@ namespace ctac
         [Inject]
         public ConfigModel config { get; set; }
 
-        public List<Component> componentList { get; set; }
-
         public ComponentModel()
         {
-            componentList = new List<Component>();
         }
 
         //  Resolve component type into URL endpoint
         public string getComponentURL(string name)
         {
-            if (name == "master")
-            {
-                return config.baseUrl + "components/master/rest/realm/" + config.realm;
-            }
-
-            var component = componentList.Where(x => x.type.name == name).FirstOrDefault();
-
-            if (component == null)
-            {
-                throw new Exception("no registered " + name + " components");
-            }
-
-            // TODO: handle multiple components being registered
-            return component.httpURL + "/rest";
+            return string.Format("{0}components/{1}/rest", config.baseUrl, name);
         }
 
         public string getComponentWSURL(string name)
         {
-            var component = componentList.Where(x => x.type.name == name).FirstOrDefault();
-
-            if (component == null)
-            {
-                throw new Exception("no registered " + name + " components");
-            }
-
-            return component.wsURL;
+            return string.Format("{0}components/{1}", config.baseUrl, name).Replace("http://", "ws://");
         }
     }
 

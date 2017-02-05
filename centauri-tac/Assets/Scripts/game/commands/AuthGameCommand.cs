@@ -37,9 +37,6 @@ namespace ctac
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
             debug.Log("Current game " + game.id, socketKey);
 
-            //add game to list of components for use
-            components.componentList.Add(game.component);
-
             var player = playersModel.GetByClientId(socketKey.clientId);
             socket.Request(socketKey.clientId, "game", "token", player.token);
         }

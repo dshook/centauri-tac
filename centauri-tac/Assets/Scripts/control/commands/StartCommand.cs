@@ -18,7 +18,7 @@ namespace ctac
         public ConfigModel config { get; set; }
 
         [Inject]
-        public FetchComponentsSignal fetchComponents { get; set; }
+        public ServerAuthSignal serverAuthSignal { get; set; }
 
         [Inject]
         public PiecesModel piecesModel { get; set; }
@@ -48,7 +48,7 @@ namespace ctac
                 diskConfig.CopyProperties(config);
             }
 
-            fetchComponents.Dispatch();
+            serverAuthSignal.Dispatch();
 
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");

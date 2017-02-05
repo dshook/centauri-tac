@@ -28,11 +28,6 @@ namespace ctac
         {
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
             debug.Log("Gamelist " + gamelist.GamesToString(socketKey.clientId), socketKey);
-
-            if (!components.componentList.Any(x => x.typeId == game.component.typeId))
-            {
-                components.componentList.Add(game.component);
-            }
         }
     }
 }

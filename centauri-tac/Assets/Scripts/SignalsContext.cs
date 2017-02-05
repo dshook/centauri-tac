@@ -116,8 +116,6 @@ namespace ctac
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
 
-            commandBinder.Bind<ComponentsFetchedSignal>().To<ServerAuthCommand>();
-
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();

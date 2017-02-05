@@ -34,7 +34,7 @@ export default class GamelistRPC
    * A game component is informing us of a state change
    */
   @on('update:state')
-  async updateState(client, {gameId, stateId})
+  async updateState({gameId, stateId})
   {
     await this.manager.setGameState(gameId, stateId);
   }
@@ -43,7 +43,7 @@ export default class GamelistRPC
    * A game component is switching the allow join param
    */
   @on('update:allowJoin')
-  async updateAllowJoin(client, {gameId, allowJoin})
+  async updateAllowJoin({gameId, allowJoin})
   {
     await this.manager.setAllowJoin(gameId, allowJoin);
   }
@@ -52,7 +52,7 @@ export default class GamelistRPC
    * Client wants to create a game
    */
   @on('create')
-  async createGame(client, {name}, auth)
+  async createGame({name}, auth)
   {
     const playerId = auth.sub.id;
     await this.manager.createNewGame(name, playerId);
@@ -62,7 +62,7 @@ export default class GamelistRPC
    * Component is building a game for a set of players
    */
   @on('gamelist:createFor')
-  async createGameFor(client, {name, playerIds})
+  async createGameFor({name, playerIds})
   {
     const [host, ...others] = playerIds;
 
@@ -77,7 +77,7 @@ export default class GamelistRPC
    * A game component is informing us that a player has joined
    */
   @on('playerJoined')
-  async playerJoined(client, {gameId, playerId})
+  async playerJoined({gameId, playerId})
   {
     this.manager.playerJoin(playerId, gameId);
   }
@@ -86,7 +86,7 @@ export default class GamelistRPC
    * A game component is informing us that a player has parted
    */
   @on('playerParted')
-  async playerParted(client, {gameId, playerId})
+  async playerParted({gameId, playerId})
   {
     this.manager.playerPart(playerId, gameId);
   }
