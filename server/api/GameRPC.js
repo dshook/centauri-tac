@@ -39,12 +39,4 @@ export default class GameRPC
     this.manager.playerPart(client, playerId);
   }
 
-  /**
-   * Track connected clients
-   */
-  @rpc.disconnected()
-  bye(client)
-  {
-    this.manager.playerPart(client);
-  }
 }

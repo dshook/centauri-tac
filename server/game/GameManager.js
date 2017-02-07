@@ -48,8 +48,8 @@ export default class GameManager
     const index = this.clients.findIndex(x => x.client === client);
 
     if (!~index) {
-      throw new Error('problem finding client %s player %s in list',
-          client.id, playerId);
+      this.log.info('problem finding client %s player %s in list', client ? client.id : -1, playerId);
+      return;
     }
 
     const clientListing = this.clients[index];

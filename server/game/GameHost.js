@@ -149,7 +149,6 @@ export default class GameHost extends EventEmitter
       throw new Error('no player found with client %s', client.id);
     }
 
-    this.emit('playerParting', player);
     await this._broadcastCommand('player:part', player);
 
     // hello
@@ -173,9 +172,12 @@ export default class GameHost extends EventEmitter
     }
 
     if (player.client) {
-      this.log.info('unexpected client disconnect!', player.id);
+      this.log.info('unexpected client disconnect! %s DC Timeout %s', player.id, process.env.DISCONNECT_TIMEOUT);
       this.binder.removeEmitter(player.client);
       player.client = null;
+      setTimeout(() => {
+        this.emitter.emit('playerParted', {gameId: this.game.id, playerId: player.id});
+      }, process.env.DISCONNECT_TIMEOUT);
     }
     else {
       // remove for good
