@@ -8,6 +8,7 @@ namespace ctac
     {
         GameObject pieceMovePreview;
         BezierSpline moveSpline;
+        SplineDecorator splineDecorator;
 
         public float height = 0.5f;
 
@@ -17,6 +18,7 @@ namespace ctac
             pieceMovePreview.SetActive(false);
 
             moveSpline = pieceMovePreview.GetComponent<BezierSpline>();
+            splineDecorator = pieceMovePreview.GetComponent<SplineDecorator>();
         }
 
         internal void onMovePath(List<Tile> tiles)
@@ -55,6 +57,7 @@ namespace ctac
             }
 
             pieceMovePreview.SetActive(true);
+            splineDecorator.SetFrequency(3 * (tiles.Count - 1));
         }
 
     }
