@@ -13,6 +13,7 @@ namespace ctac
         [Inject] public TileHoverSignal tileHover { get; set; }
 
         [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
         [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
@@ -102,6 +103,19 @@ namespace ctac
                     var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, gameTurn.currentPlayerId);
                     view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
+                    //@Cleanup: probably pass the start tile separately so we don't have to allocate and copy
+                    if (path != null)
+                    {
+                        var fullMovePath = new List<Tile>();
+                        fullMovePath.Add(gameTile);
+                        fullMovePath.AddRange(path);
+                        movePathFoundSignal.Dispatch(fullMovePath);
+                    }
+                    else
+                    {
+                        movePathFoundSignal.Dispatch(null);
+                    }
+
                     if (enemyOccupyingDest
                         && path != null
                     )
@@ -116,11 +130,13 @@ namespace ctac
                 else
                 {
                     view.toggleTileFlags(null, TileHighlightStatus.PathFind);
+                    movePathFoundSignal.Dispatch(null);
                 }
             }
             else
             {
                 view.toggleTileFlags(null, TileHighlightStatus.PathFind);
+                movePathFoundSignal.Dispatch(null);
                 view.onAttackTile(null);
             }
 

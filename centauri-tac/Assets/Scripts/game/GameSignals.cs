@@ -1,4 +1,5 @@
 using strange.extensions.signal.impl;
+using System.Collections.Generic;
 
 namespace ctac.signals
 {
@@ -131,6 +132,7 @@ namespace ctac.signals
     [Singleton] public class ActionAttachCodeSignal : Signal<AttachCodeModel, SocketKey> { }
 
     [Singleton] public class HistoryHoverSignal : Signal<bool> { }
+    [Singleton] public class MovePathFoundSignal : Signal<List<Tile>> { }
 
     [Singleton] public class StartGameSettledSignal : Signal { }
 }
