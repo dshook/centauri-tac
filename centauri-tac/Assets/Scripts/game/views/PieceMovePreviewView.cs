@@ -9,6 +9,8 @@ namespace ctac
         GameObject pieceMovePreview;
         BezierSpline moveSpline;
 
+        public float height = 0.5f;
+
         internal void init()
         {
             pieceMovePreview = transform.Find("PreviewCurve").gameObject;
@@ -32,8 +34,9 @@ namespace ctac
                 var currentTile = tiles[i];
                 var nextTile = i + 1 < tiles.Count ? tiles[i + 1] : null;
                 var anchorPointIndex = i * 3;
+                var tilePosition = currentTile.fullPosition.AddY(height);
 
-                moveSpline.SetControlPoint(anchorPointIndex, currentTile.fullPosition);
+                moveSpline.SetControlPoint(anchorPointIndex, tilePosition);
                 if (nextTile == null)
                 {
                     break;
@@ -42,9 +45,9 @@ namespace ctac
                 {
                     moveSpline.AddCurve();
                 }
-                var diffVector = nextTile.fullPosition - currentTile.fullPosition;
-                var secondControl = (diffVector * 0.2f) + currentTile.fullPosition;
-                var thirdControl = (diffVector * 0.8f) + currentTile.fullPosition;
+                var diffVector = nextTile.fullPosition.AddY(height) - tilePosition;
+                var secondControl = (diffVector * 0.5f) + tilePosition;
+                var thirdControl = (diffVector * 0.5f) + tilePosition;
 
                 moveSpline.SetControlPoint(anchorPointIndex + 1, secondControl);
                 moveSpline.SetControlPoint(anchorPointIndex + 2, thirdControl);

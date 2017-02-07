@@ -49,17 +49,22 @@ namespace ctac
 
         public static Vector3 AddX(this Vector3 vec, float amt)
         {
-            return new Vector3(vec.x + amt, vec.y);
+            return new Vector3(vec.x + amt, vec.y, vec.z);
         }
 
         public static Vector3 AddY(this Vector3 vec, float amt)
         {
-            return new Vector3(vec.x, vec.y + amt);
+            return new Vector3(vec.x, vec.y + amt, vec.z);
+        }
+
+        public static Vector3 AddZ(this Vector3 vec, float amt)
+        {
+            return new Vector3(vec.x, vec.y, vec.z + amt);
         }
         
-        public static Vector3 Add(this Vector3 vec, float xAmt, float yAmt)
+        public static Vector3 Add(this Vector3 vec, float xAmt, float yAmt, float zAmt)
         {
-            return new Vector3(vec.x + xAmt, vec.y + yAmt);
+            return new Vector3(vec.x + xAmt, vec.y + yAmt, vec.z + zAmt);
         }
     }
 }

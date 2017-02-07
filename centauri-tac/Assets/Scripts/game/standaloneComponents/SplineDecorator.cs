@@ -13,6 +13,10 @@ public class SplineDecorator : MonoBehaviour {
     public bool addWalker;
     public SplineWalkerMode mode;
 
+    [Range(0, 1f)]
+    public float scaleMargin = 0.1f;
+    public bool scaleInOut = false;
+
     private void Awake () {
         if (frequency <= 0 || items == null || items.Length == 0) {
             return;
@@ -41,6 +45,8 @@ public class SplineDecorator : MonoBehaviour {
                     walker.mode = mode;
                     walker.spline = spline;
                     walker.progress = p * stepSize;
+                    walker.scaleInOut = scaleInOut;
+                    walker.scaleMargin = scaleMargin;
                 }
             }
         }

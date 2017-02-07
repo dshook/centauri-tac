@@ -11,22 +11,36 @@ public class SplineWalker : MonoBehaviour {
     public SplineWalkerMode mode;
 
     [Range(0, 1f)]
+    public float scaleMargin = 0.1f;
+    public bool scaleInOut = false;
+    private bool scaledThisLoop = false;
+
+    [Range(0, 1f)]
     public float progress;
     private bool goingForward = true;
 
     private void Update () {
         if (goingForward) {
             progress += Time.deltaTime / duration;
+            if (scaleInOut && progress > 1f - scaleMargin && !scaledThisLoop)
+            {
+                iTweenExtensions.ScaleTo(gameObject, Vector3.zero, 0.5f, 0);
+                iTweenExtensions.ScaleTo(gameObject, Vector3.one, 0.5f, 0.5f);
+                scaledThisLoop = true;
+            }
             if (progress > 1f) {
                 if (mode == SplineWalkerMode.Once) {
                     progress = 1f;
+                    scaledThisLoop = false;
                 }
                 else if (mode == SplineWalkerMode.Loop) {
                     progress -= 1f;
+                    scaledThisLoop = false;
                 }
                 else {
                     progress = 2f - progress;
                     goingForward = false;
+                    scaledThisLoop = false;
                 }
             }
         }
