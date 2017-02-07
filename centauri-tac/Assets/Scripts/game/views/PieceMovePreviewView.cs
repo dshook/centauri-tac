@@ -25,19 +25,31 @@ namespace ctac
                 return;
             }
 
-            var start = tiles[0].fullPosition;
-            var destination = tiles[tiles.Count - 1].fullPosition;
-            var diffVector = destination - start;
-            Vector3 curveHeight = new Vector3(0, 0.30f, 0);
-            float curveMult = 1.0f;
+            moveSpline.Reset();
 
-            var secondControl = (diffVector * 0.2f) + (curveHeight * diffVector.magnitude * curveMult) + start;
-            var thirdControl = (diffVector * 0.8f) + (curveHeight * diffVector.magnitude * curveMult) + start;
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                var currentTile = tiles[i];
+                var nextTile = i + 1 < tiles.Count ? tiles[i + 1] : null;
+                var anchorPointIndex = i * 3;
 
-            moveSpline.SetControlPoint(0, start);
-            moveSpline.SetControlPoint(1, secondControl);
-            moveSpline.SetControlPoint(2, thirdControl);
-            moveSpline.SetControlPoint(3, destination);
+                moveSpline.SetControlPoint(anchorPointIndex, currentTile.fullPosition);
+                if (nextTile == null)
+                {
+                    break;
+                }
+                if (i > 0)
+                {
+                    moveSpline.AddCurve();
+                }
+                var diffVector = nextTile.fullPosition - currentTile.fullPosition;
+                var secondControl = (diffVector * 0.2f) + currentTile.fullPosition;
+                var thirdControl = (diffVector * 0.8f) + currentTile.fullPosition;
+
+                moveSpline.SetControlPoint(anchorPointIndex + 1, secondControl);
+                moveSpline.SetControlPoint(anchorPointIndex + 2, thirdControl);
+                //moveSpline.SetControlPoint(i + 3, nextTile.fullPosition);
+            }
 
             pieceMovePreview.SetActive(true);
         }
