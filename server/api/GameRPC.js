@@ -1,6 +1,7 @@
 import {rpc} from 'sock-harness';
 import roles from '../middleware/rpc/roles.js';
 import loglevel from 'loglevel-decorator';
+import {on} from 'emitter-binder';
 
 @loglevel
 export default class GameRPC
@@ -8,6 +9,12 @@ export default class GameRPC
   constructor(gameManager)
   {
     this.manager = gameManager;
+  }
+
+  @on('game:created')
+  gameCreated(game)
+  {
+    this.manager.create(game);
   }
 
   /**
@@ -30,5 +37,14 @@ export default class GameRPC
   {
     const playerId = auth.sub.id;
     this.manager.playerPart(client, playerId);
+  }
+
+  /**
+   * Track connected clients
+   */
+  @rpc.disconnected()
+  bye(client)
+  {
+    this.manager.playerPart(client);
   }
 }

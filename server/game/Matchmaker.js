@@ -46,7 +46,7 @@ export default class Matchmaker
       _.remove(this.queue, x => x === entry);
       this.log.info('player %s already in game %s, removing from queue',
           playerId, game.id);
-      client.send('game:current', {playerId, game});
+      client.send('game:current', game);
     }
 
     await this._emitStatus();

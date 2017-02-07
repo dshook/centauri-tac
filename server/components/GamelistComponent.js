@@ -1,7 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import GamelistRPC from '../api/GamelistRPC.js';
 
-const CLEANUP_INTERVAL = 30 * 1000;
+const CLEANUP_INTERVAL = 60 * 1000;
 
 /**
  * Game server component that provides lists of running games

@@ -30,6 +30,7 @@ export default class GamelistManager
     }
 
     // instantiates game on the game host
+    await this.emitter.emit('game:created', game);
     await this.emitter.emit('game', game);
 
     // have host join the game (will fire update events)
@@ -53,7 +54,7 @@ export default class GamelistManager
 
     await this.emitter.emit('game:current', {game: null, playerId});
 
-    const game = await this.games.getActive(null, id);
+    const game = await this.games.getActive(id);
 
     // no longer active (zomebie game)
     if (!game) {
@@ -95,7 +96,7 @@ export default class GamelistManager
     await this.games.playerJoin(playerId, gameId);
 
     // Fire update events
-    const game = await this.games.getActive(null, gameId);
+    const game = await this.games.getActive(gameId);
     await this.emitter.emit('game:current', {game, playerId});
     await this.emitter.emit('game', game);
   }
@@ -108,7 +109,7 @@ export default class GamelistManager
     await this.games.setState(gameId, stateId);
 
     // broadcast updated game info
-    const game = await this.games.getActive(null, gameId);
+    const game = await this.games.getActive(gameId);
     await this.emitter.emit('game', game);
   }
 
@@ -120,7 +121,7 @@ export default class GamelistManager
     await this.games.setAllowJoin(gameId, allow);
 
     // broadcast updated game info
-    const game = await this.games.getActive(null, gameId);
+    const game = await this.games.getActive(gameId);
     await this.emitter.emit('game', game);
   }
 
@@ -139,7 +140,7 @@ export default class GamelistManager
     }
 
     // kill the game on the server
-    const game = await this.games.getActive(null, gameId);
+    const game = await this.games.getActive(gameId);
     await this.gameManager.shutdown(game.id);
 
     // remove from registry
@@ -162,7 +163,7 @@ export default class GamelistManager
     await this.games.setHost(gameId, p.id);
 
     // broadcast updated game info via gamelist
-    const game = await this.games.getActive(null, gameId);
+    const game = await this.games.getActive(gameId);
     await this.emitter.emit('game', game);
   }
 
@@ -175,7 +176,7 @@ export default class GamelistManager
 
     let game = null;
     if (gameId) {
-      game = await this.games.getActive(null, gameId);
+      game = await this.games.getActive(gameId);
     }
 
     return game;

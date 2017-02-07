@@ -22,6 +22,7 @@ export default class GameManager
   async playerJoin(client, playerId, gameId)
   {
     const host = this._getHost(gameId);
+    if(!host) return;
 
     if (!(await host.canPlayerJoin(client, playerId))) {
       throw new Error('cannot join when allowJoin is false');
@@ -51,13 +52,17 @@ export default class GameManager
           client.id, playerId);
     }
 
-    const {gameId} = this.clients[index];
+    const clientListing = this.clients[index];
+    const {gameId} = clientListing;
+    playerId = clientListing.playerId;
 
     this.log.info('player %s parting game %s', playerId, gameId);
 
     // remove from host
     const host = this._getHost(gameId);
-    host.dropClient(client, playerId);
+    if(host){
+      host.dropClient(client, playerId);
+    }
 
     // remove from master list
     this.clients.splice(index, 1);
@@ -81,7 +86,7 @@ export default class GameManager
     // inform server our state has changed to staging
     const gameId = game.id;
     const stateId = 2;
-    await this.emitter.emit('update:state', {gameId, stateId});
+    await this.emitter.emit('game:updatestate', {gameId, stateId});
   }
 
   /**
@@ -118,12 +123,13 @@ export default class GameManager
    */
   _getHost(gameId)
   {
-    const index = this.hosts.findIndex(x => x.game.id === gameId);
+    const host = this.hosts.find(x => x.game.id === gameId);
 
-    if (!~index) {
-      throw new Error(`could not find game ${gameId}`);
+    if (!host) {
+      this.log.error('Could not find host for game %s, Hosts registered', gameId, this.hosts);
+      return null;
     }
 
-    return this.hosts[index];
+    return host;
   }
 }

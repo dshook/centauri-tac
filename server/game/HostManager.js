@@ -32,7 +32,7 @@ export default class HostManager extends EventEmitter
     this.game.stateId = stateId;
 
     const gameId = this.game.id;
-    await this.emitter.emit('update:state', {gameId, stateId});
+    await this.emitter.emit('game:updatestate', {gameId, stateId});
 
     this.emit('gameState', stateId);
   }

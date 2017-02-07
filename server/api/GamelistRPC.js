@@ -33,7 +33,7 @@ export default class GamelistRPC
   /**
    * A game component is informing us of a state change
    */
-  @on('update:state')
+  @on('game:updatestate')
   async updateState({gameId, stateId})
   {
     await this.manager.setGameState(gameId, stateId);
@@ -150,7 +150,7 @@ export default class GamelistRPC
       return;
     }
 
-    const game = await this.games.getActive(null, gId);
+    const game = await this.games.getActive(gId);
 
     // inform player of current game
     client.send('game:current', game);
