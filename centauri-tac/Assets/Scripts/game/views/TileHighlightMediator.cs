@@ -204,7 +204,7 @@ namespace ctac
             {
                 if (selectedPiece.canAttack)
                 {
-                    var attackTiles = mapService.GetTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
+                    var attackTiles = mapService.GetKingTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
                     setAttackRangeTiles(attackTiles.Values.ToList(), false);
                 }
                 else
@@ -281,7 +281,7 @@ namespace ctac
                 //check for ranged units first since they can't move and attack
                 if (piece.range.HasValue && piece.canAttack)
                 {
-                    var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
+                    var attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value);
                     setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
                 }
                 else
