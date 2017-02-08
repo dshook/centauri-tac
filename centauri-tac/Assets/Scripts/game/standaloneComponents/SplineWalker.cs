@@ -24,8 +24,8 @@ public class SplineWalker : MonoBehaviour {
             progress += Time.deltaTime / duration;
             if (scaleInOut && progress > 1f - scaleMargin && !scaledThisLoop)
             {
-                iTweenExtensions.ScaleTo(gameObject, Vector3.zero, 0.5f, 0);
-                iTweenExtensions.ScaleTo(gameObject, Vector3.one, 0.5f, 0.5f);
+                iTweenExtensions.ScaleTo(gameObject, Vector3.zero, 0.65f, 0);
+                iTweenExtensions.ScaleTo(gameObject, Vector3.one, 0.5f, 0.65f);
                 scaledThisLoop = true;
             }
             if (progress > 1f) {

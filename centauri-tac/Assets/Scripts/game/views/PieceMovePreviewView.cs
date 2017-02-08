@@ -47,6 +47,10 @@ namespace ctac
                 moveSpline.SetControlPoint(anchorPointIndex, tilePosition);
                 if (nextTile == null)
                 {
+                    if (!arcPath)
+                    {
+                        moveSpline.SetControlPoint(anchorPointIndex, tilePosition.AddY(-height * .75f));
+                    }
                     break;
                 }
                 if (i > 0)
