@@ -1,6 +1,5 @@
 using strange.extensions.command.impl;
 using ctac.signals;
-using System.Linq;
 
 namespace ctac
 {

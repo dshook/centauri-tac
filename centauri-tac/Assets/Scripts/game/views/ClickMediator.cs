@@ -155,9 +155,7 @@ namespace ctac
                     } else if (
                         FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
                         && selectedPiece != null
-                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
-                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack)
-                        && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
+                        && selectedPiece.canMove
                         )
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);

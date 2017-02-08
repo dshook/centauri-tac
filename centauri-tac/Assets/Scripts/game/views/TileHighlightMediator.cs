@@ -214,10 +214,7 @@ namespace ctac
             }
 
             //set movement and tile selected highlights
-            if ( FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze)
-                || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Root)
-                || selectedPiece.movement <= 0
-            ) {
+            if ( !selectedPiece.canMove ) {
                 return;
             }
             var gameTile = map.tiles.Get(selectedPiece.tilePosition);
@@ -278,8 +275,7 @@ namespace ctac
 
             if (piece != null 
                 && selectedPiece == null 
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
+                && piece.canMove //might be an issue with checking hasMoved inside of canMove
                 )
             {
                 //check for ranged units first since they can't move and attack

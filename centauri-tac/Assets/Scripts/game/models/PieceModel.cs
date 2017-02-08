@@ -93,6 +93,18 @@ namespace ctac
         }
 
         [JsonIgnore]
+        public bool canMove
+        {
+            get
+            {
+                return movement > 0 
+                    && !hasMoved
+                    && !FlagsHelper.IsSet(statuses, Statuses.Root)
+                    && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
+            }
+        }
+
+        [JsonIgnore]
         private PieceView _pieceView;
 
         [JsonIgnore]

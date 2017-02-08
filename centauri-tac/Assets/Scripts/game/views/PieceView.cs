@@ -147,10 +147,8 @@ namespace ctac {
             else if (
                 opponentId != piece.playerId
                 && currentTurnPlayerId == piece.playerId
-                && piece.currentPlayerHasControl && !piece.hasMoved
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Root)
-                && piece.movement > 0
+                && piece.currentPlayerHasControl 
+                && piece.canMove
             )
             {
                 highlight.ConstantOn(moveOutlineColor);
