@@ -15,7 +15,7 @@ namespace ctac
         GameObject draggedObject;
         bool active = false;
         float dragTimer = 0f;
-        float dragMin = 0.2f;
+        float dragMin = 0.10f;
 
         internal void init(RaycastModel rm)
         {
