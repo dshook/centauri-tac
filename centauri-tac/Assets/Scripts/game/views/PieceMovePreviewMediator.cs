@@ -24,9 +24,37 @@ namespace ctac
             movePathFoundSignal.RemoveListener(onMovePath);
         }
 
-        private void onMovePath(List<Tile> tiles)
+        private void onMovePath(MovePathFoundModel mpfm)
         {
-            view.onMovePath(tiles);
+            if (mpfm == null)
+            {
+                view.onMovePath(null);
+                return;
+            }
+
+            if (mpfm.startTile != null && mpfm.tiles != null)
+            {
+                mpfm.tiles.Insert(0, mpfm.startTile);
+            }
+
+            //should be ranged attack case
+            if (mpfm.endTile != null)
+            {
+                view.onMovePath(new List<Tile>() { mpfm.startTile, mpfm.endTile }, true);
+            }
+            else
+            {
+                view.onMovePath(mpfm.tiles);
+            }
+
+            if (mpfm.isAttack)
+            {
+                view.setColor(view.attackColor);
+            }
+            else
+            {
+                view.setColor(view.defaultColor);
+            }
         }
     }
 }

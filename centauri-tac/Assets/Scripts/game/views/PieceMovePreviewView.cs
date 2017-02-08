@@ -10,7 +10,11 @@ namespace ctac
         BezierSpline moveSpline;
         SplineDecorator splineDecorator;
 
+        public Color defaultColor;
+        public Color attackColor;
+
         public float height = 0.5f;
+        Vector3 curveHeight = new Vector3(0, 0.50f, 0);
 
         internal void init()
         {
@@ -19,9 +23,11 @@ namespace ctac
 
             moveSpline = pieceMovePreview.GetComponent<BezierSpline>();
             splineDecorator = pieceMovePreview.GetComponent<SplineDecorator>();
+
+            setColor(defaultColor);
         }
 
-        internal void onMovePath(List<Tile> tiles)
+        internal void onMovePath(List<Tile> tiles, bool arcPath = false)
         {
             if (tiles == null || tiles.Count < 2)
             {
@@ -48,8 +54,18 @@ namespace ctac
                     moveSpline.AddCurve();
                 }
                 var diffVector = nextTile.fullPosition.AddY(height) - tilePosition;
-                var secondControl = (diffVector * 0.5f) + tilePosition;
-                var thirdControl = (diffVector * 0.5f) + tilePosition;
+                Vector3 secondControl, thirdControl;
+
+                if (arcPath)
+                {
+                    secondControl = (diffVector * 0.2f) + (curveHeight * diffVector.magnitude) + tilePosition;
+                    thirdControl = (diffVector * 0.8f) + (curveHeight * diffVector.magnitude) + tilePosition;
+                }
+                else
+                {
+                    secondControl = (diffVector * 0.5f) + tilePosition;
+                    thirdControl = (diffVector * 0.5f) + tilePosition;
+                }
 
                 moveSpline.SetControlPoint(anchorPointIndex + 1, secondControl);
                 moveSpline.SetControlPoint(anchorPointIndex + 2, thirdControl);
@@ -57,7 +73,33 @@ namespace ctac
             }
 
             pieceMovePreview.SetActive(true);
-            splineDecorator.SetFrequency(3 * (tiles.Count - 1));
+            if (arcPath)
+            {
+                splineDecorator.SetFrequency(6);
+            }
+            else
+            {
+                splineDecorator.SetFrequency(3 * (tiles.Count - 1));
+            }
+        }
+
+        private Color lastColor; 
+        internal void setColor(Color c)
+        {
+            if(c == lastColor) return;
+
+            int childCount = splineDecorator.transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = splineDecorator.transform.GetChild(i).gameObject;
+                var renderer = child.GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.material.color = c;
+                }
+            }
+
+            lastColor = c;
         }
 
     }

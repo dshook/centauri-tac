@@ -96,7 +96,7 @@ namespace ctac
                     );
 
                 //don't show move path for ranged units hovering over an enemy
-                if (!(enemyOccupyingDest && selectedPiece.range.HasValue))
+                if (!enemyOccupyingDest || !selectedPiece.range.HasValue)
                 {
                     //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
                     var boost = enemyOccupyingDest ? 1 : 0;
@@ -106,10 +106,11 @@ namespace ctac
                     //@Cleanup: probably pass the start tile separately so we don't have to allocate and copy
                     if (path != null)
                     {
-                        var fullMovePath = new List<Tile>();
-                        fullMovePath.Add(gameTile);
-                        fullMovePath.AddRange(path);
-                        movePathFoundSignal.Dispatch(fullMovePath);
+                        movePathFoundSignal.Dispatch(new MovePathFoundModel() {
+                            startTile = gameTile,
+                            tiles = path,
+                            isAttack = enemyOccupyingDest
+                        });
                     }
                     else
                     {
@@ -130,7 +131,11 @@ namespace ctac
                 else
                 {
                     view.toggleTileFlags(null, TileHighlightStatus.PathFind);
-                    movePathFoundSignal.Dispatch(null);
+                    movePathFoundSignal.Dispatch(new MovePathFoundModel() {
+                        startTile = gameTile,
+                        endTile = tile,
+                        isAttack = true
+                    });
                 }
             }
             else
