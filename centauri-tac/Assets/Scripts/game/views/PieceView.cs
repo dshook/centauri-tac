@@ -161,10 +161,7 @@ namespace ctac {
                 opponentId != piece.playerId
                 && currentTurnPlayerId == piece.playerId
                 && piece.currentPlayerHasControl
-                && piece.attackCount < piece.maxAttacks
-                && piece.attack > 0
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze)
-                && !FlagsHelper.IsSet(piece.statuses, Statuses.CantAttack)
+                && piece.canAttack
                 && enemiesInRange
             )
             {

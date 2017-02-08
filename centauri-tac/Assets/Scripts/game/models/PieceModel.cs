@@ -85,7 +85,10 @@ namespace ctac
         {
             get
             {
-                return attackCount < maxAttacks;
+                return attack > 0 
+                    && attackCount < maxAttacks 
+                    && !FlagsHelper.IsSet(statuses, Statuses.CantAttack)
+                    && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
             }
         }
 

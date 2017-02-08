@@ -109,7 +109,7 @@ namespace ctac
                         movePathFoundSignal.Dispatch(new MovePathFoundModel() {
                             startTile = gameTile,
                             tiles = path,
-                            isAttack = enemyOccupyingDest
+                            isAttack = enemyOccupyingDest && selectedPiece.canAttack
                         });
                     }
                     else
@@ -134,7 +134,7 @@ namespace ctac
                     movePathFoundSignal.Dispatch(new MovePathFoundModel() {
                         startTile = gameTile,
                         endTile = tile,
-                        isAttack = true
+                        isAttack = selectedPiece.canAttack
                     });
                 }
             }
@@ -283,7 +283,7 @@ namespace ctac
                 )
             {
                 //check for ranged units first since they can't move and attack
-                if (piece.range.HasValue && piece.attack > 0)
+                if (piece.range.HasValue && piece.canAttack)
                 {
                     var attackRangeTiles = mapService.GetTilesInRadius(piece.tilePosition, piece.range.Value);
                     setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
@@ -296,7 +296,7 @@ namespace ctac
                     var moveTiles = movePositions.Values.ToList();
 
                     List<Tile> attackTiles = null;
-                    if (piece.attack > 0)
+                    if (piece.canAttack)
                     {
                         var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
                         attackTiles = attackPositions.Values.ToList();
