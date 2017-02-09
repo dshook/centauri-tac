@@ -150,7 +150,7 @@ namespace ctac
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                if (raycastModel.tile != null && raycastModel.cardCanvasHit == null)
+                if (raycastModel.cardCanvasHit == null)
                 {
                     dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
                     camOrigin = Camera.main.transform.position;
