@@ -78,7 +78,8 @@ namespace ctac {
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
             {
-                SetColor(attackRangeTint, tint);
+                //SetColor(attackRangeTint, tint);
+                ReallySetColor(attackRangeTint);
             }
 
             if (tile.highlightStatus == TileHighlightStatus.None)
@@ -106,6 +107,12 @@ namespace ctac {
         private void SetColor(Color c, Color tint)
         {
             meshRenderer.material.color = c - tint;
+        }
+
+        private void ReallySetColor(Color c)
+        {
+            meshRenderer.material.SetFloat("_UseColor", 1);
+            meshRenderer.material.SetColor("_Color", c);
         }
     }
 }
