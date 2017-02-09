@@ -24,6 +24,7 @@ namespace ctac
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
         [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
 
+        [Inject] public MessageSignal message { get; set; }
         [Inject] public MapModel map { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -86,23 +87,52 @@ namespace ctac
                     }
                     else
                     {
-                        if (
-                            selectedPiece != null
-                            && selectedPiece.id != pieceView.piece.id
-                            && selectedPiece.canAttack
-                            && !FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)
-                            && mapService.isHeightPassable(
-                                  mapService.Tile(selectedPiece.tilePosition),
-                                  mapService.Tile(pieceView.piece.tilePosition)
-                               )
-                            )
+                        //check to see if we have a valid attack, and throw a message error for all the ways its wrong
+                        if ( selectedPiece != null && selectedPiece.id != pieceView.piece.id )
                         {
-                            attackPiece.Dispatch(new AttackPieceModel()
-                            {
-                                attackingPieceId = selectedPiece.id,
-                                targetPieceId = pieceView.piece.id
-                            });
-                            pieceSelected.Dispatch(null);
+                            if (!FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)) {
+                                if (selectedPiece.canAttack)
+                                {
+                                    if (mapService.isHeightPassable(
+                                          mapService.Tile(selectedPiece.tilePosition),
+                                          mapService.Tile(pieceView.piece.tilePosition)
+                                    )) {
+                                        attackPiece.Dispatch(new AttackPieceModel()
+                                        {
+                                            attackingPieceId = selectedPiece.id,
+                                            targetPieceId = pieceView.piece.id
+                                        });
+                                        pieceSelected.Dispatch(null);
+                                    } else {
+                                        message.Dispatch(new MessageModel() { message = "Can't attack up that slope!" });
+                                    }
+
+                                }
+                                else
+                                {
+                                    //now figure out why they can't attack
+                                    if (selectedPiece.attack <= 0)
+                                    {
+                                        message.Dispatch(new MessageModel() { message = "Minion has no attack" });
+                                    }
+                                    else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
+                                    {
+                                        message.Dispatch(new MessageModel() { message = "Minion Can't Attack" });
+                                    }
+                                    else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
+                                    {
+                                        message.Dispatch(new MessageModel() { message = "Paralyzed!" });
+                                    }
+                                    else
+                                    {
+                                        message.Dispatch(new MessageModel() { message = "Minions need time to prepare!" });
+                                    }
+                                }
+
+                            } else {
+                                message.Dispatch(new MessageModel() { message = "Can't attack the cloaked unit until they attack!" });
+                            }
+                            
                         }
                     }
                     return;

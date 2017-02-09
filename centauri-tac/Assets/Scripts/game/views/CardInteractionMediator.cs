@@ -12,7 +12,7 @@ namespace ctac
         [Inject] public CardSelectedSignal cardSelected { get; set; }
         [Inject] public CardHoveredSignal cardHovered { get; set; }
         [Inject] public ActivateCardSignal activateCard { get; set; }
-        [Inject] public ActionMessageSignal message { get; set; }
+        [Inject] public MessageSignal message { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
@@ -160,7 +160,7 @@ namespace ctac
                 //check for appropriate resources
                 if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
                 {
-                    message.Dispatch(new MessageModel() { message = "Not enough energy to play!" }, new SocketKey(turns.currentTurnClientId, "game"));
+                    message.Dispatch(new MessageModel() { message = "Not enough energy to play!" });
                     return;
                 }
 

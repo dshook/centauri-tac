@@ -15,6 +15,7 @@ namespace ctac.signals
     [Singleton] public class LeaveGameSignal : Signal<SocketKey> { }
 
     [Singleton] public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
+    [Singleton] public class MessageSignal : Signal<MessageModel> { }
 
     [Singleton] public class PossibleActionsSignal : Signal<PossibleActions, SocketKey> { }
     [Singleton] public class PossibleActionsReceivedSignal : Signal<PossibleActions> { }

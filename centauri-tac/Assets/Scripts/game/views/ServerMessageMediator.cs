@@ -9,20 +9,30 @@ namespace ctac
         public ServerMessageView view { get; set; }
 
         [Inject]
-        public ActionMessageSignal message { get; set; }
+        public ActionMessageSignal actionMessage { get; set; }
+
+        [Inject]
+        public MessageSignal message { get; set; }
 
         public override void OnRegister()
         {
+            actionMessage.AddListener(onActionMessage);
             message.AddListener(onMessage);
             view.init();
         }
 
         public override void onRemove()
         {
+            actionMessage.RemoveListener(onActionMessage);
             message.RemoveListener(onMessage);
         }
 
-        private void onMessage(MessageModel message, SocketKey key)
+        private void onMessage(MessageModel message)
+        {
+            view.updateText(message.message, message.duration ?? 1f);
+        }
+
+        private void onActionMessage(MessageModel message, SocketKey key)
         {
             view.updateText(message.message, message.duration ?? 1f);
         }
