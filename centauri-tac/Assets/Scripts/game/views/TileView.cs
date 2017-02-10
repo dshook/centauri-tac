@@ -16,14 +16,15 @@ namespace ctac {
         public Color attackColor = new Color(.9f, .4f, .4f);
         public Color dimmedColor = ColorExtensions.HexToColor("#aaaaaa");
 
+#pragma warning disable
         [SerializeField]
         [EnumFlagsAttribute] TileHighlightStatus tileFlags;
+#pragma warning restore
 
         private MeshRenderer meshRenderer = null;
         private GameObject arrows = null;
         private Color invisible = new Color(0f, 0f, 0f, 0f);
         private Color tint;
-
         private Color originalColor;
 
         void Start()
@@ -83,7 +84,6 @@ namespace ctac {
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
             {
                 SetColor(attackRangeTint, tint);
-                //ReallySetColor(attackRangeTint);
             }
 
             if (tile.highlightStatus == 0)
