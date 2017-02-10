@@ -54,18 +54,19 @@ namespace ctac
     [Flags]
     public enum TileHighlightStatus
     {
-        None = 0,
-        Highlighted = 1,
-        Selected = 2,
-        Movable = 4,
-        PathFind = 8,
-        Attack = 16,
-        MoveRange = 32,
-        AttackRange = 64,
-        FriendlyTauntArea = 128,
-        EnemyTauntArea = 256,
-        TargetTile = 512,
-        Dimmed = 1024
+        //None              = (1 << 0),
+        Highlighted       = (1 << 0),
+        Selected          = (1 << 1),
+        Movable           = (1 << 2),
+        PathFind          = (1 << 3),
+        Attack            = (1 << 4),
+        MoveRange         = (1 << 5),
+        AttackRange       = (1 << 6),
+        FriendlyTauntArea = (1 << 7),
+        EnemyTauntArea    = (1 << 8),
+        TargetTile        = (1 << 9),
+        Dimmed            = (1 << 10)
+
     }
 }
 
