@@ -433,7 +433,7 @@ namespace ctac {
                 }
 
                 //if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
-                if(walker.progress > 0.99)
+                if(walker.progress > 0.99 && !Complete)
                 {
                     piece.gameObject.transform.position = destination;
                     Complete = true;

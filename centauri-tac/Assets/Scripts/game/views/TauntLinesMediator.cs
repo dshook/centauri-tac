@@ -105,7 +105,7 @@ namespace ctac
             return retList;
         }
 
-        private static TTDir[] rightPriorities =  { TTDir.Right, TTDir.Down, TTDir.Up };
+        private static TTDir[] rightPriorities =  { TTDir.Up, TTDir.Right, TTDir.Down};
         private static TTDir[] downPriorities =  { TTDir.Right, TTDir.Down, TTDir.Left };
         private static TTDir[] leftPriorities =  { TTDir.Down, TTDir.Left, TTDir.Up };
         private static TTDir[] upPriorities =  { TTDir.Left, TTDir.Up, TTDir.Right };
