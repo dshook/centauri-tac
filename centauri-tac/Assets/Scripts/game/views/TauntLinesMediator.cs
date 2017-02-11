@@ -11,6 +11,8 @@ namespace ctac
         [Inject] public TauntLinesView view { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntUpdated { get; set; }
 
+        [Inject] public MapModel map { get; set; }
+
         public override void OnRegister()
         {
             tauntUpdated.AddListener(onTilesUpdate);
@@ -24,7 +26,10 @@ namespace ctac
 
         private void onTilesUpdate(TauntTilesUpdateModel tilesUpdated)
         {
-            
+            var friendlyPerims = FindTilePerimeters(tilesUpdated.friendlyTauntTiles);
+            var enemyPerims    = FindTilePerimeters(tilesUpdated.enemyTauntTiles);
+
+            view.UpdatePerims(friendlyPerims, map);
         }
 
         //given a list of taunt tiles, find any perimeter loops which there could be multiple of
@@ -79,9 +84,23 @@ namespace ctac
         }
 
         //Return the list of all tiles in the perimeter and whatever is inside of the perimeter
-        private List<Tile> FloodFillPerimeterLoop(List<Tile> fullTileList, List<Tile> perimeter, Tile startTile)
+        //this uses a scan line approach starting from the top right as before and scanning left
+        private List<Tile> FloodFillPerimeterLoop(List<Tile> fullTileList, List<Tile> perimeter)
         {
+            var startTile = perimeter.OrderByDescending(t => t.position.y).ThenByDescending(t => t.position.x).FirstOrDefault();
+            var tileLookup = fullTileList.ToDictionary(k => k.position, v => v);
+            var perimeterLookup = perimeter.ToDictionary(k => k.position, v => v);
+
             var retList = new List<Tile>();
+            float minX, maxX, minY, maxY;
+            minY = perimeter.Min(t => t.position.y);
+            maxY = perimeter.Max(t => t.position.y);
+            minX = perimeter.Min(t => t.position.x);
+            maxX = perimeter.Max(t => t.position.x);
+
+            var listToCheck = new List<Tile>();
+            listToCheck.AddRange(perimeter);
+
 
             return retList;
         }
