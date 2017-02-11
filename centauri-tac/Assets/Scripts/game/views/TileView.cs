@@ -7,8 +7,6 @@ namespace ctac {
         public Tile tile;
         public Color hoverTint = new Color(.1f, .1f, .1f, .1f);
         public Color pathFindTint = new Color(.3f, .3f, .3f, 1f);
-        public Color friendlyTauntTint = new Color(.15f, .0f, .15f, .4f);
-        public Color enemyTauntTint = new Color(0f, .15f, .0f, .4f);
         public Color selectColor = new Color(.4f, .9f, .4f);
         public Color moveColor = new Color(.4f, .4f, .9f);
         public Color moveRangeColor = new Color(1f, 1f, 1f, 0f);
@@ -43,14 +41,6 @@ namespace ctac {
             
             tileFlags = tile.highlightStatus;
             tint = invisible;
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.FriendlyTauntArea))
-            {
-                tint = UpdateAdditive(friendlyTauntTint, tint);
-            }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.EnemyTauntArea))
-            {
-                tint = UpdateAdditive(enemyTauntTint, tint);
-            }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Dimmed))
             {
                 tint = UpdateAdditive(dimmedColor, tint);

@@ -28,7 +28,7 @@ namespace ctac
 
         //subtract out the line width
         const float tileHwidth = 0.5f;
-        const float lineWidth = 0.05f;
+        const float lineWidth = 0.04f;
 
         internal void ResetPerims()
         {

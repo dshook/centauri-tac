@@ -62,10 +62,8 @@ namespace ctac
         Attack            = (1 << 4),
         MoveRange         = (1 << 5),
         AttackRange       = (1 << 6),
-        FriendlyTauntArea = (1 << 7),
-        EnemyTauntArea    = (1 << 8),
-        TargetTile        = (1 << 9),
-        Dimmed            = (1 << 10)
+        TargetTile        = (1 << 7),
+        Dimmed            = (1 << 8)
 
     }
 }

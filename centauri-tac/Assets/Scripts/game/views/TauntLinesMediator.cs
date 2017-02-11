@@ -12,6 +12,7 @@ namespace ctac
         [Inject] public TauntTilesUpdatedSignal tauntUpdated { get; set; }
 
         [Inject] public MapModel map { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         public override void OnRegister()
         {
@@ -26,8 +27,8 @@ namespace ctac
 
         private void onTilesUpdate(TauntTilesUpdateModel tilesUpdated)
         {
-            var friendlyPerims = FindTilePerimeters(tilesUpdated.friendlyTauntTiles);
-            var enemyPerims    = FindTilePerimeters(tilesUpdated.enemyTauntTiles);
+            var friendlyPerims = FindTilePerimeters(tilesUpdated.friendlyTauntTiles, tilesUpdated.friendlyTauntPieceTiles);
+            var enemyPerims    = FindTilePerimeters(tilesUpdated.enemyTauntTiles, tilesUpdated.enemyTauntPieceTiles);
 
             view.ResetPerims();
             view.UpdatePerims(friendlyPerims, map, true);
@@ -35,25 +36,80 @@ namespace ctac
         }
 
         //given a list of taunt tiles, find any perimeter loops which there could be multiple of
-        private List<List<Tile>> FindTilePerimeters(List<Tile> tiles)
+        private List<List<Tile>> FindTilePerimeters(List<Tile> tiles, List<Tile> pieceTiles)
         {
             if(tiles == null || tiles.Count == 0) return null;
-            //start by finding the top right most tile to start a loop from (from a certain perspective it's top right at least)
-            var startTile = tiles.OrderByDescending(t => t.position.x).ThenByDescending(t => t.position.y).FirstOrDefault();
+
+            var tauntGroups = FindTauntGroups(pieceTiles);
             var loops = new List<List<Tile>>();
 
-            var firstLoop = FindPerimeterLoop(startTile, tiles);
-            loops.Add(firstLoop);
+            foreach (var tauntGroup in tauntGroups)
+            {
+                //start by finding the top right most tile to start a loop from (from a certain perspective it's top right at least)
+                var startTile = tauntGroup.OrderByDescending(t => t.position.x).ThenByDescending(t => t.position.y).FirstOrDefault();
 
-            float minX, maxX, minY, maxY;
-            minX = firstLoop.Min(t => t.position.x);
-            maxX = firstLoop.Max(t => t.position.x);
-            minY = firstLoop.Min(t => t.position.y);
-            maxY = firstLoop.Max(t => t.position.y);
+                var perimLoop = FindPerimeterLoop(startTile, tauntGroup);
+                loops.Add(perimLoop);
+            }
 
-            //var remainingTiles = tiles.Where(t => t.position.x );
-            //once that first loop is complete, search for any tiles strictly outside of that loop
             return loops;
+        }
+
+        //group up the surrounding tiles around the pieces that are taunting into groups that represent the whole taunt area
+        private List<List<Tile>> FindTauntGroups(List<Tile> pieceTiles)
+        {
+            var tauntGroups = new List<List<Tile>>();
+
+            for (int i = 0; i < pieceTiles.Count; i++)
+            {
+                var tilePosition = pieceTiles[i].position;
+                var kingTiles = mapService.GetKingTilesInRadius(tilePosition, 1).Select(k => k.Value).ToList();
+                kingTiles = kingTiles.Where(t =>
+                    mapService.isHeightPassable(t, mapService.Tile(tilePosition))).ToList();
+
+                var intGroups = FindIntersectingGroups(tauntGroups, kingTiles);
+
+                if (intGroups.Count == 0)
+                {
+                    tauntGroups.Add(kingTiles);
+                }
+                else if (intGroups.Count == 1)
+                {
+                    tauntGroups[intGroups[0]].AddRange(kingTiles);
+                }
+                else
+                {
+                    var mergedGroup = new List<Tile>();
+                    //merge groups if more than one intersected
+                    for (int tg = intGroups.Count; tg >= 0; tg--)
+                    {
+                        var tgIndex = intGroups[tg];
+                        mergedGroup.AddRange(tauntGroups[tgIndex]);
+                        tauntGroups.RemoveAt(tgIndex);
+                    }
+                }
+            }
+
+            //Make sure to take tile duplicates out
+            return tauntGroups.Select(tg => tg.Distinct().ToList()).ToList();
+        }
+
+        //returns the indexes in the tile groups for the intersecting new piece tiles
+        private List<int> FindIntersectingGroups(List<List<Tile>> tileGroups, List<Tile> newPieceTiles)
+        {
+            var intGroups = new List<int>();
+            for (int i = 0; i < tileGroups.Count; i++)
+            {
+                var tilesInGroup = tileGroups[i];
+                for (int pt = 0; pt < newPieceTiles.Count; pt++) {
+                    if (tilesInGroup.Any(t => mapService.TileDistance(t.position, newPieceTiles[pt].position) <= 1))
+                    {
+                        intGroups.Add(i);
+                        break;
+                    }
+                }
+            }
+            return intGroups;
         }
 
         //in a list of tiles, find the perim loop, assuming the taunt minons will always have the group of 9 tiles
@@ -83,28 +139,6 @@ namespace ctac
             while (currentTile != startTile);
 
             return perim;
-        }
-
-        //Return the list of all tiles in the perimeter and whatever is inside of the perimeter
-        //this uses a scan line approach starting from the top right as before and scanning left
-        private List<Tile> FloodFillPerimeterLoop(List<Tile> fullTileList, List<Tile> perimeter)
-        {
-            var startTile = perimeter.OrderByDescending(t => t.position.y).ThenByDescending(t => t.position.x).FirstOrDefault();
-            var tileLookup = fullTileList.ToDictionary(k => k.position, v => v);
-            var perimeterLookup = perimeter.ToDictionary(k => k.position, v => v);
-
-            var retList = new List<Tile>();
-            float minX, maxX, minY, maxY;
-            minY = perimeter.Min(t => t.position.y);
-            maxY = perimeter.Max(t => t.position.y);
-            minX = perimeter.Min(t => t.position.x);
-            maxX = perimeter.Max(t => t.position.x);
-
-            var listToCheck = new List<Tile>();
-            listToCheck.AddRange(perimeter);
-
-
-            return retList;
         }
 
         private static TTDir[] rightPriorities =  { TTDir.Up, TTDir.Right, TTDir.Down};

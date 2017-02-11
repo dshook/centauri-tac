@@ -372,7 +372,9 @@ namespace ctac
             var tauntPieces = pieces.Pieces.Where(p => FlagsHelper.IsSet(p.statuses, Statuses.Taunt)
                 && (deadPiece == null || p != deadPiece));
             var friendlyTauntTiles = new List<Tile>();
+            var friendlyTauntPieceTiles = new List<Tile>();
             var enemyTauntTiles = new List<Tile>();
+            var enemyTauntPieceTiles = new List<Tile>();
             foreach (var tauntPiece in tauntPieces)
             {
                 var kingTiles = mapService.GetKingTilesInRadius(tauntPiece.tilePosition, 1);
@@ -385,10 +387,12 @@ namespace ctac
                 if (tauntPiece.currentPlayerHasControl)
                 {
                     friendlyTauntTiles.AddRange(kingTiles.Values);
+                    friendlyTauntPieceTiles.Add(mapService.Tile(tauntPiece.tilePosition));
                 }
                 else
                 {
                     enemyTauntTiles.AddRange(kingTiles.Values);
+                    enemyTauntPieceTiles.Add(mapService.Tile(tauntPiece.tilePosition));
                 }
             }
             friendlyTauntTiles = friendlyTauntTiles.Distinct().ToList();
@@ -397,26 +401,10 @@ namespace ctac
             tauntTilesSignal.Dispatch(new TauntTilesUpdateModel()
             {
                 friendlyTauntTiles = friendlyTauntTiles,
-                enemyTauntTiles = enemyTauntTiles
+                friendlyTauntPieceTiles = friendlyTauntPieceTiles,
+                enemyTauntTiles = enemyTauntTiles,
+                enemyTauntPieceTiles = enemyTauntPieceTiles,
             });
-
-            if (friendlyTauntTiles.Count > 0)
-            {
-                view.toggleTileFlags(friendlyTauntTiles, TileHighlightStatus.FriendlyTauntArea);
-            }
-            else
-            {
-                view.toggleTileFlags(null, TileHighlightStatus.FriendlyTauntArea);
-            }
-
-            if (enemyTauntTiles.Count > 0)
-            {
-                view.toggleTileFlags(enemyTauntTiles, TileHighlightStatus.EnemyTauntArea);
-            }
-            else
-            {
-                view.toggleTileFlags(null, TileHighlightStatus.EnemyTauntArea);
-            }
         }
 
         private void onStartTarget(TargetModel model)
