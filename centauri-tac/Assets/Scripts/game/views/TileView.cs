@@ -12,7 +12,7 @@ namespace ctac {
         public Color moveRangeColor = new Color(1f, 1f, 1f, 0f);
         public Color attackRangeTint = new Color(1f, .1f, .1f);
         public Color attackColor = new Color(.9f, .4f, .4f);
-        public Color dimmedColor = ColorExtensions.HexToColor("#aaaaaa");
+        public Color dimmedColor = ColorExtensions.HexToColor("#8c8c8c");
 
 #pragma warning disable
         [SerializeField]

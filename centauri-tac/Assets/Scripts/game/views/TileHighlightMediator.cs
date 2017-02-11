@@ -308,7 +308,7 @@ namespace ctac
 
                     //TODO: take friendly units out of move and untargetable enemies like Cloak
 
-                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
+                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, piece.currentPlayerHasControl);
                     setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
                 }
             }
