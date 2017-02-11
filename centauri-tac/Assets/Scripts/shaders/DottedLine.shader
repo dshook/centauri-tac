@@ -12,10 +12,12 @@
         LOD 100
 
         Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off
 
         Pass
         {
+            ZWrite Off
+            ZTest Always
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
