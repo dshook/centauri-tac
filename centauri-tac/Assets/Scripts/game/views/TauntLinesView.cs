@@ -1,6 +1,6 @@
+using ctac.util;
 using strange.extensions.mediation.impl;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace ctac
@@ -9,6 +9,10 @@ namespace ctac
     {
         GameObject tauntLoops;
         GameObject tauntLoopPrefab;
+
+        private Color enemyColor = ColorExtensions.HexToColor("#E52600");
+        private Color friendlyColor = ColorExtensions.HexToColor("#0057E5");
+
         [Inject]
         public IResourceLoaderService loader { get; set; }
 
@@ -26,9 +30,13 @@ namespace ctac
         const float tileHwidth = 0.5f;
         const float lineWidth = 0.05f;
 
-        internal void UpdatePerims(List<List<Tile>> perims, MapModel map)
+        internal void ResetPerims()
         {
             tauntLoops.transform.DestroyChildren(true);
+        }
+
+        internal void UpdatePerims(List<List<Tile>> perims, MapModel map, bool isFriendly)
+        {
             if(perims == null) return;
 
             foreach (var perim in perims)
@@ -42,8 +50,8 @@ namespace ctac
                 newLoop.name = "Loop ";
                 var lineRenderer = newLoop.GetComponent<LineRenderer>();
 
-                lineRenderer.endColor = Color.red;
-                lineRenderer.startColor = Color.red;
+                lineRenderer.endColor = isFriendly ? friendlyColor : enemyColor;
+                lineRenderer.startColor = isFriendly ? friendlyColor : enemyColor;
 
                 //go around the perimeter adding the line renderer points following the curvature of the EARF
                 //assuming we're starting at the right most, top most point
@@ -135,7 +143,7 @@ namespace ctac
                     totalLength += Vector3.Distance(perimPoints[p], perimPoints[p - 1]);
                 }
 
-                lineRenderer.material.SetFloat("_RepeatCount", totalLength * 1.5f);
+                lineRenderer.material.SetFloat("_RepeatCount", totalLength * 2.5f);
 
                 lineRenderer.numPositions = perimPoints.Count;
                 lineRenderer.SetPositions(perimPoints.ToArray());

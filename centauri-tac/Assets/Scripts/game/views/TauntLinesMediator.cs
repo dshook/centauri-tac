@@ -29,7 +29,9 @@ namespace ctac
             var friendlyPerims = FindTilePerimeters(tilesUpdated.friendlyTauntTiles);
             var enemyPerims    = FindTilePerimeters(tilesUpdated.enemyTauntTiles);
 
-            view.UpdatePerims(friendlyPerims, map);
+            view.ResetPerims();
+            view.UpdatePerims(friendlyPerims, map, true);
+            view.UpdatePerims(enemyPerims, map, false);
         }
 
         //given a list of taunt tiles, find any perimeter loops which there could be multiple of

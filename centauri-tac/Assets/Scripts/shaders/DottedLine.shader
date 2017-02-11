@@ -5,6 +5,7 @@
         _RepeatCount("Repeat Count", float) = 5
         _Spacing("Spacing", float) = 0.5
         _Offset("Offset", float) = 0
+        _Speed("Speed", float) = 0.5
     }
         SubShader
     {
@@ -27,6 +28,7 @@
             float _RepeatCount;
             float _Spacing;
             float _Offset;
+            float _Speed;
 
             struct appdata
             {
@@ -44,7 +46,7 @@
 
             v2f vert (appdata v)
             {
-                _Offset = (_Offset + _Time/2) % 1000;
+                _Offset = (_Offset + _Time * _Speed) % 1000;
                 v2f o;
                 o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
                 o.uv = v.uv;
