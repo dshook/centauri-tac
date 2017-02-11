@@ -1,6 +1,4 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
-using strange.extensions.signal.impl;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,8 +6,6 @@ namespace ctac
 {
     public class TileHighlightView : View
     {
-        internal Signal<GameObject> tileHover = new Signal<GameObject>();
-
         [Inject] public MapModel map { get; set; }
 
         Tile hoveredTile = null;

@@ -34,6 +34,7 @@ namespace ctac
         [Inject] public GameTurnModel gameTurn { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IDebugService debug { get; set; }
@@ -390,10 +391,18 @@ namespace ctac
                     enemyTauntTiles.AddRange(kingTiles.Values);
                 }
             }
+            friendlyTauntTiles = friendlyTauntTiles.Distinct().ToList();
+            enemyTauntTiles = enemyTauntTiles.Distinct().ToList();
+
+            tauntTilesSignal.Dispatch(new TauntTilesUpdateModel()
+            {
+                friendlyTauntTiles = friendlyTauntTiles,
+                enemyTauntTiles = enemyTauntTiles
+            });
 
             if (friendlyTauntTiles.Count > 0)
             {
-                view.toggleTileFlags(friendlyTauntTiles.Distinct().ToList(), TileHighlightStatus.FriendlyTauntArea);
+                view.toggleTileFlags(friendlyTauntTiles, TileHighlightStatus.FriendlyTauntArea);
             }
             else
             {
@@ -402,7 +411,7 @@ namespace ctac
 
             if (enemyTauntTiles.Count > 0)
             {
-                view.toggleTileFlags(enemyTauntTiles.Distinct().ToList(), TileHighlightStatus.EnemyTauntArea);
+                view.toggleTileFlags(enemyTauntTiles, TileHighlightStatus.EnemyTauntArea);
             }
             else
             {

@@ -134,6 +134,8 @@ namespace ctac.signals
     [Singleton] public class HistoryHoverSignal : Signal<bool> { }
     [Singleton] public class MovePathFoundSignal : Signal<MovePathFoundModel> { }
 
+    [Singleton] public class TauntTilesUpdatedSignal : Signal<TauntTilesUpdateModel> { }
+
     [Singleton] public class StartGameSettledSignal : Signal { }
 }
 
