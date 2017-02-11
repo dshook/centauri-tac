@@ -129,6 +129,14 @@ namespace ctac
                     lastTile = tile;
                 }
 
+                float totalLength = 0f;
+                for (int p = 1; p < perimPoints.Count; p++)
+                {
+                    totalLength += Vector3.Distance(perimPoints[p], perimPoints[p - 1]);
+                }
+
+                lineRenderer.material.SetFloat("_RepeatCount", totalLength * 1.5f);
+
                 lineRenderer.numPositions = perimPoints.Count;
                 lineRenderer.SetPositions(perimPoints.ToArray());
             }
