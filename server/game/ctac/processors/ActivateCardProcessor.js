@@ -63,6 +63,11 @@ export default class ActivateCardProcessor
         queue.push(new Message("Can't reach!", action.playerId));
         return queue.cancel(action, true);
       }
+      if(destinationTile.unpassable){
+        this.log.warn('Cannot play minion on unpassable tile');
+        queue.push(new Message("Can't play minion on that tile!", action.playerId));
+        return queue.cancel(action, true);
+      }
 
       //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
       queue.push(new SpawnPiece(

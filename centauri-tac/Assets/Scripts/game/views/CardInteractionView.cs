@@ -117,10 +117,13 @@ namespace ctac
             //    activateSignal.Dispatch(null);
             //    clickSignal.Dispatch(null, Vector3.zero);
             //}
-            //implicitly stop dragging after activating since we only test activation when we want to stop dragging
+            return hit;
+        }
+
+        internal void ClearDrag()
+        {
             draggedObject = null;
             dragTimer = 0f;
-            return hit;
         }
     }
 }

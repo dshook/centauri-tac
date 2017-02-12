@@ -27,6 +27,7 @@ namespace ctac
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
@@ -149,10 +150,20 @@ namespace ctac
 
         private void onActivate(GameObject activated)
         {
+            var itWorked = doActivateWork(activated);
+            if (itWorked)
+            {
+                view.ClearDrag();
+            }
+        }
+
+        //returns whether or not the activate was a good one or not
+        private bool doActivateWork(GameObject activated)
+        {
             if (activated == null || draggedCard == null)
             {
                 cardSelected.Dispatch(null);
-                return;
+                return false;
             }
 
             if (activated.CompareTag("Tile"))
@@ -161,10 +172,25 @@ namespace ctac
                 if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
                 {
                     message.Dispatch(new MessageModel() { message = "Not enough energy to play!" });
-                    return;
+                    return false;
                 }
 
                 var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
+
+                if (draggedCard.isMinion)
+                {
+                    //basic sanity checks first
+                    if (gameTile.unpassable)
+                    {
+                        message.Dispatch(new MessageModel() { message = "That location doesn't look safe!" });
+                        return false;
+                    }
+                    if (pieces.PieceAt(gameTile.position) != null)
+                    {
+                        message.Dispatch(new MessageModel() { message = "That location is already occupied!" });
+                        return false;
+                    }
+                }
 
                 if (draggedCard.isChoose(possibleActions))
                 {
@@ -212,7 +238,9 @@ namespace ctac
                         optionalTarget = null
                     });
                 }
+                return true;
             }
+            return false;
         }
 
         private void StartSelectTargets()
