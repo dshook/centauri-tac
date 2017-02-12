@@ -97,16 +97,26 @@ namespace ctac
         bool TestActivate()
         {
             bool hit = false;
-            if (raycastModel.worldHit.HasValue)
+            if (raycastModel.tile != null)
             {
                 hit = true;
-                activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
+                activateSignal.Dispatch(raycastModel.tile.gameObject);
             }
             else
             {
                 activateSignal.Dispatch(null);
                 clickSignal.Dispatch(null, Vector3.zero);
             }
+            //if (raycastModel.worldHit.HasValue)
+            //{
+            //    hit = true;
+            //    activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
+            //}
+            //else
+            //{
+            //    activateSignal.Dispatch(null);
+            //    clickSignal.Dispatch(null, Vector3.zero);
+            //}
             //implicitly stop dragging after activating since we only test activation when we want to stop dragging
             draggedObject = null;
             dragTimer = 0f;
