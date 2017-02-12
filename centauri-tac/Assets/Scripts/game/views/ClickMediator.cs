@@ -26,6 +26,7 @@ namespace ctac
 
         [Inject] public MessageSignal message { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GameTurnModel turns { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
@@ -183,13 +184,20 @@ namespace ctac
                             cardTarget = null;
                         }
                     } else if (
-                        FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable) 
+                        FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
                         && selectedPiece != null
                         && selectedPiece.canMove
                         )
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);
                         pieceSelected.Dispatch(null);
+                    } else {
+                        var pieceAtTile = pieces.PieceAt(gameTile.position);
+
+                        if (pieceAtTile != null && pieceAtTile.currentPlayerHasControl && !clickModel.isUp)
+                        {
+                            pieceSelected.Dispatch(pieceAtTile);
+                        }
                     }
                 }
             }

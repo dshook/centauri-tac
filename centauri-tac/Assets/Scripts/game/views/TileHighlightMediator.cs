@@ -215,15 +215,12 @@ namespace ctac
             }
 
             //set movement and tile selected highlights
-            if ( !selectedPiece.canMove ) {
-                return;
-            }
             var gameTile = map.tiles.Get(selectedPiece.tilePosition);
             this.selectedPiece = selectedPiece;
 
             view.onTileSelected(gameTile);
 
-            if (!selectedPiece.hasMoved)
+            if (!selectedPiece.hasMoved && selectedPiece.canMove)
             {
                 //find movement
                 var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
