@@ -1,0 +1,10 @@
+diff a/centauri-tac/Assets/Scripts/game/views/TileHighlightMediator.cs b/centauri-tac/Assets/Scripts/game/views/TileHighlightMediator.cs	(rejected hunks)
+@@ -308,7 +308,7 @@
+ 
+                     //TODO: take friendly units out of move and untargetable enemies like Cloak
+ 
+-                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
++                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, piece.currentPlayerHasControl);
+                     setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
+                 }
+             }

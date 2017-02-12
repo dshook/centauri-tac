@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using ctac.util;
+using System.Linq;
 
 namespace ctac {
     public class TileView : MonoBehaviour
     {
         public Tile tile;
-        public Color hoverTint = new Color(.1f, .1f, .1f, .1f);
+        public Color hoverTint = new Color(.2f, .2f, .2f, .2f);
         public Color pathFindTint = new Color(.3f, .3f, .3f, 1f);
         public Color selectColor = new Color(.4f, .9f, .4f);
         public Color moveColor = new Color(.4f, .4f, .9f);
@@ -41,44 +42,68 @@ namespace ctac {
             
             tileFlags = tile.highlightStatus;
             tint = invisible;
+            Color desiredColor = originalColor;
+
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Dimmed))
             {
-                tint = UpdateAdditive(dimmedColor, tint);
+                tint += dimmedColor;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
             {
-                tint = UpdateAdditive(hoverTint, tint);
+                tint += hoverTint;
             }
             else if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
             {
-                tint = UpdateAdditive(pathFindTint, tint);
+                tint = pathFindTint;
             }
 
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))
             {
-                SetColor(attackColor, tint);
+                desiredColor = attackColor;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected)
                 || FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
-                SetColor(selectColor, tint);
+                desiredColor = selectColor;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
             {
-                SetColor(moveColor, tint);
+                desiredColor = moveColor;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.MoveRange))
             {
-                SetColor(moveRangeColor, tint);
+                desiredColor = moveRangeColor;
             }
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
             {
-                SetColor(attackRangeTint, tint);
+                desiredColor = attackRangeTint;
             }
 
             if (tile.highlightStatus == 0)
             {
-                meshRenderer.material.color = originalColor;
+                desiredColor = originalColor;
+            }
+
+            //for tint only color changes just set the color, don't tween
+            if (desiredColor == originalColor && tint != invisible)
+            {
+                meshRenderer.material.color = desiredColor - tint;
+            }
+            else
+            {
+                desiredColor = desiredColor - tint;
+
+                if (desiredColor != meshRenderer.material.color)
+                {
+                    var existingTweens = gameObject.GetComponents<MaterialColorTween>();
+                    if (existingTweens.Length == 0 || !existingTweens.Any(tw => tw.desiredColor == desiredColor))
+                    {
+                        var matTween = gameObject.AddComponent<MaterialColorTween>();
+                        matTween.mat = meshRenderer.material;
+                        matTween.desiredColor = desiredColor;
+                        matTween.time = 0.5f;
+                    }
+                }
             }
 
             if (tile.showPieceRotation)
@@ -89,18 +114,6 @@ namespace ctac {
             {
                 arrows.SetActive(false);
             }
-        }
-
-        private Color UpdateAdditive(Color c, Color tint)
-        {
-            tint = tint + c;
-            meshRenderer.material.color = originalColor - tint;
-            return tint;
-        }
-
-        private void SetColor(Color c, Color tint)
-        {
-            meshRenderer.material.color = c - tint;
         }
 
         private void ReallySetColor(Color c)
