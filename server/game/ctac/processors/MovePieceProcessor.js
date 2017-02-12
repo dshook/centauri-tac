@@ -94,8 +94,6 @@ export default class MovePieceProcessor
     this.log.info('moved piece %s from %s to %s, direction %s',
       action.pieceId, currentPosition, action.to, action.direction);
 
-    queue.pushFront(new UpdateAura());
-
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off
     //and then seeing if we stepped into it
@@ -113,7 +111,7 @@ export default class MovePieceProcessor
           )
         )
       {
-        this.log.info('Unit %j stepped onto a taunt area of %j', piece, tauntPiece);
+        this.log.info('Piece %s stepped onto a taunt area of %s', piece.id, tauntPiece.id);
         //cancel any upcoming move actions so we don't move past the taunt
         this.cancelUpcomingMoves(queue, piece);
 
@@ -122,14 +120,19 @@ export default class MovePieceProcessor
         break;
       }
     }
+
+    queue.pushFront(new UpdateAura());
   }
 
   cancelUpcomingMoves(queue, piece){
     let upcomingQueue = queue.peek();
+    this.log.info('Queue Peek %j', upcomingQueue);
     for(let upcomingAction of upcomingQueue){
       if((upcomingAction instanceof MovePiece) && upcomingAction.pieceId == piece.id){
+        this.log.info('Cancelling move');
         queue.cancel(upcomingAction);
       }else if((upcomingAction instanceof AttackPiece) && upcomingAction.attackingPieceId == piece.id){
+        this.log.info('Cancelling attack');
         queue.cancel(upcomingAction);
       }else{
         break;

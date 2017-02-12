@@ -27,11 +27,11 @@ export default class GamelistComponent
   }
 
   /**
-   * Clean up DB, TODO: figure out if anything is needed now
+   * Clean up DB
    */
   async cleanup()
   {
-    this.log.info('Cleanup up Games');
+    //this.log.info('Cleanup up Games');
     this.games.cleanupGames();
   }
 }
