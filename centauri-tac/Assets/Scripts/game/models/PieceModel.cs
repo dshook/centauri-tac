@@ -42,6 +42,7 @@ namespace ctac
 
         public bool hasDeathEvent { get; set; }
         public bool hasEvent { get; set; }
+        public bool hasAura { get; set; }
         public bool isSelected { get; set; }
 
         [JsonIgnore]

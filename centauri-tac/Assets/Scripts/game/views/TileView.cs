@@ -66,10 +66,10 @@ namespace ctac {
             {
                 desiredColor = selectColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
-            {
-                desiredColor = moveColor;
-            }
+            //if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
+            //{
+            //    desiredColor = moveColor;
+            //}
             if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.MoveRange))
             {
                 desiredColor = moveRangeColor;
