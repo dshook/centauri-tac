@@ -29,14 +29,14 @@ The Unity client uses a `config.json` file in the centauri-tac folder. Example:
 
 ### Requirements
 
-* NodeJS 0.12.x
+* NodeJS 6.x
 
 ### Setup
 
 Install dependencies:
 
 ```
-$ npm install
+$ yarn
 ```
 
 ### Running
@@ -45,18 +45,6 @@ Start a server instance and run all migrations:
 
 ```
 $ npm start
-```
-
-Build all frontend applications:
-
-```
-$ npm run build
-```
-
-Build static assets and watch for changes:
-
-```
-$ npm run dev
 ```
 
 Run the server with `nodemon` to automatically restart on changes:
@@ -99,16 +87,11 @@ $ npm run build-lang
 A server is composed of one of more components that provide various
 functionality:
 
-* `master` Central service locator
-* `dispatch` Relays events around components
 * `auth` Player login and authentication service
 * `gamelist` Master game registry
 * `game` Hosts running game instances
-* `portal` Frontend application to manage backend services
 * `matchmaker` Automatch queue
-* `workbench` Server app to run locally to enable game content management via
-  the portal
-* `clientlog` Server app to monitor log files and serve them up
+* `log` Server app to display client json logs in a nice table
 
 ### Environment Variables
 
@@ -116,7 +99,7 @@ Environment variables can also be set locally with a `.env` file (see `dot-env-e
 
 Variable | Notes | Example
  --- | --- | ---
-`COMPONENTS` | Comma-separated list of components to start | `master,portal`
+`COMPONENTS` | Comma-separated list of components to start | `auth,game,gamelist,matchmaker,log`
 `DATABASE_URL` | Postgres connection string | `postgres://user:pass@url:1234/schema?ssl=true`
 `PORT` | Static file and REST endpoint HTTP port | `10123`
 `BCRYPT_ROUNDS` | How many rounds to use for hashing work for passwords | `10`
@@ -125,4 +108,5 @@ Variable | Notes | Example
 `PING_INTERVAL` | How frequently the server pings clients to update latency | `2000`
 `PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`
 `CLIENT_LOG` | Where to find the client log file to serve up | `./client_log.json`
+`DISCONNECT_TIMEOUT` | How long clients have to reconnect before the boot | `5000`
 
