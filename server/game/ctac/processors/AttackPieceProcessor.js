@@ -61,7 +61,7 @@ export default class AttackPieceProcessor
         return queue.cancel(action);
     }
 
-    if(attacker.statuses & Statuses.Paralyze || attacker.statuses & Statuses.CantAttack){
+    if(!action.isTauntAttack && (attacker.statuses & Statuses.Paralyze || attacker.statuses & Statuses.CantAttack)){
       this.log.warn('Cannot attack with piece %s with status %s', attacker.id, attacker.statuses);
       return queue.cancel(action);
     }
@@ -100,10 +100,16 @@ export default class AttackPieceProcessor
       bonusMsg = 'Backstab';
     }
 
-    queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
+    //do double checks for paralyze and can't attack here if it's a taunt attack
+    if(!action.isTauntAttack || !(attacker.statuses & Statuses.CantAttack || attacker.statuses & Statuses.Paralyze)){
+      queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
+    }
+
     //counter attack if in range
     if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
-      queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
+      if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
+        queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
+      }
     }
 
     attacker.attackCount++;
