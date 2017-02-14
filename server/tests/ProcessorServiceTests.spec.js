@@ -31,7 +31,7 @@ export default class ProcessorServiceTests
     this.pieceState.reset();
     this.cardState.initPlayer(1);
     this.cardState.initPlayer(2);
-    this.turnState.passTurnTo(1);
+    this.turnState.passTurn();
   }
 
   spawnCards(){
@@ -511,9 +511,7 @@ export default class ProcessorServiceTests
 
       t.equal(this.cardEvaluator.startTurnTimers.length, 2, 'Timers were added');
 
-      //pass the turn to player 2 then back to 1
-      this.queue.push(new PassTurn(2, 1));
-      this.queue.push(new PassTurn(1, 2));
+      this.queue.push(new PassTurn());
       await this.queue.processUntilDone();
 
       const generatedActions = this.queue.iterateCompletedSince();

@@ -44,7 +44,7 @@ export default class CentauriTacGame
 
       // start first turn with random player
       const startingId = _.sample(this.players).id;
-      this.queue.push(new PassTurn(startingId));
+      this.queue.push(new PassTurn());
 
       // spawn game pieces for two players
       var heroes = this.cardDirectory.getByTag('Hero');

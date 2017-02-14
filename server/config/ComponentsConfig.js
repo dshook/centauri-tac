@@ -9,5 +9,6 @@ export default class ComponentsConfig
      * How frequently clients are pinged to update latency
      */
     this.serverPingInterval = 0 | process.env.PING_INTERVAL || 2000;
+    this.dev = process.env.DEV || false;
   }
 }

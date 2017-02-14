@@ -27,42 +27,40 @@ export default class TurnProcessor
       return;
     }
 
-    // only have to validate if its from a player
-    if (action.from) {
-      const fromOkay = this.turnState.currentPlayerId === action.from;
-      const toOkay = this.players.some(x => x.id === action.to);
-
-      if (!fromOkay || !toOkay) {
-        this.log.warn("Couldn't find either the from or to player");
-        return queue.cancel(action);
-      }
-    }
-
     //incriment piece ability charges and reset counter
-    let playerPieces = this.pieceState.pieces.filter(x => x.playerId === action.to);
-    for(let piece of playerPieces){
+    for(let piece of this.pieceState.pieces){
       piece.abilityCharge++;
       piece.hasMoved = false;
       piece.attackCount = 0;
     }
 
-    this.cardEvaluator.evaluatePlayerEvent('turnEnd', action.from);
+    //@TODO: come back and see if there's a better way to eval the turnEnd and turnStart
+    //event without needing a player id
+    for(let player of this.players){
+      this.cardEvaluator.evaluatePlayerEvent('turnEnd', player.id);
+    }
 
     // do it
-    var currentTurn = this.turnState.passTurnTo(action.to);
+    var currentTurn = this.turnState.passTurn();
 
     //give some handouts
-    action.toPlayerMaxResources = this.playerResourceState.incriment(action.to, 1);
-    action.toPlayerResources = this.playerResourceState.refill(action.to);
+    for(let player of this.players){
+      action.playerResources.push({
+        playerId: player.id,
+        current: this.playerResourceState.refill(player.id),
+        max: this.playerResourceState.incriment(player.id, 1)
+      });
+
+      //update stats
+       this.statsState.setStat('COMBOCOUNT', 0, player.id);
+
+      //and finally eval the new turn
+      this.cardEvaluator.evaluatePlayerEvent('turnStart', player.id);
+
+      queue.push(new DrawCard(player.id));
+    }
     action.currentTurn = currentTurn;
 
-    //update stats
-    this.statsState.stats['COMBOCOUNT'] = 0;
-
-    //and finally eval the new turn
-    this.cardEvaluator.evaluatePlayerEvent('turnStart', action.to);
-
-    queue.push(new DrawCard(action.to));
     queue.complete(action);
   }
 }

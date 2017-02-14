@@ -14,13 +14,14 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, turnState, possibleActions)
+  constructor(players, queue, pieceState, turnState, possibleActions, config)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
     this.possibleActions = possibleActions;
     this.turnState = turnState;
+    this.config = config;
   }
 
   /**
@@ -49,19 +50,12 @@ export default class GameController
   @on('playerCommand', x => x === 'endTurn')
   passTurn(command, toPlayerId = null, player)
   {
-    let id = toPlayerId;
-
-    // implicit just pass to the other player
-    if (toPlayerId === null) {
-      if (this.players.length !== 2) {
-        throw new Error('to field required when not 2 players');
-      }
-
-      const toPlayer = this.players.find(x => x.id !== player.id);
-      id = toPlayer.id;
+    if(!this.config.dev){
+      this.log.error('Cannot end turn in non dev mode');
+      return;
     }
 
-    const action = new PassTurn(id, player.id);
+    const action = new PassTurn();
     this.queue.push(action);
     this.queue.processUntilDone();
   }

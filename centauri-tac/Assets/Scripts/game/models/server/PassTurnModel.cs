@@ -1,12 +1,18 @@
-﻿namespace ctac
+﻿using System.Collections.Generic;
+
+namespace ctac
 {
     public class PassTurnModel : BaseAction
     {
-        public int to { get; set; }
-        public int? from { get; set; }
         public int currentTurn { get; set; }
 
-        public int toPlayerResources { get; set; }
-        public int toPlayerMaxResources { get; set; }
+        public List<TurnResourceModel> playerResources { get; set; }
+    }
+
+    public class TurnResourceModel
+    {
+        public int playerId { get; set; }
+        public int current { get; set; }
+        public int max { get; set; }
     }
 }

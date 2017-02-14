@@ -9,9 +9,6 @@ export default class TurnState
 {
   constructor()
   {
-    // who
-    this.currentPlayerId = null;
-
     // which
     this.currentTurn = 0;
 
@@ -30,13 +27,12 @@ export default class TurnState
   /**
    * Next turn
    */
-  passTurnTo(playerId)
+  passTurn()
   {
-    this.currentPlayerId = playerId;
     this._turnStart = moment();
     this.currentTurn++;
 
-    this.log.info('started turn %s, player %s', this.currentTurn, playerId);
+    this.log.info('started turn %s', this.currentTurn);
     return this.currentTurn;
   }
 }

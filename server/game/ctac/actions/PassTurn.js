@@ -5,13 +5,10 @@ import BaseAction from './BaseAction.js';
  */
 export default class PassTurn extends BaseAction
 {
-  constructor(to, from = null)
+  constructor()
   {
     super();
-    this.to = to;
-    this.from = from;
     this.currentTurn = null;
-    this.toPlayerResources = null;
-    this.toPlayerMaxResources = null;
+    this.playerResources = [];
   }
 }

@@ -44,42 +44,42 @@ $ yarn
 Start a server instance and run all migrations:
 
 ```
-$ npm start
+$ yarn start
 ```
 
 Run the server with `nodemon` to automatically restart on changes:
 
 ```
-$ npm run dev-server
+$ yarn run dev-server
 ```
 
 To create a new database migration:
 
 ```
-$ npm run create-migration MIGRATION_NAME
+$ yarn run create-migration MIGRATION_NAME
 ```
 
-Run all migrations up (happens implicitly on `npm start` as well):
+Run all migrations up (happens implicitly on `yarn start` as well):
 
 ```
-$ npm run migrate
+$ yarn run migrate
 ```
 
 Run a single migration down (step back 1 migration):
 
 ```
-$ npm run migrate-down
+$ yarn run migrate-down
 ```
 
 Run all tests
 
 ```
-$ npm test
+$ yarn test
 ```
 
 If card lang is updated run this to rebuild the parser:
 ```
-$ npm run build-lang
+$ yarn run build-lang
 ```
 
 ### Components
@@ -109,4 +109,5 @@ Variable | Notes | Example
 `PG_USE_SSL` | Whether to use SSL for postgres (defaults true) | `false`
 `CLIENT_LOG` | Where to find the client log file to serve up | `./client_log.json`
 `DISCONNECT_TIMEOUT` | How long clients have to reconnect before the boot | `5000`
+`DEV` | Allows some developer commands to be sent to the server | `true`
 

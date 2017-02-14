@@ -63,7 +63,7 @@ export default class SpawnPieceProcessor
           return queue.cancel(action, true);
         }
 
-        this.statsState.stats['COMBOCOUNT']++;
+        this.statsState.setStat('COMBOCOUNT', 1 + this.statsState.getStat('COMBOCOUNT', action.playerId), action.playerId);
       }
 
       queue.complete(action);

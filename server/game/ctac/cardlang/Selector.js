@@ -157,7 +157,7 @@ export default class Selector{
       let selectedCards = this.selectCards(input.selector, pieceSelectorParams);
       return selectedCards.length;
     }else if(input.stat){
-      return this.statsState.stats[input.path];
+      return this.statsState.getStat(input.path, pieceSelectorParams.controllingPlayerId);
     }else if(input.resource){
       let selectedPlayer = this.selectPlayer(pieceSelectorParams.controllingPlayerId, input.selector);
       let resourceKey = input.resource;
