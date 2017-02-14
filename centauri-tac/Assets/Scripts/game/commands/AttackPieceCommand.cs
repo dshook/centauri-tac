@@ -22,7 +22,7 @@ namespace ctac
         public ISocketService socket { get; set; }
 
         [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        public GamePlayersModel players { get; set; }
 
 
         public override void Execute()
@@ -34,7 +34,7 @@ namespace ctac
             List<Tile> path = null;
             if (!attacker.range.HasValue)
             {
-                path = mapService.FindPath(startTile, destTile, attacker.movement + 1, gameTurn.currentPlayerId);
+                path = mapService.FindPath(startTile, destTile, attacker.movement + 1, players.Me.id);
             }
 
             if (path == null && !attacker.range.HasValue)
@@ -56,7 +56,7 @@ namespace ctac
                 attacker.hasMoved = true;
             }
 
-            socket.Request(gameTurn.currentTurnClientId, "game", "moveattack", 
+            socket.Request(players.Me.clientId, "game", "moveattack", 
                 new { attackModel.attackingPieceId, attackModel.targetPieceId, route = serverPath }
             );
         }

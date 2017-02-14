@@ -15,7 +15,7 @@ namespace ctac
         public PossibleActionsReceivedSignal possibleActionsReceived { get; set; }
 
         [Inject]
-        public GameTurnModel turns { get; set; }
+        public GamePlayersModel players { get; set; }
 
         [Inject]
         public PiecesModel pieces { get; set; }
@@ -51,17 +51,17 @@ namespace ctac
             {
                 card.metCondition = false;
             }
-            if (possibleActions.metConditions.ContainsKey(turns.currentPlayerId) 
-                && possibleActions.metConditions[turns.currentPlayerId] != null)
+            if (possibleActions.metConditions.ContainsKey(players.Me.id) 
+                && possibleActions.metConditions[players.Me.id] != null)
             {
-                foreach (var metCondition in possibleActions.metConditions[turns.currentPlayerId])
+                foreach (var metCondition in possibleActions.metConditions[players.Me.id])
                 {
                     var card = cards.Card(metCondition.cardId);
                     if (card != null)
                     {
                         card.metCondition = true;
                         //kinda nasty, probably will chage with introduction of glow though
-                        card.cardView.UpdateText(possibleActions.GetSpellDamage(turns.currentPlayerId));
+                        card.cardView.UpdateText(possibleActions.GetSpellDamage(players.Me.id));
                     }
                 }
             }

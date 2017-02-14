@@ -148,6 +148,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
+                //@TODO: should be able to simplify this current player stuff
                 opponentId != piece.playerId
                 && currentTurnPlayerId == piece.playerId
                 && piece.currentPlayerHasControl 

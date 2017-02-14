@@ -33,9 +33,7 @@ namespace ctac
         {
             if (!processedActions.Verify(gameFinished.id)) return;
 
-            var opponentId = players.OpponentId(turns.currentPlayerId);
-
-            if (gameFinished.winnerId != opponentId)
+            if (gameFinished.winnerId == players.Me.id)
             {
                 message.Dispatch(new MessageModel() { message = "Victory!", duration = 5000}, socketKey);
             }

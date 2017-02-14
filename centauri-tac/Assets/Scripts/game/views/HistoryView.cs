@@ -2,9 +2,6 @@ using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using UnityEngine;
 using SVGImporter;
-using UnityEngine.UI;
-using strange.extensions.signal.impl;
-using ctac.signals;
 
 namespace ctac
 {
@@ -83,7 +80,7 @@ namespace ctac
             var cardSvg = cardGo.GetComponent<SVGImage>();
 
             cardSvg.vectorGraphics = iconMap[item.type];
-            borderSvg.color = item.initiatingPlayerId != players.OpponentId(turns.currentPlayerId) ? Colors.friendlyColor : Colors.enemyColor;
+            borderSvg.color = item.initiatingPlayerId != players.Me.id ? Colors.friendlyColor : Colors.enemyColor;
 
             icons.Add(new HistoryIcon()
             {

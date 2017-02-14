@@ -20,7 +20,8 @@ namespace ctac
         {
             debug.Log("Game Started", socketKey);
             
-            gameTurn.currentTurnClientId = socketKey.clientId;
+            //TODO: do something here? lol
+            //gameTurn.currentTurnClientId = socketKey.clientId;
         }
     }
 }

@@ -69,7 +69,7 @@ namespace ctac
         {
             if(decks == null || decks.Cards == null) return emptyList;
             return decks.Cards
-                .Where(c => c.playerId != players.OpponentId(gameTurn.currentPlayerId))
+                .Where(c => c.playerId == players.Me.id)
                 .ToList();
         }
 
@@ -77,7 +77,7 @@ namespace ctac
         {
             if(decks == null || decks.Cards == null) return emptyList;
             return decks.Cards
-                .Where(c => c.playerId == players.OpponentId(gameTurn.currentPlayerId))
+                .Where(c => c.playerId != players.Me.id)
                 .ToList();
         }
     }

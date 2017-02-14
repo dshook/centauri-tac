@@ -53,29 +53,21 @@ namespace ctac
         {
             if (startSettled)
             {
-                var opponentId = players.OpponentId(gameTurn.currentPlayerId);
                 view.updatePlayable(
-                    gameTurn.currentPlayerId == opponentId || 
-                    cards.Cards.Any(x => x.playerId != opponentId && x.playable)
+                    cards.Cards.Any(x => x.playerId == players.Me.id && x.playable)
                 );
             }
         }
 
         private void onTurnClicked()
         {
-            socket.Request(gameTurn.currentTurnClientId, "game", "endTurn");
+            socket.Request(players.Me.clientId, "game", "endTurn");
             endTurnSignal.Dispatch();
         }
 
         private void onTurnEnded(GameTurnModel turns)
         {
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-
             var text = "End Turn";
-            if (gameTurn.currentPlayerId == opponentId)
-            {
-                text = "Enemy Turn";
-            }
             view.onTurnEnded(text);
         }
 

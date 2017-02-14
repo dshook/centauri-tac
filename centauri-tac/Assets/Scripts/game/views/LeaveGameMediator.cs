@@ -12,7 +12,7 @@ namespace ctac
         public LeaveGameSignal leaveSignal { get; set; }
 
         [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        public GamePlayersModel players { get; set; }
 
         public override void OnRegister()
         {
@@ -27,7 +27,7 @@ namespace ctac
 
         private void onTurnClicked()
         {
-            leaveSignal.Dispatch(new SocketKey(gameTurn.currentTurnClientId, "game"));
+            leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"));
         }
 
     }

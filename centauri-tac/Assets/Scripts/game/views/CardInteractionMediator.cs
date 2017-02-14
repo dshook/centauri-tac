@@ -25,7 +25,6 @@ namespace ctac
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
-        [Inject] public GameTurnModel turns { get; set; }
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
@@ -110,8 +109,8 @@ namespace ctac
 
                     if (cardView.card.isSpell)
                     {
-                        var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, cardView.card.id);
-                        var area = possibleActions.GetAreasForCard(turns.currentPlayerId, cardView.card.id);
+                        var targets = possibleActions.GetActionsForCard(players.Me.id, cardView.card.id);
+                        var area = possibleActions.GetAreasForCard(players.Me.id, cardView.card.id);
                         if (targets != null || area != null)
                         {
                             startTargetModel = new TargetModel()
@@ -205,8 +204,8 @@ namespace ctac
                 }
                 else if (draggedCard.needsTargeting(possibleActions))
                 {
-                    var targets = possibleActions.GetActionsForCard(turns.currentPlayerId, draggedCard.id);
-                    var area = possibleActions.GetAreasForCard(turns.currentPlayerId, draggedCard.id);
+                    var targets = possibleActions.GetActionsForCard(players.Me.id, draggedCard.id);
+                    var area = possibleActions.GetAreasForCard(players.Me.id, draggedCard.id);
 
                     var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
                     if (area != null && area.selfCentered)
@@ -289,7 +288,7 @@ namespace ctac
                 if (hoveredObject.CompareTag("Card"))
                 {
                     var cardView = hoveredObject.GetComponent<CardView>();
-                    if (cardView != null && cardView != lastHoveredCard && players.OpponentId(turns.currentPlayerId) != cardView.card.playerId )
+                    if (cardView != null && cardView != lastHoveredCard && players.Me.id == cardView.card.playerId )
                     {
                         //break out and don't hover if it hasn't been added to the hand of cards yet
                         if (!cards.Cards.Contains(cardView.card))

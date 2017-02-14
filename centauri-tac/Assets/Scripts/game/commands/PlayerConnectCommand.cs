@@ -28,6 +28,7 @@ namespace ctac
             {
                 //this must be a local player so just grab them
                 gamePlayers.AddOrUpdate(player);
+                gamePlayers.SetMeClient(player.clientId);
             }
             else
             {

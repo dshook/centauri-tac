@@ -491,11 +491,12 @@ namespace ctac
 
         private void onTurnEnded(GameTurnModel turns)
         {
-            var opponentId = players.OpponentId(turns.currentPlayerId);
-            foreach (var piece in pieces.Pieces)
-            {
-                piece.pieceView.UpdateTurn(opponentId, turns.currentPlayerId);
-            }
+            //@TODO: come back and figure out when to trigger this based off local player changing
+            //var opponentId = players.Me.id;
+            //foreach (var piece in pieces.Pieces)
+            //{
+            //    piece.pieceView.UpdateTurn(opponentId, turns.currentPlayerId);
+            //}
         }
 
         private void onPieceDied(PieceModel p)

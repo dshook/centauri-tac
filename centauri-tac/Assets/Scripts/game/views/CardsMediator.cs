@@ -125,8 +125,7 @@ namespace ctac
         private void onCardDrawn(CardModel card)
         {
             //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-            var isOpponent = card.playerId == opponentId;
+            var isOpponent = card.playerId != players.Me.id;
             animationQueue.Add(new CardsView.DrawCardAnim()
             {
                 card = card,
@@ -138,8 +137,7 @@ namespace ctac
         private void onCardGiven(CardModel card)
         {
             //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-            var isOpponent = card.playerId == opponentId;
+            var isOpponent = card.playerId != players.Me.id;
 
             animationQueue.Add(new CardsView.GiveCardAnim()
             {
@@ -159,25 +157,14 @@ namespace ctac
 
         private void onCardDiscarded(CardModel card)
         {
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
+            var isOpponent = card.playerId != players.Me.id;
             card.activated = true;
-            if (card.playerId == opponentId)
+            animationQueue.Add(new CardsView.DiscardCardAnim()
             {
-                animationQueue.Add(new CardsView.DiscardCardAnim()
-                {
-                    card = card,
-                    destroyCard = destroyCard,
-                    isOpponentCard = true
-                });
-            }
-            else
-            {
-                animationQueue.Add(new CardsView.DiscardCardAnim()
-                {
-                    card = card,
-                    destroyCard = destroyCard
-                });
-            }
+                card = card,
+                destroyCard = destroyCard,
+                isOpponentCard = isOpponent
+            });
         }
 
         private void onBuff(CardBuffModel cardBuff)
@@ -219,15 +206,13 @@ namespace ctac
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
 
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-            return cards.Cards.Where(c => c.playerId != opponentId).ToList();
+            return cards.Cards.Where(c => c.playerId == players.Me.id).ToList();
         }
         private List<CardModel> OpponentCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
 
-            var opponentId = players.OpponentId(gameTurn.currentPlayerId);
-            return cards.Cards.Where(c => c.playerId == opponentId).ToList();
+            return cards.Cards.Where(c => c.playerId != players.Me.id).ToList();
         }
 
         private void onPlayerResourceSet(SetPlayerResourceModel resource)
@@ -239,7 +224,7 @@ namespace ctac
         {
             foreach (var card in cards)
             {
-                if ( card.playerId == gameTurn.currentPlayerId
+                if ( card.playerId == players.Me.id
                    && playerResources.resources.ContainsKey(card.playerId) 
                    && card.cost <= playerResources.resources[card.playerId])
                 {

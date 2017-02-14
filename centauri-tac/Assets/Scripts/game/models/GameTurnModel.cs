@@ -6,7 +6,5 @@ namespace ctac
     public class GameTurnModel
     {
         public int currentTurn { get; set; }
-        public Guid currentTurnClientId { get; set; }
-        public int currentPlayerId { get; set; }
     }
 }

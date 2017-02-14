@@ -31,7 +31,7 @@ namespace ctac
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
-        [Inject] public GameTurnModel gameTurn { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
@@ -101,7 +101,7 @@ namespace ctac
                 {
                     //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
                     var boost = enemyOccupyingDest ? 1 : 0;
-                    var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, gameTurn.currentPlayerId);
+                    var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, players.Me.id);
                     view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
                     //@Cleanup: probably pass the start tile separately so we don't have to allocate and copy

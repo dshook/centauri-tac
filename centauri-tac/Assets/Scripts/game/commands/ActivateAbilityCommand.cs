@@ -14,11 +14,11 @@ namespace ctac
         public ISocketService socket { get; set; }
 
         [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        public GamePlayersModel players { get; set; }
 
         public override void Execute()
         {
-            socket.Request(gameTurn.currentTurnClientId, "game", "activateability", 
+            socket.Request(players.Me.clientId, "game", "activateability", 
                 new { pieceId = activatedAbility.piece.id, targetPieceId = activatedAbility.optionalTarget == null ? (int?)null : activatedAbility.optionalTarget.id }
             );
         }

@@ -21,17 +21,17 @@ namespace ctac
         public ISocketService socket { get; set; }
 
         [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        public GamePlayersModel players { get; set; }
 
 
         public override void Execute()
         {
 
             var startTile = map.tiles.Get(pieceMoved.tilePosition);
-            var path = mapService.FindPath(startTile, dest, pieceMoved.movement, gameTurn.currentPlayerId);
+            var path = mapService.FindPath(startTile, dest, pieceMoved.movement, players.Me.id);
             //format for server
             var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();
-            socket.Request(gameTurn.currentTurnClientId, "game", "move", new { pieceId = pieceMoved.id, route = serverPath });
+            socket.Request(players.Me.clientId, "game", "move", new { pieceId = pieceMoved.id, route = serverPath });
         }
     }
 }

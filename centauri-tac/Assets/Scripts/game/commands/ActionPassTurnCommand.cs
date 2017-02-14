@@ -34,25 +34,27 @@ namespace ctac
             if (!processedActions.Verify(gamePassModel.id)) return;
 
             turnModel.currentTurn = gamePassModel.currentTurn;
-            turnModel.currentPlayerId = gamePassModel.to;
-            turnModel.currentTurnClientId = gamePlayers.GetByPlayerId(gamePassModel.to).clientId;
-            playerResources.resources[gamePassModel.to] = gamePassModel.toPlayerResources;
-            playerResources.maxResources[gamePassModel.to] = gamePassModel.toPlayerMaxResources;
 
-            var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
-            foreach (var piece in piecesModel.Pieces)
+            foreach (var resourceModel in gamePassModel.playerResources)
             {
-                piece.hasMoved = false;
-                piece.attackCount = 0;
-                if (piece.playerId == opponentId)
-                {
-                    piece.currentPlayerHasControl = false;
-                }
-                else
-                {
-                    piece.currentPlayerHasControl = true;
-                }
+                playerResources.resources[resourceModel.playerId] = resourceModel.current;
+                playerResources.maxResources[resourceModel.playerId] = resourceModel.max;
             }
+
+            //Shouldn't need this now, but steal for switch sides button locally
+            //foreach (var piece in piecesModel.Pieces)
+            //{
+            //    piece.hasMoved = false;
+            //    piece.attackCount = 0;
+            //    if (piece.playerId == opponentId)
+            //    {
+            //        piece.currentPlayerHasControl = false;
+            //    }
+            //    else
+            //    {
+            //        piece.currentPlayerHasControl = true;
+            //    }
+            //}
             debug.Log("Turn Ended");
             turnEnded.Dispatch(turnModel);
         }

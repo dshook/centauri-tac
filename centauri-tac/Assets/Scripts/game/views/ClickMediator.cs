@@ -27,7 +27,7 @@ namespace ctac
         [Inject] public MessageSignal message { get; set; }
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
-        [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
@@ -140,7 +140,7 @@ namespace ctac
                 }
 
                 //selected should never be null but check anyways
-                if (selectedPiece != null && selectedPiece.playerId == turns.currentPlayerId) {
+                if (selectedPiece != null && selectedPiece.playerId == players.Me.id) {
                     if (clickModel.clickedObject.CompareTag("RotateSouth"))
                     {
                         rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));

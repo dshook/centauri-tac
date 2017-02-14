@@ -51,7 +51,7 @@ namespace ctac
                 displayWrapper.SetActive(true);
                 rectTransform.SetParent(OpponentDeckGO.transform, false);
                 rectTransform.anchoredPosition3D = offset;
-                text.text = decks.Cards.Count(c => c.playerId == players.OpponentId(gameTurn.currentPlayerId)).ToString();
+                text.text = decks.Cards.Count(c => c.playerId != players.Me.id).ToString();
             }
 
             if (hoverDeck)
@@ -59,7 +59,7 @@ namespace ctac
                 displayWrapper.SetActive(true);
                 rectTransform.SetParent(DeckGO.transform, false);
                 rectTransform.anchoredPosition3D = offset;
-                text.text = decks.Cards.Count(c => c.playerId != players.OpponentId(gameTurn.currentPlayerId)).ToString();
+                text.text = decks.Cards.Count(c => c.playerId == players.Me.id).ToString();
             }
 
             if (!hoverOpponent && !hoverDeck)

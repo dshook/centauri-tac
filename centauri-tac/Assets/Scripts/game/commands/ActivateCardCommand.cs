@@ -21,11 +21,11 @@ namespace ctac
         public ISocketService socket { get; set; }
 
         [Inject]
-        public GameTurnModel gameTurn { get; set; }
+        public GamePlayersModel players { get; set; }
 
         public override void Execute()
         {
-            socket.Request(gameTurn.currentTurnClientId, "game", "activatecard", 
+            socket.Request(players.Me.clientId, "game", "activatecard", 
                 new ActivateCardModel {
                     playerId = cActivate.cardActivated.playerId,
                     cardInstanceId = cActivate.cardActivated.id,

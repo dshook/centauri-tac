@@ -12,7 +12,7 @@ namespace ctac
         [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
-        [Inject] public GameTurnModel gameTurns { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
 
         [Inject] public ActionsProcessedModel processedActions { get; set; }
 
@@ -27,7 +27,7 @@ namespace ctac
 
             var piece = pieces.Piece(charmedPiece.pieceId);
             piece.playerId = charmedPiece.newPlayerId;
-            piece.currentPlayerHasControl = gameTurns.currentPlayerId == piece.playerId;
+            piece.currentPlayerHasControl = players.Me.id == piece.playerId;
 
             pieceService.SetInitialMoveAttackStatus(piece);
 

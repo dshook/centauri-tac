@@ -26,9 +26,6 @@ namespace ctac
         public GamePlayersModel gamePlayers { get; set; }
 
         [Inject]
-        public GameTurnModel turnModel { get; set; }
-
-        [Inject]
         public CardDirectory cardDirectory { get; set; }
 
         [Inject]
@@ -67,7 +64,6 @@ namespace ctac
                 //newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
             }
 
-            var opponentId = gamePlayers.OpponentId(turnModel.currentPlayerId);
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
 
             var pieceModel = new PieceModel()
@@ -75,7 +71,7 @@ namespace ctac
                 id = spawnedPiece.pieceId.Value,
                 playerId = spawnedPiece.playerId,
                 cardTemplateId = spawnedPiece.cardTemplateId,
-                currentPlayerHasControl = spawnedPiece.playerId != opponentId,
+                currentPlayerHasControl = spawnedPiece.playerId == gamePlayers.Me.id,
                 gameObject = newPiece,
                 attack = cardTemplate.attack,
                 health = cardTemplate.health,
@@ -96,8 +92,8 @@ namespace ctac
 
             var pieceView = newPiece.AddComponent<PieceView>();
             pieceView.piece = pieceModel;
-            pieceView.opponentId = opponentId;
-            pieceView.currentTurnPlayerId = turnModel.currentPlayerId;
+            pieceView.opponentId = gamePlayers.OpponentId(gamePlayers.Me.id);
+            pieceView.currentTurnPlayerId = gamePlayers.Me.id;
 
             piecesModel.Pieces.Add(pieceModel);
 

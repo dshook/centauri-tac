@@ -25,7 +25,7 @@ namespace ctac
         [Inject] public StartChooseSignal startChoose { get; set; }
 
         [Inject] public PossibleActionsModel possibleActions { get; set; }
-        [Inject] public GameTurnModel turns { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
         public override void OnRegister()
@@ -90,7 +90,7 @@ namespace ctac
             }
             else if (model.targetingCard.isSpell)
             {
-                var area = possibleActions.GetAreasForCard(turns.currentPlayerId, model.targetingCard.id);
+                var area = possibleActions.GetAreasForCard(players.Me.id, model.targetingCard.id);
                 //don't point for untargeted spells
                 if (model.targets == null && area == null) { return; }
 
