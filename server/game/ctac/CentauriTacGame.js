@@ -15,7 +15,7 @@ import _ from 'lodash';
 @loglevel
 export default class CentauriTacGame
 {
-  constructor(queue, players, binder, host, cardDirectory, cardState, playerResourceState)
+  constructor(queue, players, binder, host, cardDirectory, cardState, playerResourceState, gameEventService)
   {
     this.players = players;
     this.binder = binder;
@@ -24,6 +24,7 @@ export default class CentauriTacGame
     this.cardDirectory = cardDirectory;
     this.cardState = cardState;
     this.playerResourceState = playerResourceState;
+    this.gameEventService = gameEventService;
   }
 
   /**
@@ -71,6 +72,8 @@ export default class CentauriTacGame
 
       await this.queue.processUntilDone();
 
+      this.gameEventService.autoTurnInterval.start();
+
       return;
     }
 
@@ -84,6 +87,7 @@ export default class CentauriTacGame
   shutdown()
   {
     this.log.info('Goodbye, world :(');
+    this.gameEventService.shutdown();
   }
 
   /**
