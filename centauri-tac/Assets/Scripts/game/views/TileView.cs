@@ -106,11 +106,11 @@ namespace ctac {
                 }
             }
 
-            if (tile.showPieceRotation)
+            if (tile.showPieceRotation && !arrows.activeSelf)
             {
                 arrows.SetActive(true);
             }
-            else
+            else if(!tile.showPieceRotation && arrows.activeSelf)
             {
                 arrows.SetActive(false);
             }
