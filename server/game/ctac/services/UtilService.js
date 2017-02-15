@@ -23,34 +23,34 @@ class PossibleActions
   }
 
   //end of processing client data update
-  findPossibleActions(){
+  findPossibleActions(playerId){
     //look through the current players hand for any cards needing a TARGET
     //and through pieces for possible abilities
     let targets = this.cardEvaluator.findPossibleTargets(
-      this.cardState.hands[this.turnState.currentPlayerId],
-      this.turnState.currentPlayerId
+      this.cardState.hands[playerId],
+      playerId
     );
     let abilities = this.cardEvaluator.findPossibleAbilities(
       this.pieceState.pieces,
-      this.turnState.currentPlayerId
+      playerId
     );
     let areas = this.cardEvaluator.findPossibleAreas(
-      this.cardState.hands[this.turnState.currentPlayerId],
-      this.turnState.currentPlayerId
+      this.cardState.hands[playerId],
+      playerId
     );
     let metConditions = this.cardEvaluator.findMetConditionCards(
-      this.cardState.hands[this.turnState.currentPlayerId],
-      this.turnState.currentPlayerId
+      this.cardState.hands[playerId],
+      playerId
     );
     let eventedPieces = this.cardEvaluator.findEventedPieces();
     let chooseCards = this.cardEvaluator.findChooseCards(
-      this.cardState.hands[this.turnState.currentPlayerId],
-      this.turnState.currentPlayerId,
+      this.cardState.hands[playerId],
+      playerId,
       this.cardDirectory
     );
     return {
-      playerId: this.turnState.currentPlayerId,
-      spellDamage: this.pieceState.totalSpellDamage(this.turnState.currentPlayerId),
+      playerId: playerId,
+      spellDamage: this.pieceState.totalSpellDamage(playerId),
       targets,
       areas,
       abilities,

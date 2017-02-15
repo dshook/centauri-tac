@@ -6,6 +6,7 @@ import {on} from 'emitter-binder';
 import Application from 'billy';
 import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
 import HostManager from '../game/HostManager.js';
+import GameConfig from './GameConfig.js';
 
 // TODO: in configs
 import ActionQueueService from './ctac/services/ActionQueueService.js';
@@ -50,6 +51,7 @@ export default class GameHost extends EventEmitter
     this.log.info('booting up game stack for game %s', this.game.id);
 
     // injectables
+    app.registerInstance('gameConfig', new GameConfig());
     app.registerInstance('players', this.players);
     app.registerInstance('binder', this.binder);
     app.registerInstance('game', this.game);

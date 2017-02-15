@@ -28,6 +28,7 @@ namespace ctac
             possibleActions.Update(newPossibleActions);
 
             //update evented pieces without anim for now
+            //@TODO: add animation for icons
             foreach (var piece in pieces.Pieces)
             {
                 piece.hasDeathEvent = false;

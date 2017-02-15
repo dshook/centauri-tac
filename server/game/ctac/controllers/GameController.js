@@ -14,14 +14,14 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, turnState, possibleActions, config)
+  constructor(players, queue, pieceState, turnState, possibleActions, gameConfig)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
     this.possibleActions = possibleActions;
     this.turnState = turnState;
-    this.config = config;
+    this.config = gameConfig;
   }
 
   /**
@@ -152,7 +152,7 @@ export default class GameController
   {
     //this.log.info('sending action %s', action.constructor.name);
     for (const player of this.players) {
-      // disconnceted played
+      // disconnected player
       if (!player.client) {
         continue;
       }
@@ -187,11 +187,15 @@ export default class GameController
       p.client.send('qpc', ticks);
     }
 
-    //find actions the client can take that could be filtered on the server side
-    let possibleActions = this.possibleActions.findPossibleActions();
-    const currentTurnPlayer = this.players.find(x => x.id === this.turnState.currentPlayerId && x.client);
-    if(currentTurnPlayer){
-      currentTurnPlayer.client.send('possibleActions', possibleActions);
+    for (const player of this.players) {
+      // disconnceted played
+      if (!player.client) {
+        continue;
+      }
+
+      //find actions the client can take that could be filtered on the server side
+      let possibleActions = this.possibleActions.findPossibleActions(player.id);
+      player.client.send('possibleActions', possibleActions);
     }
 
     //check for game win condition
