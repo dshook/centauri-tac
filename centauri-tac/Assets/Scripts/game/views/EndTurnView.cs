@@ -10,9 +10,11 @@ namespace ctac
 {
     public class EndTurnView : View
     {
-        public Signal clickSignal = new Signal();
+        public Signal clickEndTurnSignal = new Signal();
+        public Signal clickSwitchSidesSignal = new Signal();
 
         public Button endTurnButton;
+        public Button switchSidesButton;
 
         TextMeshProUGUI buttonText;
         SVGImage buttonBg;
@@ -23,6 +25,7 @@ namespace ctac
         internal void init()
         {
             endTurnButton.onClick.AddListener(() => onClick());
+            switchSidesButton.onClick.AddListener(() => onSwitchSidesClick());
             buttonText = endTurnButton.GetComponentInChildren<TextMeshProUGUI>();
             buttonBg = endTurnButton.GetComponent<SVGImage>();
         }
@@ -33,7 +36,12 @@ namespace ctac
 
         void onClick()
         {
-            clickSignal.Dispatch();
+            clickEndTurnSignal.Dispatch();
+        }
+
+        void onSwitchSidesClick()
+        {
+            clickSwitchSidesSignal.Dispatch();
         }
 
         internal void onTurnEnded(string text)

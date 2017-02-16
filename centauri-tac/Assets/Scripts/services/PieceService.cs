@@ -92,7 +92,7 @@ namespace ctac
 
             var pieceView = newPiece.AddComponent<PieceView>();
             pieceView.piece = pieceModel;
-            pieceView.opponentId = gamePlayers.OpponentId(gamePlayers.Me.id);
+            pieceView.opponentId = gamePlayers.Opponent(gamePlayers.Me.id).id;
             pieceView.currentTurnPlayerId = gamePlayers.Me.id;
 
             piecesModel.Pieces.Add(pieceModel);

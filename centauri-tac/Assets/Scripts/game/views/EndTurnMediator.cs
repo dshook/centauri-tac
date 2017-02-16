@@ -26,7 +26,8 @@ namespace ctac
 
         public override void OnRegister()
         {
-            view.clickSignal.AddListener(onTurnClicked);
+            view.clickEndTurnSignal.AddListener(onTurnClicked);
+            view.clickSwitchSidesSignal.AddListener(onSwitchClicked);
             turnEnded.AddListener(onTurnEnded);
             onStartSettled.AddListener(onStartSet);
             view.init();
@@ -44,7 +45,7 @@ namespace ctac
 
         public override void onRemove()
         {
-            view.clickSignal.RemoveListener(onTurnClicked);
+            view.clickEndTurnSignal.RemoveListener(onTurnClicked);
             turnEnded.RemoveListener(onTurnEnded);
             onStartSettled.RemoveListener(onStartSet);
         }
@@ -63,6 +64,13 @@ namespace ctac
         {
             socket.Request(players.Me.clientId, "game", "endTurn");
             endTurnSignal.Dispatch();
+        }
+
+        private void onSwitchClicked()
+        {
+            var opponent = players.Opponent(players.Me.id);
+            players.SetMeClient(opponent.clientId);
+            turnEnded.Dispatch(new GameTurnModel() { currentTurn = gameTurn.currentTurn, isClientSwitch = true });
         }
 
         private void onTurnEnded(GameTurnModel turns)

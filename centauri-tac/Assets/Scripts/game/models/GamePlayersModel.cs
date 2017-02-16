@@ -65,7 +65,7 @@ namespace ctac
             }
         }
 
-        public int OpponentId(int currentTurnPlayerId)
+        public PlayerModel Opponent(int currentTurnPlayerId)
         {
             PlayerModel opponent;
             if (isHotseat)
@@ -77,7 +77,7 @@ namespace ctac
             {
                 opponent = players.FirstOrDefault(p => !p.isLocal);
             }
-            return opponent != null ? opponent.id : -1;
+            return opponent;
         }
     }
 }
