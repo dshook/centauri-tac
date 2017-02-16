@@ -41,6 +41,12 @@ namespace ctac
                 playerResources.maxResources[resourceModel.playerId] = resourceModel.max;
             }
 
+            foreach (var piece in piecesModel.Pieces)
+            {
+                piece.hasMoved = false;
+                piece.attackCount = 0;
+            }
+
             debug.Log("Turn Ended");
             turnEnded.Dispatch(turnModel);
         }
