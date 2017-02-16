@@ -15,7 +15,7 @@
     "migrate": "db-migrate up",
     "migrate-down": "db-migrate down -c 1",
     "dbreset": "db-migrate reset",
-    "prestart": "yarn && npm run migrate",
+    "prestart": "npm install && npm run migrate",
     "build-map": "node ./util/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
     "lint": "eslint server/**"
