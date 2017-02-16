@@ -144,9 +144,7 @@ namespace ctac {
                 highlight.ConstantOn(selectedOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
-            }
-
-            if (piece.currentPlayerHasControl) {
+            }else if (piece.currentPlayerHasControl) {
 
                 if (piece.canMove && piece.canAttack)
                 {

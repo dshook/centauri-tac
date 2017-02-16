@@ -57,9 +57,25 @@ namespace ctac
         {
             if (clickModel.clickedObject != null)
             {
+                //first check to see if the tile we clicked on has a piece, 
+                //if it does, treat that the same as if we clicked the piece directly
+                PieceView pieceView = null;
+
+                if (clickModel.tile != null)
+                {
+                    var pieceAtTile = pieces.PieceAt(clickModel.tile.position);
+                    if (pieceAtTile != null)
+                    {
+                        pieceView = pieceAtTile.pieceView;
+                    }
+                }
                 if (clickModel.piece)
                 {
-                    var pieceView = clickModel.piece;
+                    pieceView = clickModel.piece;
+                }
+
+                if (pieceView != null)
+                {
                     pieceDragging.Dispatch(clickModel.isUp ? null : pieceView.piece);
                     if (cardTarget != null)
                     {
