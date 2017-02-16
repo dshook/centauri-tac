@@ -55,7 +55,8 @@ namespace ctac {
         private Highlighter highlight;
         private float outlineWidth = 0.01f;
         private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
-        private Color moveOutlineColor = ColorExtensions.HexToColor("63FF32");
+        private Color moveAttackOutlineColor = ColorExtensions.HexToColor("63FF32");
+        private Color moveOutlineColor = ColorExtensions.HexToColor("006BFF");
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
         private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
@@ -144,24 +145,33 @@ namespace ctac {
                 meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
-            else if (
-                piece.currentPlayerHasControl 
-                && piece.canMove
-            )
-            {
-                highlight.ConstantOn(moveOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
-            }
-            else if (
-                piece.currentPlayerHasControl
-                && piece.canAttack
-                && enemiesInRange
-            )
-            {
-                highlight.ConstantOn(attackOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+
+            if (piece.currentPlayerHasControl) {
+
+                if (piece.canMove && piece.canAttack)
+                {
+                    highlight.ConstantOn(moveAttackOutlineColor);
+                    meshRenderer.material.SetColor("_OutlineColor", moveAttackOutlineColor);
+                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                }
+                else if (piece.canAttack && enemiesInRange)
+                {
+                    highlight.ConstantOn(attackOutlineColor);
+                    meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
+                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                }
+                else if (piece.canMove)
+                {
+                    highlight.ConstantOn(moveOutlineColor);
+                    meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
+                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                }
+                else
+                {
+                    highlight.ConstantOff();
+                    meshRenderer.material.SetColor("_OutlineColor", Color.black);
+                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                }
             }
             else
             {
@@ -169,6 +179,7 @@ namespace ctac {
                 meshRenderer.material.SetColor("_OutlineColor", Color.black);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
+
 
             //statuses
             if (FlagsHelper.IsSet(piece.statuses, Statuses.Shield))
