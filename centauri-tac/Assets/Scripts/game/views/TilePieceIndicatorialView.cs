@@ -10,7 +10,7 @@ namespace ctac
         private Color enemyColor = ColorExtensions.HexToColor("FF0000");
         private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
 
-        private new SVGRenderer svgRenderer;
+        private SVGRenderer svgRenderer;
         private bool active = false;
 
         private Vector3 minSize = new Vector3(0.85f, 0.85f, 1);
