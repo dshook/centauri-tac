@@ -59,9 +59,6 @@ namespace ctac {
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
         private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
-        public int opponentId;
-        public int currentTurnPlayerId;
-
         protected override void Start()
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
@@ -148,10 +145,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                //@TODO: should be able to simplify this current player stuff
-                opponentId != piece.playerId
-                && currentTurnPlayerId == piece.playerId
-                && piece.currentPlayerHasControl 
+                piece.currentPlayerHasControl 
                 && piece.canMove
             )
             {
@@ -160,9 +154,7 @@ namespace ctac {
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (
-                opponentId != piece.playerId
-                && currentTurnPlayerId == piece.playerId
-                && piece.currentPlayerHasControl
+                piece.currentPlayerHasControl
                 && piece.canAttack
                 && enemiesInRange
             )
@@ -248,7 +240,7 @@ namespace ctac {
         {
             //gotta swap out the bar if it's an enemy for now
             var fillColor = hpBarFillFriendlyColor;
-            if (opponentId == piece.playerId)
+            if (!piece.currentPlayerHasControl)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 fillColor = hpBarFillEnemyColor;
@@ -268,13 +260,10 @@ namespace ctac {
             }
         }
 
-        public void UpdateTurn(int newOpponentId, int newCurrentTurnPlayerId)
+        public void UpdateTurn()
         {
-            opponentId = newOpponentId;
-            currentTurnPlayerId = newCurrentTurnPlayerId;
-
             //gotta swap out the bar if it's an enemy for now
-            if (opponentId == piece.playerId)
+            if (!piece.currentPlayerHasControl)
             {
                 hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 hpBarFillRenderer.material.SetColor("_Color", hpBarFillEnemyColor);

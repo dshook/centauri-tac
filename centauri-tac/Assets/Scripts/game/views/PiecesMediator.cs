@@ -498,7 +498,7 @@ namespace ctac
             foreach (var piece in pieces.Pieces)
             {
                 piece.currentPlayerHasControl = piece.playerId == meId;
-                piece.pieceView.UpdateTurn(opponentId, meId);
+                piece.pieceView.UpdateTurn();
             }
         }
 
