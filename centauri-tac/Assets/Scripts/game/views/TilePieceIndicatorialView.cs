@@ -10,7 +10,7 @@ namespace ctac
         private Color enemyColor = ColorExtensions.HexToColor("FF0000");
         private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
 
-        private new SVGRenderer renderer;
+        private new SVGRenderer svgRenderer;
         private bool active = false;
 
         private Vector3 minSize = new Vector3(0.85f, 0.85f, 1);
@@ -18,7 +18,7 @@ namespace ctac
 
         protected override void Start()
         {
-            renderer = GetComponent<SVGRenderer>();
+            svgRenderer = GetComponent<SVGRenderer>();
         }
 
         void Update()
@@ -34,16 +34,16 @@ namespace ctac
         public void SetStatus(bool newStatus, bool? isEnemy = null)
         {
             active = newStatus;
-            renderer.enabled = active;
+            svgRenderer.enabled = active;
             if (isEnemy.HasValue)
             {
-                renderer.color = isEnemy.Value ? enemyColor : friendlyColor;
+                svgRenderer.color = isEnemy.Value ? enemyColor : friendlyColor;
             }
         }
 
         internal void SetColor(Color color)
         {
-            renderer.color = color;
+            svgRenderer.color = color;
         }
 
     }

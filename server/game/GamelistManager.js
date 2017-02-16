@@ -159,6 +159,11 @@ export default class GamelistManager
 
     // just pick the first one
     const p = players[0];
+    if(!p){
+      this.log.info('Could not find new host for %s, removing', gameId);
+      await this.removeGame(gameId);
+      return;
+    }
 
     await this.games.setHost(gameId, p.id);
 
