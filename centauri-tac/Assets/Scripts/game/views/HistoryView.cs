@@ -80,7 +80,7 @@ namespace ctac
             var cardSvg = cardGo.GetComponent<SVGImage>();
 
             cardSvg.vectorGraphics = iconMap[item.type];
-            borderSvg.color = item.initiatingPlayerId != players.Me.id ? Colors.friendlyColor : Colors.enemyColor;
+            borderSvg.color = item.initiatingPlayerId == players.Me.id ? Colors.friendlyColor : Colors.enemyColor;
 
             icons.Add(new HistoryIcon()
             {
