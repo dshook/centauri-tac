@@ -493,10 +493,12 @@ namespace ctac
         {
             if(!turns.isClientSwitch) return;
 
-            var opponentId = players.Opponent(players.Me.id).id;
+            var meId = players.Me.id;
+            var opponentId = players.Opponent(meId).id;
             foreach (var piece in pieces.Pieces)
             {
-                piece.pieceView.UpdateTurn(opponentId, players.Me.id);
+                piece.currentPlayerHasControl = piece.playerId == meId;
+                piece.pieceView.UpdateTurn(opponentId, meId);
             }
         }
 

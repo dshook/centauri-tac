@@ -41,20 +41,6 @@ namespace ctac
                 playerResources.maxResources[resourceModel.playerId] = resourceModel.max;
             }
 
-            //Shouldn't need this now, but steal for switch sides button locally
-            //foreach (var piece in piecesModel.Pieces)
-            //{
-            //    piece.hasMoved = false;
-            //    piece.attackCount = 0;
-            //    if (piece.playerId == opponentId)
-            //    {
-            //        piece.currentPlayerHasControl = false;
-            //    }
-            //    else
-            //    {
-            //        piece.currentPlayerHasControl = true;
-            //    }
-            //}
             debug.Log("Turn Ended");
             turnEnded.Dispatch(turnModel);
         }
