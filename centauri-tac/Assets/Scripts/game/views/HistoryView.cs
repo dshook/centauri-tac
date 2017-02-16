@@ -58,7 +58,7 @@ namespace ctac
             var view = newTile.GetComponent<HistoryTileView>();
             view.item = item;
             //view.HistoryHoverSignal = HistoryHoverSignal;
-            float buttonHeight = buttonRect.sizeDelta.y * 1.3f * canvas.scaleFactor; 
+            float buttonHeight = buttonRect.sizeDelta.y * 1.3f; 
             newTile.transform.localScale = Vector3.zero;
             iTweenExtensions.ScaleTo(newTile, Vector3.one, 1f, 0f, EaseType.easeInOutBounce);
 
