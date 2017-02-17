@@ -16,6 +16,7 @@ namespace ctac
 
         public override void Execute()
         {
+            cardSelected.Dispatch(null);
             //reactivate card
             var card = cards.Card(spellPlayed.cardInstanceId);
             if (card != null)
@@ -23,7 +24,6 @@ namespace ctac
                 debug.Log("Cancelling spell cast");
                 card.activated = false;
                 cancelSelectTarget.Dispatch(card);
-                cardSelected.Dispatch(null);
             }
             else
             {

@@ -72,10 +72,6 @@ namespace ctac
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
 
-                    draggedCard = cardView.card;
-                    pieceSelected.Dispatch(null); 
-                    cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
-
                     //Choose card interactions
                     if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
                     {
@@ -129,6 +125,9 @@ namespace ctac
                         }
                     }
 
+                    draggedCard = cardView.card;
+                    pieceSelected.Dispatch(null); 
+                    cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
                 }
             }
             else
@@ -163,7 +162,6 @@ namespace ctac
             if (activated == null || draggedCard == null)
             {
                 cardSelected.Dispatch(null);
-                view.ClearDrag();
                 return false;
             }
 
@@ -253,7 +251,6 @@ namespace ctac
         private void onTargetCancel(CardModel card)
         {
             startTargetModel = null;
-            draggedCard = null;
             if (chooseModel != null)
             {
                 debug.Log("Cancelling choose from target cancel");
@@ -261,7 +258,6 @@ namespace ctac
             }
             chooseModel = null;
             cardSelected.Dispatch(null);
-            view.ClearDrag();
         }
 
         private void onSelectedTarget(TargetModel targetModel)

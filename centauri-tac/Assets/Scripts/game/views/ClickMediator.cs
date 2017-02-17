@@ -225,6 +225,7 @@ namespace ctac
                 {
                     debug.Log("Cancelling targeting");
                     cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+                    cardTarget = null;
                 }
                 else if (abilityTarget != null)
                 {

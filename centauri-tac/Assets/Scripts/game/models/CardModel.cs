@@ -73,7 +73,7 @@ namespace ctac
         {
             var targets = possibleActions.GetActionsForCard(playerId, id);
             var area = possibleActions.GetAreasForCard(playerId, id);
-            return (targets != null && targets.targetPieceIds.Count >= 1) || (area != null && area.isCursor);
+            return (targets != null ) || (area != null && area.isCursor);
         }
 
         public bool isChoose(PossibleActionsModel possibleActions)
