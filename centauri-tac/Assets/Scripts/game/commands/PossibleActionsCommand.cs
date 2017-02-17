@@ -67,7 +67,11 @@ namespace ctac
                 }
             }
 
-            possibleActionsReceived.Dispatch(newPossibleActions);
+            //only send out actions for the current player right now
+            if (newPossibleActions.playerId == players.Me.id)
+            {
+                possibleActionsReceived.Dispatch(newPossibleActions);
+            }
         }
     }
 }
