@@ -11,7 +11,7 @@ export default class GameEventService
   constructor(app, queue)
   {
     this.queue = queue;
-    this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), 20000);
+    this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), 30000);
 
     //app.registerInstance('autoTurnInterval', this.autoTurnInterval);
     app.registerInstance('gameEventService', this);

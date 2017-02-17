@@ -62,6 +62,7 @@ namespace ctac.signals
 
     [Singleton] public class ActionPlaySpellSignal : Signal<PlaySpellModel> { }
     [Singleton] public class SpellPlayedSignal : Signal<SpellPlayedModel> { }
+    [Singleton] public class ActionCancelledPlaySpellSignal : Signal<PlaySpellModel, SocketKey> { }
 
     [Singleton] public class PieceHoverSignal : Signal<PieceModel> { }
 
