@@ -32,7 +32,9 @@ namespace ctac
                     range = cardTemplate.range,
                     tags = cardTemplate.tags,
                     playable = false,
-                    buffs = new List<CardBuffModel>()
+                    buffs = new List<CardBuffModel>(),
+                    statuses = cardTemplate.statuses,
+                    rarity = cardTemplate.rarity
                 };
         }
     }

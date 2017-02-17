@@ -20,6 +20,7 @@ namespace ctac
 
         public List<string> tags { get; set; }
         public Statuses statuses { get; set; }
+        public Rarities rarity { get; set; }
 
         public List<CardBuffModel> buffs { get; set; }
 

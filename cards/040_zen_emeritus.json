@@ -4,6 +4,7 @@
 	"description": "Swap the attack and health of a minion",
 	"cost": 1,
 	"tags": ["Spell"],
+  "rarity": 2,
 	"eventcode": "playSpell{
 		SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health))
 		SetAttribute(TARGET & MINION, health, SelectAttribute(TARGET, attack))

@@ -56,9 +56,18 @@ namespace ctac
 
         public void UpdateCardArt(CardModel model)
         {
-            //set there is art to setup
             var render = loader.Load<Texture>("Models/" + model.cardTemplateId + "/render");
             var displayWrapper = model.gameObject.transform.FindChild("DisplayWrapper").gameObject;
+
+            var front = displayWrapper.transform.FindChild("Front").gameObject;
+            var frontRenderer = front.GetComponent<MeshRenderer>();
+
+            var cardFront = loader.Load<Texture>("Images/mars_" + model.rarity);
+            if (cardFront != null)
+            {
+                frontRenderer.material.SetTexture("_MainTex", cardFront);
+            }
+
             var art = displayWrapper.transform.FindChild("Art").gameObject;
             var artRenderer = art.GetComponent<MeshRenderer>();
             if (render != null)
