@@ -36,11 +36,11 @@ npm-debug.log
 .idea/
 centauri-tac/Tests/Tests/bin/
 centauri-tac/Assets/Fonts/
-centauri-tac/Assets/Images/
 centauri-tac/Assets/Library/TextMesh Pro/
 centauri-tac/Assets/Library/SVG Importer/
 centauri-tac/Assets/Library/HighlightingSystem/
 centauri-tac/Assets/Resources/Models/
+centauri-tac/Assets/Resources/Images/
 centauri-tac/Editor/HighlightingBaseEditor.cs
 centauri-tac/Editor/HighlightingBaseEditor.cs.meta
 centauri-tac/Editor/HighlightingBlitterEditor.cs
