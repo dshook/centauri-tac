@@ -8,10 +8,10 @@ import IntervalTimer from 'interval-timer';
 @loglevel
 export default class GameEventService
 {
-  constructor(app, queue)
+  constructor(app, queue, game)
   {
     this.queue = queue;
-    this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), 30000);
+    this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), game.turnLengthMs);
 
     //app.registerInstance('autoTurnInterval', this.autoTurnInterval);
     app.registerInstance('gameEventService', this);

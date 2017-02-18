@@ -21,13 +21,15 @@ export default class GamelistManager
   async createNewGame(name, playerId)
   {
     // registers the game
-    const game = await this.games.create(name, playerId);
+    const game = await this.games.create(name, playerId, 2, 25000);
 
     if(game == null){
       this.log.info('Could not create game for %s component: %s player: %s'
         ,name, playerId);
       return null;
     }
+
+    this.log.info('Gamelist created game %s %s', game.id, game.name);
 
     // instantiates game on the game host
     await this.emitter.emit('game:created', game);

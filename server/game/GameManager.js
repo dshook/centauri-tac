@@ -75,7 +75,7 @@ export default class GameManager
    */
   async create(game)
   {
-    this.log.info('creating new game %s %s', game.id, game.name);
+    this.log.info('creating new game %s %s turn length %s', game.id, game.name, game.turnLengthMs);
 
     const host = new GameHost(game, this.emitter);
     await host.startInstance();

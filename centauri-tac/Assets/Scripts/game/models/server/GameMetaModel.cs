@@ -11,6 +11,7 @@
         public HostPlayer hostPlayer { get; set; }
         public string registered { get; set; }
         public int stateId { get; set; }
+        public int turnLengthMs { get; set; }
         public GamelistGameState state { get; set; }
     }
 
