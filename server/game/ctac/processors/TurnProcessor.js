@@ -8,7 +8,7 @@ import DrawCard from '../actions/DrawCard.js';
 @loglevel
 export default class TurnProcessor
 {
-  constructor(turnState, players, playerResourceState, cardEvaluator, pieceState, statsState)
+  constructor(turnState, players, playerResourceState, cardEvaluator, pieceState, statsState, gameEventService)
   {
     this.turnState = turnState;
     this.players = players;
@@ -16,6 +16,7 @@ export default class TurnProcessor
     this.cardEvaluator = cardEvaluator;
     this.pieceState = pieceState;
     this.statsState = statsState;
+    this.gameEventService = gameEventService;
   }
 
   /**
@@ -43,10 +44,14 @@ export default class TurnProcessor
     // do it
     var currentTurn = this.turnState.passTurn();
 
+    //fire off the event service now so the times won't be impacted by processing the events
+    this.gameEventService.startTurnEnergyTimer(currentTurn);
+
     //give some handouts
     for(let player of this.players){
       let max = this.playerResourceState.incriment(player.id, 1);
-      let current = this.playerResourceState.refill(player.id);
+      this.playerResourceState.reset(player.id);
+      let current = this.playerResourceState.adjust(player.id, 1);
       action.playerResources.push({
         playerId: player.id,
         current,
@@ -54,7 +59,7 @@ export default class TurnProcessor
       });
 
       //update stats
-       this.statsState.setStat('COMBOCOUNT', 0, player.id);
+      this.statsState.setStat('COMBOCOUNT', 0, player.id);
 
       //and finally eval the new turn
       this.cardEvaluator.evaluatePlayerEvent('turnStart', player.id);

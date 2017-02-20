@@ -34,6 +34,11 @@ export default class PlayerResourceState
     return this.resources[playerId];
   }
 
+  reset(playerId){
+    this.resources[playerId] = 0;
+    return this.resources[playerId];
+  }
+
   adjust(playerId, amount){
     this.resources[playerId] += amount;
     //limit the change to zero and the max.  Don't cap at maxResources so you can

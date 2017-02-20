@@ -30,7 +30,11 @@ export default class PlayerResourceProcessor
     action.newMax = this.playerResourceState.getMax(action.playerId);
 
     queue.complete(action);
-    this.log.info('player %s used %s resources, now at %s',
-      action.playerId, action.change, action.newAmount);
+    this.log.info('player %s %s %s resources, now at %s',
+      action.playerId,
+      action.change > 0 ? 'gained' : 'used',
+      action.change,
+      action.newAmount
+    );
   }
 }

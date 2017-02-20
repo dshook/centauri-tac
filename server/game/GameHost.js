@@ -64,9 +64,9 @@ export default class GameHost extends EventEmitter
     app.service(MapService);
     app.service(GameDataService);
     app.service(CardService);
+    app.service(GameEventService);
     app.service(ProcessorsService);
     app.service(UtilService);
-    app.service(GameEventService);
 
     await app.start();
 
