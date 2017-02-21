@@ -152,7 +152,6 @@ namespace ctac
                             
                         }
                     }
-                    return;
                 }
 
                 //selected should never be null but check anyways
