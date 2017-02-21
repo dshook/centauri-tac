@@ -257,6 +257,7 @@ namespace ctac
                 cancelChoose.Dispatch(chooseModel);
             }
             chooseModel = null;
+            view.ClearDrag();
             cardSelected.Dispatch(null);
         }
 

@@ -74,7 +74,9 @@ namespace ctac
         {
             var targets = possibleActions.GetActionsForCard(playerId, id);
             var area = possibleActions.GetAreasForCard(playerId, id);
-            return (targets != null ) || (area != null && area.isCursor);
+            var needsAreaTarget = area != null && area.isCursor;
+            var needsTarget = targets != null && (isSpell || targets.targetPieceIds.Count >= 1);
+            return needsTarget || needsAreaTarget;
         }
 
         public bool isChoose(PossibleActionsModel possibleActions)

@@ -29,6 +29,7 @@ namespace ctac
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IMapService mapService { get; set; }
@@ -206,14 +207,15 @@ namespace ctac
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);
                         pieceSelected.Dispatch(null);
-                    } else {
-                        var pieceAtTile = pieces.PieceAt(gameTile.position);
-
-                        if (pieceAtTile != null && pieceAtTile.currentPlayerHasControl && !clickModel.isUp)
-                        {
-                            pieceSelected.Dispatch(pieceAtTile);
-                        }
-                    }
+                    } else if (
+                        cardTarget != null 
+                        && cardTarget.targetingCard.needsTargeting(possibleActions)
+                        && pieceView == null
+                    ) {
+                        debug.Log("Cancelling targeting from bad selection");
+                        cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+                        cardTarget = null;
+                    } 
                 }
             }
             else
