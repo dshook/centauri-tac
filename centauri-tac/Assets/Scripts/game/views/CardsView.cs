@@ -201,7 +201,7 @@ namespace ctac {
         public class DrawCardAnim : IAnimate
         {
             public bool Complete { get; set; }
-            public bool Async { get { return false; } }
+            public bool Async { get { return true; } }
             public float? postDelay { get { return 0.2f; } }
 
             public CardDrawShownSignal cardDrawn { get; set; }
@@ -210,7 +210,7 @@ namespace ctac {
 
             //dev speed
             private float animTime = 0.2f;
-            private Vector3 opponentDest = new Vector3(0, 150, -12f);
+            private Vector3 opponentDest = new Vector3(0, 250, -12f);
             private Vector3 playerDest = new Vector3(0, 0, -12f);
 
             public void Init() { }
