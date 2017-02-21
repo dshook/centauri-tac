@@ -50,7 +50,9 @@ export default class TurnProcessor
     //give some handouts
     for(let player of this.players){
       let max = this.playerResourceState.incriment(player.id, 1);
-      this.playerResourceState.reset(player.id);
+      if(max < this.playerResourceState.resourceCap){
+        this.playerResourceState.reset(player.id);
+      }
       let current = this.playerResourceState.adjust(player.id, 1);
       action.playerResources.push({
         playerId: player.id,

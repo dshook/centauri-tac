@@ -1,6 +1,5 @@
 import loglevel from 'loglevel-decorator';
 
-const maxResources = 10;
 /**
  * Current state of players resources, ie mana
  */
@@ -13,6 +12,7 @@ export default class PlayerResourceState
     this.resources = {};
     this.maxResources = {};
     this.charges = {};
+    this.resourceCap = 10;
   }
 
   init(playerId){
@@ -25,7 +25,7 @@ export default class PlayerResourceState
 
   incriment(playerId, amount){
     this.maxResources[playerId] += amount;
-    this.maxResources[playerId] = Math.min(this.maxResources[playerId], maxResources);
+    this.maxResources[playerId] = Math.min(this.maxResources[playerId], this.resourceCap);
     return this.maxResources[playerId];
   }
 
@@ -44,7 +44,7 @@ export default class PlayerResourceState
     //limit the change to zero and the max.  Don't cap at maxResources so you can
     //temporarily go over
     this.resources[playerId] = Math.max(this.resources[playerId], 0);
-    this.resources[playerId] = Math.min(this.resources[playerId], maxResources);
+    this.resources[playerId] = Math.min(this.resources[playerId], this.resourceCap);
     return this.resources[playerId];
   }
 

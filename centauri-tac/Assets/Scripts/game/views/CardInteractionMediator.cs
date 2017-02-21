@@ -71,6 +71,7 @@ namespace ctac
                 if (clickedObject.CompareTag("Card"))
                 {
                     var cardView = clickedObject.GetComponent<CardView>();
+                    draggedCard = cardView.card;
 
                     //Choose card interactions
                     if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
@@ -125,7 +126,6 @@ namespace ctac
                         }
                     }
 
-                    draggedCard = cardView.card;
                     pieceSelected.Dispatch(null); 
                     cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
                 }
@@ -244,8 +244,15 @@ namespace ctac
 
         private void StartSelectTargets()
         {
-            debug.Log("Starting targeting");
-            startSelectTarget.Dispatch(startTargetModel);
+            if (startTargetModel != null)
+            {
+                debug.Log("Starting targeting");
+                startSelectTarget.Dispatch(startTargetModel);
+            }
+            else
+            {
+                debug.Log("Couldn't start targeting without model");
+            }
         }
 
         private void onTargetCancel(CardModel card)
