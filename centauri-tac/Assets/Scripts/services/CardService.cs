@@ -62,7 +62,8 @@ namespace ctac
             var front = displayWrapper.transform.FindChild("Front").gameObject;
             var frontRenderer = front.GetComponent<MeshRenderer>();
 
-            var cardFront = loader.Load<Texture>("Images/mars_" + model.rarity);
+            var cardImagePath = string.Format("Images/cards/{0}_{1}", model.rarity.ToString().ToLower(), model.race.ToString().ToLower());
+            var cardFront = loader.Load<Texture>(cardImagePath);
             if (cardFront != null)
             {
                 frontRenderer.material.SetTexture("_MainTex", cardFront);

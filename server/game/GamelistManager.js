@@ -142,8 +142,8 @@ export default class GamelistManager
     }
 
     // kill the game on the server
-    const game = await this.games.getActive(gameId);
-    await this.gameManager.shutdown(game.id);
+    //const game = await this.games.getActive(gameId);
+    await this.gameManager.shutdown(gameId);
 
     // remove from registry
     await this.games.remove(gameId);

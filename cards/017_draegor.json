@@ -7,5 +7,6 @@
 	"health": 1,
 	"movement": 4,
 	"tags": ["Minion"],
+  "race": 2,
 	"eventcode": "playMinion{ Hit(TARGET & ENEMY, 1) }"
 }

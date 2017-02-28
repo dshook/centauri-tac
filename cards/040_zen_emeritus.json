@@ -5,6 +5,7 @@
 	"cost": 1,
 	"tags": ["Spell"],
   "rarity": 2,
+  "race": 3,
 	"eventcode": "playSpell{
 		SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health))
 		SetAttribute(TARGET & MINION, health, SelectAttribute(TARGET, attack))

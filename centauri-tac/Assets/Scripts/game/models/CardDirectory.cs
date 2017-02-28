@@ -34,7 +34,8 @@ namespace ctac
                     playable = false,
                     buffs = new List<CardBuffModel>(),
                     statuses = cardTemplate.statuses,
-                    rarity = cardTemplate.rarity
+                    rarity = cardTemplate.rarity,
+                    race = cardTemplate.race
                 };
         }
     }

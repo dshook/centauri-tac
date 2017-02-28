@@ -17,6 +17,7 @@ export default class Card
     this.buffs = [];
     this.statuses = 0;
     this.rarity = 0;
+    this.race = 0;
 
     this.inHand = false,
     this.inDeck = false;
