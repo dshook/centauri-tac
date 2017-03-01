@@ -10,6 +10,7 @@ namespace ctac
         public TextMeshProUGUI currentEnergyText;
         public TextMeshProUGUI maxEnergyText;
         public MeshRenderer fillRenderer;
+        public MeshRenderer fillRendererPreview;
 
         internal void init()
         {
@@ -18,10 +19,21 @@ namespace ctac
 
             var energyBar = GameObject.Find("EnergyContainer").gameObject;
             fillRenderer = energyBar.transform.FindChild("EnergyBarFill").GetComponent<MeshRenderer>();
+            fillRendererPreview = energyBar.transform.FindChild("EnergyBarFillPreview").GetComponent<MeshRenderer>();
         }
 
+        float turnLengthMs = 0f;
+        bool animatingEnergy = false;
+        float timerAccum = 0f;
+        float maxEnergy = 0f;
         void Update()
         {
+            if(!animatingEnergy) return;
+
+            timerAccum += Time.deltaTime;
+            
+            var progress = Math.Min(maxEnergy, maxEnergy * ((timerAccum * 1000f) / turnLengthMs));
+            fillRendererPreview.material.SetFloat("_CurrentHp", progress);
         }
 
         internal void updateText(int resource, int max)
@@ -30,10 +42,19 @@ namespace ctac
             {
                 currentEnergyText.text = string.Format("{0}", resource);
                 maxEnergyText.text = string.Format("{0}", max);
-                fillRenderer.material.SetInt("_CurrentHp", resource);
-                fillRenderer.material.SetInt("_MaxHp", Math.Max(max, resource));
+                fillRenderer.material.SetFloat("_CurrentHp", resource);
+                fillRenderer.material.SetFloat("_MaxHp", Math.Max(max, resource));
 
             }
+        }
+
+        internal void updatePreview(float maxEn, float turnLength)
+        {
+            maxEnergy = maxEn;
+            timerAccum = 0f;
+            this.turnLengthMs = turnLength;
+            animatingEnergy = true;
+            fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
         }
     }
 }

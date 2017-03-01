@@ -30,6 +30,17 @@ namespace ctac
             }
         }
 
+        public GameMetaModel CurrentGame(Guid clientId)
+        {
+            var existingGames = games.Get(clientId);
+            if (existingGames == null || existingGames.Count == 0)
+            {
+                return null;
+            }
+
+            return existingGames.FirstOrDefault(x => x.isCurrent);
+        }
+
         public string GamesToString(Guid clientId)
         {
             var existingGames = games.Get(clientId);

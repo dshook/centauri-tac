@@ -19,8 +19,7 @@ namespace ctac
 
         public override void Execute()
         {
-            var myGames = gamelist.games.Get(socketKey.clientId);
-            var gameToJoin = myGames.FirstOrDefault(x => x.isCurrent);
+            var gameToJoin = gamelist.CurrentGame(socketKey.clientId);
             if (gameToJoin != null)
             {
                 debug.Log("Joining game " + gameToJoin.id, socketKey);

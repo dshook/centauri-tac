@@ -23,6 +23,9 @@ namespace ctac
         public GameMetaModel game { get; set; }
 
         [Inject]
+        public CurrentGameModel currentGame { get; set; }
+
+        [Inject]
         public SocketKey socketKey { get; set; }
 
         public override void Execute()
@@ -35,6 +38,7 @@ namespace ctac
             //update the game list so once we're authed we can find and join it
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
+            currentGame.game = game;
             debug.Log("Current game " + game.id, socketKey);
 
             var player = playersModel.GetByClientId(socketKey.clientId);

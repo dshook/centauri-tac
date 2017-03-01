@@ -260,8 +260,8 @@ namespace ctac {
             }
 
             hpBarFillRenderer.material.SetColor("_Color", fillColor);
-            hpBarFillRenderer.material.SetInt("_CurrentHp", piece.health);
-            hpBarFillRenderer.material.SetInt("_MaxHp", piece.maxBuffedHealth);
+            hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
+            hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
 
             if (piece.baseHealth > hpBarHpCuttoff)
             {

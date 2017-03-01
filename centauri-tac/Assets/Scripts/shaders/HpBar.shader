@@ -7,8 +7,8 @@
         _LineWidth("Line Width", Range(0.0, 0.5)) = 0.05
         _Slope("Slope", Range(0.0, 1.0)) = 0.5
         _StartOffset("Start Offset", Range(0.0, 1.0)) = 0.5
-        _CurrentHp("Current HP", Int) = 2
-        _MaxHp("Max HP", Int) = 2
+        _CurrentHp("Current HP", float) = 2
+        _MaxHp("Max HP", float) = 2
     }
     SubShader
     {
@@ -44,10 +44,16 @@
                 return o;
             }
 
+            float4 _Color;
+            float4 _LineColor;
             float _LineWidth;
+            float _Slope;
+            float _StartOffset;
+            float _CurrentHp;
+            float _MaxHp;
 
             float antiAlias(float x) {
-                float width = 0.999 - _LineWidth;
+                float width = 1 - _LineWidth;
                 float blur = 6.0;
                 return (x-(width-blur/_ScreenParams.y))*(_ScreenParams.y/blur);
             }
@@ -66,13 +72,6 @@
                 c += lineC * lineColor;
                 return c;
             }
-
-            float4 _Color;
-            float4 _LineColor;
-            float _Slope;
-            float _StartOffset;
-            int _CurrentHp;
-            int _MaxHp;
 
             fixed4 frag (Frag i) : SV_Target
             {
