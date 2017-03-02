@@ -68,9 +68,9 @@ namespace ctac
         {
             if (clickedObject != null)
             {
-                if (clickedObject.CompareTag("Card"))
+                var cardView = clickedObject.GetComponent<CardView>();
+                if (cardView != null)
                 {
-                    var cardView = clickedObject.GetComponent<CardView>();
                     draggedCard = cardView.card;
 
                     //Choose card interactions
