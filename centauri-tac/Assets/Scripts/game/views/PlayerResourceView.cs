@@ -7,10 +7,12 @@ namespace ctac
 {
     public class PlayerResourceView : View
     {
-        public TextMeshProUGUI currentEnergyText;
-        public TextMeshProUGUI maxEnergyText;
-        public MeshRenderer fillRenderer;
-        public MeshRenderer fillRendererPreview;
+        public bool isOpponent;
+
+        TextMeshProUGUI currentEnergyText;
+        TextMeshProUGUI maxEnergyText;
+        MeshRenderer fillRenderer;
+        MeshRenderer fillRendererPreview;
 
         internal void init()
         {

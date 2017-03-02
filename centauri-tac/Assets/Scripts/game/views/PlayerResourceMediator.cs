@@ -35,13 +35,14 @@ namespace ctac
         {
             updateView();
 
-            view.updatePreview(playerResources.maxResources[players.Me.id], currentGame.game.turnLengthMs);
+            view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
         }
 
         private void onResourceSet(SetPlayerResourceModel m)
         {
-            playerResources.resources[m.playerId] = m.newAmount;
-            playerResources.maxResources[m.playerId] = m.newMax;
+            //if not for me, leave it be
+            if(m.playerId != playerId) return;
+
             updateView();
             if (m.newMax == 0)
             {
@@ -51,7 +52,15 @@ namespace ctac
 
         private void updateView()
         {
-            view.updateText(playerResources.resources[players.Me.id], playerResources.maxResources[players.Me.id]);
+            view.updateText(playerResources.resources[playerId], playerResources.maxResources[playerId]);
+        }
+
+        private int playerId
+        {
+            get
+            {
+                return view.isOpponent ? players.Opponent(players.Me.id).id : players.Me.id;
+            }
         }
 
     }
