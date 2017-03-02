@@ -17,9 +17,8 @@ namespace ctac
             currentEnergyText = transform.FindChild("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
             maxEnergyText = transform.FindChild("MaxEnergyText").GetComponent<TextMeshProUGUI>();
 
-            var energyBar = GameObject.Find("EnergyContainer").gameObject;
-            fillRenderer = energyBar.transform.FindChild("EnergyBarFill").GetComponent<MeshRenderer>();
-            fillRendererPreview = energyBar.transform.FindChild("EnergyBarFillPreview").GetComponent<MeshRenderer>();
+            fillRenderer = transform.FindChild("EnergyBarFill").GetComponent<MeshRenderer>();
+            fillRendererPreview = transform.FindChild("EnergyBarFillPreview").GetComponent<MeshRenderer>();
         }
 
         float turnLengthMs = 0f;
