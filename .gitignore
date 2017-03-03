@@ -12,7 +12,6 @@ centauri-tac/[Ll]ibrary/
 *.user
 *.userprefs
 *.pidb
-*.booproj
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
@@ -24,6 +23,7 @@ player_win_development_x86.pdb
 .gitconfig
 test.app/
 .DS_Store
+Thumbs.db
 
 # node / web backend
 node_modules
@@ -35,15 +35,3 @@ client_log.json
 npm-debug.log
 .idea/
 centauri-tac/Tests/Tests/bin/
-centauri-tac/Assets/Fonts/
-centauri-tac/Assets/Library/TextMesh Pro/
-centauri-tac/Assets/Library/SVG Importer/
-centauri-tac/Assets/Library/HighlightingSystem/
-centauri-tac/Assets/Resources/Models/
-centauri-tac/Assets/Resources/Images/
-centauri-tac/Editor/HighlightingBaseEditor.cs
-centauri-tac/Editor/HighlightingBaseEditor.cs.meta
-centauri-tac/Editor/HighlightingBlitterEditor.cs
-centauri-tac/Editor/HighlightingBlitterEditor.cs.meta
-centauri-tac/Editor/HighlightingRendererEditor.cs
-centauri-tac/Editor/HighlightingRendererEditor.cs.meta
