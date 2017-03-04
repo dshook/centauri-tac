@@ -880,3 +880,93 @@ test('Double Conditional expression', t => {
 
   t.deepEqual(d, expectedPlay);
 });
+
+test('Conditional event', t => {
+  t.plan(1);
+
+  let input = `
+    ability(1, 1, 'Charge Up')[ 1 > 2 ]{ ChargeUp(PLAYER, 1)  }
+    chargeChange[Charges(PLAYER) >= 3]{
+      Hit(Area(Square, 1, SELF) & ENEMY, 3)
+      ChargeUp(PLAYER, -3)
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "ability",
+      "args": [
+        1,
+        1,
+        "Charge Up"
+      ],
+      "condition": {
+        "compareExpression": true,
+        "left": 1,
+        "op": ">",
+        "right": 2
+      },
+      "actions": [
+        {
+          "action": "ChargeUp",
+          "args": [
+            {
+              "left": "PLAYER"
+            },
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "event": "chargeChange",
+      "condition": {
+        "compareExpression": true,
+        "left": {
+          "resource": "Charges",
+          "selector": {
+            "left": "PLAYER"
+          }
+        },
+        "op": ">=",
+        "right": 3
+      },
+      "actions": [
+        {
+          "action": "Hit",
+          "args": [
+            {
+              "left": {
+                "area": true,
+                "args": [
+                  "Square",
+                  1,
+                  {
+                    "left": "SELF"
+                  }
+                ]
+              },
+              "op": "&",
+              "right": "ENEMY"
+            },
+            3
+          ]
+        },
+        {
+          "action": "ChargeUp",
+          "args": [
+            {
+              "left": "PLAYER"
+            },
+            -3
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+
+});
