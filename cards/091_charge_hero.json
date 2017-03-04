@@ -1,19 +1,17 @@
 {
 	"cardTemplateId": 91,
 	"name": "Charge Hero",
-	"description": "<b>Ability(2):</b> Gain a Charge. At 2 charges deal 2 damage to surrounding enemies.",
+	"description": "<b>Ability(1):</b> Energize. At 3 charges deal 3 damage to surrounding enemies.",
 	"cost": 0,
 	"attack": 0,
 	"health": 30,
 	"movement": 2,
 	"tags": ["Hero"],
 	"eventcode": "
-		ability(2, 1, 'Charge Up'){ ChargeUp(PLAYER, 1)  }
-		chargeChange{
-			Charges(PLAYER) >= 2 &&
-			Hit(Area(Square, 1, SELF) & ENEMY, 2)
-			Charges(PLAYER) >= 2 &&
-			ChargeUp(PLAYER, -2)
+		ability(1, 1, 'Charge Up'){ ChargeUp(PLAYER, 1)  }
+		chargeChange[Charges(PLAYER) >= 3]{
+			Hit(Area(Square, 1, SELF) & ENEMY, 3)
+			ChargeUp(PLAYER, -3)
 		}
 	"
 }

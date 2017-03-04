@@ -93,6 +93,15 @@ export default class CardEvaluator{
       for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
 
+        let pieceSelectorParams = {selfPiece: piece, activatingPiece, controllingPlayerId: piece.playerId};
+
+        if(cardEvent.condition){
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          if(compareResult.length === 0){
+            continue;
+          }
+        }
+
         //see if the selector matches up for this piece
         let eventSelector = this.eventSelector(cardEvent);
         if(!eventSelector){
@@ -103,8 +112,7 @@ export default class CardEvaluator{
         }
 
         //now find all pieces that match the selector given the context of the piece that the event is for
-        let piecesSelected = this.selector.selectPieces(eventSelector,
-          {selfPiece: piece, activatingPiece, controllingPlayerId: piece.playerId});
+        let piecesSelected = this.selector.selectPieces(eventSelector, pieceSelectorParams);
 
         let selectorMatched = piecesSelected.indexOf(activatingPiece) > -1;
 
@@ -150,6 +158,14 @@ export default class CardEvaluator{
       //find all actions for this event, there could be more than one
       for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
+
+        if(cardEvent.condition){
+          let pieceSelectorParams = {selfPiece: piece, activatingPiece: piece, controllingPlayerId: piece.playerId};
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          if(compareResult.length === 0){
+            continue;
+          }
+        }
 
         //see if the selector matches up for this piece
         let eventSelector = this.eventSelector(cardEvent);
@@ -212,6 +228,14 @@ export default class CardEvaluator{
       //find all actions for this event, there could be more than one
       for(let cardEvent of piece.events){
         if(cardEvent.event !== event) continue;
+
+        if(cardEvent.condition){
+          let pieceSelectorParams = {selfPiece: piece, activatingPiece: piece, controllingPlayerId: piece.playerId};
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          if(compareResult.length === 0){
+            continue;
+          }
+        }
 
         //see if the selector matches up for this card
         let eventSelector = this.eventSelector(cardEvent);
