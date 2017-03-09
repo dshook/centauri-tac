@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 63,
 	"name": "Valus Probe",
-	"description": "<b>Play</b>: Jump to a tile within 3 spaces",
+	"description": "<b>Synthesis</b>: Jump to a tile within 3 spaces",
 	"cost": 1,
 	"attack": 2,
 	"health": 1,

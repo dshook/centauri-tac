@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 27,
 	"name": "Patient Protector",
-	"description": "<b>Play</b>: Give friendly minions without card text +1/+1",
+	"description": "<b>Synthesis</b>: Give friendly minions without card text +1/+1",
 	"cost": 5,
 	"attack": 4,
 	"health": 4,

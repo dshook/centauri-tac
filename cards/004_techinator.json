@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 4,
 	"name": "Techinator",
-	"description": "<b>Death</b>: Draw a card",
+	"description": "<b>Demise</b>: Draw a card",
 	"cost": 3,
 	"attack": 4,
 	"health": 3,

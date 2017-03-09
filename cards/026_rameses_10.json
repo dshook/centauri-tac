@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 26,
 	"name": "Rameses 10",
-	"description": "<b>Death</b>: Spawn 3 zombies",
+	"description": "<b>Demise</b>: Spawn 3 zombies",
 	"cost": 4,
 	"attack": 1,
 	"health": 1,

@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 48,
 	"name": "Disintegrating Orb",
-	"description": "<b>Death</b>: Deal 2 damage to all minions in a square",
+	"description": "<b>Demise</b>: Deal 2 damage to all minions in a square",
 	"cost": 3,
 	"attack": 2,
 	"health": 1,

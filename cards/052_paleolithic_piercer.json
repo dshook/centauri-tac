@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 52,
 	"name": "Paleolithic Piercer",
-	"description": "<b>Play</b>: Deal 1 damage in a short straight ray",
+	"description": "<b>Synthesis</b>: Deal 1 damage in a short straight ray",
 	"cost": 2,
 	"attack": 2,
 	"health": 2,

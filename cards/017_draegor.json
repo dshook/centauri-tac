@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 17,
 	"name": "Draegor",
-	"description": "<b>Play</b>: Deal 1 damage to an enemy character",
+	"description": "<b>Synthesis</b>: Deal 1 damage to an enemy character",
 	"cost": 1,
 	"attack": 1,
 	"health": 1,

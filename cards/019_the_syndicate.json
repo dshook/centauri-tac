@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 19,
 	"name": "The Syndicate",
-	"description": "<b>Play:</b> give a friendly minion +1/+2",
+	"description": "<b>Synthesis</b>: give a friendly minion +1/+2",
 	"cost": 4,
 	"attack": 2,
 	"health": 2,

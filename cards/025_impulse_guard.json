@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 25,
 	"name": "Impulse Guard",
-	"description": "<b>Death</b>: Spawn a zombie",
+	"description": "<b>Demise</b>: Spawn a zombie",
 	"cost": 3,
 	"attack": 4,
 	"health": 3,

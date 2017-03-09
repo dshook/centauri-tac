@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 2,
 	"name": "Wombat",
-	"description": "<b>Play</b>: Your opponent draws a card",
+	"description": "<b>Synthesis</b>: Your opponent draws a card",
 	"cost": 1,
 	"attack": 1,
 	"health": 2,

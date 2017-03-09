@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 9,
 	"name": "Writhing Bunch",
-	"description": "<b>Play</b>: Deal 2 damage randomly split between all other characters",
+	"description": "<b>Synthesis</b>: Deal 2 damage randomly split between all other characters",
 	"cost": 3,
 	"attack": 3,
 	"health": 3,

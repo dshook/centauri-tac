@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 3,
 	"name": "Med Bot",
-	"description": "<b>Play</b>: Draw 2 Cards",
+	"description": "<b>Synthesis</b>: Draw 2 Cards",
 	"cost": 2,
 	"attack": 3,
 	"health": 2,

@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 43,
 	"name": "Protocruiser",
-	"description": "<b>Play</b>: Give a friendly minion with less than 3 attack +2/2",
+	"description": "<b>Synthesis</b>: Give a friendly minion with less than 3 attack +2/2",
 	"cost": 3,
 	"attack": 1,
 	"health": 3,

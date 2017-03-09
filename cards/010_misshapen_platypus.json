@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 10,
 	"name": "Misshapen Platypus",
-	"description": "<b>Play</b>: Set a random enemy minion's attack to 1",
+	"description": "<b>Synthesis</b>: Set a random enemy minion's attack to 1",
 	"cost": 2,
 	"attack": 1,
 	"health": 4,

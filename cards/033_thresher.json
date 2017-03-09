@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 33,
 	"name": "Thresher",
-	"description": "<b>Play</b>: Give a minion +2 attack this turn",
+	"description": "<b>Synthesis</b>: Give a minion +2 attack this turn",
 	"cost": 2,
 	"attack": 1,
 	"health": 2,
