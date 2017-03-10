@@ -89,16 +89,16 @@ export default class AttackPieceProcessor
     let targetDirection = faceDirection(target.position, attacker.position);
     attacker.direction = action.direction = targetDirection;
 
-    let facingDirection = directionOf(targetDirection, target.direction);
 
     let bonus = 0;
     let bonusMsg = null;
-    if(facingDirection == 'behind' && !rangedAttack){
-      this.log.info('Backstab triggered, attackerDirection: %s targetDirection: %s, target.direction: %s'
-        , action.direction, targetDirection, target.direction);
-      bonus = -1;
-      bonusMsg = 'Backstab';
-    }
+    // let facingDirection = directionOf(targetDirection, target.direction);
+    // if(facingDirection == 'behind' && !rangedAttack){
+    //   this.log.info('Backstab triggered, attackerDirection: %s targetDirection: %s, target.direction: %s'
+    //     , action.direction, targetDirection, target.direction);
+    //   bonus = -1;
+    //   bonusMsg = 'Backstab';
+    // }
 
     //do double checks for paralyze and can't attack here if it's a taunt attack
     if(!action.isTauntAttack || !(attacker.statuses & Statuses.CantAttack || attacker.statuses & Statuses.Paralyze)){

@@ -21,7 +21,7 @@ namespace ctac {
 #pragma warning restore
 
         private MeshRenderer meshRenderer = null;
-        private GameObject arrows = null;
+        //private GameObject arrows = null;
         private Color invisible = new Color(0f, 0f, 0f, 0f);
         private Color tint;
         private Color originalColor;
@@ -31,7 +31,7 @@ namespace ctac {
             if (tile != null)
             {
                 meshRenderer = tile.gameObject.GetComponentInChildren<MeshRenderer>();
-                arrows = tile.gameObject.transform.FindChild("Arrows").gameObject;
+                //arrows = tile.gameObject.transform.FindChild("Arrows").gameObject;
                 originalColor = meshRenderer.material.color;
             }
         }
@@ -106,14 +106,14 @@ namespace ctac {
                 }
             }
 
-            if (tile.showPieceRotation && !arrows.activeSelf)
-            {
-                arrows.SetActive(true);
-            }
-            else if(!tile.showPieceRotation && arrows.activeSelf)
-            {
-                arrows.SetActive(false);
-            }
+            //if (tile.showPieceRotation && !arrows.activeSelf)
+            //{
+            //    arrows.SetActive(true);
+            //}
+            //else if(!tile.showPieceRotation && arrows.activeSelf)
+            //{
+            //    arrows.SetActive(false);
+            //}
         }
 
         private void ReallySetColor(Color c)

@@ -155,25 +155,25 @@ namespace ctac
                     }
                 }
 
-                //selected should never be null but check anyways
-                if (selectedPiece != null && selectedPiece.playerId == players.Me.id) {
-                    if (clickModel.clickedObject.CompareTag("RotateSouth"))
-                    {
-                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
-                    }
-                    if (clickModel.clickedObject.CompareTag("RotateWest"))
-                    {
-                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
-                    }
-                    if (clickModel.clickedObject.CompareTag("RotateNorth"))
-                    {
-                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
-                    }
-                    if (clickModel.clickedObject.CompareTag("RotateEast"))
-                    {
-                        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
-                    }
-                }
+                ////selected should never be null but check anyways
+                //if (selectedPiece != null && selectedPiece.playerId == players.Me.id) {
+                //    if (clickModel.clickedObject.CompareTag("RotateSouth"))
+                //    {
+                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
+                //    }
+                //    if (clickModel.clickedObject.CompareTag("RotateWest"))
+                //    {
+                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
+                //    }
+                //    if (clickModel.clickedObject.CompareTag("RotateNorth"))
+                //    {
+                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
+                //    }
+                //    if (clickModel.clickedObject.CompareTag("RotateEast"))
+                //    {
+                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
+                //    }
+                //}
 
                 if (clickModel.tile != null)
                 {
