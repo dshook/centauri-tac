@@ -1,0 +1,13 @@
+{
+	"cardTemplateId": 94,
+	"name": "Regulus",
+	"description": "<b>Taunt</b> <b>Holtzman Shield</b>",
+	"cost": 5,
+	"attack": 3,
+	"health": 2,
+	"movement": 3,
+	"statuses": 10,
+  "rarity": 2,
+	"tags": ["Minion"],
+	"eventcode": ""
+}

@@ -42,25 +42,6 @@ namespace ctac {
         public TextMeshPro buffNameText;
         public TextMeshPro buffAbilityText;
 
-        public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
-        {
-            {"Ability",            "Active ability to use with energy cost in parenthesis" },
-            {"Synthesis",          "Does something when played" },
-            {"Demise",             "Does something when the minion dies" },
-            {"Volatile",           "Does something when damaged" },
-            {"Spell Damage",       "Spells do one more damage for each spell damage point" },
-
-            {"Silence",            "Negates a minions card text, abilities, and status effects" },
-            {"Holtzman Shield",    "Absorbes all damage a minion takes on the first hit" },
-            {"Paralyze",           "Minion cannot move or attack" },
-            {"Taunt",              "Minions entering the area of influence must attack this minion." },
-            {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
-            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers." },
-            {"Root",               "Cannot move" },
-            {"Charge",             "Minion can move and attack immediately" },
-            {"Dyad Strike",        "Minion can attack twice per turn" },
-        };
-
         protected override void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -322,6 +303,8 @@ namespace ctac {
 
         public void DisableHoverTips()
         {
+            if(displayWrapper == null) return; //can't disable before init
+
             Transform hoverChild = displayWrapper.transform.FindChild("HoverTip");
             while (hoverChild != null)
             {
@@ -329,6 +312,25 @@ namespace ctac {
                 hoverChild = displayWrapper.transform.FindChild("HoverTip");
             }
         }
+
+        public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
+        {
+            {"Ability",            "Active ability to use with energy cost in parenthesis" },
+            {"Synthesis",          "Does something when played" },
+            {"Demise",             "Does something when the minion dies" },
+            {"Volatile",           "Does something when damaged" },
+            {"Spell Damage",       "Spells do one more damage for each spell damage point" },
+
+            {"Silence",            "Negates a minions card text, abilities, and status effects" },
+            {"Holtzman Shield",    "Absorbes all damage a minion takes on the first hit" },
+            {"Paralyze",           "Minion cannot move or attack" },
+            {"Taunt",              "Minions entering the area of influence must attack this minion." },
+            {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
+            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers." },
+            {"Root",               "Cannot move" },
+            {"Charge",             "Minion can move and attack immediately" },
+            {"Dyad Strike",        "Minion can attack twice per turn" },
+        };
 
         public void EnableHoverTips(IResourceLoaderService loader)
         {
@@ -353,6 +355,23 @@ namespace ctac {
                     descriptionWords.Add(descripWord);
                 }
             }
+
+            //if there's a linked piece with status effects, add those in too
+            if (card.linkedPiece != null)
+            {
+                var statuses = card.linkedPiece.statuses;
+                if (FlagsHelper.IsSet(statuses, Statuses.Silence)) { descriptionWords.Add("Silence"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Shield)) { descriptionWords.Add("Holtzman Shield"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Paralyze)) { descriptionWords.Add("Paralyze"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Taunt)) { descriptionWords.Add("Taunt"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Cloak)) { descriptionWords.Add("Cloak"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.TechResist)) { descriptionWords.Add("Tech Resist"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Root)) { descriptionWords.Add("Root"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Charge)) { descriptionWords.Add("Charge"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.DyadStrike)) { descriptionWords.Add("Dyad Strike"); }
+            }
+
+            descriptionWords = descriptionWords.Distinct().ToList();
 
             if(descriptionWords.Count == 0) return;
 

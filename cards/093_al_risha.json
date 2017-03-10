@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 93,
+	"name": "Al Risha",
+	"description": "<b>Taunt</b> at 7-9 health.  <b>Dyad Strike</b> at 4-6. <b>Cloak</b> at 1-3",
+	"cost": 7,
+	"attack": 7,
+	"health": 9,
+	"movement": 3,
+  "rarity": 3,
+	"tags": ["Minion"],
+	"eventcode": ""
+}
