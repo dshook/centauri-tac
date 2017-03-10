@@ -322,7 +322,7 @@ namespace ctac {
             {"Spell Damage",       "Spells do one more damage for each spell damage point" },
 
             {"Silence",            "Negates a minions card text, abilities, and status effects" },
-            {"Holtzman Shield",    "Absorbes all damage a minion takes on the first hit" },
+            {"Holtz Shield",    "Absorbes all damage a minion takes on the first hit" },
             {"Paralyze",           "Minion cannot move or attack" },
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
@@ -361,7 +361,7 @@ namespace ctac {
             {
                 var statuses = card.linkedPiece.statuses;
                 if (FlagsHelper.IsSet(statuses, Statuses.Silence)) { descriptionWords.Add("Silence"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Shield)) { descriptionWords.Add("Holtzman Shield"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Shield)) { descriptionWords.Add("Holtz Shield"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.Paralyze)) { descriptionWords.Add("Paralyze"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.Taunt)) { descriptionWords.Add("Taunt"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.Cloak)) { descriptionWords.Add("Cloak"); }

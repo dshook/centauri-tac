@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 29,
 	"name": "Regal Commandant",
-	"description": "<b>Synthesis</b>: Give a friendly minion a <b>Holtzman Shield</b>",
+	"description": "<b>Synthesis</b>: Give a friendly minion a <b>Holtz Shield</b>",
 	"cost": 5,
 	"attack": 4,
 	"health": 4,
