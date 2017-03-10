@@ -1,6 +1,7 @@
 ﻿using ctac.util;
 using strange.extensions.mediation.impl;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
@@ -40,6 +41,25 @@ namespace ctac {
 
         public TextMeshPro buffNameText;
         public TextMeshPro buffAbilityText;
+
+        public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
+        {
+            {"Ability",            "Active ability to use with energy cost in parenthesis" },
+            {"Synthesis",          "Does something when played" },
+            {"Demise",             "Does something when the minion dies" },
+            {"Volatile",           "Does something when damaged" },
+            {"Spell Damage",       "Spells do one more damage for each spell damage point" },
+
+            {"Silence",            "Negates a minions card text, abilities, and status effects" },
+            {"Holtzman Shield",    "Absorbes all damage a minion takes on the first hit" },
+            {"Paralyze",           "Minion cannot move or attack" },
+            {"Taunt",              "Minions entering the area of influence must attack this minion." },
+            {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
+            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers." },
+            {"Root",               "Cannot move" },
+            {"Charge",             "Minion can move and attack immediately" },
+            {"Dyad Strike",        "Minion can attack twice per turn" },
+        };
 
         protected override void Awake()
         {
@@ -298,6 +318,72 @@ namespace ctac {
             }
 
             buffBg.transform.localScale = buffBg.transform.localScale.SetY(buffTextHeight * 2 + bottomPadding);
+        }
+
+        public void DisableHoverTips()
+        {
+            Transform hoverChild = displayWrapper.transform.FindChild("HoverTip");
+            while (hoverChild != null)
+            {
+                DestroyImmediate(hoverChild.gameObject);
+                hoverChild = displayWrapper.transform.FindChild("HoverTip");
+            }
+        }
+
+        public void EnableHoverTips(IResourceLoaderService loader)
+        {
+            var cardTop = new Vector2(151.6f, 97.8f);
+            var positionDelta = new Vector2(0, -77.1f);
+
+            //find description words to make tips on
+            var descriptionMatches = Regex.Matches(card.description, @"<b>(.*?)<\/b>", RegexOptions.Multiline);
+            var descriptionWords = new List<string>();
+            foreach (Match match in descriptionMatches)
+            {
+                //second group should be the real match
+                if (match.Groups.Count > 1)
+                {
+                    var descripWord = match.Groups[1].Value;
+                    var parenIndex = descripWord.IndexOf('(');
+                    //if the word has parens in it like Ability(1) does, strip off everything from the paren on
+                    if (parenIndex >= 0)
+                    {
+                        descripWord = descripWord.Substring(0, parenIndex);
+                    }
+                    descriptionWords.Add(descripWord);
+                }
+            }
+
+            if(descriptionWords.Count == 0) return;
+
+            var hoverTipPrefab = loader.Load<GameObject>("HoverTip");
+
+            int tips = 0;
+            foreach (var descriptionWord in descriptionWords)
+            {
+                if (!keywordDescrips.ContainsKey(descriptionWord)) { continue; }
+
+                var description = keywordDescrips[descriptionWord];
+
+                var newHoverTip = Instantiate(hoverTipPrefab);
+                newHoverTip.transform.SetParent(displayWrapper.transform, false);
+                newHoverTip.name = "HoverTip";
+
+                //move the new text down (by subtracting) since coords are based on middle of the card
+                newHoverTip.transform.localPosition = cardTop + (tips * positionDelta);
+
+                var title = newHoverTip.transform.FindChild("Title").gameObject;
+                var descrip = newHoverTip.transform.FindChild("Descrip").gameObject;
+
+                var titleText = title.GetComponent<TextMeshPro>();
+                var descripText = descrip.GetComponent<TextMeshPro>();
+
+                titleText.text = descriptionWord;
+                descripText.text = description;
+
+                tips++;
+            }
+
         }
 
         public static readonly float HOVER_DELAY = 0.5f;

@@ -1,0 +1,30 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="393.39" height="347.01" viewBox="0 0 393.39 347.01">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 6px;
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-width: 3px;
+      }
+
+      .cls-3 {
+        fill: #999;
+        opacity: 0.7;
+      }
+    </style>
+  </defs>
+  <title>cardhovertip</title>
+  <rect class="cls-1" x="106" y="79.43" width="341.01" height="341.01" transform="translate(496.39 423.44) rotate(-180)"/>
+  <rect class="cls-2" x="108.43" y="81.86" width="336.15" height="336.15" transform="translate(496.39 423.44) rotate(-180)"/>
+  <rect class="cls-3" x="109.85" y="83.28" width="333.3" height="333.3" transform="translate(496.39 423.44) rotate(-180)"/>
+  <path d="M84.16,133.88c-0.61,24.13,8.39,38,6.56,75.68-0.05,7-8.54,24.25-34.11,39.25,25.58,10,34.08,32.31,34.13,39.29,1.82,37.64-7.16,51.58-6.55,75.72s18.92,59.62,18.92,59.62V76.52S84.77,109.75,84.16,133.88Z" transform="translate(-56.62 -76.43)"/>
+</svg>

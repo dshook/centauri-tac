@@ -13,6 +13,8 @@ namespace ctac
         public IDebugService debug { get; set; }
         [Inject]
         public IPieceService pieceService { get; set; }
+        [Inject]
+        public IResourceLoaderService loader { get; set; }
 
         float timer = 0f;
         bool cardVisible = false;
@@ -90,6 +92,7 @@ namespace ctac
             hideCard();
             timer = 0f;
             cardVisible = true;
+            hoverCardView.EnableHoverTips(loader);
         }
 
         internal void showCardFromHand(CardModel cardToShow, Vector3 position, int spellDamage)
@@ -133,6 +136,7 @@ namespace ctac
             cardVisible = false;
             //hoverCardView.card.linkedPiece = null;
             hoverCardView.gameObject.SetActive(false);
+            hoverCardView.DisableHoverTips();
         }
     }
 }
