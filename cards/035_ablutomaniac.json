@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 35,
 	"name": "Ablutomaniac",
-	"description": "Cannot be targeted by spells or hero powers",
+	"description": "<b>Tech Resist</b>",
 	"cost": 3,
 	"attack": 3,
 	"health": 4,

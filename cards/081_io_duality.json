@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 81,
 	"name": "Io Duality",
-	"description": "<b>Choose:</b> Gain +1/+1 or give a minion -1/-1",
+	"description": "<b>Choose</b>: Gain +1/+1 or give a minion -1/-1",
 	"cost": 1,
 	"attack": 2,
 	"health": 2,

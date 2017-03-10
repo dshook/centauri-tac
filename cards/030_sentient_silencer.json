@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 30,
 	"name": "Sentient Silencer",
-	"description": "<b>Synthesis</b>: Silence a minion",
+	"description": "<b>Synthesis</b>: <b>Silence</b> a minion",
 	"cost": 2,
 	"attack": 1,
 	"health": 2,

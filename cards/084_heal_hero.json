@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 84,
 	"name": "Heal Hero",
-	"description": "<b>Ability(2):</b> Heal 2 HP",
+	"description": "<b>Ability(2)</b>: Heal 2 HP",
 	"cost": 0,
 	"attack": 0,
 	"health": 30,

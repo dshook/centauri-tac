@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 39,
 	"name": "Sturm",
-	"description": "Charge",
+	"description": "<b>Charge</b>",
 	"cost": 1,
 	"attack": 1,
 	"health": 1,

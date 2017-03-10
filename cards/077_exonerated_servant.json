@@ -8,5 +8,5 @@
 	"movement": 3,
 	"statuses": 256,
 	"tags": ["Minion"],
-	"eventcode": "damaged{ GiveStatus(SELF, Silence ) }"
+	"eventcode": "damaged{ RemoveStatus(SELF, CantAttack ) }"
 }

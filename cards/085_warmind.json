@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 85,
 	"name": "Warmind",
-	"description": "<b>Volatile:</b> Gain +2 attack",
+	"description": "<b>Volatile</b>: Gain +2 attack",
 	"cost": 1,
 	"attack": 1,
 	"health": 3,
