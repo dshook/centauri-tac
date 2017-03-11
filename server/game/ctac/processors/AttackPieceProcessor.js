@@ -86,16 +86,18 @@ export default class AttackPieceProcessor
     }
 
     //determine direction piece should be facing to see if rotation is necessary
-    let targetDirection = faceDirection(target.position, attacker.position);
-    attacker.direction = action.direction = targetDirection;
+    let attackerNewDirection = faceDirection(target.position, attacker.position);
+    attacker.direction = action.direction = attackerNewDirection;
 
+    let targetNewDirection = faceDirection(attacker.position, target.position);
+    target.direction = action.targetDirection = targetNewDirection;
 
     let bonus = 0;
     let bonusMsg = null;
-    // let facingDirection = directionOf(targetDirection, target.direction);
+    // let facingDirection = directionOf(attackerNewDirection, target.direction);
     // if(facingDirection == 'behind' && !rangedAttack){
-    //   this.log.info('Backstab triggered, attackerDirection: %s targetDirection: %s, target.direction: %s'
-    //     , action.direction, targetDirection, target.direction);
+    //   this.log.info('Backstab triggered, attackerDirection: %s attackerNewDirection: %s, target.direction: %s'
+    //     , action.direction, attackerNewDirection, target.direction);
     //   bonus = -1;
     //   bonusMsg = 'Backstab';
     // }

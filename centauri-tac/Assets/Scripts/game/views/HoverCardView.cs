@@ -104,7 +104,7 @@ namespace ctac
             hoverCardView.card.gameObject = hoverCardView.gameObject;
 
             hoverCardView.rectTransform.SetAnchor(cardAnchor);
-            var displayPosition = new Vector3(position.x, 125f, zPos - 11f);
+            var displayPosition = new Vector3(position.x, 150f, zPos - 11f);
             showCard(displayPosition, spellDamage);
         }
 

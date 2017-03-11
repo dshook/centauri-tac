@@ -129,6 +129,18 @@ namespace ctac
                     destAngle = DirectionAngle.angle[attackPiece.direction]
                 }
             );
+
+            var target = pieces.Piece(attackPiece.targetPieceId);
+            if (target != null)
+            {
+                animationQueue.Add(
+                    new PieceView.RotateAnim()
+                    {
+                        piece = target.pieceView,
+                        destAngle = DirectionAngle.angle[attackPiece.targetDirection]
+                    }
+                );
+            }
         }
 
         public void onRotated(RotatePieceModel rotatePiece)

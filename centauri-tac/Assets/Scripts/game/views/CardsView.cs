@@ -31,9 +31,9 @@ namespace ctac {
         private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -390, -5);
-        private Vector3 opponentCardCircleCenter = new Vector3(0, 500, -5);
-        private float cardCircleRadius = 420f;
+        private Vector3 cardCircleCenter = new Vector3(0, -480, 125);
+        private Vector3 opponentCardCircleCenter = new Vector3(0, 640, 125);
+        private float cardCircleRadius = 480f;
         private float cardAngleSpread = -5f;
 
         protected override void Start()
