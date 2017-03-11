@@ -1,6 +1,7 @@
 using strange.extensions.mediation.impl;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
@@ -11,6 +12,8 @@ namespace ctac
         Tile hoveredTile = null;
         Tile selectedTile = null;
         Tile attackTile = null;
+
+        public GameObject tileCursor = null; 
 
         internal void onTileHover(Tile newTile)
         {
@@ -23,6 +26,16 @@ namespace ctac
             {
                 hoveredTile = newTile;
                 FlagsHelper.Set(ref hoveredTile.highlightStatus, TileHighlightStatus.Highlighted);
+
+                if (tileCursor != null)
+                {
+                    tileCursor.SetActive(true);
+                    tileCursor.transform.position = newTile.fullPosition.AddY(0.01f);
+                }
+            }
+            else if(tileCursor != null)
+            {
+                tileCursor.SetActive(false);
             }
         }
 

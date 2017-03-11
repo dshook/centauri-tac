@@ -28,13 +28,13 @@ namespace ctac
         [Inject] public SelectTargetSignal selectTarget { get; set; }
         [Inject] public UpdateTargetSignal updateTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+        [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
-        [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IDebugService debug { get; set; }

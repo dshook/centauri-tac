@@ -1,0 +1,17 @@
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: 21px;
+      }
+    </style>
+  </defs>
+  <title>tilecursorB</title>
+  <path class="cls-1" d="M123.9,10.5H23.3A11.5,11.5,0,0,0,11.5,22V125.3C35.5,75.6,74.8,34.5,123.9,10.5Z" transform="translate(-1)"/>
+  <path class="cls-1" d="M490.5,122.6V22c0-6.6-5.6-11.5-12.2-11.5H379.1A248.4,248.4,0,0,1,490.5,122.6Z" transform="translate(-1)"/>
+  <path class="cls-1" d="M11.5,369.7V477c0,6.6,5.2,12.5,11.8,12.5H132.2A253.6,253.6,0,0,1,11.5,369.7Z" transform="translate(-1)"/>
+  <path class="cls-1" d="M370.8,489.5H478.3c6.6,0,12.2-5.9,12.2-12.5V372.4C465.5,423.7,422.8,464.5,370.8,489.5Z" transform="translate(-1)"/>
+</svg>
