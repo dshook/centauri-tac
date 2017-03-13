@@ -128,7 +128,7 @@ export default class AttackPieceProcessor
 
     this.log.info('piece %s (%s/%s) attacked %s (%s/%s) direction %s',
       attacker.id, attacker.attack, attacker.health,
-      target.id, target.attack, target.health, targetDirection);
+      target.id, target.attack, target.health, attackerNewDirection);
     queue.complete(action);
   }
 }

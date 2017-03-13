@@ -14,5 +14,8 @@ export default class AttackPiece extends BaseAction
 
     //resulting direction of the attacker
     this.direction = null;
+
+    //resulting direction of the target
+    this.targetDirection = null;
   }
 }
