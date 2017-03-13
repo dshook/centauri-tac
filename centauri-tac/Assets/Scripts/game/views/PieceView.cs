@@ -95,6 +95,9 @@ namespace ctac {
 
             meshRenderer = model.GetComponentInChildren<MeshRenderer>();
             highlight = model.GetComponentInChildren<Highlighter>();
+            highlight.seeThrough = true;
+            highlight.occluder = true;
+            highlight.enabled = false;
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
@@ -135,12 +138,14 @@ namespace ctac {
 
             if (targetCandidate)
             {
+                highlight.enabled = true;
                 highlight.ConstantOn(targetOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", targetOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
+                highlight.enabled = true;
                 highlight.ConstantOn(selectedOutlineColor);
                 meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
@@ -148,18 +153,21 @@ namespace ctac {
 
                 if (piece.canMove && piece.canAttack)
                 {
+                    highlight.enabled = true;
                     highlight.ConstantOn(moveAttackOutlineColor);
                     meshRenderer.material.SetColor("_OutlineColor", moveAttackOutlineColor);
                     meshRenderer.material.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canAttack && enemiesInRange)
                 {
+                    highlight.enabled = true;
                     highlight.ConstantOn(attackOutlineColor);
                     meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
                     meshRenderer.material.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canMove)
                 {
+                    highlight.enabled = true;
                     highlight.ConstantOn(moveOutlineColor);
                     meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
                     meshRenderer.material.SetFloat("_Outline", outlineWidth);
@@ -167,6 +175,7 @@ namespace ctac {
                 else
                 {
                     highlight.ConstantOff();
+                    highlight.enabled = false;
                     meshRenderer.material.SetColor("_OutlineColor", Color.black);
                     meshRenderer.material.SetFloat("_Outline", outlineWidth);
                 }
@@ -174,6 +183,7 @@ namespace ctac {
             else
             {
                 highlight.ConstantOff();
+                highlight.enabled = false;
                 meshRenderer.material.SetColor("_OutlineColor", Color.black);
                 meshRenderer.material.SetFloat("_Outline", outlineWidth);
             }
