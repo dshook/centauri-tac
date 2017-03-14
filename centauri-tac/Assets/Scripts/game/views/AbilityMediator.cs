@@ -8,23 +8,36 @@ namespace ctac
         [Inject]
         public AbilityView view { get; set; }
 
-        [Inject]
-        public PossibleActionsReceivedSignal possibleActions { get; set; }
+        [Inject] public PossibleActionsReceivedSignal possibleActionsSignal { get; set; }
+        [Inject] public TurnEndedSignal turnEnded { get; set; }
+
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
 
         public override void OnRegister()
         {
-            possibleActions.AddListener(onActions);
+            possibleActionsSignal.AddListener(onActions);
+            turnEnded.AddListener(onTurnEnded);
             view.init();
         }
 
         public override void onRemove()
         {
-            possibleActions.RemoveListener(onActions);
+            possibleActionsSignal.RemoveListener(onActions);
+            turnEnded.RemoveListener(onTurnEnded);
         }
 
         private void onActions(PossibleActions possible)
         {
             view.UpdateAbilities(possible.playerId, possible.abilities);
+        }
+
+        private void onTurnEnded(GameTurnModel turnModel)
+        {
+            if (players.isHotseat && possibleActions.possibleAbilities.ContainsKey(players.Me.id))
+            {
+                view.UpdateAbilities(players.Me.id, possibleActions.possibleAbilities[players.Me.id]);
+            }
         }
 
     }
