@@ -525,5 +525,71 @@ export default class ProcessorServiceTests
       t.equal(buffActions[1].activatingPieceId, piece2.id, 'Second buff action is for second piece');
       t.equal(buffActions[1].pieceId, piece2.id, 'Second buff activating piece');
     });
+
+    test('End turn timer resolution order 1/2', async (t) => {
+      t.plan(1);
+      this.setupTest();
+
+      //spawn a hero for the activate card
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(0, 0, 1);
+      var enemyHero = this.spawnPiece(this.pieceState, 1, 2);
+      enemyHero.position = new Position(1, 0, 1);
+
+      //draw two choose card to hand
+      this.spawnCard(this.cardState, 95, 1);
+      this.spawnCard(this.cardState, 96, 1);
+      let reggoh  = this.cardState.drawCard(1);
+      let noddeg = this.cardState.drawCard(1);
+
+      //destroyer first
+      this.queue.push(new ActivateCard(1, noddeg.id, new Position(0,0,0), null, null, null));
+
+      await this.queue.processUntilDone();
+
+      //spawner second
+      this.queue.push(new ActivateCard(1, reggoh.id, new Position(1,0,2), null, null, null));
+
+      await this.queue.processUntilDone();
+
+      this.queue.push(new PassTurn());
+      await this.queue.processUntilDone();
+
+      let spawnedPiece = this.pieceState.pieces.find(p => p.cardTemplateId === 8);
+      t.ok(spawnedPiece, 'Spawned Piece is Still Alive');
+    });
+
+    test('End turn timer resolution order 2/2', async (t) => {
+      t.plan(1);
+      this.setupTest();
+
+      //spawn a hero for the activate card
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(0, 0, 1);
+      var enemyHero = this.spawnPiece(this.pieceState, 1, 2);
+      enemyHero.position = new Position(1, 0, 1);
+
+      //draw two choose card to hand
+      this.spawnCard(this.cardState, 95, 1);
+      this.spawnCard(this.cardState, 96, 1);
+      let reggoh  = this.cardState.drawCard(1);
+      let noddeg = this.cardState.drawCard(1);
+
+      //spawner first
+      this.queue.push(new ActivateCard(1, reggoh.id, new Position(1,0,2), null, null, null));
+
+      await this.queue.processUntilDone();
+
+      //destroyer second
+      this.queue.push(new ActivateCard(1, noddeg.id, new Position(0,0,0), null, null, null));
+
+      await this.queue.processUntilDone();
+
+      this.queue.push(new PassTurn());
+      await this.queue.processUntilDone();
+
+      let spawnedPiece = this.pieceState.pieces.find(p => p.cardTemplateId === 8);
+      t.ok(!spawnedPiece, 'Spawned Piece was destroyed');
+    });
   }
 }

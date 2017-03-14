@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 95,
+	"name": "Reggoh",
+	"description": "At the end of your turn summon a zombie",
+	"cost": 1,
+	"attack": 3,
+	"health": 4,
+	"movement": 3,
+  "rarity": 2,
+	"tags": ["Minion"],
+	"eventcode": "playMinion{
+		endTurnTimer(1, 2, Spawn(8, 1))
+	}"
+}
