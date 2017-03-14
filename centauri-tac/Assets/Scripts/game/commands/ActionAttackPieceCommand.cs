@@ -27,7 +27,13 @@ namespace ctac
         {
             if (!processedActions.Verify(attackedPiece.id)) return;
 
-            pieces.Piece(attackedPiece.attackingPieceId).attackCount++;
+            var attacker = pieces.Piece(attackedPiece.attackingPieceId);
+            attacker.attackCount++;
+
+            if (attacker.range.HasValue)
+            {
+                attacker.hasMoved = true;
+            }
 
             pieceAttacked.Dispatch(attackedPiece);
 

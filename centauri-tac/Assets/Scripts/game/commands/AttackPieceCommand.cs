@@ -51,11 +51,6 @@ namespace ctac
                 attacker.hasMoved = true;
             }
 
-            if (attacker.range.HasValue)
-            {
-                attacker.hasMoved = true;
-            }
-
             socket.Request(players.Me.clientId, "game", "moveattack", 
                 new { attackModel.attackingPieceId, attackModel.targetPieceId, route = serverPath }
             );
