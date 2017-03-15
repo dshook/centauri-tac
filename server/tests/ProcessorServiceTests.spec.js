@@ -32,6 +32,8 @@ export default class ProcessorServiceTests
     this.cardState.initPlayer(1);
     this.cardState.initPlayer(2);
     this.turnState.passTurn();
+    this.cardEvaluator.startTurnTimers = [];
+    this.cardEvaluator.endTurnTimers = [];
   }
 
   spawnCards(){
@@ -516,6 +518,7 @@ export default class ProcessorServiceTests
 
       const generatedActions = this.queue.iterateCompletedSince();
       let actions = [...generatedActions];
+      console.log(actions);
 
       let buffActions = actions.filter(a => a instanceof PieceBuff);
 

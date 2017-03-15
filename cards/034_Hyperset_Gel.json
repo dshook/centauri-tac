@@ -6,6 +6,6 @@
 	"tags": ["Spell"],
 	"eventcode": "playSpell{
 		GiveStatus(ENEMY, Root)
-		startTurnTimer(2, false, RemoveStatus(SAVED, Root) )
+		startTurnTimer(1, false, RemoveStatus(SAVED, Root) )
 	}"
 }

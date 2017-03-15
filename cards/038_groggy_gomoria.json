@@ -8,6 +8,6 @@
 	"movement": 3,
 	"tags": ["Minion"],
 	"eventcode": "playMinion{
-		startTurnTimer(2, 2, Buff(SELF, 'Coffee', attack(1), health(1), movement(1) ) )
+		startTurnTimer(1, 1, Buff(SELF, 'Coffee', attack(1), health(1), movement(1) ) )
 	}"
 }

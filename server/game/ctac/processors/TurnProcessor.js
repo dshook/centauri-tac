@@ -35,17 +35,21 @@ export default class TurnProcessor
       piece.attackCount = 0;
     }
 
-    //@TODO: come back and see if there's a better way to eval the turnEnd and turnStart
-    //event without needing a player id
-    for(let player of this.players){
-      this.cardEvaluator.evaluatePlayerEvent('turnEnd', player.id);
-    }
-
     // do it
     var currentTurn = this.turnState.passTurn();
 
     //fire off the event service now so the times won't be impacted by processing the events
     this.gameEventService.startTurnEnergyTimer(currentTurn);
+
+    action.currentTurn = currentTurn;
+    queue.complete(action);
+
+    await this.cardEvaluator.evaluateTurnEvent(false);
+    //await queue.processUntilDone();
+    // for(let player of this.players){
+    //   this.cardEvaluator.evaluatePlayerEvent('turnEnd', player.id);
+    // }
+
 
     //give some handouts
     for(let player of this.players){
@@ -63,13 +67,14 @@ export default class TurnProcessor
       //update stats
       this.statsState.setStat('COMBOCOUNT', 0, player.id);
 
-      //and finally eval the new turn
-      this.cardEvaluator.evaluatePlayerEvent('turnStart', player.id);
+      // //and finally eval the new turn
+      // this.cardEvaluator.evaluatePlayerEvent('turnStart', player.id);
 
       queue.push(new DrawCard(player.id));
     }
-    action.currentTurn = currentTurn;
 
-    queue.complete(action);
+    //startTurnTimer Events
+    await this.cardEvaluator.evaluateTurnEvent(true);
+    //await queue.processUntilDone();
   }
 }

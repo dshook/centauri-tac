@@ -616,7 +616,7 @@ export default class CardEvaluator{
               }
               break;
             }
-            //startTurnTimer(turns, repeatingInterval, ...Actions)
+            //startTurnTimer(initialTurnDelay, repeatingInterval, ...Actions)
             //turns is a counter that gets decremented each start of the turn and fires when 0
             //so a turns value of 1 will activate on the start of the following (probably enemy) turn
             //repeating interval, if truth, determines what the turns counter is reset to every time
@@ -649,7 +649,7 @@ export default class CardEvaluator{
               }
               break;
             }
-            //endTurnTimer(turns, repeatingInterval, ...Actions)
+            //endTurnTimer(initialTurnDelay, repeatingInterval, ...Actions)
             //see startTurnTimer above ^
             case 'endTurnTimer':
             {
@@ -848,6 +848,16 @@ export default class CardEvaluator{
         clonedTimer.playerId = piece.playerId; //see above
         this.startTurnTimers.push(clonedTimer);
       }
+    }
+  }
+
+  async evaluateTurnEvent(isStart){
+    let evalActions = this.updateTimers(isStart);
+    this.log.info('Eval %s %s turn events', evalActions.length, isStart ? 'start' : 'end');
+
+    for(let action of evalActions){
+      this.processActions([action], null, null);
+      await this.queue.processUntilDone();
     }
   }
 
