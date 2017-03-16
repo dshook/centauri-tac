@@ -73,6 +73,9 @@ namespace ctac.signals
     [Singleton] public class ActionPassTurnSignal : Signal<PassTurnModel> { }
     [Singleton] public class TurnEndedSignal : Signal<GameTurnModel> { }
 
+    [Singleton] public class GamePausedSignal : Signal { }
+    [Singleton] public class GameResumedSignal : Signal { }
+
     [Singleton] public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
     [Singleton] public class PieceSpawnedSignal : Signal<PieceSpawnedModel> { }
     [Singleton] public class ActionCancelledSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }

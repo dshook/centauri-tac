@@ -14,12 +14,13 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, turnState, possibleActions, gameConfig)
+  constructor(players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
   {
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
     this.possibleActions = possibleActions;
+    this.gameEventService = gameEventService;
     this.turnState = turnState;
     this.config = gameConfig;
   }
@@ -58,6 +59,34 @@ export default class GameController
     const action = new PassTurn();
     this.queue.push(action);
     this.queue.processUntilDone();
+  }
+
+  /**
+   * Pause all timers, only for dev
+   */
+  @on('playerCommand', x => x === 'pauseGame')
+  pauseGame(command)
+  {
+    if(!this.config.dev){
+      this.log.error('Cannot end turn in non dev mode');
+      return;
+    }
+
+    this.gameEventService.pauseAll();
+  }
+
+  /**
+   * Pause all timers, only for dev
+   */
+  @on('playerCommand', x => x === 'resumeGame')
+  resumeGame(command)
+  {
+    if(!this.config.dev){
+      this.log.error('Cannot end turn in non dev mode');
+      return;
+    }
+
+    this.gameEventService.resumeAll();
   }
 
   /**
