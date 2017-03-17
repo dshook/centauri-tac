@@ -85,6 +85,11 @@ namespace ctac
             {
                 GameObject.Destroy(card);
             }
+
+#if !DEBUG
+            var dbgButtons = GameObject.Find("DebugButtons");
+            GameObject.DestroyImmediate(dbgButtons);
+#endif
         }
     }
 }

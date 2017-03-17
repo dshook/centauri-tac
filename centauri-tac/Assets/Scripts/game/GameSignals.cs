@@ -76,6 +76,9 @@ namespace ctac.signals
     [Singleton] public class GamePausedSignal : Signal { }
     [Singleton] public class GameResumedSignal : Signal { }
 
+    [Singleton] public class PieceClickedSignal : Signal<PieceView> { }
+    [Singleton] public class TileClickedSignal : Signal<Tile> { }
+
     [Singleton] public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
     [Singleton] public class PieceSpawnedSignal : Signal<PieceSpawnedModel> { }
     [Singleton] public class ActionCancelledSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
