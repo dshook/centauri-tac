@@ -84,7 +84,7 @@ namespace ctac
                 debug.Log("Selected target");
                 cardTarget.selectedPiece = piece.piece;
 
-                var continueTarget = updateTarget(map.tiles.Get(piece.piece.tilePosition));
+                var continueTarget = updateTarget(piece, map.tiles.Get(piece.piece.tilePosition));
 
                 if (continueTarget && cardTarget.targetFulfilled)
                 {
@@ -134,7 +134,7 @@ namespace ctac
                     }
                 }
 
-                var continueTargeting = updateTarget(tile);
+                var continueTargeting = updateTarget(null, tile);
 
                 if (continueTargeting && cardTarget.targetFulfilled)
                 {
@@ -160,13 +160,21 @@ namespace ctac
             abilityTarget = model;
         }
 
-        private bool updateTarget(Tile tile)
+        //Returns whether or not to continue targeting
+        private bool updateTarget(PieceView piece, Tile tile)
         {
             if (cardTarget == null) return false;
 
             if (cardTarget.area == null) return true;
 
-            if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
+            if (cardTarget.targets != null && cardTarget.targets.targetPieceIds.Count > 0 && piece != null)
+            {
+                if (cardTarget.targets.targetPieceIds.Contains(piece.piece.id))
+                {
+                    cardTarget.selectedPiece = piece.piece;
+                    cardTarget.selectedPosition = piece.piece.tilePosition;
+                }
+            }else if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);
                 return false;

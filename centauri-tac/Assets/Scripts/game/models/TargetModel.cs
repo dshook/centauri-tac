@@ -11,6 +11,8 @@ namespace ctac
 
         public PieceModel selectedPiece { get; set; }
         public Vector2? selectedPosition { get; set; }
+
+        //use pivot position as the 'resolved' position that is the point in the area chosen
         public Vector2? selectedPivotPosition { get; set; }
 
         public bool targetFulfilled
