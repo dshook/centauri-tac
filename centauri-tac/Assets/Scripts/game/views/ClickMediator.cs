@@ -69,6 +69,7 @@ namespace ctac
             selectAbilityTarget.RemoveListener(onSelectAbilityTarget);
         }
 
+        //For clicking anything other than a card
         private void onClick(ClickModel clickModel)
         {
             if (clickModel.isUp)

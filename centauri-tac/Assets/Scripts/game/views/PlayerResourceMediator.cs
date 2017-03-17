@@ -42,7 +42,10 @@ namespace ctac
         {
             updateView();
 
-            view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
+            if (!passTurn.isClientSwitch)
+            {
+                view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
+            }
         }
 
         private void onResourceSet(SetPlayerResourceModel m)

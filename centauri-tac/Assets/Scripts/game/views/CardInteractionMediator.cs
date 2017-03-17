@@ -65,7 +65,7 @@ namespace ctac
             cancelSelectTarget.RemoveListener(onTargetCancel);
         }
 
-
+        //for clicking on a card directly
         private void onClick(GameObject clickedObject, Vector3 point)
         {
             if (clickedObject != null)
@@ -150,6 +150,7 @@ namespace ctac
             }
         }
 
+        //when you try to activate a card either by the click and drag click up or a click on a tile/piece
         private void onActivate(GameObject activated)
         {
             var itWorked = doActivateWork(activated);
