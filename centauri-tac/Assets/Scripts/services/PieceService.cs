@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using strange.extensions.context.api;
 using System.Linq;
+using strange.extensions.injector.api;
 
 namespace ctac
 {
@@ -32,16 +33,19 @@ namespace ctac
         public PiecesModel piecesModel { get; set; }
 
         [Inject]
-        public IResourceLoaderService resourceLoader { get; set; }
+        public IResourceLoaderService loader { get; set; }
+
+        //[Inject]
+        //public ICrossContextInjectionBinder injectionBinder { get; set; }
 
         [Inject]
         public MapModel map { get; set; }
 
         public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null)
         {
-            GameObject pieceModelResource = resourceLoader.Load<GameObject>("Models/" + spawnedPiece.cardTemplateId + "/prefab");
+            GameObject pieceModelResource = loader.Load<GameObject>("Models/" + spawnedPiece.cardTemplateId + "/prefab");
 
-            var piecePrefab = resourceLoader.Load<GameObject>("Piece");
+            var piecePrefab = loader.Load<GameObject>("Piece");
 
             //position is x and z from server, and y based on the map
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;
@@ -83,7 +87,7 @@ namespace ctac
                 baseMovement = cardTemplate.movement,
                 range = cardTemplate.range,
                 baseRange = cardTemplate.range,
-                tags = spawnedPiece.tags,
+                tags = spawnedPiece.tags ?? cardTemplate.tags,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses,
             };
@@ -91,6 +95,8 @@ namespace ctac
             SetInitialMoveAttackStatus(pieceModel);
 
             var pieceView = newPiece.AddComponent<PieceView>();
+            pieceView.loader = loader;
+
             pieceView.piece = pieceModel;
 
             piecesModel.Pieces.Add(pieceModel);
