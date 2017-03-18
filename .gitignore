@@ -24,6 +24,7 @@ player_win_development_x86.pdb
 test.app/
 .DS_Store
 Thumbs.db
+Thumbs.db.meta
 
 # node / web backend
 node_modules
