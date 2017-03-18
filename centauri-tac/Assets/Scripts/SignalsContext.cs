@@ -8,17 +8,13 @@ using System;
 using System.Reflection;
 using System.Linq;
 using strange.extensions.injector.api;
+using strange.extensions.signal.impl;
 
 namespace ctac
 {
     public class SignalsContext : MVCSContext
     {
-
         public SignalsContext(MonoBehaviour view) : base(view)
-        {
-        }
-
-        public SignalsContext(MonoBehaviour view, ContextStartupFlags flags) : base(view, flags)
         {
         }
 
@@ -34,8 +30,27 @@ namespace ctac
         override public IContext Start()
         {
             base.Start();
-            var startSignal = injectionBinder.GetInstance<StartSignal>();
-            startSignal.Dispatch();
+
+            var contextViewGo = base.contextView as GameObject;
+            var signalRoot = contextViewGo == null ? null : contextViewGo.GetComponent<SignalsRoot>();
+
+            if (signalRoot == null || String.IsNullOrEmpty(signalRoot.startSignalName)){
+                var startSignal = injectionBinder.GetInstance<StartSignal>();
+                startSignal.Dispatch();
+            } else {
+                var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
+                var startType = assemblyTypes.FirstOrDefault(t => t.Name == signalRoot.startSignalName);
+                if (startType == null)
+                {
+                    throw new Exception("Could not find type for start signal " + signalRoot.startSignalName);
+                }
+                if (startType.BaseType != typeof(Signal)) {
+                    throw new Exception("Start Signal is not of base type Signal");
+                }
+
+                var startSignal = injectionBinder.GetInstance(startType);
+                (startSignal as Signal).Dispatch();
+            }
             return this;
         }
 
@@ -115,6 +130,7 @@ namespace ctac
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
+            commandBinder.Bind<PiecesStartSignal>().To<PiecesStartCommand>().Once();
 
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
