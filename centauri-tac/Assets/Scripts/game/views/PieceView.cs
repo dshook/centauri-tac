@@ -111,21 +111,31 @@ namespace ctac {
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
 
+            var collider = model.GetComponentInChildren<MeshCollider>();
+            if (collider == null)
+            {
+                Debug.LogError(piece.cardTemplateId + " piece missing mesh collider");
+            }
+
             //find top of the mesh and adjust the hpbar to be just above it
-            Vector3[] verts = model.GetComponentInChildren<MeshFilter>().sharedMesh.vertices;
+            var rotation = collider.transform.localRotation;
+
+            Vector3[] verts = collider.sharedMesh.vertices;
             Vector3 topVertex = new Vector3(0, float.NegativeInfinity, 0);
             for (int i = 0; i < verts.Length; i++)
             {
-                //Vector3 vert = transform.TransformPoint(verts[i]);
-                Vector3 vert = verts[i];
+                Vector3 vert = rotation * verts[i];
                 if (vert.y > topVertex.y)
                 {
                     topVertex = vert;
                 }
             }
+            topVertex = topVertex + collider.transform.localPosition;
+
             hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(
-                topVertex.y * 1.5f + 0.9f
+                topVertex.y + 0.25f
             );
+            //Debug.Log(string.Format("{0} top vert y {1} hpbar pos {2}", piece.cardTemplateId, topVertex.y, hpBarContainer.transform.localPosition.y));
 
             UpdateHpBar();
         }

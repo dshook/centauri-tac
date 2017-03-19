@@ -50,9 +50,10 @@ namespace ctac
             };
             var rows = 5;
             var columns = (int)Math.Ceiling((double)minionCards.Count / rows);
-            for (int r = 0; r < rows; r++)
+            //space it out by double
+            for (int r = 0; r < rows * 2; r++)
             {
-                for (int c = 0; c < columns; c++)
+                for (int c = 0; c < columns* 2; c++)
                 {
                     defaultMap.tiles.Add(new TileImport()
                     {
@@ -98,15 +99,19 @@ namespace ctac
             //and create pieces finally
             int pRow = 0;
             int pCol = 0;
+            //var spawnIds = new List<int>() { 63, 68, 57, 8, 92 };
             for (int p = 0; p < minionCards.Count; p++)
             {
                 var minionCard = minionCards[p];
+
+                //if (!spawnIds.Contains(minionCard.cardTemplateId)) { continue; }
+
                 pieceService.CreatePiece(new SpawnPieceModel()
                 {
                     pieceId = minionCard.cardTemplateId,
                     cardTemplateId = minionCard.cardTemplateId,
                     playerId = 1,
-                    position = new PositionModel(new Vector2(pRow, pCol)),
+                    position = new PositionModel(new Vector2(pRow * 2, pCol * 2)),
                     direction = Direction.South
                 });
 
