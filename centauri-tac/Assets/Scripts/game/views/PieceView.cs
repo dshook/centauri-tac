@@ -51,7 +51,7 @@ namespace ctac {
         public bool targetCandidate = false;
         public bool enemiesInRange = false;
 
-        private MeshRenderer meshRenderer;
+        public Material meshMaterial;
         private Highlighter highlight;
         private float outlineWidth = 0.01f;
         private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
@@ -93,7 +93,17 @@ namespace ctac {
             rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
             auraIcon = eventIconContainer.transform.FindChild("Aura").gameObject;
 
-            meshRenderer = model.GetComponentInChildren<MeshRenderer>();
+            var meshRenderer = model.GetComponentInChildren<MeshRenderer>();
+            if (meshRenderer == null)
+            {
+                var skinnedMeshRenderer = model.GetComponentInChildren<SkinnedMeshRenderer>();
+                meshMaterial = skinnedMeshRenderer.material;
+            }
+            else
+            {
+                meshMaterial = meshRenderer.material;
+            }
+
             highlight = model.GetComponentInChildren<Highlighter>();
             highlight.seeThrough = true;
             highlight.occluder = true;
@@ -132,6 +142,18 @@ namespace ctac {
             }
             topVertex = topVertex + collider.transform.localPosition;
 
+            //walk up the parent chain (stopping at the Model node) to find the total combined scale.  
+            //Realistically it should only be one intermediate scaling anything
+            Vector3 combinedScale = collider.transform.localScale;
+            var curTransform = collider.transform;
+            while (curTransform != null && curTransform.name != "Model")
+            {
+                curTransform = curTransform.parent;
+                combinedScale.Scale(curTransform.localScale);
+            }
+
+            topVertex.Scale(combinedScale);
+
             hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(
                 topVertex.y + 0.25f
             );
@@ -150,52 +172,52 @@ namespace ctac {
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(targetOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", targetOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", targetOutlineColor);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(selectedOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", selectedOutlineColor);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }else if (piece.currentPlayerHasControl) {
 
                 if (piece.canMove && piece.canAttack)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(moveAttackOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", moveAttackOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", moveAttackOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canAttack && enemiesInRange)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(attackOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", attackOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canMove)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(moveOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", moveOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else
                 {
                     highlight.ConstantOff();
                     highlight.enabled = false;
-                    meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", Color.black);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
             }
             else
             {
                 highlight.ConstantOff();
                 highlight.enabled = false;
-                meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", Color.black);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
 
 

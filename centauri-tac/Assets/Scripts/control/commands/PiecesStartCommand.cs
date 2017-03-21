@@ -99,7 +99,7 @@ namespace ctac
             //and create pieces finally
             int pRow = 0;
             int pCol = 0;
-            //var spawnIds = new List<int>() { 63, 68, 57, 8, 92 };
+            //var spawnIds = new List<int>() { 77 };
             for (int p = 0; p < minionCards.Count; p++)
             {
                 var minionCard = minionCards[p];
