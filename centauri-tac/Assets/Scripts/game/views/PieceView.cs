@@ -60,10 +60,13 @@ namespace ctac {
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
         private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
+        public Animator anim;
+
         protected override void Start()
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
             faceCameraContainer = piece.gameObject.transform.FindChild("FaceCameraContainer").gameObject;
+            anim = piece.gameObject.GetComponentInChildren<Animator>();
 
             hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
@@ -436,11 +439,12 @@ namespace ctac {
             public float? postDelay { get { return null; } }
 
             public PieceModel piece { get; set; }
+            public Animator anim { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
             public bool isTeleport { get; set; }
 
-            private float moveTime = 0.25f;
+            private float moveTime = 0.41f;
             Vector3 curveHeight = new Vector3(0, 0.30f, 0);
             private float curveMult = 1.0f;
             private BezierSpline moveSpline;
@@ -478,6 +482,11 @@ namespace ctac {
                     walker.duration = moveTime;
                     walker.lookForward = false;
                     walker.mode = SplineWalkerMode.Once;
+
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("onMove");
+                    }
                 }
 
                 //if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)

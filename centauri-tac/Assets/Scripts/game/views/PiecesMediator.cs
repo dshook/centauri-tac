@@ -107,6 +107,7 @@ namespace ctac
                 new PieceView.MoveAnim()
                 {
                     piece = view.piece,
+                    anim = view.anim,
                     destination = pieceMoved.to.gameObject.transform.position,
                     finishedMoving = pieceFinishedMoving,
                     isTeleport = pieceMoved.isTeleport
