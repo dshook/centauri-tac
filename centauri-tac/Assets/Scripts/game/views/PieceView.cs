@@ -500,6 +500,26 @@ namespace ctac {
             }
         }
 
+        public class EventTriggerAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+            public string eventName { get; set; }
+
+            public void Init() { }
+            public void Update()
+            {
+                if (piece.anim != null && !string.IsNullOrEmpty(eventName))
+                {
+                    piece.anim.SetTrigger(eventName);
+                    Complete = true;
+                }
+            }
+        }
+
         public class TakeDamageAnim : IAnimate
         {
             public bool Complete { get; set; }
@@ -638,8 +658,14 @@ namespace ctac {
 
             public PieceDiedSignal pieceDied { get; set; }
             public PieceModel piece { get; set; }
+            public Animator anim { get; set; }
 
-            public void Init() { }
+            public void Init() {
+                if (anim != null)
+                {
+                    anim.SetTrigger("onDeath");
+                }
+            }
             public void Update()
             {
                 iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
