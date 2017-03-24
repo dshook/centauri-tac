@@ -13,6 +13,7 @@ namespace ctac
 
         [Inject] public GamePausedSignal pauseSignal { get; set; }
         [Inject] public GameResumedSignal resumeSignal { get; set; }
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
 
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
@@ -26,6 +27,7 @@ namespace ctac
             turnEnded.AddListener(onTurnEnd);
             pauseSignal.AddListener(onPause);
             resumeSignal.AddListener(onResume);
+            gameFinished.AddListener(onGameFinished);
 
             view.init();
         }
@@ -36,6 +38,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnd);
             pauseSignal.RemoveListener(onPause);
             resumeSignal.RemoveListener(onResume);
+            gameFinished.RemoveListener(onGameFinished);
         }
 
         public void onTurnEnd(GameTurnModel passTurn)
@@ -68,6 +71,11 @@ namespace ctac
         private void onResume()
         {
             view.setOn(true);
+        }
+
+        private void onGameFinished(GameFinishedModel gf)
+        {
+            view.setOn(false);
         }
 
         private void updateView()

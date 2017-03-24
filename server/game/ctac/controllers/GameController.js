@@ -249,6 +249,7 @@ export default class GameController
           }
         );
       }
+      this.gameEventService.shutdown();
     }
   }
 

@@ -27,7 +27,7 @@ namespace ctac
                 {"qps", typeof(ServerQueueProcessStart) },
                 {"qpc", typeof(ServerQueueProcessEnd) },
                 {"game", typeof(GamelistGameSignal) },
-                {"game:finished", typeof(GameFinishedSignal) },
+                {"game:finished", typeof(ActionGameFinishedSignal) },
                 {"game:current", typeof(CurrentGameSignal) },
                 {"possibleActions", typeof(PossibleActionsSignal) },
 

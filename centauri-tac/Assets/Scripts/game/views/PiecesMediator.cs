@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
         [Inject] public PieceArmorChangedSignal pieceArmorChanged { get; set; }
         [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -55,6 +56,7 @@ namespace ctac
             turnEnded.AddListener(onTurnEnded);
             pieceDied.AddListener(onPieceDied);
             pieceCharmed.AddListener(onCharmed);
+            gameFinished.AddListener(onGameFinished);
 
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
@@ -80,6 +82,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
             pieceDied.RemoveListener(onPieceDied);
             pieceCharmed.RemoveListener(onCharmed);
+            gameFinished.RemoveListener(onGameFinished);
 
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
@@ -535,6 +538,22 @@ namespace ctac
         private void onPieceDied(PieceModel p)
         {
             checkEnemiesInRange();
+        }
+
+        private void onGameFinished(GameFinishedModel gf)
+        {
+            foreach (var piece in pieces.Pieces)
+            {
+                string eventName = piece.playerId == gf.winnerId ? "onWin" : "onLose";
+
+                animationQueue.Add(
+                    new PieceView.EventTriggerAnim()
+                    {
+                        piece = piece.pieceView,
+                        eventName = eventName
+                    }
+                );
+            }
         }
 
         private void checkEnemiesInRange()
