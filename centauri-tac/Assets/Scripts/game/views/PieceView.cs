@@ -444,8 +444,8 @@ namespace ctac {
             public Vector3 destination { get; set; }
             public bool isTeleport { get; set; }
 
-            private float moveTime = 0.41f;
-            Vector3 curveHeight = new Vector3(0, 0.30f, 0);
+            private float moveTime = 0.33f;
+            Vector3 curveHeight = new Vector3(0, 0.20f, 0);
             private float curveMult = 1.0f;
             private BezierSpline moveSpline;
             private SplineWalker walker;
