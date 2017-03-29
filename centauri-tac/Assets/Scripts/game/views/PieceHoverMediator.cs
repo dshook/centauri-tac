@@ -22,38 +22,35 @@ namespace ctac
 
         void Update()
         {
-            if (raycastModel.piece)
+            if (raycastModel.piece != null)
             {
-                onPieceHover(raycastModel.piece);
+                onPieceHover(raycastModel.piece.piece);
             }
             else if (raycastModel.tile != null)
             {
                 var pieceAtTile = pieces.PieceAt(raycastModel.tile.position);
                 if (pieceAtTile != null)
                 {
-                    onPieceHover(pieceAtTile.pieceView);
+                    onPieceHover(pieceAtTile);
                 }
-            }
-        }
-
-        private PieceView lastHoveredPiece = null;
-        void onPieceHover(PieceView pieceHovered)
-        {
-            if (pieceHovered != null)
-            {
-                if (pieceHovered != lastHoveredPiece)
+                else
                 {
-                    lastHoveredPiece = pieceHovered;
-                    pieceHoveredSignal.Dispatch(pieceHovered.piece);
+                    onPieceHover(null);
                 }
             }
             else
             {
-                if (lastHoveredPiece != null)
-                {
-                    lastHoveredPiece = null;
-                    pieceHoveredSignal.Dispatch(null);
-                }
+                onPieceHover(null);
+            }
+        }
+
+        private PieceModel lastHoveredPiece = null;
+        void onPieceHover(PieceModel pieceHovered)
+        {
+            if (pieceHovered != lastHoveredPiece)
+            {
+                lastHoveredPiece = pieceHovered;
+                pieceHoveredSignal.Dispatch(pieceHovered);
             }
         }
     }
