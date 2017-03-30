@@ -37,6 +37,7 @@ namespace ctac
                 new PieceView.DieAnim()
                 {
                     piece = piece,
+                    anim = piece.pieceView.anim,
                     pieceDied = pieceDied
                 }
             );
