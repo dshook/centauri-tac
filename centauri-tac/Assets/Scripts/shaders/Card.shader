@@ -54,7 +54,7 @@
 
 				float4 col = tex2D(_MainTex, i.uv);
 
-				return (col * disp) + rarity;
+				return (col + rarity) * disp;
 			}
 			ENDCG
 		}
