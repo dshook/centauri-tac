@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 #ifndef UNITY_SVG_INCLUDED
 #define UNITY_SVG_INCLUDED
@@ -53,7 +55,7 @@ VertexOutputForwardBase_SVG vertForwardBase_SVG (VertexInput_SVG v)
 	#if UNITY_SPECCUBE_BOX_PROJECTION
 		o.posWorld = posWorld.xyz;
 	#endif
-	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
 	o.tex = TexCoords_SVG(v);
 	o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
 	float3 normalWorld = UnityObjectToWorldNormal(v.normal);
@@ -157,7 +159,7 @@ VertexOutputDeferred_SVG vertDeferred_SVG (VertexInput_SVG v)
 	#if UNITY_SPECCUBE_BOX_PROJECTION
 		o.posWorld = posWorld;
 	#endif
-	o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+	o.pos = UnityObjectToClipPos(v.vertex);
 	o.tex = TexCoords_SVG(v);
 	o.eyeVec = NormalizePerVertexNormal(posWorld.xyz - _WorldSpaceCameraPos);
 	float3 normalWorld = UnityObjectToWorldNormal(v.normal);

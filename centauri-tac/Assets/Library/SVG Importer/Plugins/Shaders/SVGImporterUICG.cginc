@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 float2 SVG_GRADIENT_ANTIALIASING_WIDTH;
 
 sampler2D _GradientColor;
@@ -31,7 +33,7 @@ vertex_output vertexGradients(vertex_input v)
 {
     vertex_output o;
     o.localPosition = v.vertex;
-    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.vertex = UnityObjectToClipPos(v.vertex);
     o.uv0.xy = v.texcoord0;
     o.color = v.color;
 	
@@ -61,10 +63,10 @@ vertex_output vertexGradientsAntialiased(vertex_input v)
 		float objSpaceLength = length(ObjSpaceViewDir(vertex));
 		vertex.x += v.normal.x * objSpaceLength * SVG_GRADIENT_ANTIALIASING_WIDTH.x;
 		vertex.y += v.normal.y * objSpaceLength * SVG_GRADIENT_ANTIALIASING_WIDTH.y;
-		o.vertex = mul(UNITY_MATRIX_MVP, vertex);
+		o.vertex = UnityObjectToClipPos(vertex);
 	// Orthographic Camera
 	} else {
-		o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.vertex = UnityObjectToClipPos(v.vertex);
 		o.vertex.x += v.normal.x * SVG_GRADIENT_ANTIALIASING_WIDTH.x;
 		o.vertex.y += v.normal.y * SVG_GRADIENT_ANTIALIASING_WIDTH.y;
 	} 

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Copyright (C) 2014 - 2016 Stephan Schaem - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
@@ -68,7 +70,7 @@ SubShader {
 		v2f vert (appdata_t v)
 		{
 			v2f o;
-			o.vertex = UnityPixelSnap(mul(UNITY_MATRIX_MVP, v.vertex));
+			o.vertex = UnityPixelSnap(UnityObjectToClipPos(v.vertex));
 			o.color = v.color;
 			o.color *= _Color;
 			o.color.rgb *= _DiffusePower;

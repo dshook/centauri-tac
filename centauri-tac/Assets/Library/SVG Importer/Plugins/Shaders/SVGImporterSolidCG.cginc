@@ -1,4 +1,6 @@
-﻿float2 SVG_SOLID_ANTIALIASING_WIDTH;
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+float2 SVG_SOLID_ANTIALIASING_WIDTH;
 
 struct vertex_input
 {
@@ -22,7 +24,7 @@ struct vertex_output
 vertex_output vertexColor(vertex_input v)
 {
     vertex_output o;
-    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);    
+    o.vertex = UnityObjectToClipPos(v.vertex);    
     o.color = v.color;
     return o;
 }
@@ -38,10 +40,10 @@ vertex_output vertexColorAntialiased(vertex_input_normal v)
 		float objSpaceLength = length(ObjSpaceViewDir(vertex));
 		vertex.x += v.normal.x * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.x;
 		vertex.y += v.normal.y * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.y;
-		o.vertex = mul(UNITY_MATRIX_MVP, vertex);
+		o.vertex = UnityObjectToClipPos(vertex);
 	// Orthographic Camera
 	} else {
-		o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+		o.vertex = UnityObjectToClipPos(v.vertex);
 		o.vertex.x += v.normal.x * SVG_SOLID_ANTIALIASING_WIDTH.x;
 		o.vertex.y += v.normal.y * SVG_SOLID_ANTIALIASING_WIDTH.y;
 	} 
