@@ -130,6 +130,7 @@ namespace ctac
             //StartSignal is now fired instead of the START event.
             //Note how we've bound it "Once". This means that the mapping goes away as soon as the command fires.
             commandBinder.Bind<StartSignal>().To<StartCommand>().Once();
+            commandBinder.Bind<MainMenuStartSignal>().To<MainMenuStartCommand>().Once();
             commandBinder.Bind<PiecesStartSignal>().To<PiecesStartCommand>().Once();
 
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
