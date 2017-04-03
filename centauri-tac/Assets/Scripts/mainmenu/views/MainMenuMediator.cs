@@ -30,6 +30,7 @@ namespace ctac
             view.clickPlaySignal.AddListener(onPlayClicked);
             view.clickCardsSignal.AddListener(onCardsClicked);
             view.clickOptionsSignal.AddListener(onOptionsClicked);
+            view.clickAboutSignal.AddListener(onAboutClicked);
             view.clickLeaveSignal.AddListener(onLeaveClicked);
 
             needLogin.AddListener(onNeedLogin);
@@ -45,6 +46,7 @@ namespace ctac
             view.clickPlaySignal.RemoveListener(onPlayClicked);
             view.clickCardsSignal.RemoveListener(onCardsClicked);
             view.clickOptionsSignal.RemoveListener(onOptionsClicked);
+            view.clickAboutSignal.RemoveListener(onAboutClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
 
             needLogin.RemoveListener(onNeedLogin);
@@ -80,6 +82,10 @@ namespace ctac
         }
 
         private void onOptionsClicked()
+        {
+        }
+
+        private void onAboutClicked()
         {
         }
 

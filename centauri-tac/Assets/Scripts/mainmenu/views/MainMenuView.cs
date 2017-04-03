@@ -11,11 +11,13 @@ namespace ctac
         public Signal clickPlaySignal = new Signal();
         public Signal clickCardsSignal = new Signal();
         public Signal clickOptionsSignal = new Signal();
+        public Signal clickAboutSignal = new Signal();
         public Signal clickLeaveSignal = new Signal();
 
         public Button playButton;
         public Button cardsButton;
         public Button optionsButton;
+        public Button aboutButton;
         public Button leaveButton;
 
         public TextMeshProUGUI username;
@@ -24,17 +26,20 @@ namespace ctac
         public TextMeshProUGUI playText;
         public TextMeshProUGUI cardsText;
         public TextMeshProUGUI optionsText;
+        public TextMeshProUGUI aboutText;
 
         internal void init()
         {
             playButton.onClick.AddListener(() => clickPlaySignal.Dispatch());
             cardsButton.onClick.AddListener(() => clickCardsSignal.Dispatch());
             optionsButton.onClick.AddListener(() => clickOptionsSignal.Dispatch());
+            aboutButton.onClick.AddListener(() => clickAboutSignal.Dispatch());
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
 
             playText = playButton.GetComponentInChildren<TextMeshProUGUI>();
             cardsText = cardsButton.GetComponentInChildren<TextMeshProUGUI>();
             optionsText = optionsButton.GetComponentInChildren<TextMeshProUGUI>();
+            aboutText = aboutButton.GetComponentInChildren<TextMeshProUGUI>();
 
             username.text = "";
 
@@ -42,10 +47,12 @@ namespace ctac
             playButton.interactable = false;
             cardsButton.interactable = false;
             optionsButton.interactable = false;
+            aboutButton.interactable = false;
 
             playText.color = playButton.colors.disabledColor;
             cardsText.color = cardsButton.colors.disabledColor;
             optionsText.color = optionsButton.colors.disabledColor;
+            aboutText.color = aboutButton.colors.disabledColor;
         }
 
         float accum = 0;
@@ -73,6 +80,7 @@ namespace ctac
             playButton.gameObject.SetActive(active);
             cardsButton.gameObject.SetActive(active);
             optionsButton.gameObject.SetActive(active);
+            aboutButton.gameObject.SetActive(active);
             leaveButton.gameObject.SetActive(active);
         }
 
