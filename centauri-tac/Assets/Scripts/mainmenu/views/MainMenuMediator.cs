@@ -13,9 +13,11 @@ namespace ctac
 
         [Inject] public NeedLoginSignal needLogin { get; set; }
         [Inject] public AuthLoggedInSignal authLoggedIn { get; set; }
-        [Inject] public PlayerFetchedSignal playerFetched { get; set; }
+        [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
+        [Inject] public AuthMatchmakerSignal authMatchmaker { get; set; }
 
-        bool startSettled = false;
+        PlayerModel loggedInPlayer = null;
+        SocketKey loggedInKey = null;
 
         public override void OnRegister()
         {
@@ -47,6 +49,10 @@ namespace ctac
 
         private void onPlayClicked()
         {
+            if (loggedInPlayer != null && loggedInKey != null)
+            {
+                authMatchmaker.Dispatch(loggedInPlayer, loggedInKey);
+            }
         }
 
         private void onCardsClicked()
@@ -78,6 +84,8 @@ namespace ctac
 
         private void onPlayerFetched(PlayerModel player, SocketKey key)
         {
+            loggedInPlayer = player;
+            loggedInKey = key;
             view.SetUsername("Welcome " + player.email.Substring(0, player.email.IndexOf('@')));
             view.enableButtons();
         }

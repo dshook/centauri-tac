@@ -136,7 +136,7 @@ namespace ctac
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
             commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
             commandBinder.Bind<PingSignal>().To<PongCommand>();
-            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>(); //.To<AuthMatchmakerCommand>();
+            commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>(); 
 
             commandBinder.Bind<GamelistLoggedInSignal>().To<FetchGamelistCommand>();
             commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();

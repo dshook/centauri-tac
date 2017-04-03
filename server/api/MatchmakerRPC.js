@@ -33,7 +33,7 @@ export default class MatchmakerRPC
   async hello(client, params, auth)
   {
     // connection from in the mesh
-    if (!auth.sub) {
+    if (!auth || !auth.sub) {
       return;
     }
 

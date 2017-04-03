@@ -32,14 +32,15 @@ namespace ctac
         {
 //#if DEBUG
             //authenticate players from config if needed
-            if (config.players.Count > 0)
-            {
-                foreach (var player in config.players)
-                {
-                    tryLoginSignal.Dispatch(new Credentials() { username = player.username, password = player.password });
-                }
-                return;
-            }
+            //TODO: move to game scene startup
+            //if (config.players.Count > 0)
+            //{
+            //    foreach (var player in config.players)
+            //    {
+            //        tryLoginSignal.Dispatch(new Credentials() { username = player.username, password = player.password });
+            //    }
+            //    return;
+            //}
 //#endif
             //determine if we need to authenticate with the server to fetch a token
             var playerToken = PlayerPrefs.GetString(CtacConst.playerToken);
