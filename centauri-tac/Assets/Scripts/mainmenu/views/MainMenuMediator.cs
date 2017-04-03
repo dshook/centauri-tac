@@ -1,3 +1,4 @@
+using ctac.signals;
 using strange.extensions.mediation.impl;
 using UnityEngine;
 
@@ -10,6 +11,10 @@ namespace ctac
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
+        [Inject] public NeedLoginSignal needLogin { get; set; }
+        [Inject] public AuthLoggedInSignal authLoggedIn { get; set; }
+        [Inject] public PlayerFetchedSignal playerFetched { get; set; }
+
         bool startSettled = false;
 
         public override void OnRegister()
@@ -18,6 +23,9 @@ namespace ctac
             view.clickCardsSignal.AddListener(onCardsClicked);
             view.clickOptionsSignal.AddListener(onOptionsClicked);
             view.clickLeaveSignal.AddListener(onLeaveClicked);
+
+            needLogin.AddListener(onNeedLogin);
+            playerFetched.AddListener(onPlayerFetched);
 
             view.init();
         }
@@ -28,6 +36,9 @@ namespace ctac
             view.clickCardsSignal.RemoveListener(onCardsClicked);
             view.clickOptionsSignal.RemoveListener(onOptionsClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
+
+            needLogin.RemoveListener(onNeedLogin);
+            playerFetched.RemoveListener(onPlayerFetched);
         }
 
         public void Update()
@@ -53,6 +64,22 @@ namespace ctac
                 UnityEditor.EditorApplication.isPlaying = false;
             }
             Application.Quit();
+        }
+
+        private void onNeedLogin()
+        {
+            view.SetButtonsActive(false);
+        }
+
+        private void onLogin(LoginStatusModel model, SocketKey key)
+        {
+            view.SetButtonsActive(model.status);
+        }
+
+        private void onPlayerFetched(PlayerModel player, SocketKey key)
+        {
+            view.SetUsername("Welcome " + player.email.Substring(0, player.email.IndexOf('@')));
+            view.enableButtons();
         }
     }
 }
