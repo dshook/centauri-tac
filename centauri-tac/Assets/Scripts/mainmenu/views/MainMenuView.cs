@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using TMPro;
+using UnityEngine;
 
 namespace ctac
 {
@@ -18,6 +19,7 @@ namespace ctac
         public Button leaveButton;
 
         public TextMeshProUGUI username;
+        public TextMeshProUGUI queueText;
 
         public TextMeshProUGUI playText;
         public TextMeshProUGUI cardsText;
@@ -46,8 +48,24 @@ namespace ctac
             optionsText.color = optionsButton.colors.disabledColor;
         }
 
+        float accum = 0;
         void Update()
         {
+            accum += Time.deltaTime;
+
+            if (queueing)
+            {
+                if (accum > 1f)
+                {
+                    accum = 0f;
+                    //Queueing = 8 characters
+                    queueText.text += ".";
+                    if (queueText.text.Length > 18)
+                    {
+                        queueText.text = "Queueing";
+                    }
+                }
+            }
         }
 
         internal void SetButtonsActive(bool active)
@@ -72,6 +90,22 @@ namespace ctac
             playText.color = playButton.colors.normalColor;
             //cardsText.color = cardsButton.colors.normalColor;
             //optionsText.color = optionsButton.colors.normalColor;
+        }
+
+        internal bool queueing = false;
+        internal void SetQueueing(bool status)
+        {
+            queueing = status;
+            if (status)
+            {
+                queueText.gameObject.SetActive(true);
+                playText.text = "Stop";
+            }
+            else
+            {
+                queueText.gameObject.SetActive(false);
+                playText.text = "Play";
+            }
         }
     }
 }

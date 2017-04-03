@@ -14,10 +14,16 @@ namespace ctac
         [Inject] public NeedLoginSignal needLogin { get; set; }
         [Inject] public AuthLoggedInSignal authLoggedIn { get; set; }
         [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
+
         [Inject] public AuthMatchmakerSignal authMatchmaker { get; set; }
+        [Inject] public MatchmakerLoggedInSignal mmLoggedIn { get; set; }
+        [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
+        [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
+        [Inject] public MatchmakerStatusSignal mmStatus { get; set; }
 
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
+        SocketKey mmKey = null;
 
         public override void OnRegister()
         {
@@ -28,6 +34,8 @@ namespace ctac
 
             needLogin.AddListener(onNeedLogin);
             playerFetched.AddListener(onPlayerFetched);
+            mmStatus.AddListener(onMatchmakerStatus);
+            mmLoggedIn.AddListener(onMatchmakerLoggedIn);
 
             view.init();
         }
@@ -41,6 +49,8 @@ namespace ctac
 
             needLogin.RemoveListener(onNeedLogin);
             playerFetched.RemoveListener(onPlayerFetched);
+            mmStatus.RemoveListener(onMatchmakerStatus);
+            mmLoggedIn.RemoveListener(onMatchmakerLoggedIn);
         }
 
         public void Update()
@@ -49,9 +59,19 @@ namespace ctac
 
         private void onPlayClicked()
         {
-            if (loggedInPlayer != null && loggedInKey != null)
+            if (!view.queueing)
             {
-                authMatchmaker.Dispatch(loggedInPlayer, loggedInKey);
+                if (mmKey == null && loggedInPlayer != null && loggedInKey != null) {
+                    authMatchmaker.Dispatch(loggedInPlayer, loggedInKey);
+                }
+                if (mmKey != null)
+                {
+                    mmQueue.Dispatch(mmKey);
+                }
+            }
+            if (view.queueing && mmKey != null)
+            {
+                mmDequeue.Dispatch(mmKey);
             }
         }
 
@@ -88,6 +108,23 @@ namespace ctac
             loggedInKey = key;
             view.SetUsername("Welcome " + player.email.Substring(0, player.email.IndexOf('@')));
             view.enableButtons();
+        }
+
+        private void onMatchmakerLoggedIn(LoginStatusModel loginStatus, SocketKey key)
+        {
+            mmKey = key;
+            if (loginStatus.status == false)
+            {
+                debug.LogError("Could not log into matchmaker service: " + loginStatus.message);
+                return;
+            }
+            mmQueue.Dispatch(mmKey);
+        }
+
+        private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
+        {
+            mmKey = key;
+            view.SetQueueing(model.inQueue);
         }
     }
 }
