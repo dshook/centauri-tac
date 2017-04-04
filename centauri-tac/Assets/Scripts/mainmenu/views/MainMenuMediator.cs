@@ -1,6 +1,8 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ctac
 {
@@ -21,6 +23,8 @@ namespace ctac
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
         [Inject] public MatchmakerStatusSignal mmStatus { get; set; }
 
+        [Inject] public GameLoggedInSignal currentGame { get; set; }
+
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
         SocketKey mmKey = null;
@@ -39,6 +43,8 @@ namespace ctac
             mmStatus.AddListener(onMatchmakerStatus);
             mmLoggedIn.AddListener(onMatchmakerLoggedIn);
 
+            currentGame.AddListener(onCurrentGame);
+
             view.init();
         }
 
@@ -55,6 +61,8 @@ namespace ctac
             playerFetched.RemoveListener(onPlayerFetched);
             mmStatus.RemoveListener(onMatchmakerStatus);
             mmLoggedIn.RemoveListener(onMatchmakerLoggedIn);
+
+            currentGame.RemoveListener(onCurrentGame);
         }
 
         public void Update()
@@ -135,6 +143,43 @@ namespace ctac
         {
             mmKey = key;
             view.SetQueueing(model.inQueue);
+        }
+
+        private void onCurrentGame(LoginStatusModel gameLogin, SocketKey key)
+        {
+            if (gameLogin.status)
+            {
+                StartCoroutine("LoadLevel");
+            }
+            else
+            {
+                //TODO more graceful handling?
+                debug.LogError("Could not log into game " + gameLogin.message);
+            }
+        }
+
+        public IEnumerator LoadLevel()
+        {
+            view.SetButtonsActive(false);
+            AsyncOperation async = SceneManager.LoadSceneAsync("1", LoadSceneMode.Single);
+
+            while (async.progress < 0.9f)
+            {
+                var scaledPerc = 0.5f * async.progress / 0.9f;
+                view.SetLoadingProgress(scaledPerc);
+            }
+
+            async.allowSceneActivation = true;
+            float perc = 0.5f;
+            while (!async.isDone)
+            {
+                yield return null;
+                perc = Mathf.Lerp(perc, 1f, 0.05f);
+                view.SetLoadingProgress(perc);
+            }
+
+            view.SetLoadingProgress(1.0f);
+
         }
     }
 }

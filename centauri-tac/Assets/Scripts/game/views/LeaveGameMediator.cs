@@ -16,16 +16,16 @@ namespace ctac
 
         public override void OnRegister()
         {
-            view.clickSignal.AddListener(onTurnClicked);
+            view.clickSignal.AddListener(onLeaveClicked);
             view.init();
         }
 
         public override void onRemove()
         {
-            view.clickSignal.RemoveListener(onTurnClicked);
+            view.clickSignal.RemoveListener(onLeaveClicked);
         }
 
-        private void onTurnClicked()
+        private void onLeaveClicked()
         {
             leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"));
         }

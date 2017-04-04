@@ -115,6 +115,20 @@ namespace ctac
                 playText.text = "Play";
             }
         }
+
+        internal void SetLoadingProgress(float scaledPerc)
+        {
+            //disable play button and 
+            queueing = false;
+
+            queueText.gameObject.SetActive(true);
+            queueText.text = "Loading " + (100f * scaledPerc).ToString("F0");
+
+            if (scaledPerc >= 1f)
+            {
+                queueText.text = "Loading Complete";
+            }
+        }
     }
 }
 

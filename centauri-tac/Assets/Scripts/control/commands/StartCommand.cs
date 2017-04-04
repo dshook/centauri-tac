@@ -11,44 +11,35 @@ namespace ctac
     public class StartCommand : Command
     {
 
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
+        [Inject] public ConfigModel config { get; set; }
 
-        [Inject]
-        public ConfigModel config { get; set; }
+        [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
 
-        [Inject]
-        public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public PiecesModel piecesModel { get; set; }
+        [Inject] public CardsModel cards { get; set; }
+        [Inject] public DecksModel decks { get; set; }
+        [Inject] public CardDirectory cardDirectory { get; set; }
 
-        [Inject]
-        public PiecesModel piecesModel { get; set; }
-
-        [Inject]
-        public CardsModel cards { get; set; }
-
-        [Inject]
-        public DecksModel decks { get; set; }
-
-        [Inject]
-        public CardDirectory cardDirectory { get; set; }
-
-        [Inject]
-        public IMapCreatorService mapCreator { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IMapCreatorService mapCreator { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
         {
-            //override config from settings on disk if needed
-            string configContents = File.ReadAllText("./config.json");
-            if (!string.IsNullOrEmpty(configContents)) {
-                debug.Log("Reading Config File");
-                var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
-                diskConfig.CopyProperties(config);
-            }
+            //Starting up the game not from main menu
+            if (players.Me == null)
+            {
+                //override config from settings on disk if needed
+                string configContents = File.ReadAllText("./config.json");
+                if (!string.IsNullOrEmpty(configContents))
+                {
+                    debug.Log("Reading Config File");
+                    var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
+                    diskConfig.CopyProperties(config);
+                }
 
-            serverAuthSignal.Dispatch();
+                serverAuthSignal.Dispatch();
+            }
 
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
