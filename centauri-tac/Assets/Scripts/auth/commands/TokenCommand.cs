@@ -14,9 +14,6 @@ namespace ctac
         public FailedAuthSignal failedAuth { get; set; }
 
         [Inject]
-        public NeedLoginSignal needLoginSignal { get; set; }
-
-        [Inject]
         public PlayersModel playersModel { get; set; }
 
         [Inject]
@@ -39,7 +36,6 @@ namespace ctac
             {
                 debug.LogError("Failed Authenticate", key);
                 failedAuth.Dispatch();
-                needLoginSignal.Dispatch();
             }
             else
             {

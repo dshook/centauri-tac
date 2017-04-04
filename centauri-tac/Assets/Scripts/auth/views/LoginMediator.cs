@@ -54,12 +54,19 @@ namespace ctac
 
         private void onLoggedIn(LoginStatusModel status, SocketKey key)
         {
-            view.enabled = false;
-            view.gameObject.SetActive(false);
+            if (status.status)
+            {
+                view.enabled = false;
+                view.gameObject.SetActive(false);
 
-            needLoginSignal.RemoveListener(onNeedLogin);
-            failedAuth.RemoveListener(onFailAuth);
-            loggedInSignal.RemoveListener(onLoggedIn);
+                needLoginSignal.RemoveListener(onNeedLogin);
+                failedAuth.RemoveListener(onFailAuth);
+                loggedInSignal.RemoveListener(onLoggedIn);
+            }
+            else
+            {
+                view.onBadPassword();
+            }
         }
     }
 }

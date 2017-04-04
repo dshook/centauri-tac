@@ -33,6 +33,7 @@ namespace ctac
             view.clickAboutSignal.AddListener(onAboutClicked);
             view.clickLeaveSignal.AddListener(onLeaveClicked);
 
+            authLoggedIn.AddListener(onLogin);
             needLogin.AddListener(onNeedLogin);
             playerFetched.AddListener(onPlayerFetched);
             mmStatus.AddListener(onMatchmakerStatus);
@@ -49,6 +50,7 @@ namespace ctac
             view.clickAboutSignal.RemoveListener(onAboutClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
 
+            authLoggedIn.RemoveListener(onLogin);
             needLogin.RemoveListener(onNeedLogin);
             playerFetched.RemoveListener(onPlayerFetched);
             mmStatus.RemoveListener(onMatchmakerStatus);
@@ -91,10 +93,9 @@ namespace ctac
 
         private void onLeaveClicked()
         {
-            if (Application.isEditor)
-            {
-                UnityEditor.EditorApplication.isPlaying = false;
-            }
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
             Application.Quit();
         }
 
@@ -105,7 +106,10 @@ namespace ctac
 
         private void onLogin(LoginStatusModel model, SocketKey key)
         {
-            view.SetButtonsActive(model.status);
+            if (model.status)
+            {
+                view.SetButtonsActive(model.status);
+            }
         }
 
         private void onPlayerFetched(PlayerModel player, SocketKey key)
