@@ -78,7 +78,39 @@ namespace TMPro
         [SerializeField]
         private Material m_sharedMaterial;
 
-        internal Material m_fallbackMaterial;
+
+        /// <summary>
+        /// The fallback material created from the properties of the fallback source material.
+        /// </summary>
+        public Material fallbackMaterial
+        {
+            get { return m_fallbackMaterial; }
+            set
+            {
+                if (m_fallbackMaterial == value) return;
+
+                if (m_fallbackMaterial != null && m_fallbackMaterial != value)
+                    TMP_MaterialManager.ReleaseFallbackMaterial(m_fallbackMaterial);
+
+                m_fallbackMaterial = value;
+                TMP_MaterialManager.AddFallbackMaterialReference(m_fallbackMaterial);
+
+                SetSharedMaterial(m_fallbackMaterial);
+            }
+        }
+        private Material m_fallbackMaterial;
+
+
+        /// <summary>
+        /// The source material used by the fallback font
+        /// </summary>
+        public Material fallbackSourceMaterial
+        {
+            get { return m_fallbackSourceMaterial; }
+            set { m_fallbackSourceMaterial = value; }
+        }
+        private Material m_fallbackSourceMaterial;
+
 
         /// <summary>
         /// Is the text object using the default font asset material.
@@ -151,10 +183,32 @@ namespace TMPro
         }
         private Mesh m_mesh;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public BoxCollider boxCollider
+        {
+            get
+            {
+                if (m_boxCollider == null)
+                {
+                    //
+                    m_boxCollider = GetComponent<BoxCollider>();
+                    if (m_boxCollider == null)
+                    {
+                        m_boxCollider = gameObject.AddComponent<BoxCollider>();
+                        gameObject.AddComponent<Rigidbody>();
+                    }
+                }
+
+                return m_boxCollider;
+            }
+        }
+        [SerializeField]
+        private BoxCollider m_boxCollider;
 
         [SerializeField]
         private TextMeshPro m_TextComponent;
-
 
         [NonSerialized]
         private bool m_isRegisteredForEvents;
@@ -167,7 +221,7 @@ namespace TMPro
             {
 #if UNITY_EDITOR
                 TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Add(ON_MATERIAL_PROPERTY_CHANGED);
-                //TMPro_EventManager.FONT_PROPERTY_EVENT.Add(ON_FONT_PROPERTY_CHANGED);
+                TMPro_EventManager.FONT_PROPERTY_EVENT.Add(ON_FONT_PROPERTY_CHANGED);
                 //TMPro_EventManager.TEXTMESHPRO_PROPERTY_EVENT.Add(ON_TEXTMESHPRO_PROPERTY_CHANGED);
                 TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT.Add(ON_DRAG_AND_DROP_MATERIAL);
                 //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT.Add(ON_TEXT_STYLE_CHANGED);
@@ -183,7 +237,7 @@ namespace TMPro
 
             // Update _ClipRect values
             if (m_sharedMaterial != null)
-                m_sharedMaterial.SetVector(ShaderUtilities.ID_ClipRect, new Vector4(-10000, -10000, 10000, 10000));
+                m_sharedMaterial.SetVector(ShaderUtilities.ID_ClipRect, new Vector4(-32767, -32767, 32767, 32767));
         }
 
 
@@ -213,11 +267,10 @@ namespace TMPro
                 m_fallbackMaterial = null;
             }
 
-
 #if UNITY_EDITOR
             // Unregister the event this object was listening to
             TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Remove(ON_MATERIAL_PROPERTY_CHANGED);
-            //TMPro_EventManager.FONT_PROPERTY_EVENT.Remove(ON_FONT_PROPERTY_CHANGED);
+            TMPro_EventManager.FONT_PROPERTY_EVENT.Remove(ON_FONT_PROPERTY_CHANGED);
             //TMPro_EventManager.TEXTMESHPRO_PROPERTY_EVENT.Remove(ON_TEXTMESHPRO_PROPERTY_CHANGED);
             TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT.Remove(ON_DRAG_AND_DROP_MATERIAL);
             //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT.Remove(ON_TEXT_STYLE_CHANGED);
@@ -234,9 +287,19 @@ namespace TMPro
         void ON_MATERIAL_PROPERTY_CHANGED(bool isChanged, Material mat)
         {
             //Debug.Log("*** ON_MATERIAL_PROPERTY_CHANGED ***");
+            int targetMaterialID = mat.GetInstanceID();
+            int sharedMaterialID = m_sharedMaterial.GetInstanceID();
+            int fallbackSourceMaterialID = m_fallbackSourceMaterial == null ? 0 : m_fallbackSourceMaterial.GetInstanceID();
 
             // Filter events and return if the affected material is not this object's material.
-            if (mat.GetInstanceID() != m_sharedMaterial.GetInstanceID()) return;
+            if (targetMaterialID != sharedMaterialID)
+            {
+                // Check if event applies to the source fallback material
+                if (m_fallbackMaterial != null && fallbackSourceMaterialID == targetMaterialID)
+                    TMP_MaterialManager.CopyMaterialPresetProperties(mat, m_fallbackMaterial);
+                else
+                    return;
+            }
 
             if (m_TextComponent == null) m_TextComponent = GetComponentInParent<TextMeshPro>();
 
@@ -275,10 +338,24 @@ namespace TMPro
             if (m_TextComponent != null)
             {
                 m_TextComponent.havePropertiesChanged = true;
-                m_TextComponent.SetVerticesDirty();
+                //m_TextComponent.SetVerticesDirty();
             }
 
             //}
+        }
+
+        // Event received when font asset properties are changed in Font Inspector
+        void ON_FONT_PROPERTY_CHANGED(bool isChanged, TMP_FontAsset font)
+        {
+            if (font.GetInstanceID() == m_fontAsset.GetInstanceID())
+            {
+                // Copy Normal and Bold Weight
+                if (m_fallbackMaterial != null)
+                {
+                    m_fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightNormal, m_fontAsset.normalStyle);
+                    m_fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightBold, m_fontAsset.boldStyle);
+                }
+            }
         }
 
         /// <summary>
@@ -394,7 +471,8 @@ namespace TMPro
             SetMaterialDirty();
 
 #if UNITY_EDITOR
-            gameObject.name = "TMP SubMesh [" + m_sharedMaterial.name + "]";
+            if (m_sharedMaterial != null)
+                gameObject.name = "TMP SubMesh [" + m_sharedMaterial.name + "]";
 #endif
         }
 
@@ -469,9 +547,36 @@ namespace TMPro
             m_renderer.sharedMaterial = m_sharedMaterial;
 
 #if UNITY_EDITOR
-            if (gameObject.name != "TMP SubMesh [" + m_sharedMaterial.name + "]")
+            if (m_sharedMaterial != null && gameObject.name != "TMP SubMesh [" + m_sharedMaterial.name + "]")
                 gameObject.name = "TMP SubMesh [" + m_sharedMaterial.name + "]";
 #endif
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void UpdateColliders(int vertexCount)
+        {
+            if (this.boxCollider == null) return;
+
+            Vector2 bl = TMP_Math.MAX_16BIT;
+            Vector2 tr = TMP_Math.MIN_16BIT;
+            // Compute the bounds of the sub text object mesh (excluding the transform position).
+            for (int i = 0; i < vertexCount; i++)
+            {
+                bl.x = Mathf.Min(bl.x, m_mesh.vertices[i].x);
+                bl.y = Mathf.Min(bl.y, m_mesh.vertices[i].y);
+
+                tr.x = Mathf.Max(tr.x, m_mesh.vertices[i].x);
+                tr.y = Mathf.Max(tr.y, m_mesh.vertices[i].y);
+            }
+
+            Vector3 center = (bl + tr) / 2;
+            Vector3 size = tr - bl;
+            size.z = .1f;
+            this.boxCollider.center = center;
+            this.boxCollider.size = size;
+
         }
     }
 }

@@ -26,241 +26,48 @@ namespace TMPro
 
 
     /// <summary>
-    /// Structure which contains the vertex attributes (geometry) of the text object.
+    /// TMP custom data type to represent 32 bit characters.
     /// </summary>
-    public struct TMP_MeshInfo
-    {
-        private static readonly Color32 s_DefaultColor = new Color32(byte.MaxValue, byte.MaxValue, byte.MaxValue, byte.MaxValue);
-        private static readonly Vector3 s_DefaultNormal = new Vector3(0.0f, 0.0f, -1f);
-        private static readonly Vector4 s_DefaultTangent = new Vector4(-1f, 0.0f, 0.0f, 1f);
+    //public struct TMP_Char
+    //{
+    //    private int m_value;
 
-        public Mesh mesh;
-        public int vertexCount;
+    //    private TMP_Char(int value)
+    //    {
+    //        this.m_value = value;
+    //    }
 
-        public Vector3[] vertices;
-        public Vector3[] normals;
-        public Vector4[] tangents;
+    //    private TMP_Char(TMP_Char value)
+    //    {
+    //        this.m_value = (int)value;
+    //    }
 
-        public Vector2[] uvs0;
-        public Vector2[] uvs2;
-        //public Vector2[] uvs4;
-        public Color32[] colors32;
-        public int[] triangles;
+    //    public static implicit operator TMP_Char(int value)
+    //    {
+    //        return new TMP_Char(value);
+    //    }
 
+    //    public static implicit operator TMP_Char(char c)
+    //    {
+    //        return new TMP_Char(c);
+    //    }
 
-        /// <summary>
-        /// Function to pre-allocate vertex attributes for a mesh of size X.
-        /// </summary>
-        /// <param name="mesh"></param>
-        /// <param name="size"></param>
-        public TMP_MeshInfo (Mesh mesh, int size)
-        {
-            // Reference to the TMP Text Component.
-            //this.textComponent = null;
-            
-            // Clear existing mesh data
-            if (mesh == null)
-                mesh = new Mesh();
-            else
-                mesh.Clear();
+    //    public static explicit operator int(TMP_Char value)
+    //    {
+    //        return value.m_value;
+    //    }
 
-            this.mesh = mesh;
-
-            int sizeX4 = size * 4;
-            int sizeX6 = size * 6;
-
-            this.vertexCount = 0;
-
-            this.vertices = new Vector3[sizeX4];
-            this.uvs0 = new Vector2[sizeX4];
-            this.uvs2 = new Vector2[sizeX4];
-            //this.uvs4 = new Vector2[sizeX4]; // SDF scale data
-            this.colors32 = new Color32[sizeX4];
-
-            this.normals = new Vector3[sizeX4];
-            this.tangents = new Vector4[sizeX4];
-
-            this.triangles = new int[sizeX6];
-
-            int index_X6 = 0;
-            int index_X4 = 0;
-            while (index_X4 / 4 < size)
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    this.vertices[index_X4 + i] = Vector3.zero;
-                    this.uvs0[index_X4 + i] = Vector2.zero;
-                    this.uvs2[index_X4 + i] = Vector2.zero;
-                    //this.uvs4[index_X4 + i] = Vector2.zero;
-                    this.colors32[index_X4 + i] = s_DefaultColor;
-                    this.normals[index_X4 + i] = s_DefaultNormal;
-                    this.tangents[index_X4 + i] = s_DefaultTangent;
-                }
-
-                this.triangles[index_X6 + 0] = index_X4 + 0;
-                this.triangles[index_X6 + 1] = index_X4 + 1;
-                this.triangles[index_X6 + 2] = index_X4 + 2;
-                this.triangles[index_X6 + 3] = index_X4 + 2;
-                this.triangles[index_X6 + 4] = index_X4 + 3;
-                this.triangles[index_X6 + 5] = index_X4 + 0;
-
-                index_X4 += 4;
-                index_X6 += 6;
-            }
-
-            // Pre-assign base vertex attributes.
-            this.mesh.vertices = this.vertices;
-            this.mesh.normals = this.normals;
-            this.mesh.tangents = this.tangents;
-            this.mesh.triangles = this.triangles;
-            this.mesh.bounds = new Bounds(Vector3.zero, new Vector3(3840, 2160, 0));
-        } 
-
-
-        /// <summary>
-        /// Function to resized the content of MeshData and re-assign normals, tangents and triangles.
-        /// </summary>
-        /// <param name="meshData"></param>
-        /// <param name="size"></param>
-        public void ResizeMeshInfo(int size)
-        {
-            int size_X4 = size * 4;
-            int size_X6 = size * 6;
-
-            int previousSize = this.vertices.Length / 4;
-
-            Array.Resize(ref this.vertices, size_X4);
-            Array.Resize(ref this.normals, size_X4);
-            Array.Resize(ref this.tangents, size_X4);
-
-            Array.Resize(ref this.uvs0, size_X4);
-            Array.Resize(ref this.uvs2, size_X4);
-            //Array.Resize(ref this.uvs4, size_X4);
-
-            Array.Resize(ref this.colors32, size_X4);
-
-            Array.Resize(ref this.triangles, size_X6);
-
-
-            // Re-assign Normals, Tangents and Triangles
-            if (size <= previousSize)
-            {
-                this.mesh.triangles = this.triangles;
-                this.mesh.vertices = this.vertices;
-                this.mesh.normals = this.normals;
-                this.mesh.tangents = this.tangents;
-
-                return;
-            }
-
-            for (int i = previousSize; i < size; i++)
-            {
-                int index_X4 = i * 4;
-                int index_X6 = i * 6;
-
-                this.normals[0 + index_X4] = s_DefaultNormal;
-                this.normals[1 + index_X4] = s_DefaultNormal;
-                this.normals[2 + index_X4] = s_DefaultNormal;
-                this.normals[3 + index_X4] = s_DefaultNormal;
-
-                this.tangents[0 + index_X4] = s_DefaultTangent;
-                this.tangents[1 + index_X4] = s_DefaultTangent;
-                this.tangents[2 + index_X4] = s_DefaultTangent;
-                this.tangents[3 + index_X4] = s_DefaultTangent;
-
-                // Setup Triangles
-                this.triangles[0 + index_X6] = 0 + index_X4;
-                this.triangles[1 + index_X6] = 1 + index_X4;
-                this.triangles[2 + index_X6] = 2 + index_X4;
-                this.triangles[3 + index_X6] = 2 + index_X4;
-                this.triangles[4 + index_X6] = 3 + index_X4;
-                this.triangles[5 + index_X6] = 0 + index_X4;
-            }
-
-            this.mesh.vertices = this.vertices;
-            this.mesh.normals = this.normals;
-            this.mesh.tangents = this.tangents;
-            this.mesh.triangles = this.triangles;
-        }
-
-
-        /// <summary>
-        /// Function to clear the vertices while preserving the Triangles, Normals and Tangents.
-        /// </summary>
-        public void Clear()
-        {
-            if (this.vertices == null) return;
-
-            Array.Clear(this.vertices, 0, this.vertices.Length);
-            this.vertexCount = 0;
-
-            if (this.mesh != null)
-                this.mesh.vertices = this.vertices;
-        }
-
-
-        /// <summary>
-        /// Function to clear the vertices while preserving the Triangles, Normals and Tangents.
-        /// </summary>
-        public void Clear(bool uploadChanges)
-        {
-            if (this.vertices == null) return;
-
-            Array.Clear(this.vertices, 0, this.vertices.Length);
-            this.vertexCount = 0;
-
-            if (uploadChanges && this.mesh != null)
-                this.mesh.vertices = this.vertices;
-        }
-
-
-        /// <summary>
-        /// Function to clear the vertices while preserving the Triangles, Normals and Tangents.
-        /// </summary>
-        public void ClearUnusedVertices()
-        {
-            int length = vertices.Length - vertexCount;
-
-            if (length > 0)
-                Array.Clear(vertices, vertexCount, length);
-        }
-
-
-        /// <summary>
-        /// Function used to mark unused vertices as degenerate.
-        /// </summary>
-        /// <param name="materials"></param>
-        public void ClearUnusedVertices(int startIndex)
-        {
-            int length = this.vertices.Length - startIndex;
-
-            if (length > 0)
-                Array.Clear(this.vertices, startIndex, length);
-        }
-
-
-        /// <summary>
-        /// Function used to mark unused vertices as degenerate an upload resulting data to the mesh.
-        /// </summary>
-        /// <param name="startIndex"></param>
-        public void ClearUnusedVertices(int startIndex, bool updateMesh)
-        {
-            int length = this.vertices.Length - startIndex;
-
-            if (length > 0)
-                Array.Clear(this.vertices, startIndex, length);
-
-            if (updateMesh && mesh != null)
-                this.mesh.vertices = this.vertices;
-        }
-
-    }
-
+    //    public override string ToString()
+    //    {
+    //        return m_value.ToString();
+    //    }
+    //}
 
 
     /// <summary>
     /// Structure containing information about individual text elements (character or sprites).
     /// </summary>
+    //[Serializable]
     public struct TMP_CharacterInfo
     {   
         public char character; // Should be changed to an int to handle UTF 32
@@ -305,6 +112,8 @@ namespace TMPro
         public float aspectRatio;
         public float scale;
         public Color32 color;
+        public Color32 underlineColor;
+        public Color32 highlightColor;
         public FontStyles style;
         public bool isVisible;
         //public bool isIgnoringAlignment;
@@ -373,6 +182,7 @@ namespace TMPro
         public float ascender;
         public float baseLine;
         public float descender;
+        // public float extents;
     }
 
 
@@ -428,7 +238,7 @@ namespace TMPro
             if (textComponent == null)
                 return string.Empty;
 
-            return new string(linkID);
+            return new string(linkID, 0, linkIdLength);
             //return textComponent.text.Substring(linkIdFirstCharacterIndex, linkIdLength);
 
         }
@@ -473,35 +283,6 @@ namespace TMPro
         public int spriteIndex; // Index of the sprite in the sprite atlas.
         public int characterIndex; // The characterInfo index which holds the key information about this sprite.
         public int vertexIndex;
-    }
-
-
-    /// <summary>
-    /// Structure which contains information about the individual lines of text.
-    /// </summary>
-    public struct TMP_LineInfo
-    {
-        public int characterCount;
-        public int visibleCharacterCount;
-        public int spaceCount;
-        public int wordCount;
-        public int firstCharacterIndex;
-        public int firstVisibleCharacterIndex;
-        public int lastCharacterIndex;
-        public int lastVisibleCharacterIndex;
-        public float length;
-        public float lineHeight;
-        public float ascender;
-        public float baseline;
-        public float descender;
-        public float maxAdvance;
-        public float width;
-        public float marginLeft;
-        public float marginRight;
-        public float maxScale;
-
-        public TextAlignmentOptions alignment;
-        public Extents lineExtents;
     }
 
 
@@ -566,6 +347,7 @@ namespace TMPro
         public int lastVisibleCharIndex;
         public int lineNumber;
 
+        public float maxCapHeight;
         public float maxAscender;
         public float maxDescender;
         public float maxLineAscender;
@@ -592,12 +374,21 @@ namespace TMPro
         public TMP_LineInfo lineInfo;
         
         public Color32 vertexColor;
+        public Color32 underlineColor;
+        public Color32 highlightColor;
+        public TMP_BasicXmlTagStack basicStyleStack;
         public TMP_XmlTagStack<Color32> colorStack;
+        public TMP_XmlTagStack<Color32> underlineColorStack;
+        public TMP_XmlTagStack<Color32> highlightColorStack;
         public TMP_XmlTagStack<float> sizeStack;
+        public TMP_XmlTagStack<float> indentStack;
         public TMP_XmlTagStack<int> fontWeightStack;
         public TMP_XmlTagStack<int> styleStack;
         public TMP_XmlTagStack<int> actionStack;
         public TMP_XmlTagStack<MaterialReference> materialReferenceStack;
+        public TMP_XmlTagStack<TextAlignmentOptions> lineJustificationStack;
+        //public TMP_XmlTagStack<int> spriteAnimationStack;
+        public int spriteAnimationID;
 
         public TMP_FontAsset currentFontAsset;
         public TMP_SpriteAsset currentSpriteAsset;
@@ -626,7 +417,6 @@ namespace TMPro
         public int nameHashCode;
         public TagType valueType;
         public int valueStartIndex;
-        public int valueDecimalIndex;
         public int valueLength;
         public int valueHashCode;
     }

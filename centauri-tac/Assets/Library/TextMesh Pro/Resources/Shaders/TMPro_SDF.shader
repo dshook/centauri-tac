@@ -1,12 +1,6 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-// Copyright (C) 2014 - 2016 Stephan Schaem - All Rights Reserved
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-Shader "TMPro/Distance Field" {
+Shader "TextMeshPro/Distance Field" {
 
 Properties {
 	_FaceTex			("Face Texture", 2D) = "white" {}
@@ -39,10 +33,10 @@ Properties {
 	_BumpOutline		("Bump Outline", Range(0,1)) = 0
 	_BumpFace			("Bump Face", Range(0,1)) = 0
 
-	_ReflectFaceColor		("Reflection Color", Color) = (0,0,0,1)
-	_ReflectOutlineColor	("Reflection Color", Color) = (0,0,0,1)
-	_Cube 					("Reflection Cubemap", Cube) = "black" { /* TexGen CubeReflect */ }
-	_EnvMatrixRotation		("Texture Rotation", vector) = (0, 0, 0, 0)
+	_ReflectFaceColor	("Reflection Color", Color) = (0,0,0,1)
+	_ReflectOutlineColor("Reflection Color", Color) = (0,0,0,1)
+	_Cube 				("Reflection Cubemap", Cube) = "black" { /* TexGen CubeReflect */ }
+	_EnvMatrixRotation	("Texture Rotation", vector) = (0, 0, 0, 0)
 		
 
 	_UnderlayColor		("Border Color", Color) = (0,0,0, 0.5)
@@ -76,25 +70,24 @@ Properties {
 	_VertexOffsetX		("Vertex OffsetX", float) = 0
 	_VertexOffsetY		("Vertex OffsetY", float) = 0
 	
-	//_MaskID				("Mask ID", float) = 0
-	_MaskCoord			("Mask Coordinates", vector) = (0, 0, 10000, 10000)
-	_ClipRect			("Clip Rect", vector) = (-10000, -10000, 10000, 10000)
+	_MaskCoord			("Mask Coordinates", vector) = (0, 0, 32767, 32767)
+	_ClipRect			("Clip Rect", vector) = (-32767, -32767, 32767, 32767)
 	_MaskSoftnessX		("Mask SoftnessX", float) = 0
 	_MaskSoftnessY		("Mask SoftnessY", float) = 0
 
-	_StencilComp ("Stencil Comparison", Float) = 8
-	_Stencil ("Stencil ID", Float) = 0
-	_StencilOp ("Stencil Operation", Float) = 0
-	_StencilWriteMask ("Stencil Write Mask", Float) = 255
-	_StencilReadMask ("Stencil Read Mask", Float) = 255
+	_StencilComp		("Stencil Comparison", Float) = 8
+	_Stencil			("Stencil ID", Float) = 0
+	_StencilOp			("Stencil Operation", Float) = 0
+	_StencilWriteMask	("Stencil Write Mask", Float) = 255
+	_StencilReadMask	("Stencil Read Mask", Float) = 255
 
-	_ColorMask ("Color Mask", Float) = 15	
+	_ColorMask			("Color Mask", Float) = 15
 }
 
 SubShader {
 
 	Tags
-	{ 
+	{
 		"Queue"="Transparent"
 		"IgnoreProjector"="True"
 		"RenderType"="Transparent"
@@ -113,7 +106,7 @@ SubShader {
 	ZWrite Off
 	Lighting Off
 	Fog { Mode Off }
-	Ztest [unity_GUIZTestMode]
+	ZTest [unity_GUIZTestMode]
 	Blend One OneMinusSrcAlpha
 	ColorMask [_ColorMask]
 
@@ -122,11 +115,10 @@ SubShader {
 		#pragma target 3.0
 		#pragma vertex VertShader
 		#pragma fragment PixShader
-		#pragma shader_feature __ OUTLINE_ON
 		#pragma shader_feature __ BEVEL_ON
 		#pragma shader_feature __ UNDERLAY_ON UNDERLAY_INNER
 		#pragma shader_feature __ GLOW_ON
-		#pragma shader_feature __ MASK_HARD MASK_SOFT
+		#pragma shader_feature __ MASK_OFF
 
 
 		#include "UnityCG.cginc"
@@ -134,35 +126,39 @@ SubShader {
 		#include "TMPro_Properties.cginc"
 		#include "TMPro.cginc"
 
-
 		struct vertex_t {
-			float4	vertex			: POSITION;
+			float4	position		: POSITION;
 			float3	normal			: NORMAL;
 			fixed4	color			: COLOR;
 			float2	texcoord0		: TEXCOORD0;
 			float2	texcoord1		: TEXCOORD1;
 		};
 
+
 		struct pixel_t {
-			float4	vertex			: SV_POSITION;
-			fixed4	faceColor		: COLOR;
-			fixed4	outlineColor	: COLOR1;
-			fixed   vertexAlpha		: TEXCOORD0;
-			float4	texcoords		: TEXCOORD1;		// Atlas & Texture
-			float4	param			: TEXCOORD2;		// alphaClip, scale, bias, weight
-			float4	mask			: TEXCOORD3;		// Position in object space(xy), pixel Size(zw)
-			float3	viewDir			: TEXCOORD4;
+			float4	position		: SV_POSITION;
+			fixed4	color			: COLOR;
+			float2	atlas			: TEXCOORD0;		// Atlas
+			float4	param			: TEXCOORD1;		// alphaClip, scale, bias, weight
+			float4	mask			: TEXCOORD2;		// Position in object space(xy), pixel Size(zw)
+			float3	viewDir			: TEXCOORD3;
+			
 		#if (UNDERLAY_ON || UNDERLAY_INNER)
-			float4	texcoord2		: TEXCOORD5;		// u,v, scale, bias
-			fixed4	underlayColor	: TEXCOORD6;
+			float4	texcoord2		: TEXCOORD4;		// u,v, scale, bias
+			fixed4	underlayColor	: COLOR1;
 		#endif
+			float4 textures			: TEXCOORD5;
 		};
+
+		// Used by Unity internally to handle Texture Tiling and Offset.
+		float4 _FaceTex_ST;
+		float4 _OutlineTex_ST;
 
 		pixel_t VertShader(vertex_t input)
 		{
 			float bold = step(input.texcoord1.y, 0);
 
-			float4 vert = input.vertex;
+			float4 vert = input.position;
 			vert.x += _VertexOffsetX;
 			vert.y += _VertexOffsetY;
 			float4 vPosition = UnityObjectToClipPos(vert);
@@ -171,63 +167,64 @@ SubShader {
 			pixelSize /= float2(_ScaleX, _ScaleY) * abs(mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy));
 			float scale = rsqrt(dot(pixelSize, pixelSize));
 			scale *= abs(input.texcoord1.y) * _GradientScale * 1.5;
-			if(UNITY_MATRIX_P[3][3] == 0) scale = lerp(scale*(1 - _PerspectiveFilter), scale, abs(dot(UnityObjectToWorldNormal(input.normal.xyz), normalize(WorldSpaceViewDir(vert)))));
+			if (UNITY_MATRIX_P[3][3] == 0) scale = lerp(abs(scale) * (1 - _PerspectiveFilter), scale, abs(dot(UnityObjectToWorldNormal(input.normal.xyz), normalize(WorldSpaceViewDir(vert)))));
 
-			float weight = (lerp(_WeightNormal, _WeightBold, bold)) / _GradientScale;
-			weight += _FaceDilate * _ScaleRatioA * 0.5;
+			float weight = lerp(_WeightNormal, _WeightBold, bold) / 4.0;
+			weight = (weight + _FaceDilate) * _ScaleRatioA * 0.5;
 
 			float bias =(.5 - weight) + (.5 / scale);
 
 			float alphaClip = (1.0 - _OutlineWidth*_ScaleRatioA - _OutlineSoftness*_ScaleRatioA);
+		
 		#if GLOW_ON
 			alphaClip = min(alphaClip, 1.0 - _GlowOffset * _ScaleRatioB - _GlowOuter * _ScaleRatioB);
 		#endif
 
 			alphaClip = alphaClip / 2.0 - ( .5 / scale) - weight;
 
-			float opacity = input.color.a;
-			float4 faceColor =_FaceColor;
-			faceColor.rgb *= input.color.rgb;
-			faceColor.a *= opacity;
-
-			float4 outlineColor =_OutlineColor;
-			outlineColor.a *= opacity;
-
 		#if (UNDERLAY_ON || UNDERLAY_INNER)
 			float4 underlayColor = _UnderlayColor;
-			underlayColor.a *= opacity;
 			underlayColor.rgb *= underlayColor.a;
 
 			float bScale = scale;
-			bScale /= 1 + ((_UnderlaySoftness*_ScaleRatioC)*bScale);
-			float bBias = (.5-weight)*bScale - .5 - ((_UnderlayDilate*_ScaleRatioC)*.5*bScale);
+			bScale /= 1 + ((_UnderlaySoftness*_ScaleRatioC) * bScale);
+			float bBias = (0.5 - weight) * bScale - 0.5 - ((_UnderlayDilate * _ScaleRatioC) * 0.5 * bScale);
 
 			float x = -(_UnderlayOffsetX * _ScaleRatioC) * _GradientScale / _TextureWidth;
 			float y = -(_UnderlayOffsetY * _ScaleRatioC) * _GradientScale / _TextureHeight;
 			float2 bOffset = float2(x, y);
 		#endif
 
+			// Generate UV for the Masking Texture
+			float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
+			float2 maskUV = (vert.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
+
+			// Support for texture tiling and offset
+			float2 textureUV = UnpackUV(input.texcoord1.x);
+			float2 faceUV = TRANSFORM_TEX(textureUV, _FaceTex);
+			float2 outlineUV = TRANSFORM_TEX(textureUV, _OutlineTex);
+
 			pixel_t output = {
 				vPosition,
-				faceColor,
-				outlineColor,
-				input.color.a,
-				float4(input.texcoord0, UnpackUV(input.texcoord1.x)),
+				input.color,
+				input.texcoord0,
 				float4(alphaClip, scale, bias, weight),
-				float4(vert.xy, 0.5 / pixelSize.xy),
+				half4(vert.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + pixelSize.xy)),
 				mul((float3x3)_EnvMatrix, _WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, vert).xyz),
 			#if (UNDERLAY_ON || UNDERLAY_INNER)
 				float4(input.texcoord0 + bOffset, bScale, bBias),
 				underlayColor,
 			#endif
+				float4(faceUV, outlineUV),
 			};
 
 			return output;
 		}
 
+
 		fixed4 PixShader(pixel_t input) : SV_Target
 		{
-			float c = tex2D(_MainTex, input.texcoords.xy).a;
+			float c = tex2D(_MainTex, input.atlas).a;
 		
 		#ifndef UNDERLAY_ON
 			clip(c - input.param.x);
@@ -238,22 +235,24 @@ SubShader {
 			float	weight	= input.param.w;
 			float	sd = (bias - c) * scale;
 
-			float outline = (_OutlineWidth*_ScaleRatioA) * scale;
-			float softness = (_OutlineSoftness*_ScaleRatioA) * scale;
+			float outline = (_OutlineWidth * _ScaleRatioA) * scale;
+			float softness = (_OutlineSoftness * _ScaleRatioA) * scale;
 
-			half4 faceColor = input.faceColor;
-			half4 outlineColor = input.outlineColor;
+			half4 faceColor = _FaceColor;
+			half4 outlineColor = _OutlineColor;
+
+			faceColor.rgb *= input.color.rgb;
 			
-			faceColor *= tex2D(_FaceTex, float2(input.texcoords.z + _FaceUVSpeedX * _Time.y, input.texcoords.w + _FaceUVSpeedY * _Time.y));
-			outlineColor *= tex2D(_OutlineTex, float2(input.texcoords.z + _OutlineUVSpeedX * _Time.y, input.texcoords.w + _OutlineUVSpeedY * _Time.y));
+			faceColor *= tex2D(_FaceTex, input.textures.xy + float2(_FaceUVSpeedX, _FaceUVSpeedY) * _Time.y);
+			outlineColor *= tex2D(_OutlineTex, input.textures.zw + float2(_OutlineUVSpeedX, _OutlineUVSpeedY) * _Time.y);
 
 			faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
 
 		#if BEVEL_ON
-			float3 dxy = float3(.5/_TextureWidth, .5/_TextureHeight, 0);
-			float3 n = GetSurfaceNormal(input.texcoords.xy, weight, dxy);
+			float3 dxy = float3(0.5 / _TextureWidth, 0.5 / _TextureHeight, 0);
+			float3 n = GetSurfaceNormal(input.atlas, weight, dxy);
 
-			float3 bump = UnpackNormal(tex2D(_BumpMap, input.texcoords.zw)).xyz;
+			float3 bump = UnpackNormal(tex2D(_BumpMap, input.textures.xy + float2(_FaceUVSpeedX, _FaceUVSpeedY) * _Time.y)).xyz;
 			bump *= lerp(_BumpFace, _BumpOutline, saturate(sd + outline * 0.5));
 			n = normalize(n- bump);
 
@@ -266,12 +265,11 @@ SubShader {
 
 			fixed4 reflcol = texCUBE(_Cube, reflect(input.viewDir, -n));
 			faceColor.rgb += reflcol.rgb * lerp(_ReflectFaceColor.rgb, _ReflectOutlineColor.rgb, saturate(sd + outline * 0.5)) * faceColor.a;
-			//faceColor.rgb += reflcol.rgb * _ReflectFaceColor.rgb * faceColor.a;
 		#endif
 
 		#if UNDERLAY_ON
 			float d = tex2D(_MainTex, input.texcoord2.xy).a * input.texcoord2.z;
-			faceColor += input.underlayColor * saturate(d - input.texcoord2.w) * saturate(sd - (outline * 0.5)) * (1 - faceColor.a);
+			faceColor += input.underlayColor * saturate(d - input.texcoord2.w) * (1 - faceColor.a);
 		#endif
 
 		#if UNDERLAY_INNER
@@ -281,51 +279,28 @@ SubShader {
 
 		#if GLOW_ON
 			float4 glowColor = GetGlowColor(sd, scale);
-			faceColor.rgb += glowColor.rgb * glowColor.a * input.vertexAlpha;
-			//faceColor.a *= glowColor.a; // Required for Alpha when using Render Textures
+			faceColor.rgb += glowColor.rgb * glowColor.a;
 		#endif
 
-
-		// Support for 2D RectMask
+		// #if !MASK_OFF
 		#if UNITY_VERSION < 530
+			// Unity 5.2 2D Rect Mask Support
 			if (_UseClipRect)
 				faceColor *= UnityGet2DClipping(input.mask.xy, _ClipRect);
 		#else
-			faceColor *= UnityGet2DClipping(input.mask.xy, _ClipRect);
-		#endif
-
-
-		/*if (_UseClipRect)
-		{
-			half2 clipSize = (_ClipRect.zw - _ClipRect.xy) * 0.5;
-			half2 clipCenter = _ClipRect.xy + clipSize;
-
-			half2 s = half2(_MaskSoftnessX, _MaskSoftnessY) * input.mask.zw;
-			half2 m = 1 - saturate(((abs(input.mask.xy - clipCenter) - clipSize) * input.mask.zw + s) / (1 + s));
-			m *= m;
-			faceColor *= m.x * m.y;
-		}*/
-
-
-		#if MASK_HARD
-			half2 m = 1 - saturate((abs(input.mask.xy) - _MaskCoord.zw) * input.mask.zw);
+			// Alternative implementation to UnityGet2DClipping with support for softness.
+			half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * input.mask.zw);
 			faceColor *= m.x * m.y;
 		#endif
+		//#endif
 
-		#if MASK_SOFT
-			half2 s = half2(_MaskSoftnessX, _MaskSoftnessY) * input.mask.zw;
-			half2 m = 1 - saturate(((abs(input.mask.xy) - _MaskCoord.zw) * input.mask.zw + s) / (1 + s));
-			m *= m;
-			faceColor *= m.x * m.y;
-		#endif
-
-			return faceColor;
+  		return faceColor * input.color.a;
 		}
+
 		ENDCG
 	}
 }
 
-
-Fallback "TMPro/Mobile/Distance Field"
-CustomEditor "TMPro_SDFMaterialEditor"
+Fallback "TextMeshPro/Mobile/Distance Field"
+CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
 }

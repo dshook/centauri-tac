@@ -1,10 +1,4 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Copyright (C) 2014 - 2016 Stephan Schaem - All Rights Reserved
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
-Shader "TMPro/Bitmap" {
+Shader "TextMeshPro/Bitmap" {
 
 Properties {
 	_MainTex		("Font Atlas", 2D) = "white" {}
@@ -16,7 +10,7 @@ Properties {
 	_MaskSoftnessX	("Mask SoftnessX", float) = 0
 	_MaskSoftnessY	("Mask SoftnessY", float) = 0
 
-	_ClipRect("Clip Rect", vector) = (-10000, -10000, 10000, 10000)
+	_ClipRect("Clip Rect", vector) = (-32767, -32767, 32767, 32767)
 
 	_StencilComp("Stencil Comparison", Float) = 8
 	_Stencil("Stencil ID", Float) = 0
@@ -43,7 +37,7 @@ SubShader{
 	
 	Lighting Off
 	Cull [_CullMode]
-	Ztest [unity_GUIZTestMode]
+	ZTest [unity_GUIZTestMode]
 	ZWrite Off
 	Fog { Mode Off }
 	Blend SrcAlpha OneMinusSrcAlpha
@@ -53,15 +47,13 @@ SubShader{
 		CGPROGRAM
 		#pragma vertex vert
 		#pragma fragment frag
-		#pragma fragmentoption ARB_precision_hint_fastest
-		//#pragma shader_feature __ MASK_HARD MASK_SOFT
 
 		#include "UnityCG.cginc"
-		#include "UnityUI.cginc"
 
-#if UNITY_VERSION < 530
+
+	#if UNITY_VERSION < 530
 		bool _UseClipRect;
-#endif
+	#endif
 
 		struct appdata_t {
 			float4 vertex		: POSITION;
@@ -80,6 +72,7 @@ SubShader{
 
 		uniform	sampler2D 	_MainTex;
 		uniform	sampler2D 	_FaceTex;
+		uniform float4		_FaceTex_ST;
 		uniform	fixed4		_FaceColor;
 
 		uniform float		_VertexOffsetX;
@@ -88,13 +81,23 @@ SubShader{
 		uniform float		_MaskSoftnessX;
 		uniform float		_MaskSoftnessY;
 
-		float2 UnpackUV(float uv) { return float2(floor(uv) * 4.0 / 4096.0, frac(uv) * 4.0); }
+		float2 UnpackUV(float uv)
+		{
+			float2 output;
+			output.x = floor(uv / 4096);
+			output.y = uv - 4096 * output.x;
+
+			return output * 0.001953125;
+		}
 
 		v2f vert (appdata_t i)
 		{
 			float4 vert = i.vertex;
 			vert.x += _VertexOffsetX;
 			vert.y += _VertexOffsetY;
+
+			vert.xy += (vert.w * 0.5) / _ScreenParams.xy;
+
 			float4 vPosition = UnityPixelSnap(UnityObjectToClipPos(vert));
 
 			fixed4 faceColor = i.color;
@@ -104,45 +107,36 @@ SubShader{
 			o.vertex = vPosition;
 			o.color = faceColor;
 			o.texcoord0 = i.texcoord0;
-			o.texcoord1 = UnpackUV(i.texcoord1);
+			o.texcoord1 = TRANSFORM_TEX(UnpackUV(i.texcoord1), _FaceTex);
 			float2 pixelSize = vPosition.w;
 			pixelSize /= abs(float2(_ScreenParams.x * UNITY_MATRIX_P[0][0], _ScreenParams.y * UNITY_MATRIX_P[1][1]));
-			o.mask = float4(vert.xy, 0.5 / pixelSize.xy);
+
+			// Clamp _ClipRect to 16bit.
+			float4 clampedRect = clamp(_ClipRect, -2e10, 2e10);
+			o.mask = float4(vert.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + pixelSize.xy));
+			
 			return o;
 		}
 
 		fixed4 frag (v2f i) : COLOR
 		{
-			fixed4 c = tex2D(_FaceTex, i.texcoord1) * i.color;
-			c.a *= tex2D(_MainTex, i.texcoord0).a;
+			//fixed4 c = tex2D(_MainTex, i.texcoord0) * tex2D(_FaceTex, i.texcoord1) * i.color;
+			
+			fixed4 c = tex2D(_MainTex, i.texcoord0);
+			c = fixed4 (tex2D(_FaceTex, i.texcoord1).rgb * i.color.rgb, i.color.a * c.a);
 
-			//float2 clipSize = (_ClipRect.zw - _ClipRect.xy) * 0.5;
-			//float2 clipCenter = _ClipRect.xy + clipSize;
-
-#if UNITY_VERSION < 530
-			if (_UseClipRect)
-				c *= UnityGet2DClipping(i.mask.xy, _ClipRect);
-#else
-			c *= UnityGet2DClipping(i.mask.xy, _ClipRect);
-#endif
-
-				//float2 s = float2(_MaskSoftnessX, _MaskSoftnessY) * i.mask.zw;
-				//float2 m = 1 - saturate(((abs(i.mask.xy - clipCenter) - clipSize) * i.mask.zw + s) / (1 + s));
-				//m *= m;
-				//c *= m.x * m.y;
-
-
-		//#if MASK_HARD
-		//	float2 m = 1 - saturate((abs(i.mask.xy - clipCenter) - clipSize) * i.mask.zw);
-		//	c.a *= m.x*m.y;
-		//#endif
-
-		//#if MASK_SOFT
-		//	float2 s = half2(_MaskSoftnessX, _MaskSoftnessY) * i.mask.zw;
-		//	float2 m = 1 - saturate(((abs(i.mask.xy - clipCenter) - clipSize) * i.mask.zw + s) / (1 + s));
-		//	m *= m;
-		//	c.a *= m.x*m.y;
-		//#endif
+			#if UNITY_VERSION < 530
+				if (_UseClipRect)
+				{
+					// Alternative implementation to UnityGet2DClipping with support for softness.
+					half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(i.mask.xy)) * i.mask.zw);
+					c *= m.x * m.y;
+				}
+			#else
+				// Alternative implementation to UnityGet2DClipping with support for softness.
+				half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(i.mask.xy)) * i.mask.zw);
+				c *= m.x * m.y;
+			#endif
 
 			return c;
 		}
@@ -150,5 +144,5 @@ SubShader{
 	}
 }
 
-	//CustomEditor "TMPro_SDFMaterialEditor"
+	CustomEditor "TMPro.EditorUtilities.TMP_BitmapShaderGUI"
 }

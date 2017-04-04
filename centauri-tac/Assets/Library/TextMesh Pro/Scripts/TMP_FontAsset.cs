@@ -37,7 +37,7 @@ namespace TMPro
             {
                 if (s_defaultFontAsset == null)
                 {
-                    s_defaultFontAsset = Resources.Load<TMP_FontAsset>("Fonts & Materials/ARIAL SDF");
+                    s_defaultFontAsset = Resources.Load<TMP_FontAsset>("Fonts & Materials/LiberationSans SDF");
                 }
 
                 return s_defaultFontAsset;
@@ -109,25 +109,7 @@ namespace TMPro
         public FontCreationSetting fontCreationSettings;
 
         // FONT WEIGHTS
-        /// <summary>
-        /// Array containing the alternative font assets to be used for the different font weights.
-        /// </summary>
-        //public TMP_FontWeights[] fontWeights
-        //{
-        //    get
-        //    {
-        //        if (m_fontWeights == null)
-        //        {
-        //            m_fontWeights = new TMP_FontWeights[10];
-
-        //            for (int i = 0; i < m_fontWeights.Length; i++)
-        //                m_fontWeights[i] = new TMP_FontWeights();
-        //        }
-
-        //        return m_fontWeights;
-        //    }
-        //}
-        //[SerializeField]
+        [SerializeField]
         public TMP_FontWeights[] fontWeights = new TMP_FontWeights[10];
 
         private int[] m_characterSet; // Array containing all the characters in this font asset.
@@ -201,8 +183,9 @@ namespace TMPro
                 g.width = glyphInfo[i].width;
                 g.height = glyphInfo[i].height;
                 g.xOffset = glyphInfo[i].xOffset;
-                g.yOffset = (glyphInfo[i].yOffset);  
+                g.yOffset = (glyphInfo[i].yOffset);
                 g.xAdvance = glyphInfo[i].xAdvance;
+                g.scale = 1;
 
                 m_glyphInfoList.Add(g);
 
@@ -245,10 +228,15 @@ namespace TMPro
 
             // Create new instance of GlyphInfo Dictionary for fast access to glyph info.
             m_characterDictionary = new Dictionary<int, TMP_Glyph>();
-            foreach (TMP_Glyph glyph in m_glyphInfoList)
+            for (int i = 0; i < m_glyphInfoList.Count; i++)
             {
+                TMP_Glyph glyph = m_glyphInfoList[i];
+
                 if (!m_characterDictionary.ContainsKey(glyph.id))
                     m_characterDictionary.Add(glyph.id, glyph);
+
+                // Compatibility
+                if (glyph.scale == 0) glyph.scale = 1;
             }
 
 
@@ -262,6 +250,7 @@ namespace TMPro
                 m_characterDictionary[32].width = m_characterDictionary[32].xAdvance; // m_fontInfo.Ascender / 5;
                 m_characterDictionary[32].height = m_fontInfo.Ascender - m_fontInfo.Descender;
                 m_characterDictionary[32].yOffset= m_fontInfo.Ascender;
+                m_characterDictionary[32].scale = 1;
             }
             else
             {
@@ -275,6 +264,7 @@ namespace TMPro
                 temp_charInfo.xOffset = 0; 
                 temp_charInfo.yOffset = m_fontInfo.Ascender; 
                 temp_charInfo.xAdvance = m_fontInfo.PointSize / 4;
+                temp_charInfo.scale = 1;
                 m_characterDictionary.Add(32, temp_charInfo);
             }
 
@@ -317,6 +307,7 @@ namespace TMPro
                 temp_charInfo.xOffset = 0; // m_characterDictionary[32].xOffset;
                 temp_charInfo.yOffset = m_characterDictionary[32].yOffset;
                 temp_charInfo.xAdvance = 0;
+                temp_charInfo.scale = 1;
                 m_characterDictionary.Add(10, temp_charInfo);
 
                 if (!m_characterDictionary.ContainsKey(13))
@@ -337,6 +328,7 @@ namespace TMPro
                 temp_charInfo.xOffset = m_characterDictionary[32].xOffset;
                 temp_charInfo.yOffset = m_characterDictionary[32].yOffset;
                 temp_charInfo.xAdvance = m_characterDictionary[32].xAdvance * tabSize;
+                temp_charInfo.scale = 1;
                 m_characterDictionary.Add(9, temp_charInfo);
             }
 
@@ -346,9 +338,24 @@ namespace TMPro
             // Tab Width is using the same xAdvance as space (32).
             m_fontInfo.TabWidth = m_characterDictionary[9].xAdvance;
 
+            // Set Cap Height
+            if (m_fontInfo.CapHeight == 0 && m_characterDictionary.ContainsKey(72))
+                m_fontInfo.CapHeight = m_characterDictionary[72].yOffset;
+
             // Adjust Font Scale for compatibility reasons
             if (m_fontInfo.Scale == 0)
                 m_fontInfo.Scale = 1.0f;
+
+            // Set Strikethrough Offset (if needed)
+            if (m_fontInfo.strikethrough == 0)
+                m_fontInfo.strikethrough = m_fontInfo.CapHeight / 2.5f;
+
+            // Set Padding value for legacy font assets.
+            if (m_fontInfo.Padding == 0)
+            {
+                if (material.HasProperty(ShaderUtilities.ID_GradientScale))
+                    m_fontInfo.Padding = material.GetFloat(ShaderUtilities.ID_GradientScale) - 1;
+            }
 
             // Populate Dictionary with Kerning Information
             m_kerningDictionary = new Dictionary<int, KerningPair>();
@@ -376,9 +383,23 @@ namespace TMPro
             // Compute Hashcode for the material name
             materialHashCode = TMP_TextUtilities.GetSimpleHashCode(material.name);
 
+            // Unload font atlas texture
+            //ShaderUtilities.GetShaderPropertyIDs();
+            //Resources.UnloadAsset(material.GetTexture(ShaderUtilities.ID_MainTex));
 
             // Initialize Font Weights if needed
             //InitializeFontWeights();
+        }
+
+
+        /// <summary>
+        /// Function to sort the list of glyphs.
+        /// </summary>
+        public void SortGlyphs()
+        {
+            if (m_glyphInfoList == null || m_glyphInfoList.Count == 0) return;
+
+            m_glyphInfoList = m_glyphInfoList.OrderBy(item => item.id).ToList();
         }
 
 
@@ -418,6 +439,49 @@ namespace TMPro
 
 
         /// <summary>
+        /// Function to check if a character is contained in a font asset with the option to also check through fallback font assets.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="searchFallbacks"></param>
+        /// <returns></returns>
+        public bool HasCharacter(char character, bool searchFallbacks)
+        {
+            if (m_characterDictionary == null)
+                return false;
+
+            // Check font asset
+            if (m_characterDictionary.ContainsKey(character))
+                return true;
+
+            
+            if (searchFallbacks)
+            {
+                // Check Font Asset Fallback fonts.
+                if (fallbackFontAssets != null && fallbackFontAssets.Count > 0)
+                {
+                    for (int i = 0; i < fallbackFontAssets.Count && fallbackFontAssets[i] != null; i++)
+                    {
+                        if (fallbackFontAssets[i].characterDictionary != null && fallbackFontAssets[i].characterDictionary.ContainsKey(character))
+                            return true;
+                    }
+                }
+
+                // Check general fallback font assets.
+                if (TMP_Settings.fallbackFontAssets != null && TMP_Settings.fallbackFontAssets.Count > 0)
+                {
+                    for (int i = 0; i < TMP_Settings.fallbackFontAssets.Count && TMP_Settings.fallbackFontAssets[i] != null; i++)
+                    {
+                        if (TMP_Settings.fallbackFontAssets[i].characterDictionary != null && TMP_Settings.fallbackFontAssets[i].characterDictionary.ContainsKey(character))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
+        /// <summary>
         /// Function to check if certain characters exists in the font asset. Function returns a list of missing characters.
         /// </summary>
         /// <param name="character"></param>
@@ -442,6 +506,26 @@ namespace TMPro
                 return true;
 
             return false;
+        }
+
+
+        /// <summary>
+        /// Function to check if certain characters exists in the font asset. Function returns false if any characters are missing.
+        /// </summary>
+        /// <param name="text">String containing the characters to check</param>
+        /// <returns></returns>
+        public bool HasCharacters(string text)
+        {
+            if (m_characterDictionary == null)
+                return false;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (!m_characterDictionary.ContainsKey(text[i]))
+                    return false;
+            }
+
+            return true;
         }
 
 

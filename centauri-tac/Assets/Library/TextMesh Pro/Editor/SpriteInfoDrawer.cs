@@ -13,13 +13,13 @@ namespace TMPro.EditorUtilities
     [CustomPropertyDrawer(typeof(TMP_Sprite))]
     public class SpriteInfoDrawer : PropertyDrawer
     {
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             //SerializedProperty prop_fileID = property.FindPropertyRelative("fileID");
             SerializedProperty prop_id = property.FindPropertyRelative("id");
             SerializedProperty prop_name = property.FindPropertyRelative("name");
             SerializedProperty prop_hashCode = property.FindPropertyRelative("hashCode");
+            SerializedProperty prop_unicode = property.FindPropertyRelative("unicode");
             SerializedProperty prop_x = property.FindPropertyRelative("x");
             SerializedProperty prop_y = property.FindPropertyRelative("y");
             SerializedProperty prop_width = property.FindPropertyRelative("width");
@@ -32,6 +32,13 @@ namespace TMPro.EditorUtilities
 
             // Get a reference to the sprite texture
             Texture tex = (property.serializedObject.targetObject as TMP_SpriteAsset).spriteSheet;
+
+            // Return if we don't have a texture assigned to the sprite asset.
+            if (tex == null)
+            {
+                Debug.LogWarning("Please assign a valid Sprite Atlas texture to the [" + property.serializedObject.targetObject.name + "] Sprite Asset.", property.serializedObject.targetObject);
+                return;
+            }
 
             Vector2 spriteSize = new Vector2(65, 65);
             if (prop_width.floatValue >= prop_height.floatValue)
@@ -50,23 +57,52 @@ namespace TMPro.EditorUtilities
             GUI.DrawTextureWithTexCoords(new Rect(position.x + 5, position.y, spriteSize.x,  spriteSize.y), tex, texCoords, true);
 
             // We get Rect since a valid position may not be provided by the caller.
-            Rect rect = GUILayoutUtility.GetRect(position.width, 49);
+            Rect rect = new Rect(position.x, position.y, position.width, 49);
             rect.x += 70;
-            rect.y -= 15;
 
-            EditorGUIUtility.labelWidth = 40f;
-            EditorGUIUtility.fieldWidth = 45f;
+            bool isEnabled = GUI.enabled;
+            GUI.enabled = false;
+            EditorGUIUtility.labelWidth = 30f;
+            EditorGUI.PropertyField(new Rect(rect.x + 5f, rect.y, 65f, 18), prop_id, new GUIContent("ID:"));
 
+            GUI.enabled = isEnabled;
             EditorGUI.BeginChangeCheck();
-            EditorGUI.LabelField(new Rect(rect.x + 5f, rect.y, 50f, 18), new GUIContent("ID: " + prop_id.intValue));
-            EditorGUI.PropertyField(new Rect(rect.x + 50f, rect.y, rect.width - 125, 18), prop_name, new GUIContent("Name: " + prop_name.stringValue));
+            EditorGUIUtility.labelWidth = 55f;
+            GUI.SetNextControlName("Unicode Input");
+            string unicode = EditorGUI.TextField(new Rect(rect.x + 75f, rect.y, 105, 18), "Unicode:", prop_unicode.intValue.ToString("X"));
+
+            if (GUI.GetNameOfFocusedControl() == "Unicode Input")
+            {
+                //Filter out unwanted characters.
+                char chr = Event.current.character;
+                if ((chr < '0' || chr > '9') && (chr < 'a' || chr > 'f') && (chr < 'A' || chr > 'F'))
+                {
+                    Event.current.character = '\0';
+                }
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    prop_unicode.intValue = TMP_TextUtilities.StringToInt(unicode);
+
+                    property.serializedObject.ApplyModifiedProperties();
+
+                    TMP_SpriteAsset spriteAsset = property.serializedObject.targetObject as TMP_SpriteAsset;
+                    spriteAsset.UpdateLookupTables();
+                }
+            }
+
+
+            EditorGUIUtility.labelWidth = 45f;
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.PropertyField(new Rect(rect.x + 185f, rect.y, rect.width - 260, 18), prop_name, new GUIContent("Name: " + prop_name.stringValue));
             if (EditorGUI.EndChangeCheck())
             {
                 Sprite sprite = prop_sprite.objectReferenceValue as Sprite;
-                sprite.name = prop_name.stringValue;
+                if (sprite != null)
+                    sprite.name = prop_name.stringValue;
 
                 // Recompute hashCode for new name
-                prop_hashCode.intValue = TMP_TextUtilities.GetSimpleHashCode(sprite.name);
+                prop_hashCode.intValue = TMP_TextUtilities.GetSimpleHashCode(prop_name.stringValue);
                 // Check to make sure for duplicates
                 property.serializedObject.ApplyModifiedProperties();
                 // Dictionary needs to be updated since HashCode has changed.
@@ -99,7 +135,12 @@ namespace TMPro.EditorUtilities
             }
         }
 
-        
+
+        //public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        //{
+        //    return 40f;
+        //}
+
 
     }
 }

@@ -19,8 +19,22 @@ namespace TMPro.EditorUtilities
 
     public class TMPro_FontAssetCreatorWindow : EditorWindow
     {
+        //private GUIContent m_MenuItem1 = new GUIContent("Menu Item 1");
+        ////private GUIContent m_MenuItem2 = new GUIContent("Menu Item 2");
 
-        [MenuItem("Window/TextMeshPro - Font Asset Creator")]
+        ////Implement IHasCustomMenu.AddItemsToMenu
+        //public void AddItemsToMenu(GenericMenu menu)
+        //{
+        //    menu.AddItem(m_MenuItem1, false, MenuItem1Selected);
+        //    //menu.AddItem(m_MenuItem2, m_Item2On, MenuItem2Selected);
+        //}
+
+        //private void MenuItem1Selected()
+        //{
+        //    Debug.Log("Menu Item 1 selected");
+        //}
+
+        [MenuItem("Window/TextMeshPro/Font Asset Creator")]
         public static void ShowFontAtlasCreatorWindow()
         {
             var window = GetWindow<TMPro_FontAssetCreatorWindow>();
@@ -77,8 +91,14 @@ namespace TMPro.EditorUtilities
         private int font_atlas_width = 512;
         private int font_atlas_height = 512;
 
+        //private int m_shaderSelectionIndex;
+        //private Shader m_shaderSelection;
+        //private string[] m_availableShaderNames;
+        //private Shader[] m_availableShaders;
+
+
         private int font_scaledownFactor = 1;
-        private int font_spread = 4;
+        //private int font_spread = 4;
 
         private FT_FaceInfo m_font_faceInfo;
         private FT_GlyphInfo[] m_font_glyphInfo;
@@ -115,37 +135,14 @@ namespace TMPro.EditorUtilities
             // Initialize & Get shader property IDs.
             ShaderUtilities.GetShaderPropertyIDs();
 
-            // Locate the plugin files & move them to root of project if that hasn't already been done.
-#if !UNITY_5
-            // Find to location of the TextMesh Pro Asset Folder (as users may have moved it)
-            string tmproAssetFolderPath = TMPro_EditorUtility.GetAssetLocation();
-
-            string projectPath = Path.GetFullPath("Assets/..");
-
-            if (System.IO.File.Exists(projectPath + "/TMPro_Plugin.dll") == false)
-            {
-                FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dll", projectPath + "/TMPro_Plugin.dll"); // Copy the .dll
-                FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dylib", projectPath + "/TMPro_Plugin.dylib"); // Copy Mac .dylib
-                FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/vcomp120.dll", projectPath + "/vcomp120.dll"); // Copy OpemMP .dll
-            } 
-            else // Check if we are using the latest versions
-            {
-                if (System.IO.File.GetLastWriteTime(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dylib") > System.IO.File.GetLastWriteTime(projectPath + "/TMPro_Plugin.dylib"))
-                    FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dylib", projectPath + "/TMPro_Plugin.dylib");
-
-                if (System.IO.File.GetLastWriteTime(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dll") > System.IO.File.GetLastWriteTime(projectPath + "/TMPro_Plugin.dll"))
-                    FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/TMPro_Plugin.dll", projectPath + "/TMPro_Plugin.dll");
-
-                if (System.IO.File.GetLastWriteTime(tmproAssetFolderPath + "/Plugins/vcomp120.dll") > System.IO.File.GetLastWriteTime(projectPath + "/vcomp120.dll"))
-                    FileUtil.ReplaceFile(tmproAssetFolderPath + "/Plugins/vcomp120.dll", projectPath + "/vcomp120.dll");
-            }
-#endif
-
             // Add Event Listener related to Distance Field Atlas Creation.
             TMPro_EventManager.COMPUTE_DT_EVENT.Add(ON_COMPUTE_DT_EVENT);
 
             // Debug Link to received message from Native Code
             //TMPro_FontPlugin.LinkDebugLog(); // Link with C++ Plugin to get Debug output
+
+            // Get Shader List
+            //m_availableShaderNames = UpdateShaderList(font_renderMode, out m_availableShaders);
         }
 
 
@@ -400,10 +397,10 @@ namespace TMPro.EditorUtilities
 
 
             // FONT CHARACTER SET SELECTION
-            GUI.changed = false;
+            EditorGUI.BeginChangeCheck();
             bool hasSelectionChanged = false;
             font_CharacterSet_Selection = EditorGUILayout.Popup("Character Set", font_CharacterSet_Selection, FontCharacterSets, GUILayout.Width(290));
-            if (GUI.changed)
+            if (EditorGUI.EndChangeCheck())
             {
                 characterSequence = "";
                 hasSelectionChanged = true;
@@ -530,8 +527,19 @@ namespace TMPro.EditorUtilities
             font_style_mod = EditorGUILayout.IntField((int)font_style_mod);
             GUILayout.EndHorizontal();
 
-            // Render Mode Selection   
+            // Render Mode Selection
+            EditorGUI.BeginChangeCheck();
             font_renderMode = (RenderModes)EditorGUILayout.EnumPopup("Font Render Mode:", font_renderMode, GUILayout.Width(290));
+            if (EditorGUI.EndChangeCheck())
+            {
+                //m_availableShaderNames = UpdateShaderList(font_renderMode, out m_availableShaders);
+            }
+
+            // Default Shader
+            //EditorGUI.BeginChangeCheck();
+            //m_shaderSelectionIndex = EditorGUILayout.Popup("Default Shader", m_shaderSelectionIndex, m_availableShaderNames);
+            //if (EditorGUI.EndChangeCheck())
+            //    m_shaderSelection = m_availableShaders[m_shaderSelectionIndex];
 
             includeKerningPairs = EditorGUILayout.Toggle("Get Kerning Pairs?", includeKerningPairs, GUILayout.MaxWidth(290));
 
@@ -847,7 +855,7 @@ namespace TMPro.EditorUtilities
                 m_font_Atlas.filterMode = FilterMode.Point;
 
             m_font_Atlas.SetPixels32(colors, 0);
-            m_font_Atlas.Apply(false, false);
+            m_font_Atlas.Apply(false, true);
 
             // Saving File for Debug
             //var pngData = m_font_Atlas.EncodeToPNG();
@@ -864,7 +872,7 @@ namespace TMPro.EditorUtilities
 
             string dataPath = Application.dataPath;
 
-            if (filePath.IndexOf(dataPath) == -1)
+            if (filePath.IndexOf(dataPath, System.StringComparison.InvariantCultureIgnoreCase) == -1)
             {
                 Debug.LogError("You're saving the font asset in a directory outside of this project folder. This is not supported. Please select a directory under \"" + dataPath + "\"");
                 return;
@@ -905,23 +913,34 @@ namespace TMPro.EditorUtilities
                     font_asset.AddKerningInfo(kerningTable);
                 }
 
+
                 // Add Font Atlas as Sub-Asset
                 font_asset.atlas = m_font_Atlas;
                 m_font_Atlas.name = tex_FileName + " Atlas";
-                #if !(UNITY_5_3 || UNITY_5_4)
+
+                // Special handling due to a bug in earlier versions of Unity.
+                #if UNITY_5_3_OR_NEWER
+                    // Nothing
+                #else
                     m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
                 #endif
+
                 AssetDatabase.AddObjectToAsset(m_font_Atlas, font_asset);
 
                 // Create new Material and Add it as Sub-Asset
-                Shader default_Shader = Shader.Find("TMPro/Bitmap");
+                Shader default_Shader = Shader.Find("TextMeshPro/Bitmap"); // m_shaderSelection;
                 Material tmp_material = new Material(default_Shader);
                 tmp_material.name = tex_FileName + " Material";
                 tmp_material.SetTexture(ShaderUtilities.ID_MainTex, m_font_Atlas);
                 font_asset.material = tmp_material;
-                #if !(UNITY_5_3 || UNITY_5_4)
+
+                // Special handling due to a bug in earlier versions of Unity.
+                #if UNITY_5_3_OR_NEWER
+                    // Nothing
+                #else
                     tmp_material.hideFlags = HideFlags.HideInHierarchy;
                 #endif
+
                 AssetDatabase.AddObjectToAsset(tmp_material, font_asset);
 
             }
@@ -955,17 +974,19 @@ namespace TMPro.EditorUtilities
                 // Add Font Atlas as Sub-Asset
                 font_asset.atlas = m_font_Atlas;
                 m_font_Atlas.name = tex_FileName + " Atlas";
+
                 // Special handling due to a bug in earlier versions of Unity.
-                #if !(UNITY_5_3 || UNITY_5_4)
-                    m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
-                #else
+                #if UNITY_5_3_OR_NEWER
                     m_font_Atlas.hideFlags = HideFlags.None;
                     font_asset.material.hideFlags = HideFlags.None;
+                #else
+                    m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
                 #endif
+
                 AssetDatabase.AddObjectToAsset(m_font_Atlas, font_asset);
 
                 // Assign new font atlas texture to the existing material.
-                font_asset.material.mainTexture = font_asset.atlas;
+                font_asset.material.SetTexture(ShaderUtilities.ID_MainTex, font_asset.atlas);
 
                 // Update the Texture reference on the Material
                 for (int i = 0; i < material_references.Length; i++)
@@ -985,7 +1006,7 @@ namespace TMPro.EditorUtilities
 
             m_font_Atlas = null;
 
-            // NEED TO GENERATE AN EVENT TO FORCE A REDRAW OF ANY TEXTMESHPRO INSTANCES THAT MIGHT BE USING THIS FONT ASSET      
+            // NEED TO GENERATE AN EVENT TO FORCE A REDRAW OF ANY TEXTMESHPRO INSTANCES THAT MIGHT BE USING THIS FONT ASSET
             TMPro_EventManager.ON_FONT_PROPERTY_CHANGED(true, font_asset);
         }
 
@@ -996,7 +1017,7 @@ namespace TMPro.EditorUtilities
 
             string dataPath = Application.dataPath;
 
-            if (filePath.IndexOf(dataPath) == -1)
+            if (filePath.IndexOf(dataPath, System.StringComparison.InvariantCultureIgnoreCase) == -1)
             {
                 Debug.LogError("You're saving the font asset in a directory outside of this project folder. This is not supported. Please select a directory under \"" + dataPath + "\"");
                 return;
@@ -1013,7 +1034,7 @@ namespace TMPro.EditorUtilities
             if (font_asset == null)
             {
                 //Debug.Log("Creating TextMeshPro font asset!");
-                font_asset = ScriptableObject.CreateInstance<TMP_FontAsset>(); // Create new TextMeshPro Font Asset.     
+                font_asset = ScriptableObject.CreateInstance<TMP_FontAsset>(); // Create new TextMeshPro Font Asset.
                 AssetDatabase.CreateAsset(font_asset, tex_Path_NoExt + ".asset");
 
                 // Reference to the source font file
@@ -1051,13 +1072,18 @@ namespace TMPro.EditorUtilities
                 // Add Font Atlas as Sub-Asset
                 font_asset.atlas = m_font_Atlas;
                 m_font_Atlas.name = tex_FileName + " Atlas";
-                #if !(UNITY_5_3 || UNITY_5_4)
+
+                // Special handling due to a bug in earlier versions of Unity.
+                #if UNITY_5_3_OR_NEWER
+                    // Nothing
+                #else
                     m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
                 #endif
+
                 AssetDatabase.AddObjectToAsset(m_font_Atlas, font_asset);
 
                 // Create new Material and Add it as Sub-Asset
-                Shader default_Shader = Shader.Find("TMPro/Distance Field");
+                Shader default_Shader = Shader.Find("TextMeshPro/Distance Field"); //m_shaderSelection;
                 Material tmp_material = new Material(default_Shader);
 
                 tmp_material.name = tex_FileName + " Material";
@@ -1065,17 +1091,21 @@ namespace TMPro.EditorUtilities
                 tmp_material.SetFloat(ShaderUtilities.ID_TextureWidth, m_font_Atlas.width);
                 tmp_material.SetFloat(ShaderUtilities.ID_TextureHeight, m_font_Atlas.height);
 
+                int spread = font_padding + 1;
+                tmp_material.SetFloat(ShaderUtilities.ID_GradientScale, spread); // Spread = Padding for Brute Force SDF.
 
                 tmp_material.SetFloat(ShaderUtilities.ID_WeightNormal, font_asset.normalStyle);
                 tmp_material.SetFloat(ShaderUtilities.ID_WeightBold, font_asset.boldStyle);
 
-                int spread = font_renderMode >= RenderModes.DistanceField16 ? font_padding + 1 : font_spread;
-                tmp_material.SetFloat(ShaderUtilities.ID_GradientScale, spread); // Spread = Padding for Brute Force SDF.
-
                 font_asset.material = tmp_material;
-                #if !(UNITY_5_3 || UNITY_5_4)
+
+                // Special handling due to a bug in earlier versions of Unity.
+                #if UNITY_5_3_OR_NEWER
+                    // Nothing
+                #else
                     tmp_material.hideFlags = HideFlags.HideInHierarchy;
                 #endif
+
                 AssetDatabase.AddObjectToAsset(tmp_material, font_asset);
 
             }
@@ -1112,17 +1142,17 @@ namespace TMPro.EditorUtilities
                 m_font_Atlas.name = tex_FileName + " Atlas";
 
                 // Special handling due to a bug in earlier versions of Unity.
-                #if !(UNITY_5_3 || UNITY_5_4)
-                    m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
-                #else
+                #if UNITY_5_3_OR_NEWER
                     m_font_Atlas.hideFlags = HideFlags.None;
                     font_asset.material.hideFlags = HideFlags.None;
+                #else
+                    m_font_Atlas.hideFlags = HideFlags.HideInHierarchy;
                 #endif
 
                 AssetDatabase.AddObjectToAsset(m_font_Atlas, font_asset);
 
                 // Assign new font atlas texture to the existing material.
-                font_asset.material.mainTexture = font_asset.atlas;
+                font_asset.material.SetTexture(ShaderUtilities.ID_MainTex, font_asset.atlas);
 
                 // Update the Texture reference on the Material
                 for (int i = 0; i < material_references.Length; i++)
@@ -1131,11 +1161,11 @@ namespace TMPro.EditorUtilities
                     material_references[i].SetFloat(ShaderUtilities.ID_TextureWidth, m_font_Atlas.width);
                     material_references[i].SetFloat(ShaderUtilities.ID_TextureHeight, m_font_Atlas.height);
 
+                    int spread = font_padding + 1;
+                    material_references[i].SetFloat(ShaderUtilities.ID_GradientScale, spread); // Spread = Padding for Brute Force SDF.
+
                     material_references[i].SetFloat(ShaderUtilities.ID_WeightNormal, font_asset.normalStyle);
                     material_references[i].SetFloat(ShaderUtilities.ID_WeightBold, font_asset.boldStyle);
-
-                    int spread = font_renderMode >= RenderModes.DistanceField16 ? font_padding + 1 : font_spread;
-                    material_references[i].SetFloat(ShaderUtilities.ID_GradientScale, spread); // Spread = Padding for Brute Force SDF.
                 }
             }
 
@@ -1232,12 +1262,15 @@ namespace TMPro.EditorUtilities
             face.PointSize = (float)ft_face.pointSize / scaleFactor;
             face.Padding = ft_face.padding / scaleFactor;
             face.LineHeight = ft_face.lineHeight / scaleFactor;
+            face.CapHeight = 0;
             face.Baseline = 0;
             face.Ascender = ft_face.ascender / scaleFactor;
             face.Descender = ft_face.descender / scaleFactor;
             face.CenterLine = ft_face.centerLine / scaleFactor;
             face.Underline = ft_face.underline / scaleFactor;
             face.UnderlineThickness = ft_face.underlineThickness == 0 ? 5 : ft_face.underlineThickness / scaleFactor; // Set Thickness to 5 if TTF value is Zero.
+            face.strikethrough = (face.Ascender + face.Descender) / 2.75f;
+            face.strikethroughThickness = face.UnderlineThickness;
             face.SuperscriptOffset = face.Ascender;
             face.SubscriptOffset = face.Underline;
             face.SubSize = 0.5f;
@@ -1289,7 +1322,7 @@ namespace TMPro.EditorUtilities
             kerningInfo.kerningPairs = new List<KerningPair>();
 
             // Temporary Array to hold the kerning pairs from the Native Plug-in.
-            FT_KerningPair[] kerningPairs = new FT_KerningPair[5000];
+            FT_KerningPair[] kerningPairs = new FT_KerningPair[7500];
 
             int kpCount = TMPro_FontPlugin.FT_GetKerningPairs(fontFilePath, m_kerningSet, m_kerningSet.Length, kerningPairs);
 
@@ -1309,6 +1342,37 @@ namespace TMPro.EditorUtilities
             }
 
             return kerningInfo;
+        }
+
+
+        private string[] UpdateShaderList(RenderModes mode, out Shader[] shaders)
+        {
+            // Get shaders for the given RenderModes.
+            string searchPattern = "t:Shader" + " TMP_"; // + fontAsset.name.Split(new char[] { ' ' })[0];
+
+            if (mode == RenderModes.DistanceField16 || mode == RenderModes.DistanceField32)
+                searchPattern += " SDF";
+            else
+                searchPattern += " Bitmap";
+
+            // Get materials matching the search pattern.
+            string[] shaderGUIDs = AssetDatabase.FindAssets(searchPattern);
+
+            string[] shaderList = new string[shaderGUIDs.Length];
+            shaders = new Shader[shaderGUIDs.Length];
+
+            for (int i = 0; i < shaderGUIDs.Length; i++)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(shaderGUIDs[i]);
+                Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(path);
+                shaders[i] = shader;
+
+                string name = shader.name.Replace("TextMeshPro/", "");
+                name = name.Replace("Mobile/", "Mobile - ");
+                shaderList[i] = name;
+            }
+
+            return shaderList;
         }
 
     }

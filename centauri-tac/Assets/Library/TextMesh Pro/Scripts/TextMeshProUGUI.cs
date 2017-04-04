@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 0.1.54 Beta 3b
+// Release 1.0.55.52.0b8
 
 
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace TMPro
     [RequireComponent(typeof(CanvasRenderer))]
     [AddComponentMenu("UI/TextMeshPro - Text (UI)", 11)]
     [SelectionBase]
-    public partial class TextMeshProUGUI : TMP_Text, ILayoutElement //, ICanvasElement, IMaskable, IClippable, IMaterialModifier
+    public partial class TextMeshProUGUI : TMP_Text, ILayoutElement
     {
         /// <summary>
         /// Get the material that will be used for rendering.
@@ -44,13 +44,13 @@ namespace TMPro
         /// <summary>
         /// Determines if the size of the text container will be adjusted to fit the text object when it is first created.
         /// </summary>
-        //public override bool autoSizeTextContainer
-        //{
-        //    get { return m_autoSizeTextContainer; }
+        public override bool autoSizeTextContainer
+        {
+            get { return m_autoSizeTextContainer; }
 
-        //    set { m_autoSizeTextContainer = value; if (m_autoSizeTextContainer) { m_isCalculateSizeRequired = true; SetVerticesDirty(); SetLayoutDirty(); } }
-        //}
-        //private bool m_autoSizeTextContainer;
+            set { if (m_autoSizeTextContainer == value) return; m_autoSizeTextContainer = value; if (m_autoSizeTextContainer) { CanvasUpdateRegistry.RegisterCanvasElementForLayoutRebuild(this); SetLayoutDirty(); } }
+        }
+
 
 
         /// <summary>
@@ -86,21 +86,6 @@ namespace TMPro
 
 
         /// <summary>
-        /// Contains the bounds of the text object.
-        /// </summary>
-        public override Bounds bounds
-        {
-            get
-            {
-                if (m_mesh != null) return m_mesh.bounds;
-
-                return new Bounds();
-            }
-            //set { if (_meshExtents != value) havePropertiesChanged = true; _meshExtents = value; }
-        }
-
-
-        /// <summary>
         /// Anchor dampening prevents the anchor position from being adjusted unless the positional change exceeds about 40% of the width of the underline character. This essentially stabilizes the anchor position.
         /// </summary>
         //public bool anchorDampening
@@ -112,8 +97,6 @@ namespace TMPro
 
         private bool m_isRebuildingLayout = false;
         //private bool m_isLayoutDirty = false;
-
-      
 
 
         /// <summary>
@@ -129,7 +112,6 @@ namespace TMPro
 
             if (m_isCalculateSizeRequired || m_rectTransform.hasChanged)
             {
-
                 m_preferredWidth = GetPreferredWidth();
 
                 ComputeMarginSize();
@@ -167,7 +149,7 @@ namespace TMPro
         {
             //Debug.Log("SetVerticesDirty() on Object ID: " + this.GetInstanceID());
 
-            if (m_verticesAlreadyDirty || this == null || !this.IsActive())
+            if (m_verticesAlreadyDirty || this == null || !this.IsActive() || CanvasUpdateRegistry.IsRebuildingGraphics())
                 return;
 
             m_verticesAlreadyDirty = true;
@@ -180,7 +162,9 @@ namespace TMPro
         /// </summary>
         public override void SetLayoutDirty()
         {
-            //Debug.Log("SetLayoutDirty()");
+            //Debug.Log("SetLayoutDirty() called at frame:" + Time.frameCount + ".");
+            m_isPreferredWidthDirty = true;
+            m_isPreferredHeightDirty = true;
 
             if ( m_layoutAlreadyDirty || this == null || !this.IsActive())
                 return;
@@ -199,7 +183,7 @@ namespace TMPro
         {
             //Debug.Log("SetMaterialDirty()");
 
-            if (!this.IsActive())
+            if (this == null || !this.IsActive() || CanvasUpdateRegistry.IsRebuildingGraphics())
                 return;
 
             m_isMaterialDirty = true;
@@ -229,7 +213,14 @@ namespace TMPro
         {
             if (this == null) return;
 
-            if (update == CanvasUpdate.PreRender)
+            if (update == CanvasUpdate.Prelayout)
+            {
+                if (m_autoSizeTextContainer)
+                {
+                    m_rectTransform.sizeDelta = GetPreferredValues(Mathf.Infinity, Mathf.Infinity);
+                }
+            }
+            else if (update == CanvasUpdate.PreRender)
             {
                 OnPreRenderCanvas();
 
@@ -301,10 +292,12 @@ namespace TMPro
             //if (!this.IsActive())
             //    return;
 
+            if (m_sharedMaterial == null) return;
+
             if (m_canvasRenderer == null) m_canvasRenderer = this.canvasRenderer;
 
             m_canvasRenderer.materialCount = 1;
-            m_canvasRenderer.SetMaterial(materialForRendering, m_sharedMaterial.mainTexture);
+            m_canvasRenderer.SetMaterial(materialForRendering, m_sharedMaterial.GetTexture(ShaderUtilities.ID_MainTex));
         }
 
 
@@ -369,6 +362,18 @@ namespace TMPro
 
             this.m_ShouldRecalculateStencil = true;
             SetMaterialDirty();
+        }
+
+        /// <summary>
+        /// Override of the Cull function to provide for the ability to override the culling of the text object.
+        /// </summary>
+        /// <param name="clipRect"></param>
+        /// <param name="validRect"></param>
+        public override void Cull(Rect clipRect, bool validRect)
+        {
+            if (m_ignoreRectMaskCulling) return;
+
+            base.Cull(clipRect, validRect);
         }
 
 
@@ -438,6 +443,9 @@ namespace TMPro
             m_isMaskingEnabled = ShaderUtilities.IsMaskingEnabled(m_sharedMaterial);
             m_havePropertiesChanged = true;
             checkPaddingRequired = false;
+
+            // Return if text object is not awake yet.
+            if (m_textInfo == null) return;
 
             // Update sub text objects
             for (int i = 1; i < m_textInfo.materialCount; i++)
@@ -528,6 +536,20 @@ namespace TMPro
             return this.textInfo;
         }
 
+        /// <summary>
+        /// Function to clear the geometry of the Primary and Sub Text objects.
+        /// </summary>
+        public override void ClearMesh()
+        {
+            m_canvasRenderer.SetMesh(null);
+
+            for (int i = 1; i < m_subTextObjects.Length && m_subTextObjects[i] != null; i++)
+                m_subTextObjects[i].canvasRenderer.SetMesh(null);
+
+            //if (m_linkedTextComponent != null)
+            //   m_linkedTextComponent.ClearMesh();
+        }
+
 
         /// <summary>
         /// Function to force the regeneration of the text object.
@@ -570,7 +592,12 @@ namespace TMPro
                 if (i == 0)
                     mesh = m_mesh;
                 else
+                {
+                    // Clear unused vertices
+                    //m_textInfo.meshInfo[i].ClearUnusedVertices();
+
                     mesh = m_subTextObjects[i].mesh;
+                }
 
                 if ((flags & TMP_VertexDataUpdateFlags.Vertices) == TMP_VertexDataUpdateFlags.Vertices)
                     mesh.vertices = m_textInfo.meshInfo[i].vertices;
@@ -611,7 +638,12 @@ namespace TMPro
                 if (i == 0)
                     mesh = m_mesh;
                 else
+                {
+                    // Clear unused vertices
+                    m_textInfo.meshInfo[i].ClearUnusedVertices();
+
                     mesh = m_subTextObjects[i].mesh;
+                }
 
                 //mesh.MarkDynamic();
                 mesh.vertices = m_textInfo.meshInfo[i].vertices;

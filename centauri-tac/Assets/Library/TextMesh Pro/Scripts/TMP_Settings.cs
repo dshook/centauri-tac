@@ -2,6 +2,7 @@
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
 
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -75,7 +76,6 @@ namespace TMPro
         [SerializeField]
         private int m_missingGlyphCharacter;
 
-
         /// <summary>
         /// Controls the display of warning message in the console.
         /// </summary>
@@ -97,6 +97,76 @@ namespace TMPro
         private TMP_FontAsset m_defaultFontAsset;
 
         /// <summary>
+        /// The relative path to a Resources folder in the project.
+        /// </summary>
+        public static string defaultFontAssetPath
+        {
+            get { return instance.m_defaultFontAssetPath; }
+        }
+        [SerializeField]
+        private string m_defaultFontAssetPath;
+
+        /// <summary>
+        /// The Default Point Size of newly created text objects.
+        /// </summary>
+        public static float defaultFontSize
+        {
+            get { return instance.m_defaultFontSize; }
+        }
+        [SerializeField]
+        private float m_defaultFontSize;
+
+        /// <summary>
+        /// The multiplier used to computer the default Min point size when Text Auto Sizing is used.
+        /// </summary>
+        public static float defaultTextAutoSizingMinRatio
+        {
+            get { return instance.m_defaultAutoSizeMinRatio; }
+        }
+        [SerializeField]
+        private float m_defaultAutoSizeMinRatio;
+
+        /// <summary>
+        /// The multiplier used to computer the default Max point size when Text Auto Sizing is used.
+        /// </summary>
+        public static float defaultTextAutoSizingMaxRatio
+        {
+            get { return instance.m_defaultAutoSizeMaxRatio; }
+        }
+        [SerializeField]
+        private float m_defaultAutoSizeMaxRatio;
+
+        /// <summary>
+        /// The Default Size of the Text Container of a TextMeshPro object.
+        /// </summary>
+        public static Vector2 defaultTextMeshProTextContainerSize
+        {
+            get { return instance.m_defaultTextMeshProTextContainerSize; }
+        }
+        [SerializeField]
+        private Vector2 m_defaultTextMeshProTextContainerSize;
+
+        /// <summary>
+        /// The Default Width of the Text Container of a TextMeshProUI object.
+        /// </summary>
+        public static Vector2 defaultTextMeshProUITextContainerSize
+        {
+            get { return instance.m_defaultTextMeshProUITextContainerSize; }
+        }
+        [SerializeField]
+        private Vector2 m_defaultTextMeshProUITextContainerSize;
+
+        /// <summary>
+        /// Set the size of the text container of newly created text objects to match the size of the text.
+        /// </summary>
+        public static bool autoSizeTextContainer
+        {
+            get { return instance.m_autoSizeTextContainer; }
+        }
+        [SerializeField]
+        private bool m_autoSizeTextContainer;
+
+        /// <summary>
         /// Returns the list of Fallback Fonts defined in the TMP Settings file.
         /// </summary>
         public static List<TMP_FontAsset> fallbackFontAssets
@@ -107,6 +177,16 @@ namespace TMPro
         private List<TMP_FontAsset> m_fallbackFontAssets;
 
         /// <summary>
+        /// Controls whether or not TMP will create a matching material preset or use the default material of the fallback font asset.
+        /// </summary>
+        public static bool matchMaterialPreset
+        {
+            get { return instance.m_matchMaterialPreset; }
+        }
+        [SerializeField]
+        private bool m_matchMaterialPreset;
+
+        /// <summary>
         /// The Default Sprite Asset to be used by default.
         /// </summary>
         public static TMP_SpriteAsset defaultSpriteAsset
@@ -115,6 +195,27 @@ namespace TMPro
         }
         [SerializeField]
         private TMP_SpriteAsset m_defaultSpriteAsset;
+
+        /// <summary>
+        /// The relative path to a Resources folder in the project.
+        /// </summary>
+        public static string defaultSpriteAssetPath
+        {
+            get { return instance.m_defaultSpriteAssetPath; }
+        }
+        [SerializeField]
+        private string m_defaultSpriteAssetPath;
+
+        /// <summary>
+        /// Determines if Emoji support is enabled in the Input Field TouchScreenKeyboard.
+        /// </summary>
+        public static bool enableEmojiSupport
+        {
+            get { return instance.m_enableEmojiSupport; }
+            set { instance.m_enableEmojiSupport = value; }
+        }
+        [SerializeField]
+        private bool m_enableEmojiSupport;
 
         /// <summary>
         /// The Default Style Sheet used by the text objects.

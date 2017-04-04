@@ -26,6 +26,7 @@ namespace TMPro.EditorUtilities
             TextMeshPro textMeshPro = go.AddComponent<TextMeshPro>();
             textMeshPro.text = "Sample text";
             textMeshPro.alignment = TextAlignmentOptions.TopLeft;
+            //textMeshPro.rectTransform.sizeDelta = new Vector2(20, 5);
 
             Undo.RegisterCreatedObjectUndo((Object)go, "Create " + go.name);
 
@@ -35,6 +36,8 @@ namespace TMPro.EditorUtilities
                 GameObjectUtility.SetParentAndAlign(go, contextObject);
                 Undo.SetTransformParent(go.transform, contextObject.transform, "Parent " + go.name);
             }
+
+            Selection.activeGameObject = go;
         }
 
 
@@ -72,7 +75,7 @@ namespace TMPro.EditorUtilities
             GameObject contextObject = command.context as GameObject;
             if (contextObject == null)
             {
-                goRectTransform.sizeDelta = new Vector2(200f, 50f);
+                //goRectTransform.sizeDelta = new Vector2(200f, 50f);
                 GameObjectUtility.SetParentAndAlign(go, canvas.gameObject);
 
                 TextMeshProUGUI textMeshPro = go.AddComponent<TextMeshProUGUI>();
@@ -96,7 +99,7 @@ namespace TMPro.EditorUtilities
                 }
                 else
                 {
-                    goRectTransform.sizeDelta = new Vector2(200f, 50f);
+                    //goRectTransform.sizeDelta = new Vector2(200f, 50f);
 
                     GameObjectUtility.SetParentAndAlign(go, contextObject);
 
@@ -112,8 +115,15 @@ namespace TMPro.EditorUtilities
             {
                 GameObject eventObject = new GameObject("EventSystem", typeof(EventSystem));
                 eventObject.AddComponent<StandaloneInputModule>();
+                #if UNITY_5_3_OR_NEWER
+                    // Nothing
+                #else
+                    eventObject.AddComponent<TouchInputModule>();
+                #endif
                 Undo.RegisterCreatedObjectUndo(eventObject, "Create " + eventObject.name);
             }
+
+            Selection.activeGameObject = go;
         }
 
 
@@ -126,12 +136,12 @@ namespace TMPro.EditorUtilities
         }
 
 
-        //[MenuItem("GameObject/UI/TMP Dropdown", false, 2035)]
-        //static public void AddDropdown(MenuCommand menuCommand)
-        //{
-        //    GameObject go = TMP_DefaultControls.CreateDropdown(GetStandardResources());
-        //    PlaceUIElementRoot(go, menuCommand);
-        //}
+        [MenuItem("GameObject/UI/TextMeshPro - Dropdown", false, 2036)]
+        static public void AddDropdown(MenuCommand menuCommand)
+        {
+            GameObject go = TMP_DefaultControls.CreateDropdown(GetStandardResources());
+            PlaceUIElementRoot(go, menuCommand);
+        }
 
 
         private const string kUILayerName = "UI";
@@ -261,6 +271,11 @@ namespace TMPro.EditorUtilities
                 GameObjectUtility.SetParentAndAlign(eventSystem, parent);
                 esys = eventSystem.AddComponent<EventSystem>();
                 eventSystem.AddComponent<StandaloneInputModule>();
+            #if UNITY_5_3_OR_NEWER
+                // Nothing
+            #else
+                eventSystem.AddComponent<TouchInputModule>();
+            #endif
 
                 Undo.RegisterCreatedObjectUndo(eventSystem, "Create " + eventSystem.name);
             }
