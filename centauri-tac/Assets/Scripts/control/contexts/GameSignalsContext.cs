@@ -12,9 +12,9 @@ using strange.extensions.signal.impl;
 
 namespace ctac
 {
-    public class SignalsContext : MVCSContext
+    public class GameSignalsContext : MVCSContextBase
     {
-        public SignalsContext(MonoBehaviour view) : base(view)
+        public GameSignalsContext(MonoBehaviour view) : base(view)
         {
         }
 
@@ -32,7 +32,7 @@ namespace ctac
             base.Start();
 
             var contextViewGo = base.contextView as GameObject;
-            var signalRoot = contextViewGo == null ? null : contextViewGo.GetComponent<SignalsRoot>();
+            var signalRoot = contextViewGo == null ? null : contextViewGo.GetComponent<GameSignalsRoot>();
 
             if (signalRoot == null || String.IsNullOrEmpty(signalRoot.startSignalName)){
                 var startSignal = injectionBinder.GetInstance<StartSignal>();
@@ -57,6 +57,9 @@ namespace ctac
 
         protected override void mapBindings()
         {
+            var contextViewGo = base.contextView as GameObject;
+            injectionBinder.Bind<GameObject>().To(contextViewGo).ToName(InjectionKeys.GameSignalsRoot);
+
             injectionBinder.Bind<IDebugService>().To<UnityDebugService>().ToSingleton();
             injectionBinder.Bind<ICrossContextInjectionBinder>().To(injectionBinder);
 
@@ -142,9 +145,13 @@ namespace ctac
             commandBinder.GetBinding<GamelistLoggedInSignal>().To<GamelistCreateGameCommand>().Once();
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
-            commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
             commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
 
+        }
+
+        protected override void postBindings()
+        {
+            GameObject.DontDestroyOnLoad(base.contextView as GameObject);
         }
     }
 }

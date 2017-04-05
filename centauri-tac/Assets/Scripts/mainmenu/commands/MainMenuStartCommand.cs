@@ -10,10 +10,6 @@ namespace ctac
 {
     public class MainMenuStartCommand : Command
     {
-
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public ConfigModel config { get; set; }
 

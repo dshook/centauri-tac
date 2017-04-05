@@ -7,5 +7,6 @@
     public class CurrentGameModel
     {
         public GameMetaModel game { get; set; }
+        public SocketKey me { get; set; }
     }
 }

@@ -89,6 +89,7 @@ namespace ctac
 
         private void onCardsClicked()
         {
+            StartCoroutine("LoadLevel", "pieces");
         }
 
         private void onOptionsClicked()
@@ -149,7 +150,7 @@ namespace ctac
         {
             if (gameLogin.status)
             {
-                StartCoroutine("LoadLevel");
+                StartCoroutine("LoadLevel", "1");
             }
             else
             {
@@ -158,10 +159,10 @@ namespace ctac
             }
         }
 
-        public IEnumerator LoadLevel()
+        public IEnumerator LoadLevel(string level)
         {
             view.SetButtonsActive(false);
-            AsyncOperation async = SceneManager.LoadSceneAsync("1", LoadSceneMode.Single);
+            AsyncOperation async = SceneManager.LoadSceneAsync(level, LoadSceneMode.Single);
 
             while (async.progress < 0.9f)
             {

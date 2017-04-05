@@ -14,8 +14,9 @@ namespace ctac
         [Inject] public ConfigModel config { get; set; }
 
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public JoinGameSignal joinGame { get; set; }
+        [Inject] public CurrentGameModel currentGame { get; set; }
 
-        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardsModel cards { get; set; }
         [Inject] public DecksModel decks { get; set; }
@@ -27,7 +28,7 @@ namespace ctac
         public override void Execute()
         {
             //Starting up the game not from main menu
-            if (players.Me == null)
+            if (currentGame == null || currentGame.game == null)
             {
                 //override config from settings on disk if needed
                 string configContents = File.ReadAllText("./config.json");
@@ -39,6 +40,11 @@ namespace ctac
                 }
 
                 serverAuthSignal.Dispatch();
+            }
+            else
+            {
+                //let the server know we're ready
+                joinGame.Dispatch(currentGame.me);
             }
 
             //fetch map from disk, eventually comes from server

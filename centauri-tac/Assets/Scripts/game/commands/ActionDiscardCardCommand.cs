@@ -1,16 +1,11 @@
 using ctac.signals;
 using strange.extensions.command.impl;
-using strange.extensions.context.api;
 using System.Linq;
-using UnityEngine;
 
 namespace ctac
 {
     public class ActionDiscardCardCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
         [Inject]
         public IDebugService debug { get; set; }
 

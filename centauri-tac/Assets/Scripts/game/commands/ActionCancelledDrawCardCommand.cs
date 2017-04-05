@@ -8,7 +8,7 @@ namespace ctac
 {
     public class ActionCancelledDrawCardCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject]

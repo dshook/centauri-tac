@@ -36,12 +36,6 @@ export default class SpawnDeckProcessor
         randCardId = _.sample(testingCards);
       }
 
-      //add the credit at the right spot
-      if(action.startingPlayerId != playerId && action.initialDrawAmount - 1 === c){
-        let credit = this.cardDirectory.newFromId(44);
-        this.cardState.addToDeck(playerId, credit);
-      }
-
       let cardClone = this.cardDirectory.newFromId(randCardId);
 
       this.cardState.addToDeck(playerId, cardClone);

@@ -2,13 +2,13 @@ using strange.extensions.context.impl;
 
 namespace ctac
 {
-    public class SignalsRoot : ContextView
+    public class GameSignalsRoot : ContextView
     {
         public string startSignalName;
 
         void Awake()
         {
-            context = new SignalsContext(this);
+            context = new GameSignalsContext(this);
         }
     }
 }

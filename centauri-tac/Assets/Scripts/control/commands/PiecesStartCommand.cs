@@ -1,10 +1,8 @@
 using UnityEngine;
-using strange.extensions.context.api;
 using strange.extensions.command.impl;
 using System.IO;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using ctac.signals;
 using System;
 using System.Linq;
 
@@ -12,11 +10,6 @@ namespace ctac
 {
     public class PiecesStartCommand : Command
     {
-
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
-
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public GamePlayersModel players { get; set; }

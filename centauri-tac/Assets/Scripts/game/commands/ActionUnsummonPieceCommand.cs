@@ -1,12 +1,14 @@
 using ctac.signals;
 using strange.extensions.command.impl;
-using strange.extensions.context.api;
 using UnityEngine;
 
 namespace ctac
 {
     public class ActionUnsummonPieceCommand : Command
     {
+        [Inject(InjectionKeys.GameSignalsRoot)]
+        public GameObject contextView { get; set; }
+
         [Inject] public SocketKey socketKey { get; set; }
 
         [Inject] public UnsummonPieceModel unsummonedPiece { get; set; }
@@ -36,10 +38,6 @@ namespace ctac
         public IPieceService pieceService { get; set; }
         [Inject]
         public ICardService cardService { get; set; }
-
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
-
 
         public override void Execute()
         {

@@ -11,7 +11,7 @@ namespace ctac
         [Inject]
         public ChooseModel chooseModel { get; set; }
 
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject] public IDebugService debug { get; set; }

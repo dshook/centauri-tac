@@ -92,11 +92,11 @@ namespace ctac
         internal void enableButtons()
         {
             playButton.interactable = true;
-            //cardsButton.interactable = true;
+            cardsButton.interactable = true;
             //optionsButton.interactable = true;
 
             playText.color = playButton.colors.normalColor;
-            //cardsText.color = cardsButton.colors.normalColor;
+            cardsText.color = cardsButton.colors.normalColor;
             //optionsText.color = optionsButton.colors.normalColor;
         }
 
