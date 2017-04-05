@@ -12,6 +12,7 @@ namespace ctac
     {
         public PersistentSignalsContext(MonoBehaviour view) : base(view)
         {
+
         }
 
         // Unbind the default EventCommandBinder and rebind the SignalCommandBinder
@@ -25,8 +26,17 @@ namespace ctac
         // Override Start so that we can fire the StartSignal 
         override public IContext Start()
         {
-            base.Start();
+            //check to see if this is a duplicate persistent context (from loading another scene into this one)
+            //if it is, destroy this one before it gets a chance to wreck havok
+            var contexts = GameObject.FindGameObjectsWithTag("PersistentContext");
+            if (contexts.Length > 1)
+            {
+                GameObject.DestroyImmediate(base.contextView as GameObject);
+                return null;
+            }
 
+            base.Start();
+            
             //no start signal dispatching here, should be done in a scene specific context
             return this;
         }
