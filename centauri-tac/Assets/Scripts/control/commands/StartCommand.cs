@@ -13,6 +13,8 @@ namespace ctac
 
         [Inject] public ConfigModel config { get; set; }
 
+
+        [Inject] public TryLoginSignal tryLoginSignal { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public JoinGameSignal joinGame { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
@@ -39,7 +41,19 @@ namespace ctac
                     diskConfig.CopyProperties(config);
                 }
 
-                serverAuthSignal.Dispatch();
+#if DEBUG
+                if (config.players.Count > 0)
+                {
+                    foreach (var player in config.players)
+                    {
+                        tryLoginSignal.Dispatch(new Credentials() { username = player.username, password = player.password });
+                    }
+                }
+                else
+                {
+                    serverAuthSignal.Dispatch();
+                }
+#endif
             }
             else
             {
