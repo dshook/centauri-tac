@@ -25,9 +25,9 @@ namespace ctac
             view.clickSignal.RemoveListener(onLeaveClicked);
         }
 
-        private void onLeaveClicked()
+        private void onLeaveClicked(bool returnToMainMenu)
         {
-            leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"));
+            leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"), returnToMainMenu);
         }
 
     }

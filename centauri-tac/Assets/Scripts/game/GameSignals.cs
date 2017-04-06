@@ -15,7 +15,7 @@ namespace ctac.signals
     [Singleton] public class PlayerPartSignal : Signal<JoinOrConnectModel, SocketKey> { }
     [Singleton] public class PlayerDisconnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
-    [Singleton] public class LeaveGameSignal : Signal<SocketKey> { }
+    [Singleton] public class LeaveGameSignal : Signal<SocketKey, bool> { }
 
     [Singleton] public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
     [Singleton] public class MessageSignal : Signal<MessageModel> { }
