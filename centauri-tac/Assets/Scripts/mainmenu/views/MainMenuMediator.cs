@@ -16,6 +16,7 @@ namespace ctac
         [Inject] public NeedLoginSignal needLogin { get; set; }
         [Inject] public AuthLoggedInSignal authLoggedIn { get; set; }
         [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
+        [Inject] public AuthLogoutSignal authLogout { get; set; }
 
         [Inject] public AuthMatchmakerSignal authMatchmaker { get; set; }
         [Inject] public MatchmakerLoggedInSignal mmLoggedIn { get; set; }
@@ -36,6 +37,7 @@ namespace ctac
             view.clickOptionsSignal.AddListener(onOptionsClicked);
             view.clickAboutSignal.AddListener(onAboutClicked);
             view.clickLeaveSignal.AddListener(onLeaveClicked);
+            view.clickLogoutSignal.AddListener(onLogoutClicked);
 
             authLoggedIn.AddListener(onLogin);
             needLogin.AddListener(onNeedLogin);
@@ -55,6 +57,7 @@ namespace ctac
             view.clickOptionsSignal.RemoveListener(onOptionsClicked);
             view.clickAboutSignal.RemoveListener(onAboutClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
+            view.clickLogoutSignal.RemoveListener(onLogoutClicked);
 
             authLoggedIn.RemoveListener(onLogin);
             needLogin.RemoveListener(onNeedLogin);
@@ -108,9 +111,15 @@ namespace ctac
             Application.Quit();
         }
 
+        private void onLogoutClicked()
+        {
+            authLogout.Dispatch();
+        }
+
         private void onNeedLogin()
         {
             view.SetButtonsActive(false);
+            view.SetUsername("");
         }
 
         private void onLogin(LoginStatusModel model, SocketKey key)

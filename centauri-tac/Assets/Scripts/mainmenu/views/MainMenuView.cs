@@ -13,20 +13,23 @@ namespace ctac
         public Signal clickOptionsSignal = new Signal();
         public Signal clickAboutSignal = new Signal();
         public Signal clickLeaveSignal = new Signal();
+        public Signal clickLogoutSignal = new Signal();
 
         public Button playButton;
         public Button cardsButton;
         public Button optionsButton;
         public Button aboutButton;
         public Button leaveButton;
+        public Button logoutButton;
 
+        public GameObject usernamePanel;
         public TextMeshProUGUI username;
         public TextMeshProUGUI queueText;
 
-        public TextMeshProUGUI playText;
-        public TextMeshProUGUI cardsText;
-        public TextMeshProUGUI optionsText;
-        public TextMeshProUGUI aboutText;
+        private TextMeshProUGUI playText;
+        private TextMeshProUGUI cardsText;
+        private TextMeshProUGUI optionsText;
+        private TextMeshProUGUI aboutText;
 
         internal void init()
         {
@@ -35,6 +38,7 @@ namespace ctac
             optionsButton.onClick.AddListener(() => clickOptionsSignal.Dispatch());
             aboutButton.onClick.AddListener(() => clickAboutSignal.Dispatch());
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
+            logoutButton.onClick.AddListener(() => clickLogoutSignal.Dispatch());
 
             playText = playButton.GetComponentInChildren<TextMeshProUGUI>();
             cardsText = cardsButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -42,6 +46,7 @@ namespace ctac
             aboutText = aboutButton.GetComponentInChildren<TextMeshProUGUI>();
 
             username.text = "";
+            usernamePanel.SetActive(false);
 
             //disable buttons initially until the login is settled
             playButton.interactable = false;
@@ -87,6 +92,7 @@ namespace ctac
         internal void SetUsername(string text)
         {
             username.text = text;
+            usernamePanel.SetActive(!string.IsNullOrEmpty(text));
         }
 
         internal void enableButtons()

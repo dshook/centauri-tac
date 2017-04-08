@@ -1,0 +1,40 @@
+fileFormatVersion: 2
+guid: 47e58046746f4f24383d36eef76f082d
+timeCreated: 1491682783
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg id=\"Layer_6\" data-name=\"Layer 6\" xmlns=\"http://www.w3.org/2000/svg\"
+    width=\"200\" height=\"200\" viewBox=\"0 0 200 200\">\r\n  <defs>\r\n    <style>\r\n
+    \     .cls-1, .cls-2 {\r\n        fill: #fff;\r\n      }\r\n\r\n      .cls-1 {\r\n
+    \       stroke: #fff;\r\n        stroke-linecap: round;\r\n        stroke-miterlimit:
+    8;\r\n        stroke-width: 10px;\r\n      }\r\n    </style>\r\n  </defs>\r\n
+    \ <title>logout</title>\r\n  <circle cx=\"100\" cy=\"100\" r=\"100\"/>\r\n  <g>\r\n
+    \   <line class=\"cls-1\" x1=\"100\" y1=\"54.33\" x2=\"100\" y2=\"180.49\"/>\r\n
+    \   <path class=\"cls-2\" d=\"M62.76,143.95h0a5,5,0,0,1,7.08.26l26.49,28.51a5,5,0,0,0,7.33,0l26.5-28.51a5,5,0,0,1,7.08-.25h0a5,5,0,0,1,.25,7.07l-33.83,36.38a5,5,0,0,1-7.33,0L62.51,151A5,5,0,0,1,62.76,143.95Z\"
+    transform=\"translate(0 0)\"/>\r\n  </g>\r\n  <path class=\"cls-2\" d=\"M158.22,163.22a5,5,0,0,1-3.54-8.54A77.33,77.33,0,1,0,22.67,100a76.83,76.83,0,0,0,22.65,54.68,5,5,0,0,1-7.07,7.07A87.33,87.33,0,1,1,187.33,100a86.76,86.76,0,0,1-25.58,61.75A5,5,0,0,1,158.22,163.22Z\"
+    transform=\"translate(0 0)\"/>\r\n  <g id=\"Layer_4\" data-name=\"Layer 4\">\r\n
+    \   <circle class=\"cls-2\" cx=\"100\" cy=\"33\" r=\"4.38\"/>\r\n    <circle class=\"cls-2\"
+    cx=\"82.66\" cy=\"35.28\" r=\"4.38\" transform=\"translate(-6.32 22.6) rotate(-15)\"/>\r\n
+    \   <circle class=\"cls-2\" cx=\"66.5\" cy=\"41.98\" r=\"4.38\" transform=\"translate(-12.08
+    38.87) rotate(-30)\"/>\r\n    <circle class=\"cls-2\" cx=\"52.62\" cy=\"52.62\"
+    r=\"4.38\" transform=\"translate(-21.8 52.62) rotate(-45)\"/>\r\n    <circle class=\"cls-2\"
+    cx=\"41.98\" cy=\"66.5\" r=\"4.38\" transform=\"translate(-36.6 69.6) rotate(-60)\"/>\r\n
+    \   <circle class=\"cls-2\" cx=\"35.28\" cy=\"82.66\" r=\"4.38\" transform=\"translate(-53.69
+    95.35) rotate(-75)\"/>\r\n    <circle class=\"cls-2\" cx=\"33\" cy=\"100\" r=\"4.38\"/>\r\n
+    \   <circle class=\"cls-2\" cx=\"35.28\" cy=\"117.34\" r=\"4.38\" transform=\"translate(-29.17
+    13.13) rotate(-15)\"/>\r\n    <circle class=\"cls-2\" cx=\"41.98\" cy=\"133.5\"
+    r=\"4.38\" transform=\"translate(-61.13 38.87) rotate(-30)\"/>\r\n    <circle
+    class=\"cls-2\" cx=\"158.02\" cy=\"133.5\" r=\"4.38\" transform=\"translate(-36.6
+    203.6) rotate(-60)\"/>\r\n    <circle class=\"cls-2\" cx=\"164.72\" cy=\"117.34\"
+    r=\"4.38\" transform=\"translate(8.74 246.08) rotate(-75)\"/>\r\n    <circle class=\"cls-2\"
+    cx=\"167\" cy=\"100\" r=\"4.38\"/>\r\n    <circle class=\"cls-2\" cx=\"164.72\"
+    cy=\"82.66\" r=\"4.38\" transform=\"translate(-15.78 45.45) rotate(-15)\"/>\r\n
+    \   <circle class=\"cls-2\" cx=\"158.02\" cy=\"66.5\" r=\"4.38\" transform=\"translate(-12.08
+    87.92) rotate(-30)\"/>\r\n    <circle class=\"cls-2\" cx=\"147.38\" cy=\"52.62\"
+    r=\"4.38\" transform=\"translate(5.95 119.62) rotate(-45)\"/>\r\n    <circle class=\"cls-2\"
+    cx=\"133.5\" cy=\"41.98\" r=\"4.38\" transform=\"translate(30.4 136.6) rotate(-60)\"/>\r\n
+    \   <circle class=\"cls-2\" cx=\"117.34\" cy=\"35.28\" r=\"4.38\" transform=\"translate(52.89
+    139.49) rotate(-75)\"/>\r\n  </g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 

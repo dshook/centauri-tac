@@ -173,6 +173,7 @@ namespace ctac
             if (ws == null)
             {
                 debug.LogWarning("Trying to disconnect from disconnected socket", key);
+                return;
             }
 
             ws.Close(CloseStatusCode.Normal, "Requested Disconnect");
