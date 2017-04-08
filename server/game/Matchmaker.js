@@ -25,8 +25,9 @@ export default class Matchmaker
    */
   async queuePlayer(playerId, client)
   {
-    if (this.queue.find(x => x === playerId)) {
-      this.log.info('not adding player %s, already in the queue');
+    this.log.info('Trying to find player %s in queue %j', playerId, this.queue);
+    if (this.queue.find(x => x.playerId === playerId)) {
+      this.log.info('not adding player %s, already in the queue', playerId);
       return;
     }
 

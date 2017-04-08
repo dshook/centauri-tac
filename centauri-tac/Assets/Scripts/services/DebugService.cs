@@ -75,7 +75,7 @@ namespace ctac
         //when you just gotta go
         public void Dump()
         {
-            string path = "../client_log.json";
+            string path = "./client_log.json";
             File.WriteAllText(path, JsonConvert.SerializeObject(entries));
         }
 
