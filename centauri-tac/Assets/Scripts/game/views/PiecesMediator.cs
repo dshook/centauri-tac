@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
         [Inject] public PieceArmorChangedSignal pieceArmorChanged { get; set; }
         [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
 
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
@@ -55,6 +56,7 @@ namespace ctac
             turnEnded.AddListener(onTurnEnded);
             pieceDied.AddListener(onPieceDied);
             pieceCharmed.AddListener(onCharmed);
+            gameFinished.AddListener(onGameFinished);
 
             startTarget.AddListener(onStartSelectTarget);
             targetSelected.AddListener(onTargetSelected);
@@ -80,6 +82,7 @@ namespace ctac
             turnEnded.RemoveListener(onTurnEnded);
             pieceDied.RemoveListener(onPieceDied);
             pieceCharmed.RemoveListener(onCharmed);
+            gameFinished.RemoveListener(onGameFinished);
 
             startTarget.RemoveListener(onStartSelectTarget);
             targetSelected.RemoveListener(onTargetSelected);
@@ -107,6 +110,7 @@ namespace ctac
                 new PieceView.MoveAnim()
                 {
                     piece = view.piece,
+                    anim = view.anim,
                     destination = pieceMoved.to.gameObject.transform.position,
                     finishedMoving = pieceFinishedMoving,
                     isTeleport = pieceMoved.isTeleport
@@ -116,17 +120,22 @@ namespace ctac
 
         public void onAttacked(AttackPieceModel attackPiece)
         {
-            var piece = pieces.Piece(attackPiece.attackingPieceId);
-            if(piece == null) return;
-
-            var view = piece.pieceView;
+            var attacker = pieces.Piece(attackPiece.attackingPieceId);
+            if(attacker == null) return;
 
             //TODO: Add more animation
             animationQueue.Add(
                 new PieceView.RotateAnim()
                 {
-                    piece = view,
+                    piece = attacker.pieceView,
                     destAngle = DirectionAngle.angle[attackPiece.direction]
+                }
+            );
+            animationQueue.Add(
+                new PieceView.EventTriggerAnim()
+                {
+                    piece = attacker.pieceView,
+                    eventName = "onAttack"
                 }
             );
 
@@ -177,6 +186,17 @@ namespace ctac
 
             var view = piece.pieceView;
             view.piece.health = hpChange.newCurrentHealth;
+
+            if (hpChange.change < 0)
+            {
+                animationQueue.Add(
+                    new PieceView.EventTriggerAnim()
+                    {
+                        piece = view,
+                        eventName = "onHit"
+                    }
+                );
+            }
 
             var numberSplat = loader.Load<GameObject>("NumberSplat");
             animationQueue.Add(
@@ -447,6 +467,7 @@ namespace ctac
                     new PieceView.DieAnim()
                     {
                         piece = pieceModel,
+                        anim = pieceModel.pieceView.anim,
                         pieceDied = pieceDied
                     }
                 );
@@ -517,6 +538,22 @@ namespace ctac
         private void onPieceDied(PieceModel p)
         {
             checkEnemiesInRange();
+        }
+
+        private void onGameFinished(GameFinishedModel gf)
+        {
+            foreach (var piece in pieces.Pieces)
+            {
+                string eventName = piece.playerId == gf.winnerId ? "onWin" : "onLose";
+
+                animationQueue.Add(
+                    new PieceView.EventTriggerAnim()
+                    {
+                        piece = piece.pieceView,
+                        eventName = eventName
+                    }
+                );
+            }
         }
 
         private void checkEnemiesInRange()

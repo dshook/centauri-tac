@@ -12,7 +12,7 @@ namespace ctac
 
     public class MapCreatorService : IMapCreatorService
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject]

@@ -23,4 +23,12 @@ namespace ctac
             "playMinion","death","damaged","healed","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
         };
     }
+
+    public enum InjectionKeys
+    {
+        PersistentSignalsRoot,
+        PiecesSignalsRoot,
+        GameSignalsRoot,
+        MainMenuSignalsRoot,
+    }
 }

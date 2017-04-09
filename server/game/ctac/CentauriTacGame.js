@@ -7,7 +7,6 @@ import DrawCard from './actions/DrawCard.js';
 import SpawnDeck from './actions/SpawnDeck.js';
 import Position from './models/Position.js';
 import Direction from './models/Direction.js';
-import _ from 'lodash';
 
 /**
  * Root controller deal for the game. Manage's state
@@ -44,7 +43,6 @@ export default class CentauriTacGame
       await this.host.addController(GameController);
 
       // start first turn with random player
-      const startingId = _.sample(this.players).id;
       this.queue.push(new PassTurn());
 
       // spawn game pieces for two players
@@ -55,16 +53,15 @@ export default class CentauriTacGame
       }
 
       //spawn both player decks and init hands
+      let startingCards = 4;
       for(let player of this.players){
-        let startingCards = player.id === startingId ? 3 : 4;
         this.playerResourceState.init(player.id);
         this.cardState.initPlayer(player.id);
-        this.queue.push(new SpawnDeck(player.id, startingId, startingCards));
+        this.queue.push(new SpawnDeck(player.id, startingCards));
       }
 
       //draw initial cards
       for(let player of this.players){
-        let startingCards = player.id === startingId ? 3 : 4;
         for(let c = 0; c < startingCards; c++){
           this.queue.push(new DrawCard(player.id));
         }

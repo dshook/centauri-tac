@@ -2,7 +2,7 @@
 	"cardTemplateId": 64,
 	"name": "Edrich Portal",
 	"description": "Teleport a friendly minion 3 spaces",
-	"cost": 4,
+	"cost": 2,
 	"tags": ["Spell"],
 	"eventcode": "playSpell{ Move(TARGET & FRIENDLY & MINION, CURSOR & Area(Square, 3, TARGET), true) }"
 }

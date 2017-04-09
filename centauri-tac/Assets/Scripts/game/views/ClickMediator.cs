@@ -16,13 +16,15 @@ namespace ctac
         [Inject] public RotatePieceSignal rotatePiece { get; set; }
 
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public UpdateTargetSignal updateTargetSignal { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
 
         [Inject] public StartSelectAbilityTargetSignal startSelectAbilityTarget { get; set; }
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
         [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
+
+        [Inject] public PieceClickedSignal pieceClicked { get; set; }
+        [Inject] public TileClickedSignal tileClicked { get; set; }
 
         [Inject] public MessageSignal message { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -37,25 +39,44 @@ namespace ctac
         public override void OnRegister()
         {
             pieceSelected.AddListener(onPieceSelected);
+
             startSelectTarget.AddListener(onStartTarget);
             cancelSelectTarget.AddListener(onCancelTarget);
+            selectTarget.AddListener(onSelectTarget);
+
             startSelectAbilityTarget.AddListener(onStartAbilityTarget);
+            cancelSelectAbilityTarget.AddListener(onCancelAbilityTarget);
+            selectAbilityTarget.AddListener(onSelectAbilityTarget);
+
             view.clickSignal.AddListener(onClick);
             view.init(raycastModel);
         }
 
-        private PieceModel selectedPiece = null;
+        PieceModel selectedPiece = null;
+        TargetModel cardTarget = null;
+        StartAbilityTargetModel abilityTarget = null;
 
         public override void onRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
+
             startSelectTarget.RemoveListener(onStartTarget);
             cancelSelectTarget.RemoveListener(onCancelTarget);
+            selectTarget.RemoveListener(onSelectTarget);
+
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
+            cancelSelectAbilityTarget.RemoveListener(onCancelAbilityTarget);
+            selectAbilityTarget.RemoveListener(onSelectAbilityTarget);
         }
 
+        //For clicking anything other than a card
         private void onClick(ClickModel clickModel)
         {
+            if (clickModel.isUp)
+            {
+                pieceDragging.Dispatch(null);
+            }
+
             if (clickModel.clickedObject != null)
             {
                 //first check to see if the tile we clicked on has a piece, 
@@ -75,29 +96,22 @@ namespace ctac
                     pieceView = clickModel.piece;
                 }
 
+                //TODO: come back and clean up some of this heavily nested shieet
                 if (pieceView != null)
                 {
-                    pieceDragging.Dispatch(clickModel.isUp ? null : pieceView.piece);
-                    if (cardTarget != null)
+                    if (pieceView.piece.tags.Contains(Constants.targetPieceTag))
                     {
-                        debug.Log("Selected target");
-                        cardTarget.selectedPiece = pieceView.piece;
-
-                        var continueTarget = updateTarget(map.tiles.Get(pieceView.piece.tilePosition));
-
-                        if (continueTarget && cardTarget.targetFulfilled)
-                        {
-                            selectTarget.Dispatch(cardTarget);
-                            cardTarget = null;
-                            pieceSelected.Dispatch(null);
-                        }
+                        //clicking on phantom piece shouldn't do anything
+                        return;
                     }
-                    else if (abilityTarget != null)
+                    pieceClicked.Dispatch(pieceView);
+                    if (!clickModel.isUp)
                     {
-                        debug.Log("Selected ability target");
-                        selectAbilityTarget.Dispatch(abilityTarget, pieceView.piece);
-                        abilityTarget = null;
-                        pieceSelected.Dispatch(null);
+                        pieceDragging.Dispatch(pieceView.piece);
+                    }
+
+                    if (cardTarget != null || abilityTarget != null)
+                    {
                     }
                     else if (pieceView.piece.currentPlayerHasControl && !clickModel.isUp)
                     {
@@ -179,84 +193,57 @@ namespace ctac
                 {
                     var gameTile = clickModel.tile;
 
-                    if (cardTarget != null && cardTarget.area != null)
+                    if (pieceView == null)
                     {
-                        if (cardTarget.area.areaTiles != null && cardTarget.area.areaTiles.Count > 0)
-                        {
-                            //verify tile selected is in area
-                            if (!cardTarget.area.areaTiles.Contains(gameTile.position.ToPositionModel()))
-                            {
-                                debug.Log("Cancelling target for outside area");
-                                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                                return;
-                            }
-                        }
+                        //only dispatch tile clicked if there wasn't a piece clicked so they're not duplicated and ambiguous
+                        tileClicked.Dispatch(gameTile);
+                    }
 
-                        var continueTargeting = updateTarget(gameTile);
-
-                        if (continueTargeting && cardTarget.targetFulfilled)
-                        {
-                            selectTarget.Dispatch(cardTarget);
-                            cardTarget = null;
-                        }
-                    } else if (
-                        FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
+                    if (
+                        cardTarget == null 
+                        && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
                         && selectedPiece != null
                         && selectedPiece.canMove
                         )
                     {
                         movePiece.Dispatch(selectedPiece, gameTile);
                         pieceSelected.Dispatch(null);
-                    } else if (
-                        cardTarget != null 
-                        && cardTarget.targetingCard.needsTargeting(possibleActions)
-                        && pieceView == null
-                    ) {
-                        debug.Log("Cancelling targeting from bad selection");
-                        cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                        cardTarget = null;
-                    } 
+                    }
                 }
             }
             else
             {
+                pieceClicked.Dispatch(null);
+                tileClicked.Dispatch(null);
                 pieceSelected.Dispatch(null);
-                pieceDragging.Dispatch(null);
-                if (cardTarget != null)
-                {
-                    debug.Log("Cancelling targeting");
-                    cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                    cardTarget = null;
-                }
-                else if (abilityTarget != null)
-                {
-                    debug.Log("Cancelling targeting");
-                    cancelSelectAbilityTarget.Dispatch(abilityTarget.targetingPiece);
-                    abilityTarget = null;
-                }
-            }
-
-            if (clickModel.isUp)
-            {
                 pieceDragging.Dispatch(null);
             }
         }
 
-        TargetModel cardTarget { get; set; }
         private void onStartTarget(TargetModel model)
         {
             cardTarget = model;
         }
-
         private void onCancelTarget(CardModel card)
         {
             cardTarget = null;
         }
+        private void onSelectTarget(TargetModel target)
+        {
+            cardTarget = null;
+        }
 
-        StartAbilityTargetModel abilityTarget { get; set; }
         private void onStartAbilityTarget(StartAbilityTargetModel model)
         {
             abilityTarget = model;
+        }
+        private void onCancelAbilityTarget(PieceModel model)
+        {
+            abilityTarget = null;
+        }
+        private void onSelectAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
+        {
+            abilityTarget = null;
         }
 
         private void onPieceSelected(PieceModel pieceSelected)
@@ -273,30 +260,6 @@ namespace ctac
             }
         }
 
-        private bool updateTarget(Tile tile)
-        {
-            if(cardTarget == null) return false;
-
-            if(cardTarget.area == null) return true;
-
-            if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
-            {
-                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                return false;
-            }
-
-            if (!cardTarget.selectedPosition.HasValue)
-            {
-                cardTarget.selectedPosition = tile.position;
-            }
-            else if(cardTarget.selectedPosition != tile.position)
-            {
-                cardTarget.selectedPivotPosition = tile.position;
-            }
-            updateTargetSignal.Dispatch(cardTarget);
-
-            return true;
-        }
     }
 }
 

@@ -12,6 +12,9 @@ namespace ctac
 
         [Inject] public EndTurnSignal endTurnSignal { get; set; }
 
+        [Inject] public GamePausedSignal pauseSignal { get; set; }
+        [Inject] public GameResumedSignal resumeSignal { get; set; }
+
         [Inject] public GameTurnModel gameTurn { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CardsModel cards { get; set; }
@@ -28,6 +31,8 @@ namespace ctac
         {
             view.clickEndTurnSignal.AddListener(onTurnClicked);
             view.clickSwitchSidesSignal.AddListener(onSwitchClicked);
+            view.clickPauseSignal.AddListener(onPauseClicked);
+            view.clickResumeSignal.AddListener(onResumeClicked);
             turnEnded.AddListener(onTurnEnded);
             onStartSettled.AddListener(onStartSet);
             view.init();
@@ -71,6 +76,18 @@ namespace ctac
             var opponent = players.Opponent(players.Me.id);
             players.SetMeClient(opponent.clientId);
             turnEnded.Dispatch(new GameTurnModel() { currentTurn = gameTurn.currentTurn, isClientSwitch = true });
+        }
+
+        private void onPauseClicked()
+        {
+            socket.Request(players.Me.clientId, "game", "pauseGame");
+            pauseSignal.Dispatch();
+        }
+
+        private void onResumeClicked()
+        {
+            socket.Request(players.Me.clientId, "game", "resumeGame");
+            resumeSignal.Dispatch();
         }
 
         private void onTurnEnded(GameTurnModel turns)

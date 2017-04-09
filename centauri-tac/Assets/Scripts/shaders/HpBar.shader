@@ -1,4 +1,6 @@
-﻿Shader "Custom/HpBar"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/HpBar"
 {
     Properties
     {
@@ -39,7 +41,7 @@
             Frag vert (Vertex v)
             {
                 Frag o;
-                o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 return o;
             }

@@ -8,15 +8,14 @@ namespace ctac
         public ISocketService socketService { get; set; }
 
         [Inject]
-        public PlayersModel playersModel { get; set; } 
+        public PlayerModel playerModel { get; set; } 
 
         [Inject]
         public SocketKey key { get; set; }
 
         public override void Execute()
         {
-            var player = playersModel.GetByClientId(key.clientId);
-            socketService.Request(key.clientId, "matchmaker", "token", player.token);
+            socketService.Request(key.clientId, "matchmaker", "token", playerModel.token);
         }
 
     }

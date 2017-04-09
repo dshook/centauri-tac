@@ -29,9 +29,20 @@ namespace TMPro.EditorUtilities
         }
 
 
+        // Select the currently assigned material or material preset.
+        [MenuItem("CONTEXT/Material/Select Material", false, 500)]
+        static void SelectMaterial(MenuCommand command)
+        {
+            Material mat = command.context as Material;
+
+            // Select current material
+            EditorUtility.FocusProjectWindow();
+            EditorGUIUtility.PingObject(mat);
+        }
+
+
         // Add a Context Menu to allow easy duplication of the Material.
-        //[MenuItem("CONTEXT/MaterialComponent/Duplicate Material", false)]
-        [MenuItem("CONTEXT/Material/Duplicate Material", false)]
+        [MenuItem("CONTEXT/Material/Create Material Preset", false)]
         static void DuplicateMaterial(MenuCommand command)
         {
             // Get the type of text object
@@ -77,6 +88,10 @@ namespace TMPro.EditorUtilities
                     }
                 }
             }
+
+            // Ping newly created Material Preset.
+            EditorUtility.FocusProjectWindow();
+            EditorGUIUtility.PingObject(duplicate);
         }
 
 
@@ -212,7 +227,7 @@ namespace TMPro.EditorUtilities
                 Undo.RecordObject(mat, "Paste Texture");
 
                 ShaderUtilities.GetShaderPropertyIDs(); // Make sure we have valid Property IDs
-                mat.mainTexture = m_copiedAtlasProperties.mainTexture;
+                mat.SetTexture(ShaderUtilities.ID_MainTex, m_copiedAtlasProperties.GetTexture(ShaderUtilities.ID_MainTex));
                 mat.SetFloat(ShaderUtilities.ID_GradientScale, m_copiedAtlasProperties.GetFloat(ShaderUtilities.ID_GradientScale));
                 mat.SetFloat(ShaderUtilities.ID_TextureWidth, m_copiedAtlasProperties.GetFloat(ShaderUtilities.ID_TextureWidth));
                 mat.SetFloat(ShaderUtilities.ID_TextureHeight, m_copiedAtlasProperties.GetFloat(ShaderUtilities.ID_TextureHeight));
@@ -221,7 +236,7 @@ namespace TMPro.EditorUtilities
             {
                 Undo.RecordObject(mat, "Paste Texture");
 
-                mat.mainTexture = m_copiedTexture;
+                mat.SetTexture(ShaderUtilities.ID_MainTex, m_copiedTexture);
             }
 
             //DestroyImmediate(m_copiedAtlasProperties);
@@ -234,10 +249,22 @@ namespace TMPro.EditorUtilities
         static void ExtractAtlas(MenuCommand command)
         {
             TMP_FontAsset font = command.context as TMP_FontAsset;
-            Texture2D tex = Instantiate(font.material.mainTexture) as Texture2D;
 
             string fontPath = AssetDatabase.GetAssetPath(font);
             string texPath = Path.GetDirectoryName(fontPath) + "/" + Path.GetFileNameWithoutExtension(fontPath) + " Atlas.png";
+
+            // Create a Serialized Object of the texture to allow us to make it readable.
+            SerializedObject texprop = new SerializedObject(font.material.GetTexture(ShaderUtilities.ID_MainTex));
+            texprop.FindProperty("m_IsReadable").boolValue = true;
+            texprop.ApplyModifiedProperties();
+
+            // Create a copy of the texture.
+            Texture2D tex = Instantiate(font.material.GetTexture(ShaderUtilities.ID_MainTex)) as Texture2D;
+
+            // Set the texture to not readable again.
+            texprop.FindProperty("m_IsReadable").boolValue = false;
+            texprop.ApplyModifiedProperties();
+
             Debug.Log(texPath);
             // Saving File for Debug
             var pngData = tex.EncodeToPNG();
@@ -248,48 +275,9 @@ namespace TMPro.EditorUtilities
         }
 
 
-        // Context Menus for TMPro Sprite Assets
-        //This function is used for debugging and fixing potentially broken Sprite Asset material links.
-        //[MenuItem("CONTEXT/TMP_SpriteAsset/Update Sprite Material", false, 2000)]
-        //static void UpdateMaterial(MenuCommand command)
+        //[MenuItem("CONTEXT/Asset Creator/Extra", false, 1000)]
+        //static void Extra(MenuCommand command)
         //{
-        //    TMP_SpriteAsset spriteAsset = command.context as TMP_SpriteAsset;
-
-        //    ShaderUtilities.GetShaderPropertyIDs();
-
-        //    if (spriteAsset.material == null)
-        //    {
-        //        // Add a new material
-        //        Shader shader = Shader.Find("TMPro/Sprite");
-        //        Material tempMaterial = new Material(shader);
-        //        tempMaterial.SetTexture(ShaderUtilities.ID_MainTex, spriteAsset.spriteSheet);
-
-        //        spriteAsset.material = tempMaterial;
-        //        tempMaterial.hideFlags = HideFlags.HideInHierarchy;
-        //        AssetDatabase.AddObjectToAsset(tempMaterial, spriteAsset);
-
-
-        //    }
-        //    else
-        //    {
-        //        // Update the existing material
-        //        DestroyImmediate(spriteAsset.material, true);
-
-        //        Shader shader = Shader.Find("TMPro/Sprite");
-        //        Material tempMaterial = new Material(shader);
-        //        tempMaterial.SetTexture(ShaderUtilities.ID_MainTex, spriteAsset.spriteSheet);
-
-                
-        //        tempMaterial.hideFlags = HideFlags.HideInHierarchy;
-        //        AssetDatabase.AddObjectToAsset(tempMaterial, spriteAsset);
-        //        spriteAsset.material = tempMaterial;
-
-        //        //AssetDatabase.Refresh();
-        //    }
-
-        //    AssetDatabase.SaveAssets();
-        //    AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(spriteAsset));  // Re-import font asset to get the new updated version.
-        //    AssetDatabase.Refresh();
 
         //}
 

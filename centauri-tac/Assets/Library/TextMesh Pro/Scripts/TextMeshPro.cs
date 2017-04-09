@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 0.1.54 Beta 3b
+// Release 1.0.55.52.0b8
 
 
 using UnityEngine;
@@ -14,7 +14,6 @@ namespace TMPro
 {
     [ExecuteInEditMode]
     [DisallowMultipleComponent]
-    [RequireComponent(typeof(TextContainer))]
     [RequireComponent(typeof(MeshRenderer))]
     [RequireComponent(typeof(MeshFilter))] 
     [AddComponentMenu("Mesh/TextMeshPro - Text")]
@@ -22,43 +21,6 @@ namespace TMPro
     public partial class TextMeshPro : TMP_Text, ILayoutElement
     {
         // Public Properties and Serializable Properties  
-
-        /// <summary>
-        /// Determines where word wrap will occur.
-        /// </summary>
-        [Obsolete("The length of the line is now controlled by the size of the text container and margins.")]
-        public float lineLength
-        {
-            get { return m_lineLength; }
-            set { Debug.Log("lineLength set called.");  }
-        }
-        #pragma warning disable 0649
-        [SerializeField]
-        private float m_lineLength;
-
-
-        /// <summary>
-        /// Determines the anchor position of the text object.  
-        /// </summary>
-        [Obsolete("The length of the line is now controlled by the size of the text container and margins.")]
-        public TMP_Compatibility.AnchorPositions anchor
-        {
-            get { return m_anchor; }
-            set { m_anchor = value; }
-        }
-        [SerializeField]
-        private TMP_Compatibility.AnchorPositions m_anchor = TMP_Compatibility.AnchorPositions.None;
-
-
-        /// <summary>
-        /// The margins of the text object.
-        /// </summary>
-        public override Vector4 margin
-        {
-            get { return m_margin; }
-            set { if (m_margin == value) return; m_margin = value; this.textContainer.margins = m_margin; ComputeMarginSize(); m_havePropertiesChanged = true; SetVerticesDirty(); }
-        }
-
 
         /// <summary>
         /// Sets the Renderer's sorting Layer ID
@@ -89,20 +51,18 @@ namespace TMPro
 
             set { if (m_autoSizeTextContainer == value) return; m_autoSizeTextContainer = value; if (m_autoSizeTextContainer) { TMP_UpdateManager.RegisterTextElementForLayoutRebuild(this); SetLayoutDirty(); } }
         }
-        private bool m_autoSizeTextContainer;
 
 
         /// <summary>
         /// Returns a reference to the Text Container
         /// </summary>
+        [Obsolete("The TextContainer is now obsolete. Use the RectTransform instead.")]
         public TextContainer textContainer
         {
             get
             {
-                if (m_textContainer == null)
-                    m_textContainer = GetComponent<TextContainer>();
-                
-                return m_textContainer; }
+                return null;
+            }
         }
 
 
@@ -169,21 +129,6 @@ namespace TMPro
             }
         }
 
-
-        /// <summary>
-        /// Contains the bounds of the text object.
-        /// </summary>
-        public override Bounds bounds
-        {
-            get { if (m_mesh != null)
-                    return m_mesh.bounds;
-
-                return new Bounds(); }
-
-            //set { if (_meshExtents != value) havePropertiesChanged = true; _meshExtents = value; }
-        }
-
-
         // MASKING RELATED PROPERTIES
         /// <summary>
         /// Sets the mask type 
@@ -229,7 +174,7 @@ namespace TMPro
         {
             //Debug.Log("SetVerticesDirty()");
 
-            if (m_verticesAlreadyDirty || !this.IsActive())
+            if (m_verticesAlreadyDirty || this == null || !this.IsActive())
                 return;
 
             TMP_UpdateManager.RegisterTextElementForGraphicRebuild(this);
@@ -242,7 +187,10 @@ namespace TMPro
         /// </summary>
         public override void SetLayoutDirty()
         {
-            if (m_layoutAlreadyDirty || !this.IsActive())
+            m_isPreferredWidthDirty = true;
+            m_isPreferredHeightDirty = true;
+
+            if (m_layoutAlreadyDirty || this == null || !this.IsActive())
                 return;
 
             //TMP_UpdateManager.RegisterTextElementForLayoutRebuild(this);
@@ -291,19 +239,7 @@ namespace TMPro
             {
                 if (m_autoSizeTextContainer)
                 {
-                    CalculateLayoutInputHorizontal();
-
-                    if (m_textContainer.isDefaultWidth)
-                    {
-                        m_textContainer.width = m_preferredWidth;
-                    }
-
-                    CalculateLayoutInputVertical();
-
-                    if (m_textContainer.isDefaultHeight)
-                    {
-                        m_textContainer.height = m_preferredHeight;
-                    }
+                    m_rectTransform.sizeDelta = GetPreferredValues(Mathf.Infinity, Mathf.Infinity);
                 }
             }
             else if (update == CanvasUpdate.PreRender)
@@ -330,9 +266,14 @@ namespace TMPro
             //if (!this.IsActive())
             //    return;
 
+            if (m_sharedMaterial == null)
+                return;
+
             if (m_renderer == null) m_renderer = this.renderer;
 
-            m_renderer.sharedMaterial = m_sharedMaterial;
+            // Only update the material if it has changed.
+            if (m_renderer.sharedMaterial.GetInstanceID() != m_sharedMaterial.GetInstanceID())
+                m_renderer.sharedMaterial = m_sharedMaterial;
         }
 
 
@@ -345,6 +286,9 @@ namespace TMPro
             m_isMaskingEnabled = ShaderUtilities.IsMaskingEnabled(m_sharedMaterial);
             m_havePropertiesChanged = true;
             checkPaddingRequired = false;
+
+            // Return if text object is not awake yet.
+            if (m_textInfo == null) return;
 
             // Update sub text objects
             for (int i = 1; i < m_textInfo.materialCount; i++)
@@ -398,6 +342,17 @@ namespace TMPro
 
 
         /// <summary>
+        /// Function to clear the geometry of the Primary and Sub Text objects.
+        /// </summary>
+        public override void ClearMesh(bool updateMesh)
+        {
+            if (m_textInfo.meshInfo[0].mesh == null) m_textInfo.meshInfo[0].mesh = m_mesh;
+
+            m_textInfo.ClearMeshInfo(updateMesh);
+        }
+
+
+        /// <summary>
         /// Function to force the regeneration of the text object.
         /// </summary>
         /// <param name="flags"> Flags to control which portions of the geometry gets uploaded.</param>
@@ -429,7 +384,12 @@ namespace TMPro
                 if (i == 0)
                     mesh = m_mesh;
                 else
+                {
+                    // Clear unused vertices
+                    //m_textInfo.meshInfo[i].ClearUnusedVertices();
+
                     mesh = m_subTextObjects[i].mesh;
+                }
 
                 //mesh.MarkDynamic();
 
@@ -467,7 +427,13 @@ namespace TMPro
                 if (i == 0)
                     mesh = m_mesh;
                 else
+                {
+                    // Clear unused vertices
+                    m_textInfo.meshInfo[i].ClearUnusedVertices();
+
                     mesh = m_subTextObjects[i].mesh;
+                }
+
 
                 //mesh.MarkDynamic();
                 mesh.vertices = m_textInfo.meshInfo[i].vertices;
@@ -518,8 +484,8 @@ namespace TMPro
                 }
 
                 // Set Margins to Infinity
-                m_marginWidth = Mathf.Infinity;
-                m_marginHeight = Mathf.Infinity;
+                m_marginWidth = k_LargePositiveFloat;
+                m_marginHeight = k_LargePositiveFloat;
 
                 if (m_isInputParsingRequired || m_isTextTruncated)
                     ParseInputText();
@@ -567,7 +533,7 @@ namespace TMPro
                     m_enableAutoSizing = false;
                 }
 
-                m_marginHeight = Mathf.Infinity;
+                m_marginHeight = k_LargePositiveFloat;
 
                 GenerateTextMesh();
 

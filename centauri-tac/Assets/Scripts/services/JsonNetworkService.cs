@@ -17,7 +17,7 @@ namespace ctac
 
     public class JsonNetworkService : IJsonNetworkService
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.PersistentSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject]
@@ -31,7 +31,7 @@ namespace ctac
 
         public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
         {
-            MonoBehaviour root = contextView.GetComponent<SignalsRoot>();
+            MonoBehaviour root = contextView.GetComponent<PersistentSignalsRoot>();
             root.StartCoroutine(MakeRequest(componentName, methodName, type, data));
         }
 

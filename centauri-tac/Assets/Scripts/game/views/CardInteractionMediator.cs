@@ -23,6 +23,8 @@ namespace ctac
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
         [Inject] public CardChosenSignal cardChosen { get; set; }
 
+        [Inject] public TileClickedSignal tileClicked { get; set; }
+
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -63,72 +65,73 @@ namespace ctac
             cancelSelectTarget.RemoveListener(onTargetCancel);
         }
 
-
+        //for clicking on a card directly
         private void onClick(GameObject clickedObject, Vector3 point)
         {
             if (clickedObject != null)
             {
                 var cardView = clickedObject.GetComponent<CardView>();
-                if (cardView != null)
-                {
-                    draggedCard = cardView.card;
+                if (cardView == null) { return; }
+                
+                draggedCard = cardView.card;
 
-                    //Choose card interactions
-                    if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
+                //Choose card interactions
+                if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
+                {
+                    chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
+                    cardChosen.Dispatch(chooseModel);
+                    if (chooseModel.chooseFulfilled)
                     {
-                        chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
-                        cardChosen.Dispatch(chooseModel);
-                        if (chooseModel.chooseFulfilled)
+                        activateCard.Dispatch(new ActivateModel()
                         {
-                            activateCard.Dispatch(new ActivateModel()
-                            {
-                                cardActivated = chooseModel.choosingCard,
-                                optionalTarget = null,
-                                position = chooseModel.cardDeployPosition.position,
-                                pivotPosition = null,
-                                chooseCardTemplateId = chooseModel.chosenTemplateId
-                            });
-                            chooseModel = null;
-                        }
-                        else
+                            cardActivated = chooseModel.choosingCard,
+                            optionalTarget = null,
+                            position = chooseModel.cardDeployPosition.position,
+                            pivotPosition = null,
+                            chooseCardTemplateId = chooseModel.chosenTemplateId
+                        });
+                        chooseModel = null;
+                    }
+                    else
+                    {
+                        var selected = chooseModel.choices.choices
+                            .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
+                        //if the choice isn't fulfilled yet it must mean it needs targets
+                        startTargetModel = new TargetModel()
                         {
-                            var selected = chooseModel.choices.choices
-                                .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
-                            //if the choice isn't fulfilled yet it must mean it needs targets
-                            startTargetModel = new TargetModel()
-                            {
-                                targetingCard = chooseModel.choosingCard,
-                                cardDeployPosition = chooseModel.cardDeployPosition,
-                                targets = selected.targets,
-                                area = null // not supported yet
-                            };
-                            Invoke("StartSelectTargets", 0.10f);
-                            return;
-                        }
+                            targetingCard = chooseModel.choosingCard,
+                            cardDeployPosition = chooseModel.cardDeployPosition,
+                            targets = selected.targets,
+                            area = null // not supported yet
+                        };
+                        debug.Log("Starting targeting for choose");
+                        startSelectTarget.Dispatch(startTargetModel);
                         return;
                     }
-
-                    if (cardView.card.isSpell)
-                    {
-                        var targets = possibleActions.GetActionsForCard(players.Me.id, cardView.card.id);
-                        var area = possibleActions.GetAreasForCard(players.Me.id, cardView.card.id);
-                        if (targets != null || area != null)
-                        {
-                            startTargetModel = new TargetModel()
-                            {
-                                targetingCard = cardView.card,
-                                cardDeployPosition = null,
-                                targets = targets,
-                                area = area
-                            };
-                            Invoke("StartSelectTargets", 0.10f);
-                            return;
-                        }
-                    }
-
-                    pieceSelected.Dispatch(null); 
-                    cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
+                    return;
                 }
+
+                if (cardView.card.isSpell)
+                {
+                    var targets = possibleActions.GetActionsForCard(players.Me.id, cardView.card.id);
+                    var area = possibleActions.GetAreasForCard(players.Me.id, cardView.card.id);
+                    if (targets != null || area != null)
+                    {
+                        startTargetModel = new TargetModel()
+                        {
+                            targetingCard = cardView.card,
+                            cardDeployPosition = null,
+                            targets = targets,
+                            area = area
+                        };
+                        debug.Log("Starting targeting");
+                        startSelectTarget.Dispatch(startTargetModel);
+                        return;
+                    }
+                }
+
+                pieceSelected.Dispatch(null); 
+                cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
             }
             else
             {
@@ -147,6 +150,7 @@ namespace ctac
             }
         }
 
+        //when you try to activate a card either by the click and drag click up or a click on a tile/piece
         private void onActivate(GameObject activated)
         {
             var itWorked = doActivateWork(activated);
@@ -226,7 +230,8 @@ namespace ctac
                     };
 
                     //delay sending off the start select target signal till the card deselected event has cleared
-                    Invoke("StartSelectTargets", 0.10f);
+                    debug.Log("Starting targeting");
+                    startSelectTarget.Dispatch(startTargetModel);
                 }
                 else
                 {
@@ -240,19 +245,6 @@ namespace ctac
                 return true;
             }
             return false;
-        }
-
-        private void StartSelectTargets()
-        {
-            if (startTargetModel != null)
-            {
-                debug.Log("Starting targeting");
-                startSelectTarget.Dispatch(startTargetModel);
-            }
-            else
-            {
-                debug.Log("Couldn't start targeting without model");
-            }
         }
 
         private void onTargetCancel(CardModel card)

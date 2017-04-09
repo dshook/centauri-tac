@@ -2,7 +2,7 @@
 	"cardTemplateId": 15,
 	"name": "Otaku Hack",
 	"description": "Whenever Otaku attacks, gain +1/+1",
-	"cost": 5,
+	"cost": 3,
 	"attack": 4,
 	"health": 4,
 	"movement": 4,

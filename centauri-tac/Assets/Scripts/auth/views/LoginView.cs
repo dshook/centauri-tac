@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using ctac.util;
+using TMPro;
 
 namespace ctac
 {
@@ -12,9 +12,10 @@ namespace ctac
     {
         public Signal clickSignal = new Signal();
 
-        public InputField email;
-        public InputField password;
+        public TMP_InputField email;
+        public TMP_InputField password;
         public Button loginButton;
+        public TextMeshProUGUI message;
 
         char[] passwordChars = new char[]{'$', '%', '!', '@', '#', '^', '&', '*', '(', ')', '-', '_', '+', '='};
         System.Random r = new System.Random();
@@ -22,13 +23,15 @@ namespace ctac
         float updateTimer = 0f;
 
         Color buttonTextColor;
-        Text buttonText;
+        TextMeshProUGUI buttonText;
+        TextMeshProUGUI passwordPlaceholderText;
         Color newButtonTextColor;
 
         internal void init()
         {
             loginButton.onClick.AddListener(() => onClick());
-            buttonText = loginButton.GetComponentInChildren<Text>();
+            buttonText = loginButton.GetComponentInChildren<TextMeshProUGUI>();
+            passwordPlaceholderText = password.placeholder.GetComponent<TextMeshProUGUI>();
             buttonTextColor = buttonText.color;
             newButtonTextColor = buttonTextColor;
         }
@@ -44,9 +47,9 @@ namespace ctac
             if (updateTimer > updateFreq)
             {
                 updateTimer = 0;
-                var length = Random.Range(6, 10);
+                var length = 13;
                 r.Shuffle(passwordChars);
-                password.placeholder.GetComponent<Text>().text = new string(passwordChars.Take(length).ToArray());
+                passwordPlaceholderText.text = new string(passwordChars.Take(length).ToArray());
             }
 
             buttonText.color = Color.Lerp(newButtonTextColor, buttonTextColor, 2f * Time.deltaTime);
@@ -56,6 +59,9 @@ namespace ctac
         public void onBadPassword()
         {
             newButtonTextColor = new Color(0.6f, 0.1f, 0.1f);
+            message.text = "Nope, Try again";
+            message.color = Color.white;
+            iTween.ColorTo(message.gameObject, Color.clear, 2f);
         }
 
         void onClick()

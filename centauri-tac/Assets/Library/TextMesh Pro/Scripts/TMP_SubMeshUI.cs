@@ -14,7 +14,7 @@ namespace TMPro
 {
 
     [ExecuteInEditMode]
-    public class TMP_SubMeshUI : MaskableGraphic, ITextElement, IClippable, IMaskable, IMaterialModifier
+    public class TMP_SubMeshUI : MaskableGraphic, IClippable, IMaskable, IMaterialModifier
     {
         /// <summary>
         /// The TMP Font Asset assigned to this sub text object.
@@ -47,9 +47,9 @@ namespace TMPro
         {
             get
             {
-                //Debug.Log("get.mainTexture");
                 if (this.sharedMaterial != null)
-                    return this.sharedMaterial.mainTexture;
+                    return this.sharedMaterial.GetTexture(ShaderUtilities.ID_MainTex);
+
 
                 return null;
             }
@@ -93,7 +93,38 @@ namespace TMPro
         [SerializeField]
         private Material m_sharedMaterial;
 
-        internal Material m_fallbackMaterial;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Material fallbackMaterial
+        {
+            get { return m_fallbackMaterial; }
+            set
+            {
+                if (m_fallbackMaterial == value) return;
+
+                if (m_fallbackMaterial != null && m_fallbackMaterial != value)
+                    TMP_MaterialManager.ReleaseFallbackMaterial(m_fallbackMaterial);
+
+                m_fallbackMaterial = value;
+                TMP_MaterialManager.AddFallbackMaterialReference(m_fallbackMaterial);
+
+                SetSharedMaterial(m_fallbackMaterial);
+            }
+        }
+        private Material m_fallbackMaterial;
+
+
+        /// <summary>
+        /// The source material used by the fallback font
+        /// </summary>
+        public Material fallbackSourceMaterial
+        {
+            get { return m_fallbackSourceMaterial; }
+            set { m_fallbackSourceMaterial = value; }
+        }
+        private Material m_fallbackSourceMaterial;
 
 
         /// <summary>
@@ -188,12 +219,12 @@ namespace TMPro
         /// <returns></returns>
         public static TMP_SubMeshUI AddSubTextObject(TextMeshProUGUI textComponent, MaterialReference materialReference)
         {
-            GameObject go = new GameObject("TMP UI SubObject [" + materialReference.material.name + "]");
+            GameObject go = new GameObject("TMP UI SubObject [" + materialReference.material.name + "]", typeof(RectTransform));
 
             go.transform.SetParent(textComponent.transform, false);
             go.layer = textComponent.gameObject.layer;
 
-            RectTransform rectTransform = go.AddComponent<RectTransform>();
+            RectTransform rectTransform = go.GetComponent<RectTransform>();
             rectTransform.anchorMin = Vector2.zero;
             rectTransform.anchorMax = Vector2.one;
             rectTransform.sizeDelta = Vector2.zero;
@@ -228,7 +259,7 @@ namespace TMPro
 
             #if UNITY_EDITOR
                 TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Add(ON_MATERIAL_PROPERTY_CHANGED);
-                //TMPro_EventManager.FONT_PROPERTY_EVENT.Add(ON_FONT_PROPERTY_CHANGED);
+                TMPro_EventManager.FONT_PROPERTY_EVENT.Add(ON_FONT_PROPERTY_CHANGED);
                 //TMPro_EventManager.TEXTMESHPRO_PROPERTY_EVENT.Add(ON_TEXTMESHPRO_PROPERTY_CHANGED);
                 TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT.Add(ON_DRAG_AND_DROP_MATERIAL);
                 //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT.Add(ON_TEXT_STYLE_CHANGED);
@@ -263,6 +294,7 @@ namespace TMPro
             if (m_fallbackMaterial != null)
             {
                 TMP_MaterialManager.ReleaseFallbackMaterial(m_fallbackMaterial);
+                m_fallbackMaterial = null;
             }
 
             base.OnDisable();
@@ -288,7 +320,7 @@ namespace TMPro
 #if UNITY_EDITOR
             // Unregister the event this object was listening to
             TMPro_EventManager.MATERIAL_PROPERTY_EVENT.Remove(ON_MATERIAL_PROPERTY_CHANGED);
-            //TMPro_EventManager.FONT_PROPERTY_EVENT.Remove(ON_FONT_PROPERTY_CHANGED);
+            TMPro_EventManager.FONT_PROPERTY_EVENT.Remove(ON_FONT_PROPERTY_CHANGED);
             //TMPro_EventManager.TEXTMESHPRO_PROPERTY_EVENT.Remove(ON_TEXTMESHPRO_PROPERTY_CHANGED);
             TMPro_EventManager.DRAG_AND_DROP_MATERIAL_EVENT.Remove(ON_DRAG_AND_DROP_MATERIAL);
             //TMPro_EventManager.TEXT_STYLE_PROPERTY_EVENT.Remove(ON_TEXT_STYLE_CHANGED);
@@ -304,14 +336,6 @@ namespace TMPro
 
 
 #if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            //m_ShouldRecalculateStencil = true;
-            //RecalculateClipping();
-            //RecalculateMasking();
-        }
-
-
         // Event received when custom material editor properties are changed.
         void ON_MATERIAL_PROPERTY_CHANGED(bool isChanged, Material mat)
         {
@@ -320,9 +344,14 @@ namespace TMPro
             int targetMaterialID = mat.GetInstanceID();
             int sharedMaterialID = m_sharedMaterial.GetInstanceID();
             int maskingMaterialID = m_MaskMaterial == null ? 0 : m_MaskMaterial.GetInstanceID();
+            int fallbackSourceMaterialID = m_fallbackSourceMaterial == null ? 0 : m_fallbackSourceMaterial.GetInstanceID();
 
             // Filter events and return if the affected material is not this object's material.
             //if (targetMaterialID != sharedMaterialID && targetMaterialID != maskingMaterialID) return;
+
+            // Filter events and return if the affected material is not this object's material.
+            if (m_fallbackMaterial != null && fallbackSourceMaterialID == targetMaterialID)
+                TMP_MaterialManager.CopyMaterialPresetProperties(mat, m_fallbackMaterial);
 
             if (m_TextComponent == null) m_TextComponent = GetComponentInParent<TextMeshProUGUI>();
 
@@ -352,6 +381,16 @@ namespace TMPro
                     m_sharedMaterial.shaderKeywords = mat.shaderKeywords;
                     m_sharedMaterial.SetFloat(ShaderUtilities.ID_StencilID, 0);
                     m_sharedMaterial.SetFloat(ShaderUtilities.ID_StencilComp, 8);
+                }
+                else if (fallbackSourceMaterialID == targetMaterialID)
+                {
+                    float stencilID = m_MaskMaterial.GetFloat(ShaderUtilities.ID_StencilID);
+                    float stencilComp = m_MaskMaterial.GetFloat(ShaderUtilities.ID_StencilComp);
+                    m_MaskMaterial.CopyPropertiesFromMaterial(m_fallbackMaterial);
+                    m_MaskMaterial.shaderKeywords = m_fallbackMaterial.shaderKeywords;
+
+                    m_MaskMaterial.SetFloat(ShaderUtilities.ID_StencilID, stencilID);
+                    m_MaskMaterial.SetFloat(ShaderUtilities.ID_StencilComp, stencilComp);
                 }
             }
 
@@ -388,8 +427,27 @@ namespace TMPro
         {
             //if (spriteSheet != null && (obj as TMP_SpriteAsset == m_spriteAsset || obj as Texture2D == m_spriteAsset.spriteSheet))
             //{
-            SetVerticesDirty();
+            if (m_TextComponent != null)
+            {
+                m_TextComponent.havePropertiesChanged = true;
+                //m_TextComponent.SetVerticesDirty();
+            }
+
             //}
+        }
+
+        // Event received when font asset properties are changed in Font Inspector
+        void ON_FONT_PROPERTY_CHANGED(bool isChanged, TMP_FontAsset font)
+        {
+            if (font.GetInstanceID() == m_fontAsset.GetInstanceID())
+            {
+                // Copy Normal and Bold Weight
+                if (m_fallbackMaterial != null)
+                {
+                    m_fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightNormal, m_fontAsset.normalStyle);
+                    m_fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightBold, m_fontAsset.boldStyle);
+                }
+            }
         }
 
         /// <summary>
@@ -551,11 +609,23 @@ namespace TMPro
 
 
         /// <summary>
+        /// Override to Cull function of MaskableGraphic to prevent Culling.
+        /// </summary>
+        /// <param name="clipRect"></param>
+        /// <param name="validRect"></param>
+        public override void Cull(Rect clipRect, bool validRect) { }
+        //{
+            //base.Cull(clipRect, validRect);
+        //}
+
+
+        /// <summary>
         /// 
         /// </summary>
         protected override void UpdateGeometry()
         {
             // Need to override to prevent Unity from changing the geometry of the object.
+            Debug.Log("UpdateGeometry()");
         }
 
 

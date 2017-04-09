@@ -57,6 +57,11 @@ namespace ctac
             animatingEnergy = true;
             fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
         }
+
+        internal void setOn(bool on)
+        {
+            animatingEnergy = on;
+        }
     }
 }
 

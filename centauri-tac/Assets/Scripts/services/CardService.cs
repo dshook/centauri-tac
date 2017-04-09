@@ -1,3 +1,4 @@
+using ctac.util;
 using UnityEngine;
 
 namespace ctac
@@ -62,11 +63,26 @@ namespace ctac
             var front = displayWrapper.transform.FindChild("Front").gameObject;
             var frontRenderer = front.GetComponent<MeshRenderer>();
 
-            var cardImagePath = string.Format("Images/cards/{0}_{1}", model.rarity.ToString().ToLower(), model.race.ToString().ToLower());
+            var cardImagePath = string.Format("Images/cards/common_{0}", model.race.ToString().ToLower());
             var cardFront = loader.Load<Texture>(cardImagePath);
             if (cardFront != null)
             {
                 frontRenderer.material.SetTexture("_MainTex", cardFront);
+            }
+
+            switch (model.rarity) {
+                case Rarities.Common:
+                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("999999"));
+                    break;
+                case Rarities.Rare:
+                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("2598C5"));
+                    break;
+                case Rarities.Exotic:
+                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("64FF07"));
+                    break;
+                case Rarities.Mythical:
+                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("FF0000"));
+                    break;
             }
 
             var art = displayWrapper.transform.FindChild("Art").gameObject;

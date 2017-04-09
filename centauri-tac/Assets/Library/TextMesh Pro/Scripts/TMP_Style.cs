@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
+// This code can only be used under the standard Unity Asset Store End User License Agreement
+// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
+
+
+using UnityEngine;
 using System.Collections;
 
 #pragma warning disable 0649 // Disabled warnings.
@@ -85,7 +90,10 @@ namespace TMPro
             for (int i = 0; i < m_ClosingDefinition.Length; i++)
                 m_ClosingTagArray[i] = m_ClosingDefinition[i];
 
+#if UNITY_EDITOR
+            // Event to update objects when styles are changed in the editor.
             TMPro_EventManager.ON_TEXT_STYLE_PROPERTY_CHANGED(true);
+#endif
         }
 
     }

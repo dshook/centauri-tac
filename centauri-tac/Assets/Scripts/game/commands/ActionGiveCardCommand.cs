@@ -7,7 +7,7 @@ namespace ctac
 {
     public class ActionGiveCardCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject]

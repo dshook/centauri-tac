@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 95,
+	"name": "Simultaneity Splice",
+	"description": "Teleport your hero on top of an enemy minion to destroy it",
+	"cost": 3,
+  "rarity": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{
+		Move(FRIENDLY & HERO, TARGET & ENEMY & MINION, true, true)
+		Destroy(TARGET & ENEMY & MINION)
+	}"
+}

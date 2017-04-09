@@ -11,44 +11,55 @@ namespace ctac
     public class StartCommand : Command
     {
 
-        [Inject(ContextKeys.CONTEXT_VIEW)]
-        public GameObject contextView { get; set; }
+        [Inject] public ConfigModel config { get; set; }
 
-        [Inject]
-        public ConfigModel config { get; set; }
 
-        [Inject]
-        public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public TryLoginSignal tryLoginSignal { get; set; }
+        [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public JoinGameSignal joinGame { get; set; }
+        [Inject] public CurrentGameModel currentGame { get; set; }
 
-        [Inject]
-        public PiecesModel piecesModel { get; set; }
+        [Inject] public PiecesModel piecesModel { get; set; }
+        [Inject] public CardsModel cards { get; set; }
+        [Inject] public DecksModel decks { get; set; }
+        [Inject] public CardDirectory cardDirectory { get; set; }
 
-        [Inject]
-        public CardsModel cards { get; set; }
-
-        [Inject]
-        public DecksModel decks { get; set; }
-
-        [Inject]
-        public CardDirectory cardDirectory { get; set; }
-
-        [Inject]
-        public IMapCreatorService mapCreator { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IMapCreatorService mapCreator { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
         {
-            //override config from settings on disk if needed
-            string configContents = File.ReadAllText("./config.json");
-            if (!string.IsNullOrEmpty(configContents)) {
-                debug.Log("Reading Config File");
-                var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
-                diskConfig.CopyProperties(config);
-            }
+            //Starting up the game not from main menu
+            if (currentGame == null || currentGame.game == null)
+            {
+                //override config from settings on disk if needed
+                string configContents = File.ReadAllText("./config.json");
+                if (!string.IsNullOrEmpty(configContents))
+                {
+                    debug.Log("Reading Config File");
+                    var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
+                    diskConfig.CopyProperties(config);
+                }
 
-            serverAuthSignal.Dispatch();
+#if DEBUG
+                if (config.players.Count > 0)
+                {
+                    foreach (var player in config.players)
+                    {
+                        tryLoginSignal.Dispatch(new Credentials() { username = player.username, password = player.password });
+                    }
+                }
+                else
+                {
+                    serverAuthSignal.Dispatch();
+                }
+#endif
+            }
+            else
+            {
+                //let the server know we're ready
+                joinGame.Dispatch(currentGame.me);
+            }
 
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
@@ -85,6 +96,11 @@ namespace ctac
             {
                 GameObject.Destroy(card);
             }
+
+#if !DEBUG
+            var dbgButtons = GameObject.Find("DebugButtons");
+            GameObject.DestroyImmediate(dbgButtons);
+#endif
         }
     }
 }

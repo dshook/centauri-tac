@@ -49,7 +49,7 @@ namespace ctac
 
         void TestSelection(bool isUp)
         {
-            if (raycastModel.worldHit.HasValue)
+            if (raycastModel.worldHit.HasValue && !raycastModel.cardCanvasHit.HasValue)
             {
                 clickSignal.Dispatch(new ClickModel() {
                     clickedObject = raycastModel.worldHit.Value.collider.gameObject,
@@ -58,7 +58,7 @@ namespace ctac
                     isUp = isUp
                 });
             }
-            else
+            else if(!raycastModel.cardCanvasHit.HasValue)
             {
                 clickSignal.Dispatch(new ClickModel() { isUp = isUp });
             }

@@ -17,6 +17,8 @@ export default class GameEventService
     this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), game.turnLengthMs);
     this.autoEnergyInterval = new IntervalTimer('Auto Energy Interval', () => this.giveEnergy(), game.turnLengthMs);
 
+    this.registeredTimers = [this.autoTurnInterval, this.autoEnergyInterval];
+
     //app.registerInstance('autoTurnInterval', this.autoTurnInterval);
     app.registerInstance('gameEventService', this);
   }
@@ -24,8 +26,23 @@ export default class GameEventService
   shutdown()
   {
     this.log.info('Killing Game Event Timers');
-    this.autoTurnInterval.stop();
-    this.autoEnergyInterval.stop();
+    for(let timer of this.registeredTimers){
+      timer.stop();
+    }
+  }
+
+  pauseAll(){
+    this.log.info('Pausing Game Event Timers');
+    for(let timer of this.registeredTimers){
+      timer.pause();
+    }
+  }
+
+  resumeAll(){
+    this.log.info('Resuming Game Event Timers');
+    for(let timer of this.registeredTimers){
+      timer.resume();
+    }
   }
 
   passTurn(){
@@ -50,7 +67,6 @@ export default class GameEventService
     let intervalLength = this.game.turnLengthMs / currentTurn;
     this.log.info('Setting up energy timer for turn %s. Interval %s', currentTurn, intervalLength);
     if(neededEnergy <= 0) return;
-
 
     this.autoEnergyInterval.stop();
     this.autoEnergyInterval.setMaxFires(neededEnergy);

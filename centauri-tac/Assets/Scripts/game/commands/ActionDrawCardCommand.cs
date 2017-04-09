@@ -9,7 +9,7 @@ namespace ctac
 {
     public class ActionDrawCardCommand : Command
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
         [Inject]

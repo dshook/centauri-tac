@@ -39,6 +39,7 @@ namespace ctac
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
             currentGame.game = game;
+            currentGame.me = new SocketKey(socketKey.clientId, "game");
             debug.Log("Current game " + game.id, socketKey);
 
             var player = playersModel.GetByClientId(socketKey.clientId);

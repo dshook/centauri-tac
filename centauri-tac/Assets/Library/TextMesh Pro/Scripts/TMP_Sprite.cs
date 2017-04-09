@@ -20,6 +20,7 @@ namespace TMPro
         //public int id;
         public string name;
         public int hashCode;
+        public int unicode;
         //public float x;
         //public float y;
         //public float width;
@@ -28,7 +29,7 @@ namespace TMPro
         //public float xOffset; // Pivot X
         //public float yOffset; // Pivot Y
         //public float xAdvance;
-        public float scale;
+        //public float scale;
 
         public Sprite sprite;
     }

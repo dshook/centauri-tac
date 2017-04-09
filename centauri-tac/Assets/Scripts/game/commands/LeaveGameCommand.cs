@@ -1,5 +1,6 @@
 using strange.extensions.command.impl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ctac
 {
@@ -12,6 +13,9 @@ namespace ctac
         public SocketKey socketKey { get; set; }
 
         [Inject]
+        public bool returnToMainMenu { get; set; }
+
+        [Inject]
         public GamePlayersModel gamePlayers { get; set; }
 
         public override void Execute()
@@ -21,10 +25,17 @@ namespace ctac
                 socket.Request(player.clientId, "game", "part");
             }
 
-            Application.Quit();
+            if (!returnToMainMenu)
+            {
+                Application.Quit();
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
 #endif
+            }
+            else
+            {
+                SceneManager.LoadScene("main", LoadSceneMode.Single);
+            }
         }
     }
 }

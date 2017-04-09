@@ -446,7 +446,8 @@ namespace ctac
                 if (model.selectedPosition.HasValue)
                 {
                     List<Tile> tiles = null;
-                    switch (model.area.areaType) {
+                    switch (model.area.areaType)
+                    {
                         case AreaType.Square:
                             tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
                             break;
@@ -464,6 +465,9 @@ namespace ctac
                             break;
                     }
                     view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile, true);
+                }
+                else if (model.targets != null && model.targets.targetPieceIds.Count > 0)
+                {
                 }
                 else
                 {

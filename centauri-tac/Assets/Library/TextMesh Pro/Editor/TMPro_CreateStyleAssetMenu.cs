@@ -1,20 +1,21 @@
-﻿using UnityEngine;
+﻿// Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
+// This code can only be used under the standard Unity Asset Store End User License Agreement
+// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
+
+
+using UnityEngine;
 using UnityEditor;
-using System.Linq;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
-
-
 
 
 namespace TMPro.EditorUtilities
 {
 
-    public static class TMPro_CreateStyleAssetMenu
+    public static class TMP_StyleAssetMenu
     {
 
-        [MenuItem("Assets/Create/TextMeshPro - Style Sheet", false, 120)]
+        [MenuItem("Assets/Create/TextMeshPro/Style Sheet", false, 120)]
         public static void CreateTextMeshProObjectPerform()
         {
             string filePath;

@@ -5,14 +5,17 @@ namespace ctac.signals
     [Singleton] public class CurrentGameSignal : Signal<GameMetaModel, SocketKey> { }
 
     [Singleton] public class GameLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
-    [Singleton] public class GameFinishedSignal : Signal<GameFinishedModel, SocketKey> { }
+    [Singleton] public class JoinGameSignal : Signal<SocketKey> { }
+
+    [Singleton] public class ActionGameFinishedSignal : Signal<GameFinishedModel, SocketKey> { }
+    [Singleton] public class GameFinishedSignal : Signal<GameFinishedModel> { }
 
     [Singleton] public class PlayerConnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
     [Singleton] public class PlayerJoinedSignal : Signal<JoinOrConnectModel, SocketKey> { }
     [Singleton] public class PlayerPartSignal : Signal<JoinOrConnectModel, SocketKey> { }
     [Singleton] public class PlayerDisconnectSignal : Signal<JoinOrConnectModel, SocketKey> { }
 
-    [Singleton] public class LeaveGameSignal : Signal<SocketKey> { }
+    [Singleton] public class LeaveGameSignal : Signal<SocketKey, bool> { }
 
     [Singleton] public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
     [Singleton] public class MessageSignal : Signal<MessageModel> { }
@@ -72,6 +75,12 @@ namespace ctac.signals
     [Singleton] public class EndTurnSignal : Signal { }
     [Singleton] public class ActionPassTurnSignal : Signal<PassTurnModel> { }
     [Singleton] public class TurnEndedSignal : Signal<GameTurnModel> { }
+
+    [Singleton] public class GamePausedSignal : Signal { }
+    [Singleton] public class GameResumedSignal : Signal { }
+
+    [Singleton] public class PieceClickedSignal : Signal<PieceView> { }
+    [Singleton] public class TileClickedSignal : Signal<Tile> { }
 
     [Singleton] public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
     [Singleton] public class PieceSpawnedSignal : Signal<PieceSpawnedModel> { }

@@ -1,3 +1,5 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
@@ -54,10 +56,10 @@ Shader "SVG Importer/SolidColor/SolidColorTexOverlayAlphaBlendedAntialiased" {
 					float objSpaceLength = length(ObjSpaceViewDir(vertex));
 					vertex.x += v.normal.x * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.x;
 					vertex.y += v.normal.y * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.y;
-					o.vertex = mul(UNITY_MATRIX_MVP, vertex);
+					o.vertex = UnityObjectToClipPos(vertex);
 				// Orthographic Camera
 				} else {
-					o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.vertex.x += v.normal.x * SVG_SOLID_ANTIALIASING_WIDTH.x;
 					o.vertex.y += v.normal.y * SVG_SOLID_ANTIALIASING_WIDTH.y;
 				} 

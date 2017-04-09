@@ -17,8 +17,8 @@ namespace TMPro
     [Serializable]
     public class TMP_TextInfo
     {
-        private static Vector2 k_InfinityVectorPositive = new Vector2(1000000, 1000000);
-        private static Vector2 k_InfinityVectorNegative = new Vector2(-1000000, -1000000);
+        private static Vector2 k_InfinityVectorPositive = new Vector2(32767, 32767);
+        private static Vector2 k_InfinityVectorNegative = new Vector2(-32767, -32767);
 
         public TMP_Text textComponent;
 
@@ -39,6 +39,7 @@ namespace TMPro
         public TMP_PageInfo[] pageInfo;
         public TMP_MeshInfo[] meshInfo;
 
+        private TMP_MeshInfo[] m_CachedMeshInfo;
 
         // Default Constructor
         public TMP_TextInfo()
@@ -47,7 +48,7 @@ namespace TMPro
             wordInfo = new TMP_WordInfo[16];
             linkInfo = new TMP_LinkInfo[0];
             lineInfo = new TMP_LineInfo[2];
-            pageInfo = new TMP_PageInfo[16];
+            pageInfo = new TMP_PageInfo[4];
 
             meshInfo = new TMP_MeshInfo[1];
         }
@@ -63,7 +64,7 @@ namespace TMPro
             linkInfo = new TMP_LinkInfo[0];
 
             lineInfo = new TMP_LineInfo[2];
-            pageInfo = new TMP_PageInfo[16];
+            pageInfo = new TMP_PageInfo[4];
 
             meshInfo = new TMP_MeshInfo[1];
             meshInfo[0].mesh = textComponent.mesh;
@@ -112,6 +113,16 @@ namespace TMPro
 
 
         /// <summary>
+        /// 
+        /// </summary>
+        public void ResetVertexLayout(bool isVolumetric)
+        {
+            for (int i = 0; i < this.meshInfo.Length; i++)
+                this.meshInfo[i].ResizeMeshInfo(0, isVolumetric);
+        }
+
+
+        /// <summary>
         /// Function used to mark unused vertices as degenerate.
         /// </summary>
         /// <param name="materials"></param>
@@ -151,6 +162,65 @@ namespace TMPro
 
             }
         }
+
+
+        /// <summary>
+        /// Function to copy the MeshInfo Arrays and their primary vertex data content.
+        /// </summary>
+        /// <returns>A copy of the MeshInfo[]</returns>
+        public TMP_MeshInfo[] CopyMeshInfoVertexData()
+        {
+            if (m_CachedMeshInfo == null || m_CachedMeshInfo.Length != meshInfo.Length)
+            {
+                m_CachedMeshInfo = new TMP_MeshInfo[meshInfo.Length];
+
+                // Initialize all the vertex data arrays
+                for (int i = 0; i < m_CachedMeshInfo.Length; i++)
+                {
+                    int length = meshInfo[i].vertices.Length;
+
+                    m_CachedMeshInfo[i].vertices = new Vector3[length];
+                    m_CachedMeshInfo[i].uvs0 = new Vector2[length];
+                    m_CachedMeshInfo[i].uvs2 = new Vector2[length];
+                    m_CachedMeshInfo[i].colors32 = new Color32[length];
+
+                    //m_CachedMeshInfo[i].normals = new Vector3[length];
+                    //m_CachedMeshInfo[i].tangents = new Vector4[length];
+                    //m_CachedMeshInfo[i].triangles = new int[meshInfo[i].triangles.Length];
+                }
+            }
+
+            for (int i = 0; i < m_CachedMeshInfo.Length; i++)
+            {
+                int length = meshInfo[i].vertices.Length;
+
+                if (m_CachedMeshInfo[i].vertices.Length != length)
+                {
+                    m_CachedMeshInfo[i].vertices = new Vector3[length];
+                    m_CachedMeshInfo[i].uvs0 = new Vector2[length];
+                    m_CachedMeshInfo[i].uvs2 = new Vector2[length];
+                    m_CachedMeshInfo[i].colors32 = new Color32[length];
+
+                    //m_CachedMeshInfo[i].normals = new Vector3[length];
+                    //m_CachedMeshInfo[i].tangents = new Vector4[length];
+                    //m_CachedMeshInfo[i].triangles = new int[meshInfo[i].triangles.Length];
+                }
+
+
+                // Only copy the primary vertex data
+                Array.Copy(meshInfo[i].vertices, m_CachedMeshInfo[i].vertices, length);
+                Array.Copy(meshInfo[i].uvs0, m_CachedMeshInfo[i].uvs0, length);
+                Array.Copy(meshInfo[i].uvs2, m_CachedMeshInfo[i].uvs2, length);
+                Array.Copy(meshInfo[i].colors32, m_CachedMeshInfo[i].colors32, length);
+
+                //Array.Copy(meshInfo[i].normals, m_CachedMeshInfo[i].normals, length);
+                //Array.Copy(meshInfo[i].tangents, m_CachedMeshInfo[i].tangents, length);
+                //Array.Copy(meshInfo[i].triangles, m_CachedMeshInfo[i].triangles, meshInfo[i].triangles.Length);
+            }
+
+            return m_CachedMeshInfo;
+        }
+
 
 
         /// <summary>

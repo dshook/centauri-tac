@@ -7,9 +7,10 @@ namespace ctac
 {
     public class LeaveGameView : View
     {
-        public Signal clickSignal = new Signal();
+        public Signal<bool> clickSignal = new Signal<bool>();
 
         public Button endTurnButton;
+        public bool returnToMainMenu;
 
         internal void init()
         {
@@ -18,7 +19,7 @@ namespace ctac
 
         void onClick()
         {
-            clickSignal.Dispatch();
+            clickSignal.Dispatch(returnToMainMenu);
         }
     }
 }

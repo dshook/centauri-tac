@@ -11,6 +11,10 @@ namespace ctac
         [Inject] public PlayerResourceSetSignal resourceSet { get; set; }
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
+        [Inject] public GamePausedSignal pauseSignal { get; set; }
+        [Inject] public GameResumedSignal resumeSignal { get; set; }
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
+
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
@@ -21,6 +25,9 @@ namespace ctac
         {
             resourceSet.AddListener(onResourceSet);
             turnEnded.AddListener(onTurnEnd);
+            pauseSignal.AddListener(onPause);
+            resumeSignal.AddListener(onResume);
+            gameFinished.AddListener(onGameFinished);
 
             view.init();
         }
@@ -29,13 +36,19 @@ namespace ctac
         {
             resourceSet.RemoveListener(onResourceSet);
             turnEnded.RemoveListener(onTurnEnd);
+            pauseSignal.RemoveListener(onPause);
+            resumeSignal.RemoveListener(onResume);
+            gameFinished.RemoveListener(onGameFinished);
         }
 
         public void onTurnEnd(GameTurnModel passTurn)
         {
             updateView();
 
-            view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
+            if (!passTurn.isClientSwitch)
+            {
+                view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
+            }
         }
 
         private void onResourceSet(SetPlayerResourceModel m)
@@ -48,6 +61,21 @@ namespace ctac
             {
                 view.updatePreview(m.newMax, currentGame.game.turnLengthMs);
             }
+        }
+
+        private void onPause()
+        {
+            view.setOn(false);
+        }
+        
+        private void onResume()
+        {
+            view.setOn(true);
+        }
+
+        private void onGameFinished(GameFinishedModel gf)
+        {
+            view.setOn(false);
         }
 
         private void updateView()

@@ -47,7 +47,7 @@ export default class MovePieceProcessor
         && nextAction.to.tileEquals(piece.position)
         && action.isTeleport
         && nextAction.isTeleport;
-      if(isMovingOnTopOfEnemy && !isTeleportSwap){
+      if(isMovingOnTopOfEnemy && !isTeleportSwap && !action.ignoreCollisionCheck){
         this.log.warn('Cannot move piece %j on top of %j', piece, otherPiece);
         return queue.cancel(action);
       }

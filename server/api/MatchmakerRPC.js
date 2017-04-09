@@ -27,13 +27,24 @@ export default class MatchmakerRPC
   }
 
   /**
+   * And back out again
+   */
+  @rpc.command('dequeue')
+  @rpc.middleware(roles(['player']))
+  async dequeuePlayer(client, params, auth)
+  {
+    const playerId = auth.sub.id;
+    await this.matchmaker.dequeuePlayer(playerId, client);
+  }
+
+  /**
    * When a client connects
    */
   @rpc.command('_token')
   async hello(client, params, auth)
   {
     // connection from in the mesh
-    if (!auth.sub) {
+    if (!auth || !auth.sub) {
       return;
     }
 
@@ -41,20 +52,17 @@ export default class MatchmakerRPC
 
     // drop player when they DC
     const playerId = auth.sub.id;
-    client.once('close', () => this.matchmaker.dequeuePlayer(playerId));
+    client.once('close', () => this.matchmaker.dequeuePlayer(playerId, client));
     client.once('close', () => this.clients.delete(client));
   }
 
   /**
-   * If a player is conencted, inform them of their current game
+   * If a player is connected, inform them of their current game
+   * don't think this is needed anymore,
    */
   @on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
-    if (game) {
-      this.matchmaker.dequeuePlayer(playerId);
-    }
-
     for (const c of this.clients) {
       const {id} = c.auth.sub;
       if (playerId === id) {
@@ -70,7 +78,10 @@ export default class MatchmakerRPC
   _status(status)
   {
     for (const c of this.clients) {
-      c.send('status', status);
+      const {id} = c.auth.sub;
+      if (status.playerId === id) {
+        c.send('status', status);
+      }
     }
   }
 }

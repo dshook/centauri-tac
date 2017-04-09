@@ -51,7 +51,7 @@ namespace ctac {
         public bool targetCandidate = false;
         public bool enemiesInRange = false;
 
-        private MeshRenderer meshRenderer;
+        public Material meshMaterial;
         private Highlighter highlight;
         private float outlineWidth = 0.01f;
         private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
@@ -60,10 +60,13 @@ namespace ctac {
         private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
         private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
+        public Animator anim;
+
         protected override void Start()
         {
             model = piece.gameObject.transform.FindChild("Model").gameObject;
             faceCameraContainer = piece.gameObject.transform.FindChild("FaceCameraContainer").gameObject;
+            anim = piece.gameObject.GetComponentInChildren<Animator>();
 
             hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
@@ -93,7 +96,17 @@ namespace ctac {
             rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
             auraIcon = eventIconContainer.transform.FindChild("Aura").gameObject;
 
-            meshRenderer = model.GetComponentInChildren<MeshRenderer>();
+            var meshRenderer = model.GetComponentInChildren<MeshRenderer>();
+            if (meshRenderer == null)
+            {
+                var skinnedMeshRenderer = model.GetComponentInChildren<SkinnedMeshRenderer>();
+                meshMaterial = skinnedMeshRenderer.material;
+            }
+            else
+            {
+                meshMaterial = meshRenderer.material;
+            }
+
             highlight = model.GetComponentInChildren<Highlighter>();
             highlight.seeThrough = true;
             highlight.occluder = true;
@@ -111,21 +124,43 @@ namespace ctac {
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
 
+            var collider = model.GetComponentInChildren<MeshCollider>();
+            if (collider == null)
+            {
+                Debug.LogError(piece.cardTemplateId + " piece missing mesh collider");
+            }
+
             //find top of the mesh and adjust the hpbar to be just above it
-            Vector3[] verts = model.GetComponentInChildren<MeshFilter>().sharedMesh.vertices;
+            var rotation = collider.transform.localRotation;
+
+            Vector3[] verts = collider.sharedMesh.vertices;
             Vector3 topVertex = new Vector3(0, float.NegativeInfinity, 0);
             for (int i = 0; i < verts.Length; i++)
             {
-                //Vector3 vert = transform.TransformPoint(verts[i]);
-                Vector3 vert = verts[i];
+                Vector3 vert = rotation * verts[i];
                 if (vert.y > topVertex.y)
                 {
                     topVertex = vert;
                 }
             }
+            topVertex = topVertex + collider.transform.localPosition;
+
+            //walk up the parent chain (stopping at the Model node) to find the total combined scale.  
+            //Realistically it should only be one intermediate scaling anything
+            Vector3 combinedScale = collider.transform.localScale;
+            var curTransform = collider.transform;
+            while (curTransform != null && curTransform.name != "Model")
+            {
+                curTransform = curTransform.parent;
+                combinedScale.Scale(curTransform.localScale);
+            }
+
+            topVertex.Scale(combinedScale);
+
             hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(
-                topVertex.y * 1.5f + 0.9f
+                topVertex.y + 0.25f
             );
+            //Debug.Log(string.Format("{0} top vert y {1} hpbar pos {2}", piece.cardTemplateId, topVertex.y, hpBarContainer.transform.localPosition.y));
 
             UpdateHpBar();
         }
@@ -140,52 +175,52 @@ namespace ctac {
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(targetOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", targetOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", targetOutlineColor);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(selectedOutlineColor);
-                meshRenderer.material.SetColor("_OutlineColor", selectedOutlineColor);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", selectedOutlineColor);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }else if (piece.currentPlayerHasControl) {
 
                 if (piece.canMove && piece.canAttack)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(moveAttackOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", moveAttackOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", moveAttackOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canAttack && enemiesInRange)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(attackOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", attackOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", attackOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canMove)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(moveOutlineColor);
-                    meshRenderer.material.SetColor("_OutlineColor", moveOutlineColor);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", moveOutlineColor);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else
                 {
                     highlight.ConstantOff();
                     highlight.enabled = false;
-                    meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                    meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                    meshMaterial.SetColor("_OutlineColor", Color.black);
+                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
             }
             else
             {
                 highlight.ConstantOff();
                 highlight.enabled = false;
-                meshRenderer.material.SetColor("_OutlineColor", Color.black);
-                meshRenderer.material.SetFloat("_Outline", outlineWidth);
+                meshMaterial.SetColor("_OutlineColor", Color.black);
+                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
 
 
@@ -404,12 +439,13 @@ namespace ctac {
             public float? postDelay { get { return null; } }
 
             public PieceModel piece { get; set; }
+            public Animator anim { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
             public bool isTeleport { get; set; }
 
-            private float moveTime = 0.25f;
-            Vector3 curveHeight = new Vector3(0, 0.30f, 0);
+            private float moveTime = 0.33f;
+            Vector3 curveHeight = new Vector3(0, 0.20f, 0);
             private float curveMult = 1.0f;
             private BezierSpline moveSpline;
             private SplineWalker walker;
@@ -446,6 +482,11 @@ namespace ctac {
                     walker.duration = moveTime;
                     walker.lookForward = false;
                     walker.mode = SplineWalkerMode.Once;
+
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("onMove");
+                    }
                 }
 
                 //if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
@@ -455,6 +496,26 @@ namespace ctac {
                     Complete = true;
                     Destroy(walker);
                     finishedMoving.Dispatch(piece);
+                }
+            }
+        }
+
+        public class EventTriggerAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+            public string eventName { get; set; }
+
+            public void Init() { }
+            public void Update()
+            {
+                if (piece.anim != null && !string.IsNullOrEmpty(eventName))
+                {
+                    piece.anim.SetTrigger(eventName);
+                    Complete = true;
                 }
             }
         }
@@ -597,8 +658,14 @@ namespace ctac {
 
             public PieceDiedSignal pieceDied { get; set; }
             public PieceModel piece { get; set; }
+            public Animator anim { get; set; }
 
-            public void Init() { }
+            public void Init() {
+                if (anim != null)
+                {
+                    anim.SetTrigger("onDeath");
+                }
+            }
             public void Update()
             {
                 iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);

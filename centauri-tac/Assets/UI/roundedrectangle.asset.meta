@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 6c6a36c9d19ffd74da4ab8aac6924930
+timeCreated: 1491153627
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg id=\"Layer_1\" data-name=\"Layer 1\" xmlns=\"http://www.w3.org/2000/svg\"
+    width=\"271\" height=\"271\" viewBox=\"0 0 271 271\">\r\n  <defs>\r\n    <style>\r\n
+    \     .cls-1 {\r\n        fill: #fff;\r\n      }\r\n\r\n      .cls-2 {\r\n        fill:
+    none;\r\n        stroke: #000;\r\n        stroke-miterlimit: 10;\r\n        stroke-width:
+    16px;\r\n      }\r\n\r\n      .cls-3 {\r\n        fill: #4d4d4d;\r\n      }\r\n\r\n
+    \     .cls-4 {\r\n        fill: #333;\r\n      }\r\n    </style>\r\n  </defs>\r\n
+    \ <title>roundedrectangle</title>\r\n  <g>\r\n    <rect class=\"cls-1\" x=\"8\"
+    y=\"8\" width=\"255\" height=\"255\" rx=\"100\" ry=\"100\"/>\r\n    <rect class=\"cls-2\"
+    x=\"8\" y=\"8\" width=\"255\" height=\"255\" rx=\"100\" ry=\"100\"/>\r\n    <path
+    class=\"cls-3\" d=\"M175,36a84.3,84.3,0,0,1,84,84v55a84.3,84.3,0,0,1-84,84H120a84.3,84.3,0,0,1-84-84V120a84.3,84.3,0,0,1,84-84h55m0-16H120C65,20,20,65,20,120v55c0,55,45,100,100,100h55c55,0,100-45,100-100V120c0-55-45-100-100-100h0Z\"
+    transform=\"translate(-12 -12)\"/>\r\n    <path class=\"cls-4\" d=\"M175,28a92.3,92.3,0,0,1,92,92v55a92.3,92.3,0,0,1-92,92H120a92.3,92.3,0,0,1-92-92V120a92.3,92.3,0,0,1,92-92h55m0-8H120C65,20,20,65,20,120v55c0,55,45,100,100,100h55c55,0,100-45,100-100V120c0-55-45-100-100-100h0Z\"
+    transform=\"translate(-12 -12)\"/>\r\n  </g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 

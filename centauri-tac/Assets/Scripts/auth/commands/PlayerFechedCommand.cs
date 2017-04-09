@@ -1,3 +1,4 @@
+using ctac.signals;
 using strange.extensions.command.impl;
 
 namespace ctac
@@ -15,6 +16,9 @@ namespace ctac
 
         [Inject]
         public PlayerModel player { get; set; }
+
+        [Inject]
+        public PlayerFetchedFinishedSignal finished { get; set; }
 
         [Inject]
         public SocketKey key { get; set; }
@@ -45,6 +49,7 @@ namespace ctac
                 playerModel.isLocal = true;
 
                 socketService.Disconnect(key.clientId, "auth");
+                finished.Dispatch(playerModel, key);
             }
         }
     }

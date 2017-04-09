@@ -1,4 +1,6 @@
-﻿Shader "Custom/DottedLineShader"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/DottedLineShader"
 {
     Properties
     {
@@ -48,7 +50,7 @@
             {
                 _Offset = (_Offset + _Time * _Speed) % 1000;
                 v2f o;
-                o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
                 o.uv.x = (o.uv.x + _Offset) * _RepeatCount * (1.0f + _Spacing);
                 o.color = v.color;

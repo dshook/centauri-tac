@@ -25,8 +25,9 @@ export default class Matchmaker
    */
   async queuePlayer(playerId, client)
   {
-    if (this.queue.find(x => x === playerId)) {
-      this.log.info('not adding player %s, already in the queue');
+    this.log.info('Trying to find player %s in queue %j', playerId, this.queue);
+    if (this.queue.find(x => x.playerId === playerId)) {
+      this.log.info('not adding player %s, already in the queue', playerId);
       return;
     }
 
@@ -34,7 +35,7 @@ export default class Matchmaker
     const entry = {playerId, status: WAITING};
     this.queue.push(entry);
     this.log.info('player %s waiting, %s in queue', playerId, this.queue.length);
-    await this._emitStatus();
+    await this._emitStatus(playerId, true, false);
 
     const game = await this.gamelistManager.getCurrentGame(playerId);
 
@@ -43,19 +44,17 @@ export default class Matchmaker
       entry.status = READY;
     }
     else {
-      _.remove(this.queue, x => x === entry);
-      this.log.info('player %s already in game %s, removing from queue',
-          playerId, game.id);
-      client.send('game:current', game);
+      this.log.info('player %s already in game %s, removing from queue', playerId, game.id);
+      await this.dequeuePlayer(playerId, client);
+      await this._emitStatus(playerId, false, true);
+      await this.emitter.emit('game:current', {game, playerId});
     }
-
-    await this._emitStatus();
   }
 
   /**
    * Drop em
    */
-  async dequeuePlayer(playerId)
+  async dequeuePlayer(playerId, client)
   {
     const index = this.queue.findIndex(x => x.playerId === playerId);
 
@@ -65,7 +64,7 @@ export default class Matchmaker
 
     this.queue.splice(index, 1);
     this.log.info('player %s dropped, %s in queue', playerId, this.queue.length);
-    await this._emitStatus();
+    await this._emitStatus(playerId, false, false);
   }
 
   /**
@@ -91,7 +90,9 @@ export default class Matchmaker
     _.remove(this.queue, x => playerIds.some(id => id === x.playerId));
     this.log.info('removed %s from queue, now %s left',
         playerIds.length, this.queue.length);
-    await this._emitStatus();
+
+    await this._emitStatus(pid1, false, true);
+    await this._emitStatus(pid2, false, true);
 
     // boom
     const name = '(automatch)';
@@ -102,10 +103,10 @@ export default class Matchmaker
   /**
    * info son
    */
-  async _emitStatus()
+  async _emitStatus(playerId, inQueue, beingMatched)
   {
     await this.emitter.emit('matchmaker:status', {
-      queuedPlayers: this.queue.length,
+      playerId, inQueue, beingMatched
     });
   }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using strange.extensions.context.api;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,8 +21,9 @@ namespace ctac
 
     public class SocketService : ISocketService
     {
-        [Inject(ContextKeys.CONTEXT_VIEW)]
+        [Inject(InjectionKeys.PersistentSignalsRoot)]
         public GameObject contextView { get; set; }
+        private MonoBehaviour root;
 
         [Inject]
         public IDebugService debug { get; set; }
@@ -43,18 +43,15 @@ namespace ctac
         [Inject]
         public SocketDisconnectSignal disconnectSignal { get; set; }
 
-
         [Inject]
         public QuitSignal quit { get; set; }
 
         private Dictionary<SocketKey, WebSocket> sockets = new Dictionary<SocketKey, WebSocket>();
 
-        private MonoBehaviour root;
-
         [PostConstruct]
         public void PostConstruct()
         {
-            root = contextView.GetComponent<SignalsRoot>();
+            root = contextView.GetComponent<PersistentSignalsRoot>();
             quit.AddListener(DestroySockets);
         }
 
@@ -176,6 +173,7 @@ namespace ctac
             if (ws == null)
             {
                 debug.LogWarning("Trying to disconnect from disconnected socket", key);
+                return;
             }
 
             ws.Close(CloseStatusCode.Normal, "Requested Disconnect");

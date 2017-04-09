@@ -1,8 +1,8 @@
-Shader "TMPro/Sprite"
+Shader "TextMeshPro/Sprite"
 {
 	Properties
 	{
-		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+		_MainTex ("Sprite Texture", 2D) = "white" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		
 		_StencilComp ("Stencil Comparison", Float) = 8
@@ -12,7 +12,7 @@ Shader "TMPro/Sprite"
 		_StencilReadMask ("Stencil Read Mask", Float) = 255
 
 		_ColorMask ("Color Mask", Float) = 15
-		_ClipRect ("Clip Rect", vector) = (-10000, -10000, 10000, 10000)
+		_ClipRect ("Clip Rect", vector) = (-32767, -32767, 32767, 32767)
 
 		[Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip ("Use Alpha Clip", Float) = 0
 	}
@@ -82,7 +82,7 @@ Shader "TMPro/Sprite"
 			{
 				v2f OUT;
 				OUT.worldPosition = IN.vertex;
-				OUT.vertex = mul(UNITY_MATRIX_MVP, OUT.worldPosition);
+				OUT.vertex = UnityObjectToClipPos(OUT.worldPosition);
 
 				OUT.texcoord = IN.texcoord;
 				
@@ -100,12 +100,12 @@ Shader "TMPro/Sprite"
 			{
 				half4 color = (tex2D(_MainTex, IN.texcoord) + _TextureSampleAdd) * IN.color;
 				
-#if UNITY_VERSION < 530
+			#if UNITY_VERSION < 530
 				if (_UseClipRect)
 					color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-#else
+			#else
 				color.a *= UnityGet2DClipping(IN.worldPosition.xy, _ClipRect);
-#endif
+			#endif
 				
 				#ifdef UNITY_UI_ALPHACLIP
 				clip (color.a - 0.001);

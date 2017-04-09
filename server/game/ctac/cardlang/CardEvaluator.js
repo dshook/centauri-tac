@@ -700,7 +700,7 @@ export default class CardEvaluator{
               }
 
               if(lastSelected && lastSelected.length === 1){
-                queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2]));
+                queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2], ignoreCollisionCheck));
               }
               break;
             }

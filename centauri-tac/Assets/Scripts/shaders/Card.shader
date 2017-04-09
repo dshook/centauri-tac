@@ -1,9 +1,13 @@
-﻿Shader "Custom/Card"
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/Card"
 {
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_DisplaceTex("Displacement Texture", 2D) = "white" {}
+		_RarityMask("Rarity Mask", 2D) = "black" {}
+        _RarityColor("Rarity Color", Color) = (0, 0, 1, 1)
 	}
 	SubShader
 	{
@@ -33,21 +37,26 @@
 			v2f vert (appdata v)
 			{
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = v.uv;
 				return o;
 			}
 			
 			sampler2D _MainTex;
 			sampler2D _DisplaceTex;
+			sampler2D _RarityMask;
+            float4 _RarityColor;
 
 			float4 frag (v2f i) : SV_Target
 			{
 
 				float4 disp = tex2D(_DisplaceTex, i.uv);
+				float4 rarity = tex2D(_RarityMask, i.uv);
+                rarity = rarity * _RarityColor;
 
 				float4 col = tex2D(_MainTex, i.uv);
-				return col * disp;
+
+				return (col + rarity) * disp;
 			}
 			ENDCG
 		}

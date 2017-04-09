@@ -145,7 +145,7 @@ namespace ctac
 
                 lineRenderer.material.SetFloat("_RepeatCount", totalLength * 2.5f);
 
-                lineRenderer.numPositions = perimPoints.Count;
+                lineRenderer.positionCount = perimPoints.Count;
                 lineRenderer.SetPositions(perimPoints.ToArray());
             }
 

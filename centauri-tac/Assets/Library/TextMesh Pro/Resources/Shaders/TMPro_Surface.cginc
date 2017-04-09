@@ -1,9 +1,5 @@
 // Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-// Copyright (C) 2014 - 2016 Stephan Schaem - All Rights Reserved
-// This code can only be used under the standard Unity Asset Store End User License Agreement
-// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-
 void VertShader(inout appdata_full v, out Input data)
 {
 	v.vertex.x += _VertexOffsetX;
@@ -18,10 +14,10 @@ void VertShader(inout appdata_full v, out Input data)
 	v.normal *= sign(dot(v.normal, view));
 
 #if USE_DERIVATIVE
-	data.param.y = 1;//v.texcoord1.y;// * _GradientScale * 1.5;
+	data.param.y = 1;
 #else
 	float4 vert = v.vertex;
-	float4 vPosition = mul(UNITY_MATRIX_MVP, vert);
+	float4 vPosition = UnityObjectToClipPos(vert);
 	float2 pixelSize = vPosition.w;
 
 	pixelSize /= float2(_ScaleX, _ScaleY) * mul((float2x2)UNITY_MATRIX_P, _ScreenParams.xy);
@@ -33,7 +29,7 @@ void VertShader(inout appdata_full v, out Input data)
 
 	//float opacity = v.color.a;
 
-	data.param.x = (lerp(_WeightNormal, _WeightBold, bold)) / _GradientScale + _FaceDilate*_ScaleRatioA*.5;
+	data.param.x = (lerp(_WeightNormal, _WeightBold, bold) / 4.0 + _FaceDilate) * _ScaleRatioA * 0.5; // 
 
 	v.texcoord1.xy = UnpackUV(v.texcoord1.x);
 	data.viewDirEnv = mul((float3x3)_EnvMatrix, WorldSpaceViewDir(v.vertex));
@@ -78,16 +74,17 @@ void PixShader(Input input, inout SurfaceOutput o)
 	faceColor *= input.color;
 	outlineColor.a *= input.color.a;
 	faceColor *= tex2D(_FaceTex, float2(input.uv2_FaceTex.x + _FaceUVSpeedX * _Time.y, input.uv2_FaceTex.y + _FaceUVSpeedY * _Time.y));
-	outlineColor *= tex2D(_OutlineTex, float2(input.uv2_FaceTex.x + _OutlineUVSpeedX * _Time.y, input.uv2_FaceTex.y + _OutlineUVSpeedY * _Time.y));
+	outlineColor *= tex2D(_OutlineTex, float2(input.uv2_OutlineTex.x + _OutlineUVSpeedX * _Time.y, input.uv2_OutlineTex.y + _OutlineUVSpeedY * _Time.y));
 	faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
 	faceColor.rgb /= max(faceColor.a, 0.0001);
+
 
 #if BEVEL_ON
 	// Face Normal
 	float3 n = GetSurfaceNormal(smp4x, input.param.x);
 
 	// Bumpmap
-	float3 bump = UnpackNormal(tex2D(_BumpMap, input.uv2_FaceTex)).xyz;
+	float3 bump = UnpackNormal(tex2D(_BumpMap, input.uv2_FaceTex.xy)).xyz;
 	bump *= lerp(_BumpFace, _BumpOutline, saturate(sd + outline * 0.5));
 	bump = lerp(float3(0, 0, 1), bump, faceColor.a);
 	n = normalize(n - bump);
@@ -99,6 +96,8 @@ void PixShader(Input input, inout SurfaceOutput o)
 	float3 n = float3(0, 0, -1);
 	float3 emission = float3(0, 0, 0);
 #endif
+
+
 
 #if GLOW_ON
 	float4 glowColor = GetGlowColor(sd, scale);

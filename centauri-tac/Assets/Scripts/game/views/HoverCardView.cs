@@ -6,7 +6,6 @@ namespace ctac
 {
     public class HoverCardView : View
     {
-        internal Signal<GameObject> pieceHover = new Signal<GameObject>();
         [Inject]
         public ICardService cardService { get; set; }
         [Inject]

@@ -28,18 +28,12 @@ export default class SpawnDeckProcessor
     let deck = this.cardState.decks[playerId];
 
     //dev hack, set one card you're working on to be most of your deck
-    let testingCards = [95,96];
+    let testingCards = [];
 
     for(let c = 0; c < deckCards; c++){
       let randCardId = _.sample(cardIds);
       if(testingCards.length && c % 2 == 0){
         randCardId = _.sample(testingCards);
-      }
-
-      //add the credit at the right spot
-      if(action.startingPlayerId != playerId && action.initialDrawAmount - 1 === c){
-        let credit = this.cardDirectory.newFromId(44);
-        this.cardState.addToDeck(playerId, credit);
       }
 
       let cardClone = this.cardDirectory.newFromId(randCardId);

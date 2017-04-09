@@ -9,8 +9,8 @@ namespace ctac
         public PieceHoverView view { get; set; }
         
         [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
-
         [Inject] public RaycastModel raycastModel { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
 
         public override void OnRegister()
         {
@@ -22,27 +22,35 @@ namespace ctac
 
         void Update()
         {
-            onPieceHover(raycastModel.piece);
-        }
-
-        private PieceView lastHoveredPiece = null;
-        void onPieceHover(PieceView pieceHovered)
-        {
-            if (pieceHovered != null)
+            if (raycastModel.piece != null)
             {
-                if (pieceHovered != lastHoveredPiece)
+                onPieceHover(raycastModel.piece.piece);
+            }
+            else if (raycastModel.tile != null)
+            {
+                var pieceAtTile = pieces.PieceAt(raycastModel.tile.position);
+                if (pieceAtTile != null)
                 {
-                    lastHoveredPiece = pieceHovered;
-                    pieceHoveredSignal.Dispatch(pieceHovered.piece);
+                    onPieceHover(pieceAtTile);
+                }
+                else
+                {
+                    onPieceHover(null);
                 }
             }
             else
             {
-                if (lastHoveredPiece != null)
-                {
-                    lastHoveredPiece = null;
-                    pieceHoveredSignal.Dispatch(null);
-                }
+                onPieceHover(null);
+            }
+        }
+
+        private PieceModel lastHoveredPiece = null;
+        void onPieceHover(PieceModel pieceHovered)
+        {
+            if (pieceHovered != lastHoveredPiece)
+            {
+                lastHoveredPiece = pieceHovered;
+                pieceHoveredSignal.Dispatch(pieceHovered);
             }
         }
     }

@@ -19,6 +19,9 @@ namespace ctac.signals
     public class PlayerFetchedSignal : Signal<PlayerModel, SocketKey> { }
 
     [Singleton]
+    public class PlayerFetchedFinishedSignal : Signal<PlayerModel, SocketKey> { }
+
+    [Singleton]
     public class NeedLoginSignal : Signal { }
 
     [Singleton]
@@ -26,6 +29,9 @@ namespace ctac.signals
 
     [Singleton]
     public class AuthLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
+
+    [Singleton]
+    public class AuthLogoutSignal : Signal { }
 
     [Singleton]
     public class LatencySignal : Signal<decimal> { }

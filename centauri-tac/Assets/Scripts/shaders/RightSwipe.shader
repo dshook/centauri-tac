@@ -1,4 +1,6 @@
-﻿Shader "Custom/RightSwipe" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Custom/RightSwipe" {
     
     Properties {
         //_Params ("Params", Vector) = (1.0, 1.0, 1.0, 1.0)
@@ -54,7 +56,7 @@
             vertex_output vertexGradients(vertex_input v)
             {
                 vertex_output o;
-                o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv0 = v.texcoord0;
                 o.uv1 = v.texcoord1;
                 o.localPosition = v.vertex;
