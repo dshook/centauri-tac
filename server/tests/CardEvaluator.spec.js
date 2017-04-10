@@ -432,7 +432,7 @@ test('Spawn a piece', t => {
   cardEval.evaluatePieceEvent('death', testBot);
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.ok(queue._actions[0] instanceof SpawnPiece, 'First action is Draw Card');
+  t.ok(queue._actions[0] instanceof SpawnPiece, 'First action is Spawn Piece');
 });
 
 test('Statuses', t => {

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import SpawnPiece from '../actions/SpawnPiece.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
 import loglevel from 'loglevel-decorator';
@@ -5,7 +6,7 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class SpawnPieceProcessor
 {
-  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, turnState, statsState)
+  constructor(pieceState, players, cardDirectory, cardEvaluator, cardState, turnState, statsState, mapState)
   {
     this.pieceState = pieceState;
     this.players = players;
@@ -14,6 +15,7 @@ export default class SpawnPieceProcessor
     this.cardState = cardState;
     this.turnState = turnState;
     this.statsState = statsState;
+    this.mapState = mapState;
   }
 
   /**
@@ -25,6 +27,18 @@ export default class SpawnPieceProcessor
       return;
     }
 
+    //resolve final position if it's a spawn in radius
+    if(action.spawnKingRadius){
+      let possiblePositions = this.mapState.getKingTilesInRadius(action.position, action.spawnKingRadius);
+      possiblePositions = possiblePositions.filter(p =>
+        !this.pieceState.pieceAt(p.x, p.z) && !this.mapState.getTile(p).unpassable
+      );
+      if(possiblePositions.length > 0){
+        action.position = _.sample(possiblePositions);
+      }else{
+        this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
+      }
+    }
 
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 

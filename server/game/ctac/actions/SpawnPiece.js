@@ -6,20 +6,29 @@ import Direction from '../models/Direction.js';
  */
 export default class SpawnPiece extends BaseAction
 {
-  constructor(playerId, cardInstanceId, cardTemplateId, position, targetPieceId, direction, pivotPosition, chooseCardTemplateId)
+  constructor(playerId, cardTemplateId, position, //required stuff
+    { //optional stuff
+        cardInstanceId,
+        targetPieceId,
+        direction,
+        pivotPosition,
+        chooseCardTemplateId,
+        spawnKingRadius
+    }
+  )
   {
     super();
-    this.cardInstanceId = cardInstanceId;
-    this.cardTemplateId = cardTemplateId;
     this.playerId = playerId;
+    this.cardTemplateId = cardTemplateId;
     this.position = new Position(position.x, position.y, position.z);
-    this.targetPieceId = targetPieceId;
 
-    //default to spawn south for now
+    this.cardInstanceId = cardInstanceId || null;
+    this.targetPieceId = targetPieceId;
     this.direction = direction || Direction.South;
 
     this.pivotPosition = pivotPosition ? new Position(pivotPosition.x, pivotPosition.y, pivotPosition.z) : null;
     this.chooseCardTemplateId = chooseCardTemplateId;
+    this.spawnKingRadius = spawnKingRadius;
 
     this.pieceId = null;
     this.tags = null;

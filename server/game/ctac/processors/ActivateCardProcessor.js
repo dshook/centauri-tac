@@ -72,13 +72,14 @@ export default class ActivateCardProcessor
       //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
       queue.push(new SpawnPiece(
         action.playerId,
-        action.cardInstanceId,
         cardPlayed.cardTemplateId,
         action.position,
-        action.targetPieceId,
-        null,
-        action.pivotPosition,
-        action.chooseCardTemplateId
+        {
+          cardInstanceId: action.cardInstanceId,
+          targetPieceId: action.targetPieceId,
+          pivotPosition: action.pivotPosition,
+          chooseCardTemplateId: action.chooseCardTemplateId
+        }
       ));
 
     }else if(cardPlayed.isSpell){

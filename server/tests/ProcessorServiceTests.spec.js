@@ -258,7 +258,7 @@ export default class ProcessorServiceTests
       t.plan(9);
       this.setupTest();
 
-      this.queue.push(new SpawnPiece(1, null, 28, new Position(0,0,0)));
+      this.queue.push(new SpawnPiece(1, 28, new Position(0,0,0), {}));
       await this.queue.processUntilDone();
 
       var piece = this.pieceState.pieceAt(0,0);
@@ -283,8 +283,8 @@ export default class ProcessorServiceTests
       t.plan(4);
       this.setupTest();
 
-      this.queue.push(new SpawnPiece(1, null, 8, new Position(0,0,0)));
-      this.queue.push(new SpawnPiece(2, null, 38, new Position(1,0,1)));
+      this.queue.push(new SpawnPiece(1, 8, new Position(0,0,0), {}));
+      this.queue.push(new SpawnPiece(2, 38, new Position(1,0,1), {}));
       await this.queue.processUntilDone();
 
       var piece = this.pieceState.pieceAt(0,0);
@@ -543,7 +543,7 @@ export default class ProcessorServiceTests
       enemyHero.position = new Position(1, 0, 1);
 
       //draw two choose card to hand
-      this.spawnCard(this.cardState, 95, 1);
+      this.spawnCard(this.cardState, 97, 1);
       this.spawnCard(this.cardState, 96, 1);
       let reggoh  = this.cardState.drawCard(1);
       let noddeg = this.cardState.drawCard(1);
@@ -576,7 +576,7 @@ export default class ProcessorServiceTests
       enemyHero.position = new Position(1, 0, 1);
 
       //draw two choose card to hand
-      this.spawnCard(this.cardState, 95, 1);
+      this.spawnCard(this.cardState, 97, 1);
       this.spawnCard(this.cardState, 96, 1);
       let reggoh  = this.cardState.drawCard(1);
       let noddeg = this.cardState.drawCard(1);

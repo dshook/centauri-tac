@@ -566,16 +566,12 @@ export default class CardEvaluator{
             case 'Spawn':
             {
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
-              possiblePositions = _.chain(possiblePositions)
-                .filter(p => (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
-                  && !spawnLocations.find(s => s.equals(p))
+              possiblePositions = possiblePositions.filter(p =>
+                  (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
                   && !this.mapState.getTile(p).unpassable
-                )
-                .value();
+                );
               if(possiblePositions.length > 0){
-                let position = _.sample(possiblePositions);
-                spawnLocations.push(position);
-                let spawn = new SpawnPiece(piece.playerId, null, action.args[0], position, null);
+                let spawn = new SpawnPiece(piece.playerId, action.args[0], piece.position, {spawnKingRadius: action.args[1]});
                 queue.push(spawn);
               }else{
                 this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
