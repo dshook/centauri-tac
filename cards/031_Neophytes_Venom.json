@@ -6,6 +6,6 @@
 	"tags": ["Spell"],
 	"eventcode": "playSpell{
 		GiveStatus(ENEMY & MINION, Paralyze)
-		startTurnTimer(1, false, RemoveStatus(SAVED, Paralyze) )
+		startTurnTimer(2, false, RemoveStatus(SAVED, Paralyze) )
 	}"
 }

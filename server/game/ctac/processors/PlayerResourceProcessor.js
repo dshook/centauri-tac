@@ -19,6 +19,11 @@ export default class PlayerResourceProcessor
     if (!(action instanceof SetPlayerResource)) {
       return;
     }
+
+    if(!action.playerId){
+      this.log.warn("Can't set player resource without playerId");
+      return queue.cancel(action, false);
+    }
     if(action.permanent){
       this.playerResourceState.incriment(action.playerId, action.change);
     }

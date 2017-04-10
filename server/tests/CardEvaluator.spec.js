@@ -488,11 +488,11 @@ test('Timers', t => {
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
 
-  cardEval.evaluatePlayerEvent('turnStart', 2);
+  cardEval.evaluateTurnEvent(true);
   t.equal(queue._actions.length, 1, 'Still only 1 action in the queue');
   t.equal(cardEval.startTurnTimers.length, 1, 'Still 1 timer saved');
 
-  cardEval.evaluatePlayerEvent('turnStart', 1);
+  cardEval.evaluateTurnEvent(true);
   t.equal(queue._actions.length, 2, 'Triggered another action with timer');
   t.ok(queue._actions[1] instanceof PieceStatusChange, 'New Action coming in is Piece status change');
   t.equal(cardEval.startTurnTimers.length, 0, 'No timers left');

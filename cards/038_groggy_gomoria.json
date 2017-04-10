@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 38,
 	"name": "Groggy Gomoria",
-	"description": "At the start of your turn, gain +1/1 and 1 movement",
+	"description": "At the start of each turn, gain +1/1 and 1 movement",
 	"cost": 2,
 	"attack": 1,
 	"health": 1,

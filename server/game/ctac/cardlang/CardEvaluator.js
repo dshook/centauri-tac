@@ -143,14 +143,6 @@ export default class CardEvaluator{
 
     let evalActions = [];
 
-    //special handling of turn start and end for timers
-    if(event === 'turnStart'){
-      evalActions = evalActions.concat(this.updateTimers(true));
-    }
-    if(event === 'turnEnd'){
-      evalActions = evalActions.concat(this.updateTimers(false));
-    }
-
     //look through all the pieces on the board to see if any have actions on this event
     for(let piece of this.pieceState.pieces){
       if(!piece.events || piece.events.length === 0) continue;
@@ -813,7 +805,10 @@ export default class CardEvaluator{
       }
     }catch(e){
       if(e instanceof EvalError){
-        this.queue.push(new Message(e.message, activatingPlayerId));
+        this.log.info('EvalError player %s : %s', activatingPlayerId, e.message);
+        if(activatingPlayerId){
+          this.queue.push(new Message(e.message, activatingPlayerId));
+        }
         return false;
       }
       throw e;
@@ -851,14 +846,11 @@ export default class CardEvaluator{
     }
   }
 
-  async evaluateTurnEvent(isStart){
+  evaluateTurnEvent(isStart){
     let evalActions = this.updateTimers(isStart);
     this.log.info('Eval %s %s turn events', evalActions.length, isStart ? 'start' : 'end');
 
-    for(let action of evalActions){
-      this.processActions([action], null, null);
-      await this.queue.processUntilDone();
-    }
+    return this.processActions(evalActions, null, null);
   }
 
   //Tick down all the timers in the array. When the metaphorical bomb ticks down remove it from

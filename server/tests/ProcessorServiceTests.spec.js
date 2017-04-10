@@ -497,7 +497,7 @@ export default class ProcessorServiceTests
     });
 
     test('Activating piece on timer events', async (t) => {
-      t.plan(6);
+      t.plan(7);
       this.setupTest();
 
       this.spawnCards();
@@ -510,6 +510,10 @@ export default class ProcessorServiceTests
       this.cardEvaluator.evaluatePieceEvent('playMinion', piece2);
 
       await this.queue.processUntilDone();
+      const preGeneratedActions = this.queue.iterateCompletedSince();
+      let preActions = [...preGeneratedActions];
+      let preBuffActions = preActions.filter(a => a instanceof PieceBuff);
+      t.equal(preBuffActions.length, 0, 'No buff actions have been added yet');
 
       t.equal(this.cardEvaluator.startTurnTimers.length, 2, 'Timers were added');
 
@@ -518,7 +522,6 @@ export default class ProcessorServiceTests
 
       const generatedActions = this.queue.iterateCompletedSince();
       let actions = [...generatedActions];
-      console.log(actions);
 
       let buffActions = actions.filter(a => a instanceof PieceBuff);
 

@@ -217,7 +217,7 @@ export default class GameController
     }
 
     for (const player of this.players) {
-      // disconnceted played
+      // disconnected played
       if (!player.client) {
         continue;
       }
@@ -271,6 +271,10 @@ export default class GameController
   {
     if(action.serverOnly) return;
     if(action.private && action.playerId && action.playerId !== player.id) return;
+
+    //remove server only props
+    delete action.selector;
+    delete action.pieceSelectorParams;
 
     const verb = cancelled ? 'actionCancelled:' : 'action:';
     player.client.send(verb + action.constructor.name, action);
