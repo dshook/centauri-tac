@@ -104,13 +104,13 @@ export default class AttackPieceProcessor
 
     //do double checks for paralyze and can't attack here if it's a taunt attack
     if(!action.isTauntAttack || !(attacker.statuses & Statuses.CantAttack || attacker.statuses & Statuses.Paralyze)){
-      queue.push(new PieceHealthChange(action.targetPieceId, -attacker.attack, bonus, bonusMsg));
+      queue.push(new PieceHealthChange({pieceId: action.targetPieceId, change: -attacker.attack, bonus, bonusMsg}));
     }
 
     //counter attack if in range
     if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
       if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
-        queue.push(new PieceHealthChange(action.attackingPieceId, -target.attack));
+        queue.push(new PieceHealthChange({pieceId: action.attackingPieceId, change: -target.attack}));
       }
     }
 

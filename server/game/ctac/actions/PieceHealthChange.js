@@ -3,11 +3,11 @@ import BaseAction from './BaseAction.js';
 //Whenever a piece takes damage or gets healed
 export default class PieceHealthChange extends BaseAction
 {
-  constructor(pieceId, change, bonus, bonusMsg)
+  constructor({pieceId, change, bonus, bonusMsg})
   {
     super();
-    this.pieceId = pieceId;
     this.change = change;
+    this.pieceId = pieceId || null;
     this.bonus = bonus || null;
     this.bonusMsg = bonusMsg || null;
 

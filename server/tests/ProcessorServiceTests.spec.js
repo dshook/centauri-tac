@@ -79,7 +79,7 @@ export default class ProcessorServiceTests
       const beforeHealth = piece.health;
       const damage = -2;
 
-      this.queue.push(new PieceHealthChange(piece.id, damage));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: damage}));
 
       await this.queue.processUntilDone();
 
@@ -93,7 +93,7 @@ export default class ProcessorServiceTests
       t.equal(piece.health, beforeHealth + damage, 'Piece was damaged');
 
       const heal = 4;
-      this.queue.push(new PieceHealthChange(piece.id, heal));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: heal}));
 
       await this.queue.processUntilDone();
 
@@ -110,7 +110,7 @@ export default class ProcessorServiceTests
       const damage = -2;
       t.ok(piece.statuses & Statuses.Shield, 'Piece has Shield');
 
-      this.queue.push(new PieceHealthChange(piece.id, damage));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: damage}));
 
       await this.queue.processUntilDone();
 
@@ -137,7 +137,7 @@ export default class ProcessorServiceTests
       const armor = 1;
       piece.armor = armor;
 
-      this.queue.push(new PieceHealthChange(piece.id, damage));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: damage}));
 
       await this.queue.processUntilDone();
 
@@ -165,7 +165,7 @@ export default class ProcessorServiceTests
       const armor = 3;
       piece.armor = armor;
 
-      this.queue.push(new PieceHealthChange(piece.id, damage));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: damage}));
 
       await this.queue.processUntilDone();
 
@@ -368,7 +368,7 @@ export default class ProcessorServiceTests
 
       //now kill and make sure it's removed
       let pieceId = piece.id;
-      this.queue.push(new PieceHealthChange(pieceId, -2));
+      this.queue.push(new PieceHealthChange({pieceId, change: -2}));
 
       await this.queue.processUntilDone();
 
@@ -430,7 +430,7 @@ export default class ProcessorServiceTests
       t.equal(piece.buffs[0].enabled, false, 'Buff is not enabled');
 
       //now for the damage to activate the buff
-      this.queue.push(new PieceHealthChange(piece.id, -1));
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: -1}));
 
       await this.queue.processUntilDone();
 

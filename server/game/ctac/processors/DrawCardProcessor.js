@@ -29,7 +29,7 @@ export default class DrawCardProcessor
       action.milled = true;
       let hero = this.pieceState.hero(action.playerId);
       this.cardState.millState[action.playerId] -= 1;
-      queue.push(new PieceHealthChange(hero.id, this.cardState.millState[action.playerId]));
+      queue.push(new PieceHealthChange({pieceId: hero.id, change: this.cardState.millState[action.playerId]}));
       return queue.cancel(action, true);
     }
 

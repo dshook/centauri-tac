@@ -93,8 +93,8 @@ test('Basic Hit action', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Hit');
-  t.ok(queue._actions[1] instanceof PieceHealthChange, 'Second action is Hit');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Hit');
+  t.equal(typeof queue._actions[1].actionClass, typeof PieceHealthChange, 'Second action is Hit');
 });
 
 test('Damaged with selector', t => {
@@ -166,8 +166,8 @@ test('Heal on damaged', t => {
   cardEval.evaluatePieceEvent('damaged', synth);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].change > 0, 'Healing not hitting');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].actionParams.change > 0, 'Healing not hitting');
 });
 
 test('Attacks event', t => {
@@ -191,8 +191,8 @@ test('Attacks event', t => {
   cardEval.evaluatePieceEvent('attacks', spore);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].change < 0, 'Hit action');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
 });
 
 test('Card drawn player event', t => {
@@ -218,8 +218,8 @@ test('Card drawn player event', t => {
 
   cardEval.evaluatePlayerEvent('cardDrawn', 2);
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].change > 0, 'Heal action');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].actionParams.change > 0, 'Heal action');
 });
 
 test('Spell played event', t => {
@@ -229,7 +229,7 @@ test('Spell played event', t => {
   spawnPiece(pieceStateMix, 1, 2);
   spawnPiece(pieceStateMix, 2, 2);
 
-  t.plan(3);
+  t.plan(4);
   let queue = new ActionQueue();
   let selector = new Selector(players, pieceStateMix);
   let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
@@ -238,9 +238,10 @@ test('Spell played event', t => {
 
   cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1});
 
-  t.equal(queue._actions.length, 4, '4 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].change < 0, 'Hit action');
+  t.equal(queue._actions.length, 1, '1 Actions in the queue');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
+  t.ok(queue._actions[0].selector, 'Has Piece Selector');
 });
 
 test('Targeting minions', t => {
@@ -260,9 +261,9 @@ test('Targeting minions', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 4});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].change < 0, 'Hit action');
-  t.equal(queue._actions[0].pieceId, 4, 'Targeted the right piece');
+  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
+  t.equal(queue._actions[0].pieceSelectorParams.targetPieceId, 4, 'Targeted the right piece');
 });
 
 test('Targeting invalid', t => {

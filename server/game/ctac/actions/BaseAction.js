@@ -4,9 +4,5 @@ export default class BaseAction
   {
     this.id = null;
     this.activatingPieceId = null;
-
-    //server only props which get deleted before sent to client
-    this.pieceSelectorParams = null;
-    this.selector = null;
   }
 }

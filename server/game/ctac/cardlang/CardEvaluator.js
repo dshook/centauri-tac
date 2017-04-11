@@ -2,6 +2,7 @@ import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
 import EvalError from './EvalError.js';
 import Statuses from '../models/Statuses.js';
+import PieceAction from '../actions/PieceAction.js';
 import DrawCard from '../actions/DrawCard.js';
 import DiscardCard from '../actions/DiscardCard.js';
 import GiveCard from '../actions/GiveCard.js';
@@ -271,9 +272,6 @@ export default class CardEvaluator{
     let queueIndex = 0;
 
     try{
-      let spawnLocations = []; //see Spawn
-      let pieceDamages = {}; //se Hit
-
       //Every time something selects pieces, save them for a potential timer to capture as the saved pieces
       let lastSelected = null;
 
@@ -391,52 +389,11 @@ export default class CardEvaluator{
               if(pieceSelectorParams.isSpell && times === 1){
                 spellDamageBonus = totalSpellDamage;
               }
+              //TODO: maybe this should be calculated at exec time?
               let damage = -(this.selector.eventualNumber(hitDamage, pieceSelectorParams) + spellDamageBonus);
 
-              //for multi time hit spells, we will need to loop through all the pieces and determine which pieces
-              //already would have died from previous damage and then not include them in the piece selection process
-              if(times > 1){
-                let deadPiecesToExclude = [];
-                for(let piece of this.pieceState.pieces){
-                  if(this.checkPieceDeath(pieceDamages, piece.id)){
-                    deadPiecesToExclude.push(piece.id);
-                  }
-                }
-
-                if(deadPiecesToExclude.length > 0){
-                  this.log.info('Excluding these pieces since they died: %j', deadPiecesToExclude);
-                  //to exclude, wrap the current selector to remove unwanted pieces, careful with random selections though
-                  if(pieceSelector.random){
-                    pieceSelector = {
-                      random: true,
-                      selector: {
-                        left: pieceSelector.selector,
-                        op: '-',
-                        right: {
-                          pieceIds: deadPiecesToExclude
-                        }
-                      }
-                    };
-                  }else{
-                    pieceSelector = {
-                      left: pieceSelector,
-                      op: '-',
-                      right: {
-                        pieceIds: deadPiecesToExclude
-                      }
-                    };
-                  }
-                }
-              }
-
               lastSelected = this.selector.selectPieces(pieceSelector, pieceSelectorParams);
-              this.log.info('Hit Selected %s pieces damage %s (+%s)', lastSelected.length, -(damage - spellDamageBonus), spellDamageBonus);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  this.addPieceDamageTaken(pieceDamages, s.id, damage);
-                  queue.push(new PieceHealthChange(s.id, damage));
-                }
-              }
+              queue.push(new PieceAction(pieceSelector, pieceSelectorParams, PieceHealthChange, {change: damage}));
               break;
             }
             //Heal(pieceSelector, healAmount)
@@ -444,11 +401,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Heal Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new PieceHealthChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceHealthChange, {change: this.selector.eventualNumber(action.args[1])}));
               break;
             }
             //SetAttribute(pieceSelector, attribute, value)
@@ -565,6 +518,7 @@ export default class CardEvaluator{
             //Also check to make sure it's a valid spawn location and another loop hasn't spawned at the same location
             case 'Spawn':
             {
+              //TODO: not sure if this should be checking the possible positions now or soley at the processor level
               let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
               possiblePositions = possiblePositions.filter(p =>
                   (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
