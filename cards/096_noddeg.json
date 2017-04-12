@@ -9,6 +9,6 @@
   "rarity": 2,
 	"tags": ["Minion"],
 	"eventcode": "playMinion{
-		endTurnTimer(1, 2, Hit(CHARACTER, 1))
+		endTurnTimer(1, 1, Hit(CHARACTER, 1))
 	}"
 }
