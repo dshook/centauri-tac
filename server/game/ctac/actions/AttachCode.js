@@ -2,7 +2,7 @@ import BaseAction from './BaseAction.js';
 
 export default class AttachCode extends BaseAction
 {
-  constructor(pieceId, eventList)
+  constructor({pieceId, eventList})
   {
     super();
     this.pieceId = pieceId;

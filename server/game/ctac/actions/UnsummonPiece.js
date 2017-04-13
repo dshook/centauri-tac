@@ -2,7 +2,7 @@ import BaseAction from './BaseAction.js';
 
 export default class UnsummonPiece extends BaseAction
 {
-  constructor(pieceId)
+  constructor({pieceId})
   {
     super();
     this.pieceId = pieceId;

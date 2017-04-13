@@ -5,12 +5,12 @@ import BaseAction from './BaseAction.js';
  */
 export default class TransformPiece extends BaseAction
 {
-  constructor(pieceId, cardTemplateId, transformPieceId)
+  constructor({pieceId, cardTemplateId, transformPieceId})
   {
     super();
     this.pieceId = pieceId;
-    this.cardTemplateId = cardTemplateId;
-    this.transformPieceId = transformPieceId;
+    this.cardTemplateId = cardTemplateId || null;
+    this.transformPieceId = transformPieceId || null;
 
     this.updatedPiece = null;
   }

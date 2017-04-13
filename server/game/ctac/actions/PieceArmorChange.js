@@ -2,7 +2,7 @@ import BaseAction from './BaseAction.js';
 
 export default class PieceArmorChange extends BaseAction
 {
-  constructor(pieceId, change)
+  constructor({pieceId, change})
   {
     super();
     this.pieceId = pieceId;

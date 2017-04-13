@@ -3,17 +3,28 @@ import BaseAction from './BaseAction.js';
 //Whenever a piece is buffed, or had a buff removed
 export default class PieceBuff extends BaseAction
 {
-  constructor(pieceId, name, removed = false, auraPieceId = null)
+  constructor({
+    pieceId,
+    name,
+    removed,
+    auraPieceId,
+    condition,
+    attack,
+    health,
+    movement,
+    range,
+    spellDamage
+  })
   {
     super();
     this.id = null;
     this.pieceId = pieceId;
     this.name = name;
-    this.removed = removed;
-    this.auraPieceId = auraPieceId;
+    this.removed = removed || false;
+    this.auraPieceId = auraPieceId || null;
 
     //compare expression that tells when the buff should be enabled or not
-    this.condition = null;
+    this.condition = condition || null;
     this.enabled = true;
 
     //changes in stats, not abs amount

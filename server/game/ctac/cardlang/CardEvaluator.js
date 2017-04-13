@@ -320,11 +320,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Charm Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new CharmPiece(s.id));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, CharmPiece));
               break;
             }
             //Destroy(pieceSelector)
@@ -332,26 +328,22 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Destroyed Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new PieceDestroyed(s.id));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceDestroyed));
               break;
             }
             //Discard(playerSelector)
             //Only chooses a random card for now
             case 'Discard':
             {
-              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              queue.push(new DiscardCard(playerSelector));
+              let playerToDiscard = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              queue.push(new DiscardCard(playerToDiscard));
               break;
             }
             //DrawCard(playerSelector)
             case 'DrawCard':
             {
-              let playerSelector = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
-              queue.push(new DrawCard(playerSelector));
+              let playerToDraw = this.selector.selectPlayer(pieceAction.playerId, action.args[0]);
+              queue.push(new DrawCard(playerToDraw));
               break;
             }
             //ChangeEnergy(playerSelector, amount, permanent, full)
@@ -409,14 +401,10 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Set Attr Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  let phc = new PieceAttributeChange(s.id);
-                  //set up the appropriate attribute change from args, i.e. attack = 1
-                  phc[action.args[1]] = this.selector.eventualNumber(action.args[2], pieceSelectorParams);
-                  queue.push(phc);
-                }
-              }
+              let attributeParams = {};
+              //set up the appropriate attribute change from args, i.e. attack = 1
+              attributeParams[action.args[1]] = this.selector.eventualNumber(action.args[2], pieceSelectorParams);
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceAttributeChange, attributeParams));
 
               break;
             }
@@ -427,6 +415,7 @@ export default class CardEvaluator{
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Buff Selected %j', lastSelected);
 
+              let buffParams = {}
               let attributeIndex = 2;
               let condition = null;
               if(action.args[2] && action.args[2].compareExpression){
@@ -434,18 +423,15 @@ export default class CardEvaluator{
                 condition = action.args[2];
               }
               let buffAttributes = action.args.slice(attributeIndex);
-
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  //set up a new buff for each selected piece that has all the attributes of the buff
-                  let buff = new PieceBuff(s.id, buffName, false);
-                  buff.condition = condition;
-                  for(let buffAttribute of buffAttributes){
-                    buff[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
-                  }
-                  queue.push(buff);
-                }
+              for(let buffAttribute of buffAttributes){
+                buffParams[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
               }
+              buffParams.condition = condition;
+              buffParams.name = buffName;
+              buffParams.removed = false;
+
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceBuff, buffParams));
+
               break;
             }
             //Aura(auraPieceSelector, pieceSelector, auraName, attribute(amount), ...moreAttributes)
@@ -455,21 +441,17 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Aura Selected %j', lastSelected);
-              let pieceSelector = action.args[1];
-              let auraName = action.args[2];
+              let auraParams = {
+                pieceSelector: action.args[1],
+                name: action.args[2],
+              };
               let auraAttributes = action.args.slice(3);
-
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  //set up a new aura for each selected piece that has all the attributes of the aura
-                  let aura = new PieceAura(s.id, pieceSelector, auraName);
-                  for(let auraAttribute of auraAttributes){
-                    //specifically don't use eventual number here because it will be evaluated in the aura update
-                    aura[auraAttribute.attribute] = auraAttribute.amount;
-                  }
-                  queue.push(aura);
-                }
+              for(let auraAttribute of auraAttributes){
+                //specifically don't use eventual number here because it will be evaluated in the aura update
+                auraParams[auraAttribute.attribute] = auraAttribute.amount;
               }
+
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceAura, auraParams));
               break;
             }
             //CardAura(auraPieceSelector, cardSelector, auraName, attribute(amount), ...moreAttributes)
@@ -479,36 +461,28 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Card Aura Selected %j', lastSelected);
-              let cardSelector = action.args[1];
-              let auraName = action.args[2];
-              let auraAttributes = action.args.slice(3);
 
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  //set up a new aura for each selected piece that has all the attributes of the aura
-                  let aura = new CardAura(s.id, cardSelector, auraName);
-                  for(let auraAttribute of auraAttributes){
-                    //specifically don't use eventual number here because it will be evaluated in the aura update
-                    aura[auraAttribute.attribute] = auraAttribute.amount;
-                  }
-                  queue.push(aura);
-                }
+              let auraParams = {
+                cardSelector: action.args[1],
+                name: action.args[2],
+              };
+              let auraAttributes = action.args.slice(3);
+              for(let auraAttribute of auraAttributes){
+                //specifically don't use eventual number here because it will be evaluated in the aura update
+                auraParams[auraAttribute.attribute] = auraAttribute.amount;
               }
+
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, CardAura, auraParams));
               break;
             }
             //RemoveBuff(pieceSelector, buffName)
             case 'RemoveBuff':
             {
-              let buffName = action.args[1];
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Remove Buff Selected %j', lastSelected);
+              let buffParams = {name: action.args[1], removed: true};
 
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  let buff = new PieceBuff(s.id, buffName, true);
-                  queue.push(buff);
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceBuff, buffParams));
               break;
             }
             //Spawn(pieceId, kingsRadiusToSpawnIn)
@@ -525,7 +499,12 @@ export default class CardEvaluator{
                   && !this.mapState.getTile(p).unpassable
                 );
               if(possiblePositions.length > 0){
-                let spawn = new SpawnPiece(piece.playerId, action.args[0], piece.position, {spawnKingRadius: action.args[1]});
+                let spawn = new SpawnPiece({
+                  playerId: piece.playerId,
+                  cardTemplateId: action.args[0],
+                  position: piece.position,
+                  spawnKingRadius: action.args[1]
+                });
                 queue.push(spawn);
               }else{
                 this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
@@ -539,11 +518,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Give Status Selected %j status %s', lastSelected, action.args[1]);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new PieceStatusChange(s.id, Statuses[action.args[1]] ));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceStatusChange, {add: Statuses[action.args[1]]}));
               break;
             }
             //RemoveStatus(pieceSelector, Status)
@@ -551,11 +526,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Remove Status Selected %j status %s', lastSelected, action.args[1]);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new PieceStatusChange(s.id, null, Statuses[action.args[1]] ));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceStatusChange, {remove: Statuses[action.args[1]]}));
               break;
             }
             //startTurnTimer(initialTurnDelay, repeatingInterval, ...Actions)
@@ -642,7 +613,13 @@ export default class CardEvaluator{
               }
 
               if(lastSelected && lastSelected.length === 1){
-                queue.push(new MovePiece(lastSelected[0].id, moveTo.resolvedPosition, true, action.args[2], ignoreCollisionCheck));
+                queue.push(new MovePiece({
+                  pieceId: lastSelected[0].id,
+                  to: moveTo.resolvedPosition,
+                  isJump: true,
+                  isTeleport: action.args[2],
+                  ignoreCollisionCheck
+                }));
               }
               break;
             }
@@ -656,6 +633,7 @@ export default class CardEvaluator{
               let cardTemplateId = action.args[1];
               let targetPieceSelector = action.args[2];
 
+              //TODO: should be moved to processor to select
               let transformPieceId = null;
               if(targetPieceSelector){
                 let transformPieces = this.selector.selectPieces(targetPieceSelector, pieceSelectorParams);
@@ -664,11 +642,7 @@ export default class CardEvaluator{
                 }
               }
 
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new TransformPiece(s.id, cardTemplateId, transformPieceId));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, TransformPiece, {cardTemplateId, transformPieceId}));
               break;
             }
             //GiveCard(PlayerSelector, cardTemplateId)
@@ -692,11 +666,8 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Give Armor Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new PieceArmorChange(s.id, this.selector.eventualNumber(action.args[1], pieceSelectorParams)));
-                }
-              }
+              let change = this.selector.eventualNumber(action.args[1], pieceSelectorParams);
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceArmorChange, {change}));
               break;
             }
             //AttachCode(pieceSelector, eventList)
@@ -705,11 +676,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Attach Code Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new AttachCode(s.id, action.args[1]));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, AttachCode, {eventList: action.args[1]}));
               break;
             }
             //Unsummon(pieceSelector)
@@ -717,11 +684,7 @@ export default class CardEvaluator{
             {
               lastSelected = this.selector.selectPieces(action.args[0], pieceSelectorParams);
               this.log.info('Unsummon Selected %j', lastSelected);
-              if(lastSelected && lastSelected.length > 0){
-                for(let s of lastSelected){
-                  queue.push(new UnsummonPiece(s.id));
-                }
-              }
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, UnsummonPiece));
               break;
             }
             //Choose(cardTemplateId1, cardTemplateId2)

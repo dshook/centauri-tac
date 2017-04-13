@@ -71,10 +71,10 @@ export default class ActivateCardProcessor
 
       //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
       queue.push(new SpawnPiece(
-        action.playerId,
-        cardPlayed.cardTemplateId,
-        action.position,
         {
+          playerId: action.playerId,
+          cardTemplateId: cardPlayed.cardTemplateId,
+          position: action.position,
           cardInstanceId: action.cardInstanceId,
           targetPieceId: action.targetPieceId,
           pivotPosition: action.pivotPosition,

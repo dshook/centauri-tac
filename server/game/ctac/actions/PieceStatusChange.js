@@ -5,7 +5,7 @@ import BaseAction from './BaseAction.js';
  */
 export default class PieceStatusChange extends BaseAction
 {
-  constructor(pieceId, add, remove)
+  constructor({pieceId, add, remove})
   {
     super();
     this.pieceId = pieceId;

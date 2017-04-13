@@ -189,7 +189,7 @@ export default class ProcessorServiceTests
       var piece = this.spawnPiece(this.pieceState, 77, 1);
       t.ok(piece.statuses & Statuses.CantAttack, 'Piece has Status');
 
-      this.queue.push(new PieceStatusChange(piece.id, Statuses.Silence));
+      this.queue.push(new PieceStatusChange({pieceId: piece.id, add: Statuses.Silence}));
 
       await this.queue.processUntilDone();
 
@@ -206,7 +206,7 @@ export default class ProcessorServiceTests
       t.equal(piece.health, 2, 'Piece is unbuffed with hp 2');
 
       let buffName = 'test buff';
-      let buff = new PieceBuff(piece.id, buffName);
+      let buff = new PieceBuff({pieceId: piece.id, name: buffName});
       buff.health = 2;
       this.queue.push(buff);
 
@@ -215,7 +215,7 @@ export default class ProcessorServiceTests
       t.equal(piece.health, 4, 'Piece now has 4 hp');
       t.equal(piece.buffs.length, 1, 'Piece has buff in array');
 
-      this.queue.push(new PieceBuff(piece.id, buffName, true));
+      this.queue.push(new PieceBuff({pieceId: piece.id, name: buffName, removed: true}));
 
       await this.queue.processUntilDone();
 
@@ -245,7 +245,7 @@ export default class ProcessorServiceTests
       t.equal(enemyPiece.health, 30, 'Enemy hero has 30 hp to start');
 
 
-      this.queue.push(new MovePiece(piece.id, new Position(1, 0, 1)));
+      this.queue.push(new MovePiece({pieceId: piece.id, to: new Position(1, 0, 1)}));
       this.queue.push(new AttackPiece(piece.id, enemyPiece.id));
 
       await this.queue.processUntilDone();
@@ -258,14 +258,14 @@ export default class ProcessorServiceTests
       t.plan(9);
       this.setupTest();
 
-      this.queue.push(new SpawnPiece(1, 28, new Position(0,0,0), {}));
+      this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 28, position: new Position(0,0,0)}));
       await this.queue.processUntilDone();
 
       var piece = this.pieceState.pieceAt(0,0);
       t.ok(piece, 'Spawned a piece');
       t.ok(piece.statuses & Statuses.Shield, 'Piece has Shield');
 
-      this.queue.push(new TransformPiece(piece.id, 59, false));
+      this.queue.push(new TransformPiece({pieceId: piece.id, cardTemplateId: 59}));
 
       await this.queue.processUntilDone();
 
@@ -283,14 +283,14 @@ export default class ProcessorServiceTests
       t.plan(4);
       this.setupTest();
 
-      this.queue.push(new SpawnPiece(1, 8, new Position(0,0,0), {}));
-      this.queue.push(new SpawnPiece(2, 38, new Position(1,0,1), {}));
+      this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 8, position: new Position(0,0,0)}));
+      this.queue.push(new SpawnPiece({playerId: 2, cardTemplateId: 38, position: new Position(1,0,1)}));
       await this.queue.processUntilDone();
 
       var piece = this.pieceState.pieceAt(0,0);
       t.ok(piece, 'Spawned a piece');
 
-      this.queue.push(new TransformPiece(piece.id, 0, 2));
+      this.queue.push(new TransformPiece({pieceId: piece.id, transformPieceId: 2}));
 
       await this.queue.processUntilDone();
 
@@ -326,9 +326,9 @@ export default class ProcessorServiceTests
         }
       ];
 
-      let attach0 = new AttachCode(pieceWithIncompatableDamagedEvent.id, newCode );
-      let attach1 = new AttachCode(pieceWithDamagedEvent.id, newCode );
-      let attach2 = new AttachCode(pieceNothing.id, newCode );
+      let attach0 = new AttachCode({pieceId: pieceWithIncompatableDamagedEvent.id, eventList: newCode });
+      let attach1 = new AttachCode({pieceId: pieceWithDamagedEvent.id, eventList: newCode });
+      let attach2 = new AttachCode({pieceId: pieceNothing.id, eventList: newCode });
 
       this.queue.push(attach0);
       this.queue.push(attach1);
@@ -458,12 +458,12 @@ export default class ProcessorServiceTests
 
       t.equal(piece.direction, Direction.South, 'Start facing south');
 
-      this.queue.push(new MovePiece(piece.id, new Position(1, 0, 0)));
+      this.queue.push(new MovePiece({pieceId: piece.id, to: new Position(1, 0, 0)}));
       await this.queue.processUntilDone();
       t.equal(piece.direction, Direction.East, 'Move to the east');
 
-      this.queue.push(new MovePiece(piece.id, new Position(2, 0, 0)));
-      this.queue.push(new MovePiece(piece.id, new Position(2, 0, 1)));
+      this.queue.push(new MovePiece({pieceId: piece.id, to: new Position(2, 0, 0)}));
+      this.queue.push(new MovePiece({pieceId: piece.id, to: new Position(2, 0, 1)}));
       await this.queue.processUntilDone();
       t.equal(piece.direction, Direction.North, 'Now up to North');
 

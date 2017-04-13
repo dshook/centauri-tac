@@ -111,7 +111,7 @@ export default class GameController
 
     if(route){
       for (let step of route) {
-        const action = new MovePiece(pieceId, step);
+        const action = new MovePiece({pieceId, to: step});
         this.queue.push(action);
       }
       this.queue.processUntilDone();
@@ -136,7 +136,7 @@ export default class GameController
       }
 
       for (let step of route) {
-        this.queue.push(new MovePiece(attackingPieceId, step));
+        this.queue.push(new MovePiece({pieceId: attackingPieceId, to: step}));
       }
     }
     this.queue.push(new AttackPiece(attackingPieceId, targetPieceId));

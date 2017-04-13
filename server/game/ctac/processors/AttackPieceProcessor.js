@@ -2,7 +2,7 @@ import Statuses from '../models/Statuses.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
-import {directionOf, faceDirection} from '../models/Direction.js';
+import {faceDirection} from '../models/Direction.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -121,7 +121,7 @@ export default class AttackPieceProcessor
 
     //Remove cloak once they've attacked
     if(attacker.statuses & Statuses.Cloak){
-      queue.push(new PieceStatusChange(attacker.id, null, Statuses.Cloak ));
+      queue.push(new PieceStatusChange({pieceId: attacker.id, remove: Statuses.Cloak }));
     }
 
     this.cardEvaluator.evaluatePieceEvent('attacks', attacker);

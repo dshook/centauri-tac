@@ -6,16 +6,17 @@ import Direction from '../models/Direction.js';
  */
 export default class SpawnPiece extends BaseAction
 {
-  constructor(playerId, cardTemplateId, position, //required stuff
-    { //optional stuff
-        cardInstanceId,
-        targetPieceId,
-        direction,
-        pivotPosition,
-        chooseCardTemplateId,
-        spawnKingRadius
-    }
-  )
+  constructor({
+    playerId,
+    cardTemplateId,
+    position,
+    cardInstanceId,
+    targetPieceId,
+    direction,
+    pivotPosition,
+    chooseCardTemplateId,
+    spawnKingRadius
+  })
   {
     super();
     this.playerId = playerId;

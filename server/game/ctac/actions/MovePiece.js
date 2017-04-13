@@ -8,14 +8,14 @@ import Position from '../models/Position.js';
  */
 export default class MovePiece extends BaseAction
 {
-  constructor(pieceId, to, isJump = false, isTeleport = false, ignoreCollisionCheck = false)
+  constructor({pieceId, to, isJump, isTeleport, ignoreCollisionCheck})
   {
     super();
     this.pieceId = pieceId;
     this.to = new Position(to.x, to.y, to.z);
-    this.isJump = isJump;
-    this.isTeleport = isTeleport;
-    this.ignoreCollisionCheck = ignoreCollisionCheck;
+    this.isJump = isJump || false;
+    this.isTeleport = isTeleport || false;
+    this.ignoreCollisionCheck = ignoreCollisionCheck || false;
 
     this.direction = null;
   }

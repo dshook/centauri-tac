@@ -84,11 +84,11 @@ export default class PieceHealthChangeProcessor
       action.pieceId, (action.change > 0 ? 'gained' : 'lost'), action.change, action.newCurrentHealth);
     queue.complete(action);
     if(removeShield){
-      queue.pushFront(new PieceStatusChange(piece.id, null, Statuses.Shield));
+      queue.pushFront(new PieceStatusChange({pieceId: piece.id, remove: Statuses.Shield}));
     }
     //Remove cloak if they took damage
     if(piece.health > 0 && piece.statuses & Statuses.Cloak){
-      queue.pushFront(new PieceStatusChange(piece.id, null, Statuses.Cloak ));
+      queue.pushFront(new PieceStatusChange({pieceId: piece.id, remove: Statuses.Cloak}));
     }
   }
 }

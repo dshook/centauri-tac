@@ -4,16 +4,16 @@ import BaseAction from './BaseAction.js';
 //Note that this will change the base stats as well
 export default class PieceAttributeChange extends BaseAction
 {
-  constructor(pieceId)
+  constructor({pieceId, attack, health, movement, range, spellDamage})
   {
     super();
     this.pieceId = pieceId;
 
-    this.attack      = null;
-    this.health      = null;
-    this.movement    = null;
-    this.range       = null;
-    this.spellDamage = null;
+    this.attack      = attack      || null;
+    this.health      = health      || null;
+    this.movement    = movement    || null;
+    this.range       = range       || null;
+    this.spellDamage = spellDamage || null;
 
     //set by processor
     this.baseAttack      = null;

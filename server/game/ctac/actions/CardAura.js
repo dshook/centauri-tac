@@ -2,7 +2,7 @@ import BaseAction from './BaseAction.js';
 
 export default class CardAura extends BaseAction
 {
-  constructor(pieceId, cardSelector, name)
+  constructor({pieceId, cardSelector, name})
   {
     super();
     this.serverOnly = true;

@@ -69,7 +69,7 @@ export default class UpdateAuraProcessor
     for(let oldAuraPiece of removedPieces){
       let affectedPieces = this.pieceState.pieces.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
       //remove buffs from all piece that had a buff from that piece
-      this.removeBuffs(queue, oldAuraPiece, affectedPieces, PieceBuff);
+      this.removeBuffs(queue, oldAuraPiece, affectedPieces, PieceBuff, false);
     }
 
     //find remaining pieces that still might have moved/changed
@@ -93,7 +93,7 @@ export default class UpdateAuraProcessor
       this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, PieceBuff);
 
       let leavers = Difference(previouslySelected, selected, (a,b) => a.id === b.id);
-      this.removeBuffs(queue, remainingPiece, leavers, PieceBuff);
+      this.removeBuffs(queue, remainingPiece, leavers, PieceBuff, false);
     }
 
     this.auraPieces = auraPieces;
@@ -126,7 +126,7 @@ export default class UpdateAuraProcessor
     for(let oldAuraPiece of removedPieces){
       let affectedCards = this.cardState.cards.filter(p => p.buffs.some(b => b.auraPieceId == oldAuraPiece.id));
       //remove buffs from all piece that had a buff from that piece
-      this.removeBuffs(queue, oldAuraPiece, affectedCards, CardBuff);
+      this.removeBuffs(queue, oldAuraPiece, affectedCards, CardBuff, true);
     }
 
     //find remaining pieces that still might have moved/changed
@@ -150,30 +150,36 @@ export default class UpdateAuraProcessor
       this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, CardBuff);
 
       let leavers = Difference(previouslySelected, selected, (a,b) => a.id === b.id);
-      this.removeBuffs(queue, remainingPiece, leavers, CardBuff);
+      this.removeBuffs(queue, remainingPiece, leavers, CardBuff, true);
     }
 
     this.cardAuraPieces = cardAuraPieces;
   }
 
-  removeBuffs(queue, auraPiece, affectedPieces, Buff){
+  removeBuffs(queue, auraPiece, affectedPieces, Buff, isCardBuff){
     for(let s of affectedPieces){
       let buffToRemove = s.buffs.find(b => b.auraPieceId == auraPiece.id);
-      let buff = new Buff(s.id, buffToRemove.name, true, auraPiece.id);
+      let params = {name: buffToRemove.name, removed: true, auraPieceId: auraPiece.id}
+      isCardBuff ? params.cardId = s.id : params.pieceId = s.id;
+      let buff = new Buff(params);
       queue.pushFront(buff);
     }
   }
 
-  addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, Buff){
+  addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, Buff, isCardBuff){
     let aura = newAuraPiece.aura;
 
-    for(let s of selected){
-      let buff = new Buff(s.id, aura.name, false, newAuraPiece.id);
-      for(let buffAttribute of attributes){
-        if(aura[buffAttribute]){
-          buff[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], pieceSelectorParams);
-        }
+    let buffParams = {name: aura.name, removed: false, auraPieceId: newAuraPiece.id};
+    for(let buffAttribute of attributes){
+      if(aura[buffAttribute]){
+        buffParams[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], pieceSelectorParams);
       }
+    }
+
+    for(let s of selected){
+      let sParams = Object.assign({}, buffParams);
+      isCardBuff ? sParams.cardId = s.id : sParams.pieceId = s.id;
+      let buff = new Buff(sParams);
       queue.pushFront(buff);
     }
   }
