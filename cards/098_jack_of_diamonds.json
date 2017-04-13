@@ -1,0 +1,8 @@
+{
+	"cardTemplateId": 98,
+	"name": "Jack of Diamonds",
+	"description": "Deal {2} damage to all minions in a diamond",
+	"cost": 2,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{ Hit(Area(Diamond, 3, CURSOR), 2) }"
+}

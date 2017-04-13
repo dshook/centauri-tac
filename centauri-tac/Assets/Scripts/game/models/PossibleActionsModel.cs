@@ -143,6 +143,7 @@ namespace ctac
         Line = 3,
         Row = 4,
         Diagonal = 5,
-        PiecePosition = 6
+        PiecePosition = 6,
+        Diamond = 7
     }
 }

@@ -83,7 +83,7 @@
   return 'status'
 
 //areas
-(Cross|Square|Line|Diagonal|Row)
+(Cross|Square|Line|Diagonal|Row|Diamond)
   return 'area'
 
 (Area)

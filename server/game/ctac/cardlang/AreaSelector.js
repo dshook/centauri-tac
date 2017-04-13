@@ -19,7 +19,7 @@ export default class AreaSelector{
   //ex selecting tiles to choose from
   //CURSOR & Area(...)
   //
-  //Cross|Square should be self explanitory,
+  //Cross|Square|Diamond should be self explanitory,
   //Line can go any direction diagonal or not
   //Diagonal is limited to diagonal, not horizontal or vertical
   //Row is the opposite of diagonal
@@ -112,6 +112,9 @@ export default class AreaSelector{
             break;
           case 'Square':
             areaTiles = this.mapState.getKingTilesInRadius(centerPosition, size);
+            break;
+          case 'Diamond':
+            areaTiles = this.mapState.getTilesInRadius(centerPosition, size);
             break;
           case 'Line': {
             //check to see that the pivot position is close to the center and in one of the cross tiles

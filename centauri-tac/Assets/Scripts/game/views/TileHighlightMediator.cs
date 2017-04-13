@@ -161,6 +161,9 @@ namespace ctac
                     case AreaType.Square:
                         tiles = mapService.GetKingTilesInRadius(tile.position, selectingArea.area.size).Values.ToList();
                         break;
+                    case AreaType.Diamond:
+                        tiles = mapService.GetTilesInRadius(tile.position, selectingArea.area.size).Values.ToList();
+                        break;
                     case AreaType.Cross:
                         tiles = mapService.GetCrossTiles(tile.position, selectingArea.area.size).Values.ToList();
                         break;
@@ -450,6 +453,9 @@ namespace ctac
                     {
                         case AreaType.Square:
                             tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
+                            break;
+                        case AreaType.Diamond:
+                            tiles = mapService.GetTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
                             break;
                         case AreaType.Cross:
                             tiles = mapService.GetCrossTiles(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
