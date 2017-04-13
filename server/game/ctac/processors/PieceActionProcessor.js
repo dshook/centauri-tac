@@ -26,6 +26,7 @@ export default class PieceActionProcessor
         for(let s of selected){
           let actionParams = Object.assign({}, action.actionParams, {pieceId: s.id});
           let newAction = new action.actionClass(actionParams);
+          newAction.activatingPieceId = action.activatingPieceId;
 
           additionalActions.push(newAction);
         }

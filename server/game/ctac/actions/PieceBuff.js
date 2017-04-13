@@ -28,11 +28,11 @@ export default class PieceBuff extends BaseAction
     this.enabled = true;
 
     //changes in stats, not abs amount
-    this.attack      = null;
-    this.health      = null;
-    this.movement    = null;
-    this.range       = null;
-    this.spellDamage = null;
+    this.attack      = attack      || null;
+    this.health      = health      || null;
+    this.movement    = movement    || null;
+    this.range       = range       || null;
+    this.spellDamage = spellDamage || null;
 
     //new values updated by proccessor
     this.newAttack      = null;

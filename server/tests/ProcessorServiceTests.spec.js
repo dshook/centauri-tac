@@ -528,8 +528,8 @@ export default class ProcessorServiceTests
       t.equal(buffActions.length, 2, 'A buff action for each of the pieces');
       t.equal(buffActions[0].pieceId, piece1.id, 'First buff action is for first piece');
       t.equal(buffActions[0].activatingPieceId, piece1.id, 'First buff activating piece');
-      t.equal(buffActions[1].activatingPieceId, piece2.id, 'Second buff action is for second piece');
-      t.equal(buffActions[1].pieceId, piece2.id, 'Second buff activating piece');
+      t.equal(buffActions[1].pieceId, piece2.id, 'Second buff is for second piece');
+      t.equal(buffActions[1].activatingPieceId, piece2.id, 'Second buff activating piece');
     });
 
     test('End turn timer resolution order 1/2', async (t) => {

@@ -61,7 +61,7 @@ export default class UpdateAuraProcessor
       };
       var selected = this.selector.selectPieces(aura.pieceSelector, pieceSelectorParams);
       //set up a new buff for each selected piece that has all the attributes of the buff
-      this.addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, PieceBuff);
+      this.addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, PieceBuff, false);
     }
 
     //find removed pieces
@@ -90,7 +90,7 @@ export default class UpdateAuraProcessor
 
       //add or remove buffs as necessary
       let newComers = Difference(selected, previouslySelected, (a,b) => a.id === b.id);
-      this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, PieceBuff);
+      this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, PieceBuff, false);
 
       let leavers = Difference(previouslySelected, selected, (a,b) => a.id === b.id);
       this.removeBuffs(queue, remainingPiece, leavers, PieceBuff, false);
@@ -118,7 +118,7 @@ export default class UpdateAuraProcessor
       };
       var selected = this.selector.selectCards(aura.cardSelector, pieceSelectorParams);
       //set up a new buff for each selected piece that has all the attributes of the buff
-      this.addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, CardBuff);
+      this.addBuffs(queue, newAuraPiece, selected, pieceSelectorParams, CardBuff, true);
     }
 
     //find removed pieces
@@ -147,7 +147,7 @@ export default class UpdateAuraProcessor
 
       //add or remove buffs as necessary
       let newComers = Difference(selected, previouslySelected, (a,b) => a.id === b.id);
-      this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, CardBuff);
+      this.addBuffs(queue, remainingPiece, newComers, pieceSelectorParams, CardBuff, true);
 
       let leavers = Difference(previouslySelected, selected, (a,b) => a.id === b.id);
       this.removeBuffs(queue, remainingPiece, leavers, CardBuff, true);
@@ -175,7 +175,6 @@ export default class UpdateAuraProcessor
         buffParams[buffAttribute] = this.selector.eventualNumber(aura[buffAttribute], pieceSelectorParams);
       }
     }
-
     for(let s of selected){
       let sParams = Object.assign({}, buffParams);
       isCardBuff ? sParams.cardId = s.id : sParams.pieceId = s.id;

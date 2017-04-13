@@ -42,6 +42,10 @@ function spawnCard(cardState, playerId, cardTemplateId){
   cardState.drawCard(playerId);
 }
 
+function queueTypeCheck(t, queue, index, type, message){
+  t.equal(typeof queue._actions[index].actionClass, typeof type, message);
+}
+
 var player1 = new Player(1);
 var player2 = new Player(2);
 var players = [player1, player2];
@@ -93,8 +97,8 @@ test('Basic Hit action', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot);
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Hit');
-  t.equal(typeof queue._actions[1].actionClass, typeof PieceHealthChange, 'Second action is Hit');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Hit');
+  queueTypeCheck(t, queue, 1, PieceHealthChange, 'Second action is Hit');
 });
 
 test('Damaged with selector', t => {
@@ -142,7 +146,7 @@ test('Set attribute', t => {
   cardEval.evaluatePieceEvent('playMinion', platypus);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Set attribute');
+  queueTypeCheck(t, queue, 0, PieceAttributeChange, 'First action is Set Attribute');
 });
 
 test('Heal on damaged', t => {
@@ -166,7 +170,7 @@ test('Heal on damaged', t => {
   cardEval.evaluatePieceEvent('damaged', synth);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is health change');
   t.ok(queue._actions[0].actionParams.change > 0, 'Healing not hitting');
 });
 
@@ -191,7 +195,7 @@ test('Attacks event', t => {
   cardEval.evaluatePieceEvent('attacks', spore);
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
 });
 
@@ -218,7 +222,7 @@ test('Card drawn player event', t => {
 
   cardEval.evaluatePlayerEvent('cardDrawn', 2);
   t.equal(queue._actions.length, 1, '1 Action in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].actionParams.change > 0, 'Heal action');
 });
 
@@ -239,7 +243,7 @@ test('Spell played event', t => {
   cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
   t.ok(queue._actions[0].selector, 'Has Piece Selector');
 });
@@ -261,7 +265,7 @@ test('Targeting minions', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 4});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.equal(typeof queue._actions[0].actionClass, typeof PieceHealthChange, 'First action is Health change');
+  queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
   t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
   t.equal(queue._actions[0].pieceSelectorParams.targetPieceId, 4, 'Targeted the right piece');
 });
@@ -466,8 +470,8 @@ test('Give Status', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 2});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceStatusChange, 'First action is Piece Status change');
-  t.equal(queue._actions[0].add, Statuses.Shield, 'Adding shield status');
+  queueTypeCheck(t, queue, 0, PieceStatusChange, 'First action is Piece Status change');
+  t.equal(queue._actions[0].actionParams.add, Statuses.Shield, 'Adding shield status');
 });
 
 test('Timers', t => {
@@ -495,7 +499,7 @@ test('Timers', t => {
 
   cardEval.evaluateTurnEvent(true);
   t.equal(queue._actions.length, 2, 'Triggered another action with timer');
-  t.ok(queue._actions[1] instanceof PieceStatusChange, 'New Action coming in is Piece status change');
+  queueTypeCheck(t, queue, 1, PieceStatusChange, 'New Action coming in is Piece status change');
   t.equal(cardEval.startTurnTimers.length, 0, 'No timers left');
 });
 
@@ -516,10 +520,10 @@ test('Swap attack and health', t => {
   cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1, targetPieceId: 4});
 
   t.equal(queue._actions.length, 2, '2 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceAttributeChange, 'First action is Piece Status change');
-  t.equal(queue._actions[0].attack, 2, 'Attack is now 2');
-  t.ok(queue._actions[1] instanceof PieceAttributeChange, 'Second action is Piece Status change');
-  t.equal(queue._actions[1].health, 1, 'Health is now 2');
+  queueTypeCheck(t, queue, 0, PieceAttributeChange, 'First action is Piece Status change');
+  t.equal(queue._actions[0].actionParams.attack, 2, 'Attack is now 2');
+  queueTypeCheck(t, queue, 1, PieceAttributeChange, 'Second action is Piece Status change');
+  t.equal(queue._actions[1].actionParams.health, 1, 'Health is now 2');
 });
 
 test('Find Possible abilities', t => {
@@ -659,7 +663,7 @@ test('Conditional Action', t => {
   cardEval.evaluatePieceEvent('playMinion', testBot, {targetPieceId: 1});
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.ok(queue._actions[0] instanceof PieceBuff, 'First action is Piece Buff');
+  queueTypeCheck(t, queue, 0, PieceBuff, 'First action is Piece Buff');
 
   //now without any minions shouldn't get the buff
   let sparsePieceState = new PieceState();

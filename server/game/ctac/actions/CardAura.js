@@ -2,7 +2,7 @@ import BaseAction from './BaseAction.js';
 
 export default class CardAura extends BaseAction
 {
-  constructor({pieceId, cardSelector, name})
+  constructor({pieceId, cardSelector, name, cost})
   {
     super();
     this.serverOnly = true;
@@ -12,6 +12,6 @@ export default class CardAura extends BaseAction
     this.name = name;
 
     //changes in stats, not abs amount
-    this.cost = null;
+    this.cost = cost || null;
   }
 }

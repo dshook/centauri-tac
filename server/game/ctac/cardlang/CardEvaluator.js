@@ -471,7 +471,6 @@ export default class CardEvaluator{
                 //specifically don't use eventual number here because it will be evaluated in the aura update
                 auraParams[auraAttribute.attribute] = auraAttribute.amount;
               }
-
               queue.push(new PieceAction(action.args[0], pieceSelectorParams, CardAura, auraParams));
               break;
             }
