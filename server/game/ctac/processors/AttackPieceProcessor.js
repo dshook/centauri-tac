@@ -124,7 +124,7 @@ export default class AttackPieceProcessor
       queue.push(new PieceStatusChange({pieceId: attacker.id, remove: Statuses.Cloak }));
     }
 
-    this.cardEvaluator.evaluatePieceEvent('attacks', attacker);
+    this.cardEvaluator.evaluatePieceEvent('attacks', attacker, {targetPieceId: target.id});
 
     this.log.info('piece %s (%s/%s) attacked %s (%s/%s) direction %s',
       attacker.id, attacker.attack, attacker.health,
