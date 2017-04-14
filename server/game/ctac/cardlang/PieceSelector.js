@@ -94,7 +94,7 @@ export default class PieceSelector{
         case 'SAVED':
           if(!this.savedPieces) return [];
           //Use an implicit intersection with all pieces in case one of the saved pieces is now gone
-          return Intersection(this.allPieces, this.savedPieces, (a,b) => a.id === b.id);
+          return Intersection(this.allPieces, this.savedPieces, (a,b) => a.id === b);
           break;
         case 'SILENCE':
           return this.allPieces.filter(p => p.statuses & Statuses.Silence);

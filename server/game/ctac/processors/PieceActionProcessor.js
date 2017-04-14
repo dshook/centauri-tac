@@ -7,9 +7,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class PieceActionProcessor
 {
-  constructor(selector)
+  constructor(selector, pieceState)
   {
     this.selector = selector;
+    this.pieceState = pieceState;
   }
 
   async handleAction(action, queue)
@@ -22,6 +23,8 @@ export default class PieceActionProcessor
     if(action.selector && action.pieceSelectorParams){
 
       let selected = this.selector.selectPieces(action.selector, action.pieceSelectorParams);
+      this.log.info('Selected %s pieces for action %s', selected.length, action.actionClass.name);
+      this.pieceState.lastSelectedPieces = selected.map(p => p.id) || [];
       if(selected && selected.length > 0){
         for(let s of selected){
           let actionParams = Object.assign({}, action.actionParams, {pieceId: s.id});

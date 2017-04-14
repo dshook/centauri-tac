@@ -5,7 +5,7 @@ export function Union(a, b, equal){
   results = results.concat(a);
 
   for(let bElement of b){
-    if(!_.some(results, res => equal(bElement, res) )) {
+    if(!_.some(results, res => equal(res, bElement) )) {
         results.push(bElement);
     }
   }
@@ -19,7 +19,7 @@ export function Intersection(a, b, equal){
   for(var i = 0; i < a.length; i++) {
       var aElement = a[i];
 
-      if(_.some(b, bElement => equal(bElement, aElement) )) {
+      if(_.some(b, bElement => equal(aElement, bElement) )) {
           results.push(aElement);
       }
   }
@@ -34,7 +34,7 @@ export function Difference(a, b, equal){
   for(var i = 0; i < a.length; i++) {
       var aElement = a[i];
 
-      if(!_.some(b, bElement => equal(bElement, aElement) )) {
+      if(!_.some(b, bElement => equal(aElement, bElement) )) {
           results.push(aElement);
       }
   }

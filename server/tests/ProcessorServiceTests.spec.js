@@ -597,5 +597,49 @@ export default class ProcessorServiceTests
       let spawnedPiece = this.pieceState.pieces.find(p => p.cardTemplateId === 8);
       t.ok(!spawnedPiece, 'Spawned Piece was destroyed');
     });
+
+    test('Saved pieces selection', async (t) => {
+      t.plan(7);
+      this.setupTest();
+
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(0, 0, 1);
+      var enemyHero = this.spawnPiece(this.pieceState, 1, 2);
+      enemyHero.position = new Position(1, 0, 1);
+
+      //2 zombies for each player
+      this.spawnPiece(this.pieceState, 2, 1);
+      this.spawnPiece(this.pieceState, 2, 1);
+      this.spawnPiece(this.pieceState, 2, 2);
+      this.spawnPiece(this.pieceState, 2, 2);
+
+      //draw two choose card to hand
+      this.spawnCard(this.cardState, 31, 1);
+      let card = this.cardState.drawCard(1);
+
+      //paralyze
+      this.queue.push(new ActivateCard(1, card.id, null, null, null, null));
+
+      await this.queue.processUntilDone();
+
+      let paralyzed = this.pieceState.withStatus(Statuses.Paralyze);
+      t.equal(paralyzed.length, 2, 'Two pieces paralyzed');
+      t.equal(paralyzed[0].playerId, 2, 'Enemy Piece is paralyzed');
+      t.equal(this.cardEvaluator.startTurnTimers.length, 1, '1 start turn timer saved');
+
+      this.queue.push(new PassTurn());
+      await this.queue.processUntilDone();
+
+      let secondPar = this.pieceState.withStatus(Statuses.Paralyze);
+      t.equal(secondPar.length, 2, 'Two pieces still paralyzed');
+      t.equal(this.cardEvaluator.startTurnTimers.length, 1, 'Still 1 timer saved');
+
+      this.queue.push(new PassTurn());
+      await this.queue.processUntilDone();
+
+      let thirdPar = this.pieceState.withStatus(Statuses.Paralyze);
+      t.equal(thirdPar.length, 0, 'Paralysis wore off');
+      t.equal(this.cardEvaluator.startTurnTimers.length, 0, 'No timers left');
+    });
   }
 }

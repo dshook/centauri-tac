@@ -15,6 +15,9 @@ export default class PieceState
   reset(){
     this.pieces = [];
     this.nextPieceId = 1;
+
+    //array of piece ID's that were last selected in the queue for use by timers and SAVED selector
+    this.lastSelectedPieces = [];
   }
 
   nextId(){

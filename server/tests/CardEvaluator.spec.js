@@ -13,6 +13,7 @@ import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
+import ActionTimer from '../game/ctac/actions/ActionTimer.js';
 import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
@@ -472,35 +473,6 @@ test('Give Status', t => {
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   queueTypeCheck(t, queue, 0, PieceStatusChange, 'First action is Piece Status change');
   t.equal(queue._actions[0].actionParams.add, Statuses.Shield, 'Adding shield status');
-});
-
-test('Timers', t => {
-  let pieceStateMix = new PieceState();
-  spawnPiece(pieceStateMix, 1, 1);
-  spawnPiece(pieceStateMix, 2, 1);
-  spawnPiece(pieceStateMix, 1, 2);
-  spawnPiece(pieceStateMix, 2, 2);
-
-  t.plan(7);
-  let queue = new ActionQueue();
-  let selector = new Selector(players, pieceStateMix);
-  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
-
-  let cardPlayed = cardDirectory.newFromId(31);
-
-  cardEval.evaluateSpellEvent('playSpell', {spellCard: cardPlayed, playerId: 1});
-
-  t.equal(queue._actions.length, 1, '1 Actions in the queue');
-  t.equal(cardEval.startTurnTimers.length, 1, '1 start turn timer added');
-
-  cardEval.evaluateTurnEvent(true);
-  t.equal(queue._actions.length, 1, 'Still only 1 action in the queue');
-  t.equal(cardEval.startTurnTimers.length, 1, 'Still 1 timer saved');
-
-  cardEval.evaluateTurnEvent(true);
-  t.equal(queue._actions.length, 2, 'Triggered another action with timer');
-  queueTypeCheck(t, queue, 1, PieceStatusChange, 'New Action coming in is Piece status change');
-  t.equal(cardEval.startTurnTimers.length, 0, 'No timers left');
 });
 
 test('Swap attack and health', t => {
