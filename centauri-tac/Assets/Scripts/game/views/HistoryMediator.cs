@@ -131,7 +131,20 @@ namespace ctac
                 pieceSpawned.piece.playerId
             );
 
-            currentItem.triggeringPiece = CopyPiece(pieceSpawned.piece);
+            if (pieceSpawned.spawnPieceAction.activatingPieceId.HasValue 
+                && pieceSpawned.spawnPieceAction.activatingPieceId != pieceSpawned.spawnPieceAction.pieceId)
+            {
+                currentItem.triggeringPiece = CopyPiece(pieces.Piece(pieceSpawned.spawnPieceAction.activatingPieceId.Value));
+                currentItem.pieceChanges.Add(new GenericPieceChange()
+                {
+                    type = HistoryPieceChangeType.Spawner,
+                    originalPiece = CopyPiece(pieceSpawned.piece),
+                });
+            }
+            else
+            {
+                currentItem.triggeringPiece = CopyPiece(pieceSpawned.piece);
+            }
         }
 
         private void onSpellPlayed(SpellPlayedModel spellPlayed)

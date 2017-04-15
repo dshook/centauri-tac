@@ -31,6 +31,7 @@ namespace ctac
     {
         HealthChange,
         HistoryBuff,
+        Spawner,
         Generic
     }
 
