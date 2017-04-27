@@ -27,6 +27,11 @@ namespace ctac
             needLoginSignal.AddListener(onNeedLogin);
             failedAuth.AddListener(onFailAuth);
             loggedInSignal.AddListener(onLoggedIn);
+
+            //stupid unity thing where only game objects that have been active will get their OnDestroy
+            //handlers called which we need to unregister events so flash it on then off.
+            view.gameObject.SetActive(true);
+            view.gameObject.SetActive(false);
         }
 
         public override void onRemove()
