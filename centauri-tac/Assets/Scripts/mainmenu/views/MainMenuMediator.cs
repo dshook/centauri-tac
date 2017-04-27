@@ -92,7 +92,7 @@ namespace ctac
 
         private void onCardsClicked()
         {
-            StartCoroutine("LoadLevel", "pieces");
+            StartCoroutine("LoadLevel", "cards");
         }
 
         private void onOptionsClicked()
@@ -101,6 +101,7 @@ namespace ctac
 
         private void onAboutClicked()
         {
+            StartCoroutine("LoadLevel", "pieces");
         }
 
         private void onLeaveClicked()

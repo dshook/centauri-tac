@@ -1,4 +1,3 @@
-using UnityEngine;
 using strange.extensions.mediation.impl;
 using ctac.signals;
 
@@ -33,6 +32,10 @@ namespace ctac
         public override void onRemove()
         {
             view.clickSignal.RemoveListener(onLoginClicked);
+
+            needLoginSignal.RemoveListener(onNeedLogin);
+            failedAuth.RemoveListener(onFailAuth);
+            loggedInSignal.RemoveListener(onLoggedIn);
         }
 
         public void onFailAuth()

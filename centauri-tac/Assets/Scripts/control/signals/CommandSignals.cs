@@ -11,6 +11,9 @@ namespace ctac.signals
     [ManualMapSignal]
 	public class MainMenuStartSignal : Signal { }
 
+    [ManualMapSignal]
+	public class CardsMenuStartSignal : Signal { }
+
     [Singleton]
     public class QuitSignal : Signal { }
 }
