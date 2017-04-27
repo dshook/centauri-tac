@@ -11,7 +11,10 @@ namespace ctac
     public class MainMenuStartCommand : Command
     {
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
+
         [Inject] public ConfigModel config { get; set; }
+        [Inject] public PlayersModel players { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
 
@@ -36,7 +39,16 @@ namespace ctac
                 config.baseUrl = "http://ctac.herokuapp.com/";
             }
 
-            serverAuthSignal.Dispatch();
+            //if we're coming back from another scene we don't need to refetch the player
+            if (players.players.Count == 0)
+            {
+                serverAuthSignal.Dispatch();
+            }
+            else
+            {
+                var firstPlayer = players.players[0];
+                playerFetched.Dispatch(firstPlayer, new SocketKey(firstPlayer.clientId, "auth"));
+            }
         }
     }
 }
