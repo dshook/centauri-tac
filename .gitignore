@@ -37,3 +37,4 @@ client_log.json
 npm-debug.log
 .idea/
 centauri-tac/Tests/Tests/bin/
+art/export/
