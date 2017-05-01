@@ -22,7 +22,11 @@ export default class CardDirectory
     var directoryPath = __dirname + '/../../../../cards';
     fs.readdirSync(directoryPath).map(function (filename) {
       let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
-      cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
+      try{
+        cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
+      }catch(e){
+        this.log.error('Error loading card ' + filename, e, e.stack);
+      }
     })
 
     for(let cardFileName in cardRequires){
@@ -55,9 +59,10 @@ export default class CardDirectory
         let cardEvents = this.parser.parse(card.eventcode);
         c.events = cardEvents;
       }catch(e){
-        this.log.error('Error parsing card text %s %s', card.events, e);
+        let message = `Unable to parse card ${card.name} : ${e.message}`;
+        this.log.error(message);
         //throw again so you don't run the server with a bad card
-        throw `Unable to parse card ${card.name} with text ${card.eventcode} ${e.message}`;
+        throw message;
       }
     }else{
       c.events = null;

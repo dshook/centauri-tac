@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 102,
+	"name": "Pollux",
+	"description": "",
+	"cost": 1,
+	"attack": 2,
+	"health": 2,
+	"movement": 2,
+	"tags": ["Minion"],
+	"eventcode": ""
+}
