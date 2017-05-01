@@ -124,31 +124,38 @@ namespace ctac {
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
 
-            var collider = model.GetComponentInChildren<MeshCollider>();
-            if (collider == null)
+            var colliders = model.GetComponentsInChildren<MeshCollider>();
+            if (colliders == null || colliders.Length == 0)
             {
                 Debug.LogError(piece.cardTemplateId + " piece missing mesh collider");
             }
 
-            //find top of the mesh and adjust the hpbar to be just above it
-            var rotation = collider.transform.localRotation;
-
-            Vector3[] verts = collider.sharedMesh.vertices;
             Vector3 topVertex = new Vector3(0, float.NegativeInfinity, 0);
-            for (int i = 0; i < verts.Length; i++)
+            MeshCollider topCollider = null;
+            //need to loop through all colliders (mainly for robots with multiple meshes) to find the top vertex
+            foreach (var collider in colliders)
             {
-                Vector3 vert = rotation * verts[i];
-                if (vert.y > topVertex.y)
+                //find top of the mesh and adjust the hpbar to be just above it
+                var rotation = collider.transform.localRotation;
+
+                Vector3[] verts = collider.sharedMesh.vertices;
+                for (int i = 0; i < verts.Length; i++)
                 {
-                    topVertex = vert;
+                    Vector3 vert = rotation * verts[i];
+                    if (vert.y > topVertex.y)
+                    {
+                        topVertex = vert;
+                    }
                 }
+                topVertex = topVertex + collider.transform.localPosition;
+                topCollider = collider;
             }
-            topVertex = topVertex + collider.transform.localPosition;
 
             //walk up the parent chain (stopping at the Model node) to find the total combined scale.  
             //Realistically it should only be one intermediate scaling anything
-            Vector3 combinedScale = collider.transform.localScale;
-            var curTransform = collider.transform;
+            //Have to use the top collider as the scalar
+            Vector3 combinedScale = topCollider.transform.localScale;
+            var curTransform = topCollider.transform;
             while (curTransform != null && curTransform.name != "Model")
             {
                 curTransform = curTransform.parent;
@@ -660,10 +667,25 @@ namespace ctac {
             public PieceModel piece { get; set; }
             public Animator anim { get; set; }
 
+            //different animations
+            public bool isExact { get; set; }
+            public bool isBig { get; set; }
+
             public void Init() {
                 if (anim != null)
                 {
-                    anim.SetTrigger("onDeath");
+                    if (isBig)
+                    {
+                        anim.SetTrigger("onBigDeath");
+                    }
+                    else if (isExact)
+                    {
+                        anim.SetTrigger("onExactDeath");
+                    }
+                    else
+                    {
+                        anim.SetTrigger("onDeath");
+                    }
                 }
             }
             public void Update()

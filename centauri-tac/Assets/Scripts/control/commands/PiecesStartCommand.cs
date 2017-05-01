@@ -32,7 +32,7 @@ namespace ctac
                 numberOfCards++;
             }
             debug.Log("Loaded " + numberOfCards + " cards");
-            var minionCards = cardDirectory.directory.Where(c => c.isMinion).ToList();
+            var minionCards = cardDirectory.directory.Where(c => c.isMinion || c.isHero).ToList();
             
             //figure out what kind of map we want
             var defaultMap = new MapImportModel()

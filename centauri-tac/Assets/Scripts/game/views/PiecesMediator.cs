@@ -468,7 +468,9 @@ namespace ctac
                     {
                         piece = pieceModel,
                         anim = pieceModel.pieceView.anim,
-                        pieceDied = pieceDied
+                        pieceDied = pieceDied,
+                        isExact = pieceModel.health == 0,
+                        isBig = pieceModel.health <= -5
                     }
                 );
             }

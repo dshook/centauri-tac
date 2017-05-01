@@ -38,7 +38,8 @@ namespace ctac
                 {
                     piece = piece,
                     anim = piece.pieceView.anim,
-                    pieceDied = pieceDied
+                    pieceDied = pieceDied,
+                    isBig = true
                 }
             );
 
