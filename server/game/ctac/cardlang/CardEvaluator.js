@@ -64,6 +64,7 @@ export default class CardEvaluator{
       'Transform',
       'GiveCard',
       'ShuffleToDeck',
+      'Spawn',
       'Unsummon',
       'startTurnTimer',
       'endTurnTimer'
@@ -483,28 +484,41 @@ export default class CardEvaluator{
               break;
             }
             //Spawn(pieceId, kingsRadiusToSpawnIn)
-            //Spawn a unit based on where the activating piece is located.  So if the kings radius is 0
-            //spawn it right where the piece was (after it died presumably).  If it's 1, pick a random position
-            //from any of the surrounding tiles
-            //Also check to make sure it's a valid spawn location and another loop hasn't spawned at the same location
+            //Spawn a unit based on where the activating piece is located.
+            //So kingsRadius 0 = right where the piece was (after it died presumably).
+            //If it's 1, pick a random position from any of the surrounding tiles
+            //This requires an activating piece at the moment to act as the center position
+            //ALTERNATE:
+            //Spawn(pieceId, areaSelector)
+            //This means to spawn a piece in each of the tiles returned by the area selector
             case 'Spawn':
             {
-              //TODO: not sure if this should be checking the possible positions now or soley at the processor level
-              let possiblePositions = this.mapState.getKingTilesInRadius(piece.position, action.args[1]);
-              possiblePositions = possiblePositions.filter(p =>
-                  (p.tileEquals(piece.position) || !this.pieceState.pieceAt(p.x, p.z) )
-                  && !this.mapState.getTile(p).unpassable
+              let cardTemplateId = action.args[0];
+              let placeArg = action.args[1];
+              if(placeArg.left && placeArg.left.area){
+                //if it's an area, eval the tiles now rather than at exec time since they shouldn't be changing
+                //exec time will determine if a piece actually spawns or not in the case of an occupied tile
+                let areaToSpawn = this.selector.selectArea(placeArg.left, pieceSelectorParams);
+                if(areaToSpawn && areaToSpawn.areaTiles && areaToSpawn.areaTiles.length > 0){
+                  for(let tile of areaToSpawn.areaTiles ){
+                    queue.push(
+                      new SpawnPiece({
+                        playerId: pieceAction.playerId,
+                        cardTemplateId,
+                        position: tile,
+                      })
+                    );
+                  }
+                }
+              }else if(piece){
+                queue.push(
+                  new SpawnPiece({
+                    playerId: piece.playerId,
+                    cardTemplateId,
+                    position: piece.position,
+                    spawnKingRadius: placeArg
+                  })
                 );
-              if(possiblePositions.length > 0){
-                let spawn = new SpawnPiece({
-                  playerId: piece.playerId,
-                  cardTemplateId: action.args[0],
-                  position: piece.position,
-                  spawnKingRadius: action.args[1]
-                });
-                queue.push(spawn);
-              }else{
-                this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
               }
 
               break;
@@ -915,7 +929,7 @@ export default class CardEvaluator{
         let alsoNeedsTarget = false;
         //try to find areas in any of the actions
         for(let cardEventAction of event.actions){
-          if(this.targetableActions.indexOf(cardEventAction.action) === -1) continue;
+          if(!this.targetableActions.includes(cardEventAction.action)) continue;
 
           //hacky way to see if the action needs a main target for its selection
           alsoNeedsTarget = this.selector.doesSelectorUse(cardEventAction.args[0], 'TARGET');

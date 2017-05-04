@@ -1,0 +1,10 @@
+{
+	"cardTemplateId": 103,
+	"name": "Rapid Blocade",
+	"description": "Spawn 3 Walls in a row",
+	"cost": 3,
+	"tags": ["Spell"],
+	"eventcode": "playSpell{
+    Spawn(104, Area(Row, 2, CURSOR, CURSOR, false))
+  }"
+}

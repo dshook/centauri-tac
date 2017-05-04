@@ -37,6 +37,7 @@ export default class SpawnPieceProcessor
         action.position = _.sample(possiblePositions);
       }else{
         this.log.info('Couldn\'t spawn piece because there\'s no where to put it');
+        return queue.cancel(action, false);
       }
     }
 
@@ -48,6 +49,13 @@ export default class SpawnPieceProcessor
       //be sure to emit the cancel event so the client can respond
       this.log.warn('Can\'t spawn piece %s at position %s because %j is occupying it',
         cardPlayed.name, action.position, occupyingPiece);
+      return queue.cancel(action, true);
+    }
+
+    let destinationTile = this.mapState.getTile(action.position);
+    //and then unpassable tiles
+    if(destinationTile.unpassable){
+      this.log.warn('Cannot play minion on unpassable tile');
       return queue.cancel(action, true);
     }
 

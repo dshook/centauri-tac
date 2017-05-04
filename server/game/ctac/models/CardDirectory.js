@@ -68,6 +68,10 @@ export default class CardDirectory
       c.events = null;
     }
 
+    if(this.directory[c.cardTemplateId]){
+      throw `Duplicate card template id ${c.cardTemplateId} used by ${c.name}`;
+    }
+
     this.directory[c.cardTemplateId] = deepFreeze(c);
   }
 
