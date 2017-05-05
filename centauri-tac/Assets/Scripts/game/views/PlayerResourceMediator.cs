@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
 
@@ -29,7 +30,7 @@ namespace ctac
             resumeSignal.AddListener(onResume);
             gameFinished.AddListener(onGameFinished);
 
-            view.init();
+            view.init(sounds);
         }
 
         public override void onRemove()
@@ -80,7 +81,7 @@ namespace ctac
 
         private void updateView()
         {
-            view.updateText(playerResources.resources[playerId], playerResources.maxResources[playerId]);
+            view.setEnergy(playerResources.resources[playerId], playerResources.maxResources[playerId]);
         }
 
         private int playerId

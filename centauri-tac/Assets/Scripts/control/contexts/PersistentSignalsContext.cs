@@ -61,6 +61,7 @@ namespace ctac
             injectionBinder.Bind<IJsonNetworkService>().To<JsonNetworkService>().ToSingleton().CrossContext();
             injectionBinder.Bind<ISocketService>().To<SocketService>().ToSingleton().CrossContext();
             injectionBinder.Bind<IResourceLoaderService>().To<ResourceLoaderService>().ToSingleton().CrossContext();
+            injectionBinder.Bind<ISoundService>().To<SoundService>().ToSingleton().CrossContext();
 
             commandBinder.Bind<PingSignal>().To<PongCommand>();
         }
