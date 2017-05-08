@@ -641,5 +641,31 @@ export default class ProcessorServiceTests
       t.equal(thirdPar.length, 0, 'Paralysis wore off');
       t.equal(this.cardEvaluator.startTurnTimers.length, 0, 'No timers left');
     });
+
+    //spawn a pieces in an area
+    test('Area pieces', async (t) => {
+      t.plan(4);
+      this.setupTest();
+
+      //spawn a hero for the activate card
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(0, 0, 1);
+
+      //draw two choose card to hand
+      this.spawnCard(this.cardState, 103, 1);
+      let cardDrawn  = this.cardState.drawCard(1);
+
+      //now activate it
+      this.queue.push(new ActivateCard(1, cardDrawn.id, new Position(1,0,1), null, new Position(2,0,1), null));
+
+      await this.queue.processUntilDone();
+
+      let walls = this.pieceState.fromTemplateId(104);
+      t.equal(walls.length, 3, '3 Walls were spawned');
+      t.ok(walls[0].position.tileEquals(new Position(1,0,1)), 'First wall in right position');
+      t.ok(walls[1].position.tileEquals(new Position(2,0,1)), 'Second wall in right position');
+      t.ok(walls[2].position.tileEquals(new Position(3,0,1)), 'Third wall in right position');
+
+    });
   }
 }

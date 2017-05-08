@@ -10,7 +10,7 @@ import UpdateBuffsProcessor from '../processors/UpdateBuffsProcessor.js';
 @loglevel
 export default class ProcessorsService
 {
-  constructor(app, queue)
+  constructor(queue)
   {
     var processors = requireDir('../processors/');
     let skip = ['NoOpProcessor', 'UpdateAuraProcessor', 'UpdateBuffsProcessor'];

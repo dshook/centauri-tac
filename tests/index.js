@@ -3,6 +3,8 @@
 process.env.NODE_PATH = './lib';
 require('module').Module._initPaths();
 
+//require('dotenv').load();
+
 // compiler hook
 require('babel-polyfill');
 require('babel-register')({

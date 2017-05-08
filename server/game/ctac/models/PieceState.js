@@ -128,6 +128,10 @@ export default class PieceState
     return this.pieces.find(x => x.playerId == playerId && x.tags[0] === 'Hero');
   }
 
+  fromTemplateId(cardTemplateId){
+    return this.pieces.filter(p => p.cardTemplateId === cardTemplateId);
+  }
+
   totalSpellDamage(playerId){
     return this.pieces
       .filter(x => x.playerId == playerId && x.spellDamage)
