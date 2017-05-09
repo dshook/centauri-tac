@@ -63,7 +63,7 @@ namespace ctac
             fillRenderer.material.SetFloat("_MaxHp", Math.Max(max, resource));
 
             //don't play for first energy, and only play for resources increasing
-            if (max > 1 && prevResource < resource)
+            if (max > 1 && prevResource <= resource)
             {
                 sounds.PlaySound("getEnergy");
             }

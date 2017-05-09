@@ -16,6 +16,8 @@ namespace ctac
         void Disconnect(SocketKey key);
         void Disconnect(Guid clientId, string componentName);
 
+        bool IsSocketOpen(SocketKey key);
+
         SocketMessageSignal messageSignal { get; set; }
     }
 
@@ -160,6 +162,13 @@ namespace ctac
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
             debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason, key);
             disconnectSignal.Dispatch(key);
+        }
+
+        public bool IsSocketOpen(SocketKey key)
+        {
+            var ws = sockets.Get(key);
+            if(ws == null) return false;
+            return ws.IsAlive;
         }
 
         public void Disconnect(Guid clientId, string componentName)

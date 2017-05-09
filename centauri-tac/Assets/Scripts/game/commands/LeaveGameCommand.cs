@@ -22,7 +22,11 @@ namespace ctac
         {
             foreach (var player in gamePlayers.players)
             {
-                socket.Request(player.clientId, "game", "part");
+                var key = new SocketKey(player.clientId, "game");
+                if (socket.IsSocketOpen(key))
+                {
+                    socket.Request(key, "part");
+                }
             }
 
             if (!returnToMainMenu)
