@@ -32,6 +32,7 @@ export default class CentauriTacServer
   {
     // meta / component configs
     this.app.container.registerValue('componentsConfig', new ComponentsConfig());
+    this.app.container.registerValue('componentList', this.components);
 
     // Add all needed services for components
     this.log.info(`using components ${this.components.join(',')}`);
@@ -43,16 +44,6 @@ export default class CentauriTacServer
 
     // Component service at bottom of stack
     this.app.service(ComponentService);
-
-    // add stuff from manifest in an ad-hoc service
-    this.app.service((componentManager) => {
-
-      for (const name of this.components) {
-        const T = manifest[name].TComponent;
-        componentManager.addComponent(name, T);
-      }
-
-    });
 
     this.log.info('booting application');
     await this.app.start();

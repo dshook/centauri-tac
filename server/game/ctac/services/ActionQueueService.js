@@ -8,7 +8,7 @@ export default class ActionQueueService
 {
   constructor(binder, container)
   {
-    const queue = new ActionQueue(T => container.make(T));
+    const queue = new ActionQueue(T => container.new(T));
     container.registerValue('queue', queue);
 
     // wire up to event web

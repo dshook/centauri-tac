@@ -10,16 +10,16 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class TurnService
 {
-  constructor(app, queue)
+  constructor(container, queue)
   {
     this.turnState = new TurnState();
     this.playerResourceState = new PlayerResourceState();
     this.statsState = new StatsState();
-    app.container.registerValue('turnState', this.turnState);
-    app.container.registerValue('playerResourceState', this.playerResourceState);
-    app.container.registerValue('statsState', this.statsState);
+    container.registerValue('turnState', this.turnState);
+    container.registerValue('playerResourceState', this.playerResourceState);
+    container.registerValue('statsState', this.statsState);
 
     this.pieceState = new PieceState();
-    app.container.registerValue('pieceState', this.pieceState);
+    container.registerValue('pieceState', this.pieceState);
   }
 }
