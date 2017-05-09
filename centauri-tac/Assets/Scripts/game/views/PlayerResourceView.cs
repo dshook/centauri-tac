@@ -16,6 +16,15 @@ namespace ctac
 
         ISoundService sounds;
 
+        float turnLengthMs = 0f;
+        float turnEndBufferLengthMs = 0f;
+
+        float timerAccum = 0f;
+        bool animatingEnergy = false;
+        float maxEnergy = 0f;
+
+        bool playedIncomingTurn = false;
+
         internal void init(ISoundService s)
         {
             currentEnergyText = transform.FindChild("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
@@ -26,20 +35,14 @@ namespace ctac
             sounds = s;
         }
 
-        float turnLengthMs = 0f;
-        float timerAccum = 0f;
-        bool animatingEnergy = false;
-        float maxEnergy = 0f;
-
-        bool playedIncomingTurn = false;
-        float incomingTurnSoundLength = 2f;
         void Update()
         {
-            if(!animatingEnergy) return;
+            if(!animatingEnergy || turnLengthMs == 0f) return;
 
             timerAccum += Time.deltaTime;
 
-            if (!playedIncomingTurn && timerAccum > (turnLengthMs / 1000f) - incomingTurnSoundLength)
+            //Start playing a turn finished sound when the end turn buffer starts
+            if (!playedIncomingTurn && timerAccum > (turnLengthMs - turnEndBufferLengthMs) / 1000f)
             {
                 sounds.PlaySound("turnFinish");
                 playedIncomingTurn = true;
@@ -67,11 +70,10 @@ namespace ctac
             prevResource = resource;
         }
 
-        internal void updatePreview(float maxEn, float turnLength)
+        internal void updatePreview(float maxEn)
         {
             maxEnergy = maxEn;
             timerAccum = 0f;
-            this.turnLengthMs = turnLength;
             animatingEnergy = true;
             playedIncomingTurn = false;
             fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
@@ -80,6 +82,12 @@ namespace ctac
         internal void setOn(bool on)
         {
             animatingEnergy = on;
+        }
+
+        internal void setTimers(float turnLen, float turnBuffer)
+        {
+            turnLengthMs = turnLen;
+            turnEndBufferLengthMs = turnBuffer;
         }
     }
 }

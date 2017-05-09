@@ -14,6 +14,7 @@ namespace ctac
         [Inject] public GamePausedSignal pauseSignal { get; set; }
         [Inject] public GameResumedSignal resumeSignal { get; set; }
         [Inject] public GameFinishedSignal gameFinished { get; set; }
+        [Inject] public GameAuthedSignal gameAuthed { get; set; }
 
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
@@ -29,6 +30,7 @@ namespace ctac
             pauseSignal.AddListener(onPause);
             resumeSignal.AddListener(onResume);
             gameFinished.AddListener(onGameFinished);
+            gameAuthed.AddListener(onGameAuthed);
 
             view.init(sounds);
         }
@@ -40,6 +42,12 @@ namespace ctac
             pauseSignal.RemoveListener(onPause);
             resumeSignal.RemoveListener(onResume);
             gameFinished.RemoveListener(onGameFinished);
+            gameAuthed.RemoveListener(onGameAuthed);
+        }
+
+        public void onGameAuthed()
+        {
+            view.setTimers(currentGame.game.turnLengthMs, currentGame.game.turnEndBufferLengthMs);
         }
 
         public void onTurnEnd(GameTurnModel passTurn)
@@ -48,7 +56,7 @@ namespace ctac
 
             if (!passTurn.isClientSwitch)
             {
-                view.updatePreview(playerResources.maxResources[playerId], currentGame.game.turnLengthMs);
+                view.updatePreview(playerResources.maxResources[playerId]);
             }
         }
 
@@ -60,7 +68,7 @@ namespace ctac
             updateView();
             if (m.newMax == 0)
             {
-                view.updatePreview(m.newMax, currentGame.game.turnLengthMs);
+                view.updatePreview(m.newMax);
             }
         }
 
