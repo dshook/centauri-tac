@@ -8,11 +8,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class AuthTokenService
 {
-  constructor(app)
+  constructor(container)
   {
     this.config = new AuthConfig();
-    app.registerInstance('authConfig', this.config);
-    app.registerInstance('auth', this);
+    container.registerValue('authConfig', this.config);
+    container.registerValue('auth', this);
   }
 
   /**

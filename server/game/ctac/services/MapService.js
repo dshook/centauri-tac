@@ -8,7 +8,7 @@ import requireDir from 'require-dir';
 @loglevel
 export default class MapService
 {
-  constructor(app, queue)
+  constructor(container, queue)
   {
     var mapRequires = requireDir('../../../../maps/');
     var mapState = new MapState();
@@ -18,6 +18,6 @@ export default class MapService
       mapState.add(map);
       this.log.info('Registered map %s', mapName);
     }
-    app.registerInstance('mapState', mapState);
+    container.registerValue('mapState', mapState);
   }
 }

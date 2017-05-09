@@ -6,9 +6,9 @@ import GameStore from '../datastores/GameStore.js';
  */
 export default class DatastoreService
 {
-  constructor(app)
+  constructor(container)
   {
-    app.registerSingleton('players', PlayerStore);
-    app.registerSingleton('games', GameStore);
+    container.registerSingleton('players', PlayerStore);
+    container.registerSingleton('games', GameStore);
   }
 }

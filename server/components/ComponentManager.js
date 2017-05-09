@@ -14,7 +14,7 @@ import TokenRPC from '../api/TokenRPC.js';
 export default class ComponentManager
 {
   constructor(
-      app,
+      container,
       emitter,
       eventBinder,
       httpServer,
@@ -25,7 +25,7 @@ export default class ComponentManager
     this.server = httpServer;
     this.config = httpConfig;
     this.cConfig = componentsConfig;
-    this.app = app;
+    this.container = container;
     this.emitter = emitter;
     this.eventBinder = eventBinder;
 
@@ -59,7 +59,7 @@ export default class ComponentManager
   {
     for (const [name, T] of this.registered.entries()) {
       this.log.info('creating component %s via %s', name, T.name);
-      const component = this.app.make(T);
+      const component = this.container.new(T);
 
       // Determine the URL this component will be visible at
       const prefix = `/components/${name}`;
@@ -73,7 +73,7 @@ export default class ComponentManager
       const wss = new SocketServer(raw, prefix);
       wss.pingInterval = this.cConfig.serverPingInterval;
       this.log.info('ping interval set to %s', wss.pingInterval);
-      const sockServer = new SockHarness(wss, U => this.app.make(U), this.eventBinder);
+      const sockServer = new SockHarness(wss, U => this.container.new(U), this.eventBinder);
       //sockServer.addPlugin(c => this._onHandler(c));
       sockServer.addHandler(TokenRPC);
 
@@ -86,7 +86,7 @@ export default class ComponentManager
           'authorization',
         ],
       }));
-      const rest = new HttpHarness(rRouter, U => this.app.make(U));
+      const rest = new HttpHarness(rRouter, U => this.container.new(U));
 
       // Mount to root of process HTTP server
       this.server.use(prefix, router);

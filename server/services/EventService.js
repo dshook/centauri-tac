@@ -7,12 +7,12 @@ import loglevel from 'loglevel-decorator';
  */
 export default class EventService
 {
-  constructor(app)
+  constructor(container)
   {
     let emitter = new WrappedEmitter();
-    app.registerInstance('emitter', emitter);
+    container.registerValue('emitter', emitter);
     let binder = new EmitterBinder(emitter);
-    app.registerInstance('eventBinder', binder);
+    container.registerValue('eventBinder', binder);
   }
 }
 

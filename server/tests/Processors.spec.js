@@ -14,17 +14,17 @@ import ProcessorServiceTests from './ProcessorServiceTests.spec.js';
 //wire up a new app with real dependencies plus the tests as a service (TAAS)
 var app = new Application();
 
-const queue = new ActionQueue(T => app.make(T));
-app.registerInstance('queue', queue);
+const queue = new ActionQueue(T => app.container.new(T));
+app.container.registerValue('queue', queue);
 
 var game = new Game();
 game.turnLengthMs = 10;
-app.registerInstance('game', game);
+app.container.registerValue('game', game);
 
 let players = [];
 players.push(Player.fromTest(1));
 players.push(Player.fromTest(2));
-app.registerInstance('players', players);
+app.container.registerValue('players', players);
 app.service(MapService);
 app.service(GameDataService);
 app.service(CardService);

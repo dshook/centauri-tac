@@ -6,11 +6,11 @@ import CryptoConfig from '../config/CryptoConfig.js';
  */
 export default class HashService
 {
-  constructor(app)
+  constructor(container)
   {
     const config = new CryptoConfig();
-    app.registerInstance('cryptoConfig', config);
+    container.registerValue('cryptoConfig', config);
 
-    app.registerInstance('chash', new CryptoHasher(config));
+    container.registerValue('chash', new CryptoHasher(config));
   }
 }

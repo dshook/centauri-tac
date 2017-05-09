@@ -5,8 +5,8 @@ import HttpTransport from 'http-transport';
  */
 export default class HttpTransportService
 {
-  constructor(app)
+  constructor(container)
   {
-    app.registerSingleton('httpTransport', HttpTransport);
+    container.registerSingleton('httpTransport', HttpTransport);
   }
 }

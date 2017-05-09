@@ -8,16 +8,16 @@ import HttpConfig from '../config/HttpConfig.js';
 @loglevel
 export default class HttpService
 {
-  constructor(app)
+  constructor(container)
   {
     this.server = express();
     this.server.disable('x-powered-by');
     this.server.disable('etag');
 
-    app.registerInstance('httpServer', this.server);
+    container.registerValue('httpServer', this.server);
 
     this.config = new HttpConfig();
-    app.registerInstance('httpConfig', this.config);
+    container.registerValue('httpConfig', this.config);
   }
 
   /**

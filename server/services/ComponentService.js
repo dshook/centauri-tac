@@ -7,10 +7,10 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ComponentService
 {
-  constructor(app)
+  constructor(container)
   {
-    this.manager = app.make(ComponentManager);
-    app.registerInstance('componentManager', this.manager);
+    this.manager = container.new(ComponentManager);
+    container.registerValue('componentManager', this.manager);
   }
 
   async start()

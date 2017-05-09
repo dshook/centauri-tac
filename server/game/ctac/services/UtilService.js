@@ -6,9 +6,9 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class UtilService
 {
-  constructor(app, queue)
+  constructor(container, queue)
   {
-    app.registerInstance('possibleActions', app.make(PossibleActions));
+    container.registerSingleton('possibleActions', PossibleActions);
   }
 }
 

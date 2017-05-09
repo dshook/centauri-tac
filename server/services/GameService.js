@@ -6,15 +6,15 @@ import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
  */
 export default class GameService
 {
-  constructor(app)
+  constructor(container)
   {
     // All of the services booted up for each new game
-    app.registerInstance('gameModules', {
+    container.registerValue('gameModules', {
 
       ctact: CentauriTacGame,
 
     });
 
-    app.registerSingleton('gameManager', GameManager);
+    container.registerSingleton('gameManager', GameManager);
   }
 }

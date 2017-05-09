@@ -7,7 +7,7 @@ import PGConnection from 'postgrizzly';
 @loglevel
 export default class PostgresService
 {
-  constructor(app)
+  constructor(container)
   {
     const url = process.env.DATABASE_URL;
 
@@ -22,7 +22,7 @@ export default class PostgresService
     this.log.info(`${useSSL ? 'using' : 'not using'} SSL for PG connection`);
 
     this.psql = new PGConnection(url, useSSL);
-    app.registerInstance('sql', this.psql);
+    container.registerValue('sql', this.psql);
   }
 
   async start()

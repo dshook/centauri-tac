@@ -15,11 +15,11 @@ export default class TurnService
     this.turnState = new TurnState();
     this.playerResourceState = new PlayerResourceState();
     this.statsState = new StatsState();
-    app.registerInstance('turnState', this.turnState);
-    app.registerInstance('playerResourceState', this.playerResourceState);
-    app.registerInstance('statsState', this.statsState);
+    app.container.registerValue('turnState', this.turnState);
+    app.container.registerValue('playerResourceState', this.playerResourceState);
+    app.container.registerValue('statsState', this.statsState);
 
     this.pieceState = new PieceState();
-    app.registerInstance('pieceState', this.pieceState);
+    app.container.registerValue('pieceState', this.pieceState);
   }
 }

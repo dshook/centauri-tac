@@ -6,9 +6,9 @@ import Matchmaker from '../game/Matchmaker.js';
  */
 export default class GamelistService
 {
-  constructor(app)
+  constructor(container)
   {
-    app.registerSingleton('gamelistManager', GamelistManager);
-    app.registerSingleton('matchmaker', Matchmaker);
+    container.registerSingleton('gamelistManager', GamelistManager);
+    container.registerSingleton('matchmaker', Matchmaker);
   }
 }

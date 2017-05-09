@@ -9,7 +9,7 @@ import IntervalTimer from 'interval-timer';
 @loglevel
 export default class GameEventService
 {
-  constructor(app, queue, game, players)
+  constructor(container, queue, game, players)
   {
     this.queue = queue;
     this.game = game;
@@ -19,8 +19,7 @@ export default class GameEventService
 
     this.registeredTimers = [this.autoTurnInterval, this.autoEnergyInterval];
 
-    //app.registerInstance('autoTurnInterval', this.autoTurnInterval);
-    app.registerInstance('gameEventService', this);
+    container.registerValue('gameEventService', this);
   }
 
   shutdown()

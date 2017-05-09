@@ -51,13 +51,13 @@ export default class GameHost extends EventEmitter
     this.log.info('booting up game stack for game %s', this.game.id);
 
     // injectables
-    app.registerInstance('gameConfig', new GameConfig());
-    app.registerInstance('players', this.players);
-    app.registerInstance('binder', this.binder);
-    app.registerInstance('game', this.game);
+    app.container.registerValue('gameConfig', new GameConfig());
+    app.container.registerValue('players', this.players);
+    app.container.registerValue('binder', this.binder);
+    app.container.registerValue('game', this.game);
 
-    const manager = new HostManager(app, this.binder, this.game, this.emitter);
-    app.registerInstance('host', manager);
+    const manager = new HostManager(app.container, this.binder, this.game, this.emitter);
+    app.container.registerValue('host', manager);
 
     // TODO: pull this out to configs
     app.service(ActionQueueService);

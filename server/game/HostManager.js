@@ -8,11 +8,11 @@ import {EventEmitter} from 'events';
 @loglevel
 export default class HostManager extends EventEmitter
 {
-  constructor(app, binder, game, emitter)
+  constructor(container, binder, game, emitter)
   {
     super();
 
-    this.app = app;
+    this.container = container;
     this.binder = binder;
     this.game = game;
     this.emitter = emitter;
@@ -64,7 +64,7 @@ export default class HostManager extends EventEmitter
 
     this.log.info('creating game controller %s', T.name);
 
-    const controller = this.app.make(T);
+    const controller = this.container.new(T);
     this.binder.bindInstance(controller);
     this._controllers.set(T, controller);
 

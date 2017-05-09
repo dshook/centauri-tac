@@ -6,12 +6,11 @@ require('module').Module._initPaths();
 //require('dotenv').load();
 
 // compiler hook
-require('babel-polyfill');
 require('babel-register')({
-  plugins: ["babel-plugin-transform-decorators-legacy"],
-  presets: [
-    "es2015-node",
-    "babel-preset-stage-2",
+  plugins: [
+    "transform-es2015-modules-commonjs",
+    "babel-plugin-transform-object-rest-spread",
+    "babel-plugin-transform-decorators-legacy"
   ]
 });
 
