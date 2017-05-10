@@ -76,6 +76,12 @@ export default class PieceSelector{
         case 'DAMAGED':
           return this.allPieces.filter(p => p.health < p.baseHealth);
           break;
+        case 'MELEE':
+          return this.allPieces.filter(p => !p.range);
+          break;
+        case 'RANGED':
+          return this.allPieces.filter(p => p.range);
+          break;
         case 'ACTIVATOR':
           if(!this.activatingPiece) return [];
           return [this.activatingPiece];
