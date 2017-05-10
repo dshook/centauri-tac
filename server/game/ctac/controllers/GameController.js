@@ -56,9 +56,15 @@ export default class GameController
       return;
     }
 
+    //stop the turn event timers
+    this.gameEventService.stopAll();
+
     const action = new PassTurn();
     this.queue.push(action);
     this.queue.processUntilDone();
+
+    //and then reset, the energy timer gets restarted by the pass turn
+    this.gameEventService.autoTurnInterval.start();
   }
 
   /**

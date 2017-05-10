@@ -89,7 +89,7 @@ namespace ctac
 
         private void updateView()
         {
-            view.setEnergy(playerResources.resources[playerId], playerResources.maxResources[playerId]);
+            view.setEnergy(playerResources.resources[playerId], playerResources.maxResources[playerId], !view.isOpponent);
         }
 
         private int playerId

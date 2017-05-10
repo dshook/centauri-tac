@@ -37,6 +37,13 @@ export default class GameEventService
     }
   }
 
+  stopAll(){
+    this.log.info('Stopping Game Event Timers');
+    for(let timer of this.registeredTimers){
+      timer.stop();
+    }
+  }
+
   resumeAll(){
     this.log.info('Resuming Game Event Timers');
     for(let timer of this.registeredTimers){
