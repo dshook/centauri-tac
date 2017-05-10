@@ -62,7 +62,7 @@ namespace ctac
 
         private void onPieceDragging(PieceModel p)
         {
-            view.setDragEnabled(p == null);
+            //view.setDragEnabled(p == null);
         }
 
         private void onHistoryHover(bool h)
