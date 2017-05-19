@@ -6,9 +6,11 @@ Shader "Custom/HpBar"
     {
         _Color("Color", Color) = (1, 0, 0, 1)
         _LineColor("Line Color", Color) = (0, 0, 1, 1)
+        _EndColor("End Color", Color) = (0, 0, 0, 0)
         _LineWidth("Line Width", Range(0.0, 0.5)) = 0.05
         _Slope("Slope", Range(0.0, 1.0)) = 0.5
         _StartOffset("Start Offset", Range(0.0, 1.0)) = 0.5
+        _EndOffset("End Offset", Range(0.0, 1.0)) = 0.0
         _CurrentHp("Current HP", float) = 2
         _MaxHp("Max HP", float) = 2
     }
@@ -48,9 +50,11 @@ Shader "Custom/HpBar"
 
             float4 _Color;
             float4 _LineColor;
+            float4 _EndColor;
             float _LineWidth;
             float _Slope;
             float _StartOffset;
+            float _EndOffset;
             float _CurrentHp;
             float _MaxHp;
 
@@ -78,18 +82,17 @@ Shader "Custom/HpBar"
             fixed4 frag (Frag i) : SV_Target
             {
                 fixed4 c = _Color;
-                float spacing = (1.0 - _Slope - _StartOffset) / _MaxHp;
+                float spacing = (1.0 - _Slope - _StartOffset - _EndOffset) / _MaxHp;
 
                 //cut off beginning section
                 if(i.uv.x - _StartOffset - (i.uv.y * _Slope) + _LineWidth < 0){
                     return fixed4(0,0,0,0);
                 }
 
-                //cut off end section varying with how much hp is missing
+                //cut off end diagonal
                 if(
                     i.uv.x 
                     + ((_MaxHp - _CurrentHp) * spacing ) //factor for how much hp is missing
-                    + _StartOffset 
                     + ((1 - i.uv.y) * _Slope) //angle it
                     - (_LineWidth * 2) //give the last line some breathing room
                     > 1
@@ -97,16 +100,28 @@ Shader "Custom/HpBar"
                     return fixed4(0,0,0,0);
                 }
 
+                //cut off end section varying with how much hp is missing
+                if(
+                    i.uv.x 
+                    + ((_MaxHp - _CurrentHp) * spacing ) //factor for how much hp is missing
+                    + _EndOffset 
+                    + ((1 - i.uv.y) * _Slope) //angle it
+                    - (_LineWidth * 2) //give the last line some breathing room
+                    > 1
+                ){
+                    return _EndColor;
+                }
+
                 //invert coords for line
                 i.uv = 1 - i.uv;
                 float2 p = i.uv - 1.0;
 
-                for(int i = 0; i < _CurrentHp; i++){
-                    float xPos = i * spacing + _StartOffset;
+                for(int itr = 0; itr < _CurrentHp; itr++){
+                    float xPos = itr * spacing + _StartOffset;
                     c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), _Color, _LineColor);
                 }
                 //draw final line
-                float xPos = _CurrentHp * spacing + _StartOffset;
+                float xPos = _CurrentHp * spacing + _StartOffset + (_LineWidth / 2);
                 c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), _Color, _LineColor);
 
                 return c;
