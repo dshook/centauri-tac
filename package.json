@@ -43,7 +43,7 @@
     "babel-preset-stage-2": "^6.5.0",
     "babel-register": "^6.9.0",
     "bcrypt-nodejs": "^0.0.3",
-    "billy": "v2-beta",
+    "billy": "^2.0.1",
     "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
     "chalk": "^1.1.1",

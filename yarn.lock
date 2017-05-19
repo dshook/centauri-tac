@@ -465,14 +465,7 @@ babel-plugin-transform-exponentiation-operator@^6.22.0:
     babel-plugin-syntax-exponentiation-operator "^6.8.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-object-rest-spread@^6.22.0:
-  version "6.22.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.22.0.tgz#1d419b55e68d2e4f64a5ff3373bd67d73c8e83bc"
-  dependencies:
-    babel-plugin-syntax-object-rest-spread "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-object-rest-spread@^6.23.0:
+babel-plugin-transform-object-rest-spread@^6.22.0, babel-plugin-transform-object-rest-spread@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-6.23.0.tgz#875d6bc9be761c58a2ae3feee5dc4895d8c7f921"
   dependencies:
@@ -612,11 +605,11 @@ babel-types@^6.24.1:
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babylon@6.17.0, babylon@^6.15.0:
+babylon@6.17.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.17.0.tgz#37da948878488b9c4e3c4038893fa3314b3fc932"
 
-babylon@^6.11.0, babylon@^6.13.0:
+babylon@^6.11.0, babylon@^6.13.0, babylon@^6.15.0:
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.15.0.tgz#ba65cfa1a80e1759b0e89fb562e27dccae70348e"
 
@@ -642,9 +635,9 @@ bignumber.js@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-3.1.2.tgz#f3bdb99ad5268a15fc1f0bed2fb018e2693fe236"
 
-billy@v2-beta:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/billy/-/billy-2.0.0.tgz#147f2073cfe60075db7d16c7d366050332e7931a"
+billy@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/billy/-/billy-2.0.1.tgz#b8938619eab6be6c142469a3b820bfecae2ef7e9"
   dependencies:
     babylon "6.17.0"
     debug "2.6.6"
