@@ -21,7 +21,7 @@ export default class GamelistManager
   async createNewGame(name, playerId)
   {
     // registers the game
-    const game = await this.games.create(name, playerId, 2, 25000, 2000);
+    const game = await this.games.create(name, playerId, 2, 25000, 4000);
 
     if(game == null){
       this.log.info('Could not create game for %s component: %s player: %s'
