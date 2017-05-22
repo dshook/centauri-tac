@@ -70,7 +70,7 @@ export default class GameEventService
   //setup the timer to distribute the energy over the turn
   startTurnEnergyTimer(currentTurn){
     let neededEnergy = currentTurn - 1; //one is auto given by the turn processor
-    let intervalLength = (this.game.turnLengthMs / currentTurn) - this.game.turnEndBufferLengthMs;
+    let intervalLength = (this.game.turnLengthMs - this.game.turnEndBufferLengthMs) / currentTurn;
     this.log.info('Setting up energy timer for turn %s. Interval %s', currentTurn, intervalLength);
     if(neededEnergy <= 0) return;
 
