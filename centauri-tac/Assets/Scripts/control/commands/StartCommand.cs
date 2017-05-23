@@ -63,7 +63,7 @@ namespace ctac
             else
             {
                 //let the server know we're ready
-                joinGame.Dispatch(currentGame.me);
+                joinGame.Dispatch(new LoginStatusModel() { status = true } , currentGame.me);
                 LoadGame();
             }
         }
