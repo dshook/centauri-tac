@@ -200,18 +200,18 @@ export default class GameStore
    * Create an entry for a game
    */
   @hrtime('created new game in %d ms')
-  async create(name, hostId, maxPlayerCount, turnLengthMs, turnEndBufferLengthMs)
+  async create(name, hostId, map, maxPlayerCount, turnLengthMs, turnEndBufferLengthMs)
   {
     const resp = await this.sql.query(`
 
         insert into games
-          (name, host_player_id, max_player_count, turn_length_ms, turn_end_buffer_ms)
+          (name, host_player_id, map, max_player_count, turn_length_ms, turn_end_buffer_ms)
         values
-          (@name, @hostId, @maxPlayerCount, @turnLengthMs, @turnEndBufferLengthMs)
+          (@name, @hostId, @map, @maxPlayerCount, @turnLengthMs, @turnEndBufferLengthMs)
         returning id
 
       `,
-      {name, hostId, maxPlayerCount, turnLengthMs, turnEndBufferLengthMs});
+      {name, hostId, map, maxPlayerCount, turnLengthMs, turnEndBufferLengthMs});
 
     const {id} = resp.firstOrNull();
 

@@ -6,7 +6,7 @@ namespace ctac
     [Singleton]
     public class CardsModel
     {
-        public List<CardModel> Cards { get; set; }
+        public List<CardModel> Cards = new List<CardModel>();
 
         public CardModel Card(int id)
         {

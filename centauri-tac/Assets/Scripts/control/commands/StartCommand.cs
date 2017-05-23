@@ -63,7 +63,7 @@ namespace ctac
 
             //fetch map from disk, eventually comes from server
             string mapContents = File.ReadAllText("../maps/cubeland.json");
-            var defaultMap = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
+            var mapModel = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
             debug.Log("Loaded Map");
 
             //fetch all cards from disk
@@ -78,7 +78,7 @@ namespace ctac
             }
             debug.Log("Loaded " + numberOfCards + " cards");
 
-            mapCreator.CreateMap(defaultMap);
+            mapCreator.CreateMap(mapModel);
 
             //remove any minions on the board for a clean slate
             piecesModel.Pieces = new List<PieceModel>();
@@ -89,8 +89,6 @@ namespace ctac
             }
 
             //clean up scene cards, init lists.  Need better place for init
-            cards.Cards = new List<CardModel>();
-            decks.Cards = new List<CardModel>();
             var taggedCards = GameObject.FindGameObjectsWithTag("Card");
             foreach (var card in taggedCards)
             {

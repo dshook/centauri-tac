@@ -6,6 +6,7 @@
 
         public int id { get; set; }
         public string name { get; set; }
+        public string map { get; set; }
         public int maxPlayerCount { get; set; }
         public int hostPlayerId { get; set; }
         public HostPlayer hostPlayer { get; set; }
