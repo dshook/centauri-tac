@@ -31,6 +31,7 @@ namespace ctac
         public override void Execute()
         {
             Retain();
+            Cleanup();
 
             //Starting up the game not from main menu
             if (currentGame == null || currentGame.game == null)
@@ -73,6 +74,36 @@ namespace ctac
             LoadGame();
         }
 
+        //Get rid of all the junk in the editor scene
+        void Cleanup()
+        {
+            //remove any minions on the board for a clean slate
+            piecesModel.Pieces = new List<PieceModel>();
+            var taggedPieces = GameObject.FindGameObjectsWithTag("Piece");
+            foreach (var piece in taggedPieces)
+            {
+                GameObject.Destroy(piece);
+            }
+
+            //clean up scene cards, init lists.  Need better place for init
+            var taggedCards = GameObject.FindGameObjectsWithTag("Card");
+            foreach (var card in taggedCards)
+            {
+                GameObject.Destroy(card);
+            }
+
+            var goMap = GameObject.Find("Map");
+            if (goMap != null)
+            {
+                GameObject.Destroy(goMap);
+            }
+
+#if !DEBUG
+            var dbgButtons = GameObject.Find("DebugButtons");
+            GameObject.DestroyImmediate(dbgButtons);
+#endif
+        }
+
         //Call to load the map once the currentGame is sorted out
         void LoadGame()
         {
@@ -102,26 +133,6 @@ namespace ctac
             debug.Log("Loaded " + numberOfCards + " cards");
 
             mapCreator.CreateMap(mapModel);
-
-            //remove any minions on the board for a clean slate
-            piecesModel.Pieces = new List<PieceModel>();
-            var taggedPieces = GameObject.FindGameObjectsWithTag("Piece");
-            foreach (var piece in taggedPieces)
-            {
-                GameObject.Destroy(piece);
-            }
-
-            //clean up scene cards, init lists.  Need better place for init
-            var taggedCards = GameObject.FindGameObjectsWithTag("Card");
-            foreach (var card in taggedCards)
-            {
-                GameObject.Destroy(card);
-            }
-
-#if !DEBUG
-            var dbgButtons = GameObject.Find("DebugButtons");
-            GameObject.DestroyImmediate(dbgButtons);
-#endif
         }
     }
 }
