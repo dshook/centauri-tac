@@ -9,8 +9,6 @@ using UnityEngine;
 namespace ctac {
     public class CardsView : View
     {
-        //[Inject] public IDebugService debug { get; set; }
-
         //should only be the current players cards
         private List<CardModel> playerCards { get; set; }
         private List<CardModel> opponentCards { get; set; }
@@ -200,6 +198,7 @@ namespace ctac {
 
         public class DrawCardAnim : IAnimate
         {
+            public ISoundService sounds { get; set; }
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
             public float? postDelay { get { return 0.2f; } }
@@ -213,7 +212,7 @@ namespace ctac {
             private Vector3 opponentDest = new Vector3(0, 250, -12f);
             private Vector3 playerDest = new Vector3(0, 0, -12f);
 
-            public void Init() { }
+            public void Init() {}
             public void Update()
             {
                 Vector3 dest = playerDest;
@@ -230,6 +229,10 @@ namespace ctac {
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
                 if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
                 {
+                    if (!isOpponentCard)
+                    {
+                        sounds.PlaySound("drawCard");
+                    }
                     card.gameObject.transform.localPosition = dest;
                     Complete = true;
                     cardDrawn.Dispatch(card);

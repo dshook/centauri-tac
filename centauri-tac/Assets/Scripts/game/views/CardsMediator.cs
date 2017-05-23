@@ -37,6 +37,7 @@ namespace ctac
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
         [Inject] public IDebugService debug { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
 
         public override void OnRegister()
         {
@@ -130,7 +131,8 @@ namespace ctac
             {
                 card = card,
                 cardDrawn = cardDrawShown,
-                isOpponentCard = isOpponent
+                isOpponentCard = isOpponent,
+                sounds = sounds
             });
         }
 
