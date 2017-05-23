@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public JoinGameSignal joinGame { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
+        [Inject] public GameLoggedInSignal gameLoggedIn { get; set; }
 
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardsModel cards { get; set; }
@@ -29,6 +30,8 @@ namespace ctac
 
         public override void Execute()
         {
+            Retain();
+
             //Starting up the game not from main menu
             if (currentGame == null || currentGame.game == null)
             {
@@ -51,18 +54,38 @@ namespace ctac
                 }
                 else
                 {
-                    serverAuthSignal.Dispatch();
+                    debug.LogWarning("Standalone game launch not supported without config");
+                    return;
                 }
+                gameLoggedIn.AddOnce(onGameLoggedIn);
 #endif
             }
             else
             {
                 //let the server know we're ready
                 joinGame.Dispatch(currentGame.me);
+                LoadGame();
             }
+        }
 
+        void onGameLoggedIn(LoginStatusModel status, SocketKey key)
+        {
+            LoadGame();
+        }
+
+        //Call to load the map once the currentGame is sorted out
+        void LoadGame()
+        {
+            Release();
+
+            if (currentGame == null || currentGame.game == null)
+            {
+                debug.LogWarning("Trying to start game without current game");
+                return;
+            }
             //fetch map from disk, eventually comes from server
-            string mapContents = File.ReadAllText("../maps/cubeland.json");
+            string mapContents = File.ReadAllText(string.Format("../maps/{0}.json", currentGame.game.map));
+
             var mapModel = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
             debug.Log("Loaded Map");
 

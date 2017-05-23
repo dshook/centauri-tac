@@ -12,6 +12,7 @@ namespace ctac
         public int maxPlayers { get; set; }
         public GameObject root { get; set; }
         public Dictionary<Vector2, Tile> tiles { get; set; }
+        public List<Tile> cosmeticTiles { get; set; }
 
         public List<Tile> tileList
         {
