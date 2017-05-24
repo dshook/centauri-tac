@@ -35,8 +35,8 @@ namespace ctac
 
         private CardModel draggedCard = null;
 
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
 
         //for card targeting
         private TargetModel startTargetModel;
@@ -153,6 +153,7 @@ namespace ctac
         //when you try to activate a card either by the click and drag click up or a click on a tile/piece
         private void onActivate(GameObject activated)
         {
+            sounds.PlaySound("playCard");
             var itWorked = doActivateWork(activated);
             if (itWorked)
             {
