@@ -38,7 +38,7 @@ namespace ctac
             var goMap = GameObject.Find("Map");
             if (goMap != null)
             {
-                GameObject.Destroy(goMap);
+                GameObject.DestroyImmediate(goMap);
             }
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
