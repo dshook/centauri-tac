@@ -11,8 +11,8 @@ import MapState from '../game/ctac/models/MapState.js';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 import cubeland from '../../maps/cubeland.json';
 
-//init the dependencies for the selector
-var cardDirectory = new CardDirectory();
+//manually init the dependencies for the selector
+var cardDirectory = new CardDirectory({cardSets: ['test']});
 
 var mapState = new MapState();
 mapState.add(cubeland);

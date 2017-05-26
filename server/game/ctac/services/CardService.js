@@ -10,14 +10,10 @@ import CardEvaluator from '../cardlang/CardEvaluator.js';
 @loglevel
 export default class CardService
 {
-  constructor(container, queue)
+  constructor(container)
   {
-    var cardDirectory = new CardDirectory();
-    container.registerValue('cardDirectory', cardDirectory);
-
-    //cards in hand indexed by player id
-    var cardState = new CardState();
-    container.registerValue('cardState', cardState);
+    container.registerSingleton('cardDirectory', CardDirectory);
+    container.registerSingleton('cardState', CardState);
 
     container.registerSingleton('selector', Selector);
     container.registerSingleton('cardEvaluator', CardEvaluator);

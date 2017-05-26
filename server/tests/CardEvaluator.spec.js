@@ -13,15 +13,14 @@ import Message from '../game/ctac/actions/Message.js';
 import PieceHealthChange from '../game/ctac/actions/PieceHealthChange.js';
 import PieceStatusChange from '../game/ctac/actions/PieceStatusChange.js';
 import PieceAttributeChange from '../game/ctac/actions/PieceAttributeChange.js';
-import ActionTimer from '../game/ctac/actions/ActionTimer.js';
 import PieceBuff from '../game/ctac/actions/PieceBuff.js';
 import SpawnPiece from '../game/ctac/actions/SpawnPiece.js';
 import Player from 'models/Player';
 import ActionQueue from 'action-queue';
 import CardDirectory from '../game/ctac/models/CardDirectory.js';
 
-//init the dependencies for the evaluator and selector
-var cardDirectory = new CardDirectory();
+//manually init the dependencies for the evaluator and selector
+var cardDirectory = new CardDirectory({cardSets: ['test']});
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
     var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);

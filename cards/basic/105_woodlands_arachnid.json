@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 105,
+	"name": "Woodlands Arachnid",
+	"description": "Root attack target after attacking",
+  "cost": 3,
+  "attack": 1,
+  "health": 4,
+  "movement": 3,
+  "tags": ["Minion"],
+  "eventcode": "attacks{
+    GiveStatus(TARGET, Root)
+    startTurnTimer(2, false, RemoveStatus(SAVED, Root) )
+  }"
+}

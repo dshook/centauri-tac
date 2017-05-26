@@ -23,7 +23,7 @@ namespace ctac
         {
             //fetch all cards from disk
             int numberOfCards = 0;
-            foreach (string file in Directory.GetFiles("../cards", "*.json"))
+            foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
             {
                 string cardText = File.ReadAllText(file);
                 var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);

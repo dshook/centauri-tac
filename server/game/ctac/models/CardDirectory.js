@@ -11,23 +11,30 @@ import _ from 'lodash';
  @loglevel
 export default class CardDirectory
 {
-  constructor()
+  constructor(gameConfig)
   {
     this.directory = {};
     this.parser = CardLang.parser;
 
     var cardRequires = {};
 
-    //NAS-T  required for heroku it seems
-    var directoryPath = __dirname + '/../../../../cards';
-    fs.readdirSync(directoryPath).map(function (filename) {
-      let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
-      try{
-        cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
-      }catch(e){
-        this.log.error('Error loading card ' + filename, e, e.stack);
-      }
-    })
+    if(!gameConfig.cardSets || !gameConfig.cardSets.length){
+      throw new Error('Card directory unable to start without card sets');
+    }
+
+    for(let cardSet of gameConfig.cardSets){
+      //NAS-T  required for heroku it seems
+      var directoryPath = __dirname + '/../../../../cards/' + cardSet;
+      fs.readdirSync(directoryPath).map(function (filename) {
+        let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
+        try{
+          //remove some whitespace before json parsing because json is a stupid format sometimes
+          cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
+        }catch(e){
+          this.log.error('Error loading card ' + filename, e, e.stack);
+        }
+      });
+    }
 
     for(let cardFileName in cardRequires){
       try{
@@ -38,7 +45,11 @@ export default class CardDirectory
         throw e;
       }
     }
-    this.log.info('Registered %s cards', Object.keys(this.directory).length);
+    this.log.info(
+      'Registered %s cards for sets %s'
+      , Object.keys(this.directory).length
+      , gameConfig.cardSets.join(',')
+    );
   }
 
   get cardIds()
