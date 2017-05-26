@@ -22,8 +22,6 @@ namespace ctac
         public bool zoomEnabled = true;
 
         bool dragging = false;
-        float xSpeed = 10f;
-        float ySpeed = 5f;
 
         float rotateTimer = 0f;
 
@@ -137,22 +135,17 @@ namespace ctac
 
             if (dragging)
             {
-                var mousePos = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+                var mousePos = Camera.main.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
                 mouseDiff = mousePos - dragOrigin;
 
-                //TODO: speed is still not right
-                amountToMove.Set(-mouseDiff.x * xSpeed * zoomLevel, -mouseDiff.y * ySpeed * zoomLevel, 0);
-                amountToMove = Camera.main.transform.rotation * amountToMove;
-                move = camOrigin + amountToMove;
-
-                Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, move, 1f);
+                Camera.main.transform.position -= mouseDiff;
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
                 if (raycastModel.cardCanvasHit == null)
                 {
-                    dragOrigin = Camera.main.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
+                    dragOrigin = Camera.main.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
                     camOrigin = Camera.main.transform.position;
                     dragging = true;
                 }
