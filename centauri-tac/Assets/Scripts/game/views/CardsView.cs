@@ -29,8 +29,8 @@ namespace ctac {
         private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -480, 125);
-        private Vector3 opponentCardCircleCenter = new Vector3(0, 640, 125);
+        private Vector3 cardCircleCenter = new Vector3(0, -590, 332);
+        private Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
         private float cardCircleRadius = 480f;
         private float cardAngleSpread = -5f;
 
@@ -61,7 +61,7 @@ namespace ctac {
 
             //position opponents cards
             //might need to DRY it up sometime but rule of three still holds
-            cardAngleSpread = -13f + (0.8f * opponentCards.Count);
+            cardAngleSpread = -13f + (0.9f * opponentCards.Count);
             for(int c = 0; c < opponentCards.Count; c++) 
             {
                 var card = opponentCards[c];
@@ -81,7 +81,7 @@ namespace ctac {
             }
 
             //and now players cards
-            cardAngleSpread = -16f + (1.2f * playerCards.Count);
+            cardAngleSpread = -16f + (1.1f * playerCards.Count);
             for(int c = 0; c < playerCards.Count; c++) 
             {
                 var card = playerCards[c];
