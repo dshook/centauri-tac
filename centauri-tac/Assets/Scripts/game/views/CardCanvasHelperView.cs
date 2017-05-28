@@ -34,7 +34,7 @@ namespace ctac {
             return cardCamera.ViewportToWorldPoint(viewportPoint);
         }
 
-        public Vector3 MouseToWorld(float z)
+        public Vector3 MouseToViewport(float z)
         {
             var mouseViewport = cardCamera.ScreenToViewportPoint(CrossPlatformInputManager.mousePosition);
 
@@ -45,6 +45,11 @@ namespace ctac {
                 ((mouseViewport.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)),
                 z
             );
+        }
+
+        public Vector3 CardCameraToWorld(Vector3 point)
+        {
+            return cardCamera.ScreenToWorldPoint(point);
         }
     }
 }

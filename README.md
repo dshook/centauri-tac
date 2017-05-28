@@ -110,4 +110,4 @@ Variable | Notes | Example
 `CLIENT_LOG` | Where to find the client log file to serve up | `./client_log.json`
 `DISCONNECT_TIMEOUT` | How long clients have to reconnect before the boot | `5000`
 `DEV` | Allows some developer commands to be sent to the server | `true`
-
+`CARD_SETS` | Which card sets are enabled and going to be loaded | `test,basic`

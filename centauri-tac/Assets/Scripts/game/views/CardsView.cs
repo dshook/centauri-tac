@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace ctac {
     public class CardsView : View
@@ -96,20 +97,24 @@ namespace ctac {
                 //drag the selected card with the cursor
                 if (selectedCard != null && card.id == selectedCard.card.id)
                 {
-                    var mouseWorld = cardCanvasHelper.MouseToWorld(dest.z);
-                    var dragPos = new Vector3(mouseWorld.x + selectedCard.point.x, mouseWorld.y + selectedCard.point.y, mouseWorld.z);
-                    dragPos = dragPos.SetY(dragPos.y + cardDimensions.y * canvas.scaleFactor);
+                    var mousePos = CrossPlatformInputManager.mousePosition;
+                    var mouseBefore = new Vector3(mousePos.x, mousePos.y, 130);
+                    var mouseWorld = cardCanvasHelper.CardCameraToWorld(mouseBefore);
 
-                    var dragDist = Vector3.Distance(dragPos, dest);
+
+                    var dragDist = Vector2.Distance(mouseWorld, dest);
                     if (dragDist < maxDragDistance || !selectedNeedsArrow)
                     {
+                        //Actually drag the card around the screen for spells
                         rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                        rectTransform.anchoredPosition3D = dragPos;
+                        rectTransform.position = mouseWorld;
                         continue;
                     }
                     else
                     {
-                        dest = dest.SetY(dest.y + 30f);
+                        //for targeted spells and minions, just bump it up in the hand to show the selected card
+                        rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                        dest = new Vector3(dest.x, dest.y + 60f, dest.z - 15f);
                     }
                 }
                 //show the hover card on top of where the actual card is after a delay
