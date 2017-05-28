@@ -117,7 +117,8 @@ namespace ctac
                     {
                         var pieceCard = new CardModel();
                         pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard, true);
-                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 0), 0);
+                        //stack cards to the right, and set them back a bit so the main card overlaps if scrolled
+                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 2), 0);
 
                         hoveringCards[-pieceChange.originalPiece.id] = healthChangeCard;
                     }
@@ -136,7 +137,7 @@ namespace ctac
                             //plop down the number splat scaled up and reset to the right position
                             var newNumberSplat = Instantiate(numberSplat, healthChangeCard.displayWrapper.transform, false) as GameObject;
                             var yPos = totalPieceChangeCount == 1 ? 40.5f : 120 - (pieceChangeCount * 40f);
-                            newNumberSplat.transform.localPosition = new Vector3(0, yPos, -2.0f);
+                            newNumberSplat.transform.localPosition = new Vector3(0, yPos, -0.5f);
                             newNumberSplat.transform.localScale = new Vector3(140, 140, 1);
                             newNumberSplat.transform.localRotation = Quaternion.Euler(Vector3.zero);
                             var view = newNumberSplat.GetComponent<NumberSplatView>();
