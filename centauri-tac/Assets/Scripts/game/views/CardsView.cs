@@ -25,7 +25,7 @@ namespace ctac {
         private const float maxDragDistance = 100f;
         private Vector3 dest;
 
-        private Vector2 cardDimensions = new Vector2(156, 258.2f);
+        //private Vector2 cardDimensions = new Vector2(156, 258.2f);
         private Material cardGlowMat = null;
         private Material cardOutlineMat = null;
 

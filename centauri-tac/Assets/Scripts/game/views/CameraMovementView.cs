@@ -10,7 +10,6 @@ namespace ctac
     public class CameraMovementView : View
     {
         private Vector3 dragOrigin;
-        private Vector3 camOrigin;
 
         private Vector3 mouseDiff;
         private Vector3 amountToMove;
@@ -146,7 +145,6 @@ namespace ctac
                 if (raycastModel.cardCanvasHit == null)
                 {
                     dragOrigin = Camera.main.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
-                    camOrigin = Camera.main.transform.position;
                     dragging = true;
                 }
             }

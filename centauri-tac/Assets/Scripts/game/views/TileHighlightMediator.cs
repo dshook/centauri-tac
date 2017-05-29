@@ -3,6 +3,7 @@ using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace ctac
 {
@@ -270,7 +271,28 @@ namespace ctac
             onPieceHover(null);
         }
 
+        private PieceModel hoveredPiece = null;
         private void onPieceHover(PieceModel piece)
+        {
+            hoveredPiece = piece;
+            //whenever we get a null piece hover we'll clear right away, but with a real piece, put in a delay before running logic
+            if (piece == null)
+            {
+                onRealPieceHover(piece);
+            }
+            else
+            {
+                StartCoroutine(WaitAndCall(0.3f));
+            }
+        }
+
+        IEnumerator WaitAndCall(float waitTime)
+        {
+            yield return new WaitForSeconds(waitTime);
+            onRealPieceHover(hoveredPiece);
+        }
+
+        private void onRealPieceHover(PieceModel piece)
         {
             if(isDeployingPiece) return;
 
