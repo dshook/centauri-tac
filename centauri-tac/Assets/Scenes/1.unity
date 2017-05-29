@@ -283,6 +283,30 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3381096, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3374260, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 106576, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11411154, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textAlignment
+      value: 257
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450986, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textAlignment
+      value: 257
+      objectReference: {fileID: 0}
+    - target: {fileID: 11450986, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -1478,7 +1502,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 31.399933
+      value: 31.399872
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.y

@@ -93,17 +93,19 @@ namespace ctac {
             {
                 desiredColor = desiredColor - tint;
 
-                if (desiredColor != meshRenderer.material.color)
-                {
-                    var existingTweens = gameObject.GetComponents<MaterialColorTween>();
-                    if (existingTweens.Length == 0 || !existingTweens.Any(tw => tw.desiredColor == desiredColor))
-                    {
-                        var matTween = gameObject.AddComponent<MaterialColorTween>();
-                        matTween.mat = meshRenderer.material;
-                        matTween.desiredColor = desiredColor;
-                        matTween.time = 0.5f;
-                    }
-                }
+                ReallySetColor(desiredColor);
+
+                //if (desiredColor != meshRenderer.material.color)
+                //{
+                //    var existingTweens = gameObject.GetComponents<MaterialColorTween>();
+                //    if (existingTweens.Length == 0 || !existingTweens.Any(tw => tw.desiredColor == desiredColor))
+                //    {
+                //        var matTween = gameObject.AddComponent<MaterialColorTween>();
+                //        matTween.mat = meshRenderer.material;
+                //        matTween.desiredColor = desiredColor;
+                //        matTween.time = 0.5f;
+                //    }
+                //}
             }
 
             //if (tile.showPieceRotation && !arrows.activeSelf)

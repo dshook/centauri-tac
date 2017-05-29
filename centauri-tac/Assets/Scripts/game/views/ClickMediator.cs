@@ -77,146 +77,144 @@ namespace ctac
                 pieceDragging.Dispatch(null);
             }
 
-            if (clickModel.clickedObject != null)
-            {
-                //first check to see if the tile we clicked on has a piece, 
-                //if it does, treat that the same as if we clicked the piece directly
-                PieceView pieceView = null;
-
-                if (clickModel.tile != null)
-                {
-                    var pieceAtTile = pieces.PieceAt(clickModel.tile.position);
-                    if (pieceAtTile != null)
-                    {
-                        pieceView = pieceAtTile.pieceView;
-                    }
-                }
-                if (clickModel.piece)
-                {
-                    pieceView = clickModel.piece;
-                }
-
-                //TODO: come back and clean up some of this heavily nested shieet
-                if (pieceView != null)
-                {
-                    if (pieceView.piece.tags.Contains(Constants.targetPieceTag))
-                    {
-                        //clicking on phantom piece shouldn't do anything
-                        return;
-                    }
-                    pieceClicked.Dispatch(pieceView);
-                    if (!clickModel.isUp)
-                    {
-                        pieceDragging.Dispatch(pieceView.piece);
-                    }
-
-                    if (cardTarget != null || abilityTarget != null)
-                    {
-                    }
-                    else if (pieceView.piece.currentPlayerHasControl && !clickModel.isUp)
-                    {
-                        pieceSelected.Dispatch(pieceView.piece);
-                    }
-                    else
-                    {
-                        //check to see if we have a valid attack, and throw a message error for all the ways its wrong
-                        if ( selectedPiece != null && selectedPiece.id != pieceView.piece.id )
-                        {
-                            if (!FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)) {
-                                if (selectedPiece.canAttack)
-                                {
-                                    if (mapService.isHeightPassable(
-                                          mapService.Tile(selectedPiece.tilePosition),
-                                          mapService.Tile(pieceView.piece.tilePosition)
-                                    )) {
-                                        attackPiece.Dispatch(new AttackPieceModel()
-                                        {
-                                            attackingPieceId = selectedPiece.id,
-                                            targetPieceId = pieceView.piece.id
-                                        });
-                                        pieceSelected.Dispatch(null);
-                                    } else {
-                                        message.Dispatch(new MessageModel() { message = "Can't attack up that slope!" });
-                                    }
-
-                                }
-                                else
-                                {
-                                    //now figure out why they can't attack
-                                    if (selectedPiece.attack <= 0)
-                                    {
-                                        message.Dispatch(new MessageModel() { message = "Minion has no attack" });
-                                    }
-                                    else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
-                                    {
-                                        message.Dispatch(new MessageModel() { message = "Minion Can't Attack" });
-                                    }
-                                    else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
-                                    {
-                                        message.Dispatch(new MessageModel() { message = "Paralyzed!" });
-                                    }
-                                    else
-                                    {
-                                        message.Dispatch(new MessageModel() { message = "Minions need time to prepare!" });
-                                    }
-                                }
-
-                            } else {
-                                message.Dispatch(new MessageModel() { message = "Can't attack the cloaked unit until they attack!" });
-                            }
-                            
-                        }
-                    }
-                }
-
-                ////selected should never be null but check anyways
-                //if (selectedPiece != null && selectedPiece.playerId == players.Me.id) {
-                //    if (clickModel.clickedObject.CompareTag("RotateSouth"))
-                //    {
-                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
-                //    }
-                //    if (clickModel.clickedObject.CompareTag("RotateWest"))
-                //    {
-                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
-                //    }
-                //    if (clickModel.clickedObject.CompareTag("RotateNorth"))
-                //    {
-                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
-                //    }
-                //    if (clickModel.clickedObject.CompareTag("RotateEast"))
-                //    {
-                //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
-                //    }
-                //}
-
-                if (clickModel.tile != null)
-                {
-                    var gameTile = clickModel.tile;
-
-                    if (pieceView == null)
-                    {
-                        //only dispatch tile clicked if there wasn't a piece clicked so they're not duplicated and ambiguous
-                        tileClicked.Dispatch(gameTile);
-                    }
-
-                    if (
-                        cardTarget == null 
-                        && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
-                        && selectedPiece != null
-                        && selectedPiece.canMove
-                        )
-                    {
-                        movePiece.Dispatch(selectedPiece, gameTile);
-                        pieceSelected.Dispatch(null);
-                    }
-                }
-            }
-            else
+            if (clickModel.clickedObject == null)
             {
                 pieceClicked.Dispatch(null);
                 tileClicked.Dispatch(null);
                 pieceSelected.Dispatch(null);
                 pieceDragging.Dispatch(null);
+                return;
+            }
+
+            //first check to see if the tile we clicked on has a piece, 
+            //if it does, treat that the same as if we clicked the piece directly
+            PieceView pieceView = null;
+
+            if (clickModel.tile != null)
+            {
+                var pieceAtTile = pieces.PieceAt(clickModel.tile.position);
+                if (pieceAtTile != null)
+                {
+                    pieceView = pieceAtTile.pieceView;
+                }
+            }
+            if (clickModel.piece)
+            {
+                pieceView = clickModel.piece;
+            }
+
+            if (pieceView != null)
+            {
+                if (pieceView.piece.tags.Contains(Constants.targetPieceTag))
+                {
+                    //clicking on phantom piece shouldn't do anything
+                    return;
+                }
+                pieceClicked.Dispatch(pieceView);
+                if (!clickModel.isUp)
+                {
+                    pieceDragging.Dispatch(pieceView.piece);
+                }
+
+                if (cardTarget != null || abilityTarget != null)
+                {
+                }
+                else if (pieceView.piece.currentPlayerHasControl && !clickModel.isUp)
+                {
+                    pieceSelected.Dispatch(pieceView.piece);
+                }
+                else
+                {
+                    //check to see if we have a valid attack, and throw a message error for all the ways its wrong
+                    if ( selectedPiece != null && selectedPiece.id != pieceView.piece.id )
+                    {
+                        if (!FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)) {
+                            if (selectedPiece.canAttack)
+                            {
+                                if (mapService.isHeightPassable(
+                                      mapService.Tile(selectedPiece.tilePosition),
+                                      mapService.Tile(pieceView.piece.tilePosition)
+                                )) {
+                                    attackPiece.Dispatch(new AttackPieceModel()
+                                    {
+                                        attackingPieceId = selectedPiece.id,
+                                        targetPieceId = pieceView.piece.id
+                                    });
+                                    pieceSelected.Dispatch(null);
+                                } else {
+                                    message.Dispatch(new MessageModel() { message = "Can't attack up that slope!" });
+                                }
+
+                            }
+                            else
+                            {
+                                //now figure out why they can't attack
+                                if (selectedPiece.attack <= 0)
+                                {
+                                    message.Dispatch(new MessageModel() { message = "Minion has no attack" });
+                                }
+                                else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
+                                {
+                                    message.Dispatch(new MessageModel() { message = "Minion Can't Attack" });
+                                }
+                                else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
+                                {
+                                    message.Dispatch(new MessageModel() { message = "Paralyzed!" });
+                                }
+                                else
+                                {
+                                    message.Dispatch(new MessageModel() { message = "Minions need time to prepare!" });
+                                }
+                            }
+
+                        } else {
+                            message.Dispatch(new MessageModel() { message = "Can't attack the cloaked unit until they attack!" });
+                        }
+                        
+                    }
+                }
+            }
+
+            ////selected should never be null but check anyways
+            //if (selectedPiece != null && selectedPiece.playerId == players.Me.id) {
+            //    if (clickModel.clickedObject.CompareTag("RotateSouth"))
+            //    {
+            //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.South));
+            //    }
+            //    if (clickModel.clickedObject.CompareTag("RotateWest"))
+            //    {
+            //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.West));
+            //    }
+            //    if (clickModel.clickedObject.CompareTag("RotateNorth"))
+            //    {
+            //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.North));
+            //    }
+            //    if (clickModel.clickedObject.CompareTag("RotateEast"))
+            //    {
+            //        rotatePiece.Dispatch(new RotatePieceModel(selectedPiece.id, Direction.East));
+            //    }
+            //}
+
+            if (clickModel.tile != null)
+            {
+                var gameTile = clickModel.tile;
+
+                if (pieceView == null)
+                {
+                    //only dispatch tile clicked if there wasn't a piece clicked so they're not duplicated and ambiguous
+                    tileClicked.Dispatch(gameTile);
+                }
+
+                if (
+                    cardTarget == null 
+                    && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
+                    && selectedPiece != null
+                    && selectedPiece.canMove
+                    )
+                {
+                    movePiece.Dispatch(selectedPiece, gameTile);
+                    pieceSelected.Dispatch(null);
+                }
             }
         }
 
