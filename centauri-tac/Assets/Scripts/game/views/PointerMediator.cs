@@ -28,6 +28,8 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
+        bool targeting = false;
+
         public override void OnRegister()
         {
             view.init(raycastModel);
@@ -71,7 +73,7 @@ namespace ctac
                 }
                 view.rectTransform(cardModel.card.gameObject);
             }
-            else
+            else if(!targeting)
             {
                 view.disable();
             }
@@ -87,6 +89,7 @@ namespace ctac
             if (model.targetingCard != null && model.cardDeployPosition != null)
             {
                 view.worldPoint(model.cardDeployPosition.gameObject.transform);
+                targeting = true;
             }
             else if (model.targetingCard.isSpell)
             {
@@ -95,21 +98,25 @@ namespace ctac
                 if (model.targets == null && area == null) { return; }
 
                 view.rectTransform(model.targetingCard.gameObject);
+                targeting = true;
             }
             else
             {
                 view.disable();
+                targeting = false;
             }
         }
 
         private void onCancelSelectTarget(CardModel card)
         {
             view.disable();
+            targeting = false;
         }
 
         private void onSelectTarget(TargetModel card)
         {
             view.disable();
+            targeting = false;
         }
 
         private void onAbilityStartTarget(StartAbilityTargetModel model)
@@ -117,26 +124,31 @@ namespace ctac
             if (model.targetingPiece != null && model.targetingPiece.gameObject != null)
             {
                 view.worldPoint(model.targetingPiece.gameObject.transform);
+                targeting = true;
             }
             else
             {
                 view.disable();
+                targeting = false;
             }
         }
 
         private void onAbilityCancelSelectTarget(PieceModel card)
         {
             view.disable();
+            targeting = false;
         }
 
         private void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
         {
             view.disable();
+            targeting = false;
         }
 
         private void onStartChoose(ChooseModel c)
         {
             view.disable();
+            targeting = false;
         }
 
     }

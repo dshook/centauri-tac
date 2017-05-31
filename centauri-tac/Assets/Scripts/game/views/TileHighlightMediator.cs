@@ -88,6 +88,7 @@ namespace ctac
             tileHover.Dispatch(tile);
             view.onTileHover(tile);
 
+            //Unit pathfinding highlighting
             if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
@@ -105,7 +106,6 @@ namespace ctac
                     var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, players.Me.id);
                     view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
-                    //@Cleanup: probably pass the start tile separately so we don't have to allocate and copy
                     if (path != null)
                     {
                         movePathFoundSignal.Dispatch(new MovePathFoundModel() {
@@ -119,9 +119,7 @@ namespace ctac
                         movePathFoundSignal.Dispatch(null);
                     }
 
-                    if (enemyOccupyingDest
-                        && path != null
-                    )
+                    if (enemyOccupyingDest && path != null )
                     {
                         view.onAttackTile(tile);
                     }
@@ -198,7 +196,7 @@ namespace ctac
             {
                 this.selectedPiece = null;
                 view.onTileSelected(null);
-                view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
+                //view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
                 setAttackRangeTiles(null);
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 return;
@@ -230,7 +228,7 @@ namespace ctac
                 var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
                 //take out the central one
                 moveTiles.Remove(gameTile.position);
-                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.Movable, true);
+                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
             }
         }
 

@@ -207,7 +207,7 @@ namespace ctac
 
                 if (
                     cardTarget == null 
-                    && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.Movable)
+                    && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.MoveRange)
                     && selectedPiece != null
                     && selectedPiece.canMove
                     )
