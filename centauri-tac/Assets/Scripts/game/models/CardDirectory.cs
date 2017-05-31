@@ -8,6 +8,12 @@ namespace ctac
     {
         public List<CardModel> directory = new List<CardModel>();
 
+        public void AddCard(CardModel card)
+        {
+            card.baseCost = card.cost;
+            directory.Add(card);
+        }
+
         public CardModel Card(int cardTemplateId)
         {
             return directory.FirstOrDefault(x => x.cardTemplateId == cardTemplateId);

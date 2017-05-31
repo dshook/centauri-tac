@@ -24,16 +24,13 @@ namespace ctac
         public override void Execute()
         {
             //fetch all cards from disk
-            int numberOfCards = 0;
             foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
             {
                 string cardText = File.ReadAllText(file);
                 var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
-                cardTemplate.baseCost = cardTemplate.cost;
-                cardDirectory.directory.Add(cardTemplate);
-                numberOfCards++;
+                cardDirectory.AddCard(cardTemplate);
             }
-            debug.Log("Loaded " + numberOfCards + " cards");
+            debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
             var minionCards = cardDirectory.directory.Where(c => c.isMinion || c.isHero).ToList();
             
             //figure out what kind of map we want
