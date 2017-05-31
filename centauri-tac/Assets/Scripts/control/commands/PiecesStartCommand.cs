@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using TMPro;
 
 namespace ctac
 {
@@ -13,6 +14,7 @@ namespace ctac
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public MapModel map { get; set; }
 
         [Inject] public IMapCreatorService mapCreator { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
@@ -89,6 +91,8 @@ namespace ctac
             });
             players.SetMeClient(meId);
 
+            var tileText = loader.Load<GameObject>("TileText");
+
             //and create pieces finally
             int pRow = 0;
             int pCol = 0;
@@ -98,15 +102,22 @@ namespace ctac
                 var minionCard = minionCards[p];
 
                 //if (!spawnIds.Contains(minionCard.cardTemplateId)) { continue; }
+                var piecePosition = new Vector2(pRow * 2, pCol * 2);
 
                 pieceService.CreatePiece(new SpawnPieceModel()
                 {
                     pieceId = minionCard.cardTemplateId,
                     cardTemplateId = minionCard.cardTemplateId,
                     playerId = 1,
-                    position = new PositionModel(new Vector2(pRow * 2, pCol * 2)),
+                    position = new PositionModel(piecePosition),
                     direction = Direction.South
                 });
+
+                //setup tile text on map
+                var tile = map.tiles[piecePosition];
+                var newTileText = GameObject.Instantiate(tileText, tile.gameObject.transform, false);
+                var tileTMP = newTileText.GetComponent<TextMeshPro>();
+                tileTMP.text = minionCard.cardTemplateId.ToString();
 
                 pRow++;
                 if (pRow >= rows)
