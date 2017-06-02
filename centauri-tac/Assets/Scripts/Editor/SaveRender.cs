@@ -22,6 +22,9 @@ class SaveRender : EditorWindow
 
         if (GUILayout.Button("Save"))
         {
+            var template = GameObject.Find("Template");
+            template.SetActive(false);
+
             var camera = Camera.main;
             RenderTexture rt = new RenderTexture(resWidth, resHeight, 24, RenderTextureFormat.ARGB32);
             camera.targetTexture = rt;
@@ -35,6 +38,8 @@ class SaveRender : EditorWindow
             byte[] bytes = screenShot.EncodeToPNG();
             string filename = Application.dataPath + "/Resources/Models/" + pieceId + "/render.png";
             System.IO.File.WriteAllBytes(filename, bytes);
+
+            template.SetActive(true);
             Debug.Log(string.Format("Took screenshot to: {0}", filename));
         }
     }

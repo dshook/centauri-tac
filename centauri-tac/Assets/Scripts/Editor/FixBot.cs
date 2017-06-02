@@ -13,37 +13,56 @@ class FixBot : EditorWindow
 
     void OnGUI()
     {
-        GameObject thisObject = Selection.activeObject as GameObject;
-        if (thisObject == null)
-        {
-            return;
-        }
+        //GameObject thisObject = Selection.activeObject as GameObject;
+        var selected = Selection.GetFiltered<GameObject>(SelectionMode.TopLevel | SelectionMode.Editable | SelectionMode.OnlyUserModifiable);
+        EditorGUILayout.LabelField("Objects to fix: "+ selected.Length);
+        //if (thisObject == null)
+        //{
+        //    return;
+        //}
 
         if (GUILayout.Button("Fix"))
         {
-            var prefab = thisObject.transform.Find("c-bot_c_Prefab");
-            if (prefab == null)
+            foreach (var sel in selected)
             {
-                Debug.LogWarning("Couldn't find prefab");
-                return;
-            }
-            thisObject.tag = "Piece";
-
-            for (var c = 0; c < prefab.childCount; c++)
-            {
-                var child = prefab.GetChild(c);
-                if (child.name == "Root_Bone") continue;
-                
-                var existingCollider = child.gameObject.GetComponent<MeshCollider>();
-                if (existingCollider != null) continue;
-
-                var mesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
-                var collider = child.gameObject.AddComponent<MeshCollider>();
-                collider.convex = true;
-                collider.sharedMesh = mesh.sharedMesh;
+                FixPiece(sel);
             }
         }
 
+    }
+
+    void FixPiece(GameObject piece)
+    {
+        if (piece == null) return;
+
+        piece.tag = "Piece";
+        piece.name = "prefab";
+
+        ProcessTransform(piece.transform);
+    }
+
+    void ProcessTransform(Transform t) {
+        for (var c = 0; c < t.childCount; c++)
+        {
+            var child = t.GetChild(c);
+
+            if (child.childCount > 0)
+            {
+                ProcessTransform(child);
+            }
+            
+            //shouldn't have a collider already
+            var existingCollider = child.gameObject.GetComponent<MeshCollider>();
+            if (existingCollider != null) continue;
+
+            //but should have a mesh
+            var mesh = child.gameObject.GetComponent<SkinnedMeshRenderer>();
+            if (mesh == null) continue;
+
+            var collider = child.gameObject.AddComponent<MeshCollider>();
+            collider.convex = true;
+            collider.sharedMesh = mesh.sharedMesh;
+        }
     }
 
 }
