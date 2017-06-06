@@ -681,7 +681,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1674720559327156}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.932, y: 0, z: -0.09579158}
+  m_LocalPosition: {x: 4.7726398, y: 0, z: -0.6332686}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4107597364444542}
@@ -853,7 +853,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1420365775820072}
-  m_LocalRotation: {x: 0.00037452285, y: -0.00013514937, z: 0.33943766, w: 0.94062847}
+  m_LocalRotation: {x: 0.00037452285, y: -0.00013514938, z: 0.33943766, w: 0.9406285}
   m_LocalPosition: {x: -0.016522318, y: -0.018354177, z: 0.0047618747}
   m_LocalScale: {x: 1, y: 1.0000002, z: 1.0000001}
   m_Children:
@@ -1024,7 +1024,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1201638009589140}
-  m_LocalRotation: {x: -0.4920002, y: 0.5135464, z: 0.48607618, w: 0.50787383}
+  m_LocalRotation: {x: -0.4920002, y: 0.51354647, z: 0.48607618, w: 0.5078739}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.99999994, y: 1, z: 1}
   m_Children:
@@ -1091,7 +1091,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1811523193823868}
-  m_LocalRotation: {x: -0.00037444787, y: 0.00013507191, z: 0.33943766, w: 0.94062847}
+  m_LocalRotation: {x: -0.00037444787, y: 0.00013507192, z: 0.33943766, w: 0.9406285}
   m_LocalPosition: {x: -0.016522318, y: -0.018354237, z: -0.004761867}
   m_LocalScale: {x: 0.99999994, y: 0.9999998, z: 0.9999999}
   m_Children:
@@ -1218,7 +1218,7 @@ Animator:
   m_GameObject: {fileID: 1292811617220296}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 36aafaf8fdcadc5408df980cd165e710, type: 3}
-  m_Controller: {fileID: 9100000, guid: 214e9c6b410017c4499d01439b9d4e1f, type: 2}
+  m_Controller: {fileID: 22100000, guid: 5a096a3bb05ba9545b8e2faf9b475cbc, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
