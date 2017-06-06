@@ -1,11 +1,12 @@
 {
-	"cardTemplateId": 101,
+	"cardTemplateId": 1902,
 	"name": "Earthling Hero",
 	"description": "<b>Ability(2)</b>: Summon a 2/2 Pollux",
 	"cost": 0,
 	"attack": 2,
 	"health": 50,
 	"movement": 2,
+  "race": 3,
 	"tags": ["Hero"],
 	"eventcode": "ability(2, 1, 'Summon Meat'){
     Spawn(102, 1)

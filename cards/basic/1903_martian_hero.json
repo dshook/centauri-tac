@@ -1,0 +1,19 @@
+{
+	"cardTemplateId": 1903,
+	"name": "Martian Hero",
+	"description": "<b>Ability(2)</b>: Give a friendly minion +1/+1",
+	"cost": 0,
+	"attack": 2,
+	"health": 50,
+	"movement": 2,
+  "race": 3,
+	"tags": ["Hero"],
+	"eventcode": "ability(2, 1, 'Energy Rations'){
+    Buff(
+      TARGET & FRIENDLY & MINION,
+      'Inspiration of Command',
+      attack(1),
+      health(1)
+    )
+  }"
+}

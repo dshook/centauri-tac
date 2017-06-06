@@ -1,11 +1,12 @@
 {
-	"cardTemplateId": 100,
+	"cardTemplateId": 1901,
 	"name": "Venusian Hero",
 	"description": "<b>Ability(2)</b>: Give friendly minions near your hero +0/+3",
 	"cost": 0,
 	"attack": 2,
 	"health": 50,
 	"movement": 2,
+  "race": 1,
 	"tags": ["Hero"],
 	"eventcode": "ability(2, 1, 'Energy Rations'){
     Buff(

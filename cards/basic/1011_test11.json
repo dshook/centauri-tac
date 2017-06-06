@@ -6,5 +6,6 @@
   "attack": 4,
   "health": 4,
   "movement": 3,
+  "race": 2,
   "tags": ["Minion"]
 }
