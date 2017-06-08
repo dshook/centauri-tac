@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import Position from './Position.js';
 import Tile from './Tile.js';
+import MapModel from './MapModel.js';
 import loglevel from 'loglevel-decorator';
 import Constants from '../util/Constants.js';
 
@@ -11,28 +13,63 @@ export default class MapState
 {
   constructor()
   {
-    this.name = '';
-    this.maxPlayers = 0;
-    this.tiles = [];
+    this.maps = {};
+    this.currentMap = null;
   }
 
-  //only really works with one map right now obvs
-  add(map){
-    this.name = map.name;
-    this.maxPlayers = map.maxPlayers;
+  add(map, setCurrent){
+    if(this.maps[map.name]){
+      this.log.error('Map %s already registered', map.name);
+      return;
+    }
+    let storedMap = this.maps[map.name] = new MapModel(map.name, map.maxPlayers);
 
+    //first get rid of any cosmetic tiles from the tile import list.  These are found just by looking for
+    //tiles that are the same x,z position but a lower y (highest tile wins)
+    let finalTiles = [];
     for(let tile of map.tiles){
-      this.tiles.push(
-        new Tile(
-          new Position(tile.transform.x, tile.transform.y, tile.transform.z),
-          tile.unpassable
-        )
+      let sharedPos = map.tiles.filter(sub =>
+        sub.transform.x === tile.transform.x &&
+        sub.transform.z === tile.transform.z
       );
+      if(!sharedPos.length){
+        finalTiles.push(tile);
+      }else{
+        let highestTile = _.maxBy(sharedPos, t => t.transform.y);
+        if(highestTile === tile){
+          finalTiles.push(highestTile);
+        }
+      }
+    }
+
+    for(let tile of finalTiles){
+      let tileModel = new Tile(
+        new Position(tile.transform.x, tile.transform.y, tile.transform.z),
+        tile.unpassable
+      );
+      storedMap.tiles.push(tileModel);
+
+      if(!storedMap.tileMatrix[tileModel.position.x]){ storedMap.tileMatrix[tileModel.position.x] = {}; }
+      storedMap.tileMatrix[tileModel.position.x][tileModel.position.z] = tileModel;
+    }
+    this.log.info('Map %s registered with %s/%s tiles remaining', map.name, finalTiles.length, map.tiles.length)
+
+    if(setCurrent){
+      this.setMap(map.name);
     }
   }
 
+  setMap(mapName){
+    this.currentMap = mapName;
+  }
+
+  get map(){
+    return this.maps[this.currentMap];
+  }
+
   getTile(position){
-    return this.tiles.find(t => t.position.tileEquals(position));
+    if(!this.map.tileMatrix[position.x]) return null;
+    return this.map.tileMatrix[position.x][position.z] || null;
   }
 
   tileDistance(posA, posB){

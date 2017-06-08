@@ -15,7 +15,7 @@ import cubeland from '../../maps/cubeland.json';
 var cardDirectory = new CardDirectory({cardSets: ['test']});
 
 var mapState = new MapState();
-mapState.add(cubeland);
+mapState.add(cubeland, true);
 
 var player1 = new Player(1);
 var player2 = new Player(2);

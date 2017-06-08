@@ -29,7 +29,7 @@ function positionArrayEquals(a, b){
 
 test('tile equals', t => {
   var mapState = new MapState();
-  mapState.add(cubeland);
+  mapState.add(cubeland, true);
   t.plan(3);
 
   var corner = mapState.getTile(new Position(0, 0, 0));
@@ -40,7 +40,7 @@ test('tile equals', t => {
 
 test('get neighbors', t => {
   var mapState = new MapState();
-  mapState.add(cubeland);
+  mapState.add(cubeland, true);
   t.plan(2);
 
   let cornerNeighbors = mapState.getNeighbors(new Position(0, 0, 0));
@@ -63,7 +63,7 @@ test('get neighbors', t => {
 
 test('Get Tiles in Radius', t => {
   var mapState = new MapState();
-  mapState.add(cubeland);
+  mapState.add(cubeland, true);
   t.plan(2);
 
   let zeroTileRadius = mapState.getTilesInRadius(new Position(1, 0, 1), 0);
@@ -86,7 +86,7 @@ test('Get Tiles in Radius', t => {
 
 test('Get cross Tiles', t => {
   var mapState = new MapState();
-  mapState.add(cubeland);
+  mapState.add(cubeland, true);
   t.plan(1);
 
   let edgeCrossTiles = mapState.getCrossTiles(new Position(1, 0, 1), 2);
@@ -104,7 +104,7 @@ test('Get cross Tiles', t => {
 
 test('Get line Tiles', t => {
   var mapState = new MapState();
-  mapState.add(cubeland);
+  mapState.add(cubeland, true);
   t.plan(2);
 
   let diagonalTiles = mapState.getLineTiles(new Position(1, 0, 1), new Position(0, 0, 0), 2, true);
@@ -124,4 +124,15 @@ test('Get line Tiles', t => {
     mapState.getTile(new Position(2,0,5)).position,
   ];
   t.ok(positionArrayEquals(lineTiles, expectedLineTiles), 'Got expected line tiles');
+});
+
+test('Map state handles stacked tiles', t => {
+  var mapState = new MapState();
+  mapState.add(cubeland, true);
+  t.plan(3);
+
+  t.equals(mapState.map.tiles.length, 121, 'Map did not register stacked tiles');
+  var corner = mapState.getTile(new Position(10, 0, 10));
+  t.ok(corner instanceof Tile, 'Got a tile');
+  t.ok(corner.position.equals(new Position(10, 3, 10)), 'Tile position is the highest one');
 });

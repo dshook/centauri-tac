@@ -14,16 +14,27 @@ import Direction from './models/Direction.js';
 @loglevel
 export default class CentauriTacGame
 {
-  constructor(queue, players, binder, host, cardDirectory, cardState, playerResourceState, gameEventService)
+  constructor(
+    queue,
+    players,
+    game,
+    host,
+    cardDirectory,
+    cardState,
+    playerResourceState,
+    gameEventService,
+    mapState
+  )
   {
     this.players = players;
-    this.binder = binder;
+    this.game = game;
     this.host = host;
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.cardState = cardState;
     this.playerResourceState = playerResourceState;
     this.gameEventService = gameEventService;
+    this.mapState = mapState;
   }
 
   /**
@@ -41,6 +52,9 @@ export default class CentauriTacGame
 
       // bootup the main controller
       await this.host.addController(GameController);
+
+      //set map state current map based on game
+      this.mapState.setMap(this.game.map);
 
       // start first turn with random player
       this.queue.push(new PassTurn());

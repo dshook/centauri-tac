@@ -51,7 +51,7 @@ var player2 = new Player(2);
 var players = [player1, player2];
 
 var mapState = new MapState();
-mapState.add(cubeland);
+mapState.add(cubeland, true);
 
 test('Basic Draw card', t => {
   let pieceStateMix = new PieceState();

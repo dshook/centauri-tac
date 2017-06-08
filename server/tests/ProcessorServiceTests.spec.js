@@ -16,7 +16,7 @@ import Statuses from '../game/ctac/models/Statuses.js';
 
 export default class ProcessorServiceTests
 {
-  constructor(queue, cardDirectory, pieceState, cardEvaluator, cardState, turnState)
+  constructor(queue, cardDirectory, pieceState, cardEvaluator, cardState, turnState, mapState)
   {
     this.queue = queue;
     this.cardDirectory = cardDirectory;
@@ -24,6 +24,7 @@ export default class ProcessorServiceTests
     this.cardEvaluator = cardEvaluator;
     this.cardState = cardState;
     this.turnState = turnState;
+    this.mapState = mapState;
   }
 
   setupTest(){
@@ -34,6 +35,7 @@ export default class ProcessorServiceTests
     this.turnState.passTurn();
     this.cardEvaluator.startTurnTimers = [];
     this.cardEvaluator.endTurnTimers = [];
+    this.mapState.setMap('cubeland');
   }
 
   spawnCards(){
