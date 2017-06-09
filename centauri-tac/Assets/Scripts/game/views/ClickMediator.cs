@@ -9,7 +9,6 @@ namespace ctac
         [Inject] public ClickView view { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
-        [Inject] public PieceDraggingSignal pieceDragging { get; set; }
 
         [Inject] public AttackPieceSignal attackPiece { get; set; }
         [Inject] public MovePieceSignal movePiece { get; set; }
@@ -55,6 +54,7 @@ namespace ctac
         PieceModel selectedPiece = null;
         TargetModel cardTarget = null;
         StartAbilityTargetModel abilityTarget = null;
+        const float singleClickThreshold = 0.5f;
 
         public override void onRemove()
         {
@@ -72,17 +72,11 @@ namespace ctac
         //For clicking anything other than a card
         private void onClick(ClickModel clickModel)
         {
-            if (clickModel.isUp)
-            {
-                pieceDragging.Dispatch(null);
-            }
-
             if (clickModel.clickedObject == null)
             {
                 pieceClicked.Dispatch(null);
                 tileClicked.Dispatch(null);
                 pieceSelected.Dispatch(null);
-                pieceDragging.Dispatch(null);
                 return;
             }
 
@@ -103,7 +97,7 @@ namespace ctac
                 pieceView = clickModel.piece;
             }
 
-            if (pieceView != null)
+            if (pieceView != null && clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold)
             {
                 if (pieceView.piece.tags.Contains(Constants.targetPieceTag))
                 {
@@ -111,23 +105,21 @@ namespace ctac
                     return;
                 }
                 pieceClicked.Dispatch(pieceView);
-                if (!clickModel.isUp)
-                {
-                    pieceDragging.Dispatch(pieceView.piece);
-                }
 
                 if (cardTarget != null || abilityTarget != null)
                 {
                 }
-                else if (pieceView.piece.currentPlayerHasControl && !clickModel.isUp)
+                else if (pieceView.piece.currentPlayerHasControl)
                 {
                     pieceSelected.Dispatch(pieceView.piece);
+                    return; //return here so further actions based on this click (like move) can't be fired off from the same click
                 }
                 else
                 {
                     //check to see if we have a valid attack, and throw a message error for all the ways its wrong
                     if ( selectedPiece != null && selectedPiece.id != pieceView.piece.id )
                     {
+                        string errorMessage = null;
                         if (!FlagsHelper.IsSet(pieceView.piece.statuses, Statuses.Cloak)) {
                             if (selectedPiece.canAttack)
                             {
@@ -142,7 +134,7 @@ namespace ctac
                                     });
                                     pieceSelected.Dispatch(null);
                                 } else {
-                                    message.Dispatch(new MessageModel() { message = "Can't attack up that slope!" });
+                                    errorMessage = "Can't attack up that slope!";
                                 }
 
                             }
@@ -151,26 +143,31 @@ namespace ctac
                                 //now figure out why they can't attack
                                 if (selectedPiece.attack <= 0)
                                 {
-                                    message.Dispatch(new MessageModel() { message = "Minion has no attack" });
+                                    errorMessage = "Minion has no attack";
                                 }
                                 else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
                                 {
-                                    message.Dispatch(new MessageModel() { message = "Minion Can't Attack" });
+                                    errorMessage = "Minion Can't Attack";
                                 }
                                 else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
                                 {
-                                    message.Dispatch(new MessageModel() { message = "Paralyzed!" });
+                                    errorMessage = "Paralyzed!";
                                 }
                                 else
                                 {
-                                    message.Dispatch(new MessageModel() { message = "Minions need time to prepare!" });
+                                    errorMessage = "Minions need time to prepare!";
                                 }
                             }
 
                         } else {
-                            message.Dispatch(new MessageModel() { message = "Can't attack the cloaked unit until they attack!" });
+                            errorMessage = "Can't attack the cloaked unit until they attack!";
                         }
-                        
+
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            message.Dispatch(new MessageModel() { message = errorMessage });
+                            return;
+                        }
                     }
                 }
             }
@@ -195,7 +192,7 @@ namespace ctac
             //    }
             //}
 
-            if (clickModel.tile != null)
+            if (clickModel.tile != null && clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold)
             {
                 var gameTile = clickModel.tile;
 

@@ -9,7 +9,6 @@ namespace ctac
         [Inject] public CameraMovementView view { get; set; }
 
         [Inject] public CardSelectedSignal cardSelected { get; set; }
-        [Inject] public PieceDraggingSignal pieceDragging { get; set; }
 
         [Inject] public StartSelectTargetSignal startTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelTarget { get; set; }
@@ -26,7 +25,6 @@ namespace ctac
             startTarget.AddListener(onStartTarget);
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
-            pieceDragging.AddListener(onPieceDragging);
             historyHover.AddListener(onHistoryHover);
 
             view.Init(raycastModel);
@@ -39,7 +37,6 @@ namespace ctac
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
-            pieceDragging.RemoveListener(onPieceDragging);
         }
 
         private void onCardSelected(CardSelectedModel card)
@@ -58,11 +55,6 @@ namespace ctac
         private void onCancelTarget(CardModel c)
         {
             view.setDragEnabled(true);
-        }
-
-        private void onPieceDragging(PieceModel p)
-        {
-            //view.setDragEnabled(p == null);
         }
 
         private void onHistoryHover(bool h)

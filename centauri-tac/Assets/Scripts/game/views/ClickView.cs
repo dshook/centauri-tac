@@ -11,6 +11,7 @@ namespace ctac
         public Tile tile { get; set; }
         public PieceView piece { get; set; }
         public bool isUp { get; set; }
+        public float? clickTime { get; set; }
     }
 
     public class ClickView : View
@@ -26,28 +27,35 @@ namespace ctac
             raycastModel = rm;
         }
 
+        float clickTimeAccum = 0f;
+        bool isClicking = false;
+
         void Update()
         {
-            if (active)
-            {
-                if (CrossPlatformInputManager.GetButtonDown("Fire1") )
-                {
-                    TestSelection(false);
-                }
-                if (CrossPlatformInputManager.GetButtonUp("Fire1"))
-                {
-                    TestSelection(true);
-                }
+            if (!active) { return; }
 
-                //right click et al deselects
-                if (CrossPlatformInputManager.GetButtonDown("Fire2"))
-                {
-                    clickSignal.Dispatch(new ClickModel() { isUp = false });
-                }
+            clickTimeAccum += Time.deltaTime;
+
+            if (CrossPlatformInputManager.GetButtonDown("Fire1") )
+            {
+                isClicking = true;
+                clickTimeAccum = 0f;
+                TestSelection(false, null);
+            }
+            if (CrossPlatformInputManager.GetButtonUp("Fire1"))
+            {
+                isClicking = false;
+                TestSelection(true, clickTimeAccum);
+            }
+
+            //right click et al deselects
+            if (CrossPlatformInputManager.GetButtonDown("Fire2"))
+            {
+                clickSignal.Dispatch(new ClickModel() { isUp = false });
             }
         }
 
-        void TestSelection(bool isUp)
+        void TestSelection(bool isUp, float? time)
         {
             if (raycastModel.worldHit.HasValue && !raycastModel.cardCanvasHit.HasValue)
             {
@@ -55,7 +63,8 @@ namespace ctac
                     clickedObject = raycastModel.worldHit.Value.collider.gameObject,
                     piece = raycastModel.piece,
                     tile = raycastModel.tile,
-                    isUp = isUp
+                    isUp = isUp,
+                    clickTime = time
                 });
             }
             else if(!raycastModel.cardCanvasHit.HasValue)

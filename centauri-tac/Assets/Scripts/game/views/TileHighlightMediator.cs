@@ -99,7 +99,7 @@ namespace ctac
                     );
 
                 //don't show move path for ranged units hovering over an enemy
-                if (!enemyOccupyingDest || !selectedPiece.range.HasValue)
+                if (!enemyOccupyingDest || selectedPiece.isMelee)
                 {
                     //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
                     var boost = enemyOccupyingDest ? 1 : 0;

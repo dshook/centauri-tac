@@ -82,6 +82,24 @@ namespace ctac
         }
 
         [JsonIgnore]
+        public bool isMelee
+        {
+            get
+            {
+                return !range.HasValue;
+            }
+        }
+
+        [JsonIgnore]
+        public bool isRanged
+        {
+            get
+            {
+                return range.HasValue;
+            }
+        }
+
+        [JsonIgnore]
         public bool canAttack
         {
             get
