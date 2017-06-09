@@ -30,7 +30,7 @@ namespace ctac
             var attacker = pieces.Piece(attackedPiece.attackingPieceId);
             attacker.attackCount++;
 
-            if (attacker.range.HasValue)
+            if (attacker.isRanged)
             {
                 attacker.hasMoved = true;
             }

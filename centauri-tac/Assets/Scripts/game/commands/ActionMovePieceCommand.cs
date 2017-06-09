@@ -40,7 +40,7 @@ namespace ctac
             piece.hasMoved = true;
 
             //ranged can't move and attack
-            if (piece.range.HasValue)
+            if (piece.isRanged)
             {
                 piece.attackCount++;
             }

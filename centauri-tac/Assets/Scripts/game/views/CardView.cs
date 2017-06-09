@@ -122,8 +122,8 @@ namespace ctac {
                     if      (piece.movement > piece.baseMovement) { movementColor = Color.green; }
                     else if (piece.movement < piece.baseMovement) { movementColor = Color.red; }
 
-                    if      (piece.range != null && piece.range > piece.baseRange) { rangeColor = Color.green; }
-                    else if (piece.range != null && piece.range < piece.baseRange) { rangeColor = Color.red; }
+                    if      (piece.isRanged && piece.range > piece.baseRange) { rangeColor = Color.green; }
+                    else if (piece.isRanged && piece.range < piece.baseRange) { rangeColor = Color.red; }
                 }
 
                 attackText.text = colorWrap(card.attack, attackColor) + "<size=-90>atk</size>";

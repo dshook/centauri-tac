@@ -203,7 +203,7 @@ namespace ctac
             }
 
             //check for attack range tiles
-            if (selectedPiece.range.HasValue)
+            if (selectedPiece.isRanged)
             {
                 if (selectedPiece.canAttack)
                 {
@@ -300,12 +300,12 @@ namespace ctac
                 )
             {
                 //check for ranged units first since they can't move and attack
-                if (piece.range.HasValue && piece.canAttack)
+                if (piece.isRanged && piece.canAttack)
                 {
                     var attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value);
                     setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
                 }
-                else
+                else if(piece.isMelee)
                 {
                     //melee units
 
@@ -347,7 +347,7 @@ namespace ctac
                 && selectedPiece.attackCount < selectedPiece.maxAttacks
                 && piece != null
                 && piece != selectedPiece
-                && selectedPiece.range.HasValue
+                && selectedPiece.isRanged
                 )
             {
                 if (mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition)

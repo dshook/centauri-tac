@@ -284,7 +284,7 @@ namespace ctac {
                 circleBg.SetActive(true);
                 eventIcon.SetActive(true);
             }
-            else if (piece.range.HasValue)
+            else if (piece.isRanged)
             {
                 //TODO: need to do something better for ranged units that also have events
                 circleBg.SetActive(true);

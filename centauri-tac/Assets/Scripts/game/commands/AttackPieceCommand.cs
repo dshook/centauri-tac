@@ -32,12 +32,12 @@ namespace ctac
             var startTile = map.tiles.Get(attacker.tilePosition);
             var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
             List<Tile> path = null;
-            if (!attacker.range.HasValue)
+            if (attacker.isMelee)
             {
                 path = mapService.FindPath(startTile, destTile, attacker.movement + 1, players.Me.id);
             }
 
-            if (path == null && !attacker.range.HasValue)
+            if (path == null && attacker.isMelee)
             {
                 //noop if can't find a path to attack to 
                 return;
