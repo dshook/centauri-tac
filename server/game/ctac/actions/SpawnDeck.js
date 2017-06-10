@@ -2,11 +2,11 @@ import BaseAction from './BaseAction.js';
 
 export default class SpawnDeck extends BaseAction
 {
-  constructor(playerId, initialDrawAmount)
+  constructor(playerId, race)
   {
     super();
     this.playerId = playerId;
-    this.initialDrawAmount = initialDrawAmount;
+    this.race = race;
     this.cards = null;
   }
 }

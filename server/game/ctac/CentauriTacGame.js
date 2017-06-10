@@ -46,6 +46,12 @@ export default class CentauriTacGame
     if (this.players.length === 2) {
       this.log.info('starting game!');
 
+      //maybe someday...
+      if(this.players.length !== 2){
+        this.log.error('Need exactly 2 players to start game');
+        return;
+      }
+
       // update game info
       await this.host.setGameState(3);
       await this.host.setAllowJoin(false);
@@ -60,28 +66,32 @@ export default class CentauriTacGame
       this.queue.push(new PassTurn());
 
       // spawn game pieces for two players
-      //var heroes = this.cardDirectory.getByTag('Hero');
-      if(this.players.length === 2){
-        this.queue.push(new SpawnPiece({
-          playerId: this.players[0].id,
-          cardTemplateId: 1902, //heroes[3].cardTemplateId,
-          position: new Position(2, 0, 4),
-          direction: Direction.South
-        }));
-        this.queue.push(new SpawnPiece({
-          playerId: this.players[1].id,
-          cardTemplateId: 1903, //heroes[2].cardTemplateId,
-          position: new Position(5, 0, 2),
-          direction: Direction.West
-        }));
-      }
+      let allHeroes = this.cardDirectory.getByTag('Hero');
+      let heroes = [
+        allHeroes.find(h => h.cardTemplateId === 1902),
+        allHeroes.find(h => h.cardTemplateId === 1903)
+      ];
+
+      this.queue.push(new SpawnPiece({
+        playerId: this.players[0].id,
+        cardTemplateId: heroes[0].cardTemplateId,
+        position: new Position(2, 0, 4),
+        direction: Direction.South
+      }));
+      this.queue.push(new SpawnPiece({
+        playerId: this.players[1].id,
+        cardTemplateId: heroes[1].cardTemplateId,
+        position: new Position(5, 0, 2),
+        direction: Direction.West
+      }));
 
       //spawn both player decks and init hands
       let startingCards = 4;
-      for(let player of this.players){
+      for(let p = 0; p < this.players.length; p++){
+        let player = this.players[p];
         this.playerResourceState.init(player.id);
         this.cardState.initPlayer(player.id);
-        this.queue.push(new SpawnDeck(player.id, startingCards));
+        this.queue.push(new SpawnDeck(player.id, heroes[p].race));
       }
 
       //draw initial cards
