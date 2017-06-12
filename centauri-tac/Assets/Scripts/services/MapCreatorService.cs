@@ -116,8 +116,10 @@ namespace ctac
                     mapModel.tiles.Add(position, newTile);
                 }
 
-                newTileGO.AddComponent<TileView>();
-                newTileGO.GetComponent<TileView>().tile = newTile;
+                var tileView = newTileGO.GetComponent<TileView>();
+                tileView.tile = newTile;
+                tileView.unpassable = newTile.unpassable;
+                tileView.Init();
 
                 if (!areCosmetic)
                 {

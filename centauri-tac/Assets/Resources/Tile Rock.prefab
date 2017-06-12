@@ -106,6 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4416266648666986}
   - component: {fileID: 65131268221659444}
+  - component: {fileID: 114978976816836994}
   m_Layer: 8
   m_Name: Tile Rock
   m_TagString: Tile
@@ -416,6 +417,19 @@ MonoBehaviour:
   _sortingOrder: 0
   _overrideSorter: 0
   _overrideSorterChildren: 0
+--- !u!114 &114978976816836994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1608989667095904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unpassable: 0
+  tileFlags: 0
 --- !u!212 &212216082132352664
 SpriteRenderer:
   m_ObjectHideFlags: 1

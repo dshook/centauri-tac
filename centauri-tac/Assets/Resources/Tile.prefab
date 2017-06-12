@@ -127,6 +127,7 @@ GameObject:
   m_Component:
   - component: {fileID: 407524}
   - component: {fileID: 6517962}
+  - component: {fileID: 114156432622125514}
   m_Layer: 8
   m_Name: Tile
   m_TagString: Tile
@@ -588,3 +589,16 @@ MonoBehaviour:
   _sortingOrder: 0
   _overrideSorter: 0
   _overrideSorterChildren: 0
+--- !u!114 &114156432622125514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 160946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unpassable: 0
+  tileFlags: 0

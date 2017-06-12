@@ -71,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4866100002516770}
   - component: {fileID: 65365916774541994}
+  - component: {fileID: 114493793755864680}
   m_Layer: 8
   m_Name: Tile Sand
   m_TagString: Tile
@@ -416,6 +417,19 @@ MonoBehaviour:
   _sortingOrder: 0
   _overrideSorter: 0
   _overrideSorterChildren: 0
+--- !u!114 &114493793755864680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1382088690017944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unpassable: 0
+  tileFlags: 0
 --- !u!212 &212311090857046620
 SpriteRenderer:
   m_ObjectHideFlags: 1

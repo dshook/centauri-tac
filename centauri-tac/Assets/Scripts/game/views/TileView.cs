@@ -6,14 +6,16 @@ namespace ctac {
     public class TileView : MonoBehaviour
     {
         public Tile tile;
-        public Color hoverTint = new Color(.2f, .2f, .2f, .2f);
-        public Color pathFindTint = new Color(.3f, .3f, .3f, 1f);
-        public Color selectColor = new Color(.4f, .9f, .4f);
-        public Color moveColor = new Color(.4f, .4f, .9f);
-        public Color moveRangeColor = ColorExtensions.HexToColor("D2D2FF");
-        public Color attackRangeTint = new Color(1f, .1f, .1f);
-        public Color attackColor = new Color(.9f, .4f, .4f);
-        public Color dimmedColor = ColorExtensions.HexToColor("#8c8c8c");
+        public bool unpassable = false;
+
+        Color hoverTint = new Color(.2f, .2f, .2f, .2f);
+        Color pathFindTint = new Color(.3f, .3f, .3f, 1f);
+        Color selectColor = new Color(.4f, .9f, .4f);
+        Color moveColor = new Color(.4f, .4f, .9f);
+        Color moveRangeColor = ColorExtensions.HexToColor("D2D2FF");
+        Color attackRangeTint = new Color(1f, .1f, .1f);
+        Color attackColor = new Color(.9f, .4f, .4f);
+        Color dimmedColor = ColorExtensions.HexToColor("#8c8c8c");
 
 #pragma warning disable
         [SerializeField]
@@ -26,7 +28,7 @@ namespace ctac {
         private Color tint;
         private Color originalColor;
 
-        void Start()
+        public void Init()
         {
             if (tile != null)
             {

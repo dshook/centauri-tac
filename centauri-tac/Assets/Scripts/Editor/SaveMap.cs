@@ -37,6 +37,7 @@ class SaveMap : EditorWindow
             for (int t = 0; t < mapGO.transform.childCount; t++)
             {
                 var tile = mapGO.transform.GetChild(t);
+                var tileView = tile.GetComponent<TileView>();
                 var meshRenderer = tile.GetChild(0).GetComponent<MeshRenderer>();
                 var matName = meshRenderer.sharedMaterial.name.Replace("tile_", "").Replace(" (Instance)", "");
 
@@ -48,7 +49,7 @@ class SaveMap : EditorWindow
                         z = (int)tile.transform.position.z
                     },
                     material = matName,
-                    unpassable = matName == "water"
+                    unpassable = tileView.unpassable || matName == "water"
                 });
             }
 
