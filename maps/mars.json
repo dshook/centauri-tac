@@ -309,7 +309,7 @@
         "z": 2
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
@@ -813,7 +813,7 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
@@ -822,7 +822,7 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
@@ -863,15 +863,6 @@
     {
       "transform": {
         "x": 1,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 0,
         "y": 0.0,
         "z": 6
       },
@@ -882,6 +873,15 @@
       "transform": {
         "x": 0,
         "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 0,
+        "y": 0.0,
         "z": 5
       },
       "material": "clay",
@@ -2317,6 +2317,73 @@
       },
       "material": "clay",
       "unpassable": false
+    }
+  ],
+  "props": [
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "satelliteDishAntenna"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "satelliteDishAntenna"
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.378,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble"
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
     }
   ]
 }

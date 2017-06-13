@@ -38,6 +38,11 @@ class SaveMap : EditorWindow
             for (int t = 0; t < mapGO.transform.childCount; t++)
             {
                 var tile = mapGO.transform.GetChild(t);
+                if (tile.name == "Props")
+                {
+                    mim.props = GetProps(tile.gameObject);
+                    continue;
+                }
                 var tileView = tile.GetComponent<TileView>();
                 if (tileView == null) continue;
 
@@ -65,6 +70,35 @@ class SaveMap : EditorWindow
             File.WriteAllText("../maps/" + levelName + ".json", JsonConvert.SerializeObject(mim, Formatting.Indented) );
             Debug.Log("Saved map " + levelName);
         }
+    }
+
+    List<PropImport> GetProps(GameObject propRoot)
+    {
+        var props = new List<PropImport>();
+
+        for (int t = 0; t < propRoot.transform.childCount; t++)
+        {
+            var prop = propRoot.transform.GetChild(t);
+            var mesh = prop.GetComponent<MeshFilter>();
+            var rotation = prop.transform.rotation.eulerAngles;
+            props.Add(new PropImport()
+            {
+                transform = new PropImportPosition() {
+                    x = prop.transform.position.x,
+                    y = prop.transform.position.y,
+                    z = prop.transform.position.z
+                },
+                rotation = new PropImportPosition() {
+                    x = rotation.x,
+                    y = rotation.y,
+                    z = rotation.z
+                },
+                //ghetto way for now to find out what prop this is but works
+                propName = mesh.sharedMesh.name
+            });
+        }
+
+        return props;
     }
 
 }

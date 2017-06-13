@@ -8,6 +8,7 @@ namespace ctac
         public int maxPlayers { get; set; }
         public List<TileImportPosition> startingPositions { get; set; }
         public List<TileImport> tiles { get; set; }
+        public List<PropImport> props { get; set; }
     }
 
     public class TileImport
@@ -17,11 +18,25 @@ namespace ctac
         public bool unpassable { get; set; }
     }
 
+    public class PropImport
+    {
+        public PropImportPosition transform;
+        public PropImportPosition rotation;
+        public string propName { get; set; }
+    }
+
     public class TileImportPosition
     {
         public int x { get; set; }
         public float y { get; set; }
         public int z { get; set; }
+    }
+
+    public class PropImportPosition
+    {
+        public float x { get; set; }
+        public float y { get; set; }
+        public float z { get; set; }
     }
 }
 

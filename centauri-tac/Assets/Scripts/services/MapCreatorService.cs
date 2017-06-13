@@ -22,18 +22,20 @@ namespace ctac
         [Inject]
         public MapModel mapModel { get; set; }
 
+        [Inject] public IResourceLoaderService loader { get; set; }
+
         GameObject mapTilePrefab;
         Dictionary<string, Material> mapMaterials = new Dictionary<string, Material>();
 
         public void CreateMap(MapImportModel map)
         {
-            mapTilePrefab = Resources.Load("Tile") as GameObject;
+            mapTilePrefab = loader.Load<GameObject>("Tile");
 
-            mapMaterials["clay"] = Resources.Load("Materials/tiles/tile_clay") as Material;
-            mapMaterials["grass"] = Resources.Load("Materials/tiles/tile_grass") as Material;
-            mapMaterials["rock"] = Resources.Load("Materials/tiles/tile_rock") as Material;
-            mapMaterials["sand"] = Resources.Load("Materials/tiles/tile_sand") as Material;
-            mapMaterials["water"] = Resources.Load("Materials/tiles/tile_water") as Material;
+            mapMaterials["clay"] = loader.Load<Material>("Materials/tiles/tile_clay");
+            mapMaterials["grass"] = loader.Load<Material>("Materials/tiles/tile_grass");
+            mapMaterials["rock"] = loader.Load<Material>("Materials/tiles/tile_rock");
+            mapMaterials["sand"] = loader.Load<Material>("Materials/tiles/tile_sand");
+            mapMaterials["water"] = loader.Load<Material>("Materials/tiles/tile_water");
 
             var goMap = GameObject.Find("Map");
             if (goMap != null)
@@ -42,6 +44,9 @@ namespace ctac
             }
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
+
+            var props = new GameObject("Props");
+            props.transform.parent = goMap.transform;
 
             mapModel.root = goMap;
             mapModel.name = map.name;
@@ -70,6 +75,8 @@ namespace ctac
 
             setupTiles(map.tiles, goMap, false, map.startingPositions);
             setupTiles(dedupedCosmeticTiles, goMap, true, null);
+
+            setupProps(props, map.props);
 
             mapCreated.Dispatch();
         }
@@ -130,6 +137,21 @@ namespace ctac
                 {
                     tileView.isStartTile = true;
                 }
+            }
+        }
+
+        private void setupProps(GameObject propsRoot, List<PropImport> props)
+        {
+            foreach (var prop in props)
+            {
+                var prefab = loader.Load<GameObject>("Models/Props/" + prop.propName);
+
+                var newProp = GameObject.Instantiate(
+                    prefab, 
+                    new Vector3(prop.transform.x, prop.transform.y, prop.transform.z), 
+                    Quaternion.Euler(prop.rotation.x, prop.rotation.y, prop.rotation.z)
+                ) as GameObject;
+                newProp.transform.parent = propsRoot.transform;
             }
         }
 
