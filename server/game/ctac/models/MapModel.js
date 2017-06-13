@@ -4,6 +4,7 @@ export default class MapModel
   {
     this.name = name;
     this.maxPlayers = maxPlayers;
+    this.startingPositions = []; //position arrays of hero spawn
     this.tiles = []; //flat array of all tiles
     this.tileMatrix = {}; //tiles stored by x and z positions
   }

@@ -21,7 +21,10 @@ export default class GamelistManager
   async createNewGame(name, playerId)
   {
     // registers the game
-    const game = await this.games.create(name, playerId, 'venusians', 2, 25000, 4000);
+
+    //what map to play on if forced, prob should be move to a config at some point
+    const map = process.env.MAP || 'cubeland';
+    const game = await this.games.create(name, playerId, map, 2, 25000, 4000);
 
     if(game == null){
       this.log.info('Could not create game for %s component: %s player: %s'

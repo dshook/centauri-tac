@@ -24,6 +24,8 @@ export default class MapState
     }
     let storedMap = this.maps[map.name] = new MapModel(map.name, map.maxPlayers);
 
+    storedMap.startingPositions = map.startingPositions.map(p => new Position(p.x, p.y, p.z));
+
     //first get rid of any cosmetic tiles from the tile import list.  These are found just by looking for
     //tiles that are the same x,z position but a lower y (highest tile wins)
     let finalTiles = [];

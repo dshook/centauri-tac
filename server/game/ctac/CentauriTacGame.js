@@ -75,13 +75,13 @@ export default class CentauriTacGame
       this.queue.push(new SpawnPiece({
         playerId: this.players[0].id,
         cardTemplateId: heroes[0].cardTemplateId,
-        position: new Position(2, 0, 4),
+        position: this.mapState.map.startingPositions[0],
         direction: Direction.South
       }));
       this.queue.push(new SpawnPiece({
         playerId: this.players[1].id,
         cardTemplateId: heroes[1].cardTemplateId,
-        position: new Position(5, 0, 2),
+        position: this.mapState.map.startingPositions[1],
         direction: Direction.West
       }));
 

@@ -1,6 +1,18 @@
 {
     "name": "cubeland",
     "maxPlayers": 2,
+    "startingPositions": [
+      {
+        "x": 2,
+        "y": 0.0,
+        "z": 4
+      },
+      {
+        "x": 5,
+        "y": 0.0,
+        "z": 2
+      }
+    ],
     "tiles": [
         {
             "transform": {
