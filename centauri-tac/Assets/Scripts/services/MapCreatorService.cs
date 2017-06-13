@@ -68,15 +68,14 @@ namespace ctac
                 map.tiles.Remove(cosmeticTile);
             }
 
-            setupTiles(map.tiles, goMap, false);
-            setupTiles(dedupedCosmeticTiles, goMap, true);
+            setupTiles(map.tiles, goMap, false, map.startingPositions);
+            setupTiles(dedupedCosmeticTiles, goMap, true, null);
 
             mapCreated.Dispatch();
         }
 
-        void setupTiles(List<TileImport> tiles, GameObject goMap, bool areCosmetic)
+        void setupTiles(List<TileImport> tiles, GameObject goMap, bool areCosmetic, List<TileImportPosition> startingPositions)
         {
-
             foreach (var t in tiles)
             {
                 var fullPosition = new Vector3(t.transform.x, t.transform.y, t.transform.z);
@@ -125,6 +124,11 @@ namespace ctac
                 {
                     var indicator = newTileGO.transform.Find("Indicator").gameObject;
                     indicator.AddComponent<TilePieceIndicatorialView>();
+                }
+
+                if (startingPositions != null && startingPositions.Any(ti => ti.x == fullPosition.x && ti.z == fullPosition.z))
+                {
+                    tileView.isStartTile = true;
                 }
             }
         }

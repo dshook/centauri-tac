@@ -6,6 +6,7 @@ namespace ctac
     {
         public string name { get; set; }
         public int maxPlayers { get; set; }
+        public List<TileImportPosition> startingPositions { get; set; }
         public List<TileImport> tiles { get; set; }
     }
 

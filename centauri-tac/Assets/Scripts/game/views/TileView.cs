@@ -6,7 +6,10 @@ namespace ctac {
     public class TileView : MonoBehaviour
     {
         public Tile tile;
+
+        //these are just used for map editing and saving
         public bool unpassable = false;
+        public bool isStartTile = false;
 
         Color hoverTint = new Color(.2f, .2f, .2f, .2f);
         Color pathFindTint = new Color(.3f, .3f, .3f, 1f);

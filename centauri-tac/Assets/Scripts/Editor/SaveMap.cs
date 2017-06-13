@@ -33,28 +33,37 @@ class SaveMap : EditorWindow
             mim.name = levelName;
             mim.maxPlayers = 2;
             mim.tiles = new List<TileImport>();
+            mim.startingPositions = new List<TileImportPosition>();
 
             for (int t = 0; t < mapGO.transform.childCount; t++)
             {
                 var tile = mapGO.transform.GetChild(t);
                 var tileView = tile.GetComponent<TileView>();
+                if (tileView == null) continue;
+
                 var meshRenderer = tile.GetChild(0).GetComponent<MeshRenderer>();
                 var matName = meshRenderer.sharedMaterial.name.Replace("tile_", "").Replace(" (Instance)", "");
+                var tiPosition = new TileImportPosition() {
+                    x = (int)tile.transform.position.x,
+                    y = tile.transform.position.y,
+                    z = (int)tile.transform.position.z
+                };
 
                 mim.tiles.Add(new TileImport()
                 {
-                    transform = new TileImportPosition() {
-                        x = (int)tile.transform.position.x,
-                        y = tile.transform.position.y,
-                        z = (int)tile.transform.position.z
-                    },
+                    transform = tiPosition,
                     material = matName,
                     unpassable = tileView.unpassable || matName == "water"
                 });
+
+                if (tileView.isStartTile)
+                {
+                    mim.startingPositions.Add(tiPosition);
+                }
             }
 
             File.WriteAllText("../maps/" + levelName + ".json", JsonConvert.SerializeObject(mim, Formatting.Indented) );
-            
+            Debug.Log("Saved map " + levelName);
         }
     }
 

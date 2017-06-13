@@ -8122,6 +8122,11 @@ Prefab:
       propertyPath: m_Name
       value: Tile Clay (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 114398518836001218, guid: 24554dc9676c45f4db8d6a1bfda8ac5c,
+        type: 2}
+      propertyPath: isStartTile
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24554dc9676c45f4db8d6a1bfda8ac5c, type: 2}
   m_IsPrefabParent: 0
@@ -9272,6 +9277,11 @@ Prefab:
     - target: {fileID: 1539466132822454, guid: 24554dc9676c45f4db8d6a1bfda8ac5c, type: 2}
       propertyPath: m_Name
       value: Tile Clay (38)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114398518836001218, guid: 24554dc9676c45f4db8d6a1bfda8ac5c,
+        type: 2}
+      propertyPath: isStartTile
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 24554dc9676c45f4db8d6a1bfda8ac5c, type: 2}
