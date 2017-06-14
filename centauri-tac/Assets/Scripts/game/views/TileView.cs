@@ -3,6 +3,7 @@ using ctac.util;
 using System.Linq;
 
 namespace ctac {
+    [SelectionBase]
     public class TileView : MonoBehaviour
     {
         public Tile tile;
