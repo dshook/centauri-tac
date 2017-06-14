@@ -39,7 +39,7 @@ namespace ctac
 
         private void onKickoff()
         {
-            view.RenderInitial();
+            view.UpdateCards();
         }
 
         private void onLeaveClicked()

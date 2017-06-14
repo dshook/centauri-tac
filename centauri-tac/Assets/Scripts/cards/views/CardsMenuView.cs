@@ -4,13 +4,17 @@ using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using UnityEngine;
 using System.Linq;
+using System;
 
 namespace ctac
 {
     public class CardsMenuView : View
     {
         public Signal clickLeaveSignal = new Signal();
+
         public Button leaveButton;
+        public Button prevButton;
+        public Button nextButton;
 
         ICardService cardService;
         CardDirectory cardDirectory;
@@ -25,6 +29,7 @@ namespace ctac
         List<CardModel> createdCards = new List<CardModel>();
 
         int offset = 0;
+        int prevOffset = -1;
 
         internal void init(ICardService cs, CardDirectory cd)
         {
@@ -32,6 +37,9 @@ namespace ctac
             cardDirectory = cd;
 
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
+            prevButton.onClick.AddListener(onPrevButton);
+            nextButton.onClick.AddListener(onNextButton);
+
             cardHolder = GameObject.Find("CardHolder").gameObject;
 
             cardHolder.transform.DestroyChildren(true);
@@ -51,24 +59,36 @@ namespace ctac
         {
         }
 
-        internal void RenderInitial()
+        internal void UpdateCards()
         {
-            DisplayCards(cardDirectory.directory.Skip(offset).Take(pageSize).ToList());
+            if (offset == prevOffset) return; //skip work we don't need to do
+            bool isForward = offset > prevOffset;
+            prevOffset = offset;
+            DisplayCards(cardDirectory.directory.Skip(offset).Take(pageSize).ToList(), isForward);
         }
 
         //Should just be the 8 cards to display
-        void DisplayCards(List<CardModel> cards)
+        int createdCardOffset = 0;
+        void DisplayCards(List<CardModel> cards, bool isForward)
         {
+            float cardDist = 300;
+            float animTime = 1f;
+            Vector3 animDestPosition  = new Vector3(isForward ? -cardDist : cardDist, 0, 0);
+            Vector3 animStartPosition = new Vector3(isForward ? cardDist : -cardDist, 0, 0);
+
+            //animate all existing cards out depending on if it's forward or backward
             for (int c = 0; c < cardHolder.transform.childCount; c++)
             {
                 var childCard = cardHolder.transform.GetChild(c);
+                iTweenExtensions.MoveToLocal(childCard.gameObject, childCard.transform.position + animDestPosition, animTime, 0f);
             }
 
 
+            //now copy all the card props to the surrogate cards and animate them in
             for (int c = 0; c < cards.Count; c++)
             {
                 var card = cards[c];
-                var cardGameObject = createdCards[c].gameObject;
+                var cardGameObject = createdCards[c + createdCardOffset].gameObject;
                 cardService.SetupGameObject(card, cardGameObject);
 
                 card.gameObject.transform.SetParent(cardHolder.transform);
@@ -78,9 +98,26 @@ namespace ctac
                 card.rectTransform.anchorMax = cardAnchor;
                 card.rectTransform.anchorMin = cardAnchor;
                 card.rectTransform.pivot = cardAnchor;
-                card.rectTransform.anchoredPosition3D = new Vector3(xPos, yPos);
+                card.rectTransform.anchoredPosition3D = animStartPosition;
+                iTweenExtensions.MoveToLocal(card.gameObject, new Vector3(xPos, yPos), animTime, 0f);
             }
 
+            //swip swap the next cards to use by either incrimenting or resetting the created card offset
+            createdCardOffset = createdCardOffset == 0 ? pageSize : 0;
+        }
+
+        void onPrevButton()
+        {
+            offset -= pageSize;
+            offset = Math.Max(0, offset);
+            UpdateCards();
+        }
+
+        void onNextButton()
+        {
+            offset += pageSize;
+            offset = Math.Min(cardDirectory.directory.Count - 1, offset);
+            UpdateCards();
         }
 
     }
