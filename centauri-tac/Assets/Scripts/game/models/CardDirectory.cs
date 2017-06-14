@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace ctac
@@ -7,6 +9,17 @@ namespace ctac
     public class CardDirectory
     {
         public List<CardModel> directory = new List<CardModel>();
+
+        public void LoadCards()
+        {
+            //fetch all cards from disk
+            foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
+            {
+                string cardText = File.ReadAllText(file);
+                var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
+                AddCard(cardTemplate);
+            }
+        }
 
         public void AddCard(CardModel card)
         {

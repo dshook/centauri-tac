@@ -1,3 +1,4 @@
+using ctac.signals;
 using strange.extensions.mediation.impl;
 using System.Collections;
 using UnityEngine;
@@ -12,20 +13,33 @@ namespace ctac
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
+        [Inject] public ICardService cardService { get; set; }
+
+        [Inject] public CardDirectory cardDirectory { get; set; }
+
+        [Inject] public CardsKickoffSignal cardKickoff { get; set; }
+
         public override void OnRegister()
         {
             view.clickLeaveSignal.AddListener(onLeaveClicked);
+            cardKickoff.AddListener(onKickoff);
 
-            view.init();
+            view.init(cardService, cardDirectory);
         }
 
         public override void onRemove()
         {
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
+            cardKickoff.RemoveListener(onKickoff);
         }
 
         public void Update()
         {
+        }
+
+        private void onKickoff()
+        {
+            view.RenderInitial();
         }
 
         private void onLeaveClicked()

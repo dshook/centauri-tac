@@ -39,6 +39,7 @@ namespace ctac
             BindViews(assemblyTypes);
             BindSignals(assemblyTypes);
 
+            injectionBinder.Bind<ICardService>().To<CardService>().ToSingleton();
             commandBinder.Bind<CardsMenuStartSignal>().To<CardsMenuStartCommand>().Once();
         }
     }

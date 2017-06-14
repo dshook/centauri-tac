@@ -1,5 +1,4 @@
 using UnityEngine;
-using strange.extensions.context.api;
 using strange.extensions.command.impl;
 using System.IO;
 using Newtonsoft.Json;
@@ -121,12 +120,7 @@ namespace ctac
             debug.Log("Loaded Map");
 
             //fetch all cards from disk
-            foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
-            {
-                string cardText = File.ReadAllText(file);
-                var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
-                cardDirectory.AddCard(cardTemplate);
-            }
+            cardDirectory.LoadCards();
             debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
 
             mapCreator.CreateMap(mapModel);

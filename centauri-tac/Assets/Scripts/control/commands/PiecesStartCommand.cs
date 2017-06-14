@@ -1,7 +1,5 @@
 using UnityEngine;
 using strange.extensions.command.impl;
-using System.IO;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -23,13 +21,7 @@ namespace ctac
 
         public override void Execute()
         {
-            //fetch all cards from disk
-            foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
-            {
-                string cardText = File.ReadAllText(file);
-                var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
-                cardDirectory.AddCard(cardTemplate);
-            }
+            cardDirectory.LoadCards();
             debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
             var minionCards = cardDirectory.directory.Where(c => c.isMinion || c.isHero).ToList();
             
