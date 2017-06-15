@@ -1,0 +1,69 @@
+fileFormatVersion: 2
+guid: 3efe8d7e669e4ac449158f0d71858345
+timeCreated: 1497487885
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg id=\"Layer_1\" data-name=\"Layer 1\" xmlns=\"http://www.w3.org/2000/svg\"
+    width=\"49.5\" height=\"90.25\" viewBox=\"0 0 49.5 90.25\">\r\n  <defs>\r\n    <style>\r\n
+    \     .cls-1 {\r\n        fill: #f74d00;\r\n      }\r\n\r\n      .cls-2 {\r\n
+    \       fill: #e62d00;\r\n      }\r\n\r\n      .cls-3 {\r\n        fill: #c71100;\r\n
+    \     }\r\n\r\n      .cls-4 {\r\n        fill: #b90400;\r\n        opacity: 0.7;\r\n
+    \     }\r\n    </style>\r\n  </defs>\r\n  <title>arrow fancy</title>\r\n  <g>\r\n
+    \   <polygon class=\"cls-1\" points=\"5.51 50.75 0 51.38 0 40 4.47 41.95 5.51
+    50.75\"/>\r\n    <path class=\"cls-2\" d=\"M25.25,46.11c0,2.66,2,3.89,4.15,3.89H53.82a2.83,2.83,0,1,1,5.67,0H74.75c0-2.07-7.2-1.34-11.43-5.11-3.55-1.84-3.11-15.38-6.5-15.38-4.32,0-3.08,14.09-7,14.13-4.61.13-2.64-7.92-11.67-23.21C31.3,10.18,26.43,4.88,25.25,4.88Z\"
+    transform=\"translate(-25.25 -4.88)\"/>\r\n    <rect class=\"cls-1\" x=\"36.42\"
+    y=\"37.66\" width=\"0.71\" height=\"10.99\" rx=\"0.36\" ry=\"0.36\" transform=\"translate(-31.63
+    75.06) rotate(-90)\"/>\r\n    <rect class=\"cls-1\" x=\"35.74\" y=\"35.82\" width=\"0.75\"
+    height=\"10.96\" rx=\"0.37\" ry=\"0.37\" transform=\"translate(-30.44 72.53) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"35.49\" y=\"34.22\" width=\"0.68\" height=\"10.4\"
+    rx=\"0.34\" ry=\"0.34\" transform=\"translate(-28.84 70.38) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"35.21\" y=\"32.53\" width=\"0.71\" height=\"9.86\"
+    rx=\"0.35\" ry=\"0.35\" transform=\"translate(-27.15 68.15) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"34.82\" y=\"31.12\" width=\"0.78\" height=\"9.16\"
+    rx=\"0.39\" ry=\"0.39\" transform=\"translate(-25.74 66.04) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"34.58\" y=\"29.54\" width=\"0.73\" height=\"8.62\"
+    rx=\"0.36\" ry=\"0.36\" transform=\"translate(-24.16 63.92) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"34.16\" y=\"28.09\" width=\"0.68\" height=\"7.75\"
+    rx=\"0.34\" ry=\"0.34\" transform=\"translate(-22.7 61.59) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"33.8\" y=\"26.6\" width=\"0.66\" height=\"7\" rx=\"0.33\"
+    ry=\"0.33\" transform=\"translate(-21.22 59.35) rotate(-90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"33.41\" y=\"25.12\" width=\"0.63\" height=\"6.19\" rx=\"0.32\" ry=\"0.32\"
+    transform=\"translate(-19.74 57.07) rotate(-90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"33.01\" y=\"23.7\" width=\"0.68\" height=\"5.44\" rx=\"0.34\" ry=\"0.34\"
+    transform=\"translate(-18.32 54.89) rotate(-90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"32.51\" y=\"22.32\" width=\"0.61\" height=\"4.37\" rx=\"0.3\" ry=\"0.3\" transform=\"translate(-16.94
+    52.45) rotate(-90)\"/>\r\n    <rect class=\"cls-1\" x=\"31.21\" y=\"19.93\" width=\"0.68\"
+    height=\"1.84\" rx=\"0.34\" ry=\"0.34\" transform=\"translate(-14.55 47.52) rotate(-90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"31.9\" y=\"21.04\" width=\"0.67\" height=\"3.2\"
+    rx=\"0.33\" ry=\"0.33\" transform=\"translate(-15.66 50) rotate(-90)\"/>\r\n    <path
+    class=\"cls-3\" d=\"M25.25,53.89c0-2.66,2-3.89,4.15-3.89H53.82a2.85,2.85,0,0,0,2.8,2.84A2.8,2.8,0,0,0,59.49,50H74.75c0,2-7.2,1.34-11.43,5.11-3.55,1.84-3.11,15.38-6.5,15.38-4.32,0-3.08-14.09-7-14.13-4.61-.13-2.64,7.92-11.67,23.21C31.3,89.82,26.43,95.13,25.25,95.13Z\"
+    transform=\"translate(-25.25 -4.88)\"/>\r\n    <rect class=\"cls-1\" x=\"36.42\"
+    y=\"51.34\" width=\"0.71\" height=\"10.99\" rx=\"0.36\" ry=\"0.36\" transform=\"translate(68.37
+    15.19) rotate(90)\"/>\r\n    <rect class=\"cls-1\" x=\"35.74\" y=\"53.22\" width=\"0.75\"
+    height=\"10.96\" rx=\"0.37\" ry=\"0.37\" transform=\"translate(69.56 17.72) rotate(90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"35.49\" y=\"55.38\" width=\"0.68\" height=\"10.4\"
+    rx=\"0.34\" ry=\"0.34\" transform=\"translate(71.16 19.87) rotate(90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"35.21\" y=\"57.6\" width=\"0.71\" height=\"9.86\"
+    rx=\"0.35\" ry=\"0.35\" transform=\"translate(72.85 22.1) rotate(90)\"/>\r\n    <rect
+    class=\"cls-1\" x=\"34.82\" y=\"59.72\" width=\"0.78\" height=\"9.16\" rx=\"0.39\"
+    ry=\"0.39\" transform=\"translate(74.26 24.21) rotate(90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"34.58\" y=\"61.83\" width=\"0.73\" height=\"8.62\" rx=\"0.36\" ry=\"0.36\"
+    transform=\"translate(75.84 26.33) rotate(90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"34.16\" y=\"64.17\" width=\"0.68\" height=\"7.75\" rx=\"0.34\" ry=\"0.34\"
+    transform=\"translate(77.3 28.66) rotate(90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"33.8\" y=\"66.4\" width=\"0.66\" height=\"7\" rx=\"0.33\" ry=\"0.33\" transform=\"translate(78.78
+    30.9) rotate(90)\"/>\r\n    <rect class=\"cls-1\" x=\"33.41\" y=\"68.69\" width=\"0.63\"
+    height=\"6.19\" rx=\"0.32\" ry=\"0.32\" transform=\"translate(80.26 33.18) rotate(90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"33.01\" y=\"70.86\" width=\"0.68\" height=\"5.44\"
+    rx=\"0.34\" ry=\"0.34\" transform=\"translate(81.68 35.36) rotate(90)\"/>\r\n
+    \   <rect class=\"cls-1\" x=\"32.51\" y=\"73.31\" width=\"0.61\" height=\"4.37\"
+    rx=\"0.3\" ry=\"0.3\" transform=\"translate(83.06 37.8) rotate(90)\"/>\r\n    <rect
+    class=\"cls-1\" x=\"31.21\" y=\"78.23\" width=\"0.68\" height=\"1.84\" rx=\"0.34\"
+    ry=\"0.34\" transform=\"translate(85.45 42.73) rotate(90)\"/>\r\n    <rect class=\"cls-1\"
+    x=\"31.9\" y=\"75.76\" width=\"0.67\" height=\"3.2\" rx=\"0.33\" ry=\"0.33\" transform=\"translate(84.34
+    40.25) rotate(90)\"/>\r\n    <path class=\"cls-4\" d=\"M74.56,50c-10,0-12.69,3.11-15.07,5.67-1.41,1.46-5.23,10.2-5.71,10.11-.62-1.14-1.13-9.95-4.22-9.42-3.79-.23-24.3,19.09-24.3,19.09V53.54C25.25,50.9,28,50,29.13,50,30.54,50,30.54,50,74.56,50Z\"
+    transform=\"translate(-25.25 -4.88)\"/>\r\n    <circle class=\"cls-1\" cx=\"31.41\"
+    cy=\"45.13\" r=\"2.04\"/>\r\n  </g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 
