@@ -71,7 +71,7 @@ namespace ctac
         int createdCardOffset = 0;
         void DisplayCards(List<CardModel> cards, bool isForward)
         {
-            float cardDist = 300;
+            float cardDist = 1200;
             float animTime = 1f;
             Vector3 animDestPosition  = new Vector3(isForward ? -cardDist : cardDist, 0, 0);
             Vector3 animStartPosition = new Vector3(isForward ? cardDist : -cardDist, 0, 0);
@@ -80,7 +80,9 @@ namespace ctac
             for (int c = 0; c < cardHolder.transform.childCount; c++)
             {
                 var childCard = cardHolder.transform.GetChild(c);
-                iTweenExtensions.MoveToLocal(childCard.gameObject, childCard.transform.position + animDestPosition, animTime, 0f);
+                //iTweenExtensions.MoveToLocal(childCard.gameObject, childCard.transform.position + animDestPosition, animTime, 0f);
+                var rectTrans = childCard.GetComponent<RectTransform>();
+                rectTrans.anchoredPosition3D = rectTrans.anchoredPosition3D + animDestPosition;
             }
 
 
@@ -98,8 +100,10 @@ namespace ctac
                 card.rectTransform.anchorMax = cardAnchor;
                 card.rectTransform.anchorMin = cardAnchor;
                 card.rectTransform.pivot = cardAnchor;
-                card.rectTransform.anchoredPosition3D = animStartPosition;
-                iTweenExtensions.MoveToLocal(card.gameObject, new Vector3(xPos, yPos), animTime, 0f);
+                var destPosition = new Vector3(xPos, yPos);
+                card.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
+                card.rectTransform.anchoredPosition3D = destPosition;
+                //iTweenExtensions.MoveToLocal(card.gameObject, destPosition, animTime, 0f);
             }
 
             //swip swap the next cards to use by either incrimenting or resetting the created card offset
@@ -115,8 +119,10 @@ namespace ctac
 
         void onNextButton()
         {
+            //don't need to do anything at the end
+            if (offset + pageSize >= cardDirectory.directory.Count) return;
+
             offset += pageSize;
-            offset = Math.Min(cardDirectory.directory.Count - 1, offset);
             UpdateCards();
         }
 
