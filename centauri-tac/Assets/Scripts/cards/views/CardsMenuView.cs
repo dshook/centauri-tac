@@ -108,19 +108,37 @@ namespace ctac
             for (int c = 0; c < cards.Count; c++)
             {
                 var card = cards[c];
-                var cardGameObject = createdCards[c + createdCardOffset].gameObject;
-                cardService.SetupGameObject(card, cardGameObject);
+                var surrogateCard = createdCards[c + createdCardOffset];
+                var cardGameObject = surrogateCard.gameObject;
 
-                card.gameObject.transform.SetParent(cardHolder.transform);
+                //copy over props from hovered to hover
+                card.CopyProperties(surrogateCard);
+                //but reset some key things
+                surrogateCard.gameObject = cardGameObject;
+
+                //Set up all this reference stuff from the directory card model to the surrogate card that's displaying it
+                var cardView = cardGameObject.GetComponent<CardView>();
+                if (cardView == null)
+                {
+                    cardView = cardGameObject.AddComponent<CardView>();
+                }
+                cardView.card = surrogateCard;
+                surrogateCard.rectTransform = cardGameObject.GetComponent<RectTransform>();
+                surrogateCard.cardView = cardView;
+                cardService.UpdateCardArt(surrogateCard);
+                surrogateCard.cardView.UpdateText(0);
+
+                //now position to the grid
+                surrogateCard.gameObject.transform.SetParent(cardHolder.transform);
                 var xPos = 195 * (c % rowSize);
                 var yPos = c >= rowSize ? -419 : -135;
 
-                card.rectTransform.anchorMax = cardAnchor;
-                card.rectTransform.anchorMin = cardAnchor;
-                card.rectTransform.pivot = cardAnchor;
+                surrogateCard.rectTransform.anchorMax = cardAnchor;
+                surrogateCard.rectTransform.anchorMin = cardAnchor;
+                surrogateCard.rectTransform.pivot = cardAnchor;
                 var destPosition = new Vector3(xPos, yPos);
-                card.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
-                card.rectTransform.anchoredPosition3D = destPosition;
+                surrogateCard.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
+                surrogateCard.rectTransform.anchoredPosition3D = destPosition;
                 //iTweenExtensions.MoveToLocal(card.gameObject, destPosition, animTime, 0f);
             }
 

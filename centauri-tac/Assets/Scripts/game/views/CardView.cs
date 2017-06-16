@@ -322,7 +322,7 @@ namespace ctac {
             {"Spell Damage",       "Spells do one more damage for each spell damage point" },
 
             {"Silence",            "Negates a minions card text, abilities, and status effects" },
-            {"Holtz Shield",    "Absorbes all damage a minion takes on the first hit" },
+            {"Holtz Shield",       "Absorbes all damage a minion takes on the first hit" },
             {"Paralyze",           "Minion cannot move or attack" },
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
