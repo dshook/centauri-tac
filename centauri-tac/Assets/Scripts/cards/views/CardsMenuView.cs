@@ -15,6 +15,7 @@ namespace ctac
         public Button leaveButton;
         public Button prevButton;
         public Button nextButton;
+        public Slider energySlider;
 
         ICardService cardService;
         CardDirectory cardDirectory;
@@ -30,6 +31,7 @@ namespace ctac
 
         int offset = 0;
         int prevOffset = -1;
+        int? energyFilter = null;
 
         internal void init(ICardService cs, CardDirectory cd)
         {
@@ -39,6 +41,7 @@ namespace ctac
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
             prevButton.onClick.AddListener(onPrevButton);
             nextButton.onClick.AddListener(onNextButton);
+            energySlider.onValueChanged.AddListener(onEnergySlider);
 
             cardHolder = GameObject.Find("CardHolder").gameObject;
 
@@ -61,10 +64,15 @@ namespace ctac
 
         internal void UpdateCards()
         {
-            if (offset == prevOffset) return; //skip work we don't need to do
             bool isForward = offset > prevOffset;
             prevOffset = offset;
-            DisplayCards(cardDirectory.directory.Skip(offset).Take(pageSize).ToList(), isForward);
+
+            var cardList = cardDirectory.directory
+                .Where(c => !energyFilter.HasValue || c.cost == energyFilter.Value)
+                .Skip(offset)
+                .Take(pageSize)
+                .ToList(); 
+            DisplayCards(cardList, isForward);
         }
 
         //Should just be the 8 cards to display
@@ -72,7 +80,7 @@ namespace ctac
         void DisplayCards(List<CardModel> cards, bool isForward)
         {
             float cardDist = 1200;
-            float animTime = 1f;
+            //float animTime = 1f;
             Vector3 animDestPosition  = new Vector3(isForward ? -cardDist : cardDist, 0, 0);
             Vector3 animStartPosition = new Vector3(isForward ? cardDist : -cardDist, 0, 0);
 
@@ -114,6 +122,7 @@ namespace ctac
         {
             offset -= pageSize;
             offset = Math.Max(0, offset);
+            if (offset == prevOffset) return; //skip work we don't need to do
             UpdateCards();
         }
 
@@ -123,6 +132,22 @@ namespace ctac
             if (offset + pageSize >= cardDirectory.directory.Count) return;
 
             offset += pageSize;
+            if (offset == prevOffset) return; //skip work we don't need to do
+            UpdateCards();
+        }
+
+        void onEnergySlider(float value)
+        {
+            if (value == -1)
+            {
+                energyFilter = null;
+            }
+            else
+            {
+                energyFilter = (int)value;
+            }
+            //reset what page we're on when filtering
+            offset = 0;
             UpdateCards();
         }
 
