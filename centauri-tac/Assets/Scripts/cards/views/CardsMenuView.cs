@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
+using TMPro;
 using UnityEngine;
 using System.Linq;
 using System;
@@ -16,6 +17,7 @@ namespace ctac
         public Button prevButton;
         public Button nextButton;
         public Slider energySlider;
+        public TMP_InputField searchBox;
 
         ICardService cardService;
         CardDirectory cardDirectory;
@@ -32,6 +34,7 @@ namespace ctac
         int offset = 0;
         int prevOffset = -1;
         int? energyFilter = null;
+        string stringFilter = null;
 
         internal void init(ICardService cs, CardDirectory cd)
         {
@@ -42,6 +45,7 @@ namespace ctac
             prevButton.onClick.AddListener(onPrevButton);
             nextButton.onClick.AddListener(onNextButton);
             energySlider.onValueChanged.AddListener(onEnergySlider);
+            searchBox.onValueChanged.AddListener(onSearchChange);
 
             cardHolder = GameObject.Find("CardHolder").gameObject;
 
@@ -69,6 +73,11 @@ namespace ctac
 
             var cardList = cardDirectory.directory
                 .Where(c => !energyFilter.HasValue || c.cost == energyFilter.Value)
+                .Where(c => String.IsNullOrEmpty(stringFilter) 
+                    || c.name.ToLower().Contains(stringFilter) 
+                    || c.description.ToLower().Contains(stringFilter) 
+                    || c.tags.Any(t => t.ToLower().Contains(stringFilter))
+                )
                 .Skip(offset)
                 .Take(pageSize)
                 .ToList(); 
@@ -147,6 +156,13 @@ namespace ctac
                 energyFilter = (int)value;
             }
             //reset what page we're on when filtering
+            offset = 0;
+            UpdateCards();
+        }
+
+        void onSearchChange(string value)
+        {
+            stringFilter = value.ToLower();
             offset = 0;
             UpdateCards();
         }
