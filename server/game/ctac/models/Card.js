@@ -19,6 +19,7 @@ export default class Card
     this.rarity = 0;
     this.race = 0;
 
+    this.uncollectible = false;
     this.inHand = false,
     this.inDeck = false;
   }

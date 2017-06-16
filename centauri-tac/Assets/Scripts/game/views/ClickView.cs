@@ -28,7 +28,6 @@ namespace ctac
         }
 
         float clickTimeAccum = 0f;
-        bool isClicking = false;
 
         void Update()
         {
@@ -38,13 +37,11 @@ namespace ctac
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1") )
             {
-                isClicking = true;
                 clickTimeAccum = 0f;
                 TestSelection(false, null);
             }
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
-                isClicking = false;
                 TestSelection(true, clickTimeAccum);
             }
 

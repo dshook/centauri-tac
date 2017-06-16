@@ -18,6 +18,7 @@ namespace ctac
         public int movement { get; set; }
         public int? range { get; set; }
 
+        public bool uncollectible { get; set; }
         public List<string> tags { get; set; }
         public Statuses statuses { get; set; }
         public Rarities rarity { get; set; }

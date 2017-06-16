@@ -72,6 +72,7 @@ namespace ctac
             prevOffset = offset;
 
             var cardList = cardDirectory.directory
+                .Where(c => !c.uncollectible && !c.isHero)
                 .Where(c => !energyFilter.HasValue || c.cost == energyFilter.Value)
                 .Where(c => String.IsNullOrEmpty(stringFilter) 
                     || c.name.ToLower().Contains(stringFilter) 
@@ -111,8 +112,8 @@ namespace ctac
                 cardService.SetupGameObject(card, cardGameObject);
 
                 card.gameObject.transform.SetParent(cardHolder.transform);
-                var xPos = 90 + 195 * (c % rowSize);
-                var yPos = c >= rowSize ? -415 : -135;
+                var xPos = 195 * (c % rowSize);
+                var yPos = c >= rowSize ? -419 : -135;
 
                 card.rectTransform.anchorMax = cardAnchor;
                 card.rectTransform.anchorMin = cardAnchor;
