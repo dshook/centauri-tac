@@ -23,12 +23,6 @@ namespace ctac
         [Inject] public ISoundService sounds { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
-        //for card targeting
-        private TargetModel startTargetModel;
-
-        //and for card choosing
-        private ChooseModel chooseModel;
-
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onClick);

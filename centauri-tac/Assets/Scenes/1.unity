@@ -2443,14 +2443,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b765e0b5af3bcf4a9deb5895e477da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _downsampleFactor: 4
+  _downsampleFactor: 1
   _iterations: 2
-  _blurMinSpread: 0.65
-  _blurSpread: 0.25
-  _blurIntensity: 0.3
-  _blurDirections: 0
+  _blurMinSpread: 1
+  _blurSpread: 0
+  _blurIntensity: 1
+  _blurDirections: 2
   _blitter: {fileID: 0}
-  _antiAliasing: 1
+  _antiAliasing: 0
   _presets:
   - _name: Default
     _downsampleFactor: 4
@@ -2847,7 +2847,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.794
+      value: 0.64
       objectReference: {fileID: 0}
     - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
       propertyPath: m_LocalPosition.z
