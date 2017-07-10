@@ -60,7 +60,7 @@ namespace ctac {
 
             if (animate)
             {
-                iTweenExtensions.PunchScale(gameObject, punchSize, 0.3f, 0);
+                iTweenExtensions.PunchScale(gameObject, punchSize, 0.9f, 0);
                 //iTweenExtensions.ScaleTo(gameObject, Vector3.zero, 1.0f, 0.5f);
                 iTweenExtensions.ColorTo(damageSplatGo, Color.clear, 1f, 0.0f);
                 iTweenExtensions.ColorTo(damageSplatBonusGo, Color.clear, 1.5f, 0.0f);
