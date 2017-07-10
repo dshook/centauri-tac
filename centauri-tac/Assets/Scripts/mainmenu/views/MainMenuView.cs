@@ -135,6 +135,12 @@ namespace ctac
                 queueText.text = "Loading Complete";
             }
         }
+
+        internal void setErrorMessage(string text)
+        {
+            queueText.gameObject.SetActive(true);
+            queueText.text = text;
+        }
     }
 }
 

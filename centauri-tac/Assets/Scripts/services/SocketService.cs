@@ -17,8 +17,6 @@ namespace ctac
         void Disconnect(Guid clientId, string componentName);
 
         bool IsSocketOpen(SocketKey key);
-
-        SocketMessageSignal messageSignal { get; set; }
     }
 
     public class SocketService : ISocketService
@@ -27,26 +25,11 @@ namespace ctac
         public GameObject contextView { get; set; }
         private MonoBehaviour root;
 
-        [Inject]
-        public IDebugService debug { get; set; }
-
-        [Inject]
-        public ComponentModel componentModel { get; set; } 
-
-        [Inject]
-        public SignalDispatcherService signalDispatcher { get; set; }
-
-        [Inject]
-        public SocketConnectSignal connectSignal { get; set; }
-        [Inject]
-        public SocketMessageSignal messageSignal { get; set; }
-        [Inject]
-        public SocketErrorSignal errorSignal { get; set; }
-        [Inject]
-        public SocketDisconnectSignal disconnectSignal { get; set; }
-
-        [Inject]
-        public QuitSignal quit { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public ComponentModel componentModel { get; set; } 
+        [Inject] public SignalDispatcherService signalDispatcher { get; set; }
+        [Inject] public SocketConnectSignal connectSignal { get; set; }
+        [Inject] public QuitSignal quit { get; set; }
 
         private Dictionary<SocketKey, WebSocket> sockets = new Dictionary<SocketKey, WebSocket>();
 
@@ -120,7 +103,7 @@ namespace ctac
             var ws = sockets.Get(key);
             if (ws.ReadyState != WebSocketState.Open)
             {
-                debug.LogError("Trying to make a request to disconnected web socket", key);
+                debug.LogWarning("Trying to make a request to disconnected web socket", key);
                 yield return null;
             }
 
@@ -151,17 +134,35 @@ namespace ctac
 
         private void onSocketError(SocketKey key, object sender, ErrorEventArgs e) {
             debug.Log("Socket Error: " + e.Message + " " + e.Exception.Message + "\n" + e.Exception.StackTrace, key);
-            errorSignal.Dispatch(key, e.Message);
+            signalDispatcher.ScheduleSignal(
+                new SignalData() {
+                    messageType = "socket:error",
+                    messageData = JsonConvert.SerializeObject(e.Message),
+                    key = key
+                }
+            );
         }
 
         private void onSocketOpen(SocketKey key, object sender, EventArgs e) {
             debug.Log("Socket Open For " + key.clientId.ToShort() + " " + key.componentName, key);
-            connectSignal.Dispatch(key);
+            signalDispatcher.ScheduleSignal(
+                new SignalData() {
+                    messageType = "socket:open",
+                    messageData = JsonConvert.SerializeObject(key),
+                    key = key
+                }
+            );
         }
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
             debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason, key);
-            disconnectSignal.Dispatch(key);
+            signalDispatcher.ScheduleSignal(
+                new SignalData() {
+                    messageType = "socket:close",
+                    messageData = JsonConvert.SerializeObject(key),
+                    key = key
+                }
+            );
         }
 
         public bool IsSocketOpen(SocketKey key)

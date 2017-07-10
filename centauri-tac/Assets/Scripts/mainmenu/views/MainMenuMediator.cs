@@ -26,6 +26,8 @@ namespace ctac
 
         [Inject] public GameLoggedInSignal currentGame { get; set; }
 
+        [Inject] public SocketDisconnectSignal socketDisconnect { get; set; }
+
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
         SocketKey mmKey = null;
@@ -47,6 +49,8 @@ namespace ctac
 
             currentGame.AddListener(onCurrentGame);
 
+            socketDisconnect.AddListener(onSocketDisconnect);
+
             view.init();
         }
 
@@ -66,6 +70,8 @@ namespace ctac
             mmLoggedIn.RemoveListener(onMatchmakerLoggedIn);
 
             currentGame.RemoveListener(onCurrentGame);
+
+            socketDisconnect.RemoveListener(onSocketDisconnect);
         }
 
         public void Update()
@@ -145,6 +151,7 @@ namespace ctac
             if (loginStatus.status == false)
             {
                 debug.LogError("Could not log into matchmaker service: " + loginStatus.message);
+                view.setErrorMessage("Matchmaker unavailable now, please try again later");
                 return;
             }
             mmQueue.Dispatch(mmKey);
@@ -191,6 +198,18 @@ namespace ctac
 
             view.SetLoadingProgress(1.0f);
 
+        }
+
+        public void onSocketDisconnect(SocketKey key)
+        {
+            if (key.componentName == "auth")
+            {
+                view.setErrorMessage("Cannot connect to server,\nplease check your connection and retry");
+            }
+            else
+            {
+                view.setErrorMessage("Lost connection to server, please try again later");
+            }
         }
     }
 }

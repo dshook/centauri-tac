@@ -12,7 +12,7 @@ namespace ctac.signals
     public class SocketMessageSignal : Signal<SocketKey> { }
 
     [Singleton]
-    public class SocketErrorSignal : Signal<SocketKey, string> { }
+    public class SocketErrorSignal : Signal<string, SocketKey> { }
 
     [Singleton]
     public class SocketDisconnectSignal : Signal<SocketKey> { }

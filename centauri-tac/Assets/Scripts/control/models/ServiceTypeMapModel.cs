@@ -18,6 +18,10 @@ namespace ctac
         {
             map = new Dictionary<string, Type>()
             {
+                {"socket:error", typeof(SocketErrorSignal) },
+                {"socket:open", typeof(SocketConnectSignal) },
+                {"socket:close", typeof(SocketDisconnectSignal) },
+
                 {"login", typeof(LoggedInSignal) },
                 {"me", typeof(PlayerFetchedSignal) },
                 {"token", typeof(TokenSignal) },
