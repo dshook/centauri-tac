@@ -142,6 +142,7 @@ namespace ctac
 
         private void setupProps(GameObject propsRoot, List<PropImport> props)
         {
+            if (props == null || propsRoot == null) return; 
             foreach (var prop in props)
             {
                 var prefab = loader.Load<GameObject>("Models/Props/" + prop.propName);
