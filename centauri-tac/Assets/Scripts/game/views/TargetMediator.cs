@@ -139,15 +139,16 @@ namespace ctac
         }
 
         //Must need targets if the choose was updated
-        private void onUpdateChoose(ChooseModel chooseModel)
+        private void onUpdateChoose(ChooseModel cModel)
         {
-            var selected = chooseModel.choices.choices
-                .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
+            var selected = cModel.choices.choices
+                .FirstOrDefault(x => x.cardTemplateId == cModel.chosenTemplateId.Value);
 
+            chooseModel = cModel;
             debug.Log("Starting targeting for choose");
             startSelectTarget.Dispatch(new TargetModel() {
-                targetingCard = chooseModel.choosingCard,
-                cardDeployPosition = chooseModel.cardDeployPosition,
+                targetingCard = cModel.choosingCard,
+                cardDeployPosition = cModel.cardDeployPosition,
                 targets = selected.targets,
                 area = null // not supported yet
             });
@@ -168,7 +169,17 @@ namespace ctac
         {
             if(piece == null) return;
 
-            if (cardTarget != null)
+            if (chooseModel != null)
+            {
+                debug.Log("Selected target piece for choose");
+                chooseModel.selectedPiece = piece.piece;
+                cardTarget.selectedPiece = piece.piece;
+                if (chooseModel.chooseFulfilled)
+                {
+                    selectTarget.Dispatch(cardTarget);
+                }
+            }
+            else if (cardTarget != null)
             {
                 debug.Log("Selected target piece");
                 cardTarget.selectedPiece = piece.piece;
