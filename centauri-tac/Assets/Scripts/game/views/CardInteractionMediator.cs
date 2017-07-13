@@ -15,11 +15,14 @@ namespace ctac
         [Inject] public MessageSignal message { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
+
+        [Inject] public NeedsTargetSignal needsTarget { get; set; }
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public StartChooseSignal startChoose { get; set; }
+        [Inject] public UpdateChooseSignal updateChoose { get; set; }
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
         [Inject] public CardChosenSignal cardChosen { get; set; }
 
@@ -39,7 +42,7 @@ namespace ctac
         [Inject] public ISoundService sounds { get; set; }
 
         //for card targeting
-        private TargetModel startTargetModel;
+        private TargetModel targetModel;
 
         //and for card choosing
         private ChooseModel chooseModel;
@@ -49,8 +52,11 @@ namespace ctac
             view.clickSignal.AddListener(onClick);
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
+
+            startSelectTarget.AddListener(onStartTarget);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
+
             activateCard.AddListener(onCardActivated);
             view.init(raycastModel);
         }
@@ -60,94 +66,57 @@ namespace ctac
             view.clickSignal.RemoveListener(onClick);
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
+
+            startSelectTarget.RemoveListener(onStartTarget);
             selectTarget.RemoveListener(onSelectedTarget);
-            activateCard.RemoveListener(onCardActivated);
             cancelSelectTarget.RemoveListener(onTargetCancel);
+
+            activateCard.RemoveListener(onCardActivated);
         }
 
         //for clicking on a card directly
         private void onClick(GameObject clickedObject, Vector3 point)
         {
-            if (clickedObject != null)
-            {
-                var cardView = clickedObject.GetComponent<CardView>();
-                if (cardView == null) { return; }
-                
-                draggedCard = cardView.card;
-
-                //Choose card interactions
-                if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
-                {
-                    chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
-                    cardChosen.Dispatch(chooseModel);
-                    if (chooseModel.chooseFulfilled)
-                    {
-                        activateCard.Dispatch(new ActivateModel()
-                        {
-                            cardActivated = chooseModel.choosingCard,
-                            optionalTarget = null,
-                            position = chooseModel.cardDeployPosition.position,
-                            pivotPosition = null,
-                            chooseCardTemplateId = chooseModel.chosenTemplateId
-                        });
-                        chooseModel = null;
-                    }
-                    else
-                    {
-                        var selected = chooseModel.choices.choices
-                            .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
-                        //if the choice isn't fulfilled yet it must mean it needs targets
-                        startTargetModel = new TargetModel()
-                        {
-                            targetingCard = chooseModel.choosingCard,
-                            cardDeployPosition = chooseModel.cardDeployPosition,
-                            targets = selected.targets,
-                            area = null // not supported yet
-                        };
-                        debug.Log("Starting targeting for choose");
-                        startSelectTarget.Dispatch(startTargetModel);
-                        return;
-                    }
-                    return;
-                }
-
-                if (cardView.card.isSpell)
-                {
-                    var targets = possibleActions.GetActionsForCard(players.Me.id, cardView.card.id);
-                    var area = possibleActions.GetAreasForCard(players.Me.id, cardView.card.id);
-                    if (targets != null || area != null)
-                    {
-                        startTargetModel = new TargetModel()
-                        {
-                            targetingCard = cardView.card,
-                            cardDeployPosition = null,
-                            targets = targets,
-                            area = area
-                        };
-                        debug.Log("Starting targeting");
-                        startSelectTarget.Dispatch(startTargetModel);
-                        return;
-                    }
-                }
-
-                pieceSelected.Dispatch(null); 
-                cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
-            }
-            else
+            if(clickedObject == null)
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
 
-                //only cancel if we're not targeting with a choose
-                if (startTargetModel == null)
+                return;
+            }
+
+            var cardView = clickedObject.GetComponent<CardView>();
+            if (cardView == null) { return; }
+            
+            draggedCard = cardView.card;
+
+            //Choose card interactions
+            if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
+            {
+                chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
+                cardChosen.Dispatch(chooseModel);
+                if (chooseModel.chooseFulfilled)
                 {
-                    if (chooseModel != null)
+                    activateCard.Dispatch(new ActivateModel()
                     {
-                        cancelChoose.Dispatch(chooseModel);
-                    }
+                        cardActivated = chooseModel.choosingCard,
+                        optionalTarget = null,
+                        position = chooseModel.cardDeployPosition.position,
+                        pivotPosition = null,
+                        chooseCardTemplateId = chooseModel.chosenTemplateId
+                    });
                     chooseModel = null;
                 }
+                else
+                {
+                    updateChoose.Dispatch(chooseModel);
+                    return;
+                }
+                return;
             }
+
+            pieceSelected.Dispatch(null); 
+            cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
         }
 
         //when you try to activate a card either by the click and drag click up or a click on a tile/piece
@@ -170,87 +139,77 @@ namespace ctac
                 return false;
             }
 
-            if (activated.CompareTag("Tile"))
+            if (!activated.CompareTag("Tile"))
             {
-                //check for appropriate resources
-                if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
-                {
-                    message.Dispatch(new MessageModel() { message = "Not enough energy to play!" });
-                    return false;
-                }
+                return false;
+            }
 
-                var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
-
-                if (draggedCard.isMinion)
-                {
-                    //basic sanity checks first
-                    if (gameTile.unpassable)
-                    {
-                        message.Dispatch(new MessageModel() { message = "That location doesn't look safe!" });
-                        return false;
-                    }
-                    if (pieces.PieceAt(gameTile.position) != null)
-                    {
-                        message.Dispatch(new MessageModel() { message = "That location is already occupied!" });
-                        return false;
-                    }
-                }
-
-                if (draggedCard.isChoose(possibleActions))
-                {
-                    chooseModel = new ChooseModel()
-                    {
-                        choosingCard = draggedCard,
-                        cardDeployPosition = gameTile,
-                        choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
-                    };
-                    debug.Log("Starting choose");
-                    startChoose.Dispatch(chooseModel);
-                }
-                else if (draggedCard.needsTargeting(possibleActions))
-                {
-                    var targets = possibleActions.GetActionsForCard(players.Me.id, draggedCard.id);
-                    var area = possibleActions.GetAreasForCard(players.Me.id, draggedCard.id);
-
-                    var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
-                    if (area != null && area.selfCentered)
-                    {
-                        selectedPosition = gameTile.position;
-                    }
-                    var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
-
-                    //record state we need to maintain for subsequent clicks then dispatch the start target
-                    startTargetModel = new TargetModel()
-                    {
-                        targetingCard = draggedCard,
-                        cardDeployPosition = gameTile,
-                        targets = targets,
-                        area = area,
-                        selectedPosition = selectedPosition,
-                        selectedPivotPosition = pivotPosition
-                    };
-
-                    //delay sending off the start select target signal till the card deselected event has cleared
-                    debug.Log("Starting targeting");
-                    startSelectTarget.Dispatch(startTargetModel);
-                }
-                else
-                {
-                    activateCard.Dispatch(new ActivateModel()
-                    {
-                        cardActivated = draggedCard,
-                        position = gameTile.position,
-                        optionalTarget = null
-                    });
-                }
+            //if targeting is in progress the target mediator will handle the activate
+            if (targetModel != null)
+            {
                 return true;
             }
-            return false;
+
+            //check for appropriate resources
+            if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
+            {
+                message.Dispatch(new MessageModel() { message = "Not enough energy to play!" });
+                return false;
+            }
+
+            var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
+
+            if (draggedCard.isMinion)
+            {
+                //basic sanity checks first
+                if (gameTile.unpassable)
+                {
+                    message.Dispatch(new MessageModel() { message = "That location doesn't look safe!" });
+                    return false;
+                }
+                if (pieces.PieceAt(gameTile.position) != null)
+                {
+                    message.Dispatch(new MessageModel() { message = "That location is already occupied!" });
+                    return false;
+                }
+            }
+
+            if (draggedCard.isChoose(possibleActions))
+            {
+                chooseModel = new ChooseModel()
+                {
+                    choosingCard = draggedCard,
+                    cardDeployPosition = gameTile,
+                    choices = possibleActions.GetChoiceCards(draggedCard.playerId, draggedCard.id)
+                };
+                debug.Log("Starting choose");
+                startChoose.Dispatch(chooseModel);
+                return true;
+            }
+
+            if (draggedCard.needsTargeting(possibleActions) && targetModel == null)
+            {
+                needsTarget.Dispatch(draggedCard, gameTile);
+                return true;
+            }
+
+            activateCard.Dispatch(new ActivateModel()
+            {
+                cardActivated = draggedCard,
+                position = gameTile.position,
+                optionalTarget = null
+            });
+            return true;
+        }
+
+        private void onStartTarget(TargetModel target)
+        {
+            targetModel = target;
         }
 
         private void onTargetCancel(CardModel card)
         {
-            startTargetModel = null;
+            targetModel = null;
             if (chooseModel != null)
             {
                 debug.Log("Cancelling choose from target cancel");
@@ -261,19 +220,9 @@ namespace ctac
             cardSelected.Dispatch(null);
         }
 
-        private void onSelectedTarget(TargetModel targetModel)
+        private void onSelectedTarget(TargetModel t)
         {
-            activateCard.Dispatch(new ActivateModel() {
-                cardActivated = targetModel.targetingCard,
-                position = targetModel.cardDeployPosition != null ? 
-                    targetModel.cardDeployPosition.position : 
-                    targetModel.selectedPosition,
-                pivotPosition = targetModel.selectedPivotPosition,
-                optionalTarget = targetModel.selectedPiece,
-                chooseCardTemplateId = chooseModel == null ? null : chooseModel.chosenTemplateId
-            });
-            startTargetModel = null;
-            chooseModel = null;
+            targetModel = null;
         }
 
         private void onCardActivated(ActivateModel a)

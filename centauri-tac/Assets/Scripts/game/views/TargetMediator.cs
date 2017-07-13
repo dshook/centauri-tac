@@ -1,21 +1,32 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
+using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
     public class TargetMediator : Mediator
     {
+        [Inject] public NeedsTargetSignal needsTarget { get; set; }
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public SelectTargetSignal selectTarget { get; set; }
         [Inject] public UpdateTargetSignal updateTargetSignal { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
+        [Inject] public SelectTargetSignal selectTarget { get; set; }
 
         [Inject] public StartSelectAbilityTargetSignal startSelectAbilityTarget { get; set; }
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
         [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
 
+        [Inject] public ActivateCardSignal activateCard { get; set; }
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
         [Inject] public PieceClickedSignal pieceClicked { get; set; }
         [Inject] public TileClickedSignal tileClicked { get; set; }
+
+        [Inject] public StartChooseSignal startChoose { get; set; }
+        [Inject] public UpdateChooseSignal updateChoose { get; set; }
+        [Inject] public CancelChooseSignal cancelChoose { get; set; }
+        [Inject] public CardChosenSignal cardChosen { get; set; }
+
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
 
@@ -29,30 +40,117 @@ namespace ctac
 
         TargetModel cardTarget { get; set; }
 
+        ChooseModel chooseModel;
+
         public override void OnRegister()
         {
-            cancelSelectTarget.AddListener(onCancelSelectTarget);
-            updateTargetSignal.AddListener(onUpdateTarget);
-            selectTarget.AddListener(onSelectTarget);
+            needsTarget.AddListener(onNeedsTarget);
             startSelectTarget.AddListener(onStartTarget);
+            cancelSelectTarget.AddListener(onCancelSelectTarget);
+            selectTarget.AddListener(onSelectTarget);
 
             startSelectAbilityTarget.AddListener(onStartAbilityTarget);
 
+            startChoose.AddListener(onStartChoose);
+            updateChoose.AddListener(onUpdateChoose);
+            cancelChoose.AddListener(onCancelChoose);
+            cardChosen.AddListener(onCardChosen);
+
+            cardSelected.AddListener(onCardSelected);
             pieceClicked.AddListener(onPieceClicked);
             tileClicked.AddListener(onTileClicked);
         }
 
         public override void onRemove()
         {
-            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
-            updateTargetSignal.AddListener(onUpdateTarget);
-            selectTarget.RemoveListener(onSelectTarget);
+            needsTarget.RemoveListener(onNeedsTarget);
             startSelectTarget.RemoveListener(onStartTarget);
+            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
+            selectTarget.RemoveListener(onSelectTarget);
 
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
 
+            startChoose.RemoveListener(onStartChoose);
+            updateChoose.RemoveListener(onUpdateChoose);
+            cancelChoose.RemoveListener(onCancelChoose);
+            cardChosen.RemoveListener(onCardChosen);
+
+            cardSelected.RemoveListener(onCardSelected);
             pieceClicked.RemoveListener(onPieceClicked);
             tileClicked.RemoveListener(onTileClicked);
+        }
+
+        private void onCardSelected(CardSelectedModel cardSelected)
+        {
+            if (cardSelected == null)
+            {
+                //only cancel if we're not targeting with a choose
+                if (cardTarget == null)
+                {
+                    if (chooseModel != null)
+                    {
+                        cancelChoose.Dispatch(chooseModel);
+                    }
+                    chooseModel = null;
+                }
+                return;
+            }
+
+            var card = cardSelected.card;
+
+            if (card.isSpell)
+            {
+                if (card.needsTargeting(possibleActions))
+                {
+                    debug.Log("Starting Spell Targeting From Hand");
+                    startSelectTarget.Dispatch(new TargetModel() {
+                        targetingCard = card,
+                        cardDeployPosition = null,
+                        targets = possibleActions.GetActionsForCard(card.playerId, card.id),
+                        area = possibleActions.GetAreasForCard(card.playerId, card.id) 
+                    });
+                    return;
+                }
+            }
+        }
+
+        private void onNeedsTarget(CardModel card, Tile activatedTile)
+        {
+            var targets = possibleActions.GetActionsForCard(players.Me.id, card.id);
+            var area = possibleActions.GetAreasForCard(players.Me.id, card.id);
+
+            //Setup for area targeting positions
+            var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
+            if (area != null && area.selfCentered)
+            {
+                selectedPosition = activatedTile.position;
+            }
+            var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
+
+            debug.Log("Starting targeting from activation");
+            startSelectTarget.Dispatch(new TargetModel() {
+                targetingCard = card,
+                cardDeployPosition = activatedTile,
+                targets = targets,
+                area = area,
+                selectedPosition = selectedPosition,
+                selectedPivotPosition = pivotPosition
+            });
+        }
+
+        //Must need targets if the choose was updated
+        private void onUpdateChoose(ChooseModel chooseModel)
+        {
+            var selected = chooseModel.choices.choices
+                .FirstOrDefault(x => x.cardTemplateId == chooseModel.chosenTemplateId.Value);
+
+            debug.Log("Starting targeting for choose");
+            startSelectTarget.Dispatch(new TargetModel() {
+                targetingCard = chooseModel.choosingCard,
+                cardDeployPosition = chooseModel.cardDeployPosition,
+                targets = selected.targets,
+                area = null // not supported yet
+            });
         }
 
 
@@ -61,18 +159,9 @@ namespace ctac
             cardTarget = model;
         }
 
-        private void onUpdateTarget(TargetModel model)
-        {
-        }
-
         private void onCancelSelectTarget(CardModel card)
         {
             cardTarget = null;
-        }
-
-        private void onSelectTarget(TargetModel targetModel)
-        {
-
         }
 
         private void onPieceClicked(PieceView piece)
@@ -81,7 +170,7 @@ namespace ctac
 
             if (cardTarget != null)
             {
-                debug.Log("Selected target");
+                debug.Log("Selected target piece");
                 cardTarget.selectedPiece = piece.piece;
 
                 var continueTarget = updateTarget(piece, map.tiles.Get(piece.piece.tilePosition));
@@ -89,13 +178,12 @@ namespace ctac
                 if (continueTarget && cardTarget.targetFulfilled)
                 {
                     selectTarget.Dispatch(cardTarget);
-                    cardTarget = null;
                     pieceSelected.Dispatch(null);
                 }
             }
             else if (abilityTarget != null)
             {
-                debug.Log("Selected ability target");
+                debug.Log("Selected ability target piece");
                 selectAbilityTarget.Dispatch(abilityTarget, piece.piece);
                 abilityTarget = null;
                 pieceSelected.Dispatch(null);
@@ -108,9 +196,8 @@ namespace ctac
             {
                 if (cardTarget != null)
                 {
-                    debug.Log("Cancelling targeting");
+                    debug.Log("Cancelling targeting for clicking off tile");
                     cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                    cardTarget = null;
                 }
                 
                 if (abilityTarget != null)
@@ -139,7 +226,6 @@ namespace ctac
                 if (continueTargeting && cardTarget.targetFulfilled)
                 {
                     selectTarget.Dispatch(cardTarget);
-                    cardTarget = null;
                 }
             }
             else if (
@@ -149,15 +235,23 @@ namespace ctac
             {
                 debug.Log("Cancelling targeting from bad selection");
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-                cardTarget = null;
             }
 
         }
 
-        StartAbilityTargetModel abilityTarget { get; set; }
-        private void onStartAbilityTarget(StartAbilityTargetModel model)
+        private void onSelectTarget(TargetModel targetModel)
         {
-            abilityTarget = model;
+            activateCard.Dispatch(new ActivateModel() {
+                cardActivated = targetModel.targetingCard,
+                position = targetModel.cardDeployPosition != null ? 
+                    targetModel.cardDeployPosition.position : 
+                    targetModel.selectedPosition,
+                pivotPosition = targetModel.selectedPivotPosition,
+                optionalTarget = targetModel.selectedPiece,
+                chooseCardTemplateId = chooseModel == null ? null : chooseModel.chosenTemplateId
+            });
+            cardTarget = null;
+            chooseModel = null;
         }
 
         //Returns whether or not to continue targeting
@@ -174,7 +268,8 @@ namespace ctac
                     cardTarget.selectedPiece = piece.piece;
                     cardTarget.selectedPosition = piece.piece.tilePosition;
                 }
-            }else if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
+            }
+            else if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
             {
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);
                 return false;
@@ -192,6 +287,28 @@ namespace ctac
 
             return true;
         }
+
+        private void onStartChoose(ChooseModel c)
+        {
+            chooseModel = c;
+        }
+
+        private void onCancelChoose(ChooseModel c)
+        {
+            chooseModel = null;
+        }
+
+        private void onCardChosen(ChooseModel c)
+        {
+            chooseModel = null;
+        }
+
+        StartAbilityTargetModel abilityTarget { get; set; }
+        private void onStartAbilityTarget(StartAbilityTargetModel model)
+        {
+            abilityTarget = model;
+        }
+
     }
 }
 

@@ -15,6 +15,7 @@ namespace ctac
         //use pivot position as the 'resolved' position that is the point in the area chosen
         public Vector2? selectedPivotPosition { get; set; }
 
+        //Do we have all the info we need to activate?
         public bool targetFulfilled
         {
             get

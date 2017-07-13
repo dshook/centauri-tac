@@ -122,8 +122,10 @@ namespace ctac.signals
 
     [Singleton] public class StartChooseSignal : Signal<ChooseModel> { }
     [Singleton] public class CancelChooseSignal : Signal<ChooseModel> { }
+    [Singleton] public class UpdateChooseSignal : Signal<ChooseModel> { }
     [Singleton] public class CardChosenSignal : Signal<ChooseModel> { }
 
+    [Singleton] public class NeedsTargetSignal : Signal<CardModel, Tile> { }
     [Singleton] public class StartSelectTargetSignal : Signal<TargetModel> { }
     [Singleton] public class SelectTargetSignal : Signal<TargetModel> { }
     [Singleton] public class UpdateTargetSignal : Signal<TargetModel> { }

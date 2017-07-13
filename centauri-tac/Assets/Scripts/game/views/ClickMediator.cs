@@ -113,6 +113,7 @@ namespace ctac
                 }
                 pieceClicked.Dispatch(clickedPiece);
 
+                //target click handling is elsewhere
                 if (cardTarget != null || abilityTarget != null)
                 {
                 }
@@ -213,7 +214,7 @@ namespace ctac
                 }
 
                 if (
-                    cardTarget == null 
+                    cardTarget == null
                     && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.MoveRange)
                     && selectedPiece != null
                     && selectedPiece.canMove
