@@ -111,11 +111,11 @@ namespace ctac
                     //clicking on phantom piece shouldn't do anything
                     return;
                 }
-                pieceClicked.Dispatch(clickedPiece);
 
                 //target click handling is elsewhere
                 if (cardTarget != null || abilityTarget != null)
                 {
+                    pieceClicked.Dispatch(clickedPiece);
                 }
                 else if (clickedPiece.piece.currentPlayerHasControl)
                 {
