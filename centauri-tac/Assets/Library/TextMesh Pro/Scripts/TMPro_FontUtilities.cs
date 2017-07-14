@@ -215,6 +215,8 @@ namespace TMPro
 
     public static class TMP_FontUtilities
     {
+        private static List<int> k_searchedFontAssets;
+
         /// <summary>
         /// Search through the given font and its fallbacks for the specified character.
         /// </summary>
@@ -222,26 +224,14 @@ namespace TMPro
         /// <param name="character">The character to find.</param>
         /// <param name="glyph">out parameter containing the glyph for the specified character (if found).</param>
         /// <returns></returns>
-        public static TMP_FontAsset SearchForGlyph (TMP_FontAsset font, int character, out TMP_Glyph glyph)
+        public static TMP_FontAsset SearchForGlyph(TMP_FontAsset font, int character, out TMP_Glyph glyph)
         {
-            glyph = null;
-            if (font == null) return null;
+            if (k_searchedFontAssets == null)
+                k_searchedFontAssets = new List<int>();
 
-            if (font.characterDictionary.TryGetValue(character, out glyph))
-            {
-                return font;
-            }
-            else if (font.fallbackFontAssets != null && font.fallbackFontAssets.Count > 0)
-            {
-                for (int i = 0; i < font.fallbackFontAssets.Count && glyph == null; i++)
-                {
-                    TMP_FontAsset temp = SearchForGlyph(font.fallbackFontAssets[i], character, out glyph);
+            k_searchedFontAssets.Clear();
 
-                    if (temp != null)
-                        return temp;
-                }
-            }
-            return null;
+            return SearchForGlyphInternal(font, character, out glyph);
         }
 
 
@@ -254,13 +244,54 @@ namespace TMPro
         /// <returns></returns>
         public static TMP_FontAsset SearchForGlyph(List<TMP_FontAsset> fonts, int character, out TMP_Glyph glyph)
         {
+            return SearchForGlyphInternal(fonts, character, out glyph);
+        }
+
+
+        private static TMP_FontAsset SearchForGlyphInternal (TMP_FontAsset font, int character, out TMP_Glyph glyph)
+        {
+            glyph = null;
+
+            if (font == null) return null;
+
+            if (font.characterDictionary.TryGetValue(character, out glyph))
+            {
+                return font;
+            }
+            else if (font.fallbackFontAssets != null && font.fallbackFontAssets.Count > 0)
+            {
+                for (int i = 0; i < font.fallbackFontAssets.Count && glyph == null; i++)
+                {
+                    TMP_FontAsset temp = font.fallbackFontAssets[i];
+                    int id = temp.GetInstanceID();
+
+                    // Skip over the fallback font asset in the event it is null or if already searched.
+                    if (temp == null || k_searchedFontAssets.Contains(id))
+                        continue;
+
+                    // Add to list of font assets already searched.
+                    k_searchedFontAssets.Add(id);
+
+                    temp = SearchForGlyphInternal(temp, character, out glyph);
+
+                    if (temp != null)
+                        return temp;
+                }
+            }
+
+            return null;
+        }
+
+
+        private static TMP_FontAsset SearchForGlyphInternal(List<TMP_FontAsset> fonts, int character, out TMP_Glyph glyph)
+        {
             glyph = null;
 
             if (fonts != null && fonts.Count > 0)
             {
                 for (int i = 0; i < fonts.Count; i++)
                 {
-                    TMP_FontAsset fontAsset = SearchForGlyph(fonts[i], character, out glyph);
+                    TMP_FontAsset fontAsset = SearchForGlyphInternal(fonts[i], character, out glyph);
 
                     if (fontAsset != null)
                         return fontAsset;

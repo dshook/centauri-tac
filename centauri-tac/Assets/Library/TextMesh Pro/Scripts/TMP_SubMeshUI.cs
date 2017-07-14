@@ -613,10 +613,12 @@ namespace TMPro
         /// </summary>
         /// <param name="clipRect"></param>
         /// <param name="validRect"></param>
-        public override void Cull(Rect clipRect, bool validRect) { }
-        //{
-            //base.Cull(clipRect, validRect);
-        //}
+        public override void Cull(Rect clipRect, bool validRect)
+        {
+            if (m_TextComponent.ignoreRectMaskCulling) return;
+
+            base.Cull(clipRect, validRect);
+        }
 
 
         /// <summary>

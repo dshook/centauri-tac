@@ -5,6 +5,7 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.IO;
 using System.Collections;
 
 
@@ -791,20 +792,14 @@ namespace TMPro.EditorUtilities
                 }
 
                 EditorGUIUtility.labelWidth = 135;
-                // EditorGUI.BeginChangeCheck();
-                //EditorGUILayout.PropertyField(mask_prop);
-                //EditorGUILayout.PropertyField(maskOffset_prop, true);
-                //EditorGUILayout.PropertyField(maskSoftness_prop);
-                //if (EditorGUI.EndChangeCheck())
-                //{
-                //    isMaskUpdateRequired_prop.boolValue = true;
-                //    havePropertiesChanged = true;
-                //}
 
-                //EditorGUILayout.PropertyField(sortingLayerID_prop);
-                //EditorGUILayout.PropertyField(sortingOrder_prop);
+                GUILayout.Space(10);
 
-                // Mask Selection
+                //string file = Path.GetFullPath("Assets/TextMesh Pro/Plugins/TextMeshPro.dll");
+                //Debug.Log(file);
+                //string fileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(file).FileVersion;
+
+                //EditorGUILayout.LabelField("Release: " + fileVersion);
             }
 
             /*

@@ -113,6 +113,7 @@ namespace TMPro
         public float scale;
         public Color32 color;
         public Color32 underlineColor;
+        public Color32 strikethroughColor;
         public Color32 highlightColor;
         public FontStyles style;
         public bool isVisible;
@@ -375,10 +376,12 @@ namespace TMPro
         
         public Color32 vertexColor;
         public Color32 underlineColor;
+        public Color32 strikethroughColor;
         public Color32 highlightColor;
         public TMP_BasicXmlTagStack basicStyleStack;
         public TMP_XmlTagStack<Color32> colorStack;
         public TMP_XmlTagStack<Color32> underlineColorStack;
+        public TMP_XmlTagStack<Color32> strikethroughColorStack;
         public TMP_XmlTagStack<Color32> highlightColorStack;
         public TMP_XmlTagStack<float> sizeStack;
         public TMP_XmlTagStack<float> indentStack;

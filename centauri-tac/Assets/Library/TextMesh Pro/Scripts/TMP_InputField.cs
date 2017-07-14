@@ -1388,11 +1388,11 @@ namespace TMPro
         {
             var currentEventModifiers = evt.modifiers;
             RuntimePlatform rp = Application.platform;
-#if UNITY_5_4_OR_NEWER
+            #if UNITY_5_4_OR_NEWER
             bool isMac = (rp == RuntimePlatform.OSXEditor || rp == RuntimePlatform.OSXPlayer);
-#else
+            #else
             bool isMac = (rp == RuntimePlatform.OSXEditor || rp == RuntimePlatform.OSXPlayer || rp == RuntimePlatform.OSXWebPlayer);
-#endif
+            #endif
             bool ctrl = isMac ? (currentEventModifiers & EventModifiers.Command) != 0 : (currentEventModifiers & EventModifiers.Control) != 0;
             bool shift = (currentEventModifiers & EventModifiers.Shift) != 0;
             bool alt = (currentEventModifiers & EventModifiers.Alt) != 0;
@@ -1630,8 +1630,7 @@ namespace TMPro
         /// <param name="eventData"></param>
         public virtual void OnScroll(PointerEventData eventData)
         {
-            if (m_LineType == LineType.SingleLine)
-                return;
+            if (m_TextComponent.preferredHeight < m_TextViewport.rect.height) return;
 
             float scrollDirection = -eventData.scrollDelta.y;
 
@@ -2626,7 +2625,7 @@ namespace TMPro
 
             AssignPositioningIfNeeded();
 
-            //Debug.Log("Text height: " + textHeight + "  Viewport height: " + viewportHeight + "  Adjusted RectTransform anchordedPosition:" + m_TextComponent.rectTransform.anchoredPosition + "  Text Bounds: " + m_TextComponent.bounds.ToString("f3"));
+            //Debug.Log("Text height: " + m_TextComponent.preferredHeight + "  Viewport height: " + m_TextViewport.rect.height + "  Adjusted RectTransform anchordedPosition:" + m_TextComponent.rectTransform.anchoredPosition + "  Text Bounds: " + m_TextComponent.bounds.ToString("f3"));
         }
 
 
@@ -2939,7 +2938,7 @@ namespace TMPro
                     TMP_CharacterInfo endCharInfo = textInfo.characterInfo[currentChar];
 
                     // Extra check to handle Carriage Return
-                    if (endCharInfo.character == 10 && textInfo.characterInfo[currentChar - 1].character == 13 && currentChar > 0)
+                    if (currentChar > 0 && endCharInfo.character == 10 && textInfo.characterInfo[currentChar - 1].character == 13)
                         endCharInfo = textInfo.characterInfo[currentChar - 1];
 
                     Vector2 startPosition = new Vector2(startCharInfo.origin, textInfo.lineInfo[currentLineIndex].ascender);

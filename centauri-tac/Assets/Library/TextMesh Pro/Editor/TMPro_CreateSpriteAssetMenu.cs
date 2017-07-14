@@ -38,7 +38,10 @@ namespace TMPro.EditorUtilities
 
             // Make sure the selection is a texture.
             if (target == null || target.GetType() != typeof(Texture2D))
+            {
+                Debug.LogWarning("A texture which contains sprites must first be selected in order to create a TextMesh Pro Sprite Asset.");
                 return;
+            }
 
             Texture2D sourceTex = target as Texture2D;
 

@@ -1,7 +1,7 @@
 ﻿// Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.52.0b8
+// Release 1.0.55.56.0b11
 
 
 using UnityEngine;
@@ -242,9 +242,10 @@ namespace TMPro
         [SerializeField]
         protected Color m_fontColor = Color.white;
         protected static Color32 s_colorWhite = new Color32(255, 255, 255, 255);
-        protected Color32 m_highlightColor = s_colorWhite;
         protected Color32 m_underlineColor = s_colorWhite;
-
+        protected Color32 m_strikethroughColor = s_colorWhite;
+        protected Color32 m_highlightColor = s_colorWhite;
+        
 
         /// <summary>
         /// Sets the vertex color alpha value.
@@ -1377,6 +1378,7 @@ namespace TMPro
         protected Color32 m_htmlColor = new Color(255, 255, 255, 128);
         protected TMP_XmlTagStack<Color32> m_colorStack = new TMP_XmlTagStack<Color32>(new Color32[16]);
         protected TMP_XmlTagStack<Color32> m_underlineColorStack = new TMP_XmlTagStack<Color32>(new Color32[16]);
+        protected TMP_XmlTagStack<Color32> m_strikethroughColorStack = new TMP_XmlTagStack<Color32>(new Color32[16]);
         protected TMP_XmlTagStack<Color32> m_highlightColorStack = new TMP_XmlTagStack<Color32>(new Color32[16]);
 
         protected float m_tabSpacing = 0;
@@ -1724,6 +1726,10 @@ namespace TMPro
         /// <param name="text"></param>
         public void SetText(string text, bool syncTextInputBox)
         {
+            if (text == old_text) return;
+
+            old_text = text;
+
             m_inputSource = TextInputSources.SetCharArray;
 
             StringToCharArray(text, ref m_char_buffer);
@@ -1886,15 +1892,10 @@ namespace TMPro
             if (sourceText == null || sourceText.Length == 0)
                 return;
 
+            if (m_char_buffer == null) m_char_buffer = new int[8];
+
             // Clear the Style stack.
             m_styleStack.Clear();
-
-            // Check to make sure chars_buffer is large enough to hold the content of the string.
-            if (m_char_buffer.Length <= sourceText.Length)
-            {
-                int newSize = Mathf.NextPowerOfTwo(sourceText.Length + 1);
-                m_char_buffer = new int[newSize];
-            }
 
             int writeIndex = 0;
 
@@ -1905,16 +1906,22 @@ namespace TMPro
                     switch ((int)sourceText[i + 1])
                     {
                         case 110: // \n LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)10;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 114: // \r LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)13;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 116: // \t Tab
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)9;
                             i += 1;
                             writeIndex += 1;
@@ -1927,6 +1934,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref sourceText, "<BR>", i))
                     {
+                        if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                         m_char_buffer[writeIndex] = 10; ;
                         writeIndex += 1;
                         i += 3;
@@ -1952,9 +1961,14 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                 m_char_buffer[writeIndex] = sourceText[i];
                 writeIndex += 1;
             }
+
+            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
             m_char_buffer[writeIndex] = (char)0;
 
             m_inputSource = TextInputSources.SetCharArray;
@@ -1972,15 +1986,10 @@ namespace TMPro
             if (sourceText == null || sourceText.Length == 0 || length == 0)
                 return;
 
+            if (m_char_buffer == null) m_char_buffer = new int[8];
+
             // Clear the Style stack.
             m_styleStack.Clear();
-
-            // Check to make sure chars_buffer is large enough to hold the content of the string.
-            if (m_char_buffer.Length <= length)
-            {
-                int newSize = Mathf.NextPowerOfTwo(length + 1);
-                m_char_buffer = new int[newSize];
-            }
 
             int writeIndex = 0;
 
@@ -1991,16 +2000,22 @@ namespace TMPro
                     switch ((int)sourceText[start + i + 1])
                     {
                         case 110: // \n LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)10;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 114: // \r LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)13;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 116: // \t Tab
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                             m_char_buffer[writeIndex] = (char)9;
                             i += 1;
                             writeIndex += 1;
@@ -2013,6 +2028,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref sourceText, "<BR>", i))
                     {
+                        if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                         m_char_buffer[writeIndex] = 10; ;
                         writeIndex += 1;
                         i += 3;
@@ -2038,9 +2055,14 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
                 m_char_buffer[writeIndex] = sourceText[start + i];
                 writeIndex += 1;
             }
+
+            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
             m_char_buffer[writeIndex] = (char)0;
 
             m_inputSource = TextInputSources.SetCharArray;
@@ -2065,15 +2087,10 @@ namespace TMPro
             if (sourceText == null || m_charArray_Length == 0)
                 return;
 
+            if (charBuffer == null) charBuffer = new int[8];
+
             // Clear the Style stack.
             m_styleStack.Clear();
-
-            // Check to make sure chars_buffer is large enough to hold the content of the string.
-            if (charBuffer.Length <= m_charArray_Length)
-            {
-                int newSize = m_charArray_Length > 1024 ? m_charArray_Length + 256 : Mathf.NextPowerOfTwo(m_charArray_Length + 1);
-                charBuffer = new int[newSize];
-            }
 
             int writeIndex = 0;
 
@@ -2082,6 +2099,8 @@ namespace TMPro
                 // Handle UTF-32 in the input text (string).
                 if (char.IsHighSurrogate(sourceText[i]) && char.IsLowSurrogate(sourceText[i + 1]))
                 {
+                    if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                     charBuffer[writeIndex] = char.ConvertToUtf32(sourceText[i], sourceText[i + 1]);
                     i += 1;
                     writeIndex += 1;
@@ -2093,7 +2112,9 @@ namespace TMPro
                 {
                     if (IsTagName(ref sourceText, "<BR>", i))
                     {
-                        charBuffer[writeIndex] = 10; ;
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
+                        charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
 
@@ -2118,9 +2139,14 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                 charBuffer[writeIndex] = sourceText[i];
                 writeIndex += 1;
             }
+
+            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
             charBuffer[writeIndex] = 0;
         }
 
@@ -2138,15 +2164,10 @@ namespace TMPro
                 return;
             }
 
+            if (charBuffer == null) charBuffer = new int[8];
+
             // Clear the Style stack.
             m_styleStack.SetDefault(0);
-
-            // Check to make sure chars_buffer is large enough to hold the content of the string.
-            if (charBuffer == null || charBuffer.Length <= sourceText.Length)
-            {
-                int newSize = sourceText.Length > 1024 ? sourceText.Length + 256 : Mathf.NextPowerOfTwo(sourceText.Length + 1);
-                charBuffer = new int[newSize];
-            }
 
             int writeIndex = 0;
 
@@ -2159,6 +2180,8 @@ namespace TMPro
                         case 85: // \U00000000 for UTF-32 Unicode
                             if (sourceText.Length > i + 9)
                             {
+                                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                                 charBuffer[writeIndex] = GetUTF32(i + 2);
                                 i += 9;
                                 writeIndex += 1;
@@ -2169,6 +2192,9 @@ namespace TMPro
                             if (!m_parseCtrlCharacters) break;
 
                             if (sourceText.Length <= i + 2) break;
+
+                            if (writeIndex + 2 > charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = sourceText[i + 1];
                             charBuffer[writeIndex + 1] = sourceText[i + 2];
                             i += 2;
@@ -2177,12 +2203,16 @@ namespace TMPro
                         case 110: // \n LineFeed
                             if (!m_parseCtrlCharacters) break;
 
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = (char)10;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 114: // \r
                             if (!m_parseCtrlCharacters) break;
+
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                             charBuffer[writeIndex] = (char)13;
                             i += 1;
@@ -2191,6 +2221,8 @@ namespace TMPro
                         case 116: // \t Tab
                             if (!m_parseCtrlCharacters) break;
 
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = (char)9;
                             i += 1;
                             writeIndex += 1;
@@ -2198,6 +2230,8 @@ namespace TMPro
                         case 117: // \u0000 for UTF-16 Unicode
                             if (sourceText.Length > i + 5)
                             {
+                                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                                 charBuffer[writeIndex] = (char)GetUTF16(i + 2);
                                 i += 5;
                                 writeIndex += 1;
@@ -2210,6 +2244,8 @@ namespace TMPro
                 // Handle UTF-32 in the input text (string). // Not sure this is needed //
                 if (char.IsHighSurrogate(sourceText[i]) && char.IsLowSurrogate(sourceText[i + 1]))
                 {
+                    if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                     charBuffer[writeIndex] = char.ConvertToUtf32(sourceText[i], sourceText[i + 1]);
                     i += 1;
                     writeIndex += 1;
@@ -2217,10 +2253,12 @@ namespace TMPro
                 }
 
                 //// Handle inline replacement of <stlye> and <br> tags.
-                if (sourceText[i] == 60)
+                if (sourceText[i] == 60 && m_isRichText)
                 {
                     if (IsTagName(ref sourceText, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10; ;
                         writeIndex += 1;
                         i += 3;
@@ -2246,9 +2284,14 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                 charBuffer[writeIndex] = sourceText[i];
                 writeIndex += 1;
             }
+
+            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
             charBuffer[writeIndex] = (char)0;
         }
 
@@ -2266,16 +2309,10 @@ namespace TMPro
                 return;
             }
 
+            if (charBuffer == null) charBuffer = new int[8];
+
             // Clear the Style stack.
             m_styleStack.Clear();
-
-            // Check to make sure chars_buffer is large enough to hold the content of the string.
-            if (charBuffer == null || charBuffer.Length <= sourceText.Length)
-            {
-                int newSize = sourceText.Length > 1024 ? sourceText.Length + 256 : Mathf.NextPowerOfTwo(sourceText.Length + 1);
-                //Debug.Log("Resizing the chars_buffer[" + chars.Length + "] to chars_buffer[" + newSize + "].");
-                charBuffer = new int[newSize];
-            }
 
             #if UNITY_EDITOR
             // Create new string to be displayed in the Input Text Box of the Editor Panel.
@@ -2293,6 +2330,8 @@ namespace TMPro
                         case 85: // \U00000000 for UTF-32 Unicode
                             if (sourceText.Length > i + 9)
                             {
+                                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                                 charBuffer[writeIndex] = GetUTF32(i + 2);
                                 i += 9;
                                 writeIndex += 1;
@@ -2301,22 +2340,31 @@ namespace TMPro
                             break;
                         case 92: // \ escape
                             if (sourceText.Length <= i + 2) break;
+
+                            if (writeIndex + 2 > charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = sourceText[i + 1];
                             charBuffer[writeIndex + 1] = sourceText[i + 2];
                             i += 2;
                             writeIndex += 2;
                             continue;
                         case 110: // \n LineFeed
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = (char)10;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 114: // \r
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = (char)13;
                             i += 1;
                             writeIndex += 1;
                             continue;
                         case 116: // \t Tab
+                            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                             charBuffer[writeIndex] = (char)9;
                             i += 1;
                             writeIndex += 1;
@@ -2324,6 +2372,8 @@ namespace TMPro
                         case 117: // \u0000 for UTF-16 Unicode
                             if (sourceText.Length > i + 5)
                             {
+                                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                                 charBuffer[writeIndex] = (char)GetUTF16(i + 2);
                                 i += 5;
                                 writeIndex += 1;
@@ -2336,6 +2386,8 @@ namespace TMPro
                 // Handle UTF-32 in the input text (string).
                 if (char.IsHighSurrogate(sourceText[i]) && char.IsLowSurrogate(sourceText[i + 1]))
                 {
+                    if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                     charBuffer[writeIndex] = char.ConvertToUtf32(sourceText[i], sourceText[i + 1]);
                     i += 1;
                     writeIndex += 1;
@@ -2347,7 +2399,9 @@ namespace TMPro
                 {
                     if (IsTagName(ref sourceText, "<BR>", i))
                     {
-                        charBuffer[writeIndex] = 10; ;
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
+                        charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
 
@@ -2372,9 +2426,14 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                 charBuffer[writeIndex] = sourceText[i];
                 writeIndex += 1;
             }
+
+            if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
             charBuffer[writeIndex] = (char)0;
         }
 
@@ -2401,14 +2460,6 @@ namespace TMPro
             m_styleStack.Add(style.hashCode);
 
             int styleLength = style.styleOpeningTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - srcOffset;
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] openingTagArray = style.styleOpeningTagArray;
@@ -2421,6 +2472,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref openingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2445,6 +2498,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2476,14 +2531,6 @@ namespace TMPro
             m_styleStack.Add(style.hashCode);
 
             int styleLength = style.styleOpeningTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - srcOffset;
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] openingTagArray = style.styleOpeningTagArray;
@@ -2496,6 +2543,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref openingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2520,6 +2569,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2551,14 +2602,6 @@ namespace TMPro
             m_styleStack.Add(style.hashCode);
 
             int styleLength = style.styleOpeningTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - srcOffset;
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] openingTagArray = style.styleOpeningTagArray;
@@ -2571,6 +2614,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref openingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2596,12 +2641,15 @@ namespace TMPro
                     }
                 }
 
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
             }
 
             return true;
         }
+
 
         /// <summary>
         /// Method to handle inline replacement of style tag by opening style definition.
@@ -2625,14 +2673,6 @@ namespace TMPro
             m_styleStack.Add(style.hashCode);
 
             int styleLength = style.styleOpeningTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - srcOffset;
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] openingTagArray = style.styleOpeningTagArray;
@@ -2645,6 +2685,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref openingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2669,6 +2711,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2698,14 +2742,6 @@ namespace TMPro
             if (style == null) return false;
 
             int styleLength = style.styleClosingTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - 8; // Minus 8 for </style>
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] closingTagArray = style.styleClosingTagArray;
@@ -2718,6 +2754,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref closingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2742,6 +2780,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2771,14 +2811,6 @@ namespace TMPro
             if (style == null) return false;
 
             int styleLength = style.styleClosingTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - 8; // Minus 8 for </style>
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] closingTagArray = style.styleClosingTagArray;
@@ -2791,6 +2823,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref closingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2815,6 +2849,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2844,14 +2880,6 @@ namespace TMPro
             if (style == null) return false;
 
             int styleLength = style.styleClosingTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - 8; // Minus 8 for </style>
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] closingTagArray = style.styleClosingTagArray;
@@ -2864,6 +2892,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref closingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2888,6 +2918,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -2916,14 +2948,6 @@ namespace TMPro
             if (style == null) return false;
 
             int styleLength = style.styleClosingTagArray.Length;
-            int totalLength = srcIndex + styleLength + sourceText.Length - 8; // Minus 8 for </style>
-
-            // Make sure chars array can hold tag definition
-            if (totalLength > charBuffer.Length)
-            {
-                int newSize = charBuffer.Length > 1024 ? charBuffer.Length + 256 : Mathf.NextPowerOfTwo(totalLength + 1);
-                Array.Resize(ref charBuffer, newSize);
-            }
 
             // Replace <style> tag with opening definition
             int[] closingTagArray = style.styleClosingTagArray;
@@ -2936,6 +2960,8 @@ namespace TMPro
                 {
                     if (IsTagName(ref closingTagArray, "<BR>", i))
                     {
+                        if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
+
                         charBuffer[writeIndex] = 10;
                         writeIndex += 1;
                         i += 3;
@@ -2960,6 +2986,8 @@ namespace TMPro
                         continue;
                     }
                 }
+
+                if (writeIndex == charBuffer.Length) ResizeInternalArray(ref charBuffer);
 
                 charBuffer[writeIndex] = c;
                 writeIndex += 1;
@@ -3147,6 +3175,16 @@ namespace TMPro
             }
 
             return hashCode;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        void ResizeInternalArray <T>(ref T[] array)
+        {
+            int size = Mathf.NextPowerOfTwo(array.Length + 1);
+
+            System.Array.Resize(ref array, size);
         }
 
 
@@ -3340,6 +3378,10 @@ namespace TMPro
         protected float GetPreferredWidth()
         {
             float fontSize = m_enableAutoSizing ? m_fontSizeMax : m_fontSize;
+            
+            // Reset auto sizing point size bounds
+            m_minFontSize = m_fontSizeMin;
+            m_maxFontSize = m_fontSizeMax;
 
             // Set Margins to Infinity
             Vector2 margin = k_LargePositiveVector2;
@@ -3370,6 +3412,10 @@ namespace TMPro
         {
             float fontSize = m_enableAutoSizing ? m_fontSizeMax : m_fontSize;
 
+            // Reset auto sizing point size bounds
+            m_minFontSize = m_fontSizeMin;
+            m_maxFontSize = m_fontSizeMax;
+
             m_recursiveCount = 0;
             float preferredWidth = CalculatePreferredValues(fontSize, margin, true).x;
 
@@ -3386,6 +3432,10 @@ namespace TMPro
         protected float GetPreferredHeight()
         {
             float fontSize = m_enableAutoSizing ? m_fontSizeMax : m_fontSize;
+
+            // Reset auto sizing point size bounds
+            m_minFontSize = m_fontSizeMin;
+            m_maxFontSize = m_fontSizeMax;
 
             Vector2 margin = new Vector2(m_marginWidth != 0 ? m_marginWidth : k_LargePositiveFloat, k_LargePositiveFloat);
 
@@ -3414,6 +3464,10 @@ namespace TMPro
         protected float GetPreferredHeight(Vector2 margin)
         {
             float fontSize = m_enableAutoSizing ? m_fontSizeMax : m_fontSize;
+
+            // Reset auto sizing point size bounds
+            m_minFontSize = m_fontSizeMin;
+            m_maxFontSize = m_fontSizeMax;
 
             m_recursiveCount = 0;
             float preferredHeight = CalculatePreferredValues(fontSize, margin, true).y;
@@ -3491,7 +3545,7 @@ namespace TMPro
 
             ////Profiler.BeginSample("TMP Generate Text - Phase I");
 
-            // Early exit if no font asset was assigned. This should not be needed since NotoSans SDF will be assigned by default.
+            // Early exit if no font asset was assigned. This should not be needed since LiberationSans SDF will be assigned by default.
             if (m_fontAsset == null || m_fontAsset.characterDictionary == null)
             {
                 Debug.LogWarning("Can't Generate Mesh! No Font Asset has been assigned to Object ID: " + this.GetInstanceID());
@@ -4434,6 +4488,7 @@ namespace TMPro
             //state.alignment = m_lineJustification;
             state.vertexColor = m_htmlColor;
             state.underlineColor = m_underlineColor;
+            state.strikethroughColor = m_strikethroughColor;
             state.highlightColor = m_highlightColor;
             state.tagNoParsing = tag_NoParsing;
 
@@ -4441,6 +4496,7 @@ namespace TMPro
             state.basicStyleStack = m_fontStyleStack;
             state.colorStack = m_colorStack;
             state.underlineColorStack = m_underlineColorStack;
+            state.strikethroughColorStack = m_strikethroughColorStack;
             state.highlightColorStack = m_highlightColorStack;
             state.sizeStack = m_sizeStack;
             state.indentStack = m_indentStack;
@@ -4507,6 +4563,7 @@ namespace TMPro
             //m_lineJustification = state.alignment;
             m_htmlColor = state.vertexColor;
             m_underlineColor = state.underlineColor;
+            m_strikethroughColor = state.strikethroughColor;
             m_highlightColor = state.highlightColor;
             tag_NoParsing = state.tagNoParsing;
 
@@ -4514,6 +4571,7 @@ namespace TMPro
             m_fontStyleStack = state.basicStyleStack;
             m_colorStack = state.colorStack;
             m_underlineColorStack = state.underlineColorStack;
+            m_strikethroughColorStack = state.strikethroughColorStack;
             m_highlightColorStack = state.highlightColorStack;
             m_sizeStack = state.sizeStack;
             m_indentStack = state.indentStack;
@@ -5166,6 +5224,8 @@ namespace TMPro
                     autoSizeTextContainer = true;
                 else
                 {
+                    m_rectTransform = this.rectTransform;
+
                     if (GetType() == typeof(TextMeshPro))
                         m_rectTransform.sizeDelta = TMP_Settings.defaultTextMeshProTextContainerSize;
                     else
@@ -5962,6 +6022,14 @@ namespace TMPro
                     case 83: // <S>
                         m_style |= FontStyles.Strikethrough;
                         m_fontStyleStack.Add(FontStyles.Strikethrough);
+
+                        if (m_xmlAttribute[1].nameHashCode == 281955 || m_xmlAttribute[1].nameHashCode == 192323)
+                            m_strikethroughColor = HexCharsToColor(m_htmlTag, m_xmlAttribute[1].valueStartIndex, m_xmlAttribute[1].valueLength);
+                        else
+                            m_strikethroughColor = m_htmlColor;
+
+                        m_strikethroughColorStack.Add(m_strikethroughColor);
+
                         return true;
                     case 444: // </s>
                     case 412: // </S>

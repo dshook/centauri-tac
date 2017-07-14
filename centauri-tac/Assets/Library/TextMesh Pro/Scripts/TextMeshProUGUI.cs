@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.52.0b8
+// Release 1.0.55.56.0b11
 
 
 using UnityEngine;
@@ -594,6 +594,7 @@ namespace TMPro
                 else
                 {
                     // Clear unused vertices
+                    // TODO: Causes issues when sorting geometry as last vertex data attribute get wiped out.
                     //m_textInfo.meshInfo[i].ClearUnusedVertices();
 
                     mesh = m_subTextObjects[i].mesh;

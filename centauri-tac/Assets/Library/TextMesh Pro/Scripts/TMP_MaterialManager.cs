@@ -290,13 +290,8 @@ namespace TMPro
             obj.GetComponentsInParent<Mask>(false, maskComponents);
             for (int i = 0; i < maskComponents.Count; i++)
             {
-#if UNITY_5_2 || UNITY_5_3_OR_NEWER
                 if (maskComponents[i].IsActive())
                     count += 1;
-#else
-                if (maskComponents[i].MaskEnabled())
-                    count += 1;
-#endif
             }
 
             TMP_ListPool<Mask>.Release(maskComponents);
@@ -325,22 +320,30 @@ namespace TMPro
                 return fallback.fallbackMaterial;
             }
 
-            // Create new material from the source material
-            Material fallbackMaterial = new Material(sourceMaterial);
-            fallbackMaterial.hideFlags = HideFlags.HideAndDontSave;
+            // Create new material from the source material and copy properties if using distance field shaders.
+            Material fallbackMaterial = null;
+            if (sourceMaterial.HasProperty(ShaderUtilities.ID_GradientScale) && targetMaterial.HasProperty(ShaderUtilities.ID_GradientScale))
+            {
+                fallbackMaterial = new Material(sourceMaterial);
+                fallbackMaterial.hideFlags = HideFlags.HideAndDontSave;
 
-            #if UNITY_EDITOR
+                #if UNITY_EDITOR
                 fallbackMaterial.name += " + " + tex.name;
                 //Debug.Log("Creating new fallback material for " + fallbackMaterial.name);
-            #endif
+                #endif
 
-            fallbackMaterial.SetTexture(ShaderUtilities.ID_MainTex, tex);
-            // Retain material properties unique to target material.
-            fallbackMaterial.SetFloat(ShaderUtilities.ID_GradientScale, targetMaterial.GetFloat(ShaderUtilities.ID_GradientScale));
-            fallbackMaterial.SetFloat(ShaderUtilities.ID_TextureWidth, targetMaterial.GetFloat(ShaderUtilities.ID_TextureWidth));
-            fallbackMaterial.SetFloat(ShaderUtilities.ID_TextureHeight, targetMaterial.GetFloat(ShaderUtilities.ID_TextureHeight));
-            fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightNormal, targetMaterial.GetFloat(ShaderUtilities.ID_WeightNormal));
-            fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightBold, targetMaterial.GetFloat(ShaderUtilities.ID_WeightBold));
+                fallbackMaterial.SetTexture(ShaderUtilities.ID_MainTex, tex);
+                // Retain material properties unique to target material.
+                fallbackMaterial.SetFloat(ShaderUtilities.ID_GradientScale, targetMaterial.GetFloat(ShaderUtilities.ID_GradientScale));
+                fallbackMaterial.SetFloat(ShaderUtilities.ID_TextureWidth, targetMaterial.GetFloat(ShaderUtilities.ID_TextureWidth));
+                fallbackMaterial.SetFloat(ShaderUtilities.ID_TextureHeight, targetMaterial.GetFloat(ShaderUtilities.ID_TextureHeight));
+                fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightNormal, targetMaterial.GetFloat(ShaderUtilities.ID_WeightNormal));
+                fallbackMaterial.SetFloat(ShaderUtilities.ID_WeightBold, targetMaterial.GetFloat(ShaderUtilities.ID_WeightBold));
+            }
+            else
+            {
+                fallbackMaterial = new Material(targetMaterial);
+            }
 
             fallback = new FallbackMaterial();
             fallback.baseID = sourceID;
@@ -348,11 +351,6 @@ namespace TMPro
             fallback.fallbackID = key;
             fallback.fallbackMaterial = fallbackMaterial;
             fallback.count = 0;
-
-            #if UNITY_5_0 || UNITY_5_1
-            // Have to manually copy shader keywords in Unity 5.0 and 5.1
-            fallbackMaterial.shaderKeywords = sourceMaterial.shaderKeywords;
-            #endif
 
             m_fallbackMaterials.Add(key, fallback);
             m_fallbackMaterialLookup.Add(fallbackMaterial.GetInstanceID(), key);
@@ -505,6 +503,9 @@ namespace TMPro
         /// <param name="destination"></param>
         public static void CopyMaterialPresetProperties(Material source, Material destination)
         {
+            if (!source.HasProperty(ShaderUtilities.ID_GradientScale) || !destination.HasProperty(ShaderUtilities.ID_GradientScale))
+                return;
+
             // Save unique material properties
             Texture dst_texture = destination.GetTexture(ShaderUtilities.ID_MainTex);
             float dst_gradientScale = destination.GetFloat(ShaderUtilities.ID_GradientScale);
