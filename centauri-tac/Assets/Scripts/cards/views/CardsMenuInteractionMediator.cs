@@ -14,6 +14,8 @@ namespace ctac
         [Inject] public ActivateCardSignal activateCard { get; set; }
         [Inject] public MessageSignal message { get; set; }
 
+        [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
+
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
@@ -49,6 +51,7 @@ namespace ctac
                 if (cardView == null) { return; }
                 
                 draggedCard = cardView.card;
+                addCardToDeck.Dispatch(draggedCard);
             }
             else
             {
@@ -60,7 +63,6 @@ namespace ctac
         //when you try to activate a card either by the click and drag click up or a click on a tile/piece
         private void onActivate(GameObject activated)
         {
-            sounds.PlaySound("playCard");
             var itWorked = doActivateWork(activated);
             if (itWorked)
             {
