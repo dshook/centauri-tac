@@ -276,7 +276,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4278190080
   m_fontSize: 13.25
-  m_fontSizeBase: 21.2
+  m_fontSizeBase: 13.1
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 10

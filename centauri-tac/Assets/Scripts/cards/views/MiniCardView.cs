@@ -1,4 +1,6 @@
-﻿using strange.extensions.mediation.impl;
+﻿using ctac.util;
+using strange.extensions.mediation.impl;
+using SVGImporter;
 using TMPro;
 using UnityEngine;
 
@@ -19,6 +21,8 @@ namespace ctac {
         public TextMeshProUGUI nameText;
         public TextMeshProUGUI quantityText;
 
+        public SVGImage bgImage;
+
         protected override void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -31,6 +35,7 @@ namespace ctac {
             nameGO = transform.FindChild("Name").gameObject;
             quantityGO = transform.FindChild("Quantity").gameObject;
 
+            bgImage = bgGO.GetComponent<SVGImage>();
             costText = costGO.GetComponent<TextMeshProUGUI>();
             quantityText = quantityGO.GetComponent<TextMeshProUGUI>();
             nameText = nameGO.GetComponent<TextMeshProUGUI>();
@@ -56,7 +61,23 @@ namespace ctac {
             else
             {
                 quantityGO.SetActive(true);
-                quantityText.text = quantity.ToString();
+                quantityText.text = quantity + "x";
+            }
+
+            switch (card.rarity)
+            {
+                case Rarities.Common:
+                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityCommon, 0.2f);
+                    break;
+                case Rarities.Rare:
+                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityRare, 0.2f);
+                    break;
+                case Rarities.Exotic:
+                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityExotic, 0.2f);
+                    break;
+                case Rarities.Mythical:
+                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityMythical, 0.3f);
+                    break;
             }
 
         }

@@ -25,5 +25,14 @@ namespace ctac.util
         {
             return "#" + c.r.ToString("X2") + c.g.ToString("X2") + c.b.ToString("X2");
         }
+
+        public static Color DesaturateColor(Color c, float amount)
+        {
+            var L = 0.3f * c.r + 0.6f * c.g + 0.1f * c.b;
+            float new_r = c.r + amount * (L - c.r);
+            float new_g = c.g + amount * (L - c.g);
+            float new_b = c.b + amount * (L - c.b);
+            return new Color(new_r, new_g, new_b);
+        }
     }
 }

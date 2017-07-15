@@ -30,7 +30,23 @@ namespace ctac
 
         internal void addCard(CardModel card)
         {
-            cardList.Add(CreateMiniCard(card, miniCardsHolder.transform, new Vector3(-87.8f, 198 - (25 * cardList.Count))));
+            //first check to see if we already have this card in the deck and thus we can just increase the quantity
+            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == card.cardTemplateId);
+
+            if (foundCard != null)
+            {
+                if (foundCard.quantity == 2 || foundCard.card.rarity == Rarities.Mythical)
+                {
+                    //message pops up
+                    return;
+                }
+                foundCard.quantity++;
+                foundCard.UpdateText();
+            }
+            else
+            {
+                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform, new Vector3(-87.8f, 198 - (25 * cardList.Count))));
+            }
         }
 
         public MiniCardView CreateMiniCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null)
@@ -58,6 +74,7 @@ namespace ctac
 
             var miniCardView = newCard.AddComponent<MiniCardView>();
             miniCardView.card = miniCardModel;
+            miniCardView.quantity = 1;
 
             return miniCardView;
         }

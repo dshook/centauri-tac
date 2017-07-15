@@ -72,16 +72,16 @@ namespace ctac
 
             switch (model.rarity) {
                 case Rarities.Common:
-                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("999999"));
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityCommon);
                     break;
                 case Rarities.Rare:
-                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("2598C5"));
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityRare);
                     break;
                 case Rarities.Exotic:
-                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("64FF07"));
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityExotic);
                     break;
                 case Rarities.Mythical:
-                    frontRenderer.material.SetColor("_RarityColor", ColorExtensions.HexToColor("FF0000"));
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityMythical);
                     break;
             }
 
