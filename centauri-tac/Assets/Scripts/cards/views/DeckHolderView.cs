@@ -9,9 +9,10 @@ namespace ctac
 {
     public class DeckHolderView : View
     {
-        public Signal clickLeaveSignal = new Signal();
-
         public GameObject miniCardsHolder;
+        RectTransform holderRectTransform;
+        RectTransform scrollRectTransform;
+
         IResourceLoaderService loader;
 
         List<MiniCardView> cardList = new List<MiniCardView>();
@@ -19,9 +20,13 @@ namespace ctac
         internal void init(IResourceLoaderService l)
         {
             loader = l;
-            //miniCardsHolder = transform.FindChild("MiniCards").gameObject;
+            holderRectTransform = miniCardsHolder.GetComponent<RectTransform>();
+
+            var scrollRect = GetComponentInChildren<ScrollRect>();
+            scrollRectTransform = scrollRect.gameObject.GetComponent<RectTransform>();
 
             miniCardsHolder.transform.DestroyChildren(true);
+            UpdateList();
         }
 
         void Update()
@@ -46,7 +51,7 @@ namespace ctac
             else
             {
                 cardList.Add(CreateMiniCard(card, miniCardsHolder.transform));
-                SortList();
+                UpdateList();
             }
         }
 
@@ -64,18 +69,23 @@ namespace ctac
             {
                 cardList.Remove(foundCard);
                 Destroy(foundCard.card.gameObject);
-                SortList();
+                UpdateList();
             }
         }
 
         //sort and reposition list by cost
-        void SortList()
+        void UpdateList()
         {
             cardList = cardList.OrderBy(c => c.card.cost).ToList();
+            const float cardHeight = 25;
+            const float padding = 5f;
+            var contentHeight = cardHeight * cardList.Count + padding;
+            contentHeight = Mathf.Max(contentHeight, scrollRectTransform.sizeDelta.y);
+            holderRectTransform.sizeDelta = new Vector2(holderRectTransform.sizeDelta.x, contentHeight);
 
             for(int i = 0; i < cardList.Count; i++)
             {
-                cardList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (25 * i));
+                cardList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (cardHeight * i));
             }
         }
 
