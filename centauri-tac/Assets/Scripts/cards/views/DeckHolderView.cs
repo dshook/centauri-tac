@@ -45,7 +45,37 @@ namespace ctac
             }
             else
             {
-                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform, new Vector3(-87.8f, 198 - (25 * cardList.Count))));
+                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform, new Vector3(-87.8f, 198)));
+                SortList();
+            }
+        }
+
+        internal void removeCard(CardModel card)
+        {
+            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == card.cardTemplateId);
+            if (foundCard == null) return;
+
+            if (foundCard.quantity > 1)
+            {
+                foundCard.quantity--;
+                foundCard.UpdateText();
+            }
+            else
+            {
+                cardList.Remove(foundCard);
+                Destroy(foundCard.card.gameObject);
+                SortList();
+            }
+        }
+
+        //sort and reposition list by cost
+        void SortList()
+        {
+            cardList = cardList.OrderBy(c => c.card.cost).ToList();
+
+            for(int i = 0; i < cardList.Count; i++)
+            {
+                cardList[i].gameObject.transform.localPosition = new Vector3(-87.8f, 198 - (25 * i));
             }
         }
 

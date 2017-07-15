@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224325574743184508}
   - component: {fileID: 222073310567837132}
   - component: {fileID: 114560229892420152}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 224715397302928642}
   - component: {fileID: 222606123142892790}
   - component: {fileID: 114295895914692098}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Bg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,13 +87,26 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224931828785421006}
-  m_Layer: 5
+  - component: {fileID: 65140472663687428}
+  m_Layer: 9
   m_Name: MiniCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &65140472663687428
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1990536640126908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 155.2, y: 24, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114295895914692098
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -15,6 +15,7 @@ namespace ctac
         [Inject] public MessageSignal message { get; set; }
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
+        [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -48,10 +49,17 @@ namespace ctac
             if (clickedObject != null)
             {
                 var cardView = clickedObject.GetComponent<CardView>();
-                if (cardView == null) { return; }
-                
-                draggedCard = cardView.card;
-                addCardToDeck.Dispatch(draggedCard);
+                var miniCardView = clickedObject.GetComponent<MiniCardView>();
+                if (cardView != null)
+                {
+                    draggedCard = cardView.card;
+                    addCardToDeck.Dispatch(draggedCard);
+                }
+                else if (miniCardView != null)
+                {
+                    removeCardFromDeck.Dispatch(miniCardView.card);
+                }
+
             }
             else
             {

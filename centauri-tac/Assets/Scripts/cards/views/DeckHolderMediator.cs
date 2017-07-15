@@ -13,16 +13,19 @@ namespace ctac
         [Inject] public IResourceLoaderService loader { get; set; }
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
+        [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
 
         public override void OnRegister()
         {
             addCardToDeck.AddListener(onAddToDeck);
+            removeCardFromDeck.AddListener(onRemoveFromDeck);
             view.init(loader);
         }
 
         public override void onRemove()
         {
             addCardToDeck.RemoveListener(onAddToDeck);
+            removeCardFromDeck.RemoveListener(onRemoveFromDeck);
         }
 
         public void Update()
@@ -32,6 +35,11 @@ namespace ctac
         private void onAddToDeck(CardModel card)
         {
             view.addCard(card);
+        }
+
+        private void onRemoveFromDeck(CardModel card)
+        {
+            view.removeCard(card);
         }
 
     }
