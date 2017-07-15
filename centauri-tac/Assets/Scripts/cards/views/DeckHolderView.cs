@@ -11,7 +11,7 @@ namespace ctac
     {
         public Signal clickLeaveSignal = new Signal();
 
-        GameObject miniCardsHolder;
+        public GameObject miniCardsHolder;
         IResourceLoaderService loader;
 
         List<MiniCardView> cardList = new List<MiniCardView>();
@@ -19,7 +19,7 @@ namespace ctac
         internal void init(IResourceLoaderService l)
         {
             loader = l;
-            miniCardsHolder = transform.FindChild("MiniCards").gameObject;
+            //miniCardsHolder = transform.FindChild("MiniCards").gameObject;
 
             miniCardsHolder.transform.DestroyChildren(true);
         }
@@ -45,7 +45,7 @@ namespace ctac
             }
             else
             {
-                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform, new Vector3(-87.8f, 198)));
+                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform));
                 SortList();
             }
         }
@@ -75,7 +75,7 @@ namespace ctac
 
             for(int i = 0; i < cardList.Count; i++)
             {
-                cardList[i].gameObject.transform.localPosition = new Vector3(-87.8f, 198 - (25 * i));
+                cardList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (25 * i));
             }
         }
 
