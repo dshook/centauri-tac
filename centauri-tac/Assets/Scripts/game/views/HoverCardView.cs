@@ -19,12 +19,14 @@ namespace ctac
         bool cardVisible = false;
         bool active = true;
         float zPos = 100f;
+        float miniCardzPos = -5f;
 
         private string hoverName = "Hover Card";
         private CardView hoverCardView = null;
         private Canvas canvas { get; set; }
 
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
+        private Vector2 miniCardAnchor = new Vector2(1f, 0.5f);
         //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
         private Vector2 topLeftAnchor = new Vector2(0, 1);
         private Vector2 topLeftOffset = new Vector2(-20f, 0f);
@@ -104,6 +106,20 @@ namespace ctac
 
             hoverCardView.rectTransform.SetAnchor(cardAnchor);
             var displayPosition = new Vector3(position.x, 90f, zPos);
+            showCard(displayPosition, spellDamage);
+        }
+
+        internal void showMiniCardFromDeck(CardModel cardToShow, Vector3 position, int spellDamage)
+        {
+            //copy over props from hovered to hover
+            cardToShow.CopyProperties(hoverCardView.card);
+            //but reset some key things
+            hoverCardView.name = hoverName;
+            hoverCardView.card.gameObject = hoverCardView.gameObject;
+
+            hoverCardView.rectTransform.SetAnchor(miniCardAnchor);
+            var yPos = Mathf.Clamp(position.y, -76, 76);
+            var displayPosition = new Vector3(position.x - 300f, yPos, miniCardzPos);
             showCard(displayPosition, spellDamage);
         }
 

@@ -1,9 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
-using strange.extensions.context.api;
-using System.Linq;
-using strange.extensions.injector.api;
 
 namespace ctac
 {
@@ -13,6 +9,14 @@ namespace ctac
         void CopyPropertiesFromPiece(PieceModel src, PieceModel dest);
         void SetInitialMoveAttackStatus(PieceModel piece);
         void CopyPieceToCard(PieceModel src, CardModel dest, bool link);
+    }
+
+    public class MockPieceService : IPieceService
+    {
+        public PieceModel CreatePiece(SpawnPieceModel spawnedPiece, string name = null) { return new PieceModel(); }
+        public void CopyPropertiesFromPiece(PieceModel src, PieceModel dest) { }
+        public void SetInitialMoveAttackStatus(PieceModel piece) { }
+        public void CopyPieceToCard(PieceModel src, CardModel dest, bool link) { }
     }
 
     public class PieceService : IPieceService

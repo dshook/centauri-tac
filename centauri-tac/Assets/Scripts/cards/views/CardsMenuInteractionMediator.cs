@@ -11,6 +11,7 @@ namespace ctac
 
         [Inject] public CardSelectedSignal cardSelected { get; set; }
         [Inject] public CardHoveredSignal cardHovered { get; set; }
+        [Inject] public MiniCardHoveredSignal miniCardHovered { get; set; }
         [Inject] public ActivateCardSignal activateCard { get; set; }
         [Inject] public MessageSignal message { get; set; }
 
@@ -95,6 +96,7 @@ namespace ctac
         }
 
         private CardView lastHoveredCard = null;
+        private MiniCardView lastHoveredMiniCard = null;
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -105,8 +107,17 @@ namespace ctac
                     if (cardView != null && cardView != lastHoveredCard)
                     {
                         lastHoveredCard = cardView;
-                        cardHovered.Dispatch(cardView.card);
+                        //cardHovered.Dispatch(cardView.card);
                         cardView.EnableHoverTips(loader);
+                    }
+                }
+                if (hoveredObject.CompareTag("MiniCard"))
+                {
+                    var cardView = hoveredObject.GetComponent<MiniCardView>();
+                    if (cardView != null && cardView != lastHoveredMiniCard)
+                    {
+                        lastHoveredMiniCard = cardView;
+                        miniCardHovered.Dispatch(cardView.card);
                     }
                 }
             }
@@ -117,6 +128,11 @@ namespace ctac
                     lastHoveredCard.DisableHoverTips();
                     lastHoveredCard = null;
                     cardHovered.Dispatch(null);
+                }
+                if (lastHoveredMiniCard != null)
+                {
+                    lastHoveredMiniCard = null;
+                    miniCardHovered.Dispatch(null);
                 }
             }
         }

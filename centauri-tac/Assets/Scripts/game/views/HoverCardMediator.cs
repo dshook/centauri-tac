@@ -12,8 +12,9 @@ namespace ctac
         [Inject] public CardSelectedSignal cardSelected { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
-        [Inject]
-        public PieceHoverSignal pieceHovered { get; set; }
+        [Inject] public MiniCardHoveredSignal miniCardHovered { get; set; }
+
+        [Inject] public PieceHoverSignal pieceHovered { get; set; }
 
         //[Inject] public IDebugService debug { get; set; }
 
@@ -23,6 +24,7 @@ namespace ctac
             cardHovered.AddListener(onCardHovered);
             cardSelected.AddListener(onCardSelected);
             pieceHovered.AddListener(onPieceHovered);
+            miniCardHovered.AddListener(onMiniCardHovered);
         }
 
         public override void onRemove()
@@ -30,6 +32,7 @@ namespace ctac
             cardHovered.RemoveListener(onCardHovered);
             cardSelected.RemoveListener(onCardSelected);
             pieceHovered.RemoveListener(onPieceHovered);
+            miniCardHovered.RemoveListener(onMiniCardHovered);
         }
 
         private bool hoveringCard = false;
@@ -76,6 +79,21 @@ namespace ctac
             }
         }
 
+        private void onMiniCardHovered(CardModel card)
+        {
+            if (card != null)
+            {
+                var hoveredCardRect = card.rectTransform;
+                var position = hoveredCardRect.anchoredPosition3D;
+                view.showMiniCardFromDeck(card, position, 0);
+                hoveringCard = true;
+            }
+            else
+            {
+                view.hideCard();
+                hoveringCard = false;
+            }
+        }
     }
 }
 
