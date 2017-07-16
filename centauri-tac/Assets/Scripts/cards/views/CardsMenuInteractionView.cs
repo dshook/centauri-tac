@@ -16,6 +16,7 @@ namespace ctac
         bool active = false;
         float dragTimer = 0f;
         float dragMin = 0.10f;
+        float clickTime = 0f;
 
         internal void init(RaycastModel rm)
         {
@@ -54,6 +55,18 @@ namespace ctac
                 {
                     TestActivate();
                 }
+                else
+                {
+                    //only dispatch click signal if it was fast enough and not a drag
+                    if (hoverHit.HasValue && (Time.time - clickTime < dragMin))
+                    {
+                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
+                    }
+                    else
+                    {
+                        clickSignal.Dispatch(null, Vector3.zero);
+                    }
+                }
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
@@ -63,17 +76,7 @@ namespace ctac
                 {
                     TestActivate();
                 }
-                else
-                {
-                    if (hoverHit.HasValue)
-                    {
-                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
-                    }
-                    else
-                    {
-                        clickSignal.Dispatch(null, Vector3.zero);
-                    }
-                }
+                clickTime = Time.time;
             }
 
             //right click et al deselects
