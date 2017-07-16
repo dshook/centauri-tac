@@ -18,6 +18,7 @@
     "prestart": "npm install && npm run migrate",
     "build-map": "node ./util/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
+    "build-docker": "docker build -t stac:latest -f ./docker/Dockerfile .",
     "lint": "eslint server/**"
   },
   "contributors": [
