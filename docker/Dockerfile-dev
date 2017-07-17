@@ -1,0 +1,16 @@
+FROM node:8.1.4-alpine
+MAINTAINER Dillon Shook "dshook@alumni.nmt.edu"
+
+# location layout
+ENV APP_BASE /opt/app
+RUN mkdir -p $APP_BASE
+WORKDIR ${APP_BASE}
+
+# server options
+ENV PORT 10123
+EXPOSE ${PORT}/tcp
+
+COPY ./docker/wait-for-db.sh .
+RUN touch .env
+
+CMD yarn install && yarn run dev-server

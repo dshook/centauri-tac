@@ -1,4 +1,4 @@
-FROM node:6.11.1-alpine
+FROM node:8.1.4-alpine
 MAINTAINER Dillon Shook "dshook@alumni.nmt.edu"
 
 # location layout
@@ -7,7 +7,7 @@ RUN mkdir -p $APP_BASE
 WORKDIR ${APP_BASE}
 
 # server options
-ENV PORT 8000
+ENV PORT 10123
 EXPOSE ${PORT}/tcp
 
 # app source and package-level deps

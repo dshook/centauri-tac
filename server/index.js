@@ -18,6 +18,7 @@ require('babel-register')({
 // use bluebird instead of native promise
 global.Promise = require('bluebird');
 
+console.log('Preprossesing complete, loading main');
 // boot
 require('./main.js');
 
