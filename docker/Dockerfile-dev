@@ -10,7 +10,6 @@ WORKDIR ${APP_BASE}
 ENV PORT 10123
 EXPOSE ${PORT}/tcp
 
-COPY ./docker/wait-for-db.sh .
 RUN touch .env
 
 CMD yarn install && yarn run dev-server

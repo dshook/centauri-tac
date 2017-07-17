@@ -15,3 +15,13 @@ up: down build-dev
 
 logs:
 	docker-compose -p stac -f ./docker/docker-compose.yml logs -f --tail 1000
+
+down-prod:
+	docker-compose -p stac -f ./docker/docker-compose-prod.yml kill
+	docker-compose -p stac -f ./docker/docker-compose-prod.yml rm -f -v
+
+up-prod: down-prod build
+	docker-compose -p stac -f ./docker/docker-compose-prod.yml up --force-recreate -d
+
+logs-prod:
+	docker-compose -p stac -f ./docker/docker-compose-prod.yml logs -f --tail 1000

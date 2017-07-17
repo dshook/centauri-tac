@@ -13,14 +13,18 @@ EXPOSE ${PORT}/tcp
 # app source and package-level deps
 COPY ./package.json .
 COPY ./yarn.lock .
-COPY ./cards .
-COPY ./lang .
-COPY ./lib .
-COPY ./maps .
-COPY ./migrations .
-COPY ./server .
-COPY ./tests .
+COPY ./cards ./cards
+COPY ./lang ./lang
+COPY ./lib ./lib
+COPY ./maps ./maps
+COPY ./migrations ./migrations
+COPY ./server ./server
+COPY ./tests ./tests
+
+#script to wait for db to come up
+COPY ./docker/wait-for-db.sh .
+RUN chmod 755 wait-for-db.sh
 
 RUN yarn install
 
-CMD yarn run dev-server
+CMD ["./wait-for-db.sh", "db", "yarn run dev-server"]

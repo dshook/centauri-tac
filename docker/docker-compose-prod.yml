@@ -1,0 +1,26 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.6.3-alpine
+    environment:
+      POSTGRES_PASSWORD: example
+
+  server:
+    image: stac:latest
+    # command: ["./wait-for-db.sh", "db", "--", "yarn install && yarn run dev-server"]
+    ports:
+      - "10123:10123"
+    links:
+      - db
+    environment:
+      - COMPONENTS=auth,game,gamelist,matchmaker,log
+      - DATABASE_URL=postgres://postgres:example@db/postgres
+      - PG_USE_SSL=false
+      - DEBUG=*,-nodemon*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter
+      - DEBUG_COLORS=true
+      - PORT=10123
+      - PUBLIC_URL=http://server.solaria.online:10123
+      - PING_INTERVAL=30000
+      - DISCONNECT_TIMEOUT=5000
+      - DEV=true
+      - CARD_SETS=test,basic
