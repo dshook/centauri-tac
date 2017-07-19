@@ -22,5 +22,5 @@ services:
       - PUBLIC_URL=http://server.solaria.online:10123
       - PING_INTERVAL=30000
       - DISCONNECT_TIMEOUT=5000
-      - DEV=true
+      # - DEV=true
       - CARD_SETS=test,basic

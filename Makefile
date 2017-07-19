@@ -10,7 +10,7 @@ down:
 	docker-compose -p stac -f ./docker/docker-compose.yml kill
 	docker-compose -p stac -f ./docker/docker-compose.yml rm -f -v
 
-up: down build-dev
+up: build-dev down
 	docker-compose -p stac -f ./docker/docker-compose.yml up --force-recreate -d
 
 logs:
@@ -20,7 +20,7 @@ down-prod:
 	docker-compose -p stac -f ./docker/docker-compose-prod.yml kill
 	docker-compose -p stac -f ./docker/docker-compose-prod.yml rm -f -v
 
-up-prod: down-prod build
+up-prod: build down-prod
 	docker-compose -p stac -f ./docker/docker-compose-prod.yml up --force-recreate -d
 
 logs-prod:
