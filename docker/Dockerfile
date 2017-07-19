@@ -21,10 +21,10 @@ COPY ./migrations ./migrations
 COPY ./server ./server
 COPY ./tests ./tests
 
-#script to wait for db to come up
-COPY ./docker/wait-for-db.sh .
-RUN chmod 755 wait-for-db.sh
-
 RUN yarn install
 
-CMD ["./wait-for-db.sh", "db", "yarn run dev-server"]
+#script to wait for db to come up
+COPY ./docker/wait-for-command.sh .
+RUN chmod +x wait-for-command.sh
+
+CMD ./wait-for-command.sh -c 'nc -z db 5432' && yarn run dev-server
