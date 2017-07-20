@@ -24,3 +24,5 @@ services:
       - DISCONNECT_TIMEOUT=5000
       # - DEV=true
       - CARD_SETS=test,basic
+      - VIRTUAL_HOST=server.solaria.online
+      - VIRTUAL_PORT=10123
