@@ -1,12 +1,11 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
-using System.Collections;
 
 namespace ctac
 {
-    public class DeckHolderMediator : Mediator
+    public class DeckEditHolderMediator : Mediator
     {
-        [Inject] public DeckHolderView view { get; set; }
+        [Inject] public DeckEditHolderView view { get; set; }
 
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }

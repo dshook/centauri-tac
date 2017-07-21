@@ -1,13 +1,12 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using strange.extensions.mediation.impl;
-using strange.extensions.signal.impl;
 using UnityEngine;
 using System.Linq;
 
 namespace ctac
 {
-    public class DeckHolderView : View
+    public class DeckEditHolderView : View
     {
         public GameObject miniCardsHolder;
         RectTransform holderRectTransform;

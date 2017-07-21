@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a7247f120e8b49946beb4ed3c5529d35
+timeCreated: 1500601972
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"
+    viewBox=\"0 0 100 100\">\r\n  <defs>\r\n    <style>\r\n      .cls-1 {\r\n        fill:
+    #1100c5;\r\n        stroke: #238b00;\r\n        stroke-miterlimit: 10;\r\n        stroke-width:
+    4px;\r\n      }\r\n    </style>\r\n  </defs>\r\n  <title>faction</title>\r\n  <g
+    id=\"earthlings\">\r\n    <path class=\"cls-1\" d=\"M62.58,16.11V28.69H37.42V41.31H56.29V53.89H37.42V66.47H62.58V79.08H24.8v-63Z\"/>\r\n
+    \ </g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 
