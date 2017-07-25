@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_Aensians
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636361987726475585
+  _lastTimeModified: 636365418948755445
   _documentAsset: {fileID: 114265647822703350}
-  _sharedMesh: {fileID: 43373921363973884}
+  _sharedMesh: {fileID: 43627899457053560}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   _optimizeMesh: 1
   _generateNormals: 0
   _generateTangents: 0
-  _scale: 0.01
+  _scale: 1
   _vpm: 1000
   _depthOffset: 0.01
   _compressDepth: 1
@@ -40,11 +40,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 100
+    height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43373921363973884
+--- !u!43 &43627899457053560
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -59,8 +59,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 32
     localAABB:
-      m_Center: {x: 0.000000014901161, y: -0.000000044703484, z: 0}
-      m_Extent: {x: 0.31674004, y: 0.35452002, z: 0}
+      m_Center: {x: 0.0000019073486, y: 0, z: 0}
+      m_Extent: {x: 31.674002, y: 35.452, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -112,7 +112,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 512
-    _typelessdata: 1b6492be3546abbe00000000961ddeffe890dbbd3e8d74be00000000961ddeffa6d019be3546abbe00000000961ddeff80c561bda6e002be00000000961ddeff007c4c3a804b433b00000000961ddeff00f0d6b9de679c3e00000000961ddeff8027663da6e002be00000000961ddeff00c1dc3d1af674be00000000961ddeffde5e923e3546abbe00000000961ddefff896193e3546abbe00000000961ddeff22930cbea783b5be00000000ffd81bff1c1bc1bdb18684be00000000ffd81bff242307beb177afbe00000000ffd81bff6a1327bec508a1be00000000ffd81bff789c82bec508a1be00000000ffd81bffbf2ba2bea783b5be00000000ffd81bff0078ccb9684d833e00000000ffd81bff00b0e6b9a483b53e00000000ffd81bffe0410c3ea783b5be00000000ffd81bff4c93823ec508a1be00000000ffd81bffc02ba23ea783b5be00000000ffd81bff78e9263ec508a1be00000000ffd81bff8811c23ddfb584be00000000ffd81bff386bf73d768060be00000000ffd81bfff80bf6bd820a60be00000000ffd81bff00e8b03d865b17be00000000ffd81bff503ecbbc84cbdcbd00000000ffd81bff00e9d43c84cbdcbd00000000ffd81bff70ebaebd865b17be00000000ffd81bff0080373a980445bd00000000ffd81bff60499d3c40c8303c00000000ffd81bff0010643a70785d3d00000000ffd81bff
+    _typelessdata: 6abce4c1d9ce05c200000000961ddeff34892bc1560ebfc100000000961ddeff045670c1d9ce05c200000000961ddeff4862b0c0fc7e4cc100000000961ddeff00c09f3d8093983e00000000961ddeff00ec27bd4e62f44100000000961ddeffe0ceb340fc7e4cc100000000961ddeffcc762c414260bfc100000000961ddeff3cb4e441d9ce05c200000000961ddeffe8fb6f41d9ce05c200000000961ddeffe4a55bc1d9ce0dc200000000ffd81bff2cdd16c17212cfc100000000ffd81bffe82653c1811509c200000000ffd81bff2a8782c1b29dfbc100000000ffd81bff7b14ccc1b29dfbc100000000ffd81bff5a64fdc1d9ce0dc200000000ffd81bff00bc1fbdf628cd4100000000ffd81bff003834bdd9ce0d4200000000ffd81bfff0265b41d9ce0dc200000000ffd81bff2806cc41b29dfbc100000000ffd81bff5c64fd41d9ce0dc200000000ffd81bff68668241b29dfbc100000000ffd81bffb49d17412a5ccfc100000000ffd81bffc84b41415a64afc100000000ffd81bff583940c13208afc100000000ffd81bff40350a41fc7e6cc100000000ffd81bffb0c81ec0fc7e2cc100000000ffd81bff10562640fc7e2cc100000000ffd81bfff0a708c1fc7e6cc100000000ffd81bff005e8f3d88eb99c000000000ffd81bffa0c2f53fa01c8a3f00000000ffd81bff002eb23d2006ad4000000000ffd81bff
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -166,8 +166,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 0.000000014901161, y: -0.000000044703484, z: 0}
-    m_Extent: {x: 0.31674004, y: 0.35452002, z: 0}
+    m_Center: {x: 0.0000019073486, y: 0, z: 0}
+    m_Extent: {x: 31.674002, y: 35.452, z: 0}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 

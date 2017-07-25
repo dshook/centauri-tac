@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_The Lost
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636361987729375489
+  _lastTimeModified: 636365418948810525
   _documentAsset: {fileID: 114380032360667126}
-  _sharedMesh: {fileID: 43337418002142690}
+  _sharedMesh: {fileID: 43348205474724342}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   _optimizeMesh: 1
   _generateNormals: 0
   _generateTangents: 0
-  _scale: 0.01
+  _scale: 1
   _vpm: 1000
   _depthOffset: 0.01
   _compressDepth: 1
@@ -40,11 +40,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 100
+    height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43337418002142690
+--- !u!43 &43348205474724342
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -59,8 +59,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 18
     localAABB:
-      m_Center: {x: 0.000000014901161, y: 0, z: 0}
-      m_Extent: {x: 0.20890002, y: 0.33506003, z: 0}
+      m_Center: {x: -0.000002861023, y: 0, z: 0}
+      m_Extent: {x: 20.890003, y: 33.506004, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -112,7 +112,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 288
-    _typelessdata: 006f413e894fa1be00000000303030ffdc6880bd92e741be00000000303030ff006f413e92e741be00000000303030ff026f41be894fa1be00000000303030ffdc6880bd62e5a03e00000000303030ff026f41bed23fa13e00000000303030ffe2e955befd8cabbe00000000692affff20f42c3e191297be00000000692affffe4e9553efd8cabbe00000000692affffc0f62cbe191297be00000000692affffc0f62cbe46f5963e00000000692affffe2e955befd8cab3e00000000692affff20f42c3e766256be00000000692affffe4e9553eb26c2dbe00000000692affffa05ea9bd766256be00000000692affff38e62ebdb26c2dbe00000000692affff38e62ebd1813ab3e00000000692affffa05ea9bd5cb6963e00000000692affff
+    _typelessdata: b81e9741480cfcc100000000303030ffe0a3c8c0ec7c97c100000000303030ffb81e9741ec7c97c100000000303030ffbb1e97c1480cfcc100000000303030ffe0a3c8c06866fb4100000000303030ffbb1e97c1b8f3fb4100000000303030ffbb1ea7c1260606c200000000692affffb81e8741480cecc100000000692affffb81ea741260606c200000000692affffc82087c1480cecc100000000692affffc82087c13ddfeb4100000000692affffbb1ea7c12606064200000000692affffb81e8741ec7ca7c100000000692affffb81ea741ec7c87c100000000692afffff05104c1ec7ca7c100000000692affffe0a388c0ec7c87c100000000692affffe0a388c0eaa6054200000000692afffff05104c1ef7ceb4100000000692affff
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -166,8 +166,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 0.000000014901161, y: 0, z: 0}
-    m_Extent: {x: 0.20890002, y: 0.33506003, z: 0}
+    m_Center: {x: -0.000002861023, y: 0, z: 0}
+    m_Extent: {x: 20.890003, y: 33.506004, z: 0}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 

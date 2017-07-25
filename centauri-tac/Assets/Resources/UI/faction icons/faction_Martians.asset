@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_Martians
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636361987725925484
+  _lastTimeModified: 636365418948300553
   _documentAsset: {fileID: 114122893569556174}
-  _sharedMesh: {fileID: 43304763094587430}
+  _sharedMesh: {fileID: 43920552941986422}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
   _optimizeMesh: 1
   _generateNormals: 0
   _generateTangents: 0
-  _scale: 0.01
+  _scale: 1
   _vpm: 1000
   _depthOffset: 0.01
   _compressDepth: 1
@@ -40,11 +40,11 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 100
+    height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43304763094587430
+--- !u!43 &43920552941986422
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -59,8 +59,8 @@ Mesh:
     firstVertex: 0
     vertexCount: 31
     localAABB:
-      m_Center: {x: 0.000000029802322, y: 0, z: 0}
-      m_Extent: {x: 0.32705, y: 0.36345002, z: 0}
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 32.705, y: 36.345, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -112,7 +112,7 @@ Mesh:
       format: 0
       dimension: 0
     m_DataSize: 496
-    _typelessdata: a8359dbef7bdadbe00000000ef3100fff64a39befc7ca2bd00000000ef3100fff64a39bef7bdadbe00000000ef3100ffa8359dbeeca89a3e00000000ef3100ff008051b83f9fa8be00000000ef3100ff00c05138fcc5f3bd00000000ef3100ffc030393efc7ca2bd00000000ef3100ffaa359d3ef7bdadbe00000000ef3100ffc030393ef7bdadbe00000000ef3100ffaa359d3eeca89a3e00000000ef3100ff1873a7be69fbb7be00000000fba700ffd6c54dbe8780a3be00000000fba700ff14d024be69fbb7be00000000fba700ff37f892be8780a3be00000000fba700ff37f892beb17c763e00000000fba700ff1873a7be8013ba3e00000000fba700ff14d024bee27910be00000000fba700ffd6c54dbee00390bc00000000fba700ff00c07b38caa61cbe00000000fba700ff00c05138a443aebd00000000fba700ffe0df843caef505be00000000fba700ff3af8923e3572763e00000000fba700ff1a73a73e1f16ba3e00000000fba700ff008051b81f16babe00000000fba700ff008051b8152797be00000000fba700ffe0b5243e867c10be00000000fba700ffe0b5243e69fbb7be00000000fba700ff3af8923e8780a3be00000000fba700ff1a73a73e69fbb7be00000000fba700ffa0ab4d3e8780a3be00000000fba700ffa0ab4d3ee00390bc00000000fba700ff
+    _typelessdata: d9a3f5c16abc07c200000000ef3100ff92c290c150e3fdc000000000ef3100ff92c290c16abc07c200000000ef3100ffd9a3f5c1f1a7f14100000000ef3100ff00e0a3bb6abc03c200000000ef3100ff00c0a33bb0723ec100000000ef3100ff14ae904150e3fdc000000000ef3100ffd8a3f5416abc07c200000000ef3100ff14ae90416abc07c200000000ef3100ffd8a3f541f1a7f14100000000ef3100ffecd102c26abc0fc200000000fba700ff92c2a0c1d478ffc100000000fba700ff92c280c16abc0fc200000000fba700ffd9a3e5c1d478ffc100000000fba700ffd9a3e5c16a91c04100000000fba700ffecd102c23c5f114200000000fba700ff92c280c174be61c100000000fba700ff92c2a0c12006e1bf00000000fba700ff0080c43b9cc474c100000000fba700ff00c0a33bdc2408c100000000fba700ffa09dcf3fe04f51c100000000fba700ffd8a3e5413989c04100000000fba700ffecd102424861114200000000fba700ff00e0a3bb486111c200000000fba700ff00e0a3bb102decc100000000fba700ff14ae804190c261c100000000fba700ff14ae80416abc0fc200000000fba700ffd8a3e541d478ffc100000000fba700ffecd102426abc0fc200000000fba700ff14aea041d478ffc100000000fba700ff14aea0412006e1bf00000000fba700ff
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -166,8 +166,8 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 0.000000029802322, y: 0, z: 0}
-    m_Extent: {x: 0.32705, y: 0.36345002, z: 0}
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 32.705, y: 36.345, z: 0}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
