@@ -11,32 +11,32 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
-        [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
-        [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
+        [Inject] public NewDeckSignal newDeckSignal { get; set; }
+        [Inject] public RemoveDeckSignal removeDeckSignal { get; set; }
 
         public override void OnRegister()
         {
-            addCardToDeck.AddListener(onAddToDeck);
-            removeCardFromDeck.AddListener(onRemoveFromDeck);
+            newDeckSignal.AddListener(onAddToDeck);
+            removeDeckSignal.AddListener(onRemoveFromDeck);
             view.init(loader);
         }
 
         public override void onRemove()
         {
-            addCardToDeck.RemoveListener(onAddToDeck);
-            removeCardFromDeck.RemoveListener(onRemoveFromDeck);
+            newDeckSignal.RemoveListener(onAddToDeck);
+            removeDeckSignal.RemoveListener(onRemoveFromDeck);
         }
 
         public void Update()
         {
         }
 
-        private void onAddToDeck(CardModel card)
+        private void onAddToDeck(DeckModel deck)
         {
-            view.addCard(card);
+            view.addDeck(deck);
         }
 
-        private void onRemoveFromDeck(CardModel card)
+        private void onRemoveFromDeck(DeckModel card)
         {
             view.removeCard(card);
         }

@@ -6,11 +6,11 @@ namespace ctac
     public enum Races
     {
         Neutral = 0,
-        Vesudari = 1,
+        Venusians = 1,
         Earthlings = 2,
         Martians = 3,
         Grex = 4,
-        Aensians = 5,
+        Phaenon = 5,
         Lost = 6,
     }
 }

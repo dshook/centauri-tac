@@ -8,23 +8,23 @@ namespace ctac
 {
     public class DeckHolderView : View
     {
-        public GameObject miniCardsHolder;
+        public GameObject contentHolder;
         RectTransform holderRectTransform;
         RectTransform scrollRectTransform;
 
         IResourceLoaderService loader;
 
-        List<MiniCardView> cardList = new List<MiniCardView>();
+        List<DeckListView> decksList = new List<DeckListView>();
 
         internal void init(IResourceLoaderService l)
         {
             loader = l;
-            holderRectTransform = miniCardsHolder.GetComponent<RectTransform>();
+            holderRectTransform = contentHolder.GetComponent<RectTransform>();
 
             var scrollRect = GetComponentInChildren<ScrollRect>();
             scrollRectTransform = scrollRect.gameObject.GetComponent<RectTransform>();
 
-            miniCardsHolder.transform.DestroyChildren(true);
+            contentHolder.transform.DestroyChildren(true);
             UpdateList();
         }
 
@@ -32,90 +32,58 @@ namespace ctac
         {
         }
 
-        internal void addCard(CardModel card)
+        internal void addDeck(DeckModel deck)
         {
-            //first check to see if we already have this card in the deck and thus we can just increase the quantity
-            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == card.cardTemplateId);
-
-            if (foundCard != null)
-            {
-                if (foundCard.quantity == 2 || foundCard.card.rarity == Rarities.Mythical)
-                {
-                    //message pops up
-                    return;
-                }
-                foundCard.quantity++;
-                foundCard.UpdateText();
-            }
-            else
-            {
-                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform));
-                UpdateList();
-            }
+            decksList.Add(CreateDeckList(deck, contentHolder.transform));
+            UpdateList();
         }
 
-        internal void removeCard(CardModel card)
+        internal void removeCard(DeckModel deck)
         {
-            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == card.cardTemplateId);
-            if (foundCard == null) return;
-
-            if (foundCard.quantity > 1)
-            {
-                foundCard.quantity--;
-                foundCard.UpdateText();
-            }
-            else
-            {
-                cardList.Remove(foundCard);
-                Destroy(foundCard.card.gameObject);
-                UpdateList();
-            }
+            decksList.Remove(deck.deckListView);
+            Destroy(deck.deckListView.gameObject);
+            UpdateList();
         }
 
         //sort and reposition list by cost
         void UpdateList()
         {
-            cardList = cardList.OrderBy(c => c.card.cost).ToList();
-            const float cardHeight = 25;
+            decksList = decksList.OrderBy(d => d.deck.id).ToList();
+            const float deckListHeight = 34;
             const float padding = 5f;
-            var contentHeight = cardHeight * cardList.Count + padding;
+            var contentHeight = deckListHeight * decksList.Count + padding;
             contentHeight = Mathf.Max(contentHeight, scrollRectTransform.sizeDelta.y);
             holderRectTransform.sizeDelta = new Vector2(holderRectTransform.sizeDelta.x, contentHeight);
 
-            for(int i = 0; i < cardList.Count; i++)
+            for(int i = 0; i < decksList.Count; i++)
             {
-                cardList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (cardHeight * i));
+                decksList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (deckListHeight * i));
             }
         }
 
-        public MiniCardView CreateMiniCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null)
+        public DeckListView CreateDeckList(DeckModel deck, Transform parent)
         {
-            var cardPrefab = loader.Load<GameObject>("MiniCard");
+            var deckPrefab = loader.Load<GameObject>("DeckList");
 
-            var newCard = GameObject.Instantiate(
-                cardPrefab,
-                spawnPosition ?? Constants.cardSpawnPosition,
+            var newDeck = GameObject.Instantiate(
+                deckPrefab,
+                Constants.cardSpawnPosition,
                 Quaternion.identity
             ) as GameObject;
             if (parent != null)
             {
-                newCard.transform.SetParent(parent, false);
+                newDeck.transform.SetParent(parent, false);
             }
-            newCard.name = "Template " + cardModel.cardTemplateId + " Card " + cardModel.id;
+            newDeck.name = deck.name;
 
-            //copy to new card model so we won't affect the actual card display
-            var miniCardModel = new CardModel();
-            ObjectPropertyCopy.CopyProperties(cardModel, miniCardModel);
-            miniCardModel.cardView = null;
+            var deckListView = newDeck.AddComponent<DeckListView>();
+            deckListView.deck = deck;
+            deck.deckListView = deckListView;
 
-            miniCardModel.gameObject = newCard;
-            miniCardModel.rectTransform = newCard.GetComponent<RectTransform>();
+            //TODO: id from server prolly
+            deck.id = decksList.Count == 0 ? 0 : decksList.Max(d => d.deck.id) + 1;
 
-            var miniCardView = newCard.AddComponent<MiniCardView>();
-            miniCardView.card = miniCardModel;
-            miniCardView.quantity = 1;
-
-            return miniCardView;
+            return deckListView;
         }
 
 

@@ -1,7 +1,6 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
 using System.Collections;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace ctac
@@ -19,9 +18,24 @@ namespace ctac
 
         [Inject] public CardsKickoffSignal cardKickoff { get; set; }
 
+        [Inject] public NewDeckSignal newDeck { get; set; }
+        [Inject] public EditDeckSignal editDeck { get; set; }
+        [Inject] public SaveDeckSignal saveDeck { get; set; }
+        [Inject] public RemoveDeckSignal removeDeck { get; set; }
+        [Inject] public CancelDeckSignal cancelDeck { get; set; }
+
         public override void OnRegister()
         {
             view.clickLeaveSignal.AddListener(onLeaveClicked);
+
+            view.clickNewDeckSignal.AddListener(onNewDeck);
+            view.clickSaveDeckSignal.AddListener(onSaveDeck);
+            view.clickCancelDeckSignal.AddListener(onCancelDeck);
+
+            editDeck.AddListener(onEditDeck);
+            saveDeck.AddListener(onSaveDeck);
+            cancelDeck.AddListener(onCancelDeck);
+
             cardKickoff.AddListener(onKickoff);
 
             view.init(cardService, cardDirectory);
@@ -31,6 +45,14 @@ namespace ctac
         {
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             cardKickoff.RemoveListener(onKickoff);
+
+            view.clickNewDeckSignal.RemoveListener(onNewDeck);
+            view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
+            view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
+
+            editDeck.RemoveListener(onEditDeck);
+            saveDeck.RemoveListener(onSaveDeck);
+            cancelDeck.RemoveListener(onCancelDeck);
         }
 
         public void Update()
@@ -40,6 +62,30 @@ namespace ctac
         private void onKickoff()
         {
             view.UpdateCards();
+        }
+
+        private void onNewDeck(Races raceSelected)
+        {
+            var dm = new DeckModel()
+            {
+                name = "Deck Fraiche",
+                race = raceSelected
+            };
+            newDeck.Dispatch(dm);
+            editDeck.Dispatch(dm);
+        }
+
+        private void onEditDeck(DeckModel deck)
+        {
+            view.onEditDeck(deck);
+        }
+
+        private void onSaveDeck(DeckModel deck)
+        {
+        }
+
+        private void onCancelDeck()
+        {
         }
 
         private void onLeaveClicked()

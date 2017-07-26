@@ -12,17 +12,34 @@ namespace ctac
     public class CardsMenuView : View
     {
         public Signal clickLeaveSignal = new Signal();
+        public Signal<Races> clickNewDeckSignal = new Signal<Races>();
+        public Signal<DeckModel> clickSaveDeckSignal = new Signal<DeckModel>();
+        public Signal clickCancelDeckSignal = new Signal();
 
         public Button leaveButton;
         public Button prevButton;
         public Button nextButton;
+        public Button newDeckButton;
+        public Button saveDeckButton;
+        public Button cancelDeckButton;
         public Slider energySlider;
         public TMP_InputField searchBox;
+
+        public Button venusiansButton;
+        public Button earthlingsButton;
+        public Button martiansButton;
+        public Button grexButton;
+        public Button phaenonButton;
+        public Button lostButton;
 
         ICardService cardService;
         CardDirectory cardDirectory;
 
-        GameObject cardHolder;
+        public GameObject cardHolder;
+        public GameObject cardControls;
+        public GameObject factionSelection;
+        public GameObject deckHolder;
+        public GameObject deckEditHolder;
         
         const int pageSize = 8;
         const int rowSize = 4;
@@ -36,18 +53,33 @@ namespace ctac
         int? energyFilter = null;
         string stringFilter = null;
 
+        DeckModel editingDeck = null;
+
         internal void init(ICardService cs, CardDirectory cd)
         {
             cardService = cs;
             cardDirectory = cd;
 
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
+            newDeckButton.onClick.AddListener(onNewDeckClick);
+            saveDeckButton.onClick.AddListener(onSaveDeckClick);
+            cancelDeckButton.onClick.AddListener(onCancelDeckClick);
+
+            venusiansButton.onClick.AddListener(() => onFactionSelect(Races.Venusians));
+            earthlingsButton.onClick.AddListener(() => onFactionSelect(Races.Earthlings));
+            martiansButton.onClick.AddListener(() => onFactionSelect(Races.Martians));
+            grexButton.onClick.AddListener(() => onFactionSelect(Races.Grex));
+            phaenonButton.onClick.AddListener(() => onFactionSelect(Races.Phaenon));
+            lostButton.onClick.AddListener(() => onFactionSelect(Races.Lost));
+
             prevButton.onClick.AddListener(onPrevButton);
             nextButton.onClick.AddListener(onNextButton);
             energySlider.onValueChanged.AddListener(onEnergySlider);
             searchBox.onValueChanged.AddListener(onSearchChange);
 
-            cardHolder = GameObject.Find("CardHolder").gameObject;
+            //cardHolder = GameObject.Find("CardHolder").gameObject;
+            //cardControls = GameObject.Find("CardControls").gameObject;
+            //factionSelection = GameObject.Find("FactionSelection").gameObject;
 
             cardHolder.transform.DestroyChildren(true);
 
@@ -186,6 +218,65 @@ namespace ctac
             UpdateCards();
         }
 
+        void onNewDeckClick()
+        {
+            //swip swap the cards showing for the race selection buttons
+            ShowRaceSelectionButtons(true);
+        }
+
+        void onFactionSelect(Races race)
+        {
+            ShowRaceSelectionButtons(false);
+            clickNewDeckSignal.Dispatch(race);
+        }
+
+        internal void onEditDeck(DeckModel deck)
+        {
+            editingDeck = deck;
+            ShowDeckHolder(false);
+            //todo: filter cards based on race of deck
+        }
+
+        void onSaveDeckClick()
+        {
+            clickSaveDeckSignal.Dispatch(editingDeck);
+            editingDeck = null;
+            ShowDeckHolder(true);
+        }
+        
+        void onCancelDeckClick()
+        {
+            editingDeck = null;
+            ShowDeckHolder(true);
+            clickCancelDeckSignal.Dispatch();
+        }
+
+        //swap the cards out for faction selection buttons
+        void ShowRaceSelectionButtons(bool show)
+        {
+            cardHolder.SetActive(!show);
+            cardControls.SetActive(!show);
+            factionSelection.SetActive(show);
+        }
+
+        //Show either deck holder, or the deck edit holder
+        void ShowDeckHolder(bool show)
+        {
+            float showXPos = 5f;
+            float hideXPos = 222f;
+            var deckHolderRect = deckHolder.GetComponent<RectTransform>();
+            var deckEditHolderRect = deckEditHolder.GetComponent<RectTransform>();
+            if (show)
+            {
+                deckHolderRect.anchoredPosition3D = deckHolderRect.anchoredPosition3D.SetX(showXPos);
+                deckEditHolderRect.anchoredPosition3D = deckEditHolderRect.anchoredPosition3D.SetX(hideXPos);
+            }
+            else
+            {
+                deckHolderRect.anchoredPosition3D = deckHolderRect.anchoredPosition3D.SetX(hideXPos);
+                deckEditHolderRect.anchoredPosition3D = deckEditHolderRect.anchoredPosition3D.SetX(showXPos);
+            }
+        }
     }
 }
 
