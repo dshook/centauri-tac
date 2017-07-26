@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using strange.extensions.mediation.impl;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 
 namespace ctac
 {
     public class DeckEditHolderView : View
     {
         public GameObject miniCardsHolder;
+        public GameObject deckName;
+
         RectTransform holderRectTransform;
         RectTransform scrollRectTransform;
+        TMP_InputField deckNameText;
 
         IResourceLoaderService loader;
 
+        DeckModel deck;
         List<MiniCardView> cardList = new List<MiniCardView>();
 
         internal void init(IResourceLoaderService l)
@@ -24,12 +29,32 @@ namespace ctac
             var scrollRect = GetComponentInChildren<ScrollRect>();
             scrollRectTransform = scrollRect.gameObject.GetComponent<RectTransform>();
 
+            deckNameText = deckName.GetComponent<TMP_InputField>();
+
             miniCardsHolder.transform.DestroyChildren(true);
             UpdateList();
         }
 
         void Update()
         {
+        }
+
+        internal void EditDeck(DeckModel editingDeck)
+        {
+            //if we're editing the same deck we should be good on resetting
+            if (editingDeck == deck) return;
+
+            //blow everything away
+            cardList.Clear();
+            miniCardsHolder.transform.DestroyChildren(true);
+
+            deck = editingDeck;
+            deckNameText.text = deck.name;
+
+            foreach (var card in deck.Cards)
+            {
+                addCard(card);
+            }
         }
 
         internal void addCard(CardModel card)

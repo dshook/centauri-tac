@@ -995,6 +995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miniCardsHolder: {fileID: 995871929}
+  deckName: {fileID: 798115290}
 --- !u!1 &358586492
 GameObject:
   m_ObjectHideFlags: 0
