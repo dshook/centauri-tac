@@ -30,6 +30,7 @@ namespace ctac
             scrollRectTransform = scrollRect.gameObject.GetComponent<RectTransform>();
 
             deckNameText = deckName.GetComponent<TMP_InputField>();
+            deckNameText.onValueChanged.AddListener(DeckNameChange);
 
             miniCardsHolder.transform.DestroyChildren(true);
             UpdateList();
@@ -55,6 +56,11 @@ namespace ctac
             {
                 addCard(card);
             }
+        }
+
+        internal void DeckNameChange(string value)
+        {
+            deck.name = value;
         }
 
         internal void addCard(CardModel card)

@@ -17,6 +17,7 @@ namespace ctac
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
         [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
+        [Inject] public EditDeckSignal editDeck { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -44,29 +45,37 @@ namespace ctac
             activateCard.RemoveListener(onCardActivated);
         }
 
-        //for clicking on a card directly
+        //for clicking on a thing.
+        //TODO: prolly a better way to do this by tag or something
         private void onClick(GameObject clickedObject, Vector3 point)
         {
-            if (clickedObject != null)
-            {
-                var cardView = clickedObject.GetComponent<CardView>();
-                var miniCardView = clickedObject.GetComponent<MiniCardView>();
-                if (cardView != null)
-                {
-                    draggedCard = cardView.card;
-                    addCardToDeck.Dispatch(draggedCard);
-                }
-                else if (miniCardView != null)
-                {
-                    removeCardFromDeck.Dispatch(miniCardView.card);
-                }
-
-            }
-            else
+            if (clickedObject == null)
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
+                return;
             }
+
+            var cardView = clickedObject.GetComponent<CardView>();
+            if (cardView != null)
+            {
+                draggedCard = cardView.card;
+                addCardToDeck.Dispatch(draggedCard);
+                return;
+            }
+
+            var miniCardView = clickedObject.GetComponent<MiniCardView>();
+            if (miniCardView != null)
+            {
+                removeCardFromDeck.Dispatch(miniCardView.card);
+            }
+
+            var deckList = clickedObject.GetComponent<DeckListView>();
+            if (deckList != null)
+            {
+                editDeck.Dispatch(deckList.deck);
+            }
+
         }
 
         //when you try to activate a card either by the click and drag click up or a click on a tile/piece

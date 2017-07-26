@@ -35,13 +35,16 @@ namespace ctac {
 
         void Update()
         {
+            if (deck == null) return;
+
+            nameText.text = deck.name;
+            bgImage.color = Colors.RacePrimaries[deck.race];
         }
 
         public void UpdateText()
         {
             //ResetTextColors();
 
-            nameText.text = deck.name;
 
             //switch (card.rarity)
             //{

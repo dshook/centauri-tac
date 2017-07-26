@@ -50,8 +50,8 @@ namespace ctac
         {
             decksList = decksList.OrderBy(d => d.deck.id).ToList();
             const float deckListHeight = 34;
-            const float padding = 5f;
-            var contentHeight = deckListHeight * decksList.Count + padding;
+            const float margin = 10f;
+            var contentHeight = deckListHeight * decksList.Count + margin;
             contentHeight = Mathf.Max(contentHeight, scrollRectTransform.sizeDelta.y);
             holderRectTransform.sizeDelta = new Vector2(holderRectTransform.sizeDelta.x, contentHeight);
 
