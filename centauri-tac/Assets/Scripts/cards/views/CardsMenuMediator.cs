@@ -1,6 +1,7 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 namespace ctac
@@ -60,11 +61,21 @@ namespace ctac
             view.UpdateCards();
         }
 
+        static Dictionary<Races, string> starterDeckNames = new Dictionary<Races, string>()
+        {
+            {Races.Venusians, "Victory by Patience" },
+            {Races.Earthlings, "Easy PZ" },
+            {Races.Martians, "March to Victory" },
+            {Races.Grex, "Gratuitous Explosions" },
+            {Races.Phaenon, "Phenom Phaenon" },
+            {Races.Lost, "Laconic Style" },
+        };
+ 
         private void onNewDeck(Races raceSelected)
         {
             var dm = new DeckModel()
             {
-                name = "Deck Fraiche",
+                name = starterDeckNames[raceSelected],
                 race = raceSelected
             };
             newDeck.Dispatch(dm);

@@ -124,8 +124,8 @@ namespace ctac
         {
             cardList = cardList.OrderBy(c => c.card.cost).ToList();
             const float cardHeight = 25;
-            const float padding = 5f;
-            var contentHeight = cardHeight * cardList.Count + padding;
+            const float margin = 5f;
+            var contentHeight = cardHeight * cardList.Count + margin;
             contentHeight = Mathf.Max(contentHeight, scrollRectTransform.sizeDelta.y);
             holderRectTransform.sizeDelta = new Vector2(holderRectTransform.sizeDelta.x, contentHeight);
 

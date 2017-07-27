@@ -49,15 +49,15 @@ namespace ctac
         void UpdateList()
         {
             decksList = decksList.OrderBy(d => d.deck.id).ToList();
-            const float deckListHeight = 34;
-            const float margin = 10f;
+            const float deckListHeight = 36;
+            const float margin = 5f;
             var contentHeight = deckListHeight * decksList.Count + margin;
             contentHeight = Mathf.Max(contentHeight, scrollRectTransform.sizeDelta.y);
             holderRectTransform.sizeDelta = new Vector2(holderRectTransform.sizeDelta.x, contentHeight);
 
             for(int i = 0; i < decksList.Count; i++)
             {
-                decksList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (deckListHeight * i));
+                decksList[i].gameObject.transform.localPosition = new Vector3(81f, -20 - (deckListHeight * i));
             }
         }
 
