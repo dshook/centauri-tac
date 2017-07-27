@@ -66,7 +66,9 @@ namespace ctac
         //Convert all our card views
         internal void SaveDeck(DeckModel savingDeck)
         {
-
+            savingDeck.cards = cardList
+                .Select(c => new CardInDeckModel() { cardTemplateId = c.card.cardTemplateId, quantity = c.quantity } )
+                .ToList();
         }
 
         internal void DeckNameChange(string value)

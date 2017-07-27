@@ -33,8 +33,6 @@ namespace ctac
             view.clickCancelDeckSignal.AddListener(onCancelDeck);
 
             editDeck.AddListener(onEditDeck);
-            saveDeck.AddListener(onSaveDeck);
-            cancelDeck.AddListener(onCancelDeck);
 
             cardKickoff.AddListener(onKickoff);
 
@@ -51,8 +49,6 @@ namespace ctac
             view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
 
             editDeck.RemoveListener(onEditDeck);
-            saveDeck.RemoveListener(onSaveDeck);
-            cancelDeck.RemoveListener(onCancelDeck);
         }
 
         public void Update()
@@ -82,10 +78,12 @@ namespace ctac
 
         private void onSaveDeck(DeckModel deck)
         {
+            saveDeck.Dispatch(deck);
         }
 
         private void onCancelDeck()
         {
+            cancelDeck.Dispatch();
         }
 
         private void onLeaveClicked()
