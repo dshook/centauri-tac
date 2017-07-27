@@ -81,7 +81,13 @@ namespace ctac
 
         internal void addCard(int cardTemplateId, int quantity = 1)
         {
-            //first check to see if we already have this card in the deck and thus we can just increase the quantity
+            if (quantity + CardCount() > 30)
+            {
+                //TODO: max cards message
+                return;
+            }
+
+            //check to see if we already have this card in the deck and thus we can just increase the quantity
             var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == cardTemplateId);
 
             if (foundCard != null)
