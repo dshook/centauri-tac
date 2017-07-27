@@ -58,7 +58,7 @@ namespace ctac
                 else
                 {
                     //only dispatch click signal if it was fast enough and not a drag
-                    if (hoverHit.HasValue && (Time.time - clickTime < dragMin))
+                    if (hoverHit.HasValue && hoverHit.Value.collider != null && (Time.time - clickTime < dragMin))
                     {
                         clickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
                     }

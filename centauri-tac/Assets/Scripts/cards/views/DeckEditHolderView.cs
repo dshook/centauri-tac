@@ -11,6 +11,7 @@ namespace ctac
     {
         public GameObject miniCardsHolder;
         public GameObject deckName;
+        public TextMeshProUGUI deckCounter;
 
         RectTransform holderRectTransform;
         RectTransform scrollRectTransform;
@@ -36,6 +37,7 @@ namespace ctac
 
             miniCardsHolder.transform.DestroyChildren(true);
             UpdateList();
+            UpdateCounter();
         }
 
         void Update()
@@ -61,6 +63,7 @@ namespace ctac
                     addCard(card.cardTemplateId, card.quantity);
                 }
             }
+            UpdateCounter();
         }
 
         //Convert all our card views
@@ -90,6 +93,7 @@ namespace ctac
                 }
                 foundCard.quantity++;
                 foundCard.UpdateText();
+                UpdateCounter();
             }
             else if (quantity > 2) {
                 //TODO: message also pops up
@@ -98,6 +102,7 @@ namespace ctac
             {
                 cardList.Add(CreateMiniCard(cardTemplateId, miniCardsHolder.transform, quantity));
                 UpdateList();
+                UpdateCounter();
             }
         }
 
@@ -117,6 +122,7 @@ namespace ctac
                 Destroy(foundCard.card.gameObject);
                 UpdateList();
             }
+            UpdateCounter();
         }
 
         //sort and reposition list by cost
@@ -133,6 +139,11 @@ namespace ctac
             {
                 cardList[i].gameObject.transform.localPosition = new Vector3(81f, -15 - (cardHeight * i));
             }
+        }
+
+        void UpdateCounter()
+        {
+            deckCounter.text = string.Format("{0}/{1}", CardCount(), 30);
         }
 
         public MiniCardView CreateMiniCard(int cardTemplateId, Transform parent, int quantity)
@@ -162,6 +173,11 @@ namespace ctac
             return miniCardView;
         }
 
+        int CardCount()
+        {
+            return (cardList == null || cardList.Count == 0) ? 0 
+                : cardList.Sum(c => c.quantity);
+        }
 
     }
 }
