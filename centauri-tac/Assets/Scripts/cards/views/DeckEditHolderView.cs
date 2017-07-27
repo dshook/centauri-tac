@@ -17,13 +17,15 @@ namespace ctac
         TMP_InputField deckNameText;
 
         IResourceLoaderService loader;
+        CardDirectory directory;
 
         DeckModel deck;
         List<MiniCardView> cardList = new List<MiniCardView>();
 
-        internal void init(IResourceLoaderService l)
+        internal void init(IResourceLoaderService l, CardDirectory d)
         {
             loader = l;
+            directory = d;
             holderRectTransform = miniCardsHolder.GetComponent<RectTransform>();
 
             var scrollRect = GetComponentInChildren<ScrollRect>();
@@ -50,12 +52,21 @@ namespace ctac
             miniCardsHolder.transform.DestroyChildren(true);
 
             deck = editingDeck;
-            deckNameText.text = deck.name;
-
-            foreach (var card in deck.Cards)
+            if (deck != null)
             {
-                addCard(card);
+                deckNameText.text = deck.name;
+
+                foreach (var card in deck.cards)
+                {
+                    addCard(card.cardTemplateId, card.quantity);
+                }
             }
+        }
+
+        //Convert all our card views
+        internal void SaveDeck(DeckModel savingDeck)
+        {
+
         }
 
         internal void DeckNameChange(string value)
@@ -63,24 +74,27 @@ namespace ctac
             deck.name = value;
         }
 
-        internal void addCard(CardModel card)
+        internal void addCard(int cardTemplateId, int quantity = 1)
         {
             //first check to see if we already have this card in the deck and thus we can just increase the quantity
-            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == card.cardTemplateId);
+            var foundCard = cardList.FirstOrDefault(c => c.card.cardTemplateId == cardTemplateId);
 
             if (foundCard != null)
             {
-                if (foundCard.quantity == 2 || foundCard.card.rarity == Rarities.Mythical)
+                if (foundCard.quantity == 2 || foundCard.quantity + quantity > 2 || foundCard.card.rarity == Rarities.Mythical)
                 {
-                    //message pops up
+                    //TODO: message pops up
                     return;
                 }
                 foundCard.quantity++;
                 foundCard.UpdateText();
             }
+            else if (quantity > 2) {
+                //TODO: message also pops up
+            }
             else
             {
-                cardList.Add(CreateMiniCard(card, miniCardsHolder.transform));
+                cardList.Add(CreateMiniCard(cardTemplateId, miniCardsHolder.transform, quantity));
                 UpdateList();
             }
         }
@@ -119,25 +133,22 @@ namespace ctac
             }
         }
 
-        public MiniCardView CreateMiniCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null)
+        public MiniCardView CreateMiniCard(int cardTemplateId, Transform parent, int quantity)
         {
             var cardPrefab = loader.Load<GameObject>("MiniCard");
 
             var newCard = GameObject.Instantiate(
                 cardPrefab,
-                spawnPosition ?? Constants.cardSpawnPosition,
+                Constants.cardSpawnPosition,
                 Quaternion.identity
             ) as GameObject;
             if (parent != null)
             {
                 newCard.transform.SetParent(parent, false);
             }
-            newCard.name = "Template " + cardModel.cardTemplateId + " Card " + cardModel.id;
+            newCard.name = "Card Template " + cardTemplateId;
 
-            //copy to new card model so we won't affect the actual card display
-            var miniCardModel = new CardModel();
-            ObjectPropertyCopy.CopyProperties(cardModel, miniCardModel);
-            miniCardModel.cardView = null;
+            var miniCardModel = directory.NewFromTemplate(0, cardTemplateId, 0);
 
             miniCardModel.gameObject = newCard;
             miniCardModel.rectTransform = newCard.GetComponent<RectTransform>();
