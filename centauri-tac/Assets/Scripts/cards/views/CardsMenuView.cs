@@ -25,6 +25,16 @@ namespace ctac
         public Slider energySlider;
         public TMP_InputField searchBox;
 
+        public Toggle venusiansToggle;
+        public Toggle earthlingsToggle;
+        public Toggle martiansToggle;
+        public Toggle grexToggle;
+        public Toggle phaenonToggle;
+        public Toggle lostToggle;
+        public Toggle neutralToggle;
+
+        Dictionary<Races, Toggle> raceToggles;
+
         public Button venusiansButton;
         public Button earthlingsButton;
         public Button martiansButton;
@@ -52,6 +62,7 @@ namespace ctac
         int prevOffset = -1;
         int? energyFilter = null;
         string stringFilter = null;
+        Dictionary<Races, bool> raceFilters;
 
         DeckModel editingDeck = null;
 
@@ -77,11 +88,28 @@ namespace ctac
             energySlider.onValueChanged.AddListener(onEnergySlider);
             searchBox.onValueChanged.AddListener(onSearchChange);
 
-            //cardHolder = GameObject.Find("CardHolder").gameObject;
-            //cardControls = GameObject.Find("CardControls").gameObject;
-            //factionSelection = GameObject.Find("FactionSelection").gameObject;
-
             cardHolder.transform.DestroyChildren(true);
+
+            //manually wire this up for now
+            raceFilters = new Dictionary<Races, bool>();
+            raceToggles = new Dictionary<Races, Toggle>()
+            {
+                {Races.Venusians, venusiansToggle },
+                {Races.Earthlings, earthlingsToggle },
+                {Races.Martians, martiansToggle },
+                {Races.Grex, grexToggle },
+                {Races.Phaenon, phaenonToggle },
+                {Races.Lost, lostToggle },
+                {Races.Neutral, neutralToggle },
+            };
+            foreach (var toggle in raceToggles)
+            {
+                toggle.Value.isOn = false;
+                toggle.Value.interactable = true;
+                toggle.Value.onValueChanged.AddListener((value) => onToggleSelect(value, toggle.Key));
+                raceFilters.Add(toggle.Key, false);
+
+            }
 
             //create all the card game objects that will be recycled
             for (var c = 0; c < cardBufferSize; c++)
@@ -98,10 +126,16 @@ namespace ctac
         {
         }
 
-        internal void UpdateCards()
+        //OPTIMIZATION: the filtering of cards could be separated from the paging of cards so you don't refilter each time you page
+        internal void UpdateCards(bool resetPage = false)
         {
+            if (resetPage)
+            {
+                offset = 0;
+            }
             bool isForward = offset > prevOffset;
             prevOffset = offset;
+            var allowAllRaces = !raceFilters.Any(c => c.Value == true);
 
             var cardList = cardDirectory.directory
                 .Where(c => !c.uncollectible && !c.isHero)
@@ -111,6 +145,7 @@ namespace ctac
                     || c.description.ToLower().Contains(stringFilter) 
                     || c.tags.Any(t => t.ToLower().Contains(stringFilter))
                 )
+                .Where(c => allowAllRaces || raceFilters[c.race] )
                 .Skip(offset)
                 .Take(pageSize)
                 .ToList(); 
@@ -207,15 +242,13 @@ namespace ctac
                 energyFilter = (int)value;
             }
             //reset what page we're on when filtering
-            offset = 0;
-            UpdateCards();
+            UpdateCards(true);
         }
 
         void onSearchChange(string value)
         {
             stringFilter = value.ToLower();
-            offset = 0;
-            UpdateCards();
+            UpdateCards(true);
         }
 
         void onNewDeckClick()
@@ -228,6 +261,12 @@ namespace ctac
         {
             ShowRaceSelectionButtons(false);
             clickNewDeckSignal.Dispatch(race);
+        }
+
+        void onToggleSelect(bool status, Races race)
+        {
+            raceFilters[race] = status;
+            UpdateCards(true);
         }
 
         internal void onEditDeck(DeckModel deck)
