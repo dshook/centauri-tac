@@ -170,7 +170,6 @@ namespace ctac
                 rectTrans.anchoredPosition3D = rectTrans.anchoredPosition3D + animDestPosition;
             }
 
-
             //now copy all the card props to the surrogate cards and animate them in
             for (int c = 0; c < cards.Count; c++)
             {
@@ -206,7 +205,14 @@ namespace ctac
                 var destPosition = new Vector3(xPos, yPos);
                 surrogateCard.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
                 surrogateCard.rectTransform.anchoredPosition3D = destPosition;
+                surrogateCard.gameObject.SetActive(true);
                 //iTweenExtensions.MoveToLocal(card.gameObject, destPosition, animTime, 0f);
+            }
+
+            //now disable any straggling cards for this page, like if there's only 1 card on the page disable the other 7
+            for (int c = cards.Count + createdCardOffset; c < pageSize + createdCardOffset; c++)
+            {
+                createdCards[c].gameObject.SetActive(false);
             }
 
             //swip swap the next cards to use by either incrimenting or resetting the created card offset
