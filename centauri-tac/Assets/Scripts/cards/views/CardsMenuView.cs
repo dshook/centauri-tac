@@ -60,6 +60,7 @@ namespace ctac
 
         int offset = 0;
         int prevOffset = -1;
+        int remainingCardsToShow = 0;
         int? energyFilter = null;
         string stringFilter = null;
         Dictionary<Races, bool> raceFilters;
@@ -140,16 +141,16 @@ namespace ctac
             var cardList = cardDirectory.directory
                 .Where(c => !c.uncollectible && !c.isHero)
                 .Where(c => !energyFilter.HasValue || c.cost == energyFilter.Value)
-                .Where(c => String.IsNullOrEmpty(stringFilter) 
-                    || c.name.ToLower().Contains(stringFilter) 
-                    || c.description.ToLower().Contains(stringFilter) 
+                .Where(c => String.IsNullOrEmpty(stringFilter)
+                    || c.name.ToLower().Contains(stringFilter)
+                    || c.description.ToLower().Contains(stringFilter)
                     || c.tags.Any(t => t.ToLower().Contains(stringFilter))
                 )
-                .Where(c => allowAllRaces || raceFilters[c.race] )
-                .Skip(offset)
-                .Take(pageSize)
-                .ToList(); 
-            DisplayCards(cardList, isForward);
+                .Where(c => allowAllRaces || raceFilters[c.race]);
+
+            remainingCardsToShow = cardList.Count() - offset - pageSize;
+
+            DisplayCards(cardList.Skip(offset).Take(pageSize).ToList(), isForward);
         }
 
         //Should just be the 8 cards to display
@@ -229,8 +230,8 @@ namespace ctac
 
         void onNextButton()
         {
-            //don't need to do anything at the end
-            if (offset + pageSize >= cardDirectory.directory.Count) return;
+            //don't need to do anything when we've run out of cards to show with the filters
+            if (remainingCardsToShow <= 0) return;
 
             offset += pageSize;
             if (offset == prevOffset) return; //skip work we don't need to do
