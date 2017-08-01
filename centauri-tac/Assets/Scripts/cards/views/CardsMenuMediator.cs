@@ -89,11 +89,13 @@ namespace ctac
 
         private void onSaveDeck(DeckModel deck)
         {
+            view.ResetRaceFilters();
             saveDeck.Dispatch(deck);
         }
 
         private void onCancelDeck()
         {
+            view.ResetRaceFilters();
             cancelDeck.Dispatch();
         }
 

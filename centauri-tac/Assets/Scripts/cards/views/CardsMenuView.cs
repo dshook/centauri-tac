@@ -280,7 +280,7 @@ namespace ctac
         {
             editingDeck = deck;
             ShowDeckHolder(false);
-            //todo: filter cards based on race of deck
+            LimitRaceFilters(deck.race);
         }
 
         void onSaveDeckClick()
@@ -321,6 +321,30 @@ namespace ctac
             {
                 deckHolderRect.anchoredPosition3D = deckHolderRect.anchoredPosition3D.SetX(hideXPos);
                 deckEditHolderRect.anchoredPosition3D = deckEditHolderRect.anchoredPosition3D.SetX(showXPos);
+            }
+        }
+
+        //limit the faction selections to neutral and a particular race
+        internal void LimitRaceFilters(Races race)
+        {
+            foreach (var toggle in raceToggles)
+            {
+                toggle.Value.isOn = false;
+                toggle.Value.interactable = false;
+            }
+
+            raceToggles[race].isOn = true;
+            raceToggles[race].interactable = true;
+
+            raceToggles[Races.Neutral].interactable = true;
+        }
+
+        internal void ResetRaceFilters()
+        {
+            foreach (var toggle in raceToggles)
+            {
+                toggle.Value.isOn = false;
+                toggle.Value.interactable = true;
             }
         }
     }
