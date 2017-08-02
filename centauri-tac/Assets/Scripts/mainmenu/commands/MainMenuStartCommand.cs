@@ -35,8 +35,8 @@ namespace ctac
             }
             catch (Exception)
             {
-                debug.LogWarning("Couldn't read config file, using defaults");
-                config.baseUrl = "http://ctac.herokuapp.com/";
+                debug.Log("Couldn't read config file, using defaults");
+                config.baseUrl = "http://server.solaria.online:10123/";
             }
 
             //if we're coming back from another scene we don't need to refetch the player
