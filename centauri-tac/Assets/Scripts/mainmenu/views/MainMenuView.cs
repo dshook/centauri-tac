@@ -72,9 +72,9 @@ namespace ctac
                     accum = 0f;
                     //Queueing = 8 characters
                     queueText.text += ".";
-                    if (queueText.text.Length > 18)
+                    if (queueText.text.Length > 68)
                     {
-                        queueText.text = "Queueing";
+                        queueText.text = "Queueing\n";
                     }
                 }
             }

@@ -20,7 +20,8 @@ namespace ctac
             {
                 {"socket:error", typeof(SocketErrorSignal) },
                 {"socket:open", typeof(SocketConnectSignal) },
-                {"socket:close", typeof(SocketDisconnectSignal) },
+                {"socket:close", typeof(SocketCloseSignal) },
+                {"socket:hangup", typeof(SocketHangupSignal) },
 
                 {"login", typeof(LoggedInSignal) },
                 {"me", typeof(PlayerFetchedSignal) },

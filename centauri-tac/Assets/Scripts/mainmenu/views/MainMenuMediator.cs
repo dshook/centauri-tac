@@ -26,7 +26,7 @@ namespace ctac
 
         [Inject] public GameLoggedInSignal currentGame { get; set; }
 
-        [Inject] public SocketDisconnectSignal socketDisconnect { get; set; }
+        [Inject] public SocketHangupSignal socketHangup { get; set; }
 
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
@@ -49,7 +49,7 @@ namespace ctac
 
             currentGame.AddListener(onCurrentGame);
 
-            socketDisconnect.AddListener(onSocketDisconnect);
+            socketHangup.AddListener(onSocketDisconnect);
 
             view.init();
         }
@@ -71,7 +71,7 @@ namespace ctac
 
             currentGame.RemoveListener(onCurrentGame);
 
-            socketDisconnect.RemoveListener(onSocketDisconnect);
+            socketHangup.RemoveListener(onSocketDisconnect);
         }
 
         public void Update()

@@ -15,7 +15,10 @@ namespace ctac.signals
     public class SocketErrorSignal : Signal<string, SocketKey> { }
 
     [Singleton]
-    public class SocketDisconnectSignal : Signal<SocketKey> { }
+    public class SocketCloseSignal : Signal<SocketKey> { }
+
+    [Singleton]
+    public class SocketHangupSignal : Signal<SocketKey> { }
 
     [Singleton]
     public class PingSignal : Signal<int, SocketKey> { }

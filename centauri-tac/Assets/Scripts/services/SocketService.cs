@@ -156,13 +156,28 @@ namespace ctac
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
             debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason, key);
-            signalDispatcher.ScheduleSignal(
-                new SignalData() {
-                    messageType = "socket:close",
-                    messageData = JsonConvert.SerializeObject(key),
-                    key = key
-                }
-            );
+            if (e.Code == 1000)
+            {
+                //Normal disconnect
+                signalDispatcher.ScheduleSignal(
+                    new SignalData() {
+                        messageType = "socket:close",
+                        messageData = JsonConvert.SerializeObject(key),
+                        key = key
+                    }
+                );
+            }
+            else
+            {
+                //everything else
+                signalDispatcher.ScheduleSignal(
+                    new SignalData() {
+                        messageType = "socket:hangup",
+                        messageData = JsonConvert.SerializeObject(key),
+                        key = key
+                    }
+                );
+            }
         }
 
         public bool IsSocketOpen(SocketKey key)
