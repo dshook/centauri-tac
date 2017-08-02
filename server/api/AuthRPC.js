@@ -37,7 +37,7 @@ export default class AuthRPC
       return;
     }
 
-    this.log.info('player %s posted valid creds, sending token', email);
+    this.log.info('auth player %s posted valid creds, sending token', email);
 
     // update remote's token and stash here
     const token = this.players.generateToken(player);
@@ -61,6 +61,9 @@ export default class AuthRPC
       return;
     }
     const {id} = auth.sub;
-    client.send('me', await this.players.get(id));
+    let player = await this.players.get(id);
+
+    this.log.info('Sending me for %s', player.email);
+    client.send('me', player);
   }
 }
