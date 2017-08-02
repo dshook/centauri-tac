@@ -1,4 +1,4 @@
-.PHONY: build
+.PHONY: build build-dev down up logs down-prod up-prod logs-prod build-client-win build-client-win-dev build-client-all
 
 build:
 	docker build -t stac:latest -f ./docker/Dockerfile .
