@@ -9,7 +9,6 @@ namespace ctac
     {
         public TextMeshProUGUI serverText;
 
-        private Color transparentWhite = new Color(1, 1, 1, 0);
         internal void init()
         {
             serverText = GetComponent<TextMeshProUGUI>();
@@ -26,7 +25,7 @@ namespace ctac
 
             Hashtable tweenParams = new Hashtable();
             tweenParams.Add("from", Color.white);
-            tweenParams.Add("to", transparentWhite);
+            tweenParams.Add("to", (Color)Colors.transparentWhite);
             tweenParams.Add("time", time);
             tweenParams.Add("delay", 0.75f);
             tweenParams.Add("onupdate", "OnColorUpdated");

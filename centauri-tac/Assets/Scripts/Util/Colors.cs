@@ -6,6 +6,9 @@ namespace ctac
 {
     public static class Colors
     {
+        public static Color32 white = Color.white;
+        public static Color32 transparentWhite = new Color(1, 1, 1, 0);
+
         public static Color32 friendlyColor = ColorExtensions.HexToColor("#65ACFF");
         public static Color32 enemyColor = ColorExtensions.HexToColor("#FF4949");
 
@@ -30,8 +33,9 @@ namespace ctac
         public static Color32 tauntEnemyColor = ColorExtensions.HexToColor("#E52600");
         public static Color32 tauntFriendlyColor = ColorExtensions.HexToColor("#0057E5");
 
-        public static Color32 tileIndicatorEnemyColor = ColorExtensions.HexToColor("FF0000");
-        public static Color32 tileIndicatorFriendlyColor = ColorExtensions.HexToColor("00FF00");
+        public static Color32 tileIndicatorFriendlyColor = friendlyColor;
+        public static Color32 tileIndicatorEnemyColor = enemyColor;
+
 
         public static Dictionary<Races, Color32> RacePrimaries = new Dictionary<Races, Color32>()
         {
