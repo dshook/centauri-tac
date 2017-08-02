@@ -23,6 +23,7 @@ services:
       - PING_INTERVAL=30000
       - DISCONNECT_TIMEOUT=5000
       # - DEV=true
-      - CARD_SETS=test,basic
+      - CARD_SETS=basic
+      - MAP=venusians
       - VIRTUAL_HOST=server.solaria.online
-      - VIRTUAL_PORT=80
+      - VIRTUAL_PORT=10123

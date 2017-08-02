@@ -391,7 +391,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1792269620}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.56469333
+  m_Size: 0.5646932
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5100,7 +5100,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1.3333334
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -5725,6 +5725,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1247320196}
   - component: {fileID: 1247320197}
+  - component: {fileID: 1247320198}
   m_Layer: 0
   m_Name: CardCamera
   m_TagString: Untagged
@@ -5781,6 +5782,21 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!114 &1247320198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1247320195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1 &1251463311
 GameObject:
   m_ObjectHideFlags: 0
@@ -6579,6 +6595,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1 &1364129664
 GameObject:
   m_ObjectHideFlags: 0
@@ -10997,7 +11017,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1.3333334
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96

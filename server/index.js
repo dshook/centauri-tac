@@ -18,6 +18,10 @@ require('babel-register')({
 // use bluebird instead of native promise
 global.Promise = require('bluebird');
 
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
+
 console.log('Preprossesing complete, loading main');
 // boot
 require('./main.js');
