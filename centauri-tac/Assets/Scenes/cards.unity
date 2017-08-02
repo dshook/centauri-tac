@@ -391,7 +391,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1792269620}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.5646933
+  m_Size: 0.56469333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2485,7 +2485,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 735624979}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.5646934
+  m_Size: 0.56469333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6421,6 +6421,7 @@ GameObject:
   - component: {fileID: 1358037275}
   - component: {fileID: 1358037274}
   - component: {fileID: 1358037273}
+  - component: {fileID: 1358037278}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6567,6 +6568,17 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!114 &1358037278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1358037271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1364129664
 GameObject:
   m_ObjectHideFlags: 0
