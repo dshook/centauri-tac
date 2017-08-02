@@ -18,12 +18,6 @@ namespace ctac {
 
         private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1);
 
-        private Color damageColor = ColorExtensions.HexToColor("FD0000");
-        private Color damageColorBot = ColorExtensions.HexToColor("470000");
-
-        private Color healColor = ColorExtensions.HexToColor("00F00B");
-        private Color healColorBot = ColorExtensions.HexToColor("006504");
-
         void Start()
         {
             damageSplatGo = transform.FindChild("Text").gameObject;
@@ -34,17 +28,17 @@ namespace ctac {
             //damage vs heal
             if (change <= 0)
             {
-                damageSplatText.color = damageColor;
-                damageSplatBonusText.color = damageColor;
-                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, damageColorBot, damageColorBot);
-                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, damageColorBot, damageColorBot);
+                damageSplatText.color = Colors.numberSplatDamageColor;
+                damageSplatBonusText.color = Colors.numberSplatDamageColor;
+                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, Colors.numberSplatDamageColorBot, Colors.numberSplatDamageColorBot);
+                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, Colors.numberSplatDamageColorBot, Colors.numberSplatDamageColorBot);
             }
             else
             {
-                damageSplatText.color = healColor;
-                damageSplatBonusText.color = healColor;
-                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, healColorBot, healColorBot);
-                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, healColorBot, healColorBot);
+                damageSplatText.color = Colors.numberSplatHealColor;
+                damageSplatBonusText.color = Colors.numberSplatHealColor;
+                damageSplatText.colorGradient = new VertexGradient(Color.white, Color.white, Colors.numberSplatHealColorBot, Colors.numberSplatHealColorBot);
+                damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, Colors.numberSplatHealColorBot, Colors.numberSplatHealColorBot);
             }
 
             damageSplatText.text = string.Format("{0:+#;-#;0}", change);

@@ -101,7 +101,7 @@ namespace ctac {
             if      (card.cost > card.baseCost) { costText.color = Color.red; }
             else if (card.cost < card.baseCost) { costText.color = Color.green; }
 
-            if (card.metCondition) { descriptionText.color = ColorExtensions.HexToColor("740000"); }
+            if (card.metCondition) { descriptionText.color = Colors.cardMetCondition; }
             else { descriptionText.color = Color.black; }
 
             if (card.isMinion || card.isHero)

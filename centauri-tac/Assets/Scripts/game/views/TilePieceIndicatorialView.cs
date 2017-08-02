@@ -1,15 +1,11 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using SVGImporter;
-using ctac.util;
 
 namespace ctac
 {
     public class TilePieceIndicatorialView : View
     {
-        private Color enemyColor = ColorExtensions.HexToColor("FF0000");
-        private Color friendlyColor = ColorExtensions.HexToColor("00FF00");
-
         private SVGRenderer svgRenderer;
         private bool active = false;
 
@@ -37,7 +33,7 @@ namespace ctac
             svgRenderer.enabled = active;
             if (isEnemy.HasValue)
             {
-                svgRenderer.color = isEnemy.Value ? enemyColor : friendlyColor;
+                svgRenderer.color = isEnemy.Value ? Colors.tileIndicatorEnemyColor : Colors.tileIndicatorFriendlyColor;
             }
         }
 

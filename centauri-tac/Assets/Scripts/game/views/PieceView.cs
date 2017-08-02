@@ -54,11 +54,6 @@ namespace ctac {
         public Material meshMaterial;
         private Highlighter highlight;
         private float outlineWidth = 0.01f;
-        private Color targetOutlineColor = ColorExtensions.HexToColor("E1036C");
-        private Color moveAttackOutlineColor = ColorExtensions.HexToColor("63FF32");
-        private Color moveOutlineColor = ColorExtensions.HexToColor("006BFF");
-        private Color attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
-        private Color selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
         public Animator anim;
 
@@ -181,37 +176,37 @@ namespace ctac {
             if (targetCandidate)
             {
                 highlight.enabled = true;
-                highlight.ConstantOn(targetOutlineColor);
-                meshMaterial.SetColor("_OutlineColor", targetOutlineColor);
+                highlight.ConstantOn(Colors.targetOutlineColor);
+                meshMaterial.SetColor("_OutlineColor", Colors.targetOutlineColor);
                 meshMaterial.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
                 highlight.enabled = true;
-                highlight.ConstantOn(selectedOutlineColor);
-                meshMaterial.SetColor("_OutlineColor", selectedOutlineColor);
+                highlight.ConstantOn(Colors.selectedOutlineColor);
+                meshMaterial.SetColor("_OutlineColor", Colors.selectedOutlineColor);
                 meshMaterial.SetFloat("_Outline", outlineWidth);
             }else if (piece.currentPlayerHasControl) {
 
                 if (piece.canMove && piece.canAttack)
                 {
                     highlight.enabled = true;
-                    highlight.ConstantOn(moveAttackOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", moveAttackOutlineColor);
+                    highlight.ConstantOn(Colors.moveAttackOutlineColor);
+                    meshMaterial.SetColor("_OutlineColor", Colors.moveAttackOutlineColor);
                     meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canAttack && enemiesInRange)
                 {
                     highlight.enabled = true;
-                    highlight.ConstantOn(attackOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", attackOutlineColor);
+                    highlight.ConstantOn(Colors.attackOutlineColor);
+                    meshMaterial.SetColor("_OutlineColor", Colors.attackOutlineColor);
                     meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canMove)
                 {
                     highlight.enabled = true;
-                    highlight.ConstantOn(moveOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", moveOutlineColor);
+                    highlight.ConstantOn(Colors.moveOutlineColor);
+                    meshMaterial.SetColor("_OutlineColor", Colors.moveOutlineColor);
                     meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else

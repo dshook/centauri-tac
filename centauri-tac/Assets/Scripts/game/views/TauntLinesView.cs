@@ -10,9 +10,6 @@ namespace ctac
         GameObject tauntLoops;
         GameObject tauntLoopPrefab;
 
-        private Color enemyColor = ColorExtensions.HexToColor("#E52600");
-        private Color friendlyColor = ColorExtensions.HexToColor("#0057E5");
-
         [Inject]
         public IResourceLoaderService loader { get; set; }
 
@@ -50,8 +47,8 @@ namespace ctac
                 newLoop.name = "Loop ";
                 var lineRenderer = newLoop.GetComponent<LineRenderer>();
 
-                lineRenderer.endColor = isFriendly ? friendlyColor : enemyColor;
-                lineRenderer.startColor = isFriendly ? friendlyColor : enemyColor;
+                lineRenderer.endColor = isFriendly ? Colors.tauntFriendlyColor : Colors.tauntEnemyColor;
+                lineRenderer.startColor = isFriendly ? Colors.tauntFriendlyColor : Colors.tauntEnemyColor;
 
                 //go around the perimeter adding the line renderer points following the curvature of the EARF
                 //assuming we're starting at the right most, top most point

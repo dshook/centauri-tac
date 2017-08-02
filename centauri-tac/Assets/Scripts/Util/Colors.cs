@@ -13,6 +13,25 @@ namespace ctac
         public static Color32 RarityRare = ColorExtensions.HexToColor("#2598C5");
         public static Color32 RarityExotic = ColorExtensions.HexToColor("#64FF07");
         public static Color32 RarityMythical = ColorExtensions.HexToColor("#FF0000");
+        
+        public static Color32 cardMetCondition = ColorExtensions.HexToColor("740000");
+
+        public static Color32 numberSplatDamageColor = ColorExtensions.HexToColor("FD0000");
+        public static Color32 numberSplatDamageColorBot = ColorExtensions.HexToColor("470000");
+        public static Color32 numberSplatHealColor = ColorExtensions.HexToColor("00F00B");
+        public static Color32 numberSplatHealColorBot = ColorExtensions.HexToColor("006504");
+
+        public static Color32 targetOutlineColor = ColorExtensions.HexToColor("E1036C");
+        public static Color32 moveAttackOutlineColor = ColorExtensions.HexToColor("63FF32");
+        public static Color32 moveOutlineColor = ColorExtensions.HexToColor("006BFF");
+        public static Color32 attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
+        public static Color32 selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
+
+        public static Color32 tauntEnemyColor = ColorExtensions.HexToColor("#E52600");
+        public static Color32 tauntFriendlyColor = ColorExtensions.HexToColor("#0057E5");
+
+        public static Color32 tileIndicatorEnemyColor = ColorExtensions.HexToColor("FF0000");
+        public static Color32 tileIndicatorFriendlyColor = ColorExtensions.HexToColor("00FF00");
 
         public static Dictionary<Races, Color32> RacePrimaries = new Dictionary<Races, Color32>()
         {
