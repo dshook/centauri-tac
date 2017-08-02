@@ -29,6 +29,8 @@ namespace ctac
 
         void Update()
         {
+            if (abilityButton == null || buttonText == null) return;
+
             buttonText.text = string.Format("({0}) {1}", ability.abilityCost, ability.ability);
 
             abilityButton.interactable = (ability.abilityCooldown == 0) 
