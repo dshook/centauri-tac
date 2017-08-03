@@ -1202,6 +1202,7 @@ GameObject:
   - component: {fileID: 136877653}
   - component: {fileID: 136877655}
   - component: {fileID: 136877654}
+  - component: {fileID: 136877656}
   m_Layer: 5
   m_Name: cardCanvas
   m_TagString: Untagged
@@ -1259,6 +1260,27 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &136877656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 136877652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
 --- !u!1001 &148637699
 Prefab:
   m_ObjectHideFlags: 0
@@ -7803,6 +7825,7 @@ GameObject:
   - component: {fileID: 2007580427}
   - component: {fileID: 2007580426}
   - component: {fileID: 2007580425}
+  - component: {fileID: 2007580430}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7949,6 +7972,21 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!114 &2007580430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2007580423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1001 &2042587448
 Prefab:
   m_ObjectHideFlags: 0
@@ -8427,6 +8465,7 @@ GameObject:
   - component: {fileID: 2079801527}
   - component: {fileID: 2079801525}
   - component: {fileID: 2079801528}
+  - component: {fileID: 2079801526}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -8476,6 +8515,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &2079801526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2079801523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 1
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
 --- !u!223 &2079801527
 Canvas:
   m_ObjectHideFlags: 0
@@ -8659,6 +8719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2100146254}
   - component: {fileID: 2100146255}
+  - component: {fileID: 2100146256}
   m_Layer: 0
   m_Name: CardCamera
   m_TagString: Untagged
@@ -8715,6 +8776,21 @@ Camera:
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
+--- !u!114 &2100146256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2100146253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1 &2101765953
 GameObject:
   m_ObjectHideFlags: 0

@@ -1498,7 +1498,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 31.399902
+      value: 31.399872
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -2354,6 +2354,7 @@ GameObject:
   - component: {fileID: 611969539}
   - component: {fileID: 611969538}
   - component: {fileID: 611969543}
+  - component: {fileID: 611969544}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2501,6 +2502,21 @@ MonoBehaviour:
     _blurSpread: 0
     _blurIntensity: 1
     _blurDirections: 2
+--- !u!114 &611969544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 611969537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1001 &612944970
 Prefab:
   m_ObjectHideFlags: 0
@@ -5563,6 +5579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1468249736}
   - component: {fileID: 1468249735}
+  - component: {fileID: 1468249737}
   m_Layer: 0
   m_Name: CardCamera
   m_TagString: Untagged
@@ -5619,6 +5636,21 @@ Transform:
   m_Father: {fileID: 1197005253}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1468249737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1468249734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b2043db15f1a5419d0ad0ad28ed601, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAspectNumerator: 16
+  maxAspectDenomenator: 10
+  minAspectNumerator: 4
+  minAspectDenomenator: 3
 --- !u!1 &1479129813
 GameObject:
   m_ObjectHideFlags: 0
@@ -7250,7 +7282,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1.3333334
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
