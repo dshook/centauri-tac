@@ -28,10 +28,10 @@ logs-prod:
 
 
 build-client-win:
-	"C:\\Program Files\\Unity\\Editor\\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinBuild -projectPath "C:\\Users\\dillo_000.DILLON\\Documents\\Programming\\centauri-tac\\centauri-tac"
+	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
 
 build-client-win-dev:
-	"C:\\Program Files\\Unity\\Editor\\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinDevBuild -projectPath "C:\\Users\\dillo_000.DILLON\\Documents\\Programming\\centauri-tac\\centauri-tac"
+	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinDevBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
 
 build-client-all:
-	"C:\\Program Files\\Unity\\Editor\\Unity.exe" -batchmode -quit -executeMethod BuildScript.BuildAll -projectPath "C:\\Users\\dillo_000.DILLON\\Documents\\Programming\\centauri-tac\\centauri-tac"
+	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.BuildAll -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
