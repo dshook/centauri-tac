@@ -94,6 +94,9 @@ export default class CardDirectory
 
   newFromId(cardTemplateId){
     let directoryCard = this.directory[cardTemplateId];
+    if(!directoryCard){
+      this.log.error('Cannot crate card from template %s when not in directory', cardTemplateId);
+    }
     //clone into new card
     var cardClone = new Card();
     for(var k in directoryCard) cardClone[k]=directoryCard[k];

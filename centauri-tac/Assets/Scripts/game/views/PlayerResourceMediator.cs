@@ -19,6 +19,8 @@ namespace ctac
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
+        [Inject] public GameTurnModel turnModel { get; set; }
+
         [Inject] public ISoundService sounds { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
@@ -47,12 +49,13 @@ namespace ctac
 
         public void onGameAuthed()
         {
-            view.setTimers(currentGame.game.turnLengthMs, currentGame.game.turnEndBufferLengthMs);
+            SetTimers();
         }
 
         public void onTurnEnd(GameTurnModel passTurn)
         {
             updateView();
+            SetTimers();
 
             if (!passTurn.isClientSwitch)
             {
@@ -70,6 +73,11 @@ namespace ctac
             {
                 view.updatePreview(m.newMax);
             }
+        }
+
+        private void SetTimers()
+        {
+            view.setTimers(turnLength(currentGame.game, turnModel.currentTurn), currentGame.game.turnEndBufferLengthMs);
         }
 
         private void onPause()
@@ -99,6 +107,12 @@ namespace ctac
                 return view.isOpponent ? players.Opponent(players.Me.id).id : players.Me.id;
             }
         }
+
+        private int turnLength(GameMetaModel game, int currentTurn)
+        {
+            return game.turnLengthMs + (currentTurn * game.turnIncrementLengthMs);
+        }
+
 
     }
 }

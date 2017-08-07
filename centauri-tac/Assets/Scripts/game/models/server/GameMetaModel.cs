@@ -14,6 +14,7 @@
         public int stateId { get; set; }
         public int turnLengthMs { get; set; }
         public int turnEndBufferLengthMs { get; set; }
+        public int turnIncrementLengthMs { get; set; }
         public GamelistGameState state { get; set; }
     }
 

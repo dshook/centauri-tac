@@ -27,3 +27,6 @@ services:
       - MAP=venusians
       - VIRTUAL_HOST=server.solaria.online
       - VIRTUAL_PORT=10123
+      - TURN_LENGTH_MS=40000;
+      - TURN_END_BUFFER_LENGTH_MS=5000;
+      - TURN_INCREMENT_LENGTH_MS=5000;

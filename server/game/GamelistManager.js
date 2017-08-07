@@ -7,12 +7,13 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class GamelistManager
 {
-  constructor(games, emitter, componentManager, gameManager)
+  constructor(games, emitter, componentManager, gameManager, componentsConfig)
   {
     this.games = games;
     this.emitter = emitter;
     this.componentManager = componentManager;
     this.gameManager = gameManager;
+    this.componentsConfig = componentsConfig;
   }
 
   /**
@@ -24,7 +25,15 @@ export default class GamelistManager
 
     //what map to play on if forced, prob should be move to a config at some point
     const map = process.env.MAP || 'cubeland';
-    const game = await this.games.create(name, playerId, map, 2, 25000, 4000);
+    const game = await this.games.create(
+      name,
+      playerId,
+      map,
+      2,
+      this.componentsConfig.turnLengthMs,
+      this.componentsConfig.turnEndBufferLengthMs,
+      this.componentsConfig.turnIncrementLengthMs
+    );
 
     if(game == null){
       this.log.info('Could not create game for %s component: %s player: %s'
