@@ -77,7 +77,8 @@ namespace ctac
 
         private void SetTimers()
         {
-            view.setTimers(turnLength(currentGame.game, turnModel.currentTurn), currentGame.game.turnEndBufferLengthMs);
+            //Have to subtract one from the turn here to sync up due to the ordering of when the intervals are set in the server
+            view.setTimers(turnLength(currentGame.game, turnModel.currentTurn - 1), currentGame.game.turnEndBufferLengthMs);
         }
 
         private void onPause()
