@@ -165,7 +165,11 @@ namespace ctac
                             }
                             else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
                             {
-                                errorMessage = "Paralyzed!";
+                                errorMessage = "Minion is Paralyzed!";
+                            }
+                            else if (selectedPiece.canAttack && movePath == null)
+                            {
+                                errorMessage = "Can't Get to Target";
                             }
                             else
                             {

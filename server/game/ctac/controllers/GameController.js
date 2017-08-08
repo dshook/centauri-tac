@@ -1,6 +1,5 @@
 import {on} from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
-import PassTurn from '../actions/PassTurn.js';
 import MovePiece from '../actions/MovePiece.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import ActivateAbility from '../actions/ActivateAbility.js';
