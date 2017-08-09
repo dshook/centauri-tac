@@ -128,26 +128,34 @@ namespace ctac
                     if ( selectedPiece != null && selectedPiece.id != clickedPiece.piece.id )
                     {
                         string errorMessage = null;
-                        if (FlagsHelper.IsSet(clickedPiece.piece.statuses, Statuses.Cloak)) {
+                        if (FlagsHelper.IsSet(clickedPiece.piece.statuses, Statuses.Cloak))
+                        {
                             errorMessage = "Can't attack the cloaked unit until they attack!";
+                        }
+                        else if (clickedPiece.piece.isMoving)
+                        {
+                            //debug.Log("Clicked on moving piece");
                         }
                         else if (selectedPiece.canAttack && movePath != null)
                         {
                             //find the tile the piece will end up on when attacking for melee which is the second to last tile in the list,
                             //ranged can attack up or down slopes
-                            var tileToAttackFrom = movePath.tiles != null && movePath.tiles.Count >= 2 
-                                ? movePath.tiles[movePath.tiles.Count - 2] 
+                            var tileToAttackFrom = movePath.tiles != null && movePath.tiles.Count >= 2
+                                ? movePath.tiles[movePath.tiles.Count - 2]
                                 : movePath.startTile;
-                            if (selectedPiece.isRanged || 
+                            if (selectedPiece.isRanged ||
                                 mapService.isHeightPassable(tileToAttackFrom, mapService.Tile(clickedPiece.piece.tilePosition))
-                            ){
+                            )
+                            {
                                 attackPiece.Dispatch(new AttackPieceModel()
                                 {
                                     attackingPieceId = selectedPiece.id,
                                     targetPieceId = clickedPiece.piece.id
                                 });
                                 pieceSelected.Dispatch(null);
-                            } else {
+                            }
+                            else
+                            {
                                 errorMessage = "Can't attack up that slope!";
                             }
 

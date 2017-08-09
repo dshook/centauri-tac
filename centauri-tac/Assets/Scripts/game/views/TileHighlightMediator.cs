@@ -89,7 +89,7 @@ namespace ctac
             view.onTileHover(tile);
 
             //Unit pathfinding highlighting
-            if (selectedPiece != null && tile != null && !selectedPiece.hasMoved)
+            if (selectedPiece != null && tile != null && (selectedPiece.canMove || selectedPiece.canAttack))
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
                 var enemyOccupyingDest = pieces.Pieces.Any(m => 

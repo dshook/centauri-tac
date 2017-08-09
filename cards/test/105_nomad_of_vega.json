@@ -1,0 +1,10 @@
+{
+	"cardTemplateId": 105,
+	"name": "Nomad of Vega",
+	"description": "",
+	"cost": 1,
+	"attack": 1,
+	"health": 3,
+	"movement": 7,
+	"tags": ["Minion"]
+}

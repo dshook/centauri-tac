@@ -463,6 +463,7 @@ namespace ctac {
                 {
                     firstRun = false;
 
+                    piece.isMoving = true;
                     var start = piece.gameObject.transform.position;
                     var diffVector = destination - start;
 
@@ -495,6 +496,7 @@ namespace ctac {
                 if(walker.progress > 0.99 && !Complete)
                 {
                     piece.gameObject.transform.position = destination;
+                    piece.isMoving = false;
                     Complete = true;
                     Destroy(walker);
                     finishedMoving.Dispatch(piece);

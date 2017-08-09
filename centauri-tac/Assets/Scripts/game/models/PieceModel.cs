@@ -17,6 +17,7 @@ namespace ctac
         public bool currentPlayerHasControl { get; set; }
 
         public bool hasMoved { get; set; }
+        public bool isMoving { get; set; }
         public int attackCount { get; set; }
 
         public List<string> tags { get; set; }
