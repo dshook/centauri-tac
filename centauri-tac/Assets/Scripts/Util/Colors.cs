@@ -9,6 +9,8 @@ namespace ctac
         public static Color32 white = Color.white;
         public static Color32 transparentWhite = new Color(1, 1, 1, 0);
 
+        public static Color invisible = new Color(0f, 0f, 0f, 0f);
+
         public static Color32 friendlyColor = ColorExtensions.HexToColor("#65ACFF");
         public static Color32 enemyColor = ColorExtensions.HexToColor("#FF4949");
 
