@@ -99,12 +99,11 @@ export default class Selector{
     if(selector.random) return [];
 
     if(!this.doesSelectorUse(selector, 'TARGET')) return [];
-    //only use these specific selection params
-    let selectionParams = {
-      isSpell: pieceSelectorParams.isSpell,
-      controllingPlayerId: pieceSelectorParams.controllingPlayerId,
-      selfPiece: pieceSelectorParams.selfPiece
-    }
+
+    let selectionParams = Object.assign({}, pieceSelectorParams);
+    //remove the target piece id so we select all possible targets and not just the chosen one
+    delete selectionParams.targetPieceId;
+
     return new PieceSelector(this, selectionParams)
       .Select(selector);
   }
