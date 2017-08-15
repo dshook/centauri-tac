@@ -95,6 +95,7 @@ export default class PieceSelector{
             (!this.targetPieceId || p.id === this.targetPieceId)
             && !(p.statuses & Statuses.Cloak)
             && (!this.isSpell || !(p.statuses & Statuses.TechResist))
+            && (!this.selfPiece || p.id !== this.selfPiece.id) //can't target yourself
           );
           break;
         case 'SAVED':
