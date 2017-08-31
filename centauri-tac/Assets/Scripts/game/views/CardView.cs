@@ -23,6 +23,7 @@ namespace ctac {
         public GameObject move;
         public GameObject range;
         public GameObject tribe;
+        public GameObject tribeBg;
         public GameObject moveRangeUnderline;
 
         public GameObject buffsPanel;
@@ -58,6 +59,7 @@ namespace ctac {
             move = displayWrapper.transform.FindChild("Movement").gameObject;
             range = displayWrapper.transform.FindChild("Range").gameObject;
             tribe = displayWrapper.transform.FindChild("Tribe").gameObject;
+            tribeBg = tribe.transform.FindChild("TribeBg").gameObject;
             moveRangeUnderline = displayWrapper.transform.FindChild("MoveRangeUnderline").gameObject;
 
             buffsPanel = displayWrapper.transform.FindChild("Buffs").gameObject;
@@ -159,7 +161,7 @@ namespace ctac {
                 rangeText.text = "";
                 attackText.text = "";
                 healthText.text = "";
-                tribeText.text = "";
+                tribeText.text = "Spell";
 
                 //update spell damage text
                 string descrip = card.description;
@@ -181,6 +183,15 @@ namespace ctac {
                     }
                 }
                 descriptionText.text = descrip;
+            }
+
+            if (string.IsNullOrEmpty(tribeText.text))
+            {
+                tribeBg.SetActive(false);
+            }
+            else
+            {
+                tribeBg.SetActive(true);
             }
         }
 
