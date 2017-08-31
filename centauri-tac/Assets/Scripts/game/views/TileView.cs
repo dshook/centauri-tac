@@ -21,7 +21,7 @@ namespace ctac {
         Color pathFindColor = ColorExtensions.HexToColor("7478FF");
         Color attackRangeTint = new Color(1f, .1f, .1f);
         Color attackColor = new Color(.9f, .4f, .4f);
-        Color dimmedColor = ColorExtensions.HexToColor("#8c8c8c");
+        Color dimmedColor = new Color(.3f, .3f, .3f, .3f);
 
 #pragma warning disable
         [SerializeField]
