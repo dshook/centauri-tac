@@ -1,7 +1,7 @@
 import loglevel from 'loglevel-decorator';
 
 /**
- * A facade exposed to the game services that can be used to deal with stuff
+ * A facade exposed to the in game services that can be used to deal with stuff
  * with the host
  */
 @loglevel

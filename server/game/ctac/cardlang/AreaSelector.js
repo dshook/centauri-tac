@@ -104,7 +104,7 @@ export default class AreaSelector{
         }
       }
 
-      this.log.info('Selected center of %s and pivot of %s', centerPosition, pivotPosition);
+      //this.log.info('Selected center of %s and pivot of %s', centerPosition, pivotPosition);
 
       //if we have a defined center, actually resolve what the area tiles are
       //also check for the required pivot position for lines/diagonals

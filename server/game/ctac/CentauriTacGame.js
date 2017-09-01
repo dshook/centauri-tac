@@ -43,72 +43,66 @@ export default class CentauriTacGame
   @on('playerJoined')
   async joined()
   {
-    if (this.players.length === 2) {
-      this.log.info('starting game!');
-
-      //maybe someday...
-      if(this.players.length !== 2){
-        this.log.error('Need exactly 2 players to start game');
-        return;
-      }
-
-      // update game info
-      await this.host.setGameState(3);
-      await this.host.setAllowJoin(false);
-
-      // bootup the main controller
-      await this.host.addController(GameController);
-
-      //set map state current map based on game
-      this.mapState.setMap(this.game.map);
-
-      // start first turn with random player
-      this.queue.push(new PassTurn());
-
-      // spawn game pieces for two players
-      let allHeroes = this.cardDirectory.getByTag('Hero');
-      let heroes = [
-        allHeroes.find(h => h.cardTemplateId === 1902),
-        allHeroes.find(h => h.cardTemplateId === 1903)
-      ];
-
-      this.queue.push(new SpawnPiece({
-        playerId: this.players[0].id,
-        cardTemplateId: heroes[0].cardTemplateId,
-        position: this.mapState.map.startingPositions[0],
-        direction: Direction.South
-      }));
-      this.queue.push(new SpawnPiece({
-        playerId: this.players[1].id,
-        cardTemplateId: heroes[1].cardTemplateId,
-        position: this.mapState.map.startingPositions[1],
-        direction: Direction.West
-      }));
-
-      //spawn both player decks and init hands
-      let startingCards = 4;
-      for(let p = 0; p < this.players.length; p++){
-        let player = this.players[p];
-        this.playerResourceState.init(player.id);
-        this.cardState.initPlayer(player.id);
-        this.queue.push(new SpawnDeck(player.id, heroes[p].race));
-      }
-
-      //draw initial cards
-      for(let player of this.players){
-        for(let c = 0; c < startingCards; c++){
-          this.queue.push(new DrawCard(player.id));
-        }
-      }
-
-      await this.queue.processUntilDone();
-
-      this.gameEventService.autoTurnInterval.start();
-
+    //maybe someday there will be more players...
+    if (this.players.length !== 2) {
+      this.log.info('waiting for both players to join before starting');
       return;
     }
 
-    this.log.info('waiting for both players to join before starting');
+    this.log.info('starting game!');
+
+    // update game info
+    await this.host.setGameState(3);
+    await this.host.setAllowJoin(false);
+
+    // bootup the main controller
+    await this.host.addController(GameController);
+
+    //set map state current map based on game
+    this.mapState.setMap(this.game.map);
+
+    // start first turn with random player
+    this.queue.push(new PassTurn());
+
+    // spawn game pieces for two players
+    let allHeroes = this.cardDirectory.getByTag('Hero');
+    let heroes = [
+      allHeroes.find(h => h.cardTemplateId === 1902),
+      allHeroes.find(h => h.cardTemplateId === 1903)
+    ];
+
+    this.queue.push(new SpawnPiece({
+      playerId: this.players[0].id,
+      cardTemplateId: heroes[0].cardTemplateId,
+      position: this.mapState.map.startingPositions[0],
+      direction: Direction.South
+    }));
+    this.queue.push(new SpawnPiece({
+      playerId: this.players[1].id,
+      cardTemplateId: heroes[1].cardTemplateId,
+      position: this.mapState.map.startingPositions[1],
+      direction: Direction.West
+    }));
+
+    //spawn both player decks and init hands
+    let startingCards = 4;
+    for(let p = 0; p < this.players.length; p++){
+      let player = this.players[p];
+      this.playerResourceState.init(player.id);
+      this.cardState.initPlayer(player.id);
+      this.queue.push(new SpawnDeck(player.id, heroes[p].race));
+    }
+
+    //draw initial cards
+    for(let player of this.players){
+      for(let c = 0; c < startingCards; c++){
+        this.queue.push(new DrawCard(player.id));
+      }
+    }
+
+    await this.queue.processUntilDone();
+
+    this.gameEventService.autoTurnInterval.start();
   }
 
   /**
