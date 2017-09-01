@@ -202,19 +202,7 @@ namespace ctac
                 return;
             }
 
-            //check for attack range tiles
-            if (selectedPiece.isRanged)
-            {
-                if (selectedPiece.canAttack)
-                {
-                    var attackTiles = mapService.GetKingTilesInRadius(selectedPiece.tilePosition, selectedPiece.range.Value);
-                    setAttackRangeTiles(attackTiles.Values.ToList(), false);
-                }
-                else
-                {
-                    setAttackRangeTiles(null, false);
-                }
-            }
+            updatePieceAttackRange(selectedPiece);
 
             //set movement and tile selected highlights
             var gameTile = map.tiles.Get(selectedPiece.tilePosition);
@@ -299,38 +287,7 @@ namespace ctac
                 && piece.canMove //might be an issue with checking hasMoved inside of canMove
                 )
             {
-                //check for ranged units first since they can't move and attack
-                if (piece.isRanged && piece.canAttack)
-                {
-                    var attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value);
-                    setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
-                }
-                else if(piece.isMelee)
-                {
-                    //melee units
-
-                    var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
-                    var moveTiles = movePositions.Values.ToList();
-
-                    List<Tile> attackTiles = null;
-                    if (piece.canAttack)
-                    {
-                        var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
-                        attackTiles = attackPositions.Values.ToList();
-
-                        //find diff to get just attack tiles
-                        attackTiles = attackTiles.Except(moveTiles).ToList();
-                    }
-
-                    //take out the central one
-                    var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
-                    moveTiles.Remove(center);
-
-                    //TODO: take friendly units out of move and untargetable enemies like Cloak
-
-                    view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
-                    setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
-                }
+                updatePieceAttackRange(piece);
             }
             else
             {
@@ -364,6 +321,45 @@ namespace ctac
             else
             {
                 view.onAttackTile(null);
+            }
+        }
+
+        private void updatePieceAttackRange(PieceModel piece)
+        {
+            //check for ranged units first since they can't move and attack
+            if (!piece.canAttack)
+            {
+                setAttackRangeTiles(null, false);
+            }
+            else if (piece.isRanged)
+            {
+                var attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value);
+                setAttackRangeTiles(attackRangeTiles.Values.ToList(), !piece.currentPlayerHasControl);
+            }
+            else if (piece.isMelee)
+            {
+                //melee units
+
+                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
+                var moveTiles = movePositions.Values.ToList();
+
+                List<Tile> attackTiles = null;
+                if (piece.canAttack)
+                {
+                    var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
+                    attackTiles = attackPositions.Values.ToList();
+
+                    //find diff to get just attack tiles
+                    attackTiles = attackTiles.Except(moveTiles).ToList();
+                }
+
+                //take out the central one
+                var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
+                moveTiles.Remove(center);
+
+                //TODO: take friendly units out of move and untargetable enemies like Cloak
+                view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
+                setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
             }
         }
 
