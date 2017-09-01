@@ -13,8 +13,9 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
+  constructor(host, players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
   {
+    this.host = host;
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
@@ -229,6 +230,7 @@ export default class GameController
     }
 
     //check for game win condition
+    //TODO: think about ties when both players die at the same time
     let loser = null;
     for (const p of this.players) {
       const hero = this.pieceState.hero(p.id);
@@ -240,17 +242,19 @@ export default class GameController
 
     //TODO: actually shut down the game
     if(loser !== null){
-      this.log.info('player %s LOSES', loser);
+      let winner = this.players.find(w => w.id != loser);
+      this.log.info('player %s LOSES, player %s WINS!', loser, winner);
       for (const p of this.players.filter(x => x.client)) {
         p.client.send('game:finished',
           {
             id: 99999,
-            winnerId: this.players.find(w => w.id != loser).id,
+            winnerId: winner.id,
             loserId: loser
           }
         );
       }
       this.gameEventService.shutdown();
+      this.host.completeGame(winner.id);
     }
   }
 

@@ -1,23 +1,20 @@
 import loglevel from 'loglevel-decorator';
-import {EventEmitter} from 'events';
 
 /**
  * A facade exposed to the game services that can be used to deal with stuff
  * with the host
  */
 @loglevel
-export default class HostManager extends EventEmitter
+export default class HostManager
 {
   constructor(container, binder, game, emitter)
   {
-    super();
-
     this.container = container;
     this.binder = binder;
     this.game = game;
     this.emitter = emitter;
 
-    binder.addEmitter(this);
+    //binder.addEmitter(this);
 
     this._controllers = new Map();
   }
@@ -33,8 +30,6 @@ export default class HostManager extends EventEmitter
 
     const gameId = this.game.id;
     await this.emitter.emit('game:updatestate', {gameId, stateId});
-
-    this.emit('gameState', stateId);
   }
 
   /**
@@ -47,10 +42,18 @@ export default class HostManager extends EventEmitter
     this.game.allowJoin = allowJoin;
 
     const gameId = this.game.id;
-    await this.emitter.emit(
-        'update:allowJoin', {gameId, allowJoin});
+    await this.emitter.emit('update:allowJoin', {gameId, allowJoin});
+  }
 
-    this.emit('gameAllowJoin', allowJoin);
+  /**
+   * Game won/lost
+   */
+  async completeGame(winningPlayerId)
+  {
+    this.log.info('Player %s won!', winningPlayerId);
+
+    const gameId = this.game.id;
+    await this.emitter.emit('game:completed', {gameId, winningPlayerId});
   }
 
   /**

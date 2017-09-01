@@ -67,7 +67,7 @@ export default class GameManager
     // remove from master list
     this.clients.splice(index, 1);
 
-    await this.emitter.emit('playerParted', {gameId, playerId});
+    this.emitter.emit('playerParted', {gameId, playerId});
   }
 
   /**

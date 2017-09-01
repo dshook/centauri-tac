@@ -5,7 +5,7 @@ import PassTurn from './actions/PassTurn.js';
 import SpawnPiece from './actions/SpawnPiece.js';
 import DrawCard from './actions/DrawCard.js';
 import SpawnDeck from './actions/SpawnDeck.js';
-import Position from './models/Position.js';
+//import Position from './models/Position.js';
 import Direction from './models/Direction.js';
 
 /**

@@ -49,6 +49,15 @@ export default class GamelistRPC
   }
 
   /**
+   * Game completed message
+   */
+  @on('game:completed')
+  async completed({gameId, winningPlayerId})
+  {
+    await this.manager.completeGame(gameId, winningPlayerId);
+  }
+
+  /**
    * Client wants to create a game
    */
   @on('create')

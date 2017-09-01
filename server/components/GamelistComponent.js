@@ -12,7 +12,7 @@ export default class GamelistComponent
   constructor(games)
   {
     this.games = games;
-    setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
+    //setInterval(() => this.cleanup(), CLEANUP_INTERVAL);
   }
 
   /**

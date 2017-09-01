@@ -27,7 +27,6 @@ export default class GamelistManager
     const map = process.env.MAP || 'cubeland';
     const game = await this.games.create(
       name,
-      playerId,
       map,
       2,
       this.componentsConfig.turnLengthMs,
@@ -70,22 +69,16 @@ export default class GamelistManager
 
     const game = await this.games.getActive(id);
 
-    // no longer active (zomebie game)
+    // no longer active (zombie game)
     if (!game) {
-      await this.removeGame(game.id);
+      await this.completeGame(game.id, null);
       return;
     }
 
     // empty game, kill it
     else if (!game.currentPlayerCount) {
       this.log.info('after %s parted, game is empty', playerId);
-      await this.removeGame(game.id);
-      return;
-    }
-
-    // host left
-    else if (game.hostPlayerId === playerId) {
-      await this.assignNewHost(game.id);
+      await this.completeGame(game.id, null);
       return;
     }
 
@@ -140,11 +133,11 @@ export default class GamelistManager
   }
 
   /**
-   * Drop a game out
+   * Complete a game and assign a winner
    */
-  async removeGame(gameId)
+  async completeGame(gameId, winningPlayerId = null)
   {
-    this.log.info('removing game %s', gameId);
+    this.log.info('completing game %s with winner %s', gameId, '' + winningPlayerId);
 
     const players = await this.games.playersInGame(gameId);
 
@@ -158,32 +151,10 @@ export default class GamelistManager
     await this.gameManager.shutdown(gameId);
 
     // remove from registry
-    await this.games.remove(gameId);
+    await this.games.complete(gameId, winningPlayerId);
 
     // announce
     await this.emitter.emit('game:remove', gameId);
-  }
-
-  /**
-   * Assign a new host to a game
-   */
-  async assignNewHost(gameId)
-  {
-    const players = await this.games.playersInGame(gameId);
-
-    // just pick the first one
-    const p = players[0];
-    if(!p){
-      this.log.info('Could not find new host for %s, removing', gameId);
-      await this.removeGame(gameId);
-      return;
-    }
-
-    await this.games.setHost(gameId, p.id);
-
-    // broadcast updated game info via gamelist
-    const game = await this.games.getActive(gameId);
-    await this.emitter.emit('game', game);
   }
 
   /**
@@ -199,24 +170,5 @@ export default class GamelistManager
     }
 
     return game;
-  }
-
-  /**
-   * Player was the host of game but parted it
-   */
-  async _handleHostLeft(game)
-  {
-    this.log.info('host left');
-
-    // game was total empty, time to remove it
-    if (game.currentPlayerCount === 0) {
-      this.log.info('...and was last one');
-
-      await this.removeGame(game.id);
-      return;
-    }
-
-    // not empty yet
-    await this.assignHost(game.id);
   }
 }
