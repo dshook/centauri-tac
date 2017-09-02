@@ -151,7 +151,8 @@ export default class GameHost extends EventEmitter
     const player = this.players.find(x => x.client === client);
 
     if (!player) {
-      throw new Error('no player found with client %s', client.id);
+      this.log.error('no player found with client %s', client.id);
+      return;
     }
 
     await this._broadcastCommand('player:part', player);
@@ -173,7 +174,8 @@ export default class GameHost extends EventEmitter
     const index = this.players.indexOf(player);
 
     if (!~index) {
-      throw new Error('player was not in the list');
+      this.log.error('player was not in the list');
+      return;
     }
 
     if (player.client) {

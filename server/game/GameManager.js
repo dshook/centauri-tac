@@ -106,7 +106,7 @@ export default class GameManager
     this.log.info('player %s joining game %s', playerId, gameId);
 
     // tell gamelist we've a new player
-    await this.emitter.emit('playerJoined', {gameId, playerId});
+    // await this.emitter.emit('playerJoined', {gameId, playerId});
 
     // master list
     this.clients.push({client, playerId, gameId});

@@ -144,19 +144,19 @@ export default class GameRPC
 
     this.clients.add(client);
 
-    const playerId = auth.sub.id;
+    // const playerId = auth.sub.id;
 
-    // player already in a game?
-    const gId = await this.games.currentGameId(playerId);
+    // // player already in a game?
+    // const gId = await this.games.currentGameId(playerId);
 
-    if (!gId) {
-      return;
-    }
+    // if (!gId) {
+    //   return;
+    // }
 
-    const game = await this.games.getActive(gId);
+    // const game = await this.games.getActive(gId);
 
-    // inform player of current game
-    client.send('game:current', game);
+    // // inform player of current game
+    // client.send('game:current', game);
   }
 
   /**
