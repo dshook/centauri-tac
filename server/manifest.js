@@ -5,12 +5,13 @@ import HashService from './services/HashService.js';
 import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
 import GameService from './services/GameService.js';
-import GamelistService from './services/GamelistService.js';
+//import GamelistService from './services/GamelistService.js';
+import MatchmakerService from './services/MatchmakerService.js';
 import EventService from './services/EventService.js';
 
 import AuthComponent from './components/AuthComponent.js';
 import LogComponent from './components/LogComponent.js';
-import GamelistComponent from './components/GamelistComponent.js';
+//import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
 import MatchmakerComponent from './components/MatchmakerComponent.js';
 
@@ -31,6 +32,7 @@ export default {
     TComponent: MatchmakerComponent,
     services: [
       ...common,
+      MatchmakerService
     ],
   },
 
@@ -41,22 +43,24 @@ export default {
     TComponent: GameComponent,
     services: [
       ...common,
+      PostgresService,
+      DatastoreService,
       GameService,
     ],
   },
 
-  /**
-   * Manages game servers
-   */
-  gamelist: {
-    TComponent: GamelistComponent,
-    services: [
-      ...common,
-      PostgresService,
-      DatastoreService,
-      GamelistService,
-    ],
-  },
+  // /**
+  //  * Manages game servers
+  //  */
+  // gamelist: {
+  //   TComponent: GamelistComponent,
+  //   services: [
+  //     ...common,
+  //     PostgresService,
+  //     DatastoreService,
+  //     GamelistService,
+  //   ],
+  // },
 
   //Client log view
   log: {

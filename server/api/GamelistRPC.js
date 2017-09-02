@@ -9,7 +9,7 @@ import {on} from 'emitter-binder';
 @loglevel
 export default class GamelistRPC
 {
-  constructor(games, gamelistManager, componentsConfig)
+  constructor(games, gamelistManager)
   {
     this.manager = gamelistManager;
     this.games = games;

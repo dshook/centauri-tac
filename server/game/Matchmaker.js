@@ -10,10 +10,10 @@ const READY = 2;
 @loglevel
 export default class Matchmaker
 {
-  constructor(emitter, gamelistManager)
+  constructor(emitter, gameManager)
   {
     this.emitter = emitter;
-    this.gamelistManager = gamelistManager;
+    this.gameManager = gameManager;
 
     setInterval(() => this._processQueue(), 500);
 
@@ -37,7 +37,7 @@ export default class Matchmaker
     this.log.info('player %s waiting, %s in queue', playerId, this.queue.length);
     await this._emitStatus(playerId, true, false);
 
-    const game = await this.gamelistManager.getCurrentGame(playerId);
+    const game = await this.gameManager.getCurrentGame(playerId);
 
     // if the player's already in a game, send it on but them boot em put
     if (!game) {
@@ -95,7 +95,7 @@ export default class Matchmaker
     await this._emitStatus(pid2, false, true);
 
     // boom
-    const name = '(automatch)';
+    const name = '';
     this.log.info('match found! creating game for %s', playerIds.join(','));
     await this.emitter.emit('gamelist:createFor', {name, playerIds});
   }

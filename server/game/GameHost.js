@@ -8,7 +8,6 @@ import CentauriTacGame from '../game/ctac/CentauriTacGame.js';
 import HostManager from '../game/HostManager.js';
 import GameConfig from './GameConfig.js';
 
-// TODO: in configs
 import ActionQueueService from './ctac/services/ActionQueueService.js';
 import GameDataService from './ctac/services/GameDataService.js';
 import ProcessorsService from './ctac/services/ProcessorsService.js';
@@ -70,7 +69,6 @@ export default class GameHost extends EventEmitter
 
     await app.start();
 
-    // TODO: pull this out to configs
     manager.addController(CentauriTacGame);
   }
 
@@ -104,8 +102,11 @@ export default class GameHost extends EventEmitter
 
     let player = this.players.find(x => x.id === playerId);
 
-    // add the client to the binder so it sends events to all listeners
-    this.binder.addEmitter(client);
+    //TODO: Maybe we will need to re-add when a player reconnects?
+    if(!player){
+      // add the client to the binder so it sends events to all listeners
+      this.binder.addEmitter(client);
+    }
 
     // hello
     client.send('join');
