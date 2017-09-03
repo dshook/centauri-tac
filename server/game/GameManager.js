@@ -158,9 +158,9 @@ export default class GameManager
     // Otherwise see if there are any players left in the game and give them the w
     let gamePlayers = await this.games.playersInGame(gameId);
 
-    let winnerId = (gamePlayers || []).find(p => p.id !== playerId);
+    let winner = (gamePlayers || []).find(p => p.id !== playerId);
 
-    await this.completeGame(game.id, winnerId);
+    await this.completeGame(game.id, winner ? winner.id : null);
 
     // Broadcast updated model
     await this.emitter.emit('game', game);
@@ -182,22 +182,32 @@ export default class GameManager
   {
     this.log.info('completing game %s with winner %s', gameId, '' + winningPlayerId);
 
-    const players = await this.games.playersInGame(gameId);
+    // kill the game on the server
+    const index = this.gameHosts.findIndex(x => x.game.id === gameId);
 
-    // kick all players
-    for (const p of players) {
-      await this.playerPart(p.id);
+    // possible a shutdown message would happen before the game was actually
+    // started, so dont barf over it
+    if (!~index) {
+      this.log.info('game %s isnt running on this component', gameId);
+      return;
     }
 
-    // kill the game on the server
-    //const game = await this.games.getActive(gameId);
-    await this.shutdown(gameId);
+    const host = this.gameHosts[index];
 
     // remove from registry
     await this.games.complete(gameId, winningPlayerId);
 
-    // announce
-    await this.emitter.emit('game:remove', gameId);
+    // remove all remaining players
+    this.log.info('removing all players');
+    for (const player of [...host.players]) {
+      this.playerPart(player.client, player.id);
+    }
+
+    await host.shutdown();
+
+    this.gameHosts.splice(index, 1);
+    this.log.info('shutdown %s and removed from gameHosts list, %d still running',
+        gameId, this.gameHosts.length);
   }
 
   /**
@@ -237,35 +247,6 @@ export default class GameManager
     }
 
     return game;
-  }
-
-  /**
-   * Destroy a running game by id
-   */
-  async shutdown(gameId)
-  {
-    const index = this.gameHosts.findIndex(x => x.game.id === gameId);
-
-    // possible a shutdown message would happen before the game was actually
-    // started, so dont barf over it
-    if (!~index) {
-      this.log.info('game %s isnt running on this component', gameId);
-      return;
-    }
-
-    const host = this.gameHosts[index];
-
-    // remove all players
-    this.log.info('removing all players');
-    for (const player of [...host.players]) {
-      this.playerPartGame(player.client, player.id);
-    }
-
-    await host.shutdown();
-
-    this.gameHosts.splice(index, 1);
-    this.log.info('shutdown %s and removed from gameHosts list, %d still running',
-        gameId, this.gameHosts.length);
   }
 
   /**

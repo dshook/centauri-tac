@@ -141,7 +141,7 @@ export default class GameHost extends EventEmitter
    */
   async dropClient(client)
   {
-    this.log.info('client %s is leaving host for game %s', client.id, this.game.id);
+    this.log.info('client %s is leaving host in game %s', client.id, this.game.id);
 
     const player = this.playerByClient(client);
 
