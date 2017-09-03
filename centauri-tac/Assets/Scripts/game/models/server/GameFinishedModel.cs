@@ -4,6 +4,5 @@
     {
         public int id { get; set; }
         public int winnerId { get; set; }
-        public int loserId { get; set; }
     }
 }

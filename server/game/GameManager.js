@@ -123,23 +123,26 @@ export default class GameManager
     const index = this.clients.findIndex(x => x.client === client);
 
     if (!~index) {
-      this.log.info('Client %s not in list', client ? client.id : -1);
+      //This is a benign message since this function is called in a player part or disconnect
+      //so if the client sends a part and then disconnects themselves this will be called twice,
+      //the second time the client won't be in our list
+      this.log.info('client %s not in list', client ? client.id : -1);
       return;
     }
 
     const clientListing = this.clients[index];
     const {gameId, playerId} = clientListing;
 
-    this.log.info('player %s parting game %s', playerId, gameId);
+    // remove from master list
+    this.clients.splice(index, 1);
+
+    this.log.info('client %s parting game %s', client.id, gameId);
 
     // remove from host
     const host = this._getHost(gameId);
     if(host){
       host.dropClient(client, playerId);
     }
-
-    // remove from master list
-    this.clients.splice(index, 1);
 
     this.emitter.emit('playerParted', {gameId, playerId});
 
@@ -194,11 +197,20 @@ export default class GameManager
 
     const host = this.gameHosts[index];
 
+    //Tell the clients who won
+    for (const player of [...host.players]) {
+      player.client.send('game:finished', {
+          id: 99999,
+          winnerId: winningPlayerId,
+        }
+      );
+    }
+
     // remove from registry
     await this.games.complete(gameId, winningPlayerId);
 
     // remove all remaining players
-    this.log.info('removing all players');
+    this.log.info('removing remaining players');
     for (const player of [...host.players]) {
       this.playerPart(player.client, player.id);
     }
