@@ -116,54 +116,19 @@ export default class GameManager
   }
 
   /**
-   * Remove a player from a game and kick em off the gamelist
+   * A client either disconnecting or requesting to part from their game, if they're in one
    */
-  async playerPart(playerId, gameId)
-  {
-    this.log.info('dropping player %s from their game', playerId);
-    const id = await this.games.playerPart(playerId);
-
-    // not in a game, nothing to do
-    if (!id) {
-      return;
-    }
-
-    await this.emitter.emit('game:current', {game: null, playerId});
-
-    const game = await this.games.getActive(id);
-
-    // no longer active (zombie game)
-    if (!game) {
-      await this.completeGame(game.id, null);
-      return;
-    }
-
-    // empty game, kill it
-    else if (!game.currentPlayerCount) {
-      this.log.info('after %s parted, game is empty', playerId);
-      await this.completeGame(game.id, null);
-      return;
-    }
-
-    // Otherwise just broadcast updated model
-    await this.emitter.emit('game', game);
-  }
-
-  /**
-   * A client requesting to part from their game
-   */
-  async playerPartGame(client, playerId)
+  async playerPart(client)
   {
     const index = this.clients.findIndex(x => x.client === client);
 
     if (!~index) {
-      this.log.info('problem finding client %s player %s in list', client ? client.id : -1, playerId);
+      this.log.info('Client %s not in list', client ? client.id : -1);
       return;
     }
 
     const clientListing = this.clients[index];
-    const {gameId} = clientListing;
-    playerId = clientListing.playerId;
+    const {gameId, playerId} = clientListing;
 
     this.log.info('player %s parting game %s', playerId, gameId);
 
@@ -177,8 +142,38 @@ export default class GameManager
     this.clients.splice(index, 1);
 
     this.emitter.emit('playerParted', {gameId, playerId});
+
+    await this.games.playerPart(playerId, gameId);
+
+    await this.emitter.emit('game:current', {game: null, playerId});
+
+    const game = await this.games.getActive(gameId);
+
+    // no longer active (zombie game)
+    if (!game) {
+      await this.completeGame(game.id, null);
+      return;
+    }
+
+    // Otherwise see if there are any players left in the game and give them the w
+    let gamePlayers = await this.games.playersInGame(gameId);
+
+    let winnerId = (gamePlayers || []).find(p => p.id !== playerId);
+
+    await this.completeGame(game.id, winnerId);
+
+    // Broadcast updated model
+    await this.emitter.emit('game', game);
+
+    // axe the connection finally (if it was a part)
+    // if it was a part this function will be called again since it's wired up to the DC but the client
+    // won't be in the list by that point so we're good
+    client.disconnect();
   }
 
+  clientDisconnect(client){
+    this.log.info('Client %s disconnected', client ? client.id : -1);
+  }
 
   /**
    * Complete a game and assign a winner

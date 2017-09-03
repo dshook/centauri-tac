@@ -58,7 +58,6 @@ export default class GameHost extends EventEmitter
     const manager = new HostManager(app.container, this.binder, this.game, this.emitter);
     app.container.registerValue('host', manager);
 
-    // TODO: pull this out to configs
     app.service(ActionQueueService);
     app.service(MapService);
     app.service(GameDataService);
@@ -88,7 +87,7 @@ export default class GameHost extends EventEmitter
   @on('command')
   onClientCommand({command, params}, client)
   {
-    const player = this.players.find(x => x.client === client);
+    const player = this.playerByClient(client);
     this.emit('playerCommand', command, params, player);
   }
 
@@ -111,16 +110,13 @@ export default class GameHost extends EventEmitter
     // hello
     client.send('join');
 
-    // Events with the connection is broken
-    client.once('close', () => this._clientClose(player));
-
     // send all current players to the client
     for (const p of this.players) {
       client.send('player:connect', p);
       client.send('player:join', p);
     }
 
-    if (player) {
+    if (player) { //Shouldn't happen for now before reconnect logic is in
       this.log.info('player %s has reconnected!', player.id);
       player.client = client;
 
@@ -145,10 +141,9 @@ export default class GameHost extends EventEmitter
    */
   async dropClient(client)
   {
-    this.log.info('client %s is leaving host for game %s',
-        client.id, this.game.id);
+    this.log.info('client %s is leaving host for game %s', client.id, this.game.id);
 
-    const player = this.players.find(x => x.client === client);
+    const player = this.playerByClient(client);
 
     if (!player) {
       this.log.error('no player found with client %s', client.id);
@@ -162,38 +157,7 @@ export default class GameHost extends EventEmitter
 
     // clear out on purpose
     this.binder.removeEmitter(player.client);
-    player.client = null;
-    client.disconnect();
-  }
-
-  /**
-   * Disconnect happened, either manually or from client
-   */
-  _clientClose(player)
-  {
-    const index = this.players.indexOf(player);
-
-    if (!~index) {
-      this.log.error('player was not in the list');
-      return;
-    }
-
-    if (player.client) {
-      this.log.info('unexpected client disconnect! %s DC Timeout %s', player.id, process.env.DISCONNECT_TIMEOUT);
-      this.binder.removeEmitter(player.client);
-      player.client = null;
-      setTimeout(() => {
-        this.emitter.emit('playerParted', {gameId: this.game.id, playerId: player.id});
-      }, process.env.DISCONNECT_TIMEOUT);
-    }
-    else {
-      // remove for good
-      this.log.info('clearing player from list');
-      this.players.splice(index, 1);
-    }
-
-    this.log.info('player %s has disconnected from host for game %s',
-        player.id, this.game.id);
+    this.players.splice(this.players.indexOf(player), 1);
 
     this.emit('playerDisconnected', player);
     this._broadcastCommand('player:disconnect', player);
@@ -220,7 +184,9 @@ export default class GameHost extends EventEmitter
   {
     this.log.info('shutting down GameHost for game %s', this.game.id);
     this.emit('shutdown');
+  }
 
-    // TODO: drop all players, trigger something in gamehost
+  playerByClient(client){
+    return this.players.find(x => x.client === client);
   }
 }

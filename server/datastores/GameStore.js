@@ -110,11 +110,13 @@ export default class GameStore
   /**
    * Remove a player from a game
    */
-  async playerPart(playerId)
+  async playerPart(playerId, gameId = null)
   {
-    let gameId = await this.currentGameId(playerId);
+    if(!gameId){
+      gameId = await this.currentGameId(playerId);
+    }
 
-    // player wasnt yet in a game, nothing to do
+    // player isn't in a game, nothing to do
     if(!gameId){
       return null;
     }
