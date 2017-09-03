@@ -23,14 +23,6 @@ namespace ctac
         {
             if (!processedActions.Verify(gameFinished.id)) return;
 
-            if (gameFinished.winnerId == players.Me.id)
-            {
-                message.Dispatch(new MessageModel() { message = "Victory!", duration = 5000}, socketKey);
-            }
-            else
-            {
-                message.Dispatch(new MessageModel() { message = "Defeat :(", duration = 5000}, socketKey);
-            }
             gameFinishedSignal.Dispatch(gameFinished);
         }
     }
