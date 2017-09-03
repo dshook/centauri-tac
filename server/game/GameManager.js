@@ -83,7 +83,7 @@ export default class GameManager
     // Fire update events
     const game = await this.games.getActive(gameId);
     await this.emitter.emit('game:current', {game, playerId});
-    //await this.emitter.emit('game', game);
+    await this.emitter.emit('game', game);
   }
 
   /**

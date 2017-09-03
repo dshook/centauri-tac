@@ -19,15 +19,15 @@ export default class GameRPC
   /**
    * Client wants the entire gamelist
    */
-  @rpc.command('gamelist')
-  @rpc.middleware(roles(['player']))
-  async sendGamelist(client)
-  {
-    const games = await this.games.getActive();
-    for (const g of games) {
-      client.send('game', g);
-    }
-  }
+  // @rpc.command('gamelist')
+  // @rpc.middleware(roles(['player']))
+  // async sendGamelist(client)
+  // {
+  //   const games = await this.games.getActive();
+  //   for (const g of games) {
+  //     client.send('game', g);
+  //   }
+  // }
 
   /**
    * A game component is switching the allow join param
@@ -96,24 +96,24 @@ export default class GameRPC
   /**
    * Send game update to all connected
    */
-  @on('game')
-  _broadcastGame(game)
-  {
-    for (const c of this.clients) {
-      c.send('game', game);
-    }
-  }
+  // @on('game')
+  // _broadcastGame(game)
+  // {
+  //   for (const c of this.clients) {
+  //     c.send('game', game);
+  //   }
+  // }
 
   /**
    * Send game remove to all connected
    */
-  @on('game:remove')
-  _broadcastRemoveGame(gameId)
-  {
-    for (const c of this.clients) {
-      c.send('game:remove', gameId);
-    }
-  }
+  // @on('game:remove')
+  // _broadcastRemoveGame(gameId)
+  // {
+  //   for (const c of this.clients) {
+  //     c.send('game:remove', gameId);
+  //   }
+  // }
 
 
   /**
