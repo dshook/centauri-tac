@@ -87,6 +87,11 @@ export default class GameHost extends EventEmitter
   @on('command')
   onClientCommand({command, params}, client)
   {
+    if(!this.game.allowCommands){
+      this.log.warn('Player command %s sent before allowed', command);
+      return;
+    }
+
     const player = this.playerByClient(client);
     this.emit('playerCommand', command, params, player);
   }

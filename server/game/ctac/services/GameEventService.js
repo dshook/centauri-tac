@@ -75,6 +75,7 @@ export default class GameEventService
   //Start the game!
   kickoff(){
     this.log.info('Game kickoff!');
+    this.game.allowCommands = true;
     this.autoTurnInterval.start();
 
     this.queue.push(new Kickoff('Go!'));
