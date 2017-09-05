@@ -14,7 +14,7 @@ namespace ctac
         [Inject] public GamePausedSignal pauseSignal { get; set; }
         [Inject] public GameResumedSignal resumeSignal { get; set; }
         [Inject] public GameFinishedSignal gameFinished { get; set; }
-        [Inject] public GameAuthedSignal gameAuthed { get; set; }
+        [Inject] public ActionKickoffSignal kickoff { get; set; }
 
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
@@ -32,7 +32,7 @@ namespace ctac
             pauseSignal.AddListener(onPause);
             resumeSignal.AddListener(onResume);
             gameFinished.AddListener(onGameFinished);
-            gameAuthed.AddListener(onGameAuthed);
+            kickoff.AddListener(onKickoff);
 
             view.init(sounds);
         }
@@ -44,10 +44,10 @@ namespace ctac
             pauseSignal.RemoveListener(onPause);
             resumeSignal.RemoveListener(onResume);
             gameFinished.RemoveListener(onGameFinished);
-            gameAuthed.RemoveListener(onGameAuthed);
+            kickoff.RemoveListener(onKickoff);
         }
 
-        public void onGameAuthed()
+        public void onKickoff(KickoffModel km, SocketKey key)
         {
             SetTimers();
         }

@@ -20,7 +20,7 @@ namespace ctac
         [Inject] public CardsModel cards { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
-        [Inject] public StartGameSettledSignal onStartSettled { get; set; }
+        [Inject] public ActionKickoffSignal kickoff { get; set; }
 
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
@@ -34,35 +34,24 @@ namespace ctac
             view.clickPauseSignal.AddListener(onPauseClicked);
             view.clickResumeSignal.AddListener(onResumeClicked);
             turnEnded.AddListener(onTurnEnded);
-            onStartSettled.AddListener(onStartSet);
+            kickoff.AddListener(onStartSet);
             view.init();
-
-            //Really ghetto way to delay the button looking for updates
-            StartCoroutine(WaitAndStart(10.0f));
-        }
-
-        IEnumerator WaitAndStart(float waitTime)
-        {
-            yield return new WaitForSeconds(waitTime);
-            debug.Log("Start settled");
-            onStartSettled.Dispatch();
         }
 
         public override void onRemove()
         {
             view.clickEndTurnSignal.RemoveListener(onTurnClicked);
             turnEnded.RemoveListener(onTurnEnded);
-            onStartSettled.RemoveListener(onStartSet);
+            kickoff.RemoveListener(onStartSet);
         }
 
         public void Update()
         {
-            if (startSettled)
-            {
-                view.updatePlayable(
-                    cards.Cards.Any(x => x.playerId == players.Me.id && x.playable)
-                );
-            }
+            if (!startSettled) { return; }
+
+            view.updatePlayable(
+                cards.Cards.Any(x => x.playerId == players.Me.id && x.playable)
+            );
         }
 
         private void onTurnClicked()
@@ -96,7 +85,7 @@ namespace ctac
             view.onTurnEnded(text);
         }
 
-        private void onStartSet()
+        private void onStartSet(KickoffModel km, SocketKey key)
         {
             startSettled = true;
         }

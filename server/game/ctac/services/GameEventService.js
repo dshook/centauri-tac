@@ -32,7 +32,7 @@ export default class GameEventService
     this.gameKickoff = new IntervalTimer(
       'Game Kickoff Interval',
       () => this.kickoff(),
-      5000,
+      2000,
       1
     );
 
