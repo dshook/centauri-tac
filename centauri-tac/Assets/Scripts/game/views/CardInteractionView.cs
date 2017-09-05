@@ -7,6 +7,8 @@ namespace ctac
 {
     public class CardInteractionView : View
     {
+        [Inject] public GameInputStatusModel gameInputStatus { get; set; }
+
         internal Signal<GameObject, Vector3> clickSignal = new Signal<GameObject, Vector3>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
@@ -54,14 +56,14 @@ namespace ctac
                 dragTimer += Time.deltaTime;
             }
 
-            if (CrossPlatformInputManager.GetButtonUp("Fire1")) {
+            if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonUp("Fire1")) {
                 if (draggedObject != null && dragTimer > dragMin)
                 {
                     TestActivate();
                 }
             }
 
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
                 //if we're already dragging, test the activate, otherwise start dragging
                 if (draggedObject != null && dragTimer > dragMin)

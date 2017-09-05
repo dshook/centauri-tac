@@ -2,7 +2,6 @@
 using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
 using System;
-using strange.extensions.signal.impl;
 using System.Collections;
 
 namespace ctac
@@ -12,12 +11,10 @@ namespace ctac
         private Vector3 dragOrigin;
 
         private Vector3 mouseDiff;
-        private Vector3 amountToMove;
-        private Vector3 move;
 
         private RaycastModel raycastModel;
 
-        private bool dragEnabled = false;
+        private bool dragEnabled = true;
         public bool zoomEnabled = true;
 
         bool dragging = false;

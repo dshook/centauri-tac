@@ -11,6 +11,7 @@ namespace ctac
         [Inject] public LeaveGameSignal leaveSignal { get; set; }
 
         [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public GameInputStatusModel gameInputStatus { get; set; }
 
         public override void OnRegister()
         {
@@ -27,6 +28,8 @@ namespace ctac
 
         private void onGameFinished(GameFinishedModel gameFinished)
         {
+            gameInputStatus.inputEnabled = false;
+
             if (gameFinished.winnerId == players.Me.id)
             {
                 view.onFinish("Victory!");

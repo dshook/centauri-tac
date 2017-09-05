@@ -8,6 +8,8 @@ namespace ctac
 {
     public class AbilityButtonView : View, IPointerEnterHandler, IPointerExitHandler
     {
+        [Inject] public GameInputStatusModel gameInputStatus { get; set; }
+
         public Signal clickSignal = new Signal();
         public Signal<bool> hoverSignal = new Signal<bool>();
 
@@ -33,12 +35,16 @@ namespace ctac
 
             buttonText.text = string.Format("({0}) {1}", ability.abilityCost, ability.ability);
 
-            abilityButton.interactable = (ability.abilityCooldown == 0) 
+            abilityButton.interactable = 
+                gameInputStatus.inputEnabled 
+                && ability.abilityCooldown == 0
                 && ability.abilityCost <= playerResources.resources[piece.playerId];
         }
 
         void onClick()
         {
+            if (!gameInputStatus.inputEnabled) return;
+
             clickSignal.Dispatch();
         }
 

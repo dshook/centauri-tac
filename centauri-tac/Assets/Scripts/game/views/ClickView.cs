@@ -16,6 +16,8 @@ namespace ctac
 
     public class ClickView : View
     {
+        [Inject] public GameInputStatusModel gameInputStatus { get; set; }
+
         internal Signal<ClickModel> clickSignal = new Signal<ClickModel>();
         RaycastModel raycastModel;
 
@@ -31,7 +33,7 @@ namespace ctac
 
         void Update()
         {
-            if (!active) { return; }
+            if (!active || !gameInputStatus.inputEnabled) { return; }
 
             clickTimeAccum += Time.deltaTime;
 

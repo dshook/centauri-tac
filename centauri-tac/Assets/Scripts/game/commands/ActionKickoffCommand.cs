@@ -11,6 +11,8 @@ namespace ctac
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
+        [Inject] public GameInputStatusModel gameInputStatus { get; set; }
+
         [Inject]
         public MessageSignal messageSignal { get; set; }
         
@@ -18,6 +20,7 @@ namespace ctac
         {
             if (!processedActions.Verify(kickoff.id)) return;
 
+            gameInputStatus.inputEnabled = true;
             messageSignal.Dispatch( new MessageModel() { message = kickoff.message });
 
         }
