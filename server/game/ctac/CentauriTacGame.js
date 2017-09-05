@@ -1,7 +1,6 @@
 import {on} from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
 import GameController from './controllers/GameController.js';
-import PassTurn from './actions/PassTurn.js';
 import SpawnPiece from './actions/SpawnPiece.js';
 import DrawCard from './actions/DrawCard.js';
 import SpawnDeck from './actions/SpawnDeck.js';

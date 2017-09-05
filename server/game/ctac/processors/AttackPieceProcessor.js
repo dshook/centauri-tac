@@ -4,6 +4,7 @@ import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
 import {faceDirection} from '../models/Direction.js';
 import loglevel from 'loglevel-decorator';
+import Message from '../actions/Message.js';
 
 /**
  * Handle the units attacking each other
@@ -50,6 +51,7 @@ export default class AttackPieceProcessor
     let rangedAttack = attacker.range != null && targetDistance > 1;
     if(targetDistance > 1 && (attacker.range != null && attacker.range < targetDistance)){
       this.log.warn('Attacker too far away from target %s %s', targetDistance, attacker.range);
+      queue.push(new Message('Too far away!', action.playerId));
       return queue.cancel(action);
     }
 
@@ -58,30 +60,35 @@ export default class AttackPieceProcessor
     let targetTile = this.mapState.getTile(target.position)
     if(attacker.range == null && !this.mapState.isHeightPassable(attackerTile, targetTile)){
         this.log.info('Cannot attack due to tile heigh diff');
+        queue.push(new Message('Can\'t attack up that slope!', action.playerId));
         return queue.cancel(action);
     }
 
     if(!action.isTauntAttack && (attacker.statuses & Statuses.Paralyze || attacker.statuses & Statuses.CantAttack)){
       this.log.warn('Cannot attack with piece %s with status %s', attacker.id, attacker.statuses);
+      queue.push(new Message('Unable to attack with this status!', action.playerId));
       return queue.cancel(action);
     }
 
     if(target.statuses & Statuses.Cloak){
       this.log.warn('Cannot attack piece %s with Cloak', target.id);
+      queue.push(new Message('Cannot attack a cloaked minion!', action.playerId));
       return queue.cancel(action);
     }
 
     //check if piece is 'old' enough to attack
-    if(!attacker.bornOn ||
+    if(attacker.bornOn === null ||
       ((this.turnState.currentTurn - attacker.bornOn) < 1 && !(attacker.statuses & Statuses.Charge))
     ){
       this.log.warn('Piece %s must wait a turn to attack', attacker.id);
+      queue.push(new Message('Minions need time to prepare!', action.playerId));
       return queue.cancel(action);
     }
 
     let maxAttacks = (attacker.statuses & Statuses.DyadStrike) ? 2 : 1;
     if(attacker.attackCount >= maxAttacks){
       this.log.warn('Piece %s has already attacked', attacker.id);
+      queue.push(new Message('Piece has already attacked!', action.playerId));
       return queue.cancel(action);
     }
 
