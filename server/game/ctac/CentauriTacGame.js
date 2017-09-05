@@ -61,9 +61,6 @@ export default class CentauriTacGame
     //set map state current map based on game
     this.mapState.setMap(this.game.map);
 
-    // start first turn with random player
-    this.queue.push(new PassTurn());
-
     // spawn game pieces for two players
     let allHeroes = this.cardDirectory.getByTag('Hero');
     let heroes = [
@@ -102,7 +99,7 @@ export default class CentauriTacGame
 
     await this.queue.processUntilDone();
 
-    this.gameEventService.autoTurnInterval.start();
+    this.gameEventService.gameKickoff.start();
   }
 
   /**

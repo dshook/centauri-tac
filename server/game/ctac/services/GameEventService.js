@@ -1,6 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import PassTurn from '../actions/PassTurn.js';
 import SetPlayerResource from '../actions/SetPlayerResource.js';
+import Kickoff from '../actions/Kickoff.js';
 import IntervalTimer from 'interval-timer';
 
 /**
@@ -16,8 +17,24 @@ export default class GameEventService
     this.players = players;
     this.turnState = turnState;
 
-    this.autoTurnInterval = new IntervalTimer('Auto Turn Interval', () => this.passTurn(), this.turnLength(game, turnState.currentTurn), 1);
-    this.autoEnergyInterval = new IntervalTimer('Auto Energy Interval', () => this.giveEnergy(), this.turnLength(game, turnState.currentTurn) - game.turnEndBufferLengthMs);
+    this.autoTurnInterval = new IntervalTimer(
+      'Auto Turn Interval',
+      () => this.passTurn(),
+      this.turnLength(game, turnState.currentTurn),
+      1
+    );
+    this.autoEnergyInterval = new IntervalTimer(
+      'Auto Energy Interval',
+      () => this.giveEnergy(),
+      this.turnLength(game, turnState.currentTurn) - game.turnEndBufferLengthMs
+    );
+
+    this.gameKickoff = new IntervalTimer(
+      'Game Kickoff Interval',
+      () => this.kickoff(),
+      5000,
+      1
+    );
 
     this.registeredTimers = [this.autoTurnInterval, this.autoEnergyInterval];
 
@@ -53,6 +70,16 @@ export default class GameEventService
     for(let timer of this.registeredTimers){
       timer.resume();
     }
+  }
+
+  //Start the game!
+  kickoff(){
+    this.log.info('Game kickoff!');
+    this.autoTurnInterval.start();
+
+    this.queue.push(new Kickoff('Go!'));
+    this.queue.push(new PassTurn());
+    this.queue.processUntilDone();
   }
 
   passTurn(){

@@ -60,10 +60,10 @@ export default class AreaSelector{
       pivotSelector = extraParams ? selector.args[3] : null;
       bothDirections = extraParams ? selector.args[4] : null;
 
-      this.log.info('Evaluating area %s size %s %s %s'
-        , areaType, size
-        , pieceSelectorParams.position ? 'center ' + pieceSelectorParams.position : '',
-        pieceSelectorParams.pivotPosition ? 'pivot ' + pieceSelectorParams.pivotPosition : '');
+      // this.log.info('Evaluating area %s size %s %s %s'
+      //   , areaType, size
+      //   , pieceSelectorParams.position ? 'center ' + pieceSelectorParams.position : '',
+      //   pieceSelectorParams.pivotPosition ? 'pivot ' + pieceSelectorParams.pivotPosition : '');
 
       //first find the centering piece then all the pieces in the area
       if(centerSelector.left && centerSelector.left === 'CURSOR'){
