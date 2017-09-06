@@ -136,18 +136,18 @@ export default class GameStore
   @hrtime('removed game in %s ms')
   async complete(id, winningPlayerId)
   {
-    const resp = await this.sql.query(`
+    await this.sql.query(`
         update games set
         game_state_id = 4,
         winning_player_id = @winningPlayerId
         where id = @id
         returning id`, {id, winningPlayerId});
 
-    const data = resp.firstOrNull();
-
-    if (!data || !data.id) {
-      return;
-    }
+    //make sure all the game players are inactivated
+    await this.sql.query(`
+        update game_players set state = 0
+        where game_id = @id
+        `, {id});
   }
 
   /**

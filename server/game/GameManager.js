@@ -182,6 +182,9 @@ export default class GameManager
   {
     this.log.info('completing game %s with winner %s', gameId, '' + winningPlayerId);
 
+    // remove from registry
+    await this.games.complete(gameId, winningPlayerId);
+
     // kill the game on the server
     const index = this.gameHosts.findIndex(x => x.game.id === gameId);
 
@@ -202,9 +205,6 @@ export default class GameManager
         }
       );
     }
-
-    // remove from registry
-    await this.games.complete(gameId, winningPlayerId);
 
     // remove all remaining players
     this.log.info('removing remaining players');
