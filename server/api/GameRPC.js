@@ -3,8 +3,6 @@ import roles from '../middleware/rpc/roles.js';
 import loglevel from 'loglevel-decorator';
 import {on} from 'emitter-binder';
 
-//TODO: Big problem: a lot of this code assumes there are only two players
-// and broadcasts stuff to all clients that doesn't need to be broadcast to them
 @loglevel
 export default class GameRPC
 {
