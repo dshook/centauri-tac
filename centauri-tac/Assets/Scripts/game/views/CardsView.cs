@@ -169,7 +169,8 @@ namespace ctac {
         internal void onCardHovered(CardModel card)
         {
             //reset previous hovered card to active
-            if (hoveredCard != null)
+            //some extra null checks for when cards are played and destroyed then hovered
+            if (hoveredCard != null && hoveredCard.cardView != null && hoveredCard.cardView.displayWrapper != null)
             {
                 hoveredCard.cardView.displayWrapper.SetActive(true);
             }
