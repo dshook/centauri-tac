@@ -91,9 +91,9 @@ namespace ctac
             draggedCard = cardView.card;
 
             //Choose card interactions
-            if (chooseModel != null && cardView.card.tags.Contains(Constants.chooseCardTag))
+            if (chooseModel != null && draggedCard.tags.Contains(Constants.chooseCardTag))
             {
-                chooseModel.chosenTemplateId = cardView.card.cardTemplateId;
+                chooseModel.chosenTemplateId = draggedCard.cardTemplateId;
                 cardChosen.Dispatch(chooseModel);
                 if (chooseModel.chooseFulfilled)
                 {

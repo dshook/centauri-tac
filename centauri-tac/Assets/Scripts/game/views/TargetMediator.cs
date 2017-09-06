@@ -98,6 +98,14 @@ namespace ctac
 
             var card = cardSelected.card;
 
+            //clicking on a card while targeting cancels the target;
+            if (cardTarget != null && cardTarget.targetingCard != card)
+            {
+                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+                return;
+            }
+
+
             if (card.isSpell)
             {
                 if (card.needsTargeting(possibleActions))
