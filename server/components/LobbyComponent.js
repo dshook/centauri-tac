@@ -3,7 +3,7 @@ import MatchmakerRPC from '../api/MatchmakerRPC.js';
 /**
  * Make me a damn match
  */
-export default class MatchmakerComponent
+export default class LobbyComponent
 {
   async start(component)
   {

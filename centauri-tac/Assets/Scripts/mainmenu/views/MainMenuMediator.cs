@@ -18,8 +18,8 @@ namespace ctac
         [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
         [Inject] public AuthLogoutSignal authLogout { get; set; }
 
-        [Inject] public AuthMatchmakerSignal authMatchmaker { get; set; }
-        [Inject] public MatchmakerLoggedInSignal mmLoggedIn { get; set; }
+        [Inject] public AuthLobbySignal authLobby { get; set; }
+        [Inject] public LobbyLoggedInSignal mmLoggedIn { get; set; }
         [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
         [Inject] public MatchmakerStatusSignal mmStatus { get; set; }
@@ -83,7 +83,7 @@ namespace ctac
             if (!view.queueing)
             {
                 if (mmKey == null && loggedInPlayer != null && loggedInKey != null) {
-                    authMatchmaker.Dispatch(loggedInPlayer, loggedInKey);
+                    authLobby.Dispatch(loggedInPlayer, loggedInKey);
                 }
                 if (mmKey != null)
                 {

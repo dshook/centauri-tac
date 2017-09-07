@@ -12,13 +12,10 @@ namespace ctac
         public AuthLoggedInSignal authLoggedIn { get; set; }
 
         [Inject]
-        public GamelistLoggedInSignal gamelistLoggedIn { get; set; }
-
-        [Inject]
         public GameLoggedInSignal gameLoggedIn { get; set; }
 
         [Inject]
-        public MatchmakerLoggedInSignal matchmakerLoggedIn { get; set; }
+        public LobbyLoggedInSignal lobbyLoggedIn { get; set; }
 
         [Inject]
         public LoginStatusModel status { get; set; }
@@ -32,14 +29,11 @@ namespace ctac
                 case "auth":
                     authLoggedIn.Dispatch(status, loggedInKey);
                     break;
-                case "gamelist":
-                    gamelistLoggedIn.Dispatch(status, loggedInKey);
-                    break;
                 case "game":
                     gameLoggedIn.Dispatch(status, loggedInKey);
                     break;
-                case "matchmaker":
-                    matchmakerLoggedIn.Dispatch(status, loggedInKey);
+                case "lobby":
+                    lobbyLoggedIn.Dispatch(status, loggedInKey);
                     break;
             }
         }

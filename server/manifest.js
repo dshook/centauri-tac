@@ -6,14 +6,14 @@ import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
 import GameService from './services/GameService.js';
 //import GamelistService from './services/GamelistService.js';
-import MatchmakerService from './services/MatchmakerService.js';
+import LobbyService from './services/LobbyService.js';
 import EventService from './services/EventService.js';
 
 import AuthComponent from './components/AuthComponent.js';
 import LogComponent from './components/LogComponent.js';
 //import GamelistComponent from './components/GamelistComponent.js';
 import GameComponent from './components/GameComponent.js';
-import MatchmakerComponent from './components/MatchmakerComponent.js';
+import LobbyComponent from './components/LobbyComponent.js';
 
 // common things for all backend components
 const common = [
@@ -28,11 +28,11 @@ const common = [
  */
 export default {
 
-  matchmaker: {
-    TComponent: MatchmakerComponent,
+  lobby: {
+    TComponent: LobbyComponent,
     services: [
       ...common,
-      MatchmakerService
+      LobbyService
     ],
   },
 

@@ -2,7 +2,7 @@ using strange.extensions.command.impl;
 
 namespace ctac
 {
-    public class AuthMatchmakerCommand : Command
+    public class AuthLobbyCommand : Command
     {
         [Inject]
         public ISocketService socketService { get; set; }
@@ -15,7 +15,7 @@ namespace ctac
 
         public override void Execute()
         {
-            socketService.Request(key.clientId, "matchmaker", "token", playerModel.token);
+            socketService.Request(key.clientId, "lobby", "token", playerModel.token);
         }
 
     }

@@ -3,7 +3,7 @@ import Matchmaker from '../game/Matchmaker.js';
 /**
  * Expose the matchmaker
  */
-export default class MatchmakerService
+export default class LobbyService
 {
   constructor(container)
   {
