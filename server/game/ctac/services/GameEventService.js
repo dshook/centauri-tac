@@ -118,7 +118,7 @@ export default class GameEventService
   }
 
   turnLength(game, currentTurn){
-    return game.turnLengthMs + (currentTurn * game.turnIncrementLengthMs);
+    return game.turnLengthMs + (Math.min(currentTurn, 10) * game.turnIncrementLengthMs);
   }
 }
 
