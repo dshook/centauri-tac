@@ -131,7 +131,7 @@ export default class GameStore
   }
 
   /**
-   * Will blow up if theres still players in the game!
+   * Mark a game as complete
    */
   @hrtime('removed game in %s ms')
   async complete(id, winningPlayerId)
