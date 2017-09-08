@@ -34,7 +34,7 @@ namespace ctac
             {
                 return;
             }
-            socket.Disconnect(socketKey.clientId, "matchmaker");
+            socket.Disconnect(socketKey.clientId, "lobby");
             //update the game list so once we're authed we can find and join it
             game.isCurrent = true;
             gamelist.AddOrUpdateGame(socketKey.clientId, game);
