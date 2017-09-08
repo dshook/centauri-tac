@@ -70,6 +70,10 @@ namespace ctac
         private void onGotDecks(ServerDecksModel decks, SocketKey key)
         {
             debug.Log("Got Decks: " + decks.decks.Count);
+            foreach (var deck in decks.decks)
+            {
+                newDeck.Dispatch(deck);
+            }
         }
 
         static Dictionary<Races, string> starterDeckNames = new Dictionary<Races, string>()
