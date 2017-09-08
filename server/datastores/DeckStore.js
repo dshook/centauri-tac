@@ -39,7 +39,8 @@ export default class DeckStore
       );
     }
 
-    return Promise.all(deckResolves);
+    await Promise.all(deckResolves);
+    return decks;
   }
 
   async getDeckCards(deckId)

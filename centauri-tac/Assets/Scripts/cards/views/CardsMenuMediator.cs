@@ -25,6 +25,9 @@ namespace ctac
         [Inject] public RemoveDeckSignal removeDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
 
+        [Inject] public GetDecksSignal getDecks { get; set; }
+        [Inject] public GotDecksSignal gotDecks { get; set; }
+
         public override void OnRegister()
         {
             view.clickLeaveSignal.AddListener(onLeaveClicked);
@@ -36,6 +39,7 @@ namespace ctac
             editDeck.AddListener(onEditDeck);
 
             cardKickoff.AddListener(onKickoff);
+            gotDecks.AddListener(onGotDecks);
 
             view.init(cardService, cardDirectory);
         }
@@ -44,6 +48,7 @@ namespace ctac
         {
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             cardKickoff.RemoveListener(onKickoff);
+            gotDecks.RemoveListener(onGotDecks);
 
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
@@ -58,7 +63,13 @@ namespace ctac
 
         private void onKickoff()
         {
+            getDecks.Dispatch();
             view.UpdateCards();
+        }
+
+        private void onGotDecks(ServerDecksModel decks, SocketKey key)
+        {
+            debug.Log("Got Decks: " + decks.decks.Count);
         }
 
         static Dictionary<Races, string> starterDeckNames = new Dictionary<Races, string>()

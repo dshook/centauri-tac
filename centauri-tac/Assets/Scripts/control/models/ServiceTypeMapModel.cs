@@ -41,13 +41,12 @@ namespace ctac
                 {"player:part", typeof(PlayerPartSignal) },
                 {"player:disconnect", typeof(PlayerDisconnectSignal) },
 
-                {"status", typeof(MatchmakerStatusSignal) },
+                {"decks:current", typeof(GotDecksSignal) },
 
-                //{"actionCancelled:SpawnPiece", typeof(ActionCancelledSpawnPieceSignal) },
-                //{"actionCancelled:ActivateCard", typeof(ActionCancelledActivateCardSignal) },
+                {"status", typeof(MatchmakerStatusSignal) },
             }; 
 
-            //auto add action bindings
+            //auto add action bindings so action:name -> ActionNameSignal
             var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => t.Name.StartsWith("Action") && !t.Name.Contains("ActionCancelled"));
             foreach (Type type in assemblyTypes)
@@ -56,7 +55,7 @@ namespace ctac
                 map.Add("action:" + actionType, type);
             }
 
-            //auto add action cancelled bindings
+            //auto add action cancelled bindings actionCancelled:name -> ActionCancelledNameSignal
             var assemblyCancelledTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => t.Name.StartsWith("ActionCancelled"));
             foreach (Type type in assemblyCancelledTypes)

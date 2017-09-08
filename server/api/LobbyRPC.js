@@ -9,9 +9,10 @@ import {on} from 'emitter-binder';
 @loglevel
 export default class LobbyRPC
 {
-  constructor(matchmaker)
+  constructor(matchmaker, cardManager)
   {
     this.matchmaker = matchmaker;
+    this.cardManager = cardManager;
     this.clients = new Set();
   }
 
@@ -63,12 +64,7 @@ export default class LobbyRPC
   @on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
-    for (const c of this.clients) {
-      const {id} = c.auth.sub;
-      if (playerId === id) {
-        c.send('game:current', game);
-      }
-    }
+    this.sendToPlayer(playerId, 'game:current', game);
   }
 
   /**
@@ -77,10 +73,27 @@ export default class LobbyRPC
   @on('matchmaker:status')
   _status(status)
   {
+    this.sendToPlayer(status.playerId, 'status', status);
+  }
+
+  /**
+   * Get decks, duh
+   */
+  @rpc.command('getDecks')
+  @rpc.middleware(roles(['player']))
+  async getDecks(client, params, auth)
+  {
+    const playerId = auth.sub.id;
+    let decks = await this.cardManager.getDecks(playerId);
+    this.sendToPlayer(playerId, 'decks:current', decks);
+  }
+
+  //prolly should index them
+  sendToPlayer(playerId, message, data){
     for (const c of this.clients) {
       const {id} = c.auth.sub;
-      if (status.playerId === id) {
-        c.send('status', status);
+      if (playerId === id) {
+        c.send(message, data);
       }
     }
   }

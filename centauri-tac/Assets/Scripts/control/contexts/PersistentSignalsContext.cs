@@ -64,6 +64,9 @@ namespace ctac
             injectionBinder.Bind<ISoundService>().To<SoundService>().ToSingleton().CrossContext();
 
             commandBinder.Bind<PingSignal>().To<PongCommand>();
+
+            //this should be moved to a lobby specific context at some point I think
+            injectionBinder.Bind<LobbyModel>().To<LobbyModel>().ToSingleton().CrossContext();
         }
 
         protected override void postBindings()

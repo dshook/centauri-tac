@@ -28,9 +28,10 @@ namespace ctac
 
         [Inject] public SocketHangupSignal socketHangup { get; set; }
 
+        [Inject] public LobbyModel lobbyModel { get; set; }
+
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
-        SocketKey mmKey = null;
 
         public override void OnRegister()
         {
@@ -80,13 +81,13 @@ namespace ctac
 
         private void onPlayClicked()
         {
-            if (!view.queueing && mmKey != null)
+            if (!view.queueing && lobbyModel.lobbyKey != null)
             {
-                mmQueue.Dispatch(mmKey);
+                mmQueue.Dispatch(lobbyModel.lobbyKey);
             }
-            if (view.queueing && mmKey != null)
+            if (view.queueing && lobbyModel.lobbyKey != null)
             {
-                mmDequeue.Dispatch(mmKey);
+                mmDequeue.Dispatch(lobbyModel.lobbyKey);
             }
         }
 
@@ -140,7 +141,7 @@ namespace ctac
 
         private void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
         {
-            mmKey = key;
+            lobbyModel.lobbyKey = key;
             if (loginStatus.status == false)
             {
                 debug.LogError("Could not log into loby service: " + loginStatus.message);
@@ -153,7 +154,7 @@ namespace ctac
 
         private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
         {
-            mmKey = key;
+            lobbyModel.lobbyKey = key;
             view.SetQueueing(model.inQueue);
         }
 
