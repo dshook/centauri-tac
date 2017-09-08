@@ -7,7 +7,7 @@ import {on} from 'emitter-binder';
  * RPC handler for the matchmaker component
  */
 @loglevel
-export default class MatchmakerRPC
+export default class LobbyRPC
 {
   constructor(matchmaker)
   {

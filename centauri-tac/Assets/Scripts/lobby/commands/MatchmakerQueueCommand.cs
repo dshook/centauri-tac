@@ -12,6 +12,7 @@ namespace ctac
 
         public override void Execute()
         {
+            debug.Log("Player Queuing", key);
             socketService.Request(key, "queue");
         }
 

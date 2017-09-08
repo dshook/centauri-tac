@@ -1,4 +1,4 @@
-import MatchmakerRPC from '../api/MatchmakerRPC.js';
+import LobbyRPC from '../api/LobbyRPC.js';
 
 /**
  * Make me a damn match
@@ -9,6 +9,6 @@ export default class LobbyComponent
   {
     const {sockServer} = component;
 
-    sockServer.addHandler(MatchmakerRPC);
+    sockServer.addHandler(LobbyRPC);
   }
 }
