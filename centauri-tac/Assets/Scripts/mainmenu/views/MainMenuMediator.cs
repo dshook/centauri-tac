@@ -19,7 +19,7 @@ namespace ctac
         [Inject] public AuthLogoutSignal authLogout { get; set; }
 
         [Inject] public AuthLobbySignal authLobby { get; set; }
-        [Inject] public LobbyLoggedInSignal mmLoggedIn { get; set; }
+        [Inject] public LobbyLoggedInSignal lobbyLoggedIn { get; set; }
         [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
         [Inject] public MatchmakerStatusSignal mmStatus { get; set; }
@@ -45,7 +45,7 @@ namespace ctac
             needLogin.AddListener(onNeedLogin);
             playerFetched.AddListener(onPlayerFetched);
             mmStatus.AddListener(onMatchmakerStatus);
-            mmLoggedIn.AddListener(onMatchmakerLoggedIn);
+            lobbyLoggedIn.AddListener(onLobbyLoggedIn);
 
             currentGame.AddListener(onCurrentGame);
 
@@ -67,7 +67,7 @@ namespace ctac
             needLogin.RemoveListener(onNeedLogin);
             playerFetched.RemoveListener(onPlayerFetched);
             mmStatus.RemoveListener(onMatchmakerStatus);
-            mmLoggedIn.RemoveListener(onMatchmakerLoggedIn);
+            lobbyLoggedIn.RemoveListener(onLobbyLoggedIn);
 
             currentGame.RemoveListener(onCurrentGame);
 
@@ -80,15 +80,9 @@ namespace ctac
 
         private void onPlayClicked()
         {
-            if (!view.queueing)
+            if (!view.queueing && mmKey != null)
             {
-                if (mmKey == null && loggedInPlayer != null && loggedInKey != null) {
-                    authLobby.Dispatch(loggedInPlayer, loggedInKey);
-                }
-                if (mmKey != null)
-                {
-                    mmQueue.Dispatch(mmKey);
-                }
+                mmQueue.Dispatch(mmKey);
             }
             if (view.queueing && mmKey != null)
             {
@@ -133,7 +127,6 @@ namespace ctac
         {
             if (model.status)
             {
-                view.SetButtonsActive(model.status);
             }
         }
 
@@ -142,19 +135,20 @@ namespace ctac
             loggedInPlayer = player;
             loggedInKey = key;
             view.SetUsername("Welcome " + player.email.Substring(0, player.email.IndexOf('@')));
-            view.enableButtons();
+            authLobby.Dispatch(loggedInPlayer, loggedInKey);
         }
 
-        private void onMatchmakerLoggedIn(LoginStatusModel loginStatus, SocketKey key)
+        private void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
         {
             mmKey = key;
             if (loginStatus.status == false)
             {
-                debug.LogError("Could not log into matchmaker service: " + loginStatus.message);
-                view.setErrorMessage("Matchmaker unavailable now, please try again later");
+                debug.LogError("Could not log into loby service: " + loginStatus.message);
+                view.setErrorMessage("Lobby server unavailable now, please try again later");
                 return;
             }
-            mmQueue.Dispatch(mmKey);
+            view.SetButtonsActive(loginStatus.status);
+            view.enableButtons();
         }
 
         private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
