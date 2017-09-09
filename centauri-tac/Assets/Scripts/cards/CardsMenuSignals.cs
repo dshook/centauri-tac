@@ -14,6 +14,7 @@ namespace ctac.signals
     [Singleton] public class RemoveDeckSignal : Signal<DeckModel> { }
     [Singleton] public class EditDeckSignal : Signal<DeckModel> { }
     [Singleton] public class CancelDeckSignal : Signal { }
+    [Singleton] public class DeleteDeckSignal : Signal<DeckModel> { }
 
     [Singleton] public class GetDecksSignal : Signal { }
     [Singleton] public class GotDecksSignal : Signal<ServerDecksModel, SocketKey> { }

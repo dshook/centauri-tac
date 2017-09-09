@@ -416,8 +416,6 @@ namespace ctac {
 
         }
 
-        public static readonly float HOVER_DELAY = 0.5f;
-
         public class UpdateTextAnim : IAnimate
         {
             public bool Complete { get; set; }

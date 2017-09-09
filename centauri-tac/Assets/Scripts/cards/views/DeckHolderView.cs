@@ -45,7 +45,7 @@ namespace ctac
             UpdateList();
         }
 
-        //sort and reposition list by cost
+        //sort list by id and display
         void UpdateList()
         {
             decksList = decksList.OrderBy(d => d.deck.id).ToList();

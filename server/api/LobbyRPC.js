@@ -112,6 +112,24 @@ export default class LobbyRPC
     this.sendToPlayer(playerId, 'decks:saveSuccess', deck);
   }
 
+  @rpc.command('deleteDeck')
+  @rpc.middleware(roles(['player']))
+  async deleteDeck(client, deckId, auth)
+  {
+    const playerId = auth.sub.id;
+    try{
+      await this.cardManager.deleteDeck(playerId, deckId);
+    }catch(e){
+      this.log.warn('Deck delete failed for player %s, reason: %s', playerId, e.message);
+      let message = e.message;
+      if (!(e instanceof DeckStoreError)) {
+        message = 'Error deleting deck, please try again later';
+      }
+      this.sendToPlayer(playerId, 'decks:saveFailed', message);
+      return;
+    }
+  }
+
   //prolly should index them
   sendToPlayer(playerId, message, data){
     for (const c of this.clients) {

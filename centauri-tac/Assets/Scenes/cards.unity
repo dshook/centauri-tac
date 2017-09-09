@@ -391,7 +391,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1792269620}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.5646932
+  m_Size: 0.56469333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2879,6 +2879,16 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114254188173174954, guid: 2b2407efab67e6846b58410073eab821,
+        type: 2}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114254188173174954, guid: 2b2407efab67e6846b58410073eab821,
+        type: 2}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114731397658844258, guid: 2b2407efab67e6846b58410073eab821,
         type: 2}
       propertyPath: m_havePropertiesChanged
@@ -3153,6 +3163,11 @@ Prefab:
       propertyPath: m_Name
       value: Card (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -3291,6 +3306,11 @@ Prefab:
     - target: {fileID: 145728, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Name
       value: Card (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -4963,6 +4983,11 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -5236,6 +5261,11 @@ Prefab:
     - target: {fileID: 145728, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Name
       value: Card (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -6339,6 +6369,11 @@ Prefab:
     - target: {fileID: 145728, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Name
       value: Card (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -7630,6 +7665,11 @@ Prefab:
     - target: {fileID: 145728, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Name
       value: Card (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -9800,6 +9840,11 @@ Prefab:
       propertyPath: m_Name
       value: Card (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -11153,6 +11198,11 @@ Prefab:
     - target: {fileID: 145728, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Name
       value: Card (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}

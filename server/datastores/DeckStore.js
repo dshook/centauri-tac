@@ -2,6 +2,7 @@ import loglevel from 'loglevel-decorator';
 import PlayerDeck from 'models/PlayerDeck';
 import DeckCard from 'models/DeckCard';
 import hrtime from 'hrtime-log-decorator';
+import DeckStoreError from 'errors/DeckStoreError';
 
 /**
  * Data layer for games
@@ -94,7 +95,7 @@ export default class DeckStore
     return deck;
   }
 
-  async deleteDeck(deckId, playerId){
+  async deleteDeck(playerId, deckId){
     let sql = `
       select *
       from player_decks
@@ -105,7 +106,7 @@ export default class DeckStore
 
     if(!resp){
       this.log.warn('No deck found to delete with id %s player %s', deckId, playerId)
-      return false;
+      throw new DeckStoreError('Deck not found to delete');
     }
 
     await this.sql.query(`

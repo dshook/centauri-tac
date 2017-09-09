@@ -70,7 +70,7 @@ namespace ctac
 
             timer += Time.deltaTime;
 
-            if (timer > CardView.HOVER_DELAY && cardVisible)
+            if (timer > Constants.hoverTime && cardVisible)
             {
                 hoverCardView.gameObject.SetActive(true);
             }

@@ -123,7 +123,7 @@ namespace ctac {
                     dest = dest.SetY(dest.y + 30f);
                     hoverAccumulator += Time.deltaTime;
 
-                    if (hoverAccumulator > CardView.HOVER_DELAY)
+                    if (hoverAccumulator > Constants.hoverTime)
                     {
                         card.cardView.displayWrapper.SetActive(false);
                     }

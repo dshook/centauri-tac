@@ -59,4 +59,8 @@ export default class CardManager
 
     return await this.decks.upsertDeck(deck);
   }
+
+  async deleteDeck(playerId, deckId){
+    return await this.decks.deleteDeck(playerId, deckId);
+  }
 }
