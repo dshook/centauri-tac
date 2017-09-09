@@ -21,12 +21,16 @@ namespace ctac
 
         [Inject] public NewDeckSignal newDeck { get; set; }
         [Inject] public EditDeckSignal editDeck { get; set; }
-        [Inject] public SaveDeckSignal saveDeck { get; set; }
+        [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public RemoveDeckSignal removeDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
 
         [Inject] public GetDecksSignal getDecks { get; set; }
         [Inject] public GotDecksSignal gotDecks { get; set; }
+
+        [Inject] public SaveDeckSignal saveDeck { get; set; }
+        [Inject] public DeckSavedSignal deckSaved { get; set; }
+        [Inject] public DeckSaveFailedSignal deckSaveFailed { get; set; }
 
         public override void OnRegister()
         {
@@ -41,6 +45,9 @@ namespace ctac
             cardKickoff.AddListener(onKickoff);
             gotDecks.AddListener(onGotDecks);
 
+            deckSaved.AddListener(onDeckSaved);
+            deckSaveFailed.AddListener(onDeckSaveFailed);
+
             view.init(cardService, cardDirectory);
         }
 
@@ -53,6 +60,9 @@ namespace ctac
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
             view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
+
+            deckSaved.RemoveListener(onDeckSaved);
+            deckSaveFailed.RemoveListener(onDeckSaveFailed);
 
             editDeck.RemoveListener(onEditDeck);
         }
@@ -85,7 +95,7 @@ namespace ctac
             {Races.Phaenon, "Phenom Phaenon" },
             {Races.Lost, "Laconic Style" },
         };
- 
+
         private void onNewDeck(Races raceSelected)
         {
             var dm = new DeckModel()
@@ -104,8 +114,18 @@ namespace ctac
 
         private void onSaveDeck(DeckModel deck)
         {
-            view.ResetRaceFilters();
+            savingDeck.Dispatch(deck);
             saveDeck.Dispatch(deck);
+        }
+
+        private void onDeckSaved(DeckModel deck, SocketKey key)
+        {
+            view.onDeckSaved();
+        }
+
+        private void onDeckSaveFailed(string message, SocketKey key)
+        {
+            debug.Log("Deck Save failed: " + message, key);
         }
 
         private void onCancelDeck()

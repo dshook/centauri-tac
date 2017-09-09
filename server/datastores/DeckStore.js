@@ -1,6 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import PlayerDeck from 'models/PlayerDeck';
-import DeckCards from 'models/DeckCards';
+import DeckCard from 'models/DeckCard';
 import hrtime from 'hrtime-log-decorator';
 
 /**
@@ -51,7 +51,7 @@ export default class DeckStore
       where deck_id = @deckId
     `;
 
-    const resp = await this.sql.tquery(DeckCards)(sql, {deckId});
+    const resp = await this.sql.tquery(DeckCard)(sql, {deckId});
 
     return resp.toArray();
   }
@@ -71,6 +71,11 @@ export default class DeckStore
     let id = await this.sql.query(sql, deck);
 
     await this.sql.query('delete from deck_cards where deck_id = @id', {id});
+
+    //make sure the deck cards have the right id now that it may have been created
+    for(let card of deck.cards){
+      card.deckId = id;
+    }
 
     await Promise.map(deck.cards, card => this.sql.query(`
         INSERT INTO deck_cards (deck_id, card_template_id, quantity)

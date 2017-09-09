@@ -2,6 +2,8 @@ import {rpc} from 'sock-harness';
 import loglevel from 'loglevel-decorator';
 import roles from '../middleware/rpc/roles.js';
 import {on} from 'emitter-binder';
+import PlayerDeck from 'models/PlayerDeck';
+import DeckStoreError from 'errors/DeckStoreError';
 
 /**
  * RPC handler for the matchmaker component
@@ -86,6 +88,28 @@ export default class LobbyRPC
     const playerId = auth.sub.id;
     let decks = await this.cardManager.getDecks(playerId);
     this.sendToPlayer(playerId, 'decks:current', decks);
+  }
+
+  @rpc.command('saveDeck')
+  @rpc.middleware(roles(['player']))
+  async saveDeck(client, params, auth)
+  {
+    const playerId = auth.sub.id;
+    let deck;
+    try{
+      deck = PlayerDeck.fromData(params);
+      deck = await this.cardManager.saveDeck(playerId, deck);
+    }catch(e){
+      this.log.warn('Deck Save failed for player %s, reason: %s', playerId, e.message);
+      let message = e.message;
+      if (!(e instanceof DeckStoreError)) {
+        message = 'Error saving deck, please try again later';
+      }
+      this.sendToPlayer(playerId, 'decks:saveFailed', message);
+      return;
+    }
+
+    this.sendToPlayer(playerId, 'decks:saveSuccess', deck);
   }
 
   //prolly should index them

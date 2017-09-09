@@ -13,11 +13,17 @@ namespace ctac.signals
     [Singleton] public class NewDeckSignal : Signal<DeckModel> { }
     [Singleton] public class RemoveDeckSignal : Signal<DeckModel> { }
     [Singleton] public class EditDeckSignal : Signal<DeckModel> { }
-    [Singleton] public class SaveDeckSignal : Signal<DeckModel> { }
     [Singleton] public class CancelDeckSignal : Signal { }
 
     [Singleton] public class GetDecksSignal : Signal { }
     [Singleton] public class GotDecksSignal : Signal<ServerDecksModel, SocketKey> { }
+
+    //initial deck saving signal that allows things to prepare and write state
+    [Singleton] public class SavingDeckSignal : Signal<DeckModel> { } 
+    //the actual save signal triggering the server command
+    [Singleton] public class SaveDeckSignal : Signal<DeckModel> { }
+    [Singleton] public class DeckSavedSignal : Signal<DeckModel, SocketKey> { }
+    [Singleton] public class DeckSaveFailedSignal : Signal<string, SocketKey> { }
 
 }
 

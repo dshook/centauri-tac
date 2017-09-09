@@ -42,6 +42,8 @@ namespace ctac
                 {"player:disconnect", typeof(PlayerDisconnectSignal) },
 
                 {"decks:current", typeof(GotDecksSignal) },
+                {"decks:saveFailed", typeof(DeckSaveFailedSignal) },
+                {"decks:saveSuccess", typeof(DeckSavedSignal) },
 
                 {"status", typeof(MatchmakerStatusSignal) },
             }; 

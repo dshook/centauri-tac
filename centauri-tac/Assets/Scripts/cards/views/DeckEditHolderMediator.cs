@@ -13,7 +13,7 @@ namespace ctac
         [Inject] public IResourceLoaderService loader { get; set; }
 
         [Inject] public EditDeckSignal editDeck { get; set; }
-        [Inject] public SaveDeckSignal saveDeck { get; set; }
+        [Inject] public SavingDeckSignal saveDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
@@ -60,7 +60,6 @@ namespace ctac
         private void onSaveDeck(DeckModel deck)
         {
             view.SaveDeck(deck);
-            //and then save to server
         }
 
         private void onCancelDeck()

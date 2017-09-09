@@ -286,6 +286,11 @@ namespace ctac
         void onSaveDeckClick()
         {
             clickSaveDeckSignal.Dispatch(editingDeck);
+        }
+
+        internal void onDeckSaved()
+        {
+            ResetRaceFilters();
             editingDeck = null;
             ShowDeckHolder(true);
         }

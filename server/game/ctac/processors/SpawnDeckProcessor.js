@@ -1,6 +1,7 @@
 import SpawnDeck from '../actions/SpawnDeck.js';
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
+import Constants from '../util/Constants.js';
 
 @loglevel
 export default class SpawnDeckProcessor
@@ -21,7 +22,7 @@ export default class SpawnDeckProcessor
       return;
     }
     //give players some cards and init decks and hands
-    let deckCards = 30;
+    let deckCards = Constants.deckCardLimit;
     var playableCards = this.cardDirectory.getByTag(['Minion', 'Spell']);
     let cardIds = playableCards
       .filter(c => !c.uncollectible && c.race === 0 || c.race === action.race)
