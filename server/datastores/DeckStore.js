@@ -59,16 +59,22 @@ export default class DeckStore
   //Update or insert a deck
   //TODO: might need a transaction at some point?
   async upsertDeck(deck){
-    let sql = `
+    let insertSql = `
+      insert into player_decks (player_id, name, race, type, is_valid)
+        values (@playerId, @name, @race, @type, @isValid)
+      returning id;
+    `;
+
+    let upsertSql = `
       insert into player_decks (id, player_id, name, race, type, is_valid)
         values (@id, @playerId, @name, @race, @type, @isValid)
       on conflict (id)
       do update set (name, race, type, is_valid) = (@name, @race, @type, @isValid)
-      where id = @id
       returning id;
     `;
 
-    let id = await this.sql.query(sql, deck);
+    let resp = await this.sql.query(deck.id ? upsertSql : insertSql, deck)
+    let {id} = resp.firstOrNull();
 
     await this.sql.query('delete from deck_cards where deck_id = @id', {id});
 
