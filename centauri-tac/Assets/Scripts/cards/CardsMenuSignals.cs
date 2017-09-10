@@ -11,10 +11,10 @@ namespace ctac.signals
     [Singleton] public class MiniCardHoveredSignal : Signal<CardModel> { }
 
     [Singleton] public class NewDeckSignal : Signal<DeckModel> { }
-    [Singleton] public class RemoveDeckSignal : Signal<DeckModel> { }
     [Singleton] public class EditDeckSignal : Signal<DeckModel> { }
     [Singleton] public class CancelDeckSignal : Signal { }
     [Singleton] public class DeleteDeckSignal : Signal<DeckModel> { }
+    [Singleton] public class DeckDeletedSignal : Signal<DeckModel> { }
 
     [Singleton] public class GetDecksSignal : Signal { }
     [Singleton] public class GotDecksSignal : Signal<ServerDecksModel, SocketKey> { }

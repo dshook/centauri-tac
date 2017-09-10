@@ -22,7 +22,6 @@ namespace ctac
         [Inject] public NewDeckSignal newDeck { get; set; }
         [Inject] public EditDeckSignal editDeck { get; set; }
         [Inject] public SavingDeckSignal savingDeck { get; set; }
-        [Inject] public RemoveDeckSignal removeDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
 
         [Inject] public GetDecksSignal getDecks { get; set; }

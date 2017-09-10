@@ -3,10 +3,13 @@ using SVGImporter;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using ctac.signals;
 
 namespace ctac {
     public class DeckListView : View
     {
+        [Inject] public DeleteDeckSignal deleteDeck { get; set; }
+
         public DeckModel deck { get; set; }
 
         public RectTransform rectTransform { get; set; }
@@ -24,6 +27,7 @@ namespace ctac {
 
         protected override void Awake()
         {
+            base.Awake();
             rectTransform = GetComponent<RectTransform>();
         }
 
@@ -32,6 +36,8 @@ namespace ctac {
             bgGO = transform.FindChild("Bg").gameObject;
             nameGO = transform.FindChild("Name").gameObject;
             deleteButton = transform.FindChild("DeleteButton").GetComponent<Button>();
+
+            deleteButton.onClick.AddListener(() => deleteDeck.Dispatch(deck));
 
             bgImage = bgGO.GetComponent<SVGImage>();
             nameText = nameGO.GetComponent<TextMeshProUGUI>();

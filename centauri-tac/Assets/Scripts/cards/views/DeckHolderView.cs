@@ -15,6 +15,7 @@ namespace ctac
         IResourceLoaderService loader;
 
         List<DeckListView> decksList = new List<DeckListView>();
+        const int fakeDeckId = 0;
 
         internal void init(IResourceLoaderService l)
         {
@@ -42,6 +43,16 @@ namespace ctac
         {
             decksList.Remove(deck.deckListView);
             Destroy(deck.deckListView.gameObject);
+            UpdateList();
+        }
+
+        //once deck is saved on the server and has a real ID find the corresponding deck and update
+        internal void deckSaved(DeckModel deck)
+        {
+            var toUpdate = decksList.FirstOrDefault(d => d.deck.id == fakeDeckId);
+            if (toUpdate != null) {
+                toUpdate.deck.id = deck.id;
+            }
             UpdateList();
         }
 
@@ -81,7 +92,7 @@ namespace ctac
             deck.deckListView = deckListView;
 
             //TODO: id from server prolly
-            deck.id = decksList.Count == 0 ? 0 : decksList.Max(d => d.deck.id) + 1;
+            deck.id = deck.id != 0 ? deck.id : fakeDeckId;
 
             return deckListView;
         }

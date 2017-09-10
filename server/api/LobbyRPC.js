@@ -109,6 +109,7 @@ export default class LobbyRPC
       return;
     }
 
+    this.log.info('Created/Saved deck %s for player %s', deck.id, playerId);
     this.sendToPlayer(playerId, 'decks:saveSuccess', deck);
   }
 
@@ -128,6 +129,7 @@ export default class LobbyRPC
       this.sendToPlayer(playerId, 'decks:saveFailed', message);
       return;
     }
+    this.log.info('Deleted deck %s for player %s', deckId, playerId);
   }
 
   //prolly should index them

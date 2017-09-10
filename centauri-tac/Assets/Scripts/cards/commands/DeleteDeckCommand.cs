@@ -1,3 +1,4 @@
+using ctac.signals;
 using strange.extensions.command.impl;
 
 namespace ctac
@@ -11,6 +12,8 @@ namespace ctac
 
         [Inject] public DeckModel deck { get; set; }
 
+        [Inject] public DeckDeletedSignal deckDeleted { get; set; }
+
         public override void Execute()
         {
             if (lobbyModel.lobbyKey == null)
@@ -20,6 +23,8 @@ namespace ctac
             }
 
             socket.Request(lobbyModel.lobbyKey, "deleteDeck", deck.id);
+
+            deckDeleted.Dispatch(deck);
         }
     }
 }

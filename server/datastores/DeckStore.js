@@ -104,7 +104,7 @@ export default class DeckStore
 
     const resp = await this.sql.tquery(PlayerDeck)(sql, {deckId, playerId});
 
-    if(!resp){
+    if(!resp.firstOrNull()){
       this.log.warn('No deck found to delete with id %s player %s', deckId, playerId)
       throw new DeckStoreError('Deck not found to delete');
     }
