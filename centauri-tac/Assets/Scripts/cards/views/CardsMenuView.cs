@@ -157,18 +157,19 @@ namespace ctac
         int createdCardOffset = 0;
         void DisplayCards(List<CardModel> cards, bool isForward)
         {
-            float cardDist = 1200;
+            //float cardDist = 1200;
             //float animTime = 1f;
-            Vector3 animDestPosition  = new Vector3(isForward ? -cardDist : cardDist, 0, 0);
-            Vector3 animStartPosition = new Vector3(isForward ? cardDist : -cardDist, 0, 0);
+            //Vector3 animDestPosition  = new Vector3(isForward ? -cardDist : cardDist, 0, 0);
+            //Vector3 animStartPosition = new Vector3(isForward ? cardDist : -cardDist, 0, 0);
 
-            //animate all existing cards out depending on if it's forward or backward
+            //Inactivate all the current showing cards
             for (int c = 0; c < cardHolder.transform.childCount; c++)
             {
                 var childCard = cardHolder.transform.GetChild(c);
+                childCard.gameObject.SetActive(false);
                 //iTweenExtensions.MoveToLocal(childCard.gameObject, childCard.transform.position + animDestPosition, animTime, 0f);
-                var rectTrans = childCard.GetComponent<RectTransform>();
-                rectTrans.anchoredPosition3D = rectTrans.anchoredPosition3D + animDestPosition;
+                //var rectTrans = childCard.GetComponent<RectTransform>();
+                //rectTrans.anchoredPosition3D = rectTrans.anchoredPosition3D + animDestPosition;
             }
 
             //now copy all the card props to the surrogate cards and animate them in
@@ -204,7 +205,7 @@ namespace ctac
                 surrogateCard.rectTransform.anchorMin = cardAnchor;
                 surrogateCard.rectTransform.pivot = cardAnchor;
                 var destPosition = new Vector3(xPos, yPos);
-                surrogateCard.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
+                //surrogateCard.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
                 surrogateCard.rectTransform.anchoredPosition3D = destPosition;
                 surrogateCard.gameObject.SetActive(true);
                 //iTweenExtensions.MoveToLocal(card.gameObject, destPosition, animTime, 0f);

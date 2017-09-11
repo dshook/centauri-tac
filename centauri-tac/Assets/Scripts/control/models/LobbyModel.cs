@@ -10,6 +10,7 @@ namespace ctac
 
         public Vector3 mainMenuPosition = new Vector3(0, 100, 60);
         public Vector3 cardsMenuPosition = new Vector3(225, 100, 60);
+        public float menuTransitionTime = 0.8f;
 
     }
 }

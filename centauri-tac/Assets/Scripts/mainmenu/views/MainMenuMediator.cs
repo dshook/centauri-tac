@@ -96,7 +96,7 @@ namespace ctac
 
         private void onCardsClicked()
         {
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.cardsMenuPosition, 1f, 0f, EaseType.easeOutExpo);
+            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.cardsMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
         }
 
         private void onOptionsClicked()
