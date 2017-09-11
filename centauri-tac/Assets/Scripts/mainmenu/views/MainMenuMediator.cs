@@ -1,6 +1,7 @@
 using ctac.signals;
 using strange.extensions.mediation.impl;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,6 +36,8 @@ namespace ctac
 
         public override void OnRegister()
         {
+            lobbyModel.cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
+
             view.clickPlaySignal.AddListener(onPlayClicked);
             view.clickCardsSignal.AddListener(onCardsClicked);
             view.clickOptionsSignal.AddListener(onOptionsClicked);
@@ -93,9 +96,7 @@ namespace ctac
 
         private void onCardsClicked()
         {
-            //StartCoroutine("LoadLevel", "cards");
-            var cardCamera = GameObject.Find("CardCamera").gameObject;
-            cardCamera.MoveTo(cardCamera.transform.position + new Vector3(225, 0, 0), 2f, 0f);
+            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.cardsMenuPosition, 1f, 0f, EaseType.easeOutExpo);
         }
 
         private void onOptionsClicked()

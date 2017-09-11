@@ -143,7 +143,7 @@ namespace ctac
 
         private void onLeaveClicked()
         {
-            StartCoroutine("LoadLevel", "main");
+            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.mainMenuPosition, 1f, 0f, EaseType.easeOutExpo);
         }
 
         public IEnumerator LoadLevel(string level)
