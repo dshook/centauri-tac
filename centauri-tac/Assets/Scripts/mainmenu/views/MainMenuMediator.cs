@@ -93,7 +93,9 @@ namespace ctac
 
         private void onCardsClicked()
         {
-            StartCoroutine("LoadLevel", "cards");
+            //StartCoroutine("LoadLevel", "cards");
+            var cardCamera = GameObject.Find("CardCamera").gameObject;
+            cardCamera.MoveTo(cardCamera.transform.position + new Vector3(225, 0, 0), 2f, 0f);
         }
 
         private void onOptionsClicked()

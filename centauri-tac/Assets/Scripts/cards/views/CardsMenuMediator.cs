@@ -31,6 +31,9 @@ namespace ctac
         [Inject] public DeckSavedSignal deckSaved { get; set; }
         [Inject] public DeckSaveFailedSignal deckSaveFailed { get; set; }
 
+        [Inject] public LobbyLoggedInSignal lobbyLoggedIn { get; set; }
+        [Inject] public LobbyModel lobbyModel { get; set; }
+
         public override void OnRegister()
         {
             view.clickLeaveSignal.AddListener(onLeaveClicked);
@@ -72,8 +75,13 @@ namespace ctac
 
         private void onKickoff()
         {
-            getDecks.Dispatch();
             view.UpdateCards();
+        }
+
+        private void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
+        {
+            lobbyModel.lobbyKey = key;
+            getDecks.Dispatch();
         }
 
         private void onGotDecks(ServerDecksModel decks, SocketKey key)
