@@ -54,10 +54,10 @@ namespace ctac
             optionsButton.interactable = false;
             aboutButton.interactable = false;
 
-            playText.color = playButton.colors.disabledColor;
-            cardsText.color = cardsButton.colors.disabledColor;
-            optionsText.color = optionsButton.colors.disabledColor;
-            aboutText.color = aboutButton.colors.disabledColor;
+            //playText.color = playButton.colors.disabledColor;
+            //cardsText.color = cardsButton.colors.disabledColor;
+            //optionsText.color = optionsButton.colors.disabledColor;
+            //aboutText.color = aboutButton.colors.disabledColor;
         }
 
         float accum = 0;
@@ -101,8 +101,8 @@ namespace ctac
             cardsButton.interactable = true;
             //optionsButton.interactable = true;
 
-            playText.color = playButton.colors.normalColor;
-            cardsText.color = cardsButton.colors.normalColor;
+            //playText.color = playButton.colors.normalColor;
+            //cardsText.color = cardsButton.colors.normalColor;
             //optionsText.color = optionsButton.colors.normalColor;
         }
 
