@@ -45,6 +45,7 @@ namespace ctac
             editDeck.AddListener(onEditDeck);
 
             cardKickoff.AddListener(onKickoff);
+            lobbyLoggedIn.AddListener(onLobbyLoggedIn);
             gotDecks.AddListener(onGotDecks);
 
             deckSaved.AddListener(onDeckSaved);
@@ -58,6 +59,7 @@ namespace ctac
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             cardKickoff.RemoveListener(onKickoff);
             gotDecks.RemoveListener(onGotDecks);
+            lobbyLoggedIn.RemoveListener(onLobbyLoggedIn);
 
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
