@@ -314,8 +314,8 @@ namespace ctac
         //Show either deck holder, or the deck edit holder
         void ShowDeckHolder(bool show)
         {
-            float showXPos = 5f;
-            float hideXPos = 222f;
+            float showXPos = -74f;
+            float hideXPos = 400f;
             var deckHolderRect = deckHolder.GetComponent<RectTransform>();
             var deckEditHolderRect = deckEditHolder.GetComponent<RectTransform>();
             if (show)
