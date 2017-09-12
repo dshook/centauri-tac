@@ -27,9 +27,6 @@ namespace ctac
         public TextMeshProUGUI queueText;
 
         private TextMeshProUGUI playText;
-        private TextMeshProUGUI cardsText;
-        private TextMeshProUGUI optionsText;
-        private TextMeshProUGUI aboutText;
 
         internal void init()
         {
@@ -41,9 +38,6 @@ namespace ctac
             logoutButton.onClick.AddListener(() => clickLogoutSignal.Dispatch());
 
             playText = playButton.GetComponentInChildren<TextMeshProUGUI>();
-            cardsText = cardsButton.GetComponentInChildren<TextMeshProUGUI>();
-            optionsText = optionsButton.GetComponentInChildren<TextMeshProUGUI>();
-            aboutText = aboutButton.GetComponentInChildren<TextMeshProUGUI>();
 
             username.text = "";
             usernamePanel.SetActive(false);
@@ -54,10 +48,6 @@ namespace ctac
             optionsButton.interactable = false;
             aboutButton.interactable = false;
 
-            //playText.color = playButton.colors.disabledColor;
-            //cardsText.color = cardsButton.colors.disabledColor;
-            //optionsText.color = optionsButton.colors.disabledColor;
-            //aboutText.color = aboutButton.colors.disabledColor;
         }
 
         float accum = 0;
@@ -100,10 +90,6 @@ namespace ctac
             playButton.interactable = true;
             cardsButton.interactable = true;
             //optionsButton.interactable = true;
-
-            //playText.color = playButton.colors.normalColor;
-            //cardsText.color = cardsButton.colors.normalColor;
-            //optionsText.color = optionsButton.colors.normalColor;
         }
 
         internal bool queueing = false;
