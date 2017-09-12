@@ -219,6 +219,30 @@ namespace ctac
 
             //swip swap the next cards to use by either incrimenting or resetting the created card offset
             createdCardOffset = createdCardOffset == 0 ? pageSize : 0;
+
+            UpdatePageButtons();
+        }
+
+        //show/hide paging buttons if there are available pages in that direction
+        void UpdatePageButtons()
+        {
+            if (offset == 0)
+            {
+                prevButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                prevButton.gameObject.SetActive(true);
+            }
+
+            if (remainingCardsToShow <= 0)
+            {
+                nextButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                nextButton.gameObject.SetActive(true);
+            }
         }
 
         void onPrevButton()
