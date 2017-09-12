@@ -16,6 +16,9 @@ namespace ctac
         [Inject] public ConfigModel config { get; set; }
         [Inject] public PlayersModel players { get; set; }
 
+        [Inject] public CardDirectory cardDirectory { get; set; }
+        [Inject] public CardsKickoffSignal cardKickoff { get; set; }
+
         [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -49,6 +52,9 @@ namespace ctac
                 var firstPlayer = players.players[0];
                 playerFetched.Dispatch(firstPlayer, new SocketKey(firstPlayer.clientId, "auth"));
             }
+
+            cardDirectory.LoadCards();
+            cardKickoff.Dispatch();
         }
     }
 }
