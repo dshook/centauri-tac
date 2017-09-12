@@ -51,7 +51,6 @@ namespace ctac
 
             injectionBinder.Bind<ICardService>().To<CardService>().ToSingleton();
             injectionBinder.Bind<IPieceService>().To<MockPieceService>().ToSingleton(); //for hover card view that won't use it
-            commandBinder.Bind<CardsMenuStartSignal>().To<CardsMenuStartCommand>().Once();
 
         }
     }
