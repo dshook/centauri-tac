@@ -4,11 +4,14 @@ using strange.extensions.mediation.impl;
 using UnityEngine;
 using System.Linq;
 using TMPro;
+using ctac.signals;
 
 namespace ctac
 {
     public class DeckEditHolderView : View
     {
+        [Inject] public CardsMenuMessageSignal cardsMessage { get; set; }
+
         public GameObject miniCardsHolder;
         public GameObject deckName;
         public TextMeshProUGUI deckCounter;
@@ -83,7 +86,7 @@ namespace ctac
         {
             if (quantity + CardCount() > 30)
             {
-                //TODO: max cards message
+                cardsMessage.Dispatch("A deck can only have 30 cards");
                 return;
             }
 
@@ -94,7 +97,7 @@ namespace ctac
             {
                 if (foundCard.quantity == 2 || foundCard.quantity + quantity > 2 || foundCard.card.rarity == Rarities.Mythical)
                 {
-                    //TODO: message pops up
+                    cardsMessage.Dispatch("Can't fit any more of that card in the deck");
                     return;
                 }
                 foundCard.quantity++;
@@ -102,7 +105,7 @@ namespace ctac
                 UpdateCounter();
             }
             else if (quantity > 2) {
-                //TODO: message also pops up
+                cardsMessage.Dispatch("Can't fit any more of that card in the deck");
             }
             else
             {

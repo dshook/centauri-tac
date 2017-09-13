@@ -26,5 +26,7 @@ namespace ctac.signals
     [Singleton] public class DeckSavedSignal : Signal<DeckModel, SocketKey> { }
     [Singleton] public class DeckSaveFailedSignal : Signal<string, SocketKey> { }
 
+    [Singleton] public class CardsMenuMessageSignal : Signal<string> { }
+
 }
 
