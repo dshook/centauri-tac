@@ -174,7 +174,7 @@ namespace ctac
 
             var miniCardView = newCard.AddComponent<MiniCardView>();
             miniCardView.card = miniCardModel;
-            miniCardView.quantity = 1;
+            miniCardView.quantity = quantity;
 
             return miniCardView;
         }

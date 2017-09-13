@@ -2,13 +2,10 @@
 using SVGImporter;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using ctac.signals;
 
 namespace ctac {
     public class DeckListView : View
     {
-        [Inject] public DeleteDeckSignal deleteDeck { get; set; }
 
         public DeckModel deck { get; set; }
 
@@ -16,14 +13,10 @@ namespace ctac {
 
         public GameObject bgGO;
         public GameObject nameGO;
-        public Button deleteButton;
 
         public TextMeshProUGUI nameText;
 
         public SVGImage bgImage;
-
-        private bool hovering = false;
-        private float timeAccum = 0f;
 
         protected override void Awake()
         {
@@ -35,9 +28,6 @@ namespace ctac {
         {
             bgGO = transform.FindChild("Bg").gameObject;
             nameGO = transform.FindChild("Name").gameObject;
-            deleteButton = transform.FindChild("DeleteButton").GetComponent<Button>();
-
-            deleteButton.onClick.AddListener(() => deleteDeck.Dispatch(deck));
 
             bgImage = bgGO.GetComponent<SVGImage>();
             nameText = nameGO.GetComponent<TextMeshProUGUI>();
@@ -48,29 +38,9 @@ namespace ctac {
         void Update()
         {
             if (deck == null) return;
-            if (hovering)
-            {
-                timeAccum += Time.deltaTime;
-            }
-
-            if (timeAccum >= Constants.hoverTime)
-            {
-                deleteButton.gameObject.SetActive(true);
-            }
 
             nameText.text = deck.name;
             bgImage.color = Colors.RacePrimaries[deck.race];
-        }
-
-        void OnMouseOver()
-        {
-            hovering = true;
-        }
-        void OnMouseExit()
-        {
-            hovering = false;
-            timeAccum = 0f;
-            deleteButton.gameObject.SetActive(false);
         }
 
         public void UpdateText()

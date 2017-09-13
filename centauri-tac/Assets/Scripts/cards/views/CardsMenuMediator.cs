@@ -23,6 +23,8 @@ namespace ctac
         [Inject] public EditDeckSignal editDeck { get; set; }
         [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
+        [Inject] public DeleteDeckSignal deleteDeck { get; set; }
+
 
         [Inject] public GetDecksSignal getDecks { get; set; }
         [Inject] public GotDecksSignal gotDecks { get; set; }
@@ -41,6 +43,7 @@ namespace ctac
             view.clickNewDeckSignal.AddListener(onNewDeck);
             view.clickSaveDeckSignal.AddListener(onSaveDeck);
             view.clickCancelDeckSignal.AddListener(onCancelDeck);
+            view.clickDeleteDeckSignal.AddListener(onDeleteDeck);
 
             editDeck.AddListener(onEditDeck);
 
@@ -64,6 +67,7 @@ namespace ctac
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
             view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
+            view.clickDeleteDeckSignal.RemoveListener(onDeleteDeck);
 
             deckSaved.RemoveListener(onDeckSaved);
             deckSaveFailed.RemoveListener(onDeckSaveFailed);
@@ -125,6 +129,11 @@ namespace ctac
         {
             savingDeck.Dispatch(deck);
             saveDeck.Dispatch(deck);
+        }
+
+        private void onDeleteDeck(DeckModel deck)
+        {
+            deleteDeck.Dispatch(deck);
         }
 
         private void onDeckSaved(DeckModel deck, SocketKey key)

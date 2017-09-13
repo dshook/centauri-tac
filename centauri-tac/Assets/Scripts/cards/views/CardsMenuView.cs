@@ -15,6 +15,8 @@ namespace ctac
         public Signal<Races> clickNewDeckSignal = new Signal<Races>();
         public Signal<DeckModel> clickSaveDeckSignal = new Signal<DeckModel>();
         public Signal clickCancelDeckSignal = new Signal();
+        public Signal<DeckModel> clickDeleteDeckSignal = new Signal<DeckModel>();
+
 
         public Button leaveButton;
         public Button prevButton;
@@ -22,6 +24,7 @@ namespace ctac
         public Button newDeckButton;
         public Button saveDeckButton;
         public Button cancelDeckButton;
+        public Button deleteDeckButton;
         public Slider energySlider;
         public TMP_InputField searchBox;
 
@@ -76,6 +79,7 @@ namespace ctac
             newDeckButton.onClick.AddListener(onNewDeckClick);
             saveDeckButton.onClick.AddListener(onSaveDeckClick);
             cancelDeckButton.onClick.AddListener(onCancelDeckClick);
+            deleteDeckButton.onClick.AddListener(onDeleteDeckClick);
 
             venusiansButton.onClick.AddListener(() => onFactionSelect(Races.Venusians));
             earthlingsButton.onClick.AddListener(() => onFactionSelect(Races.Earthlings));
@@ -311,6 +315,14 @@ namespace ctac
         void onSaveDeckClick()
         {
             clickSaveDeckSignal.Dispatch(editingDeck);
+        }
+
+        void onDeleteDeckClick()
+        {
+            clickDeleteDeckSignal.Dispatch(editingDeck);
+            ResetRaceFilters();
+            editingDeck = null;
+            ShowDeckHolder(true);
         }
 
         internal void onDeckSaved()
