@@ -37,6 +37,7 @@ namespace ctac
         public override void OnRegister()
         {
             lobbyModel.cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
+            lobbyModel.cardCamera.transform.position = lobbyModel.mainMenuPosition;
 
             view.clickPlaySignal.AddListener(onPlayClicked);
             view.clickCardsSignal.AddListener(onCardsClicked);
