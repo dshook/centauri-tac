@@ -6,14 +6,12 @@ namespace ctac
 {
     public class HoverCardView : View
     {
-        [Inject]
-        public ICardService cardService { get; set; }
-        [Inject]
-        public IDebugService debug { get; set; }
-        [Inject]
-        public IPieceService pieceService { get; set; }
-        [Inject]
-        public IResourceLoaderService loader { get; set; }
+        [Inject] public ICardService cardService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public IPieceService pieceService { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
+
+        public GameObject cardCanvas = null;
 
         float timer = 0f;
         bool cardVisible = false;
@@ -33,7 +31,7 @@ namespace ctac
 
         internal void init()
         {
-            var cardCanvas = GameObject.Find(Constants.cardCanvas);
+            cardCanvas = cardCanvas ?? GameObject.Find(Constants.cardCanvas);
             canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
             //set up fake card model
             var hoverCardModel = new CardModel()
@@ -119,7 +117,7 @@ namespace ctac
 
             hoverCardView.rectTransform.SetAnchor(miniCardAnchor);
             var yPos = Mathf.Clamp(position.y, -76, 76);
-            var displayPosition = new Vector3(position.x - 300f, yPos, miniCardzPos);
+            var displayPosition = new Vector3(position.x - 385f, yPos, miniCardzPos);
             showCard(displayPosition, spellDamage);
         }
 
