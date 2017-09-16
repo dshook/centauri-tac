@@ -16,150 +16,6 @@
   "tiles": [
     {
       "transform": {
-        "x": 0,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": true
-    },
-    {
-      "transform": {
-        "x": 1,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 2,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 7,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 5,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 12,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 11,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 10,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 9,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 8,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 8,
         "y": 0.0,
         "z": 1
@@ -188,33 +44,6 @@
     {
       "transform": {
         "x": 11,
-        "y": 0.0,
-        "z": 1
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 1
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 1
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
         "y": 0.0,
         "z": 1
       },
@@ -385,33 +214,6 @@
     },
     {
       "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 2
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 2
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 2
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 11,
         "y": 0.0,
         "z": 2
@@ -476,33 +278,6 @@
     {
       "transform": {
         "x": 11,
-        "y": 0.0,
-        "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
         "y": 0.0,
         "z": 3
       },
@@ -673,33 +448,6 @@
     },
     {
       "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 7
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 7
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 7
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 11,
         "y": 0.0,
         "z": 7
@@ -764,33 +512,6 @@
     {
       "transform": {
         "x": 11,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
         "y": 0.0,
         "z": 6
       },
@@ -961,33 +682,6 @@
     },
     {
       "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 11,
         "y": 0.0,
         "z": 5
@@ -1060,33 +754,6 @@
     },
     {
       "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 4
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 4
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 4
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 12,
         "y": 0.0,
         "z": 4
@@ -1241,33 +908,6 @@
     {
       "transform": {
         "x": 12,
-        "y": 0.0,
-        "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
         "y": 0.0,
         "z": 8
       },
@@ -1348,33 +988,6 @@
     },
     {
       "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 9
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 9
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 9
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 12,
         "y": 0.0,
         "z": 9
@@ -1529,33 +1142,6 @@
     {
       "transform": {
         "x": 12,
-        "y": 0.0,
-        "z": 10
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 10
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 10
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
         "y": 0.0,
         "z": 10
       },
@@ -1636,33 +1222,6 @@
     },
     {
       "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 11
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 11
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 11
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 12,
         "y": 0.0,
         "z": 11
@@ -1746,294 +1305,6 @@
       "transform": {
         "x": 0,
         "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 1,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 2,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 7,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 5,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 12,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 11,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 10,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 9,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 8,
-        "y": 0.0,
-        "z": 15
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 8,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 9,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 10,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 11,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 12,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 5,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 7,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 2,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 1,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 0,
-        "y": 0.0,
-        "z": 14
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 0,
-        "y": 0.0,
         "z": 13
       },
       "material": "clay",
@@ -2105,33 +1376,6 @@
     {
       "transform": {
         "x": 12,
-        "y": 0.0,
-        "z": 13
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
-        "y": 0.0,
-        "z": 13
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 13
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
         "y": 0.0,
         "z": 13
       },
@@ -2204,33 +1448,6 @@
     {
       "transform": {
         "x": 11,
-        "y": 0.0,
-        "z": 12
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 15,
-        "y": 0.0,
-        "z": 12
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 14,
-        "y": 0.0,
-        "z": 12
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 13,
         "y": 0.0,
         "z": 12
       },
@@ -2322,9 +1539,178 @@
   "props": [
     {
       "transform": {
+        "x": 12.247,
+        "y": 0.158,
+        "z": 12.209
+      },
+      "rotation": {
         "x": 0.0,
+        "y": 270.0,
+        "z": 135.0
+      },
+      "propName": "pipeCornerDiagonal"
+    },
+    {
+      "transform": {
+        "x": 11.756,
+        "y": 0.657,
+        "z": 12.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 90.0,
+        "z": 180.0
+      },
+      "propName": "pipeCorner"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.5,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
         "y": 0.0,
         "z": 0.0
+      },
+      "propName": "metalTileConnectCorner"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge"
+    },
+    {
+      "transform": {
+        "x": 11.968,
+        "y": 2.079,
+        "z": 7.983
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "satelliteDishLarge"
+    },
+    {
+      "transform": {
+        "x": -0.0350000262,
+        "y": 0.073,
+        "z": 6.078
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "propName": "stationLarge"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.526,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "station"
+    },
+    {
+      "transform": {
+        "x": -0.333,
+        "y": 0.073,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "consoleScreen"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.073,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "consoleCorner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 1.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureCross"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 2.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructure"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeCorner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 3.0,
+        "z": 7.0
       },
       "rotation": {
         "x": 270.019775,
@@ -2335,35 +1721,22 @@
     },
     {
       "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 2.0
+        "x": 5.0,
+        "y": 0.46,
+        "z": 4.0
       },
       "rotation": {
         "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "satelliteDishAntenna"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.378,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
+        "y": 90.0,
         "z": 0.0
       },
       "propName": "metalTileDouble"
     },
     {
       "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 6.0
+        "x": 5.0,
+        "y": 0.08,
+        "z": 4.0
       },
       "rotation": {
         "x": 270.019775,
@@ -2375,7 +1748,657 @@
     {
       "transform": {
         "x": 5.0,
+        "y": 0.08,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.019775,
         "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "pipeCorner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 12.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.412,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.412,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 2.0,
+        "y": 0.412,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.412,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 8.0,
+        "y": 0.412,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.412,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.412,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 1.0,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 1.0,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 1.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 3.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 9.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 11.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.08,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.08,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.46,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.46,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.08,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.08,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.08,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.08,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.46,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 3.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 1.0,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.08,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.08,
         "z": 6.0
       },
       "rotation": {
@@ -2384,6 +2407,175 @@
         "z": 0.0
       },
       "propName": "frameHigh"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 1.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureCross"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 2.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile"
+    },
+    {
+      "transform": {
+        "x": 12.234,
+        "y": 0.544,
+        "z": 6.183
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "propName": "stationLarge"
+    },
+    {
+      "transform": {
+        "x": -1.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 13.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge"
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 11.247,
+        "y": 0.158,
+        "z": 12.209
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 135.0
+      },
+      "propName": "pipeCornerDiagonal"
+    },
+    {
+      "transform": {
+        "x": 11.0,
+        "y": 0.0,
+        "z": 13.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner"
+    },
+    {
+      "transform": {
+        "x": 10.756,
+        "y": 0.657,
+        "z": 12.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 90.0,
+        "z": 180.0
+      },
+      "propName": "pipeCorner"
     }
   ]
 }
