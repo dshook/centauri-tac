@@ -31,7 +31,7 @@ namespace ctac
 
         internal void init()
         {
-            cardCanvas = cardCanvas ?? GameObject.Find(Constants.cardCanvas);
+            cardCanvas = (cardCanvas != null && cardCanvas.transform != null) ? cardCanvas : GameObject.Find(Constants.cardCanvas);
             canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
             //set up fake card model
             var hoverCardModel = new CardModel()

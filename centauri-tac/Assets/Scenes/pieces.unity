@@ -11926,7 +11926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &173556336
@@ -13059,7 +13059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &192402234
@@ -13209,7 +13209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &200364617
@@ -14998,7 +14998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &228605935
@@ -19919,7 +19919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &325779970
@@ -22828,7 +22828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &369192544
@@ -23306,7 +23306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &379160041
@@ -23879,7 +23879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &386794355
@@ -30807,7 +30807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &511379210
@@ -31480,7 +31480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &527836869
@@ -32205,7 +32205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &539081400
@@ -36992,7 +36992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &609277132
@@ -41334,7 +41334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &685467770
@@ -42254,7 +42254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &701739188
@@ -43920,7 +43920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &727878460
@@ -44857,7 +44857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &738729345
@@ -45929,7 +45929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &754170432
@@ -50350,7 +50350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &823370172
@@ -51137,7 +51137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &836029806
@@ -53199,7 +53199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &865591082
@@ -53362,7 +53362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &866359357
@@ -54327,7 +54327,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &878985015
@@ -62103,7 +62103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1015108188
@@ -62276,7 +62276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1021204043
@@ -63110,7 +63110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1037741955
@@ -65671,7 +65671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1084417439
@@ -66800,7 +66800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1100607988
@@ -67999,7 +67999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1126314038
@@ -75617,7 +75617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1278175966
@@ -77042,7 +77042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1299520037
@@ -86881,7 +86881,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1442672316
@@ -90468,7 +90468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1508145758
@@ -94270,7 +94270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1557572509
@@ -99626,7 +99626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1657846435
@@ -99789,7 +99789,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1661050374
@@ -100563,7 +100563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1675405478
@@ -102551,7 +102551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1712701673
@@ -104152,7 +104152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1741675990
