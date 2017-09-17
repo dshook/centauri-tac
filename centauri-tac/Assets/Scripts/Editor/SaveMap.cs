@@ -43,27 +43,9 @@ class SaveMap : EditorWindow
                     mim.props = GetProps(tile.gameObject);
                     continue;
                 }
-                var tileView = tile.GetComponent<TileView>();
-                if (tileView == null) continue;
-
-                var meshRenderer = tile.GetChild(0).GetComponent<MeshRenderer>();
-                var matName = meshRenderer.sharedMaterial.name.Replace("tile_", "").Replace(" (Instance)", "");
-                var tiPosition = new TileImportPosition() {
-                    x = (int)tile.transform.position.x,
-                    y = tile.transform.position.y,
-                    z = (int)tile.transform.position.z
-                };
-
-                mim.tiles.Add(new TileImport()
+                if (tile.name == "Tiles")
                 {
-                    transform = tiPosition,
-                    material = matName,
-                    unpassable = tileView.unpassable || matName == "water"
-                });
-
-                if (tileView.isStartTile)
-                {
-                    mim.startingPositions.Add(tiPosition);
+                    GetTiles(tile.gameObject, mim.tiles, mim.startingPositions);
                 }
             }
 
@@ -99,6 +81,38 @@ class SaveMap : EditorWindow
         }
 
         return props;
+    }
+
+    void GetTiles(GameObject tileRoot, List<TileImport> tiles, List<TileImportPosition> startingPositions)
+    {
+            for (int t = 0; t < tileRoot.transform.childCount; t++)
+            {
+                var tile = tileRoot.transform.GetChild(t);
+
+                var tileView = tile.GetComponent<TileView>();
+                if (tileView == null) continue;
+
+                var meshRenderer = tile.GetChild(0).GetComponent<MeshRenderer>();
+                var matName = meshRenderer.sharedMaterial.name.Replace("tile_", "").Replace(" (Instance)", "");
+                var tiPosition = new TileImportPosition() {
+                    x = (int)tile.transform.position.x,
+                    y = tile.transform.position.y,
+                    z = (int)tile.transform.position.z
+                };
+
+                tiles.Add(new TileImport()
+                {
+                    transform = tiPosition,
+                    material = matName,
+                    unpassable = tileView.unpassable || matName == "water"
+                });
+
+                if (tileView.isStartTile)
+                {
+                    startingPositions.Add(tiPosition);
+                }
+            }
+
     }
 
 }

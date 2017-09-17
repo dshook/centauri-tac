@@ -2723,9 +2723,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.06512377
+    x: 0
     y: 0
-    width: 0.86975247
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -5302,6 +5302,10 @@ Prefab:
       propertyPath: tileCursor
       value: 
       objectReference: {fileID: 1049081185}
+    - target: {fileID: 11435744, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
+      propertyPath: cardCanvas
+      value: 
+      objectReference: {fileID: 2006314273}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
   m_IsPrefabParent: 0
@@ -6166,9 +6170,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.06512377
+    x: 0
     y: 0
-    width: 0.86975247
+    width: 1
     height: 1
   near clip plane: 90
   far clip plane: 1600

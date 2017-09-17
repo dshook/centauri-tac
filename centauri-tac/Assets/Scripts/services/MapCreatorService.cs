@@ -29,13 +29,14 @@ namespace ctac
 
         public void CreateMap(MapImportModel map)
         {
-            mapTilePrefab = loader.Load<GameObject>("Tile");
+            mapTilePrefab = loader.Load<GameObject>("Maps/Tiles/Tile");
 
-            mapMaterials["clay"] = loader.Load<Material>("Materials/tiles/tile_clay");
-            mapMaterials["grass"] = loader.Load<Material>("Materials/tiles/tile_grass");
-            mapMaterials["rock"] = loader.Load<Material>("Materials/tiles/tile_rock");
-            mapMaterials["sand"] = loader.Load<Material>("Materials/tiles/tile_sand");
-            mapMaterials["water"] = loader.Load<Material>("Materials/tiles/tile_water");
+            mapMaterials["clay"] = loader.Load<Material>("Maps/Tiles/tile_clay");
+            mapMaterials["grass"] = loader.Load<Material>("Maps/Tiles/tile_grass");
+            mapMaterials["rock"] = loader.Load<Material>("Maps/Tiles/tile_rock");
+            mapMaterials["sand"] = loader.Load<Material>("Maps/Tiles/tile_sand");
+            mapMaterials["water"] = loader.Load<Material>("Maps/Tiles/tile_water");
+            mapMaterials["invisible"] = loader.Load<Material>("Maps/Tiles/tile_invisible");
 
             var goMap = GameObject.Find("Map");
             if (goMap != null)
@@ -45,8 +46,11 @@ namespace ctac
             goMap = new GameObject("Map");
             goMap.transform.parent = contextView.transform;
 
-            var props = new GameObject("Props");
-            props.transform.parent = goMap.transform;
+            var tilesGO = new GameObject("Tiles");
+            tilesGO.transform.parent = goMap.transform;
+
+            var propsGO = new GameObject("Props");
+            propsGO.transform.parent = goMap.transform;
 
             mapModel.root = goMap;
             mapModel.name = map.name;
@@ -73,15 +77,15 @@ namespace ctac
                 map.tiles.Remove(cosmeticTile);
             }
 
-            setupTiles(map.tiles, goMap, false, map.startingPositions);
+            setupTiles(map.tiles, tilesGO, false, map.startingPositions);
             setupTiles(dedupedCosmeticTiles, goMap, true, null);
 
-            setupProps(props, map.props);
+            setupProps(propsGO, map.props);
 
             mapCreated.Dispatch();
         }
 
-        void setupTiles(List<TileImport> tiles, GameObject goMap, bool areCosmetic, List<TileImportPosition> startingPositions)
+        void setupTiles(List<TileImport> tiles, GameObject parentGO, bool areCosmetic, List<TileImportPosition> startingPositions)
         {
             foreach (var t in tiles)
             {
@@ -97,13 +101,18 @@ namespace ctac
                     fullPosition, 
                     Quaternion.identity
                 ) as GameObject;
-                newTileGO.transform.parent = goMap.transform;
+                newTileGO.transform.parent = parentGO.transform;
 
                 //set up material
                 var tileRenderer = newTileGO.transform.Find("cube").GetComponent<MeshRenderer>();
+                if (!mapMaterials.ContainsKey(t.material))
+                {
+                    Debug.LogError("Material " + t.material + " not loaded");
+                    return;
+                }
                 tileRenderer.material = mapMaterials[t.material];
-                var tileVarietyColor = Random.Range(0.85f, 1);
-                tileRenderer.material.color = new Color(tileVarietyColor, tileVarietyColor, tileVarietyColor);
+                //var tileVarietyColor = Random.Range(0.85f, 1);
+                //tileRenderer.material.color = new Color(tileVarietyColor, tileVarietyColor, tileVarietyColor);
 
                 //position and set up map references
                 var newTile = new Tile() {
@@ -145,7 +154,7 @@ namespace ctac
             if (props == null || propsRoot == null) return; 
             foreach (var prop in props)
             {
-                var prefab = loader.Load<GameObject>("Models/Props/" + prop.propName);
+                var prefab = loader.Load<GameObject>("Maps/Props/" + prop.propName);
 
                 var newProp = GameObject.Instantiate(
                     prefab, 

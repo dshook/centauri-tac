@@ -3,14 +3,14 @@
   "maxPlayers": 2,
   "startingPositions": [
     {
-      "x": 2,
+      "x": 3,
       "y": 0.0,
-      "z": 2
+      "z": 7
     },
     {
-      "x": 5,
+      "x": 9,
       "y": 0.0,
-      "z": 2
+      "z": 7
     }
   ],
   "tiles": [
@@ -1534,6 +1534,114 @@
       },
       "material": "clay",
       "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.543,
+        "z": 3
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.543,
+        "z": 4
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 1.084,
+        "z": 4
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 1.084,
+        "z": 3
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 7,
+        "y": 0.543,
+        "z": 4
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 7,
+        "y": 0.543,
+        "z": 3
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 7,
+        "y": 0.543,
+        "z": 10
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 7,
+        "y": 0.543,
+        "z": 11
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 1.084,
+        "z": 10
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 1.084,
+        "z": 11
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.543,
+        "z": 11
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.543,
+        "z": 10
+      },
+      "material": "invisible",
+      "unpassable": false
     }
   ],
   "props": [
@@ -2576,6 +2684,32 @@
         "z": 180.0
       },
       "propName": "pipeCorner"
+    },
+    {
+      "transform": {
+        "x": 11.0,
+        "y": 0.412,
+        "z": 14.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight"
+    },
+    {
+      "transform": {
+        "x": 12.0,
+        "y": 0.5,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "metalTileConnectCorner"
     }
   ]
 }
