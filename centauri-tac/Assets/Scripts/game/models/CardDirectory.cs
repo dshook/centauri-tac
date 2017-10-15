@@ -24,6 +24,20 @@ namespace ctac
         public void AddCard(CardModel card)
         {
             card.baseCost = card.cost;
+
+            //auto add ranged/melee tag for minions
+            if (card.isMinion)
+            {
+                if (card.range != null && card.range > 0)
+                {
+                    card.tags.Add("Ranged");
+                }
+                else
+                {
+                    card.tags.Add("Melee");
+                }
+            }
+
             directory.Add(card);
         }
 

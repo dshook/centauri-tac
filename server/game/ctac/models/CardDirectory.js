@@ -79,6 +79,15 @@ export default class CardDirectory
       c.events = null;
     }
 
+    //auto add ranged/melee tag for minions
+    if(c.isMinion){
+      if(c.range && c.range > 0){
+        c.tags.push('Ranged');
+      }else{
+        c.tags.push('Melee');
+      }
+    }
+
     if(this.directory[c.cardTemplateId]){
       throw `Duplicate card template id ${c.cardTemplateId} used by ${c.name}`;
     }
