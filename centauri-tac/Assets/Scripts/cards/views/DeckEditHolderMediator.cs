@@ -15,9 +15,14 @@ namespace ctac
         [Inject] public EditDeckSignal editDeck { get; set; }
         [Inject] public SavingDeckSignal saveDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
+        [Inject] public DeckSavedSignal deckSaved { get; set; }
+        [Inject] public DeleteDeckSignal deleteDeck { get; set; }
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
         [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
+
+        //is a deck currently being edited?
+        bool active = false;
 
         public override void OnRegister()
         {
@@ -26,6 +31,8 @@ namespace ctac
             saveDeck.AddListener(onSaveDeck);
             removeCardFromDeck.AddListener(onRemoveFromDeck);
             editDeck.AddListener(onEditDeck);
+            deckSaved.AddListener(onDeckSaved);
+            deleteDeck.AddListener(onDeleteDeck);
             view.init(loader, directory);
         }
 
@@ -36,6 +43,8 @@ namespace ctac
             saveDeck.RemoveListener(onSaveDeck);
             removeCardFromDeck.RemoveListener(onRemoveFromDeck);
             editDeck.RemoveListener(onEditDeck);
+            deckSaved.RemoveListener(onDeckSaved);
+            deleteDeck.RemoveListener(onDeleteDeck);
         }
 
         public void Update()
@@ -44,6 +53,8 @@ namespace ctac
 
         private void onAddToDeck(CardModel card)
         {
+            if (!active) return;
+
             view.addCard(card.cardTemplateId);
         }
 
@@ -55,6 +66,7 @@ namespace ctac
         private void onEditDeck(DeckModel deck)
         {
             view.EditDeck(deck);
+            active = true;
         }
 
         private void onSaveDeck(DeckModel deck)
@@ -65,6 +77,17 @@ namespace ctac
         private void onCancelDeck()
         {
             view.EditDeck(null);
+            active = false;
+        }
+
+        private void onDeckSaved(DeckModel deck, SocketKey key)
+        {
+            active = false;
+        }
+
+        private void onDeleteDeck(DeckModel deck)
+        {
+            active = false;
         }
 
     }
