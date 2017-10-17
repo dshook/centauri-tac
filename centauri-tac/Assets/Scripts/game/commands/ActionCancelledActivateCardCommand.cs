@@ -35,8 +35,11 @@ namespace ctac
             var card = cards.Cards.FirstOrDefault(c => c.id == activateCancelled.cardInstanceId);
             if (card != null)
             {
-                debug.LogWarning("Couldn't find a card to reactivate on cancelled activate");
                 card.activated = false;
+            }
+            else
+            {
+                debug.LogWarning("Couldn't find a card to reactivate on cancelled activate");
             }
         }
     }

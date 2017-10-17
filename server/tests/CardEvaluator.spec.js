@@ -721,5 +721,31 @@ test('Find choose cards', {objectPrintDepth: 9}, t => {
   ];
 
   t.deepEqual(choices, expectedChoices, 'Player 1 choices are enemy characters');
+});
 
+test('Play a teleport off the map', t => {
+  let pieceStateMix = new PieceState();
+  let hero1 = spawnPiece(pieceStateMix, 1, 1);
+  let testSubject = spawnPiece(pieceStateMix, 2, 1);
+  let hero2 = spawnPiece(pieceStateMix, 1, 2);
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let cardPlayed = cardDirectory.directory[64];
+
+  testSubject.position = new Position(4, 0, 4);
+  hero1.position = new Position(1, 0, 1);
+  hero2.position = new Position(1, 0, 2);
+
+  let spellEvalResult = cardEval.evaluateSpellEvent('playSpell', {
+    spellCard: cardPlayed,
+    playerId: 1,
+    targetPieceId: testSubject.id,
+    pivotPosition: new Position(4, 0, 5)
+  });
+
+  t.equal(spellEvalResult, false, 'Rejected spell event');
 });

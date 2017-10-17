@@ -599,9 +599,20 @@ export default class CardEvaluator{
                 throw new EvalError("You can't move on top of another piece!");
               }
 
+              let movingPiece = lastSelected[0];
+              let destinationTile = this.mapState.getTile(moveTo.resolvedPosition)
+
+              //other checks for scrubbing early. Really need to dedupe w/move piece processor
+              if(!destinationTile || destinationTile.unpassable){
+                this.log.warn('Cannot move piece %s to unpassable tile %s'
+                  , movingPiece.id, destinationTile ? destinationTile.position : 'Missing dest: ' + moveTo.resolvedPosition);
+                throw new EvalError("That tile doesn't look safe!");
+                return;
+              }
+
               if(lastSelected && lastSelected.length === 1){
                 queue.push(new MovePiece({
-                  pieceId: lastSelected[0].id,
+                  pieceId: movingPiece.id,
                   to: moveTo.resolvedPosition,
                   isJump: true,
                   isTeleport: action.args[2],

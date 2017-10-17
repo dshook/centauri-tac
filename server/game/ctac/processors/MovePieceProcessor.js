@@ -53,7 +53,7 @@ export default class MovePieceProcessor
       }
     }
 
-    if((piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
+    if(!action.isJump && (piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
       this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
       return queue.cancel(action);
     }
@@ -61,8 +61,9 @@ export default class MovePieceProcessor
     let currentTile = this.mapState.getTile(piece.position);
     let destinationTile = this.mapState.getTile(action.to)
 
-    if(destinationTile.unpassable){
-      this.log.warn('Cannot move piece %s to unpassable tile %s', piece.id, destinationTile.position);
+    if(!destinationTile || destinationTile.unpassable){
+      this.log.warn('Cannot move piece %s to unpassable tile %s'
+        , piece.id, destinationTile ? destinationTile.position : 'Missing dest: ' + action.to);
       queue.cancel(action);
       this.cancelUpcomingMoves(queue, piece);
       queue.push(new Message("That tile doesn't look safe!", piece.playerId));
@@ -72,8 +73,8 @@ export default class MovePieceProcessor
     //check height differential
     if(!action.isJump){
       if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
-          this.log.warn('Cannot move piece %j up height diff', piece);
-          return queue.cancel(action);
+        this.log.warn('Cannot move piece %j up height diff', piece);
+        return queue.cancel(action);
       }
     }
 

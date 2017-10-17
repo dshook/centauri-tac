@@ -78,6 +78,9 @@ body {
 .label-primary[href]:focus {
   background-color: #286090;
 }
+.label-secondary {
+  background-color: #56748e;
+}
 .label-success {
   background-color: #5cb85c;
 }
