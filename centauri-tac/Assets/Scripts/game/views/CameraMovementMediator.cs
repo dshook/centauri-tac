@@ -13,11 +13,13 @@ namespace ctac
         [Inject] public StartSelectTargetSignal startTarget { get; set; }
         [Inject] public CancelSelectTargetSignal cancelTarget { get; set; }
         [Inject] public SelectTargetSignal targetSelected { get; set; }
+        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
 
         [Inject] public HistoryHoverSignal historyHover { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
 
         public override void OnRegister()
         {
@@ -26,6 +28,7 @@ namespace ctac
             cancelTarget.AddListener(onCancelTarget);
             targetSelected.AddListener(onSelectTarget);
             historyHover.AddListener(onHistoryHover);
+            pieceSpawned.AddListener(onPieceSpawned);
 
             view.Init(raycastModel);
         }
@@ -37,6 +40,7 @@ namespace ctac
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
+            pieceSpawned.RemoveListener(onPieceSpawned);
         }
 
         private void onCardSelected(CardSelectedModel card)
@@ -60,6 +64,13 @@ namespace ctac
         private void onHistoryHover(bool h)
         {
             view.zoomEnabled = !h;
+        }
+
+        public void onPieceSpawned(PieceSpawnedModel piece)
+        {
+            if (piece.piece.isHero && piece.piece.playerId == players.Me.id) {
+                view.MoveToTile(piece.piece.tilePosition);
+            }
         }
     }
 }

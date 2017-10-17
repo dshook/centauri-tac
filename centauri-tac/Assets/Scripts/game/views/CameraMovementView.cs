@@ -152,6 +152,20 @@ namespace ctac
             dragEnabled = selected;
         }
 
+        //move the camera so it's focused on a world point
+        internal void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
+        {
+            Vector3 currentWorldPos;
+            var destPosition = new Vector3(tilePos.x, 0, tilePos.y); //convert tile coords to full vec3
+            LinePlaneIntersection(out currentWorldPos, Camera.main.transform.position, Camera.main.transform.forward, Vector3.up, Vector3.zero);
+
+            var finalPosition = Camera.main.transform.position + destPosition - currentWorldPos;
+
+            //Camera.main.transform.position += finalPosition;
+
+            iTweenExtensions.MoveTo(Camera.main.gameObject, finalPosition, transitionTime, 0f);
+        }
+
         //Get the intersection between a line and a plane. 
         //If the line and plane are not parallel, the function outputs true, otherwise false.
         public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)

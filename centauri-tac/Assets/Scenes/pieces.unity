@@ -6962,7 +6962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 1
+  unpassable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &107177307
@@ -77347,7 +77347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 1
+  unpassable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1304207114
