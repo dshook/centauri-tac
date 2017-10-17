@@ -534,7 +534,7 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -543,7 +543,7 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
