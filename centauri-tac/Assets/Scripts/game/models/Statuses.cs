@@ -15,6 +15,7 @@ namespace ctac
       Root = 64,
       Charge = 128,
       CantAttack = 256,
-      DyadStrike = 512
+      DyadStrike = 512,
+      Jump = 1024
     }
 }

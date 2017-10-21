@@ -71,7 +71,7 @@ export default class MovePieceProcessor
     }
 
     //check height differential
-    if(!action.isJump){
+    if(!action.isJump && !(piece.statuses & Statuses.Jump) ){
       if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
         this.log.warn('Cannot move piece %j up height diff', piece);
         return queue.cancel(action);
