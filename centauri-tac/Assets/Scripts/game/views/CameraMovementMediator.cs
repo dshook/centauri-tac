@@ -16,6 +16,7 @@ namespace ctac
         [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
 
         [Inject] public HistoryHoverSignal historyHover { get; set; }
+        [Inject] public MoveCameraToTileSignal moveCamSignal { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -29,6 +30,7 @@ namespace ctac
             targetSelected.AddListener(onSelectTarget);
             historyHover.AddListener(onHistoryHover);
             pieceSpawned.AddListener(onPieceSpawned);
+            moveCamSignal.AddListener(onMoveCamera);
 
             view.Init(raycastModel);
         }
@@ -41,6 +43,7 @@ namespace ctac
             cancelTarget.RemoveListener(onCancelTarget);
             targetSelected.RemoveListener(onSelectTarget);
             pieceSpawned.RemoveListener(onPieceSpawned);
+            moveCamSignal.RemoveListener(onMoveCamera);
         }
 
         private void onCardSelected(CardSelectedModel card)
@@ -64,6 +67,11 @@ namespace ctac
         private void onHistoryHover(bool h)
         {
             view.zoomEnabled = !h;
+        }
+
+        private void onMoveCamera(Vector2 pos)
+        {
+            view.MoveToTile(pos);
         }
 
         public void onPieceSpawned(PieceSpawnedModel piece)

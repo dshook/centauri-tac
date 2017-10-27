@@ -1,4 +1,5 @@
 using strange.extensions.signal.impl;
+using UnityEngine;
 
 namespace ctac.signals
 {
@@ -152,5 +153,7 @@ namespace ctac.signals
     [Singleton] public class MovePathFoundSignal : Signal<MovePathFoundModel> { }
 
     [Singleton] public class TauntTilesUpdatedSignal : Signal<TauntTilesUpdateModel> { }
+
+    [Singleton] public class MoveCameraToTileSignal : Signal<Vector2> { }
 }
 

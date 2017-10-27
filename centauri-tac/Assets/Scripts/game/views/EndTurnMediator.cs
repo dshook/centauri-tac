@@ -18,9 +18,12 @@ namespace ctac
         [Inject] public GameTurnModel gameTurn { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CardsModel cards { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
         [Inject] public ActionKickoffSignal kickoff { get; set; }
+        [Inject] public MoveCameraToTileSignal moveCamSignal { get; set; }
+
 
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
@@ -65,6 +68,8 @@ namespace ctac
             var opponent = players.Opponent(players.Me.id);
             players.SetMeClient(opponent.clientId);
             turnEnded.Dispatch(new GameTurnModel() { currentTurn = gameTurn.currentTurn, isClientSwitch = true });
+            var newHero = pieces.Hero(opponent.id);
+            moveCamSignal.Dispatch(newHero.tilePosition);
         }
 
         private void onPauseClicked()
