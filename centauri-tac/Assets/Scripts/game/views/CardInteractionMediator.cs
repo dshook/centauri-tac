@@ -127,6 +127,7 @@ namespace ctac
             if (itWorked)
             {
                 view.ClearDrag();
+                cardSelected.Dispatch(null);
             }
         }
 

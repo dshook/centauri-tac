@@ -50,15 +50,15 @@ namespace ctac
 
         private void onStartTarget(TargetModel m)
         {
-            view.setDragEnabled(false);
+            //view.setDragEnabled(false);
         }
         private void onSelectTarget(TargetModel c)
         {
-            view.setDragEnabled(true);
+            //view.setDragEnabled(true);
         }
         private void onCancelTarget(CardModel c)
         {
-            view.setDragEnabled(true);
+            //view.setDragEnabled(true);
         }
 
         private void onHistoryHover(bool h)

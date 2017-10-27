@@ -197,9 +197,7 @@ namespace ctac
 
             if (clickModel.tile != null 
                 //don't select tiles when clicking and dragging around the map which has long click times
-                && (clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold 
-                // but ignore that if we're targeting
-                    || cardTarget != null)
+                && (clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold)
                 )
             {
                 var gameTile = clickModel.tile;

@@ -22,6 +22,7 @@ namespace ctac
         [Inject] public PieceDiedSignal pieceDied { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceMoved { get; set; }
         [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public ActionCancelledSpawnPieceSignal pieceSpawnCancelled { get; set; }
         [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
         [Inject] public TurnEndedSignal turnEnded { get; set; }
 
@@ -52,6 +53,7 @@ namespace ctac
             pieceHoveredSignal.AddListener(onPieceHover);
             pieceMoved.AddListener(onPieceMove);
             pieceSpawned.AddListener(onPieceSpawn);
+            pieceSpawnCancelled.AddListener(onPieceSpawnCancelled);
             pieceStatusChanged.AddListener(onPieceStatusChange);
             turnEnded.AddListener(onTurnEnded);
 
@@ -69,6 +71,7 @@ namespace ctac
             pieceDied.RemoveListener(onPieceDied);
             pieceMoved.RemoveListener(onPieceMove);
             pieceSpawned.RemoveListener(onPieceSpawn);
+            pieceSpawnCancelled.RemoveListener(onPieceSpawnCancelled);
             pieceStatusChanged.RemoveListener(onPieceStatusChange);
             turnEnded.RemoveListener(onTurnEnded);
 
@@ -222,16 +225,9 @@ namespace ctac
 
         private void onCardSelected(CardSelectedModel cardModel)
         {
-            if (cardModel == null)
+            if (cardModel != null && !cardModel.card.isSpell)
             {
-                view.toggleTileFlags(null, TileHighlightStatus.Selected, true);
-                isDeployingPiece = false;
-                return;
-            }
-
-            if (!cardModel.card.isSpell)
-            {
-                //find play radius depending on the card
+                //find play radius depending on the card to show spawning area for a piece
                 var playerHero = pieces.Hero(cardModel.card.playerId);
                 List<Tile> playableTiles = map.tileList
                     .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
@@ -371,6 +367,12 @@ namespace ctac
         private void onPieceSpawn(PieceSpawnedModel piece)
         {
             updateTauntTiles();
+            pieceNotDeploying();
+        }
+
+        private void onPieceSpawnCancelled(SpawnPieceModel piece, SocketKey key)
+        {
+            onPieceSpawn(null);
         }
 
         private void onTurnEnded(GameTurnModel gameTurn)
@@ -381,6 +383,13 @@ namespace ctac
         private void onPieceStatusChange(PieceStatusChangeModel change)
         {
             updateTauntTiles();
+        }
+
+        private void pieceNotDeploying()
+        {
+            //remove piece deploying highlights
+            view.toggleTileFlags(null, TileHighlightStatus.Selected, true);
+            isDeployingPiece = false;
         }
 
         private void updateTauntTiles(PieceModel deadPiece = null)
@@ -448,6 +457,7 @@ namespace ctac
             setAttackRangeTiles(null);
             selectingArea = null;
             updateSelectHighlights(null);
+            pieceNotDeploying();
         }
 
         private void onSelectTarget(TargetModel card)

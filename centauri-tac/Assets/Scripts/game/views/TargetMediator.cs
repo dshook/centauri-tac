@@ -254,14 +254,6 @@ namespace ctac
                     selectTarget.Dispatch(cardTarget);
                 }
             }
-            else if (
-              cardTarget != null
-              && cardTarget.targetingCard.needsTargeting(possibleActions)
-            )
-            {
-                debug.Log("Cancelling targeting from bad selection");
-                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
-            }
 
         }
 
