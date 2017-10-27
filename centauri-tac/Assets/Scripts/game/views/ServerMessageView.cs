@@ -18,19 +18,22 @@ namespace ctac
         {
         }
 
-        internal void updateText(string message, float time)
+        internal void updateText(string message, float? time)
         {
             serverText.text = message;
             serverText.color = Color.white;
 
-            Hashtable tweenParams = new Hashtable();
-            tweenParams.Add("from", Color.white);
-            tweenParams.Add("to", (Color)Colors.transparentWhite);
-            tweenParams.Add("time", time);
-            tweenParams.Add("delay", 0.75f);
-            tweenParams.Add("onupdate", "OnColorUpdated");
+            if (time.HasValue)
+            {
+                Hashtable tweenParams = new Hashtable();
+                tweenParams.Add("from", Color.white);
+                tweenParams.Add("to", (Color)Colors.transparentWhite);
+                tweenParams.Add("time", time.Value);
+                tweenParams.Add("delay", 0.75f);
+                tweenParams.Add("onupdate", "OnColorUpdated");
 
-            iTween.ValueTo(serverText.gameObject, tweenParams);
+                iTween.ValueTo(serverText.gameObject, tweenParams);
+            }
         }
 
         private void OnColorUpdated(Color color)

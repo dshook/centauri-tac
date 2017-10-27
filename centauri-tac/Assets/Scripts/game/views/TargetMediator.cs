@@ -29,6 +29,7 @@ namespace ctac
 
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
+        [Inject] public MessageSignal message { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -50,6 +51,8 @@ namespace ctac
             selectTarget.AddListener(onSelectTarget);
 
             startSelectAbilityTarget.AddListener(onStartAbilityTarget);
+            cancelSelectAbilityTarget.AddListener(onCancelAbilityTarget);
+            selectAbilityTarget.AddListener(onSelectedAbilityTarget);
 
             startChoose.AddListener(onStartChoose);
             updateChoose.AddListener(onUpdateChoose);
@@ -69,6 +72,8 @@ namespace ctac
             selectTarget.RemoveListener(onSelectTarget);
 
             startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
+            cancelSelectAbilityTarget.RemoveListener(onCancelAbilityTarget);
+            selectAbilityTarget.RemoveListener(onSelectedAbilityTarget);
 
             startChoose.RemoveListener(onStartChoose);
             updateChoose.RemoveListener(onUpdateChoose);
@@ -166,11 +171,13 @@ namespace ctac
         private void onStartTarget(TargetModel model)
         {
             cardTarget = model;
+            message.Dispatch(new MessageModel() { message = "Select Your Target" });
         }
 
         private void onCancelSelectTarget(CardModel card)
         {
             cardTarget = null;
+            message.Dispatch(new MessageModel() { message = "", duration = 0f });
         }
 
         private void onPieceClicked(PieceView piece)
@@ -271,6 +278,7 @@ namespace ctac
             });
             cardTarget = null;
             chooseModel = null;
+            message.Dispatch(new MessageModel() { message = "", duration = 0f });
         }
 
         //Returns whether or not to continue targeting
@@ -326,6 +334,19 @@ namespace ctac
         private void onStartAbilityTarget(StartAbilityTargetModel model)
         {
             abilityTarget = model;
+            message.Dispatch(new MessageModel() { message = "Choose Your Target"});
+        }
+
+        private void onCancelAbilityTarget(PieceModel model)
+        {
+            abilityTarget = null;
+            message.Dispatch(new MessageModel() { message = "", duration = 0f });
+        }
+
+        private void onSelectedAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
+        {
+            abilityTarget = null;
+            message.Dispatch(new MessageModel() { message = "", duration = 0f });
         }
 
     }

@@ -26,7 +26,7 @@ namespace ctac
 
         private void onMessage(MessageModel message)
         {
-            view.updateText(message.message, message.duration ?? 1f);
+            view.updateText(message.message, message.duration);
             sounds.PlaySound("error");
         }
 
