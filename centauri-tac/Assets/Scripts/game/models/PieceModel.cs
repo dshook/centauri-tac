@@ -16,7 +16,7 @@ namespace ctac
 
         public bool currentPlayerHasControl { get; set; }
 
-        public bool hasMoved { get; set; }
+        public int moveCount { get; set; }
         public bool isMoving { get; set; }
         public int attackCount { get; set; }
 
@@ -118,7 +118,7 @@ namespace ctac
             get
             {
                 return movement > 0 
-                    && !hasMoved
+                    && moveCount < movement
                     && !FlagsHelper.IsSet(statuses, Statuses.Root)
                     && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
             }

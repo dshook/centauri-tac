@@ -48,7 +48,7 @@ namespace ctac
                 //slice off the last move tile since it'll be the enemy and then format for server
                 serverPath = path.Take(path.Count - 1).Select(x => new PositionModel(x.position)).ToList();
 
-                attacker.hasMoved = true;
+                attacker.moveCount += serverPath.Count;
             }
 
             socket.Request(players.Me.clientId, "game", "moveattack", 

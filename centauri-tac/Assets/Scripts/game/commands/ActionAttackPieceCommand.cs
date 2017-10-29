@@ -30,9 +30,10 @@ namespace ctac
             var attacker = pieces.Piece(attackedPiece.attackingPieceId);
             attacker.attackCount++;
 
+            //Attacking with ranged units uses all their movement
             if (attacker.isRanged)
             {
-                attacker.hasMoved = true;
+                attacker.moveCount = attacker.movement;
             }
 
             pieceAttacked.Dispatch(attackedPiece);

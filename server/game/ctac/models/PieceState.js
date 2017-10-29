@@ -103,7 +103,7 @@ export default class PieceState
   }
 
   setInitialMoveAttackStatus(piece){
-    piece.hasMoved = !(piece.statuses & Statuses.Charge) && piece.range === null;
+    piece.moveCount = !(piece.statuses & Statuses.Charge) && piece.range === null ? 9999 : 0;
     piece.attackCount = (piece.statuses & Statuses.Charge) ? 0 : 9;
   }
 

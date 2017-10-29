@@ -105,8 +105,8 @@ export default class GameController
       return;
     }
 
-    if(piece.hasMoved){
-      this.log.warn('Piece %s has already moved', pieceId);
+    if(piece.moveCount >= piece.movement){
+      this.log.warn('Piece %s has already exceeded move count', pieceId);
       return;
     }
 
@@ -132,7 +132,7 @@ export default class GameController
     }
 
     if(route){
-      if(piece.hasMoved){
+      if(piece.moveCount >= piece.movement){
         this.log.warn('Piece %s has already moved', attackingPieceId);
         return;
       }

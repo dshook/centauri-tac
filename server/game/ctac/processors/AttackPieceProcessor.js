@@ -123,7 +123,7 @@ export default class AttackPieceProcessor
 
     attacker.attackCount++;
     if(attacker.range != null){
-      attacker.hasMoved = true;
+      attacker.moveCount = attacker.movement;
     }
 
     //Remove cloak once they've attacked

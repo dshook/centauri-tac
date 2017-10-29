@@ -78,13 +78,28 @@ export default class MovePieceProcessor
       }
     }
 
+    let travelDistance = this.mapState.tileDistance(currentTile.position, destinationTile.position);
+    if(!action.isJump && travelDistance > 1){
+      this.log.warn('Cannot move piece more than 1 at a time', piece);
+      return queue.cancel(action);
+    }
+
     //determine direction piece should be facing to see if rotation is necessary
     let targetDirection = faceDirection(action.to, piece.position);
     action.direction = targetDirection;
-    var currentPosition = piece.position;
     piece.position = action.to;
     piece.direction = action.direction;
-    piece.hasMoved = true;
+
+
+    //Jumps only counts as a single move but everything else is based on distance which should be 1
+    if (action.isJump)
+    {
+      piece.moveCount++;
+    }
+    else
+    {
+      piece.moveCount += travelDistance;
+    }
 
     //ranged pieces can't move and attack on the same turn
     if(piece.range != null){
@@ -93,7 +108,7 @@ export default class MovePieceProcessor
 
     queue.complete(action);
     this.log.info('moved piece %s from %s to %s, direction %s',
-      action.pieceId, currentPosition, action.to, action.direction);
+      action.pieceId, currentTile.position, action.to, action.direction);
 
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off

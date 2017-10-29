@@ -2,6 +2,7 @@ using strange.extensions.command.impl;
 using ctac.signals;
 using System.Linq;
 using UnityEngine;
+using System;
 
 namespace ctac
 {
@@ -37,7 +38,16 @@ namespace ctac
             Vector2 difference = toTileCoords - piece.tilePosition;
             var toTile = map.tiles[toTileCoords];
             piece.tilePosition = toTileCoords;
-            piece.hasMoved = true;
+
+            if (movePiece.isJump)
+            {
+                piece.moveCount++;
+            }
+            else
+            {
+                //theoretically this should always be 1 I think
+                piece.moveCount += (int)(Math.Abs(difference.x) + Math.Abs(difference.y));
+            }
 
             //ranged can't move and attack
             if (piece.isRanged)

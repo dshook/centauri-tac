@@ -31,7 +31,7 @@ export default class TurnProcessor
     //incriment piece ability charges and reset counter
     for(let piece of this.pieceState.pieces){
       piece.abilityCharge++;
-      piece.hasMoved = false;
+      piece.moveCount = 0;
       piece.attackCount = 0;
     }
 

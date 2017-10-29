@@ -213,7 +213,7 @@ namespace ctac
 
             view.onTileSelected(gameTile);
 
-            if (!selectedPiece.hasMoved && selectedPiece.canMove)
+            if (selectedPiece.canMove)
             {
                 //find movement
                 var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece);

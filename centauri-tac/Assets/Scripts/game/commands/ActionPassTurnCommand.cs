@@ -43,7 +43,7 @@ namespace ctac
 
             foreach (var piece in piecesModel.Pieces)
             {
-                piece.hasMoved = false;
+                piece.moveCount = 0;
                 piece.attackCount = 0;
             }
 

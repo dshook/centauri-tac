@@ -35,7 +35,7 @@ export default class GamePiece
     this.armor = 0;
 
     //piece has moved or attacked this turn?
-    this.hasMoved = false;
+    this.moveCount = 0;
     this.attackCount = 0;
 
     this.bornOn = null;
