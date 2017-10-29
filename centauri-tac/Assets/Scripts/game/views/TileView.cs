@@ -12,6 +12,7 @@ namespace ctac {
 
         //these are just used for map editing and saving
         public bool unpassable = false;
+        public bool clearable = false;
         public bool isStartTile = false;
 
         Color hoverTint = new Color(.2f, .2f, .2f, .2f);

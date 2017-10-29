@@ -16,6 +16,7 @@ namespace ctac
         public TileImportPosition transform;
         public string material { get; set; }
         public bool unpassable { get; set; }
+        public bool clearable { get; set; }
     }
 
     public class PropImport

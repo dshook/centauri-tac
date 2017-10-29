@@ -509,7 +509,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1482,6 +1482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &16725527
@@ -2189,6 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &34525473
@@ -3085,7 +3087,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3375,6 +3377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &66740182
@@ -3548,6 +3551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &73818429
@@ -4884,7 +4888,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4452529173973912, guid: 073789f50a8a93a4488ecd872b2d8907, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4452529173973912, guid: 073789f50a8a93a4488ecd872b2d8907, type: 2}
       propertyPath: m_LocalPosition.y
@@ -5143,6 +5147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &107177307
@@ -5248,7 +5253,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -5689,7 +5694,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -7528,7 +7533,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4454210136717550, guid: e23c8e3402ba3974eaf8a8e4328fc359, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4454210136717550, guid: e23c8e3402ba3974eaf8a8e4328fc359, type: 2}
       propertyPath: m_LocalPosition.y
@@ -7955,6 +7960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &161282517
@@ -8671,6 +8677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &173556336
@@ -9231,6 +9238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &188664839
@@ -9476,6 +9484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &192402234
@@ -9535,6 +9544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &195096269
@@ -9626,6 +9636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &200364617
@@ -9685,6 +9696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &200999076
@@ -9708,7 +9720,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4139595552166346, guid: 5c8504872056e9545ad385e6aefefe68, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4139595552166346, guid: 5c8504872056e9545ad385e6aefefe68, type: 2}
       propertyPath: m_LocalPosition.y
@@ -10163,6 +10175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &218162518
@@ -10733,6 +10746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &226183482
@@ -10920,7 +10934,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -11620,6 +11634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &256907638
@@ -11679,6 +11694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &257280005
@@ -12637,6 +12653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &280548319
@@ -14070,6 +14087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &314369657
@@ -14463,6 +14481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &325779970
@@ -14636,6 +14655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &330522436
@@ -14968,7 +14988,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -15855,6 +15875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &349257584
@@ -16061,7 +16082,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -16697,6 +16718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &369192544
@@ -17175,6 +17197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &379160041
@@ -17420,6 +17443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &386794355
@@ -17734,6 +17758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &396199374
@@ -18402,6 +18427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &403308147
@@ -19160,7 +19186,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -19856,7 +19882,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.y
@@ -20114,7 +20140,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -20395,6 +20421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &466311130
@@ -21440,7 +21467,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -22866,6 +22893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &511379210
@@ -23053,7 +23081,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -23169,7 +23197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &517330688
@@ -23393,6 +23422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &527836869
@@ -23840,6 +23870,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &539081400
@@ -23945,7 +23976,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -24173,7 +24204,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.y
@@ -24659,7 +24690,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -24740,7 +24771,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -25123,7 +25154,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -25395,6 +25426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &574218061
@@ -25536,6 +25568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &574997230
@@ -26165,6 +26198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &586849756
@@ -27638,7 +27672,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -27883,7 +27917,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -29065,6 +29099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &652677422
@@ -29944,6 +29979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &667268216
@@ -30467,6 +30503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &685467770
@@ -31169,6 +31206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &703649260
@@ -31597,6 +31635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &712350070
@@ -32262,6 +32301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &727878460
@@ -32595,6 +32635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &735018032
@@ -32782,7 +32823,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -33185,6 +33226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &738729345
@@ -33244,6 +33286,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &740186533
@@ -34034,6 +34077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &754170432
@@ -34266,7 +34310,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -34635,7 +34679,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4133807091446200, guid: 50d7a26dc76053242b8d02b105a411bc, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.25
+      value: 9.25
       objectReference: {fileID: 0}
     - target: {fileID: 4133807091446200, guid: 50d7a26dc76053242b8d02b105a411bc, type: 2}
       propertyPath: m_LocalPosition.y
@@ -35515,6 +35559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &786924482
@@ -35643,7 +35688,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -35802,7 +35847,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -36269,6 +36314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &803529629
@@ -36792,6 +36838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &814003195
@@ -37097,6 +37144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &823370172
@@ -37374,6 +37422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &829284901
@@ -37433,6 +37482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &832500626
@@ -37647,6 +37697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &836029806
@@ -38048,6 +38099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &847977724
@@ -38175,7 +38227,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -38529,6 +38581,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &852331527
@@ -39311,6 +39364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &866359357
@@ -39911,6 +39965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &873639937
@@ -40043,6 +40098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &878985015
@@ -40148,7 +40204,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4233189573423140, guid: bbdffbe34b4a7fd4795a4fa7d79f46d9, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4233189573423140, guid: bbdffbe34b4a7fd4795a4fa7d79f46d9, type: 2}
       propertyPath: m_LocalPosition.y
@@ -40416,6 +40472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &885061207
@@ -40439,7 +40496,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -40839,7 +40896,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -41087,6 +41144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &897757918
@@ -41110,7 +41168,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -41917,6 +41975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &909193034
@@ -42647,6 +42706,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &930421236
@@ -42705,7 +42765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &930731767
@@ -43621,6 +43682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &951253350
@@ -43972,7 +44034,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -44235,7 +44297,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -44634,6 +44696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &974132091
@@ -45289,7 +45352,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -45371,6 +45434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &983424920
@@ -45430,6 +45494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &984089528
@@ -45453,7 +45518,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -46085,6 +46150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1001725652
@@ -46491,6 +46557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1021204043
@@ -46787,6 +46854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1032220527
@@ -47617,7 +47685,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4768281372596506, guid: 472ac9c7c9024ca469c6263552394ac3, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4768281372596506, guid: 472ac9c7c9024ca469c6263552394ac3, type: 2}
       propertyPath: m_LocalPosition.y
@@ -47812,7 +47880,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -48844,7 +48912,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4060906333861188, guid: fdc387d38d8c3e647bd85566ac74193b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -49075,6 +49143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1084417439
@@ -49566,6 +49635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1092389968
@@ -49780,6 +49850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1093790034
@@ -50076,6 +50147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1100607988
@@ -51758,6 +51830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1149035310
@@ -52036,7 +52109,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.76
+      value: 9.76
       objectReference: {fileID: 0}
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.y
@@ -52312,6 +52385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1157321257
@@ -53468,6 +53542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1173516712
@@ -53609,6 +53684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1174203582
@@ -54233,6 +54309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1198637293
@@ -54562,7 +54639,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -54683,6 +54760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1209851417
@@ -55195,6 +55273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1230082231
@@ -55464,7 +55543,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -55909,7 +55988,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -56947,6 +57026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1278175966
@@ -56970,7 +57050,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -57329,6 +57409,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1287363912
@@ -58131,6 +58212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1299520037
@@ -58367,6 +58449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1304207114
@@ -58767,6 +58850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 1
   tileFlags: 0
 --- !u!65 &1307306655
@@ -58904,7 +58988,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4133807091446200, guid: 50d7a26dc76053242b8d02b105a411bc, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11.25
+      value: 10.25
       objectReference: {fileID: 0}
     - target: {fileID: 4133807091446200, guid: 50d7a26dc76053242b8d02b105a411bc, type: 2}
       propertyPath: m_LocalPosition.y
@@ -59215,6 +59299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 1
   tileFlags: 0
 --- !u!65 &1313316401
@@ -59704,7 +59789,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4151112715540528, guid: b107470fd62fc7349ad211387adc0d2b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.97
+      value: 9.97
       objectReference: {fileID: 0}
     - target: {fileID: 4151112715540528, guid: b107470fd62fc7349ad211387adc0d2b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -60363,6 +60448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1331252207
@@ -60422,6 +60508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1333156720
@@ -60882,6 +60969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1340091746
@@ -61086,6 +61174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1345756014
@@ -61537,7 +61626,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -61809,6 +61898,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1354407757
@@ -62191,6 +62281,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1371297513
@@ -64183,7 +64274,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -65440,6 +65531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1442672316
@@ -65758,6 +65850,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1446625647
@@ -66028,7 +66121,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4926936769961032, guid: be7e9bf39aef44546baa1d11bbe7fbfb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.96
+      value: -0.04
       objectReference: {fileID: 0}
     - target: {fileID: 4926936769961032, guid: be7e9bf39aef44546baa1d11bbe7fbfb, type: 2}
       propertyPath: m_LocalPosition.y
@@ -66182,11 +66275,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.41
+      value: 0.411
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.z
@@ -66851,6 +66944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1467035327
@@ -67233,7 +67327,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -67819,7 +67913,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -68667,6 +68761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1508145758
@@ -68726,6 +68821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1509142114
@@ -68853,7 +68949,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4768281372596506, guid: 472ac9c7c9024ca469c6263552394ac3, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4768281372596506, guid: 472ac9c7c9024ca469c6263552394ac3, type: 2}
       propertyPath: m_LocalPosition.y
@@ -68930,7 +69026,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -69052,6 +69148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1514694820
@@ -69585,6 +69682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1519956279
@@ -70569,7 +70667,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4926936769961032, guid: be7e9bf39aef44546baa1d11bbe7fbfb, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11.23
+      value: 10.23
       objectReference: {fileID: 0}
     - target: {fileID: 4926936769961032, guid: be7e9bf39aef44546baa1d11bbe7fbfb, type: 2}
       propertyPath: m_LocalPosition.y
@@ -70694,6 +70792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1539371406
@@ -71156,6 +71255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1544585717
@@ -71246,7 +71346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1551463784
@@ -71543,6 +71644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1557572509
@@ -71895,6 +71997,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1565965239
@@ -72989,7 +73092,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -73662,7 +73765,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -73907,7 +74010,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -74066,7 +74169,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -75422,6 +75525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1648637611
@@ -75609,7 +75713,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -75731,6 +75835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1657846435
@@ -75894,6 +75999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1661050374
@@ -76436,6 +76542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1675405478
@@ -76946,6 +77053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1687099871
@@ -77254,6 +77362,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1693719635
@@ -77277,7 +77386,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4615588822118782, guid: 18f909d9906371f4e81bd94c252c887a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -77944,6 +78053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1711758666
@@ -78085,6 +78195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1712701673
@@ -78226,6 +78337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1713605552
@@ -78660,6 +78772,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1722613421
@@ -78788,6 +78901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1725454036
@@ -79197,6 +79311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1741675990
@@ -79370,6 +79485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1744525984
@@ -81250,6 +81366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1788549211
@@ -81273,7 +81390,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -81359,7 +81476,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -82052,7 +82169,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -82153,6 +82270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1816036396
@@ -82327,7 +82445,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -82787,6 +82905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1827876661
@@ -82823,7 +82942,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1831944358}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1309132372}
@@ -83162,7 +83281,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4139595552166346, guid: 5c8504872056e9545ad385e6aefefe68, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4139595552166346, guid: 5c8504872056e9545ad385e6aefefe68, type: 2}
       propertyPath: m_LocalPosition.y
@@ -83427,6 +83546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1842173763
@@ -84249,7 +84369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fab8de0777aaef48aee2b0cdb97006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unpassable: 0
+  unpassable: 1
+  clearable: 1
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1866330411
@@ -84355,7 +84476,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -84709,7 +84830,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -85982,6 +86103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1900024998
@@ -86197,6 +86319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1903855996
@@ -86256,6 +86379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1904410849
@@ -86637,6 +86761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1909787896
@@ -86833,7 +86958,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -86934,6 +87059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1919064450
@@ -87121,7 +87247,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -88340,7 +88466,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -88462,6 +88588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1944310668
@@ -89686,6 +89813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &1977052602
@@ -89791,7 +89919,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -90978,6 +91106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &2009798665
@@ -91156,7 +91285,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4746730723840454, guid: 0484b5c0b3b562e40a764a1697a82403, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4746730723840454, guid: 0484b5c0b3b562e40a764a1697a82403, type: 2}
       propertyPath: m_LocalPosition.y
@@ -91537,7 +91666,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 9.76
+      value: 8.76
       objectReference: {fileID: 0}
     - target: {fileID: 4564969872713498, guid: 9834d606691100042ac6deb862ecf755, type: 2}
       propertyPath: m_LocalPosition.y
@@ -91981,6 +92110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &2032339504
@@ -92634,7 +92764,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4998543605921320, guid: ea9eb97fe3206564c9e0f9fbc9167552, type: 2}
       propertyPath: m_LocalPosition.y
@@ -93002,6 +93132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &2050502428
@@ -94632,6 +94763,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &2105946604
@@ -94791,7 +94923,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4500806936941986, guid: bf6e19a72904dae4ab50a65483c9acf1, type: 2}
       propertyPath: m_LocalPosition.y
@@ -94908,7 +95040,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -95489,6 +95621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unpassable: 0
+  clearable: 0
   isStartTile: 0
   tileFlags: 0
 --- !u!65 &2124962491
@@ -95617,7 +95750,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4015612532586640, guid: bf1dee800b27e67469eba84932e1bce0, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.67
+      value: -0.33
       objectReference: {fileID: 0}
     - target: {fileID: 4015612532586640, guid: bf1dee800b27e67469eba84932e1bce0, type: 2}
       propertyPath: m_LocalPosition.y
@@ -95780,7 +95913,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4102006499081670, guid: 06c9a1fde22291649bc8b0667acf342a, type: 2}
       propertyPath: m_LocalPosition.y

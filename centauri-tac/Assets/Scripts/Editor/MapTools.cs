@@ -54,6 +54,10 @@ class MapTools : EditorWindow
         {
             SelectUnpassable();
         }
+        if (GUILayout.Button("Select Clearable Tiles"))
+        {
+            SelectClearable();
+        }
         if (GUILayout.Button("Select Breakable Props"))
         {
             SelectBreakable();
@@ -153,7 +157,8 @@ class MapTools : EditorWindow
             {
                 transform = tiPosition,
                 material = matName,
-                unpassable = tileView.unpassable || matName == "water"
+                unpassable = tileView.unpassable || matName == "water",
+                clearable = tileView.clearable
             });
 
             if (tileView.isStartTile)
@@ -193,6 +198,28 @@ class MapTools : EditorWindow
             if (tileView == null) continue;
 
             if (tileView.unpassable)
+            {
+                selected.Add(tile.gameObject);
+            }
+        }
+
+        Selection.objects = selected.ToArray();
+    }
+
+    void SelectClearable()
+    {
+        var mapGO = GameObject.Find("Map");
+        var tileGO = mapGO.transform.FindChild("Tiles");
+
+        var selected = new List<GameObject>();
+        for (int t = 0; t < tileGO.childCount; t++)
+        {
+            var tile = tileGO.transform.GetChild(t);
+
+            var tileView = tile.GetComponent<TileView>();
+            if (tileView == null) continue;
+
+            if (tileView.clearable)
             {
                 selected.Add(tile.gameObject);
             }
