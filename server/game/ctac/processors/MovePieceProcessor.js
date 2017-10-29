@@ -80,7 +80,12 @@ export default class MovePieceProcessor
 
     let travelDistance = this.mapState.tileDistance(currentTile.position, destinationTile.position);
     if(!action.isJump && travelDistance > 1){
-      this.log.warn('Cannot move piece more than 1 at a time', piece);
+      this.log.warn('Cannot move piece %j more than 1 at a time', piece);
+      return queue.cancel(action);
+    }
+
+    if(piece.moveCount >= piece.movement){
+      this.log.warn('Piece %j has already exceeded move count', piece);
       return queue.cancel(action);
     }
 
@@ -89,7 +94,6 @@ export default class MovePieceProcessor
     action.direction = targetDirection;
     piece.position = action.to;
     piece.direction = action.direction;
-
 
     //Jumps only counts as a single move but everything else is based on distance which should be 1
     if (action.isJump)
@@ -107,8 +111,8 @@ export default class MovePieceProcessor
     }
 
     queue.complete(action);
-    this.log.info('moved piece %s from %s to %s, direction %s',
-      action.pieceId, currentTile.position, action.to, action.direction);
+    this.log.info('moved piece %s from %s to %s, direction %s moveCount %s',
+      action.pieceId, currentTile.position, action.to, action.direction, piece.moveCount);
 
     //figure out if we've stepped into an enemy taunted area
     //we do this by finding all the enemy taunt pieces, getting the combined area they block off

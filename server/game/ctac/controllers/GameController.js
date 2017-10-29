@@ -105,12 +105,6 @@ export default class GameController
       return;
     }
 
-    if(piece.moveCount >= piece.movement){
-      this.log.warn('Piece %s has already exceeded move count', pieceId);
-      return;
-    }
-
-
     if(route){
       for (let step of route) {
         const action = new MovePiece({pieceId, to: step});
@@ -132,11 +126,6 @@ export default class GameController
     }
 
     if(route){
-      if(piece.moveCount >= piece.movement){
-        this.log.warn('Piece %s has already moved', attackingPieceId);
-        return;
-      }
-
       for (let step of route) {
         this.queue.push(new MovePiece({pieceId: attackingPieceId, to: step}));
       }

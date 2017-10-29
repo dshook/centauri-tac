@@ -51,7 +51,7 @@ export default class AttackPieceProcessor
     let rangedAttack = attacker.range != null && targetDistance > 1;
     if(targetDistance > 1 && (attacker.range != null && attacker.range < targetDistance)){
       this.log.warn('Attacker too far away from target %s %s', targetDistance, attacker.range);
-      queue.push(new Message('Too far away!', action.playerId));
+      //queue.push(new Message('Too far away!', action.playerId));
       return queue.cancel(action);
     }
 

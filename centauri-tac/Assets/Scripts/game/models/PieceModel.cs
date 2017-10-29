@@ -117,7 +117,7 @@ namespace ctac
         {
             get
             {
-                return movement > 0 
+                return movement > 0
                     && moveCount < movement
                     && !FlagsHelper.IsSet(statuses, Statuses.Root)
                     && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
