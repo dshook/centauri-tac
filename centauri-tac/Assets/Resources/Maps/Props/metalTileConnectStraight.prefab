@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4673718090134748}
   - component: {fileID: 33037103925554488}
   - component: {fileID: 23963511282336108}
+  - component: {fileID: 114080581926161464}
   m_Layer: 0
   m_Name: metalTileConnectStraight
   m_TagString: Untagged
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1822868720680196}
   m_Mesh: {fileID: 4300000, guid: 86641d1914094864e821d1d9d0ad28d0, type: 3}
+--- !u!114 &114080581926161464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1822868720680196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

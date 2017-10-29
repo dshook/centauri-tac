@@ -3,12 +3,12 @@
   "maxPlayers": 2,
   "startingPositions": [
     {
-      "x": 1,
+      "x": 2,
       "y": 0.0,
       "z": 5
     },
     {
-      "x": 7,
+      "x": 8,
       "y": 0.0,
       "z": 5
     }
@@ -16,15 +16,6 @@
   "tiles": [
     {
       "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": true
-    },
-    {
-      "transform": {
         "x": 7,
         "y": 0.0,
         "z": 0
@@ -52,12 +43,12 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 0
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
@@ -75,7 +66,7 @@
         "z": 0
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -88,12 +79,30 @@
     },
     {
       "transform": {
-        "x": 1,
+        "x": 6,
+        "y": 0.0,
+        "z": 0
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 2,
         "y": 0.0,
         "z": 0
       },
       "material": "clay",
       "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 1,
+        "y": 0.0,
+        "z": 0
+      },
+      "material": "clay",
+      "unpassable": true
     },
     {
       "transform": {
@@ -103,24 +112,6 @@
       },
       "material": "clay",
       "unpassable": true
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 0
-      },
-      "material": "clay",
-      "unpassable": true
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 1
-      },
-      "material": "clay",
-      "unpassable": false
     },
     {
       "transform": {
@@ -151,7 +142,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 1
       },
@@ -174,11 +165,29 @@
         "z": 1
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
         "x": 5,
+        "y": 0.0,
+        "z": 1
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 1
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 2,
         "y": 0.0,
         "z": 1
       },
@@ -205,61 +214,16 @@
     },
     {
       "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 1
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": true
-    },
-    {
-      "transform": {
         "x": 0,
         "y": 0.0,
         "z": 5
       },
       "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 1,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 5,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
       "unpassable": true
     },
     {
       "transform": {
-        "x": 3,
+        "x": 1,
         "y": 0.0,
         "z": 5
       },
@@ -274,6 +238,51 @@
       },
       "material": "clay",
       "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 5
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.0,
+        "z": 5
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 4,
+        "y": 0.0,
+        "z": 5
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 3,
+        "y": 0.0,
+        "z": 5
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 10,
+        "y": 0.0,
+        "z": 5
+      },
+      "material": "clay",
+      "unpassable": true
     },
     {
       "transform": {
@@ -282,7 +291,7 @@
         "z": 5
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -304,24 +313,6 @@
     },
     {
       "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 5
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 4
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 7,
         "y": 0.0,
         "z": 4
@@ -345,16 +336,16 @@
         "z": 4
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 4
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
@@ -372,11 +363,29 @@
         "z": 4
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
         "x": 5,
+        "y": 0.0,
+        "z": 4
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 4
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 2,
         "y": 0.0,
         "z": 4
       },
@@ -399,25 +408,7 @@
         "z": 4
       },
       "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 4
-      },
-      "material": "clay",
       "unpassable": true
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
     },
     {
       "transform": {
@@ -439,7 +430,7 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 2,
         "y": 0.0,
         "z": 3
       },
@@ -448,12 +439,30 @@
     },
     {
       "transform": {
-        "x": 4,
+        "x": 6,
+        "y": 0.0,
+        "z": 3
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
         "y": 0.0,
         "z": 3
       },
       "material": "clay",
       "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 4,
+        "y": 0.0,
+        "z": 3
+      },
+      "material": "clay",
+      "unpassable": false
     },
     {
       "transform": {
@@ -466,7 +475,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 3
       },
@@ -496,24 +505,6 @@
         "x": 7,
         "y": 0.0,
         "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 3
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 2
       },
       "material": "clay",
       "unpassable": false
@@ -547,7 +538,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 2
       },
@@ -570,7 +561,7 @@
         "z": 2
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -579,11 +570,11 @@
         "z": 2
       },
       "material": "clay",
-      "unpassable": false
+      "unpassable": true
     },
     {
       "transform": {
-        "x": -1,
+        "x": 6,
         "y": 0.0,
         "z": 2
       },
@@ -610,12 +601,12 @@
     },
     {
       "transform": {
-        "x": -1,
+        "x": 2,
         "y": 0.0,
-        "z": 6
+        "z": 2
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -624,38 +615,11 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 1,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 5,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
       "unpassable": true
     },
     {
       "transform": {
-        "x": 3,
+        "x": 1,
         "y": 0.0,
         "z": 6
       },
@@ -670,6 +634,51 @@
       },
       "material": "clay",
       "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 4,
+        "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 3,
+        "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 10,
+        "y": 0.0,
+        "z": 6
+      },
+      "material": "clay",
+      "unpassable": true
     },
     {
       "transform": {
@@ -678,7 +687,7 @@
         "z": 6
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -700,24 +709,6 @@
     },
     {
       "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 6
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 7
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 7,
         "y": 0.0,
         "z": 7
@@ -745,7 +736,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 7
       },
@@ -768,11 +759,29 @@
         "z": 7
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
         "x": 5,
+        "y": 0.0,
+        "z": 7
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 7
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 2,
         "y": 0.0,
         "z": 7
       },
@@ -799,24 +808,6 @@
     },
     {
       "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 7
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
         "x": 0,
         "y": 0.0,
         "z": 8
@@ -835,7 +826,7 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 2,
         "y": 0.0,
         "z": 8
       },
@@ -844,12 +835,30 @@
     },
     {
       "transform": {
-        "x": 4,
+        "x": 6,
+        "y": 0.0,
+        "z": 8
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
         "y": 0.0,
         "z": 8
       },
       "material": "clay",
       "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 4,
+        "y": 0.0,
+        "z": 8
+      },
+      "material": "clay",
+      "unpassable": false
     },
     {
       "transform": {
@@ -862,7 +871,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 8
       },
@@ -892,24 +901,6 @@
         "x": 7,
         "y": 0.0,
         "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 8
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 9
       },
       "material": "clay",
       "unpassable": false
@@ -943,7 +934,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 9
       },
@@ -966,11 +957,29 @@
         "z": 9
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
         "x": 5,
+        "y": 0.0,
+        "z": 9
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 6,
+        "y": 0.0,
+        "z": 9
+      },
+      "material": "clay",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 2,
         "y": 0.0,
         "z": 9
       },
@@ -997,24 +1006,6 @@
     },
     {
       "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 9
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": -1,
-        "y": 0.0,
-        "z": 10
-      },
-      "material": "clay",
-      "unpassable": true
-    },
-    {
-      "transform": {
         "x": 0,
         "y": 0.0,
         "z": 10
@@ -1033,12 +1024,30 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 2,
+        "y": 0.0,
+        "z": 10
+      },
+      "material": "clay",
+      "unpassable": true
+    },
+    {
+      "transform": {
+        "x": 6,
         "y": 0.0,
         "z": 10
       },
       "material": "clay",
       "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 0.0,
+        "z": 10
+      },
+      "material": "clay",
+      "unpassable": true
     },
     {
       "transform": {
@@ -1060,7 +1069,7 @@
     },
     {
       "transform": {
-        "x": 2,
+        "x": 10,
         "y": 0.0,
         "z": 10
       },
@@ -1083,7 +1092,7 @@
         "z": 10
       },
       "material": "clay",
-      "unpassable": true
+      "unpassable": false
     },
     {
       "transform": {
@@ -1096,16 +1105,7 @@
     },
     {
       "transform": {
-        "x": 6,
-        "y": 0.0,
-        "z": 10
-      },
-      "material": "clay",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
+        "x": 4,
         "y": 0.543,
         "z": 1
       },
@@ -1114,7 +1114,7 @@
     },
     {
       "transform": {
-        "x": 3,
+        "x": 4,
         "y": 0.543,
         "z": 2
       },
@@ -1123,7 +1123,7 @@
     },
     {
       "transform": {
-        "x": 4,
+        "x": 5,
         "y": 1.084,
         "z": 2
       },
@@ -1132,7 +1132,7 @@
     },
     {
       "transform": {
-        "x": 4,
+        "x": 5,
         "y": 1.084,
         "z": 1
       },
@@ -1141,7 +1141,7 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 6,
         "y": 0.543,
         "z": 2
       },
@@ -1150,7 +1150,7 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 6,
         "y": 0.543,
         "z": 1
       },
@@ -1159,7 +1159,7 @@
     },
     {
       "transform": {
-        "x": 5,
+        "x": 6,
         "y": 0.543,
         "z": 8
       },
@@ -1168,7 +1168,34 @@
     },
     {
       "transform": {
+        "x": 6,
+        "y": 0.543,
+        "z": 9
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
         "x": 5,
+        "y": 1.084,
+        "z": 8
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 5,
+        "y": 1.084,
+        "z": 9
+      },
+      "material": "invisible",
+      "unpassable": false
+    },
+    {
+      "transform": {
+        "x": 4,
         "y": 0.543,
         "z": 9
       },
@@ -1178,33 +1205,6 @@
     {
       "transform": {
         "x": 4,
-        "y": 1.084,
-        "z": 8
-      },
-      "material": "invisible",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 4,
-        "y": 1.084,
-        "z": 9
-      },
-      "material": "invisible",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
-        "y": 0.543,
-        "z": 9
-      },
-      "material": "invisible",
-      "unpassable": false
-    },
-    {
-      "transform": {
-        "x": 3,
         "y": 0.543,
         "z": 8
       },
@@ -1213,6 +1213,1028 @@
     }
   ],
   "props": [
+    {
+      "transform": {
+        "x": 10.25,
+        "y": 0.16,
+        "z": 9.21
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 270.0,
+        "z": 135.0
+      },
+      "propName": "pipeCornerDiagonal",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 9.76,
+        "y": 0.66,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 0.0,
+        "y": 90.0,
+        "z": 180.0
+      },
+      "propName": "pipeCorner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.5,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTileConnectCorner",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 9.97,
+        "y": 2.08,
+        "z": 5.98
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "satelliteDishLarge",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": -0.04000002,
+        "y": 0.07,
+        "z": 4.08
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "propName": "stationLarge",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.53,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "station",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": -0.329999983,
+        "y": 0.07,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "consoleScreen",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.07,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "consoleCorner",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureCross",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 2.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructure",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeCorner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 3.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "satelliteDishAntenna",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.46,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.08,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.08,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 270.0,
+        "z": 0.0
+      },
+      "propName": "pipeCorner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.41,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 3.0,
+        "y": 0.41,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.41,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": -1.0,
+        "y": 0.41,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 7.0,
+        "y": 0.41,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 9.0,
+        "y": 0.41,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 11.0,
+        "y": 0.41,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 7.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 3.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 2.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 8.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.08,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.08,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.46,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.46,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.08,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 6.0,
+        "y": 0.08,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.08,
+        "z": 8.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.08,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 4.0,
+        "y": 0.46,
+        "z": 9.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 90.0,
+        "z": 0.0
+      },
+      "propName": "metalTileDouble",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 0.0,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 3.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 5.0,
+        "y": 1.0,
+        "z": 2.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.08,
+        "z": 5.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.08,
+        "z": 4.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "frameHigh",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 1.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureCross",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalStructureBottom",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 2.0,
+        "z": 6.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "metalTile",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.23,
+        "y": 0.54,
+        "z": 4.18
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 180.0,
+        "z": 0.0
+      },
+      "propName": "stationLarge",
+      "breakable": false
+    },
+    {
+      "transform": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 1.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "barrelLarge",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
+    },
     {
       "transform": {
         "x": 9.25,
@@ -1224,7 +2246,22 @@
         "y": 270.0,
         "z": 135.0
       },
-      "propName": "pipeCornerDiagonal"
+      "propName": "pipeCornerDiagonal",
+      "breakable": true
+    },
+    {
+      "transform": {
+        "x": 9.0,
+        "y": 0.0,
+        "z": 10.0
+      },
+      "rotation": {
+        "x": 270.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStandStraightLiner",
+      "breakable": true
     },
     {
       "transform": {
@@ -1237,973 +2274,12 @@
         "y": 90.0,
         "z": 180.0
       },
-      "propName": "pipeCorner"
+      "propName": "pipeCorner",
+      "breakable": true
     },
     {
       "transform": {
         "x": 9.0,
-        "y": 0.5,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTileConnectCorner"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "barrelLarge"
-    },
-    {
-      "transform": {
-        "x": 8.97,
-        "y": 2.08,
-        "z": 5.98
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "satelliteDishLarge"
-    },
-    {
-      "transform": {
-        "x": -1.04,
-        "y": 0.07,
-        "z": 4.08
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 180.0,
-        "z": 0.0
-      },
-      "propName": "stationLarge"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.53,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "station"
-    },
-    {
-      "transform": {
-        "x": -1.33,
-        "y": 0.07,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 270.0,
-        "z": 0.0
-      },
-      "propName": "consoleScreen"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.07,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 270.0,
-        "z": 0.0
-      },
-      "propName": "consoleCorner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureCross"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 2.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructure"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeCorner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 3.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "satelliteDishAntenna"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.46,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "metalTileDouble"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.08,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.08,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 270.0,
-        "z": 0.0
-      },
-      "propName": "pipeCorner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 8.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 4.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.41,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 2.0,
-        "y": 0.41,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.41,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": -2.0,
-        "y": 0.41,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 6.0,
-        "y": 0.41,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 8.0,
-        "y": 0.41,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 10.0,
-        "y": 0.41,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStraight"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 8.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 8.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 7.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 3.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.0,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 1.0,
-        "y": 0.0,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 7.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.08,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.08,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.46,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "metalTileDouble"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.46,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "metalTileDouble"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.08,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 5.0,
-        "y": 0.08,
-        "z": 8.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.08,
-        "z": 8.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.08,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 3.0,
-        "y": 0.46,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 90.0,
-        "z": 0.0
-      },
-      "propName": "metalTileDouble"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 0.0,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 3.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 4.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 4.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 4.0,
-        "y": 1.0,
-        "z": 2.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.08,
-        "z": 5.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.08,
-        "z": 4.0
-      },
-      "rotation": {
-        "x": 270.019775,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "frameHigh"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 1.0,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureCross"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.0,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalStructureBottom"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 2.0,
-        "z": 6.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "metalTile"
-    },
-    {
-      "transform": {
-        "x": 9.23,
-        "y": 0.54,
-        "z": 4.18
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 180.0,
-        "z": 0.0
-      },
-      "propName": "stationLarge"
-    },
-    {
-      "transform": {
-        "x": -1.0,
-        "y": 0.0,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "barrelLarge"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 1.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "barrelLarge"
-    },
-    {
-      "transform": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "barrelLarge"
-    },
-    {
-      "transform": {
-        "x": 9.0,
-        "y": 0.0,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 8.25,
-        "y": 0.16,
-        "z": 9.21
-      },
-      "rotation": {
-        "x": 0.0,
-        "y": 270.0,
-        "z": 135.0
-      },
-      "propName": "pipeCornerDiagonal"
-    },
-    {
-      "transform": {
-        "x": 8.0,
-        "y": 0.0,
-        "z": 10.0
-      },
-      "rotation": {
-        "x": 270.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "propName": "pipeStandStraightLiner"
-    },
-    {
-      "transform": {
-        "x": 7.76,
-        "y": 0.66,
-        "z": 9.0
-      },
-      "rotation": {
-        "x": 0.0,
-        "y": 90.0,
-        "z": 180.0
-      },
-      "propName": "pipeCorner"
-    },
-    {
-      "transform": {
-        "x": 8.0,
         "y": 0.41,
         "z": 11.0
       },
@@ -2212,11 +2288,12 @@
         "y": 0.0,
         "z": 0.0
       },
-      "propName": "pipeStraight"
+      "propName": "pipeStraight",
+      "breakable": false
     },
     {
       "transform": {
-        "x": 9.0,
+        "x": 10.0,
         "y": 0.5,
         "z": 4.0
       },
@@ -2225,7 +2302,8 @@
         "y": 270.0,
         "z": 0.0
       },
-      "propName": "metalTileConnectCorner"
+      "propName": "metalTileConnectCorner",
+      "breakable": false
     }
   ]
 }

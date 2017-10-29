@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4139595552166346}
   - component: {fileID: 33840060041180926}
   - component: {fileID: 23153199303814772}
+  - component: {fileID: 114544749371109444}
   m_Layer: 0
   m_Name: metalTileConnectCorner
   m_TagString: Untagged
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1213417363121330}
   m_Mesh: {fileID: 4300000, guid: bb47f36064f8f8c4d81159928bba48da, type: 3}
+--- !u!114 &114544749371109444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1213417363121330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

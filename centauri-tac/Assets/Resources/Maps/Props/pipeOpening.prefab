@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4528288682125876}
   - component: {fileID: 33239056069782854}
   - component: {fileID: 23112573143022916}
+  - component: {fileID: 114034534573397674}
   m_Layer: 0
   m_Name: pipeOpening
   m_TagString: Untagged
@@ -80,3 +81,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1482608900458820}
   m_Mesh: {fileID: 4300000, guid: fbedc895ac95f4d4497052f8041e18a7, type: 3}
+--- !u!114 &114034534573397674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482608900458820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

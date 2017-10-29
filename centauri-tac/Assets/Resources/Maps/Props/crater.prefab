@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4289163010457112}
   - component: {fileID: 33220487999060168}
   - component: {fileID: 23449261049081210}
+  - component: {fileID: 114844710110628516}
   m_Layer: 0
   m_Name: crater
   m_TagString: Untagged
@@ -80,3 +81,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1065364486971392}
   m_Mesh: {fileID: 4300000, guid: 1f36dd0e5fccb334c9c7ed78e229914d, type: 3}
+--- !u!114 &114844710110628516
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1065364486971392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

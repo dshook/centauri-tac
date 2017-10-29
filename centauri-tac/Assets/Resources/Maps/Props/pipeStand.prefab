@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4945801898313322}
   - component: {fileID: 33158665789863482}
   - component: {fileID: 23067847322852478}
+  - component: {fileID: 114760978190583552}
   m_Layer: 0
   m_Name: pipeStand
   m_TagString: Untagged
@@ -81,3 +82,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1571093253710608}
   m_Mesh: {fileID: 4300000, guid: 9f955026b22ac4041bebe80854ac92bf, type: 3}
+--- !u!114 &114760978190583552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1571093253710608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

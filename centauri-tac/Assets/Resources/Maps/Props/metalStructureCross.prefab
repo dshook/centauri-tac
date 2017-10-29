@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4768281372596506}
   - component: {fileID: 33349861128460080}
   - component: {fileID: 23590031076847588}
+  - component: {fileID: 114079359340525454}
   m_Layer: 0
   m_Name: metalStructureCross
   m_TagString: Untagged
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1570905065750734}
   m_Mesh: {fileID: 4300000, guid: 3da20f7c9568ed54ca49a36839d6c8a0, type: 3}
+--- !u!114 &114079359340525454
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570905065750734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

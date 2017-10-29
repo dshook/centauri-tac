@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4441285244851700}
   - component: {fileID: 33549419115524668}
   - component: {fileID: 23770534551659970}
+  - component: {fileID: 114793756399594990}
   m_Layer: 0
   m_Name: rocksSmallOre
   m_TagString: Untagged
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1968844542059654}
   m_Mesh: {fileID: 4300000, guid: 310cba0d205d4db439531a30b8760f47, type: 3}
+--- !u!114 &114793756399594990
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1968844542059654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4002354588639440}
   - component: {fileID: 33398930803624086}
   - component: {fileID: 23256035416617072}
+  - component: {fileID: 114660404821068014}
   m_Layer: 0
   m_Name: pipeStraightLiner
   m_TagString: Untagged
@@ -81,3 +82,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1471669524066040}
   m_Mesh: {fileID: 4300000, guid: 8a50db255ce5e2743b8f11461569bb3c, type: 3}
+--- !u!114 &114660404821068014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1471669524066040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

@@ -23,6 +23,7 @@ namespace ctac
         public PropImportPosition transform;
         public PropImportPosition rotation;
         public string propName { get; set; }
+        public bool breakable { get; set; }
     }
 
     public class TileImportPosition

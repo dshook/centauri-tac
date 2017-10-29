@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4233189573423140}
   - component: {fileID: 33527234482917030}
   - component: {fileID: 23624692199579878}
+  - component: {fileID: 114454388889476420}
   m_Layer: 0
   m_Name: station
   m_TagString: Untagged
@@ -83,3 +84,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1350035321735262}
   m_Mesh: {fileID: 4300000, guid: 7e76a2d50c1c31543a5e82c8311250b7, type: 3}
+--- !u!114 &114454388889476420
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1350035321735262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

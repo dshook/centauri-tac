@@ -162,6 +162,9 @@ namespace ctac
                     Quaternion.Euler(prop.rotation.x, prop.rotation.y, prop.rotation.z)
                 ) as GameObject;
                 newProp.transform.parent = propsRoot.transform;
+
+                var propView = newProp.GetComponent<PropView>();
+                propView.breakable = prop.breakable;
             }
         }
 

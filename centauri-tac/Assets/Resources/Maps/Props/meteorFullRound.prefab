@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4969035615382288}
   - component: {fileID: 33002341073124254}
   - component: {fileID: 23624364708099390}
+  - component: {fileID: 114587388879678608}
   m_Layer: 0
   m_Name: meteorFullRound
   m_TagString: Untagged
@@ -80,3 +81,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1244369825402650}
   m_Mesh: {fileID: 4300000, guid: 3ce185ffc6f5fda4599154e72adef20f, type: 3}
+--- !u!114 &114587388879678608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1244369825402650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

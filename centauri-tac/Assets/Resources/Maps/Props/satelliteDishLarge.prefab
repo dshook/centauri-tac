@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4151112715540528}
   - component: {fileID: 33547998828581996}
   - component: {fileID: 23459880084764206}
+  - component: {fileID: 114353626561706850}
   m_Layer: 0
   m_Name: satelliteDishLarge
   m_TagString: Untagged
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1346299980804964}
   m_Mesh: {fileID: 4300000, guid: a8e27b40ea8ea404897dfe18bbf2ca8e, type: 3}
+--- !u!114 &114353626561706850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1346299980804964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0

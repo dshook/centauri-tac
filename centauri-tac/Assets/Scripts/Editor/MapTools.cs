@@ -54,6 +54,10 @@ class MapTools : EditorWindow
         {
             SelectUnpassable();
         }
+        if (GUILayout.Button("Select Breakable Props"))
+        {
+            SelectBreakable();
+        }
 
         if (GUILayout.Button("Fix Tile Positions"))
         {
@@ -105,6 +109,7 @@ class MapTools : EditorWindow
         {
             var prop = propRoot.transform.GetChild(t);
             var mesh = prop.GetComponent<MeshFilter>();
+            var view = prop.GetComponent<PropView>();
             var rotation = prop.transform.rotation.eulerAngles;
             props.Add(new PropImport()
             {
@@ -119,7 +124,8 @@ class MapTools : EditorWindow
                     z = rotation.z
                 },
                 //ghetto way for now to find out what prop this is but works
-                propName = mesh.sharedMesh.name
+                propName = mesh.sharedMesh.name,
+                breakable = view.breakable
             });
         }
 
@@ -187,6 +193,28 @@ class MapTools : EditorWindow
             if (tileView == null) continue;
 
             if (tileView.unpassable)
+            {
+                selected.Add(tile.gameObject);
+            }
+        }
+
+        Selection.objects = selected.ToArray();
+    }
+
+    void SelectBreakable()
+    {
+        var mapGO = GameObject.Find("Map");
+        var tileGO = mapGO.transform.FindChild("Props");
+
+        var selected = new List<GameObject>();
+        for (int t = 0; t < tileGO.childCount; t++)
+        {
+            var tile = tileGO.transform.GetChild(t);
+
+            var propView = tile.GetComponent<PropView>();
+            if (propView == null) continue;
+
+            if (propView.breakable)
             {
                 selected.Add(tile.gameObject);
             }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4133807091446200}
   - component: {fileID: 33579387811209942}
   - component: {fileID: 23655953535650868}
+  - component: {fileID: 114965787021103538}
   m_Layer: 0
   m_Name: pipeCornerDiagonal
   m_TagString: Untagged
@@ -80,3 +81,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1257902969641154}
   m_Mesh: {fileID: 4300000, guid: 6d965227b59c2b648a79a88df8611973, type: 3}
+--- !u!114 &114965787021103538
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1257902969641154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breakable: 0
