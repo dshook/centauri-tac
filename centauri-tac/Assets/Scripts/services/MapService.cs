@@ -11,14 +11,14 @@ namespace ctac
         Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> GetDiagonalTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
-        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId);
+        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece);
         Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections);
         Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
         int KingDistance(Vector2 a, Vector2 b);
-        List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId);
+        List<Tile> FindPath(Tile start, Tile end, int maxDist, PieceModel piece);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-        Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null);
         bool isHeightPassable(Tile start, Tile end);
         Tile Tile(Vector2 position);
     }
@@ -178,7 +178,7 @@ namespace ctac
             return ret;
         }
 
-        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, int controllingPlayerId)
+        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece)
         {
             var ret = new Dictionary<Vector2, Tile>();
             if (distance <= 0) return ret;
@@ -205,7 +205,7 @@ namespace ctac
                     ret.Add(current, currentTile);
                 }
 
-                var neighbors = GetMovableNeighbors(currentTile, controllingPlayerId);
+                var neighbors = GetMovableNeighbors(currentTile, piece);
                 foreach (var neighbor in neighbors)
                 {
                     //add the neighbor to explore if it's not already being returned 
@@ -238,7 +238,7 @@ namespace ctac
             );
         }
 
-        public List<Tile> FindPath(Tile start, Tile end, int maxDist, int controllingPlayerId)
+        public List<Tile> FindPath(Tile start, Tile end, int maxDist, PieceModel piece)
         {
             var ret = new List<Tile>();
             if(start == end) return ret;
@@ -269,7 +269,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetMovableNeighbors(current, controllingPlayerId, end);
+                var neighbors = GetMovableNeighbors(current, piece, end);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -394,17 +394,20 @@ namespace ctac
         /// but always include the dest tile for attacking if it's passed
         /// but also make sure not to land on a tile with an occupant if attacking
         /// </summary>
-        public Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, int controllingPlayerId, Tile dest = null)
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null)
         {
             var ret = GetNeighbors(center.position);
 
             //filter tiles that are too high/low to move to & are passable
-            ret = ret.Where(t => !t.Value.unpassable && isHeightPassable(t.Value, center)).ToDictionary(k => k.Key, v => v.Value);
+            ret = ret.Where(t => 
+                !t.Value.unpassable 
+                && (isHeightPassable(t.Value, center) || FlagsHelper.IsSet(piece.statuses, Statuses.Jump))
+            ).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
             ret = ret.Where(t => 
                 (dest != null && t.Key == dest.position) ||
-                !pieces.Pieces.Any(m => m.tilePosition == t.Key && m.playerId != controllingPlayerId)
+                !pieces.Pieces.Any(m => m.tilePosition == t.Key && m.playerId != piece.playerId)
             ).ToDictionary(k => k.Key, v => v.Value);
 
             bool destinationOccupied = dest != null && pieces.Pieces.Any(p => p.tilePosition == dest.position);

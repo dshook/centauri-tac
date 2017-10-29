@@ -106,7 +106,7 @@ namespace ctac
                 {
                     //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
                     var boost = enemyOccupyingDest ? 1 : 0;
-                    var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, players.Me.id);
+                    var path = mapService.FindPath(gameTile, tile, selectedPiece.movement + boost, selectedPiece);
                     view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
                     if (path != null)
@@ -216,7 +216,7 @@ namespace ctac
             if (!selectedPiece.hasMoved && selectedPiece.canMove)
             {
                 //find movement
-                var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece.playerId);
+                var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement, selectedPiece);
                 //take out the central one
                 moveTiles.Remove(gameTile.position);
                 view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
@@ -336,7 +336,7 @@ namespace ctac
             {
                 //melee units
 
-                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece.playerId);
+                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement, piece);
                 var moveTiles = movePositions.Values.ToList();
 
                 List<Tile> attackTiles = null;

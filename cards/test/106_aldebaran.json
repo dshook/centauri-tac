@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 106,
+	"name": "Aldebaran",
+	"description": "<b>Jump</b>",
+	"cost": 1,
+	"attack": 2,
+	"health": 1,
+	"movement": 3,
+  "statuses": 1024,
+	"tags": ["Minion"]
+}

@@ -28,7 +28,7 @@ namespace ctac
         {
 
             var startTile = map.tiles.Get(pieceMoved.tilePosition);
-            var path = mapService.FindPath(startTile, dest, pieceMoved.movement, players.Me.id);
+            var path = mapService.FindPath(startTile, dest, pieceMoved.movement, pieceMoved);
             if (path == null || path.Count == 0) return;
             //format for server
             var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();

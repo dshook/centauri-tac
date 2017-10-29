@@ -34,7 +34,7 @@ namespace ctac
             List<Tile> path = null;
             if (attacker.isMelee)
             {
-                path = mapService.FindPath(startTile, destTile, attacker.movement + 1, players.Me.id);
+                path = mapService.FindPath(startTile, destTile, attacker.movement + 1, attacker);
             }
 
             if (path == null && attacker.isMelee)
