@@ -341,6 +341,7 @@ namespace ctac {
             {"Root",               "Cannot move" },
             {"Charge",             "Minion can move and attack immediately" },
             {"Dyad Strike",        "Minion can attack twice per turn" },
+            {"Jump",               "Minion can jump up or down any height" },
         };
 
         public void EnableHoverTips(IResourceLoaderService loader)
@@ -380,6 +381,7 @@ namespace ctac {
                 if (FlagsHelper.IsSet(statuses, Statuses.Root)) { descriptionWords.Add("Root"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.Charge)) { descriptionWords.Add("Charge"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.DyadStrike)) { descriptionWords.Add("Dyad Strike"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Jump)) { descriptionWords.Add("Jump"); }
             }
 
             descriptionWords = descriptionWords.Distinct().ToList();

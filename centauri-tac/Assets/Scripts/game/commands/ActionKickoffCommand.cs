@@ -21,7 +21,7 @@ namespace ctac
             if (!processedActions.Verify(kickoff.id)) return;
 
             gameInputStatus.inputEnabled = true;
-            messageSignal.Dispatch( new MessageModel() { message = kickoff.message });
+            messageSignal.Dispatch( new MessageModel() { message = kickoff.message, duration = 1f });
 
         }
     }
