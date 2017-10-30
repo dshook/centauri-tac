@@ -58,6 +58,8 @@ namespace ctac
             mapModel.tiles = new Dictionary<Vector2, Tile>();
             mapModel.cosmeticTiles = new List<Tile>();
 
+            goMap.AddComponent<MapView>();
+
             //first go through the import looking for tiles stacked on top of each other.
             //the topmost tile will be the "real" map tile and ones below that will be instanciated as normal
             //but just be cosmetic. Kinda nasty self join stuff going on here

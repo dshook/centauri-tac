@@ -12,6 +12,7 @@ export default class Selector{
     this.pieceState = pieceState;
     this.cardState = cardState;
     this.areaSelector = new AreaSelector(this, mapState);
+    this.mapState = mapState;
     this.statsState = statsState;
     this.playerResourceState = playerResourceState;
   }
@@ -71,6 +72,23 @@ export default class Selector{
       this,
       pieceSelectorParams
     ).Select(selector);
+  }
+
+  //Find tiles on the map that can be cleared and made passable
+  selectClearableTiles(selector, pieceSelectorParams){
+    this.log.info('Selecting clearable tiles with selector %j', selector);
+    //for now, only way to break shit is with AOE's
+    if(!selector.left || !selector.left.area){
+      return [];
+    }
+
+    let areaDescrip = this.selectArea(selector.left, pieceSelectorParams);
+
+    if(areaDescrip.areaTiles.length > 0){
+      return this.mapState.map.tiles.filter(p => p.clearable && areaDescrip.areaTiles.some(t => t.tileEquals(p.position)));
+    }else{
+      return [];
+    }
   }
 
   //similar to select pieces but a more limited set of selections

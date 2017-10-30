@@ -115,6 +115,9 @@ namespace ctac.signals
     [Singleton] public class ActionUnsummonPieceSignal : Signal<UnsummonPieceModel, SocketKey> { }
     [Singleton] public class PieceUnsummonedSignal : Signal<UnsummonPieceModel> { }
 
+    [Singleton] public class ActionTilesClearedSignal : Signal<TilesClearedModel, SocketKey> { }
+    [Singleton] public class TilesClearedSignal : Signal<TilesClearedModel> { }
+
     [Singleton] public class CardSelectedSignal : Signal<CardSelectedModel> { }
     [Singleton] public class CardHoveredSignal : Signal<CardModel> { }
     [Singleton] public class ActivateCardSignal : Signal<ActivateModel> { }

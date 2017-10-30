@@ -47,7 +47,8 @@ export default class MapState
     for(let tile of finalTiles){
       let tileModel = new Tile(
         new Position(tile.transform.x, tile.transform.y, tile.transform.z),
-        tile.unpassable
+        tile.unpassable,
+        tile.clearable
       );
       storedMap.tiles.push(tileModel);
 

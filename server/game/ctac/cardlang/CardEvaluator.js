@@ -26,6 +26,7 @@ import PieceArmorChange from '../actions/PieceArmorChange.js';
 import AttachCode from '../actions/AttachCode.js';
 import UnsummonPiece from '../actions/UnsummonPiece.js';
 import Choose from '../actions/Choose.js';
+import TilesCleared from '../actions/TilesCleared.js';
 
 /**
  * Evaluate the scripts on cards
@@ -385,6 +386,12 @@ export default class CardEvaluator{
 
               this.selector.selectPieces(pieceSelector, pieceSelectorParams);
               queue.push(new PieceAction(pieceSelector, pieceSelectorParams, PieceHealthChange, {change: damage}));
+
+              //Find any tiles that might be made passable by an AOE
+              let clearedTiles = this.selector.selectClearableTiles(pieceSelector, pieceSelectorParams);
+              if(clearedTiles.length){
+                queue.push(new TilesCleared(clearedTiles.map(t => t.position)));
+              }
               break;
             }
             //Heal(pieceSelector, healAmount)
