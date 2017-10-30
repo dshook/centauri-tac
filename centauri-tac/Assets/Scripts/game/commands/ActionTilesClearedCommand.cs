@@ -28,7 +28,7 @@ namespace ctac
             }
 
             tilesClearedSignal.Dispatch(tilesCleared);
-            debug.Log(string.Format("Tiles cleared {0}", tilesCleared.tilePositions), socketKey);
+            debug.Log(string.Format("{0} Tiles cleared", tilesCleared.tilePositions.Count), socketKey);
         }
     }
 }

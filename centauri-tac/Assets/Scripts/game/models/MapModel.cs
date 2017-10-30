@@ -13,6 +13,7 @@ namespace ctac
         public GameObject root { get; set; }
         public Dictionary<Vector2, Tile> tiles { get; set; }
         public List<Tile> cosmeticTiles { get; set; }
+        public List<PropView> props { get; set; }
 
         public List<Tile> tileList
         {

@@ -57,6 +57,7 @@ namespace ctac
             mapModel.maxPlayers = map.maxPlayers;
             mapModel.tiles = new Dictionary<Vector2, Tile>();
             mapModel.cosmeticTiles = new List<Tile>();
+            mapModel.props = new List<PropView>();
 
             goMap.AddComponent<MapView>();
 
@@ -167,6 +168,8 @@ namespace ctac
 
                 var propView = newProp.GetComponent<PropView>();
                 propView.breakable = prop.breakable;
+
+                mapModel.props.Add(propView);
             }
         }
 
