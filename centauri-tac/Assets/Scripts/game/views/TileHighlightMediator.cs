@@ -13,7 +13,7 @@ namespace ctac
         
         [Inject] public TileHoverSignal tileHover { get; set; }
 
-        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public PieceSpawningSignal pieceSpawning { get; set; }
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
@@ -47,7 +47,7 @@ namespace ctac
 
         public override void OnRegister()
         {
-            cardSelected.AddListener(onCardSelected);
+            pieceSpawning.AddListener(onPieceSpawning);
             pieceSelected.AddListener(onPieceSelected);
             pieceDied.AddListener(onPieceDied);
             pieceHoveredSignal.AddListener(onPieceHover);
@@ -66,7 +66,7 @@ namespace ctac
         public override void onRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
-            cardSelected.RemoveListener(onCardSelected);
+            pieceSpawning.RemoveListener(onPieceSpawning);
             pieceHoveredSignal.RemoveListener(onPieceHover);
             pieceDied.RemoveListener(onPieceDied);
             pieceMoved.RemoveListener(onPieceMove);
@@ -223,9 +223,9 @@ namespace ctac
             }
         }
 
-        private void onCardSelected(CardSelectedModel cardModel)
+        private void onPieceSpawning(CardSelectedModel cardModel)
         {
-            if (cardModel != null && !cardModel.card.isSpell)
+            if (cardModel != null)
             {
                 //find play radius depending on the card to show spawning area for a piece
                 var playerHero = pieces.Hero(cardModel.card.playerId);
@@ -237,6 +237,10 @@ namespace ctac
                     .ToList();
                 view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected, true);
                 isDeployingPiece = true;
+            }
+            else
+            {
+                pieceNotDeploying();
             }
         }
 

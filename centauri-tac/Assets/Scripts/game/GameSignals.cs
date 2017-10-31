@@ -86,6 +86,7 @@ namespace ctac.signals
     [Singleton] public class TileClickedSignal : Signal<Tile> { }
 
     [Singleton] public class ActionSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
+    [Singleton] public class PieceSpawningSignal : Signal<CardSelectedModel> { }
     [Singleton] public class PieceSpawnedSignal : Signal<PieceSpawnedModel> { }
     [Singleton] public class ActionCancelledSpawnPieceSignal : Signal<SpawnPieceModel, SocketKey> { }
 

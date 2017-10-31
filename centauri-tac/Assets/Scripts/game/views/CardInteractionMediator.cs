@@ -14,6 +14,7 @@ namespace ctac
         [Inject] public ActivateCardSignal activateCard { get; set; }
         [Inject] public MessageSignal message { get; set; }
 
+        [Inject] public PieceSpawningSignal pieceSpawning { get; set; }
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject] public NeedsTargetSignal needsTarget { get; set; }
@@ -81,6 +82,7 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
+                pieceSpawning.Dispatch(null);
 
                 return;
             }
@@ -115,7 +117,11 @@ namespace ctac
                 return;
             }
 
-            pieceSelected.Dispatch(null); 
+            pieceSelected.Dispatch(null);
+            if (draggedCard.isMinion)
+            {
+                pieceSpawning.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
+            }
             cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
         }
 

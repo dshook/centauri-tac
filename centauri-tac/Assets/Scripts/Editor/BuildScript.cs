@@ -1,11 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEditor;
+using UnityEngine;
 
 class BuildScript
 {
     private static string[] EnabledLevels()
     {
-        return EditorBuildSettings.scenes.Where(scene => scene.enabled).Select(scene => scene.path).ToArray();
+        return EditorBuildSettings.scenes
+            .Where(scene => scene.enabled && !string.IsNullOrEmpty(scene.path))
+            .Select(scene => scene.path).ToArray();
     }
 
     private static string basePath = "../build/";
@@ -38,10 +42,19 @@ class BuildScript
 
     public static void BuildAll()
     {
-        WinBuild();
-        WinDevBuild();
-        MacBuild();
-        MacDevBuild();
+        try
+        {
+            WinBuild();
+            WinDevBuild();
+            MacBuild();
+            MacDevBuild();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error building: \n" + e);
+            Console.WriteLine("Error Building: \n"+ e);
+            throw e;
+        }
     }
 
     private static void Build(string build, BuildTarget target, BuildOptions options)
