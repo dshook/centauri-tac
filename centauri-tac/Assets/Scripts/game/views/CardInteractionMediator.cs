@@ -29,6 +29,8 @@ namespace ctac
 
         [Inject] public TileClickedSignal tileClicked { get; set; }
 
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
+
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -57,6 +59,7 @@ namespace ctac
             startSelectTarget.AddListener(onStartTarget);
             selectTarget.AddListener(onSelectedTarget);
             cancelSelectTarget.AddListener(onTargetCancel);
+            gameFinished.AddListener(onGameFinished);
 
             activateCard.AddListener(onCardActivated);
             view.init(raycastModel);
@@ -71,6 +74,7 @@ namespace ctac
             startSelectTarget.RemoveListener(onStartTarget);
             selectTarget.RemoveListener(onSelectedTarget);
             cancelSelectTarget.RemoveListener(onTargetCancel);
+            gameFinished.RemoveListener(onGameFinished);
 
             activateCard.RemoveListener(onCardActivated);
         }
@@ -266,6 +270,11 @@ namespace ctac
                     cardHovered.Dispatch(null);
                 }
             }
+        }
+
+        private void onGameFinished(GameFinishedModel gf)
+        {
+            view.Disable();
         }
     }
 }

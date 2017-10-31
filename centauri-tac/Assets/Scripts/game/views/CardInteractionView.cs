@@ -26,6 +26,11 @@ namespace ctac
             raycastModel = rm;
         }
 
+        internal void Disable()
+        {
+            active = false;
+        }
+
         void onClick(GameObject g, Vector3 v)
         {
             draggedObject = g;
