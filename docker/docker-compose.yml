@@ -44,6 +44,9 @@ services:
       - TESTING_CARDS=81,30
       - CARD_SETS=test,basic
       - MAP=mars
+      - TURN_LENGTH_MS=30000
+      - TURN_END_BUFFER_LENGTH_MS=10000
+      - TURN_INCREMENT_LENGTH_MS=10000
 
 volumes:
   postgres-volume:
