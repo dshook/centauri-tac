@@ -30,7 +30,7 @@ services:
     links:
       - db
     environment:
-      - COMPONENTS=auth,game,gamelist,matchmaker,log
+      - COMPONENTS=auth,game,lobby,log
       - DATABASE_URL=postgres://postgres:example@db/postgres
       - PG_USE_SSL=false
       - DEBUG=*,-nodemon*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter
@@ -40,13 +40,13 @@ services:
       - PING_INTERVAL=30000
       - CLIENT_LOG=./centauri-tac/client_log.json
       - DISCONNECT_TIMEOUT=5000
-      - DEV=true
-      - TESTING_CARDS=81,30
-      - CARD_SETS=test,basic
-      - MAP=mars
-      - TURN_LENGTH_MS=30000
-      - TURN_END_BUFFER_LENGTH_MS=10000
-      - TURN_INCREMENT_LENGTH_MS=10000
+      - DEV=${DEV}
+      - TESTING_CARDS=${TESTING_CARDS}
+      - CARD_SETS=${CARD_SETS}
+      - MAP=${MAP}
+      - TURN_LENGTH_MS=${TURN_LENGTH_MS}
+      - TURN_END_BUFFER_LENGTH_MS=${TURN_END_BUFFER_LENGTH_MS}
+      - TURN_INCREMENT_LENGTH_MS=${TURN_INCREMENT_LENGTH_MS}
 
 volumes:
   postgres-volume:
