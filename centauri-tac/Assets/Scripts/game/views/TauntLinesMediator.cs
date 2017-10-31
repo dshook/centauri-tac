@@ -20,7 +20,7 @@ namespace ctac
             view.init();
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             tauntUpdated.RemoveListener(onTilesUpdate);
         }

@@ -34,7 +34,7 @@ namespace ctac
             view.gameObject.SetActive(false);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onLoginClicked);
 

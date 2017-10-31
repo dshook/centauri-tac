@@ -24,7 +24,7 @@ namespace ctac
             view.init(loader);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             newDeckSignal.RemoveListener(onAddToDeck);
             removeDeckSignal.RemoveListener(onRemoveFromDeck);

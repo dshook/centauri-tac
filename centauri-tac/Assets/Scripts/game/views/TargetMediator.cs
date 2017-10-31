@@ -64,7 +64,7 @@ namespace ctac
             tileClicked.AddListener(onTileClicked);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             needsTarget.RemoveListener(onNeedsTarget);
             startSelectTarget.RemoveListener(onStartTarget);

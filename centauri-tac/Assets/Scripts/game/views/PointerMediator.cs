@@ -47,7 +47,7 @@ namespace ctac
             startAbilitySelectTarget.AddListener(onAbilityStartTarget);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             cardSelected.RemoveListener(onCardSelected);
             cardActivated.RemoveListener(onCardDragEnd);

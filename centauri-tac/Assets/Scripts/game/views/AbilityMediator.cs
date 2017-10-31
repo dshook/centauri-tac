@@ -21,7 +21,7 @@ namespace ctac
             view.init();
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             possibleActionsSignal.RemoveListener(onActions);
             turnEnded.RemoveListener(onTurnEnded);

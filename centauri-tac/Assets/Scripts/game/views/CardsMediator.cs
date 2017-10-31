@@ -60,9 +60,8 @@ namespace ctac
             cardChosen.AddListener(cleanupChooseCards);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
-            base.onRemove();
             cardSelected.RemoveListener(onCardSelected);
             cardHovered.RemoveListener(onCardHovered);
             destroyCard.RemoveListener(onDestroyCard);

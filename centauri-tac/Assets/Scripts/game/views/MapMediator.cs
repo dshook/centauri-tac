@@ -23,7 +23,7 @@ namespace ctac
             propDestroyParticle = loader.Load<GameObject>("particles/Smoke Explosion");
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             tilesCleared.RemoveListener(onTilesCleared);
         }

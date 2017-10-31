@@ -19,7 +19,7 @@ namespace ctac
             movePathFoundSignal.AddListener(onMovePath);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             movePathFoundSignal.RemoveListener(onMovePath);
         }

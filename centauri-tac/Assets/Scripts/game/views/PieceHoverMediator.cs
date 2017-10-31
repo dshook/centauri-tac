@@ -16,7 +16,7 @@ namespace ctac
         {
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
         }
 

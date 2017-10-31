@@ -59,7 +59,21 @@ namespace strange.extensions.mediation.impl
 		 *
 		 * Override and place your cleanup code here
 		 */
-		virtual public void onRemove()
+		virtual public void OnRemove()
+		{
+		}
+
+		/**
+		 * Fires on enabling of view.
+		 */
+		virtual public void OnEnabled()
+		{
+		}
+
+		/**
+		 * Fires on disabling of view.
+		 */
+		virtual public void OnDisabled()
 		{
 		}
 	}

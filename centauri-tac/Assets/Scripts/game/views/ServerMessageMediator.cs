@@ -18,7 +18,7 @@ namespace ctac
             view.init();
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             actionMessage.RemoveListener(onActionMessage);
             message.RemoveListener(onMessage);

@@ -32,9 +32,8 @@ namespace ctac
             shuffleToDeck.AddListener(onShuffleToDeck);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
-            base.onRemove();
             turnEnded.RemoveListener(onTurnEnded);
             deckSpawned.RemoveListener(onDeckSpawned);
             shuffleToDeck.RemoveListener(onShuffleToDeck);

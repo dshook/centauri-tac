@@ -61,7 +61,7 @@ namespace ctac
         StartAbilityTargetModel abilityTarget = null;
         const float singleClickThreshold = 0.5f;
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
 

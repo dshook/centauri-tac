@@ -35,9 +35,8 @@ namespace ctac
             view.Init(raycastModel);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
-            base.onRemove();
             cardSelected.RemoveListener(onCardSelected);
             startTarget.RemoveListener(onStartTarget);
             cancelTarget.RemoveListener(onCancelTarget);

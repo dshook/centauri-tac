@@ -62,7 +62,7 @@ namespace ctac
             pieceUnsummoned.AddListener(onUnsummon);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             qpc.RemoveListener(onQpc);
             spawnPiece.RemoveListener(onSpawnPiece);

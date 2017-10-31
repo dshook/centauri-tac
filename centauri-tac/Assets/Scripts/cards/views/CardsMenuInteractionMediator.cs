@@ -37,7 +37,7 @@ namespace ctac
             view.init(raycastModel);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onClick);
             view.activateSignal.RemoveListener(onActivate);

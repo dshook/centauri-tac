@@ -20,7 +20,7 @@ namespace ctac
             view.init();
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
             view.clickSignal.RemoveListener(onDamagedClicked);

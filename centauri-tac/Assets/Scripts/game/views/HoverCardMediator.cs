@@ -27,7 +27,7 @@ namespace ctac
             miniCardHovered.AddListener(onMiniCardHovered);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             cardHovered.RemoveListener(onCardHovered);
             cardSelected.RemoveListener(onCardSelected);

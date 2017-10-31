@@ -63,7 +63,7 @@ namespace ctac
             startSelectTarget.AddListener(onStartTarget);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             pieceSelected.RemoveListener(onPieceSelected);
             pieceSpawning.RemoveListener(onPieceSpawning);

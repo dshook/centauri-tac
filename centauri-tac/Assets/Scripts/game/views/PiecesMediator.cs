@@ -67,7 +67,7 @@ namespace ctac
             targetAbilityCancel.AddListener(onTargetAbilityCancel);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             pieceMoved.RemoveListener(onMove);
             pieceAttacked.RemoveListener(onAttacked);

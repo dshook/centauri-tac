@@ -36,7 +36,7 @@ namespace ctac
             view.init(loader, directory);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             addCardToDeck.RemoveListener(onAddToDeck);
             cancelDeck.RemoveListener(onCancelDeck);

@@ -37,7 +37,7 @@ namespace ctac
             view.init(sounds);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             resourceSet.RemoveListener(onResourceSet);
             turnEnded.RemoveListener(onTurnEnd);

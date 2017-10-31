@@ -57,7 +57,7 @@ namespace ctac
             view.init(cardService, cardDirectory);
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             cardKickoff.RemoveListener(onKickoff);

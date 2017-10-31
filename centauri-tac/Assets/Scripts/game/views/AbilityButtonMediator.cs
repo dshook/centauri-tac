@@ -37,7 +37,7 @@ namespace ctac
             }
         }
 
-        public override void onRemove()
+        public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onAbilityClicked);
             selectTarget.RemoveListener(onSelectedTarget);
