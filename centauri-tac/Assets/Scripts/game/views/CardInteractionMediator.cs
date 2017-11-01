@@ -18,9 +18,6 @@ namespace ctac
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
 
         [Inject] public NeedsTargetSignal needsTarget { get; set; }
-        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public SelectTargetSignal selectTarget { get; set; }
-        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public StartChooseSignal startChoose { get; set; }
         [Inject] public UpdateChooseSignal updateChoose { get; set; }
@@ -28,8 +25,6 @@ namespace ctac
         [Inject] public CardChosenSignal cardChosen { get; set; }
 
         [Inject] public TileClickedSignal tileClicked { get; set; }
-
-        [Inject] public GameFinishedSignal gameFinished { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
@@ -56,12 +51,6 @@ namespace ctac
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
 
-            startSelectTarget.AddListener(onStartTarget);
-            selectTarget.AddListener(onSelectedTarget);
-            cancelSelectTarget.AddListener(onTargetCancel);
-            gameFinished.AddListener(onGameFinished);
-
-            activateCard.AddListener(onCardActivated);
             view.init(raycastModel);
         }
 
@@ -70,13 +59,6 @@ namespace ctac
             view.clickSignal.RemoveListener(onClick);
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
-
-            startSelectTarget.RemoveListener(onStartTarget);
-            selectTarget.RemoveListener(onSelectedTarget);
-            cancelSelectTarget.RemoveListener(onTargetCancel);
-            gameFinished.RemoveListener(onGameFinished);
-
-            activateCard.RemoveListener(onCardActivated);
         }
 
         //for clicking on a card directly
@@ -213,12 +195,14 @@ namespace ctac
             return true;
         }
 
-        private void onStartTarget(TargetModel target)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel target)
         {
             targetModel = target;
         }
 
-        private void onTargetCancel(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onTargetCancel(CardModel card)
         {
             targetModel = null;
             if (chooseModel != null)
@@ -231,12 +215,14 @@ namespace ctac
             cardSelected.Dispatch(null);
         }
 
-        private void onSelectedTarget(TargetModel t)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onSelectedTarget(TargetModel t)
         {
             targetModel = null;
         }
 
-        private void onCardActivated(ActivateModel a)
+        [ListensTo(typeof(ActivateCardSignal))]
+        public void onCardActivated(ActivateModel a)
         {
             cardSelected.Dispatch(null);
         }
@@ -272,7 +258,8 @@ namespace ctac
             }
         }
 
-        private void onGameFinished(GameFinishedModel gf)
+        [ListensTo(typeof(GameFinishedSignal))]
+        public void onGameFinished(GameFinishedModel gf)
         {
             view.Disable();
         }

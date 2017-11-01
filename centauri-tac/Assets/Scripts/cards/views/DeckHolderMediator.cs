@@ -11,41 +11,25 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
-        [Inject] public NewDeckSignal newDeckSignal { get; set; }
-        [Inject] public DeckDeletedSignal removeDeckSignal { get; set; }
-        [Inject] public DeckSavedSignal deckSaved { get; set; }
-
-
         public override void OnRegister()
         {
-            newDeckSignal.AddListener(onAddToDeck);
-            removeDeckSignal.AddListener(onRemoveFromDeck);
-            deckSaved.AddListener(onDeckSaved);
             view.init(loader);
         }
 
-        public override void OnRemove()
-        {
-            newDeckSignal.RemoveListener(onAddToDeck);
-            removeDeckSignal.RemoveListener(onRemoveFromDeck);
-            deckSaved.RemoveListener(onDeckSaved);
-        }
-
-        public void Update()
-        {
-        }
-
-        private void onAddToDeck(DeckModel deck)
+        [ListensTo(typeof(NewDeckSignal))]
+        public void onAddToDeck(DeckModel deck)
         {
             view.addDeck(deck);
         }
 
-        private void onRemoveFromDeck(DeckModel deck)
+        [ListensTo(typeof(DeckDeletedSignal))]
+        public void onRemoveFromDeck(DeckModel deck)
         {
             view.removeCard(deck);
         }
 
-        private void onDeckSaved(DeckModel deck, SocketKey key)
+        [ListensTo(typeof(DeckSavedSignal))]
+        public void onDeckSaved(DeckModel deck, SocketKey key)
         {
             view.deckSaved(deck);
         }

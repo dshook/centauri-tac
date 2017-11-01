@@ -9,21 +9,12 @@ namespace ctac
         [Inject]
         public PieceMovePreviewView view { get; set; }
 
-        [Inject]
-        public MovePathFoundSignal movePathFoundSignal { get; set; }
-
         public override void OnRegister()
         {
             view.init();
-
-            movePathFoundSignal.AddListener(onMovePath);
         }
 
-        public override void OnRemove()
-        {
-            movePathFoundSignal.RemoveListener(onMovePath);
-        }
-
+        [ListensTo(typeof(MovePathFoundSignal))]
         private void onMovePath(MovePathFoundModel mpfm)
         {
             if (mpfm == null)

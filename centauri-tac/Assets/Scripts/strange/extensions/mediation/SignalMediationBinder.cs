@@ -94,15 +94,23 @@ namespace strange.extensions.mediation
 		/// Apply ListensTo delegates
 		protected void AssignDelegate(object mediator, ISignal signal, MethodInfo method)
 		{
-			if (signal.GetType().BaseType.IsGenericType)
-			{
-				var toAdd = Delegate.CreateDelegate(signal.listener.GetType(), mediator, method); //e.g. Signal<T>, Signal<T,U> etc.
-				signal.listener = Delegate.Combine(signal.listener, toAdd);
-			}
-			else
-			{
-				((Signal)signal).AddListener((Action)Delegate.CreateDelegate(typeof(Action), mediator, method)); //Assign and cast explicitly for Type == Signal case
-			}
+            try
+            {
+                if (signal.GetType().BaseType.IsGenericType)
+                {
+                    var toAdd = Delegate.CreateDelegate(signal.listener.GetType(), mediator, method); //e.g. Signal<T>, Signal<T,U> etc.
+                    signal.listener = Delegate.Combine(signal.listener, toAdd);
+                }
+                else
+                {
+                    ((Signal)signal).AddListener((Action)Delegate.CreateDelegate(typeof(Action), mediator, method)); //Assign and cast explicitly for Type == Signal case
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(string.Format("Cannot add listener for method {0}:{1}",  method.DeclaringType.Name, method.Name));
+                throw e;
+            }
 		}
 	}
 }

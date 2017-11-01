@@ -8,22 +8,6 @@ namespace ctac
         [Inject]
         public PointerView view { get; set; }
 
-        [Inject]
-        public CardSelectedSignal cardSelected { get; set; }
-
-        [Inject]
-        public ActivateCardSignal cardActivated { get; set; }
-
-        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public SelectTargetSignal selectTarget { get; set; }
-        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
-
-        [Inject] public StartSelectAbilityTargetSignal startAbilitySelectTarget { get; set; }
-        [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
-        [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
-
-        [Inject] public StartChooseSignal startChoose { get; set; }
-
         [Inject] public PossibleActionsModel possibleActions { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -33,36 +17,10 @@ namespace ctac
         public override void OnRegister()
         {
             view.init(raycastModel);
-
-            cardSelected.AddListener(onCardSelected);
-            cardActivated.AddListener(onCardDragEnd);
-
-            cancelSelectTarget.AddListener(onCancelSelectTarget);
-            selectTarget.AddListener(onSelectTarget);
-            startSelectTarget.AddListener(onStartTarget);
-            startChoose.AddListener(onStartChoose);
-
-            cancelSelectAbilityTarget.AddListener(onAbilityCancelSelectTarget);
-            selectAbilityTarget.AddListener(onAbilitySelectTarget);
-            startAbilitySelectTarget.AddListener(onAbilityStartTarget);
         }
 
-        public override void OnRemove()
-        {
-            cardSelected.RemoveListener(onCardSelected);
-            cardActivated.RemoveListener(onCardDragEnd);
-
-            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
-            selectTarget.RemoveListener(onSelectTarget);
-            startSelectTarget.RemoveListener(onStartTarget);
-            startChoose.RemoveListener(onStartChoose);
-
-            cancelSelectAbilityTarget.RemoveListener(onAbilityCancelSelectTarget);
-            selectAbilityTarget.RemoveListener(onAbilitySelectTarget);
-            startAbilitySelectTarget.RemoveListener(onAbilityStartTarget);
-        }
-
-        private void onCardSelected(CardSelectedModel cardModel)
+        [ListensTo(typeof(CardSelectedSignal))]
+        public void onCardSelected(CardSelectedModel cardModel)
         {
             if (cardModel != null && cardModel.card.gameObject != null)
             {
@@ -79,12 +37,14 @@ namespace ctac
             }
         }
 
-        private void onCardDragEnd(ActivateModel m)
+        [ListensTo(typeof(ActivateCardSignal))]
+        public void onCardActivated(ActivateModel m)
         {
             view.disable();
         }
 
-        private void onStartTarget(TargetModel model)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel model)
         {
             if (model.targetingCard != null && model.cardDeployPosition != null)
             {
@@ -107,19 +67,22 @@ namespace ctac
             }
         }
 
-        private void onCancelSelectTarget(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onCancelSelectTarget(CardModel card)
         {
             view.disable();
             targeting = false;
         }
 
-        private void onSelectTarget(TargetModel card)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onSelectTarget(TargetModel card)
         {
             view.disable();
             targeting = false;
         }
 
-        private void onAbilityStartTarget(StartAbilityTargetModel model)
+        [ListensTo(typeof(StartSelectAbilityTargetSignal))]
+        public void onAbilityStartTarget(StartAbilityTargetModel model)
         {
             if (model.targetingPiece != null && model.targetingPiece.gameObject != null)
             {
@@ -133,19 +96,22 @@ namespace ctac
             }
         }
 
-        private void onAbilityCancelSelectTarget(PieceModel card)
+        [ListensTo(typeof(CancelSelectAbilityTargetSignal))]
+        public void onAbilityCancelSelectTarget(PieceModel card)
         {
             view.disable();
             targeting = false;
         }
 
-        private void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
+        [ListensTo(typeof(SelectAbilityTargetSignal))]
+        public void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
         {
             view.disable();
             targeting = false;
         }
 
-        private void onStartChoose(ChooseModel c)
+        [ListensTo(typeof(StartChooseSignal))]
+        public void onStartChoose(ChooseModel c)
         {
             view.disable();
             targeting = false;

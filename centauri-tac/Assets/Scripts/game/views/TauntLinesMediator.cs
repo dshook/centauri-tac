@@ -9,23 +9,17 @@ namespace ctac
     public class TauntLinesMediator : Mediator
     {
         [Inject] public TauntLinesView view { get; set; }
-        [Inject] public TauntTilesUpdatedSignal tauntUpdated { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public IMapService mapService { get; set; }
 
         public override void OnRegister()
         {
-            tauntUpdated.AddListener(onTilesUpdate);
             view.init();
         }
 
-        public override void OnRemove()
-        {
-            tauntUpdated.RemoveListener(onTilesUpdate);
-        }
-
-        private void onTilesUpdate(TauntTilesUpdateModel tilesUpdated)
+        [ListensTo(typeof(TauntTilesUpdatedSignal))]
+        public void onTilesUpdate(TauntTilesUpdateModel tilesUpdated)
         {
             var friendlyPerims = FindTilePerimeters(tilesUpdated.friendlyTauntTiles, tilesUpdated.friendlyTauntPieceTiles);
             var enemyPerims    = FindTilePerimeters(tilesUpdated.enemyTauntTiles, tilesUpdated.enemyTauntPieceTiles);

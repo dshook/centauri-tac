@@ -16,25 +16,6 @@ namespace ctac
         [Inject] public CardsModel cards { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
-        [Inject] public ServerQueueProcessEnd qpc { get; set; }
-
-        [Inject] public PieceSpawnedSignal spawnPiece { get; set; }
-        [Inject] public SpellPlayedSignal spellPlayed { get; set; }
-        [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
-        [Inject] public PieceHealthChangedSignal pieceHealthChange { get; set; }
-
-        [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
-        [Inject] public ActionPieceDestroyedSignal pieceDestroyed { get; set; }
-        [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
-        [Inject] public PieceBuffSignal pieceBuff { get; set; }
-        [Inject] public PieceStatusChangeSignal pieceStatusChange { get; set; }
-        [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
-        [Inject] public PieceArmorChangedSignal pieceArmorChange { get; set; }
-        [Inject] public ActionAttachCodeSignal pieceCodeAttached { get; set; }
-        [Inject] public PieceUnsummonedSignal pieceUnsummoned { get; set; }
-
-        [Inject] public TurnEndedSignal turnEnded { get; set; }
-
         [Inject] public IDebugService debug { get; set; }
 
         private List<HistoryItem> history = new List<HistoryItem>();
@@ -44,49 +25,14 @@ namespace ctac
         public override void OnRegister()
         {
             view.init();
-            qpc.AddListener(onQpc);
-            spawnPiece.AddListener(onSpawnPiece);
-            spellPlayed.AddListener(onSpellPlayed);
-            pieceAttacked.AddListener(onPieceAttacked);
-            pieceHealthChange.AddListener(onPieceHealthChanged);
-            turnEnded.AddListener(onTurnEnd);
-
-            pieceCharmed.AddListener(onCharmed);
-            pieceDestroyed.AddListener(onDestroyed);
-            pieceAttrChanged.AddListener(onAttrChange);
-            pieceBuff.AddListener(onPieceBuff);
-            pieceStatusChange.AddListener(onStatusChange);
-            pieceTransformed.AddListener(onTransformed);
-            pieceArmorChange.AddListener(onArmor);
-            pieceCodeAttached.AddListener(onCode);
-            pieceUnsummoned.AddListener(onUnsummon);
-        }
-
-        public override void OnRemove()
-        {
-            qpc.RemoveListener(onQpc);
-            spawnPiece.RemoveListener(onSpawnPiece);
-            spellPlayed.RemoveListener(onSpellPlayed);
-            pieceAttacked.RemoveListener(onPieceAttacked);
-            pieceHealthChange.RemoveListener(onPieceHealthChanged);
-            turnEnded.RemoveListener(onTurnEnd);
-
-            pieceCharmed.RemoveListener(onCharmed);
-            pieceDestroyed.RemoveListener(onDestroyed);
-            pieceAttrChanged.RemoveListener(onAttrChange);
-            pieceBuff.RemoveListener(onPieceBuff);
-            pieceStatusChange.RemoveListener(onStatusChange);
-            pieceTransformed.RemoveListener(onTransformed);
-            pieceArmorChange.RemoveListener(onArmor);
-            pieceCodeAttached.RemoveListener(onCode);
-            pieceUnsummoned.RemoveListener(onUnsummon);
         }
 
         //Generally how the history processor work is by listening for relavent events as they come in
         //If they're the first in the queue process then they'll make a new current item, otherwise they'll
         //attach themselves to the current one.  Then when the queue processing is complete we'll push the
         //built up item
-        private void onQpc(int t)
+        [ListensTo(typeof(ServerQueueProcessEnd))]
+        public void onQpc(int t)
         {
             if (currentItems.Count > 0)
             {
@@ -99,7 +45,7 @@ namespace ctac
         /// Get or create the current history item for the activating piece Id which the history items are grouped by
         /// If one doesn't exist, create it with the player and type passed
         /// </summary>
-        private HistoryItem GetCurrent(int? activatingPieceId, HistoryItemType type, int player)
+        public HistoryItem GetCurrent(int? activatingPieceId, HistoryItemType type, int player)
         {
             if (!activatingPieceId.HasValue)
             {
@@ -121,7 +67,8 @@ namespace ctac
             return currentItem;
         }
 
-        private void onSpawnPiece(PieceSpawnedModel pieceSpawned)
+        [ListensTo(typeof(PieceSpawnedSignal))]
+        public void onSpawnPiece(PieceSpawnedModel pieceSpawned)
         {
             if(pieceSpawned.piece.isHero) return;
 
@@ -147,7 +94,8 @@ namespace ctac
             }
         }
 
-        private void onSpellPlayed(SpellPlayedModel spellPlayed)
+        [ListensTo(typeof(SpellPlayedSignal))]
+        public void onSpellPlayed(SpellPlayedModel spellPlayed)
         {
             var currentItem = GetCurrent(
                 spellPlayed.playSpellAction.activatingPieceId, 
@@ -158,7 +106,8 @@ namespace ctac
             currentItem.triggeringCard = CopyCard(card);
         }
 
-        private void onTurnEnd(GameTurnModel turn)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnd(GameTurnModel turn)
         {
             //for hotseat mode update the colors each turn to reflect the current player
             if (players.isHotseat)
@@ -167,7 +116,8 @@ namespace ctac
             }
         }
 
-        private void onPieceBuff(PieceBuffModel pieceBuff)
+        [ListensTo(typeof(PieceBuffSignal))]
+        public void onPieceBuff(PieceBuffModel pieceBuff)
         {
             var piece = CopyPiece(pieces.Piece(pieceBuff.pieceId));
             var currentItem = GetCurrent(pieceBuff.activatingPieceId, HistoryItemType.Event, piece.playerId);
@@ -185,14 +135,16 @@ namespace ctac
             });
         }
 
-        private void onPieceAttacked(AttackPieceModel atk)
+        [ListensTo(typeof(PieceAttackedSignal))]
+        public void onPieceAttacked(AttackPieceModel atk)
         {
             var attacker = pieces.Piece(atk.attackingPieceId);
             var currentItem = GetCurrent(atk.activatingPieceId, HistoryItemType.Attack, attacker.playerId);
             currentItem.triggeringPiece = attacker;
         }
 
-        private void onPieceHealthChanged(PieceHealthChangeModel phcm)
+        [ListensTo(typeof(PieceHealthChangedSignal))]
+        public void onPieceHealthChanged(PieceHealthChangeModel phcm)
         {
             var piece = CopyPiece(pieces.Piece(phcm.pieceId));
             //should be encapsulated under some other event, but could be from an event or deathrattle
@@ -228,34 +180,42 @@ namespace ctac
             });
         }
 
+        [ListensTo(typeof(PieceCharmedSignal))]
         public void onCharmed(CharmPieceModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(ActionPieceDestroyedSignal))]
         public void onDestroyed(PieceDestroyedModel m, SocketKey k)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(PieceAttributeChangedSignal))]
         public void onAttrChange(PieceAttributeChangeModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(PieceStatusChangeSignal))]
         public void onStatusChange(PieceStatusChangeModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(PieceTransformedSignal))]
         public void onTransformed(TransformPieceModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(PieceArmorChangedSignal))]
         public void onArmor(PieceArmorChangeModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(ActionAttachCodeSignal))]
         public void onCode(AttachCodeModel m, SocketKey k)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
+        [ListensTo(typeof(PieceUnsummonedSignal))]
         public void onUnsummon(UnsummonPieceModel m)
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);

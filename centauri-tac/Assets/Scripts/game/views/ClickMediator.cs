@@ -9,25 +9,13 @@ namespace ctac
         [Inject] public ClickView view { get; set; }
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
-
-        [Inject] public AttackPieceSignal attackPiece { get; set; }
-        [Inject] public MovePieceSignal movePiece { get; set; }
-        [Inject] public RotatePieceSignal rotatePiece { get; set; }
-
-        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
-        [Inject] public SelectTargetSignal selectTarget { get; set; }
-
-        [Inject] public StartSelectAbilityTargetSignal startSelectAbilityTarget { get; set; }
-        [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
-        [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
-
         [Inject] public PieceClickedSignal pieceClicked { get; set; }
         [Inject] public TileClickedSignal tileClicked { get; set; }
 
-        [Inject] public MovePathFoundSignal movePathFound { get; set; }
-
+        [Inject] public AttackPieceSignal attackPiece { get; set; }
         [Inject] public MessageSignal message { get; set; }
+        [Inject] public MovePieceSignal movePiece { get; set; }
+
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
@@ -39,18 +27,6 @@ namespace ctac
 
         public override void OnRegister()
         {
-            pieceSelected.AddListener(onPieceSelected);
-
-            startSelectTarget.AddListener(onStartTarget);
-            cancelSelectTarget.AddListener(onCancelTarget);
-            selectTarget.AddListener(onSelectTarget);
-
-            startSelectAbilityTarget.AddListener(onStartAbilityTarget);
-            cancelSelectAbilityTarget.AddListener(onCancelAbilityTarget);
-            selectAbilityTarget.AddListener(onSelectAbilityTarget);
-
-            movePathFound.AddListener(onMovePathFound);
-
             view.clickSignal.AddListener(onClick);
             view.init(raycastModel);
         }
@@ -63,17 +39,7 @@ namespace ctac
 
         public override void OnRemove()
         {
-            pieceSelected.RemoveListener(onPieceSelected);
-
-            startSelectTarget.RemoveListener(onStartTarget);
-            cancelSelectTarget.RemoveListener(onCancelTarget);
-            selectTarget.RemoveListener(onSelectTarget);
-
-            movePathFound.RemoveListener(onMovePathFound);
-
-            startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
-            cancelSelectAbilityTarget.RemoveListener(onCancelAbilityTarget);
-            selectAbilityTarget.RemoveListener(onSelectAbilityTarget);
+            view.clickSignal.RemoveListener(onClick);
         }
 
         //For clicking anything other than a card
@@ -221,33 +187,40 @@ namespace ctac
             }
         }
 
-        private void onStartTarget(TargetModel model)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel model)
         {
             cardTarget = model;
         }
-        private void onCancelTarget(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onCancelTarget(CardModel card)
         {
             cardTarget = null;
         }
-        private void onSelectTarget(TargetModel target)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onSelectTarget(TargetModel target)
         {
             cardTarget = null;
         }
 
-        private void onStartAbilityTarget(StartAbilityTargetModel model)
+        [ListensTo(typeof(StartSelectAbilityTargetSignal))]
+        public void onStartAbilityTarget(StartAbilityTargetModel model)
         {
             abilityTarget = model;
         }
-        private void onCancelAbilityTarget(PieceModel model)
+        [ListensTo(typeof(CancelSelectAbilityTargetSignal))]
+        public void onCancelAbilityTarget(PieceModel model)
         {
             abilityTarget = null;
         }
-        private void onSelectAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
+        [ListensTo(typeof(SelectAbilityTargetSignal))]
+        public void onSelectAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
         {
             abilityTarget = null;
         }
 
-        private void onPieceSelected(PieceModel pieceSelected)
+        [ListensTo(typeof(PieceSelectedSignal))]
+        public void onPieceSelected(PieceModel pieceSelected)
         {
             if (selectedPiece != null)
             {
@@ -261,7 +234,8 @@ namespace ctac
             }
         }
 
-        private void onMovePathFound(MovePathFoundModel mp)
+        [ListensTo(typeof(MovePathFoundSignal))]
+        public void onMovePathFound(MovePathFoundModel mp)
         {
             movePath = mp;
         }

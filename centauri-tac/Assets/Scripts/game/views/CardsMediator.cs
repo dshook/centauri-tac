@@ -9,25 +9,12 @@ namespace ctac
     {
         [Inject] public CardsView view { get; set; }
 
-        [Inject] public CardSelectedSignal cardSelected { get; set; }
-        [Inject] public CardHoveredSignal cardHovered { get; set; }
-
-        [Inject] public ActivateCardSignal activateCard { get; set; }
-
         [Inject] public DestroyCardSignal destroyCard { get; set; }
         [Inject] public CardDestroyedSignal cardDestroyed { get; set; }
-
-        [Inject] public TurnEndedSignal turnEnded { get; set; }
-
-        [Inject] public CardDrawnSignal cardDrawn { get; set; }
         [Inject] public CardDrawShownSignal cardDrawShown { get; set; }
-        [Inject] public CardDiscardedSignal cardDiscarded { get; set; }
-        [Inject] public CardGivenSignal cardGiven { get; set; }
-        [Inject] public PlayerResourceSetSignal playerResourceSet { get; set; }
-        [Inject] public CardBuffSignal cardBuffed { get; set; }
+
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
         [Inject] public CardChosenSignal cardChosen { get; set; }
-        [Inject] public ServerQueueProcessEnd qpc { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
@@ -42,19 +29,6 @@ namespace ctac
         public override void OnRegister()
         {
             view.init(PlayerCards(), OpponentCards());
-            cardSelected.AddListener(onCardSelected);
-            cardHovered.AddListener(onCardHovered);
-            activateCard.AddListener(onCardActivated);
-            destroyCard.AddListener(onDestroyCard);
-            cardDestroyed.AddListener(onCardDestroyed);
-            cardDrawn.AddListener(onCardDrawn);
-            cardGiven.AddListener(onCardGiven);
-            cardDrawShown.AddListener(onCardDrawnShown);
-            cardDiscarded.AddListener(onCardDiscarded);
-            cardBuffed.AddListener(onBuff);
-            turnEnded.AddListener(onTurnEnded);
-            playerResourceSet.AddListener(onPlayerResourceSet);
-            qpc.AddListener(onQueueProcessComplete);
 
             cancelChoose.AddListener(cleanupChooseCards);
             cardChosen.AddListener(cleanupChooseCards);
@@ -62,25 +36,12 @@ namespace ctac
 
         public override void OnRemove()
         {
-            cardSelected.RemoveListener(onCardSelected);
-            cardHovered.RemoveListener(onCardHovered);
-            destroyCard.RemoveListener(onDestroyCard);
-            activateCard.RemoveListener(onCardActivated);
-            cardDestroyed.RemoveListener(onCardDestroyed);
-            cardDrawn.RemoveListener(onCardDrawn);
-            cardGiven.RemoveListener(onCardGiven);
-            cardDrawShown.RemoveListener(onCardDrawnShown);
-            cardDiscarded.RemoveListener(onCardDiscarded);
-            turnEnded.RemoveListener(onTurnEnded);
-            cardBuffed.AddListener(onBuff);
-            playerResourceSet.RemoveListener(onPlayerResourceSet);
-            qpc.RemoveListener(onQueueProcessComplete);
-
             cancelChoose.RemoveListener(cleanupChooseCards);
             cardChosen.RemoveListener(cleanupChooseCards);
         }
 
-        private void onCardSelected(CardSelectedModel cardModel)
+        [ListensTo(typeof(CardSelectedSignal))]
+        public void onCardSelected(CardSelectedModel cardModel)
         {
             var needsArrow = true;
             if (cardModel != null && cardModel.card.isSpell)
@@ -90,17 +51,20 @@ namespace ctac
             view.onCardSelected(cardModel, needsArrow);
         }
 
-        private void onCardHovered(CardModel card)
+        [ListensTo(typeof(CardHoveredSignal))]
+        public void onCardHovered(CardModel card)
         {
             view.onCardHovered(card);
         }
 
-        private void onCardActivated(ActivateModel act)
+        [ListensTo(typeof(ActivateCardSignal))]
+        public void onCardActivated(ActivateModel act)
         {
             act.cardActivated.activated = true;
         }
 
-        private void onDestroyCard(int cardId)
+        [ListensTo(typeof(DestroyCardSignal))]
+        public void onDestroyCard(int cardId)
         {
             var card = cards.Cards.FirstOrDefault(c => c.id == cardId);
             if (card == null)
@@ -115,14 +79,16 @@ namespace ctac
             });
         }
 
-        private void onCardDestroyed(CardModel card)
+        [ListensTo(typeof(CardDestroyedSignal))]
+        public void onCardDestroyed(CardModel card)
         {
             cards.Cards.Remove(card);
             Destroy(card.gameObject);
             view.init(PlayerCards(), OpponentCards());
         }
 
-        private void onCardDrawn(CardModel card)
+        [ListensTo(typeof(CardDrawnSignal))]
+        public void onCardDrawn(CardModel card)
         {
             //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
             var isOpponent = card.playerId != players.Me.id;
@@ -135,7 +101,8 @@ namespace ctac
             });
         }
 
-        private void onCardGiven(CardModel card)
+        [ListensTo(typeof(CardGivenSignal))]
+        public void onCardGiven(CardModel card)
         {
             //animate the card going to the right hand, based on who's turn it is and if it's hotseat vs net
             var isOpponent = card.playerId != players.Me.id;
@@ -149,14 +116,16 @@ namespace ctac
             onCardDrawn(card);
         }
 
-        private void onCardDrawnShown(CardModel card)
+        [ListensTo(typeof(CardDrawShownSignal))]
+        public void onCardDrawnShown(CardModel card)
         {
             cards.Cards.Add(card);
             UpdateCardsPlayableStatus(cards.Cards);
             view.init(PlayerCards(), OpponentCards());
         }
 
-        private void onCardDiscarded(CardModel card)
+        [ListensTo(typeof(CardDiscardedSignal))]
+        public void onCardDiscarded(CardModel card)
         {
             var isOpponent = card.playerId != players.Me.id;
             card.activated = true;
@@ -168,7 +137,8 @@ namespace ctac
             });
         }
 
-        private void onBuff(CardBuffModel cardBuff)
+        [ListensTo(typeof(CardBuffSignal))]
+        public void onBuff(CardBuffModel cardBuff)
         {
             var card = cards.Card(cardBuff.cardId);
 
@@ -187,13 +157,15 @@ namespace ctac
             }
         }
 
-        private void onTurnEnded(GameTurnModel turns)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnded(GameTurnModel turns)
         {
             view.init(PlayerCards(), OpponentCards());
             UpdateCardsPlayableStatus(cards.Cards);
         }
 
-        private void onQueueProcessComplete(int t)
+        [ListensTo(typeof(ServerQueueProcessEnd))]
+        public void onQueueProcessComplete(int t)
         {
             //update text on all cards when the queue completes to catch updates 
             //to playable status, cost, etc
@@ -216,7 +188,8 @@ namespace ctac
             return cards.Cards.Where(c => c.playerId != players.Me.id).ToList();
         }
 
-        private void onPlayerResourceSet(SetPlayerResourceModel resource)
+        [ListensTo(typeof(PlayerResourceSetSignal))]
+        public void onPlayerResourceSet(SetPlayerResourceModel resource)
         {
             UpdateCardsPlayableStatus(cards.Cards);
         }

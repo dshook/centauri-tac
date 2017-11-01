@@ -5,38 +5,19 @@ namespace ctac
 {
     public class HoverCardMediator : Mediator
     {
-        [Inject]
-        public HoverCardView view { get; set; }
-        
-        [Inject] public CardHoveredSignal cardHovered { get; set; }
-        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public HoverCardView view { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
-
-        [Inject] public MiniCardHoveredSignal miniCardHovered { get; set; }
-
-        [Inject] public PieceHoverSignal pieceHovered { get; set; }
 
         //[Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
             view.init();
-            cardHovered.AddListener(onCardHovered);
-            cardSelected.AddListener(onCardSelected);
-            pieceHovered.AddListener(onPieceHovered);
-            miniCardHovered.AddListener(onMiniCardHovered);
-        }
-
-        public override void OnRemove()
-        {
-            cardHovered.RemoveListener(onCardHovered);
-            cardSelected.RemoveListener(onCardSelected);
-            pieceHovered.RemoveListener(onPieceHovered);
-            miniCardHovered.RemoveListener(onMiniCardHovered);
         }
 
         private bool hoveringCard = false;
 
+        [ListensTo(typeof(CardHoveredSignal))]
         private void onCardHovered(CardModel card)
         {
             if (card != null)
@@ -55,6 +36,7 @@ namespace ctac
             }
         }
 
+        [ListensTo(typeof(CardSelectedSignal))]
         private void onCardSelected(CardSelectedModel card)
         {
             view.setActive(card == null);
@@ -62,6 +44,7 @@ namespace ctac
             //debug.Log("Setting hover view " + (card == null ? "active" : "inactive"));
         }
 
+        [ListensTo(typeof(PieceHoverSignal))]
         private void onPieceHovered(PieceModel piece)
         {
             //hovering cards takes priority so don't hide/show if we're hovering from a card
@@ -79,6 +62,7 @@ namespace ctac
             }
         }
 
+        [ListensTo(typeof(MiniCardHoveredSignal))]
         private void onMiniCardHovered(CardModel card)
         {
             if (card != null)

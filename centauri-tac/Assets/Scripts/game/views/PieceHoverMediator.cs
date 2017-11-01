@@ -12,14 +12,6 @@ namespace ctac
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
 
-        public override void OnRegister()
-        {
-        }
-
-        public override void OnRemove()
-        {
-        }
-
         void Update()
         {
             if (raycastModel.piece != null)

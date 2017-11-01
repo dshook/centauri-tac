@@ -15,25 +15,16 @@ namespace ctac
 
         [Inject] public ICardService cardService { get; set; }
 
-        [Inject] public CardDirectory cardDirectory { get; set; }
-
-        [Inject] public CardsKickoffSignal cardKickoff { get; set; }
-
         [Inject] public NewDeckSignal newDeck { get; set; }
         [Inject] public EditDeckSignal editDeck { get; set; }
         [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public DeleteDeckSignal deleteDeck { get; set; }
 
-
         [Inject] public GetDecksSignal getDecks { get; set; }
-        [Inject] public GotDecksSignal gotDecks { get; set; }
-
         [Inject] public SaveDeckSignal saveDeck { get; set; }
-        [Inject] public DeckSavedSignal deckSaved { get; set; }
-        [Inject] public DeckSaveFailedSignal deckSaveFailed { get; set; }
 
-        [Inject] public LobbyLoggedInSignal lobbyLoggedIn { get; set; }
+        [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
 
         public override void OnRegister()
@@ -45,52 +36,34 @@ namespace ctac
             view.clickCancelDeckSignal.AddListener(onCancelDeck);
             view.clickDeleteDeckSignal.AddListener(onDeleteDeck);
 
-            editDeck.AddListener(onEditDeck);
-
-            cardKickoff.AddListener(onKickoff);
-            lobbyLoggedIn.AddListener(onLobbyLoggedIn);
-            gotDecks.AddListener(onGotDecks);
-
-            deckSaved.AddListener(onDeckSaved);
-            deckSaveFailed.AddListener(onDeckSaveFailed);
-
             view.init(cardService, cardDirectory);
         }
 
         public override void OnRemove()
         {
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
-            cardKickoff.RemoveListener(onKickoff);
-            gotDecks.RemoveListener(onGotDecks);
-            lobbyLoggedIn.RemoveListener(onLobbyLoggedIn);
-
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
             view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
             view.clickDeleteDeckSignal.RemoveListener(onDeleteDeck);
-
-            deckSaved.RemoveListener(onDeckSaved);
-            deckSaveFailed.RemoveListener(onDeckSaveFailed);
-
-            editDeck.RemoveListener(onEditDeck);
         }
 
-        public void Update()
-        {
-        }
 
-        private void onKickoff()
+        [ListensTo(typeof(CardsKickoffSignal))]
+        public void onKickoff()
         {
             view.UpdateCards();
         }
 
-        private void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
+        [ListensTo(typeof(LobbyLoggedInSignal))]
+        public void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
         {
             lobbyModel.lobbyKey = key;
             getDecks.Dispatch();
         }
 
-        private void onGotDecks(ServerDecksModel decks, SocketKey key)
+        [ListensTo(typeof(GotDecksSignal))]
+        public void onGotDecks(ServerDecksModel decks, SocketKey key)
         {
             debug.Log("Got Decks: " + decks.decks.Count);
             foreach (var deck in decks.decks)
@@ -120,6 +93,7 @@ namespace ctac
             editDeck.Dispatch(dm);
         }
 
+        [ListensTo(typeof(EditDeckSignal))]
         private void onEditDeck(DeckModel deck)
         {
             view.onEditDeck(deck);
@@ -136,12 +110,14 @@ namespace ctac
             deleteDeck.Dispatch(deck);
         }
 
-        private void onDeckSaved(DeckModel deck, SocketKey key)
+        [ListensTo(typeof(DeckSavedSignal))]
+        public void onDeckSaved(DeckModel deck, SocketKey key)
         {
             view.onDeckSaved();
         }
 
-        private void onDeckSaveFailed(string message, SocketKey key)
+        [ListensTo(typeof(DeckSaveFailedSignal))]
+        public void onDeckSaveFailed(string message, SocketKey key)
         {
             debug.Log("Deck Save failed: " + message, key);
         }

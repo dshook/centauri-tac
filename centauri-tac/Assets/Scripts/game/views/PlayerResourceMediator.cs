@@ -8,14 +8,6 @@ namespace ctac
     {
         [Inject] public PlayerResourceView view { get; set; }
 
-        [Inject] public PlayerResourceSetSignal resourceSet { get; set; }
-        [Inject] public TurnEndedSignal turnEnded { get; set; }
-
-        [Inject] public GamePausedSignal pauseSignal { get; set; }
-        [Inject] public GameResumedSignal resumeSignal { get; set; }
-        [Inject] public GameFinishedSignal gameFinished { get; set; }
-        [Inject] public ActionKickoffSignal kickoff { get; set; }
-
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
@@ -27,31 +19,16 @@ namespace ctac
 
         public override void OnRegister()
         {
-            resourceSet.AddListener(onResourceSet);
-            turnEnded.AddListener(onTurnEnd);
-            pauseSignal.AddListener(onPause);
-            resumeSignal.AddListener(onResume);
-            gameFinished.AddListener(onGameFinished);
-            kickoff.AddListener(onKickoff);
-
             view.init(sounds);
         }
 
-        public override void OnRemove()
-        {
-            resourceSet.RemoveListener(onResourceSet);
-            turnEnded.RemoveListener(onTurnEnd);
-            pauseSignal.RemoveListener(onPause);
-            resumeSignal.RemoveListener(onResume);
-            gameFinished.RemoveListener(onGameFinished);
-            kickoff.RemoveListener(onKickoff);
-        }
-
+        [ListensTo(typeof(ActionKickoffSignal))]
         public void onKickoff(KickoffModel km, SocketKey key)
         {
             SetTimers();
         }
 
+        [ListensTo(typeof(TurnEndedSignal))]
         public void onTurnEnd(GameTurnModel passTurn)
         {
             updateView();
@@ -63,7 +40,8 @@ namespace ctac
             }
         }
 
-        private void onResourceSet(SetPlayerResourceModel m)
+        [ListensTo(typeof(PlayerResourceSetSignal))]
+        public void onResourceSet(SetPlayerResourceModel m)
         {
             //if not for me, leave it be
             if(m.playerId != playerId) return;
@@ -81,17 +59,20 @@ namespace ctac
             view.setTimers(turnLength(currentGame.game, turnModel.currentTurn - 1), currentGame.game.turnEndBufferLengthMs);
         }
 
-        private void onPause()
+        [ListensTo(typeof(GamePausedSignal))]
+        public void onPause()
         {
             view.setOn(false);
         }
-        
-        private void onResume()
+
+        [ListensTo(typeof(GameResumedSignal))]
+        public void onResume()
         {
             view.setOn(true);
         }
 
-        private void onGameFinished(GameFinishedModel gf)
+        [ListensTo(typeof(GameFinishedSignal))]
+        public void onGameFinished(GameFinishedModel gf)
         {
             view.setOn(false);
         }

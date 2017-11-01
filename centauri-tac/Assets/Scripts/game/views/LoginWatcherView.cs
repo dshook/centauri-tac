@@ -15,10 +15,7 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
 
         [Inject] public AuthLoggedInSignal loggedInSignal { get; set; }
-        [Inject] public PlayerFetchedSignal playerFetched { get; set; }
-
         [Inject] public TryLoginSignal tryLoginSignal { get; set; }
-        [Inject] public TokenSignal tokenSignal { get; set; }
 
         private float loginTimer = 0f;
         private const float retryTime = 2f;
@@ -35,11 +32,6 @@ namespace ctac
 
         new void Start()
         {
-            loggedInSignal.AddListener(onLoggedIn);
-            playerFetched.AddListener(onPlayerFetched);
-            
-            tryLoginSignal.AddListener(onTryLogin);
-            tokenSignal.AddListener(tokenReceived);
         }
 
         private void onTryLogin(Credentials c)
@@ -47,7 +39,8 @@ namespace ctac
             tryLoginStatuses[c] = true;
         }
 
-        private void tokenReceived(string token, SocketKey key)
+        [ListensTo(typeof(TokenSignal))]
+        public void tokenReceived(string token, SocketKey key)
         {
             //decode and mark try login statuses to stop checking
             var splitToken = token.Split('.');
@@ -80,7 +73,8 @@ namespace ctac
             }
         }
 
-        private void onLoggedIn(LoginStatusModel status, SocketKey key)
+        [ListensTo(typeof(LoggedInSignal))]
+        public void onLoggedIn(LoginStatusModel status, SocketKey key)
         {
             //start checking for successful login, if one is not found (by the player fetched) 
             //resend the login signal to retrigger the fetch player command
@@ -91,7 +85,8 @@ namespace ctac
             };
         }
 
-        private void onPlayerFetched(PlayerModel p, SocketKey key)
+        [ListensTo(typeof(PlayerFetchedSignal))]
+        public void onPlayerFetched(PlayerModel p, SocketKey key)
         {
             if (!loginStatuses.ContainsKey(key))
             {

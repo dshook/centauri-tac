@@ -7,7 +7,6 @@ namespace ctac
     {
         [Inject] public GameFinishedView view { get; set; }
 
-        [Inject] public GameFinishedSignal gameFinishedSignal { get; set; }
         [Inject] public LeaveGameSignal leaveSignal { get; set; }
 
         [Inject] public GamePlayersModel players { get; set; }
@@ -16,7 +15,6 @@ namespace ctac
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onLeaveClicked);
-            gameFinishedSignal.AddListener(onGameFinished);
 
             view.init();
         }
@@ -26,7 +24,8 @@ namespace ctac
             view.clickSignal.RemoveListener(onLeaveClicked);
         }
 
-        private void onGameFinished(GameFinishedModel gameFinished)
+        [ListensTo(typeof(GameFinishedSignal))]
+        public void onGameFinished(GameFinishedModel gameFinished)
         {
             gameInputStatus.inputEnabled = false;
 

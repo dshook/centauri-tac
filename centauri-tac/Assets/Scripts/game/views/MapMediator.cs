@@ -19,15 +19,10 @@ namespace ctac
 
         public override void OnRegister()
         {
-            tilesCleared.AddListener(onTilesCleared);
             propDestroyParticle = loader.Load<GameObject>("particles/Smoke Explosion");
         }
 
-        public override void OnRemove()
-        {
-            tilesCleared.RemoveListener(onTilesCleared);
-        }
-
+        [ListensTo(typeof(TilesClearedSignal))]
         public void onTilesCleared(TilesClearedModel tilesModel)
         {
             List<PropView> allToRemove = new List<PropView>();

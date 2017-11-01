@@ -7,32 +7,9 @@ namespace ctac
 {
     public class PiecesMediator : Mediator
     {
-        [Inject] public PieceMovedSignal pieceMoved { get; set; }
-        [Inject] public PieceAttackedSignal pieceAttacked { get; set; }
-        [Inject] public PieceRotatedSignal pieceRotated { get; set; }
-
-        [Inject] public PieceHealthChangedSignal pieceHpChanged { get; set; }
-        [Inject] public PieceAttributeChangedSignal pieceAttrChanged { get; set; }
-        [Inject] public PieceBuffSignal pieceBuffed { get; set; }
-        [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
-        [Inject] public PieceTransformedSignal pieceTransformed { get; set; }
-        [Inject] public PieceArmorChangedSignal pieceArmorChanged { get; set; }
-        [Inject] public PieceCharmedSignal pieceCharmed { get; set; }
-        [Inject] public GameFinishedSignal gameFinished { get; set; }
-
         [Inject] public PieceTextAnimationFinishedSignal pieceTextAnimFinished { get; set; }
         [Inject] public PieceFinishedMovingSignal pieceFinishedMoving { get; set; }
-
-        [Inject] public StartSelectTargetSignal startTarget { get; set; }
-        [Inject] public SelectTargetSignal targetSelected { get; set; }
-        [Inject] public CancelSelectTargetSignal targetCancel { get; set; }
-
-        [Inject] public StartSelectAbilityTargetSignal startAbilityTarget { get; set; }
-        [Inject] public SelectAbilityTargetSignal targetAbilitySelected { get; set; }
-        [Inject] public CancelSelectAbilityTargetSignal targetAbilityCancel { get; set; }
-
         [Inject] public PieceDiedSignal pieceDied { get; set; }
-        [Inject] public TurnEndedSignal turnEnded { get; set; }
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
@@ -41,58 +18,8 @@ namespace ctac
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
-        public override void OnRegister()
-        {
-            pieceMoved.AddListener(onMove);
-            pieceAttacked.AddListener(onAttacked);
-            pieceRotated.AddListener(onRotated);
-            pieceHpChanged.AddListener(onHealthChange);
-            pieceAttrChanged.AddListener(onAttrChange);
-            pieceStatusChanged.AddListener(onStatusChange);
-            pieceTransformed.AddListener(onTransformed);
-            pieceArmorChanged.AddListener(onArmorChange);
-            pieceBuffed.AddListener(onBuffed);
-            pieceTextAnimFinished.AddListener(onAnimFinished);
-            turnEnded.AddListener(onTurnEnded);
-            pieceDied.AddListener(onPieceDied);
-            pieceCharmed.AddListener(onCharmed);
-            gameFinished.AddListener(onGameFinished);
 
-            startTarget.AddListener(onStartSelectTarget);
-            targetSelected.AddListener(onTargetSelected);
-            targetCancel.AddListener(onTargetCancel);
-
-            startAbilityTarget.AddListener(onStartSelectAbilityTarget);
-            targetAbilitySelected.AddListener(onTargetAbilitySelected);
-            targetAbilityCancel.AddListener(onTargetAbilityCancel);
-        }
-
-        public override void OnRemove()
-        {
-            pieceMoved.RemoveListener(onMove);
-            pieceAttacked.RemoveListener(onAttacked);
-            pieceRotated.RemoveListener(onRotated);
-            pieceHpChanged.RemoveListener(onHealthChange);
-            pieceAttrChanged.RemoveListener(onAttrChange);
-            pieceBuffed.RemoveListener(onBuffed);
-            pieceStatusChanged.RemoveListener(onStatusChange);
-            pieceArmorChanged.RemoveListener(onArmorChange);
-            pieceTransformed.RemoveListener(onTransformed);
-            pieceTextAnimFinished.RemoveListener(onAnimFinished);
-            turnEnded.RemoveListener(onTurnEnded);
-            pieceDied.RemoveListener(onPieceDied);
-            pieceCharmed.RemoveListener(onCharmed);
-            gameFinished.RemoveListener(onGameFinished);
-
-            startTarget.RemoveListener(onStartSelectTarget);
-            targetSelected.RemoveListener(onTargetSelected);
-            targetCancel.RemoveListener(onTargetCancel);
-
-            startAbilityTarget.RemoveListener(onStartSelectAbilityTarget);
-            targetAbilitySelected.RemoveListener(onTargetAbilitySelected);
-            targetAbilityCancel.RemoveListener(onTargetAbilityCancel);
-        }
-
+        [ListensTo(typeof(PieceMovedSignal))]
         public void onMove(PieceMovedModel pieceMoved)
         {
             checkEnemiesInRange();
@@ -118,6 +45,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceAttackedSignal))]
         public void onAttacked(AttackPieceModel attackPiece)
         {
             var attacker = pieces.Piece(attackPiece.attackingPieceId);
@@ -152,6 +80,7 @@ namespace ctac
             }
         }
 
+        [ListensTo(typeof(PieceRotatedSignal))]
         public void onRotated(RotatePieceModel rotatePiece)
         {
             var piece = pieces.Piece(rotatePiece.pieceId);
@@ -166,6 +95,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceCharmedSignal))]
         public void onCharmed(CharmPieceModel charm)
         {
             var piece = pieces.Piece(charm.pieceId);
@@ -179,6 +109,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceHealthChangedSignal))]
         public void onHealthChange(PieceHealthChangeModel hpChange)
         {
             var piece = pieces.Piece(hpChange.pieceId);
@@ -246,6 +177,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceArmorChangedSignal))]
         public void onArmorChange(PieceArmorChangeModel armorChange)
         {
             var piece = pieces.Piece(armorChange.pieceId);
@@ -269,6 +201,7 @@ namespace ctac
             }
         }
 
+        [ListensTo(typeof(PieceAttributeChangedSignal))]
         public void onAttrChange(PieceAttributeChangeModel attrChange)
         {
             var piece = pieces.Piece(attrChange.pieceId);
@@ -319,6 +252,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceBuffSignal))]
         public void onBuffed(PieceBuffModel pieceBuff)
         {
             var piece = pieces.Piece(pieceBuff.pieceId);
@@ -366,6 +300,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceStatusChangeSignal))]
         public void onStatusChange(PieceStatusChangeModel pieceStatusChange)
         {
             var piece = pieces.Piece(pieceStatusChange.pieceId);
@@ -419,6 +354,7 @@ namespace ctac
             );
         }
 
+        [ListensTo(typeof(PieceTransformedSignal))]
         public void onTransformed(TransformPieceModel transformed)
         {
             var piece = pieces.Piece(transformed.pieceId);
@@ -459,7 +395,8 @@ namespace ctac
             );
         }
 
-        private void onAnimFinished(PieceModel pieceModel)
+        [ListensTo(typeof(PieceTextAnimationFinishedSignal))]
+        public void onAnimFinished(PieceModel pieceModel)
         {
             if (pieceModel.health <= 0)
             {
@@ -476,7 +413,8 @@ namespace ctac
             }
         }
 
-        private void onStartSelectTarget(TargetModel model)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartSelectTarget(TargetModel model)
         {
             if (model.targets != null )
             {
@@ -487,11 +425,13 @@ namespace ctac
                 }
             }
         }
-        private void onTargetSelected(TargetModel c)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onTargetSelected(TargetModel c)
         {
             disableTargetCandidate();
         }
-        private void onTargetCancel(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onTargetCancel(CardModel card)
         {
             foreach (var piece in pieces.Pieces)
             {
@@ -499,7 +439,8 @@ namespace ctac
             }
         }
 
-        private void onStartSelectAbilityTarget(StartAbilityTargetModel model)
+        [ListensTo(typeof(StartSelectAbilityTargetSignal))]
+        public void onStartSelectAbilityTarget(StartAbilityTargetModel model)
         {
             var selected = pieces.Pieces.Where(p => model.targets.targetPieceIds.Contains(p.id));
             foreach (var piece in selected)
@@ -507,11 +448,13 @@ namespace ctac
                 piece.pieceView.targetCandidate = true;
             }
         }
-        private void onTargetAbilitySelected(StartAbilityTargetModel c, PieceModel m)
+        [ListensTo(typeof(SelectAbilityTargetSignal))]
+        public void onTargetAbilitySelected(StartAbilityTargetModel c, PieceModel m)
         {
             disableTargetCandidate();
         }
-        private void onTargetAbilityCancel(PieceModel card)
+        [ListensTo(typeof(CancelSelectAbilityTargetSignal))]
+        public void onTargetAbilityCancel(PieceModel card)
         {
             disableTargetCandidate();
         }
@@ -524,7 +467,8 @@ namespace ctac
             }
         }
 
-        private void onTurnEnded(GameTurnModel turns)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnded(GameTurnModel turns)
         {
             if(!turns.isClientSwitch) return;
 
@@ -537,12 +481,14 @@ namespace ctac
             }
         }
 
-        private void onPieceDied(PieceModel p)
+        [ListensTo(typeof(PieceDiedSignal))]
+        public void onPieceDied(PieceModel p)
         {
             checkEnemiesInRange();
         }
 
-        private void onGameFinished(GameFinishedModel gf)
+        [ListensTo(typeof(GameFinishedSignal))]
+        public void onGameFinished(GameFinishedModel gf)
         {
             foreach (var piece in pieces.Pieces)
             {

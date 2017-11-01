@@ -13,8 +13,6 @@ namespace ctac
         [Inject] public PieceHoverSignal pieceHovered { get; set; }
 
         [Inject] public StartSelectAbilityTargetSignal startSelectTarget { get; set; }
-        [Inject] public SelectAbilityTargetSignal selectTarget { get; set; }
-        [Inject] public CancelSelectAbilityTargetSignal cancelSelectTarget { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
@@ -27,8 +25,6 @@ namespace ctac
         {
             view.clickSignal.AddListener(onAbilityClicked);
             view.hoverSignal.AddListener(onAbilityHover);
-            selectTarget.AddListener(onSelectedTarget);
-            cancelSelectTarget.AddListener(onTargetCancel);
 
             if (view.ability != null)
             {
@@ -40,8 +36,6 @@ namespace ctac
         public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onAbilityClicked);
-            selectTarget.RemoveListener(onSelectedTarget);
-            cancelSelectTarget.RemoveListener(onTargetCancel);
         }
 
         private void onAbilityClicked()
@@ -87,12 +81,14 @@ namespace ctac
             startSelectTarget.Dispatch(startTargetModel);
         }
 
-        private void onTargetCancel(PieceModel card)
+        [ListensTo(typeof(CancelSelectAbilityTargetSignal))]
+        public void onTargetCancel(PieceModel card)
         {
             startTargetModel = null;
         }
 
-        private void onSelectedTarget(StartAbilityTargetModel targetModel, PieceModel piece)
+        [ListensTo(typeof(SelectAbilityTargetSignal))]
+        public void onSelectedTarget(StartAbilityTargetModel targetModel, PieceModel piece)
         {
             if(targetModel.targetingPiece.id != view.ability.pieceId) return;
 

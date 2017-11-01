@@ -7,50 +7,27 @@ namespace ctac
 {
     public class DecksMediator : Mediator
     {
-        [Inject]
-        public DecksView view { get; set; }
+        [Inject] public DecksView view { get; set; }
 
-        [Inject]
-        public DecksModel decks { get; set; }
-
-        [Inject]
-        public DeckSpawnedSignal deckSpawned { get; set; }
-
-        [Inject]
-        public ShuffleToDeckSignal shuffleToDeck { get; set; }
-
-        [Inject]
-        public TurnEndedSignal turnEnded { get; set; }
-
+        [Inject] public DecksModel decks { get; set; }
         [Inject] public GameTurnModel gameTurn { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
 
-        public override void OnRegister()
-        {
-            turnEnded.AddListener(onTurnEnded);
-            deckSpawned.AddListener(onDeckSpawned);
-            shuffleToDeck.AddListener(onShuffleToDeck);
-        }
-
-        public override void OnRemove()
-        {
-            turnEnded.RemoveListener(onTurnEnded);
-            deckSpawned.RemoveListener(onDeckSpawned);
-            shuffleToDeck.RemoveListener(onShuffleToDeck);
-        }
-
-        private void onDeckSpawned(SpawnDeckModel deck)
+        [ListensTo(typeof(DeckSpawnedSignal))]
+        public void onDeckSpawned(SpawnDeckModel deck)
         {
             updateDecks();
         }
 
-        private void onShuffleToDeck(CardModel card)
+        [ListensTo(typeof(ShuffleToDeckSignal))]
+        public void onShuffleToDeck(CardModel card)
         {
             //TODO: Better animation
             updateDecks();
         }
 
-        private void onTurnEnded(GameTurnModel turns)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnded(GameTurnModel turns)
         {
             updateDecks();
         }

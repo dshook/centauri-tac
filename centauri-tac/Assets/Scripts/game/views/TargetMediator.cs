@@ -7,26 +7,16 @@ namespace ctac
 {
     public class TargetMediator : Mediator
     {
-        [Inject] public NeedsTargetSignal needsTarget { get; set; }
         [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
         [Inject] public UpdateTargetSignal updateTargetSignal { get; set; }
         [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
         [Inject] public SelectTargetSignal selectTarget { get; set; }
 
-        [Inject] public StartSelectAbilityTargetSignal startSelectAbilityTarget { get; set; }
         [Inject] public CancelSelectAbilityTargetSignal cancelSelectAbilityTarget { get; set; }
         [Inject] public SelectAbilityTargetSignal selectAbilityTarget { get; set; }
 
         [Inject] public ActivateCardSignal activateCard { get; set; }
-        [Inject] public CardSelectedSignal cardSelected { get; set; }
-        [Inject] public PieceClickedSignal pieceClicked { get; set; }
-        [Inject] public TileClickedSignal tileClicked { get; set; }
-
-        [Inject] public StartChooseSignal startChoose { get; set; }
-        [Inject] public UpdateChooseSignal updateChoose { get; set; }
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
-        [Inject] public CardChosenSignal cardChosen { get; set; }
-
 
         [Inject] public PieceSelectedSignal pieceSelected { get; set; }
         [Inject] public MessageSignal message { get; set; }
@@ -43,49 +33,9 @@ namespace ctac
 
         ChooseModel chooseModel;
 
-        public override void OnRegister()
-        {
-            needsTarget.AddListener(onNeedsTarget);
-            startSelectTarget.AddListener(onStartTarget);
-            cancelSelectTarget.AddListener(onCancelSelectTarget);
-            selectTarget.AddListener(onSelectTarget);
 
-            startSelectAbilityTarget.AddListener(onStartAbilityTarget);
-            cancelSelectAbilityTarget.AddListener(onCancelAbilityTarget);
-            selectAbilityTarget.AddListener(onSelectedAbilityTarget);
-
-            startChoose.AddListener(onStartChoose);
-            updateChoose.AddListener(onUpdateChoose);
-            cancelChoose.AddListener(onCancelChoose);
-            cardChosen.AddListener(onCardChosen);
-
-            cardSelected.AddListener(onCardSelected);
-            pieceClicked.AddListener(onPieceClicked);
-            tileClicked.AddListener(onTileClicked);
-        }
-
-        public override void OnRemove()
-        {
-            needsTarget.RemoveListener(onNeedsTarget);
-            startSelectTarget.RemoveListener(onStartTarget);
-            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
-            selectTarget.RemoveListener(onSelectTarget);
-
-            startSelectAbilityTarget.RemoveListener(onStartAbilityTarget);
-            cancelSelectAbilityTarget.RemoveListener(onCancelAbilityTarget);
-            selectAbilityTarget.RemoveListener(onSelectedAbilityTarget);
-
-            startChoose.RemoveListener(onStartChoose);
-            updateChoose.RemoveListener(onUpdateChoose);
-            cancelChoose.RemoveListener(onCancelChoose);
-            cardChosen.RemoveListener(onCardChosen);
-
-            cardSelected.RemoveListener(onCardSelected);
-            pieceClicked.RemoveListener(onPieceClicked);
-            tileClicked.RemoveListener(onTileClicked);
-        }
-
-        private void onCardSelected(CardSelectedModel cardSelected)
+        [ListensTo(typeof(CardSelectedSignal))]
+        public void onCardSelected(CardSelectedModel cardSelected)
         {
             if (cardSelected == null)
             {
@@ -127,7 +77,8 @@ namespace ctac
             }
         }
 
-        private void onNeedsTarget(CardModel card, Tile activatedTile)
+        [ListensTo(typeof(NeedsTargetSignal))]
+        public void onNeedsTarget(CardModel card, Tile activatedTile)
         {
             var targets = possibleActions.GetActionsForCard(players.Me.id, card.id);
             var area = possibleActions.GetAreasForCard(players.Me.id, card.id);
@@ -152,7 +103,8 @@ namespace ctac
         }
 
         //Must need targets if the choose was updated
-        private void onUpdateChoose(ChooseModel cModel)
+        [ListensTo(typeof(UpdateChooseSignal))]
+        public void onUpdateChoose(ChooseModel cModel)
         {
             var selected = cModel.choices.choices
                 .FirstOrDefault(x => x.cardTemplateId == cModel.chosenTemplateId.Value);
@@ -167,20 +119,22 @@ namespace ctac
             });
         }
 
-
-        private void onStartTarget(TargetModel model)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel model)
         {
             cardTarget = model;
             message.Dispatch(new MessageModel() { message = "Select Your Target" });
         }
 
-        private void onCancelSelectTarget(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onCancelSelectTarget(CardModel card)
         {
             cardTarget = null;
             message.Dispatch(new MessageModel() { message = "", duration = 0f });
         }
 
-        private void onPieceClicked(PieceView piece)
+        [ListensTo(typeof(PieceClickedSignal))]
+        public void onPieceClicked(PieceView piece)
         {
             if(piece == null) return;
 
@@ -216,7 +170,8 @@ namespace ctac
             }
         }
 
-        private void onTileClicked(Tile tile)
+        [ListensTo(typeof(TileClickedSignal))]
+        public void onTileClicked(Tile tile)
         {
             if (tile == null)
             {
@@ -257,7 +212,8 @@ namespace ctac
 
         }
 
-        private void onSelectTarget(TargetModel targetModel)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onSelectTarget(TargetModel targetModel)
         {
             activateCard.Dispatch(new ActivateModel() {
                 cardActivated = targetModel.targetingCard,
@@ -274,7 +230,7 @@ namespace ctac
         }
 
         //Returns whether or not to continue targeting
-        private bool updateTarget(PieceView piece, Tile tile)
+        public bool updateTarget(PieceView piece, Tile tile)
         {
             if (cardTarget == null) return false;
 
@@ -307,35 +263,41 @@ namespace ctac
             return true;
         }
 
-        private void onStartChoose(ChooseModel c)
+        [ListensTo(typeof(StartChooseSignal))]
+        public void onStartChoose(ChooseModel c)
         {
             chooseModel = c;
         }
 
-        private void onCancelChoose(ChooseModel c)
+        [ListensTo(typeof(CancelChooseSignal))]
+        public void onCancelChoose(ChooseModel c)
         {
             chooseModel = null;
         }
 
-        private void onCardChosen(ChooseModel c)
+        [ListensTo(typeof(CardChosenSignal))]
+        public void onCardChosen(ChooseModel c)
         {
             chooseModel = null;
         }
 
         StartAbilityTargetModel abilityTarget { get; set; }
-        private void onStartAbilityTarget(StartAbilityTargetModel model)
+        [ListensTo(typeof(StartSelectAbilityTargetSignal))]
+        public void onStartAbilityTarget(StartAbilityTargetModel model)
         {
             abilityTarget = model;
             message.Dispatch(new MessageModel() { message = "Choose Your Target"});
         }
 
-        private void onCancelAbilityTarget(PieceModel model)
+        [ListensTo(typeof(CancelSelectAbilityTargetSignal))]
+        public void onCancelAbilityTarget(PieceModel model)
         {
             abilityTarget = null;
             message.Dispatch(new MessageModel() { message = "", duration = 0f });
         }
 
-        private void onSelectedAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
+        [ListensTo(typeof(SelectAbilityTargetSignal))]
+        public void onSelectedAbilityTarget(StartAbilityTargetModel model, PieceModel piece)
         {
             abilityTarget = null;
             message.Dispatch(new MessageModel() { message = "", duration = 0f });

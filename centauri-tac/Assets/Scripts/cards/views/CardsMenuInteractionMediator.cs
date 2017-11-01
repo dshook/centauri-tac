@@ -33,7 +33,7 @@ namespace ctac
             view.clickSignal.AddListener(onClick);
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
-            activateCard.AddListener(onCardActivated);
+
             view.init(raycastModel);
         }
 
@@ -42,7 +42,6 @@ namespace ctac
             view.clickSignal.RemoveListener(onClick);
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
-            activateCard.RemoveListener(onCardActivated);
         }
 
         //for clicking on a thing.
@@ -99,6 +98,7 @@ namespace ctac
             return false;
         }
 
+        [ListensTo(typeof(ActivateCardSignal))]
         private void onCardActivated(ActivateModel a)
         {
             cardSelected.Dispatch(null);

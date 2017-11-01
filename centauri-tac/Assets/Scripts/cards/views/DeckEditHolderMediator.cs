@@ -12,80 +12,56 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
-        [Inject] public EditDeckSignal editDeck { get; set; }
-        [Inject] public SavingDeckSignal saveDeck { get; set; }
-        [Inject] public CancelDeckSignal cancelDeck { get; set; }
-        [Inject] public DeckSavedSignal deckSaved { get; set; }
-        [Inject] public DeleteDeckSignal deleteDeck { get; set; }
-
-        [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
-        [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
-
         //is a deck currently being edited?
         bool active = false;
 
         public override void OnRegister()
         {
-            addCardToDeck.AddListener(onAddToDeck);
-            cancelDeck.AddListener(onCancelDeck);
-            saveDeck.AddListener(onSaveDeck);
-            removeCardFromDeck.AddListener(onRemoveFromDeck);
-            editDeck.AddListener(onEditDeck);
-            deckSaved.AddListener(onDeckSaved);
-            deleteDeck.AddListener(onDeleteDeck);
             view.init(loader, directory);
         }
 
-        public override void OnRemove()
-        {
-            addCardToDeck.RemoveListener(onAddToDeck);
-            cancelDeck.RemoveListener(onCancelDeck);
-            saveDeck.RemoveListener(onSaveDeck);
-            removeCardFromDeck.RemoveListener(onRemoveFromDeck);
-            editDeck.RemoveListener(onEditDeck);
-            deckSaved.RemoveListener(onDeckSaved);
-            deleteDeck.RemoveListener(onDeleteDeck);
-        }
-
-        public void Update()
-        {
-        }
-
-        private void onAddToDeck(CardModel card)
+        [ListensTo(typeof(AddCardToDeckSignal))]
+        public void onAddToDeck(CardModel card)
         {
             if (!active) return;
 
             view.addCard(card.cardTemplateId);
         }
 
-        private void onRemoveFromDeck(CardModel card)
+        [ListensTo(typeof(RemoveCardFromDeckSignal))]
+        public void onRemoveFromDeck(CardModel card)
         {
             view.removeCard(card);
         }
 
-        private void onEditDeck(DeckModel deck)
+        [ListensTo(typeof(EditDeckSignal))]
+        public void onEditDeck(DeckModel deck)
         {
             view.EditDeck(deck);
             active = true;
         }
 
-        private void onSaveDeck(DeckModel deck)
+        [ListensTo(typeof(SaveDeckSignal))]
+        public void onSaveDeck(DeckModel deck)
         {
             view.SaveDeck(deck);
         }
 
-        private void onCancelDeck()
+        [ListensTo(typeof(CancelDeckSignal))]
+        public void onCancelDeck()
         {
             view.EditDeck(null);
             active = false;
         }
 
-        private void onDeckSaved(DeckModel deck, SocketKey key)
+        [ListensTo(typeof(DeckSavedSignal))]
+        public void onDeckSaved(DeckModel deck, SocketKey key)
         {
             active = false;
         }
 
-        private void onDeleteDeck(DeckModel deck)
+        [ListensTo(typeof(DeleteDeckSignal))]
+        public void onDeleteDeck(DeckModel deck)
         {
             active = false;
         }

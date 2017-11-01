@@ -1,8 +1,6 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
-using System.Collections;
-using UnityEngine;
 
 namespace ctac
 {
@@ -21,7 +19,6 @@ namespace ctac
         [Inject] public PiecesModel pieces { get; set; }
 
         [Inject] public TurnEndedSignal turnEnded { get; set; }
-        [Inject] public ActionKickoffSignal kickoff { get; set; }
         [Inject] public MoveCameraToTileSignal moveCamSignal { get; set; }
 
 
@@ -36,16 +33,12 @@ namespace ctac
             view.clickSwitchSidesSignal.AddListener(onSwitchClicked);
             view.clickPauseSignal.AddListener(onPauseClicked);
             view.clickResumeSignal.AddListener(onResumeClicked);
-            turnEnded.AddListener(onTurnEnded);
-            kickoff.AddListener(onStartSet);
             view.init();
         }
 
         public override void OnRemove()
         {
             view.clickEndTurnSignal.RemoveListener(onTurnClicked);
-            turnEnded.RemoveListener(onTurnEnded);
-            kickoff.RemoveListener(onStartSet);
         }
 
         public void Update()
@@ -84,13 +77,15 @@ namespace ctac
             resumeSignal.Dispatch();
         }
 
-        private void onTurnEnded(GameTurnModel turns)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnded(GameTurnModel turns)
         {
             var text = "End Turn";
             view.onTurnEnded(text);
         }
 
-        private void onStartSet(KickoffModel km, SocketKey key)
+        [ListensTo(typeof(ActionKickoffSignal))]
+        public void onKickoff(KickoffModel km, SocketKey key)
         {
             startSettled = true;
         }

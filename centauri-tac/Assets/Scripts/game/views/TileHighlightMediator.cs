@@ -13,23 +13,7 @@ namespace ctac
         
         [Inject] public TileHoverSignal tileHover { get; set; }
 
-        [Inject] public PieceSpawningSignal pieceSpawning { get; set; }
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
-
-        [Inject] public PieceSelectedSignal pieceSelected { get; set; }
-        [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
-
-        [Inject] public PieceDiedSignal pieceDied { get; set; }
-        [Inject] public PieceFinishedMovingSignal pieceMoved { get; set; }
-        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
-        [Inject] public ActionCancelledSpawnPieceSignal pieceSpawnCancelled { get; set; }
-        [Inject] public PieceStatusChangeSignal pieceStatusChanged { get; set; }
-        [Inject] public TurnEndedSignal turnEnded { get; set; }
-
-        [Inject] public StartSelectTargetSignal startSelectTarget { get; set; }
-        [Inject] public SelectTargetSignal selectTarget { get; set; }
-        [Inject] public UpdateTargetSignal updateTarget { get; set; }
-        [Inject] public CancelSelectTargetSignal cancelSelectTarget { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
 
         [Inject] public MapModel map { get; set; }
@@ -45,48 +29,12 @@ namespace ctac
         private TargetModel selectingArea = null;
         private bool isDeployingPiece = false;
 
-        public override void OnRegister()
-        {
-            pieceSpawning.AddListener(onPieceSpawning);
-            pieceSelected.AddListener(onPieceSelected);
-            pieceDied.AddListener(onPieceDied);
-            pieceHoveredSignal.AddListener(onPieceHover);
-            pieceMoved.AddListener(onPieceMove);
-            pieceSpawned.AddListener(onPieceSpawn);
-            pieceSpawnCancelled.AddListener(onPieceSpawnCancelled);
-            pieceStatusChanged.AddListener(onPieceStatusChange);
-            turnEnded.AddListener(onTurnEnded);
-
-            cancelSelectTarget.AddListener(onCancelSelectTarget);
-            updateTarget.AddListener(onUpdateTarget);
-            selectTarget.AddListener(onSelectTarget);
-            startSelectTarget.AddListener(onStartTarget);
-        }
-
-        public override void OnRemove()
-        {
-            pieceSelected.RemoveListener(onPieceSelected);
-            pieceSpawning.RemoveListener(onPieceSpawning);
-            pieceHoveredSignal.RemoveListener(onPieceHover);
-            pieceDied.RemoveListener(onPieceDied);
-            pieceMoved.RemoveListener(onPieceMove);
-            pieceSpawned.RemoveListener(onPieceSpawn);
-            pieceSpawnCancelled.RemoveListener(onPieceSpawnCancelled);
-            pieceStatusChanged.RemoveListener(onPieceStatusChange);
-            turnEnded.RemoveListener(onTurnEnded);
-
-            cancelSelectTarget.RemoveListener(onCancelSelectTarget);
-            updateTarget.AddListener(onUpdateTarget);
-            selectTarget.RemoveListener(onSelectTarget);
-            startSelectTarget.RemoveListener(onStartTarget);
-        }
-
         void Update()
         {
             onTileHover(raycastModel.tile);
         }
 
-        void onTileHover(Tile tile)
+        public void onTileHover(Tile tile)
         {
             tileHover.Dispatch(tile);
             view.onTileHover(tile);
@@ -191,7 +139,8 @@ namespace ctac
             }
         }
 
-        private void onPieceSelected(PieceModel selectedPiece)
+        [ListensTo(typeof(PieceSelectedSignal))]
+        public void onPieceSelected(PieceModel selectedPiece)
         {
             if(isDeployingPiece) return;
 
@@ -223,7 +172,8 @@ namespace ctac
             }
         }
 
-        private void onPieceSpawning(CardSelectedModel cardModel)
+        [ListensTo(typeof(PieceSpawningSignal))]
+        public void onPieceSpawning(CardSelectedModel cardModel)
         {
             if (cardModel != null)
             {
@@ -244,7 +194,8 @@ namespace ctac
             }
         }
 
-        private void onPieceDied(PieceModel piece)
+        [ListensTo(typeof(PieceDiedSignal))]
+        public void onPieceDied(PieceModel piece)
         {
             if (selectedPiece != null && piece.id == selectedPiece.id)
             {
@@ -258,7 +209,8 @@ namespace ctac
         }
 
         private PieceModel hoveredPiece = null;
-        private void onPieceHover(PieceModel piece)
+        [ListensTo(typeof(PieceHoverSignal))]
+        public void onPieceHover(PieceModel piece)
         {
             hoveredPiece = piece;
             //whenever we get a null piece hover we'll clear right away, but with a real piece, put in a delay before running logic
@@ -363,28 +315,33 @@ namespace ctac
             }
         }
 
-        private void onPieceMove(PieceModel piece)
+        [ListensTo(typeof(PieceFinishedMovingSignal))]
+        public void onPieceMove(PieceModel piece)
         {
             updateTauntTiles();
         }
 
-        private void onPieceSpawn(PieceSpawnedModel piece)
+        [ListensTo(typeof(PieceSpawnedSignal))]
+        public void onPieceSpawn(PieceSpawnedModel piece)
         {
             updateTauntTiles();
             pieceNotDeploying();
         }
 
-        private void onPieceSpawnCancelled(SpawnPieceModel piece, SocketKey key)
+        [ListensTo(typeof(ActionCancelledSpawnPieceSignal))]
+        public void onPieceSpawnCancelled(SpawnPieceModel piece, SocketKey key)
         {
             onPieceSpawn(null);
         }
 
-        private void onTurnEnded(GameTurnModel gameTurn)
+        [ListensTo(typeof(TurnEndedSignal))]
+        public void onTurnEnded(GameTurnModel gameTurn)
         {
             updateTauntTiles();
         }
 
-        private void onPieceStatusChange(PieceStatusChangeModel change)
+        [ListensTo(typeof(PieceStatusChangeSignal))]
+        public void onPieceStatusChange(PieceStatusChangeModel change)
         {
             updateTauntTiles();
         }
@@ -436,7 +393,8 @@ namespace ctac
             });
         }
 
-        private void onStartTarget(TargetModel model)
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel model)
         {
             //see if there are any areas to show
             var area = model.area;
@@ -451,12 +409,14 @@ namespace ctac
             updateSelectHighlights(model);
         }
 
-        private void onUpdateTarget(TargetModel model)
+        [ListensTo(typeof(UpdateTargetSignal))]
+        public void onUpdateTarget(TargetModel model)
         {
             updateSelectHighlights(model);
         }
 
-        private void onCancelSelectTarget(CardModel card)
+        [ListensTo(typeof(CancelSelectTargetSignal))]
+        public void onCancelSelectTarget(CardModel card)
         {
             setAttackRangeTiles(null);
             selectingArea = null;
@@ -464,7 +424,8 @@ namespace ctac
             pieceNotDeploying();
         }
 
-        private void onSelectTarget(TargetModel card)
+        [ListensTo(typeof(SelectTargetSignal))]
+        public void onSelectTarget(TargetModel card)
         {
             setAttackRangeTiles(null);
             selectingArea = null;
