@@ -257,11 +257,12 @@ namespace ctac {
 
             if (FlagsHelper.IsSet(piece.statuses, Statuses.Root))
             {
-                root.transform.localScale = Vector3.one;
+                //TODO: Animate root in with y scale
+                root.SetActive(true);
             }
             else
             {
-                root.transform.localScale = Vector3.zero;
+                root.SetActive(false);
             }
 
             deathIcon.SetActive(false);
