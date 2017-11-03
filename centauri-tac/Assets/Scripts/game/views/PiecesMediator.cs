@@ -308,9 +308,7 @@ namespace ctac
 
             var view = piece.pieceView;
 
-            //Animate?
-            view.circleBg.SetActive(false);
-            view.deathIcon.SetActive(false);
+            //TODO: animate in status effect icons
 
             //as above, we don't actually know change in this case, but pass in -1 to always show
             //the punch size

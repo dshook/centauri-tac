@@ -8,5 +8,6 @@
 	"movement": 3,
   "rarity": 3,
 	"tags": ["Minion"],
+	"statuses": 536,
 	"eventcode": ""
 }

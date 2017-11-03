@@ -41,11 +41,15 @@ namespace ctac {
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
-        public GameObject circleBg;
         public GameObject deathIcon;
         public GameObject eventIcon;
         public GameObject rangeIcon;
         public GameObject auraIcon;
+        public GameObject tauntIcon;
+        public GameObject cantAttackIcon;
+        public GameObject dyadStrikeIcon;
+        public GameObject silenceIcon;
+
         public GameObject model;
         private GameObject textContainer;
         public bool targetCandidate = false;
@@ -85,11 +89,14 @@ namespace ctac {
             armorBG = faceCameraContainer.transform.FindChild("Armor").gameObject;
 
             eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
-            circleBg = eventIconContainer.transform.FindChild("CircleBg").gameObject;
             eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
             deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
             rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
             auraIcon = eventIconContainer.transform.FindChild("Aura").gameObject;
+            tauntIcon = eventIconContainer.transform.FindChild("Taunt").gameObject;
+            cantAttackIcon = eventIconContainer.transform.FindChild("CantAttack").gameObject;
+            dyadStrikeIcon = eventIconContainer.transform.FindChild("DyadStrike").gameObject;
+            silenceIcon = eventIconContainer.transform.FindChild("Silence").gameObject;
 
             var meshRenderer = model.GetComponentInChildren<MeshRenderer>();
             if (meshRenderer == null)
@@ -109,12 +116,6 @@ namespace ctac {
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();
-
-            circleBg.SetActive(false);
-            deathIcon.SetActive(false);
-            eventIcon.SetActive(false);
-            rangeIcon.SetActive(false);
-            auraIcon.SetActive(false);
 
             //rotate to model direction
             model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
@@ -263,30 +264,46 @@ namespace ctac {
                 root.transform.localScale = Vector3.zero;
             }
 
-            circleBg.SetActive(false);
             deathIcon.SetActive(false);
             eventIcon.SetActive(false);
             rangeIcon.SetActive(false);
             auraIcon.SetActive(false);
+            tauntIcon.SetActive(false);
+            cantAttackIcon.SetActive(false);
+            dyadStrikeIcon.SetActive(false);
+            silenceIcon.SetActive(false);
             //event icons
             if (piece.hasDeathEvent)
             {
-                circleBg.SetActive(true);
                 deathIcon.SetActive(true);
             }
-            else if (piece.hasEvent)
+            if (piece.hasEvent)
             {
-                circleBg.SetActive(true);
                 eventIcon.SetActive(true);
             }
-            else if (piece.isRanged)
+            if (piece.isRanged)
             {
-                //TODO: need to do something better for ranged units that also have events
-                circleBg.SetActive(true);
                 rangeIcon.SetActive(true);
-            } else if (piece.hasAura) {
-                circleBg.SetActive(true);
+            }
+            if (piece.hasAura)
+            {
                 auraIcon.SetActive(true);
+            }
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.Taunt))
+            {
+                tauntIcon.SetActive(true);
+            }
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.CantAttack))
+            {
+                cantAttackIcon.SetActive(true);
+            }
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.DyadStrike))
+            {
+                dyadStrikeIcon.SetActive(true);
+            }
+            if (FlagsHelper.IsSet(piece.statuses, Statuses.Silence))
+            {
+                silenceIcon.SetActive(true);
             }
         }
 
