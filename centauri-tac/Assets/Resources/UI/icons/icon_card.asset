@@ -9,11 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
-  m_Name: history icon border
+  m_Name: icon_card
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636077718015340815
-  _documentAsset: {fileID: 114000011238682500}
-  _sharedMesh: {fileID: 43000012006197592}
+  _lastTimeModified: 636077701495535767
+  _documentAsset: {fileID: 114000012976251880}
+  _sharedMesh: {fileID: 43000011666954188}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
@@ -44,23 +44,23 @@ MonoBehaviour:
     height: 1
   _useLayers: 0
   _layers: []
---- !u!43 &43000012006197592
+--- !u!43 &43000011666954188
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: history icon border
+  m_Name: history icon card
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
-    indexCount: 33
+    indexCount: 24
     topology: 0
     firstVertex: 0
-    vertexCount: 13
+    vertexCount: 12
     localAABB:
-      m_Center: {x: 0, y: 0, z: 0}
-      m_Extent: {x: 0.52000004, y: 0.52000004, z: 0}
+      m_Center: {x: -0.000000029802322, y: 0.000000044703484, z: 0}
+      m_Extent: {x: 0.42805, y: 0.40914506, z: 0}
   m_Shapes:
     vertices: []
     shapes: []
@@ -73,11 +73,11 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
-  m_IndexBuffer: 000001000200010000000300040005000600040007000500040008000700040009000800090004000a0005000b0006000c000b00050008000b000c000b0008000900
+  m_IndexBuffer: 000001000200010000000300040005000600050004000700080009000a0008000b00090005000b0008000b0005000700
   m_Skin: []
   m_VertexData:
     m_CurrentChannels: 5
-    m_VertexCount: 13
+    m_VertexCount: 12
     m_Channels:
     - stream: 0
       offset: 0
@@ -111,8 +111,8 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 208
-    _typelessdata: 010000bffeffffbe00000000fffffffffeffff3e0100003f00000000fffffffffeffff3efeffffbe00000000ffffffff010000bf0100003f00000000ffffffff121e05bfb91e05bf00000000000000ff90c2f53e90c2f5be00000000000000ffb91e053fb91e05bf00000000000000ffe1c3f5be90c2f5be00000000000000ffe1c3f5bee1c3f53e00000000000000ff010000bf121e053f00000000000000ffb91e05bf121e053f00000000000000ffb91e053fb91e053f00000000000000ff90c2f53ee1c3f53e00000000000000ff
+    m_DataSize: 192
+    _typelessdata: 5748b9be48b0d0be00000000e6e6e6ffa236b13ef559c63e00000000e6e6e6ff1cf5d03e48b0d0be00000000e6e6e6ff9552d0be5f8aa33e00000000e6e6e6ffda81c3be8051d1be00000000000000ff197dc5becb3c9a3e00000000000000ff2510afbec20dd0be00000000000000ff6029dbbef4d7ac3e00000000000000ffd8cea73ec439bb3e00000000000000ff5e29db3ecee3cfbe00000000000000ff86bfc63e747bd1be00000000000000ff1e9dba3e777bd13e00000000000000ff
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0
@@ -166,13 +166,13 @@ Mesh:
       m_BitSize: 0
     m_UVInfo: 0
   m_LocalAABB:
-    m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.52000004, y: 0.52000004, z: 0}
+    m_Center: {x: -0.000000029802322, y: 0.000000044703484, z: 0}
+    m_Extent: {x: 0.42805, y: 0.40914506, z: 0}
   m_MeshUsageFlags: 0
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!114 &114000011238682500
+--- !u!114 &114000012976251880
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
