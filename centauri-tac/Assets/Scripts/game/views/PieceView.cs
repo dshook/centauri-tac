@@ -230,11 +230,12 @@ namespace ctac {
             //statuses
             if (FlagsHelper.IsSet(piece.statuses, Statuses.Shield))
             {
-                shield.transform.localScale = Vector3.one;
+                //TODO: animate shield coming up with scale tween
+                shield.SetActive(true);
             }
             else
             {
-                shield.transform.localScale = Vector3.zero;
+                shield.SetActive(false);
             }
 
             if (FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze))

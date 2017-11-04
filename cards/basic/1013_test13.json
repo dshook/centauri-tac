@@ -7,5 +7,6 @@
   "health": 6,
   "movement": 3,
   "race": 2,
+  "statuses": 2,
   "tags": ["Minion"]
 }
