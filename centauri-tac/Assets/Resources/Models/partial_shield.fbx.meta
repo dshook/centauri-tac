@@ -8,15 +8,20 @@ ModelImporter:
     100000: Cube
     100002: //RootNode
     100004: uv-sphere
+    100006: uv-sphere.001
     400000: Cube
     400002: //RootNode
     400004: uv-sphere
+    400006: uv-sphere.001
     2300000: Cube
     2300002: uv-sphere
+    2300004: uv-sphere.001
     3300000: Cube
     3300002: uv-sphere
+    3300004: uv-sphere.001
     4300000: uv-sphere
     4300002: Cube
+    4300004: uv-sphere.001
   materials:
     importMaterials: 1
     materialName: 0
