@@ -38,6 +38,7 @@ namespace ctac
 
         [Inject] public IDebugService debug { get; set; }
         [Inject] public ISoundService sounds { get; set; }
+        [Inject] public IMapService mapService { get; set; }
 
         //for card targeting
         private TargetModel targetModel;
@@ -163,6 +164,12 @@ namespace ctac
                 if (pieces.PieceAt(gameTile.position) != null)
                 {
                     message.Dispatch(new MessageModel() { message = "That location is already occupied!", duration = 1f });
+                    return false;
+                }
+                var kingDist = mapService.KingDistance(pieces.Hero(draggedCard.playerId).tilePosition, gameTile.position);
+                if (kingDist > 1)
+                {
+                    message.Dispatch(new MessageModel() { message = "You must play your minions close to your hero!", duration = 1f });
                     return false;
                 }
             }
