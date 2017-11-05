@@ -25,14 +25,14 @@ namespace ctac
 
         Color buttonTextColor;
         TextMeshProUGUI buttonText;
-        TextMeshProUGUI passwordPlaceholderText;
+        //TextMeshProUGUI passwordPlaceholderText;
         Color newButtonTextColor;
 
         internal void init()
         {
             loginButton.onClick.AddListener(() => onClick());
             buttonText = loginButton.GetComponentInChildren<TextMeshProUGUI>();
-            passwordPlaceholderText = password.placeholder.GetComponent<TextMeshProUGUI>();
+            //passwordPlaceholderText = password.placeholder.GetComponent<TextMeshProUGUI>();
             buttonTextColor = buttonText.color;
             newButtonTextColor = buttonTextColor;
         }

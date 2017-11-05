@@ -73,7 +73,7 @@ namespace ctac
             }
         }
 
-        [ListensTo(typeof(LoggedInSignal))]
+        [ListensTo(typeof(ComponentLoggedInSignal))]
         public void onLoggedIn(LoginStatusModel status, SocketKey key)
         {
             //start checking for successful login, if one is not found (by the player fetched) 

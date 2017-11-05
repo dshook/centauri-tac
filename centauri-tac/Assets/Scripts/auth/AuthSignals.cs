@@ -25,7 +25,7 @@ namespace ctac.signals
     public class NeedLoginSignal : Signal { }
 
     [Singleton]
-    public class LoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
+    public class ComponentLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
     public class AuthLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }

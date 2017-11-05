@@ -23,7 +23,7 @@ namespace ctac
                 {"socket:close", typeof(SocketCloseSignal) },
                 {"socket:hangup", typeof(SocketHangupSignal) },
 
-                {"login", typeof(LoggedInSignal) },
+                {"login", typeof(ComponentLoggedInSignal) },
                 {"me", typeof(PlayerFetchedSignal) },
                 {"token", typeof(TokenSignal) },
                 {"_ping", typeof(PingSignal) },
