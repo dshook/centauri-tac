@@ -110,7 +110,7 @@ namespace ctac
         public void onTurnEnd(GameTurnModel turn)
         {
             //for hotseat mode update the colors each turn to reflect the current player
-            if (players.isHotseat)
+            if (turn.isClientSwitch)
             {
                 view.UpdatePlayerColors();
             }
@@ -195,11 +195,11 @@ namespace ctac
         {
             addGenericHistory(m.pieceId, m.activatingPieceId);
         }
-        [ListensTo(typeof(PieceStatusChangeSignal))]
-        public void onStatusChange(PieceStatusChangeModel m)
-        {
-            addGenericHistory(m.pieceId, m.activatingPieceId);
-        }
+        //[ListensTo(typeof(PieceStatusChangeSignal))]
+        //public void onStatusChange(PieceStatusChangeModel m)
+        //{
+        //    addGenericHistory(m.pieceId, m.activatingPieceId);
+        //}
         [ListensTo(typeof(PieceTransformedSignal))]
         public void onTransformed(TransformPieceModel m)
         {
