@@ -12,6 +12,7 @@ namespace ctac
     {
         public Signal clickSignal = new Signal();
 
+        public GameObject holder;
         public TMP_InputField email;
         public TMP_InputField password;
         public Button loginButton;
