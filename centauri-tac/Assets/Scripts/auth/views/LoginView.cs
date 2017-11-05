@@ -18,10 +18,10 @@ namespace ctac
         public Button loginButton;
         public TextMeshProUGUI message;
 
-        char[] passwordChars = new char[]{'$', '%', '!', '@', '#', '^', '&', '*', '(', ')', '-', '_', '+', '='};
-        System.Random r = new System.Random();
-        float updateFreq = 0.5f;
-        float updateTimer = 0f;
+        //char[] passwordChars = new char[]{'$', '%', '!', '@', '#', '^', '&', '*', '(', ')', '-', '_', '+', '='};
+        //System.Random r = new System.Random();
+        //float updateFreq = 0.5f;
+        //float updateTimer = 0f;
 
         Color buttonTextColor;
         TextMeshProUGUI buttonText;
@@ -44,25 +44,25 @@ namespace ctac
                 onClick();
             }
 
-            updateTimer += Time.deltaTime;
-            if (updateTimer > updateFreq)
-            {
-                updateTimer = 0;
-                var length = 13;
-                r.Shuffle(passwordChars);
-                passwordPlaceholderText.text = new string(passwordChars.Take(length).ToArray());
-            }
+            //updateTimer += Time.deltaTime;
+            //if (updateTimer > updateFreq)
+            //{
+            //    updateTimer = 0;
+            //    var length = 13;
+            //    r.Shuffle(passwordChars);
+            //    passwordPlaceholderText.text = new string(passwordChars.Take(length).ToArray());
+            //}
 
             buttonText.color = Color.Lerp(newButtonTextColor, buttonTextColor, 2f * Time.deltaTime);
             newButtonTextColor = buttonText.color;
         }
 
-        public void onBadPassword()
+        public void onBadPassword(string userMessage)
         {
             newButtonTextColor = new Color(0.6f, 0.1f, 0.1f);
-            message.text = "Nope, Try again";
+            message.text = userMessage;
             message.color = Color.white;
-            iTween.ColorTo(message.gameObject, Color.clear, 2f);
+            iTween.ColorTo(message.gameObject, Color.clear, 4f);
         }
 
         void onClick()

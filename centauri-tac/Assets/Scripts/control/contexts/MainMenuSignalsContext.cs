@@ -43,7 +43,7 @@ namespace ctac
             commandBinder.Bind<MainMenuStartSignal>().To<MainMenuStartCommand>().Once();
 
             commandBinder.Bind<LoggedInSignal>().To<ComponentLoggedInCommand>();
-            commandBinder.Bind<AuthLoggedInSignal>().To<FetchPlayerCommand>();
+            //commandBinder.Bind<AuthLoggedInSignal>().To<AuthLoggedInCommand>();
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>(); 
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();

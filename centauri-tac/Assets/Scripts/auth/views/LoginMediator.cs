@@ -43,7 +43,7 @@ namespace ctac
 
         public void onFailAuth()
         {
-            view.onBadPassword();
+            view.onBadPassword("Nope, Try Again");
         }
 
         private void onLoginClicked()
@@ -70,7 +70,7 @@ namespace ctac
             }
             else
             {
-                view.onBadPassword();
+                view.onBadPassword(status.message);
             }
         }
     }

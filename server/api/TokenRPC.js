@@ -27,7 +27,13 @@ export default class AuthRPC
 
       // barf
       const status = false;
-      const message = err.message;
+
+      //decode the jwt errors into something usable for the client
+      let message = 'Invalid Login';
+      if(err.name === 'TokenExpiredError'){
+        message = 'Session expired, please log in again'
+      }
+
       client.token = null;
       client.send('login', {status, message});
       return;
