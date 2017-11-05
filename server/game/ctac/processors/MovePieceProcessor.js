@@ -84,7 +84,7 @@ export default class MovePieceProcessor
       return queue.cancel(action);
     }
 
-    if(piece.moveCount >= piece.movement){
+    if(!action.isJump && piece.moveCount >= piece.movement){
       this.log.warn('Piece %j has already exceeded move count', piece);
       return queue.cancel(action);
     }
