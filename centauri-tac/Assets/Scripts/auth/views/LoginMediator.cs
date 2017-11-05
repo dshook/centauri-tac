@@ -27,6 +27,9 @@ namespace ctac
             needLoginSignal.AddListener(onNeedLogin);
             failedAuth.AddListener(onFailAuth);
             loggedInSignal.AddListener(onLoggedIn);
+
+            //wait for signal to wake up
+            view.enabled = false;
         }
 
         public override void OnRemove()
