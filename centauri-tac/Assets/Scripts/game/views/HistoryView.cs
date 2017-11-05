@@ -39,10 +39,10 @@ namespace ctac
 
             iconMap = new Dictionary<HistoryItemType, SVGAsset>()
             {
-                { HistoryItemType.Attack, loader.Load<SVGAsset>("UI/history icon attack")},
-                { HistoryItemType.CardPlayed, loader.Load<SVGAsset>("UI/history icon card")},
-                { HistoryItemType.Event, loader.Load<SVGAsset>("UI/history icon event")},
-                { HistoryItemType.MinionPlayed, loader.Load<SVGAsset>("UI/history icon minion card")},
+                { HistoryItemType.Attack, loader.Load<SVGAsset>("UI/icons/icon_attack")},
+                { HistoryItemType.CardPlayed, loader.Load<SVGAsset>("UI/icons/icon_card")},
+                { HistoryItemType.Event, loader.Load<SVGAsset>("UI/icons/icon_event")},
+                { HistoryItemType.MinionPlayed, loader.Load<SVGAsset>("UI/icons/icon_minion card")},
             };
 
             historyPanel.transform.DestroyChildren();
