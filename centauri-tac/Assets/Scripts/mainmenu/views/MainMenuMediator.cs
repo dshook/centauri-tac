@@ -14,20 +14,11 @@ namespace ctac
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
-        [Inject] public NeedLoginSignal needLogin { get; set; }
-        [Inject] public AuthLoggedInSignal authLoggedIn { get; set; }
-        [Inject] public PlayerFetchedFinishedSignal playerFetched { get; set; }
         [Inject] public AuthLogoutSignal authLogout { get; set; }
 
         [Inject] public AuthLobbySignal authLobby { get; set; }
-        [Inject] public LobbyLoggedInSignal lobbyLoggedIn { get; set; }
         [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
-        [Inject] public MatchmakerStatusSignal mmStatus { get; set; }
-
-        [Inject] public GameLoggedInSignal currentGame { get; set; }
-
-        [Inject] public SocketHangupSignal socketHangup { get; set; }
 
         [Inject] public LobbyModel lobbyModel { get; set; }
 
@@ -46,16 +37,6 @@ namespace ctac
             view.clickLeaveSignal.AddListener(onLeaveClicked);
             view.clickLogoutSignal.AddListener(onLogoutClicked);
 
-            authLoggedIn.AddListener(onLogin);
-            needLogin.AddListener(onNeedLogin);
-            playerFetched.AddListener(onPlayerFetched);
-            mmStatus.AddListener(onMatchmakerStatus);
-            lobbyLoggedIn.AddListener(onLobbyLoggedIn);
-
-            currentGame.AddListener(onCurrentGame);
-
-            socketHangup.AddListener(onSocketDisconnect);
-
             view.init();
         }
 
@@ -67,16 +48,6 @@ namespace ctac
             view.clickAboutSignal.RemoveListener(onAboutClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             view.clickLogoutSignal.RemoveListener(onLogoutClicked);
-
-            authLoggedIn.RemoveListener(onLogin);
-            needLogin.RemoveListener(onNeedLogin);
-            playerFetched.RemoveListener(onPlayerFetched);
-            mmStatus.RemoveListener(onMatchmakerStatus);
-            lobbyLoggedIn.RemoveListener(onLobbyLoggedIn);
-
-            currentGame.RemoveListener(onCurrentGame);
-
-            socketHangup.RemoveListener(onSocketDisconnect);
         }
 
         public void Update()
@@ -122,19 +93,22 @@ namespace ctac
             authLogout.Dispatch();
         }
 
-        private void onNeedLogin()
+        [ListensTo(typeof(NeedLoginSignal))]
+        public void onNeedLogin()
         {
             view.SetButtonsActive(false);
             view.SetUsername("");
         }
 
-        private void onLogin(LoginStatusModel model, SocketKey key)
+        [ListensTo(typeof(AuthLoggedInSignal))]
+        public void onLogin(LoginStatusModel model, SocketKey key)
         {
             if (model.status)
             {
             }
         }
 
+        [ListensTo(typeof(PlayerFetchedFinishedSignal))]
         private void onPlayerFetched(PlayerModel player, SocketKey key)
         {
             loggedInPlayer = player;
@@ -143,12 +117,13 @@ namespace ctac
             authLobby.Dispatch(loggedInPlayer, loggedInKey);
         }
 
+        [ListensTo(typeof(LobbyLoggedInSignal))]
         private void onLobbyLoggedIn(LoginStatusModel loginStatus, SocketKey key)
         {
             lobbyModel.lobbyKey = key;
             if (loginStatus.status == false)
             {
-                debug.LogError("Could not log into loby service: " + loginStatus.message);
+                debug.LogError("Could not log into lobby service: " + loginStatus.message);
                 view.setErrorMessage("Lobby server unavailable now, please try again later");
                 return;
             }
@@ -156,12 +131,14 @@ namespace ctac
             view.enableButtons();
         }
 
+        [ListensTo(typeof(MatchmakerStatusSignal))]
         private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
         {
             lobbyModel.lobbyKey = key;
             view.SetQueueing(model.inQueue);
         }
 
+        [ListensTo(typeof(GameLoggedInSignal))]
         private void onCurrentGame(LoginStatusModel gameLogin, SocketKey key)
         {
             if (gameLogin.status)
@@ -199,6 +176,7 @@ namespace ctac
 
         }
 
+        [ListensTo(typeof(SocketHangupSignal))]
         public void onSocketDisconnect(SocketKey key)
         {
             if (key.componentName == "auth")
