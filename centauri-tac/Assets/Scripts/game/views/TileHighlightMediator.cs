@@ -165,7 +165,7 @@ namespace ctac
             if (selectedPiece.canMove)
             {
                 //find movement
-                var moveTiles = mapService.GetMovementTilesInRadius(gameTile.position, selectedPiece.movement - selectedPiece.moveCount, selectedPiece);
+                var moveTiles = mapService.GetMovementTilesInRadius(selectedPiece);
                 //take out the central one
                 moveTiles.Remove(gameTile.position);
                 view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
@@ -179,10 +179,14 @@ namespace ctac
             {
                 //find play radius depending on the card to show spawning area for a piece
                 var playerHero = pieces.Hero(cardModel.card.playerId);
-                List<Tile> playableTiles = map.tileList
-                    .Where(t => mapService.KingDistance(playerHero.tilePosition, t.position) == 1
-                        && !pieces.Pieces.Select(p => p.tilePosition).Contains(t.position)
-                        && mapService.isHeightPassable(t, mapService.Tile(playerHero.tilePosition))
+                var kingTiles = mapService.GetKingTilesInRadius(playerHero.tilePosition, 1);
+                var heroTile = mapService.Tile(playerHero.tilePosition);
+                var piecePositions = pieces.Pieces.Select(p => p.tilePosition);
+                List<Tile> playableTiles = kingTiles.Values.ToList()
+                    .Where(t => 
+                        !piecePositions.Contains(t.position)
+                        && mapService.isHeightPassable(t, heroTile)
+                        && !t.unpassable
                     )
                     .ToList();
                 view.toggleTileFlags(playableTiles, TileHighlightStatus.Selected, true);
@@ -292,7 +296,7 @@ namespace ctac
             {
                 //melee units
 
-                var movePositions = mapService.GetMovementTilesInRadius(piece.tilePosition, piece.movement - piece.moveCount, piece);
+                var movePositions = mapService.GetMovementTilesInRadius(piece);
                 var moveTiles = movePositions.Values.ToList();
 
                 List<Tile> attackTiles = null;
@@ -302,14 +306,27 @@ namespace ctac
                     attackTiles = attackPositions.Values.ToList();
 
                     //find diff to get just attack tiles
-                    attackTiles = attackTiles.Except(moveTiles).ToList();
+                    //also take friendly units and untargetable enemies like Cloak
+                    attackTiles = attackTiles
+                        .Except(moveTiles)
+                        .Where(t => {
+                            var occupyingPiece = pieces.Pieces.FirstOrDefault(m => m.tilePosition == t.position);
+                            return !t.unpassable
+                                && (
+                                    occupyingPiece == null
+                                    || (
+                                        occupyingPiece.playerId != piece.playerId 
+                                        && !FlagsHelper.IsSet(occupyingPiece.statuses, Statuses.Cloak)
+                                        )
+                                );
+                        })
+                        .ToList();
                 }
 
                 //take out the central one
                 var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
                 moveTiles.Remove(center);
 
-                //TODO: take friendly units out of move and untargetable enemies like Cloak
                 view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
                 setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
             }

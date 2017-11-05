@@ -11,7 +11,7 @@ namespace ctac
         Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> GetDiagonalTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
-        Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece);
+        Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece);
         Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections);
         Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
@@ -74,7 +74,7 @@ namespace ctac
                     //add the neighbor to explore if it's not already being returned 
                     //or in the queue or too far away
                     if (
-                        !ret.ContainsKey(neighbor.Key) 
+                        !ret.ContainsKey(neighbor.Key)
                         && !frontier.Contains(neighbor.Key)
                         && distanceFunc(neighbor.Key, center) <= distance
                     )
@@ -96,7 +96,7 @@ namespace ctac
             Tile neighborTile = null;
             for (var d = 1; d <= distance; d++)
             {
-                var toCheck = new Vector2[4] { 
+                var toCheck = new Vector2[4] {
                   center.AddX(d),
                   center.AddX(-d),
                   center.AddY(d),
@@ -178,7 +178,20 @@ namespace ctac
             return ret;
         }
 
-        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece)
+        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece)
+        {
+            if (!piece.canMove)
+            {
+                return new Dictionary<Vector2, Tile>();
+            }
+            var ret = GetMovementTilesInRadius(piece.tilePosition, piece.movement - piece.moveCount, piece);
+            //filter out friendly pieces from the mix finally. These are still in up until now since you can pass through them
+            ret = ret.Where(t => !pieces.Pieces.Any(m => m.tilePosition == t.Key)
+            ).ToDictionary(k => k.Key, v => v.Value);
+            return ret;
+        }
+
+        private Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece)
         {
             var ret = new Dictionary<Vector2, Tile>();
             if (distance <= 0) return ret;
