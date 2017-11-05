@@ -23,6 +23,12 @@ namespace ctac
             serverText.text = message;
             serverText.color = Color.white;
 
+            var existingTween = serverText.gameObject.GetComponent<iTween>();
+            if (existingTween != null)
+            {
+                Destroy(existingTween);
+            }
+
             if (time.HasValue)
             {
                 Hashtable tweenParams = new Hashtable();
