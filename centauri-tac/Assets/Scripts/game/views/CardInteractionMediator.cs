@@ -146,7 +146,7 @@ namespace ctac
             //check for appropriate resources
             if (draggedCard.cost > playerResources.resources[draggedCard.playerId])
             {
-                message.Dispatch(new MessageModel() { message = "Not enough energy to play!" });
+                message.Dispatch(new MessageModel() { message = "Not enough energy to play!", duration = 1f });
                 return false;
             }
 
@@ -157,12 +157,12 @@ namespace ctac
                 //basic sanity checks first
                 if (gameTile.unpassable)
                 {
-                    message.Dispatch(new MessageModel() { message = "That location doesn't look safe!" });
+                    message.Dispatch(new MessageModel() { message = "That location doesn't look safe!", duration = 1f });
                     return false;
                 }
                 if (pieces.PieceAt(gameTile.position) != null)
                 {
-                    message.Dispatch(new MessageModel() { message = "That location is already occupied!" });
+                    message.Dispatch(new MessageModel() { message = "That location is already occupied!", duration = 1f });
                     return false;
                 }
             }
