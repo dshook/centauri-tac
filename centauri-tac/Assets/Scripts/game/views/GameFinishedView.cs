@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
 using TMPro;
+using UnityEngine;
 
 namespace ctac
 {
@@ -9,6 +10,7 @@ namespace ctac
     {
         public Signal clickSignal = new Signal();
 
+        public GameObject holder;
         public Button mainMenuButton;
         public TextMeshProUGUI finishMessage;
 
@@ -19,7 +21,7 @@ namespace ctac
 
         internal void onFinish(string message)
         {
-            gameObject.SetActive(true);
+            holder.SetActive(true);
             finishMessage.text = message;
         }
 
