@@ -13,7 +13,7 @@ services:
     links:
       - db
     environment:
-      - COMPONENTS=auth,game,lobby,log
+      - COMPONENTS=auth,game,lobby,log,site
       - DATABASE_URL=postgres://postgres:example@db/postgres
       - PG_USE_SSL=false
       - DEBUG=*,-nodemon*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter

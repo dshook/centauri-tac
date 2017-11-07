@@ -1,0 +1,63 @@
+@font-face {
+  font-family: LemonMilk;
+  src: url("/assets/LemonMilk.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Eboracum;
+  src: url("/assets/Eboracum_new.ttf") format("truetype");
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: Eboracum, sans-serif;
+  color: #37254b;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: auto;
+
+  background: linear-gradient(#ddbe98, #8c8a92);
+}
+
+h1, h2, h3, h4, h5{
+  font-family: LemonMilk, sans-serif;
+}
+
+.section {
+  max-width: 1024px;
+  min-width: 750px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.separator{
+  margin-top: 100px;
+}
+
+.faction{
+  border-top: 1px solid #37254b;
+  padding: 30px;
+}
+
+.faction-portrait{
+  width: 360px;
+  display: inline-block;
+}
+.faction-descrip{
+  display: inline-block;
+  vertical-align: top;
+  padding: 30px;
+  width: 390px;
+}

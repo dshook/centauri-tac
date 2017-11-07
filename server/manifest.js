@@ -5,13 +5,12 @@ import HashService from './services/HashService.js';
 import AuthTokenService from './services/AuthTokenService.js';
 import HttpTransportService from './services/HttpTransportService.js';
 import GameService from './services/GameService.js';
-//import GamelistService from './services/GamelistService.js';
 import LobbyService from './services/LobbyService.js';
 import EventService from './services/EventService.js';
 
 import AuthComponent from './components/AuthComponent.js';
 import LogComponent from './components/LogComponent.js';
-//import GamelistComponent from './components/GamelistComponent.js';
+import SiteComponent from './components/SiteComponent.js';
 import GameComponent from './components/GameComponent.js';
 import LobbyComponent from './components/LobbyComponent.js';
 
@@ -65,6 +64,13 @@ export default {
   //Client log view
   log: {
     TComponent: LogComponent,
+    services: [
+      ...common,
+    ],
+  },
+
+  site: {
+    TComponent: SiteComponent,
     services: [
       ...common,
     ],
