@@ -72,7 +72,6 @@ namespace ctac
             commandBinder.Bind<PiecesStartSignal>().To<PiecesStartCommand>().Once();
 
             //signals for the standalone debug game launch
-            commandBinder.Bind<AuthLoggedInSignal>().To<AuthLoggedInCommand>();
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthLobbyFromGameCommand>(); 
             commandBinder.Bind<LobbyLoggedInSignal>().To<MatchmakerQueueCommand>();
 

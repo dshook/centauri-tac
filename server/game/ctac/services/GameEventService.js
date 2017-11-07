@@ -91,7 +91,7 @@ export default class GameEventService
 
     //now reset the turn interval for the next turn
     this.autoTurnInterval.stop();
-    this.autoTurnInterval.setInterval(this.turnLength(this.game, this.turnState.currentTurn));
+    this.autoTurnInterval.changeInterval(this.turnLength(this.game, this.turnState.currentTurn));
     this.autoTurnInterval.start();
   }
 
@@ -113,7 +113,7 @@ export default class GameEventService
 
     this.autoEnergyInterval.stop();
     this.autoEnergyInterval.setMaxFires(neededEnergy);
-    this.autoEnergyInterval.setInterval(intervalLength);
+    this.autoEnergyInterval.changeInterval(intervalLength);
     this.autoEnergyInterval.start();
   }
 

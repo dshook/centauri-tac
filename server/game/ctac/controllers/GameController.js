@@ -31,8 +31,7 @@ export default class GameController
   @on('playerCommand', x => x === 'getActionsSince')
   async getActionsSince(command, actionId, player)
   {
-    this.log.info('player %s catching up on actions since %s',
-        player.id, actionId);
+    this.log.info('player %s catching up on actions since %s', player.id, actionId);
 
     const actions = this.queue.iterateCompletedSince(actionId);
 
@@ -55,6 +54,7 @@ export default class GameController
       this.log.error('Cannot end turn in non dev mode');
       return;
     }
+    this.log.info('Dev End Turn');
 
     //stop the turn event timers
     this.gameEventService.stopAll();
@@ -73,6 +73,7 @@ export default class GameController
       this.log.error('Cannot end turn in non dev mode');
       return;
     }
+    this.log.info('Dev Pause');
 
     this.gameEventService.pauseAll();
   }
@@ -87,6 +88,7 @@ export default class GameController
       this.log.error('Cannot end turn in non dev mode');
       return;
     }
+    this.log.info('Dev Resume');
 
     this.gameEventService.resumeAll();
   }
