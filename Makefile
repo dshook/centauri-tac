@@ -27,11 +27,11 @@ logs:
 	docker-compose -p stac -f ./docker/docker-compose.yml logs -f --tail 1000
 
 down-site:
-	docker-compose -p stac -f ./docker/docker-compose-site.yml kill
-	docker-compose -p stac -f ./docker/docker-compose-site.yml rm -f -v
+	docker-compose -p stac_site -f ./docker/docker-compose-site.yml kill
+	docker-compose -p stac_site -f ./docker/docker-compose-site.yml rm -f -v
 
 up-site: build down-site
-	docker-compose -p stac -f ./docker/docker-compose-site.yml up --force-recreate -d
+	docker-compose -p stac_site -f ./docker/docker-compose-site.yml up --force-recreate -d
 
 build-client-win:
 	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"

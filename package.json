@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev-server": "npm run migrate && nodemon ./server",
-    "start": "node ./server",
+    "server": "node ./server",
     "test": "node tests | tap-spec",
     "create-migration": "db-migrate create --sql-file",
     "migrate": "db-migrate up",

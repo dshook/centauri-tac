@@ -1,6 +1,7 @@
 version: '2.1'
 services:
   server:
+    command: yarn run server
     image: stac:latest
     ports:
       - "10124:10124"
