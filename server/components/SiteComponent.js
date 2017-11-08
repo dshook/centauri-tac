@@ -20,6 +20,7 @@ export default class PortalComponent
     // server.set('views', path.resolve(__dirname, '../views'));
     // server.set('layout', 'layout');
     server.use('/', express.static(path.resolve(__dirname, '../static-assets')));
+    server.use('/assets', express.static(path.resolve(__dirname, '../static-assets')));
 
     // routed.get('/', async (req, res) => {
     //   try{
