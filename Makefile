@@ -6,26 +6,32 @@ build:
 build-dev:
 	docker build -t stac-dev:latest -f ./docker/Dockerfile-dev .
 
+down-dev:
+	docker-compose -p stac -f ./docker/docker-compose-dev.yml kill
+	docker-compose -p stac -f ./docker/docker-compose-dev.yml rm -f -v
+
+up-dev: build-dev down-dev
+	docker-compose -p stac -f ./docker/docker-compose-dev.yml up --force-recreate -d
+
+logs-dev:
+	docker-compose -p stac -f ./docker/docker-compose-dev.yml logs -f --tail 1000
+
 down:
 	docker-compose -p stac -f ./docker/docker-compose.yml kill
 	docker-compose -p stac -f ./docker/docker-compose.yml rm -f -v
 
-up: build-dev down
+up: build down
 	docker-compose -p stac -f ./docker/docker-compose.yml up --force-recreate -d
 
 logs:
 	docker-compose -p stac -f ./docker/docker-compose.yml logs -f --tail 1000
 
-down-prod:
-	docker-compose -p stac -f ./docker/docker-compose-prod.yml kill
-	docker-compose -p stac -f ./docker/docker-compose-prod.yml rm -f -v
+down-site:
+	docker-compose -p stac -f ./docker/docker-compose-site.yml kill
+	docker-compose -p stac -f ./docker/docker-compose-site.yml rm -f -v
 
-up-prod: build down-prod
-	docker-compose -p stac -f ./docker/docker-compose-prod.yml up --force-recreate -d
-
-logs-prod:
-	docker-compose -p stac -f ./docker/docker-compose-prod.yml logs -f --tail 1000
-
+up-site: build down-site
+	docker-compose -p stac -f ./docker/docker-compose-site.yml up --force-recreate -d
 
 build-client-win:
 	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"

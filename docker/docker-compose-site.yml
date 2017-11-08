@@ -1,0 +1,11 @@
+version: '2.1'
+services:
+  server:
+    image: stac:latest
+    ports:
+      - "10124:10124"
+    environment:
+      - COMPONENTS=site
+      - DEBUG=*,-nodemon*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter
+      - DEBUG_COLORS=true
+      - PORT=10124

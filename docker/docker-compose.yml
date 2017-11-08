@@ -1,30 +1,12 @@
-version: '2'
+version: '2.1'
 services:
   db:
     image: postgres:9.6.3-alpine
-    ports:
-      - "5432:5432"
-    volumes:
-      # - "../build/pgdata:/var/lib/postgresql/data/pgdata"
-      - postgres-volume:/var/lib/posgresql:Z
     environment:
       POSTGRES_PASSWORD: example
-      PGDATA: "/var/lib/postgresql/data/pgdata"
 
   server:
-    image: stac-dev:latest
-    # command: ["./wait-for-db.sh", "db", "--", "yarn install && yarn run dev-server"]
-    volumes:
-      # - ../node_modules:/opt/app/node_modules
-      - ../package.json:/opt/app/package.json
-      - ../yarn.lock:/opt/app/yarn.lock
-      - ../cards:/opt/app/cards
-      - ../lang:/opt/app/lang
-      - ../lib:/opt/app/lib
-      - ../maps:/opt/app/maps
-      - ../migrations:/opt/app/migrations
-      - ../server:/opt/app/server
-      - ../tests:/opt/app/tests
+    image: stac:latest
     ports:
       - "10123:10123"
     links:
@@ -36,10 +18,11 @@ services:
       - DEBUG=*,-nodemon*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter
       - DEBUG_COLORS=true
       - PORT=10123
-      - PUBLIC_URL=http://192.168.1.155:10123
+      - PUBLIC_URL=http://server.solaria.online:10123
       - PING_INTERVAL=30000
-      - CLIENT_LOG=./centauri-tac/client_log.json
       - DISCONNECT_TIMEOUT=5000
+      - VIRTUAL_HOST=server.solaria.online
+      - VIRTUAL_PORT=10123
       - DEV=${DEV}
       - TESTING_CARDS=${TESTING_CARDS}
       - CARD_SETS=${CARD_SETS}
@@ -47,7 +30,3 @@ services:
       - TURN_LENGTH_MS=${TURN_LENGTH_MS}
       - TURN_END_BUFFER_LENGTH_MS=${TURN_END_BUFFER_LENGTH_MS}
       - TURN_INCREMENT_LENGTH_MS=${TURN_INCREMENT_LENGTH_MS}
-
-volumes:
-  postgres-volume:
-    external: true
