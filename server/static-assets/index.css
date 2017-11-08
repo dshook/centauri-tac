@@ -3,11 +3,6 @@
   src: url("/assets/LemonMilk.otf") format("opentype");
 }
 
-@font-face {
-  font-family: Eboracum;
-  src: url("/assets/Eboracum_new.ttf") format("truetype");
-}
-
 html {
   box-sizing: border-box;
   height: 100%;
@@ -15,7 +10,8 @@ html {
 }
 
 body {
-  font-family: Eboracum, sans-serif;
+  font-family: Helvetica, sans-serif;
+  font-size: 18px;
   color: #37254b;
   margin: 0;
   padding: 0;
@@ -27,6 +23,10 @@ body {
 
 h1, h2, h3, h4, h5{
   font-family: LemonMilk, sans-serif;
+}
+
+a {
+  color: #bb3631;
 }
 
 .section {
@@ -52,7 +52,7 @@ h1, h2, h3, h4, h5{
 }
 
 .faction-portrait{
-  width: 360px;
+  width: 256px;
   display: inline-block;
 }
 .faction-descrip{
