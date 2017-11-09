@@ -302,7 +302,7 @@ namespace ctac {
             public IMapService mapService { get; set; }
 
             private Vector3 destPosition { get; set; }
-            private Vector3 startOffset = new Vector3(0, 5f, 0);
+            private Vector3 startOffset = new Vector3(0, 8f, 0);
             private float dropTime = 0.7f;
             private float pieceMagnitude = 0f;
             private float pieceDuration = 0f;
@@ -313,7 +313,8 @@ namespace ctac {
 
             public void Init()
             {
-                destPosition = piece.gameObject.transform.position;
+
+                destPosition = map.tiles[piece.piece.tilePosition].fullPosition;
                 piece.gameObject.transform.position = destPosition + startOffset;
 
                 pieceMagnitude = Math.Min(1f, (piece.piece.health + piece.piece.attack) / 20f);

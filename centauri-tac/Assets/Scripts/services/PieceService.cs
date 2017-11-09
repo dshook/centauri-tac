@@ -51,8 +51,8 @@ namespace ctac
 
             var piecePrefab = loader.Load<GameObject>("Piece");
 
-            //position is x and z from server, and y based on the map
-            var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition;
+            //position is x and z from server, and y based on the map, but way up in the air so the animation can do its job right
+            var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition + new Vector3(0, 100f, 0);
 
             var newPiece = GameObject.Instantiate(
                 piecePrefab, 
