@@ -58,6 +58,7 @@ namespace ctac {
         public Material meshMaterial;
         private Highlighter highlight;
         private float outlineWidth = 0.01f;
+        private Dictionary<Statuses, GameObject> statusIcons;
 
         public Animator anim;
 
@@ -97,6 +98,18 @@ namespace ctac {
             cantAttackIcon = eventIconContainer.transform.FindChild("CantAttack").gameObject;
             dyadStrikeIcon = eventIconContainer.transform.FindChild("DyadStrike").gameObject;
             silenceIcon = eventIconContainer.transform.FindChild("Silence").gameObject;
+
+            statusIcons = new Dictionary<Statuses, GameObject>()
+            {
+                {Statuses.Taunt, tauntIcon },
+                {Statuses.CantAttack, cantAttackIcon },
+                {Statuses.DyadStrike, dyadStrikeIcon },
+                {Statuses.Silence, silenceIcon },
+                {Statuses.hasDeathEvent, deathIcon },
+                {Statuses.hasEvent, eventIcon },
+                {Statuses.isRanged, rangeIcon },
+                {Statuses.hasAura, auraIcon },
+            };
 
             var meshRenderer = model.GetComponentInChildren<MeshRenderer>();
             if (meshRenderer == null)
@@ -226,87 +239,6 @@ namespace ctac {
                 meshMaterial.SetFloat("_Outline", outlineWidth);
             }
 
-
-            //statuses
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Shield))
-            {
-                //TODO: animate shield coming up with scale tween
-                shield.SetActive(true);
-            }
-            else
-            {
-                shield.SetActive(false);
-            }
-
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Paralyze))
-            {
-                paralyze.transform.localScale = Vector3.one;
-            }
-            else
-            {
-                paralyze.transform.localScale = Vector3.zero;
-            }
-
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Cloak))
-            {
-                cloak.transform.localScale = Vector3.one;
-            }
-            else
-            {
-                cloak.transform.localScale = Vector3.zero;
-            }
-
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Root))
-            {
-                //TODO: Animate root in with y scale
-                root.SetActive(true);
-            }
-            else
-            {
-                root.SetActive(false);
-            }
-
-            deathIcon.SetActive(false);
-            eventIcon.SetActive(false);
-            rangeIcon.SetActive(false);
-            auraIcon.SetActive(false);
-            tauntIcon.SetActive(false);
-            cantAttackIcon.SetActive(false);
-            dyadStrikeIcon.SetActive(false);
-            silenceIcon.SetActive(false);
-            //event icons
-            if (piece.hasDeathEvent)
-            {
-                deathIcon.SetActive(true);
-            }
-            if (piece.hasEvent)
-            {
-                eventIcon.SetActive(true);
-            }
-            if (piece.isRanged)
-            {
-                rangeIcon.SetActive(true);
-            }
-            if (piece.hasAura)
-            {
-                auraIcon.SetActive(true);
-            }
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Taunt))
-            {
-                tauntIcon.SetActive(true);
-            }
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.CantAttack))
-            {
-                cantAttackIcon.SetActive(true);
-            }
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.DyadStrike))
-            {
-                dyadStrikeIcon.SetActive(true);
-            }
-            if (FlagsHelper.IsSet(piece.statuses, Statuses.Silence))
-            {
-                silenceIcon.SetActive(true);
-            }
         }
 
 
@@ -478,6 +410,7 @@ namespace ctac {
             }
             public void Update()
             {
+                //TODO: might be able to put this in init with change to when init runs
                 if (firstRun)
                 {
                     firstRun = false;
@@ -743,6 +676,115 @@ namespace ctac {
 
                     Complete = true;
                     pieceDied.Dispatch(piece.piece);
+                }
+            }
+        }
+
+        public class ChangeStatusAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceStatusChangeModel pieceStatusChange { get; set; }
+            public PieceView pieceView { get; set; }
+
+            private float transitionTime = 1f;
+            private float timeAccum = 0f;
+
+            private void AnimInStatus(GameObject statusIcon)
+            {
+                statusIcon.transform.localScale = Vector3.zero;
+                statusIcon.SetActive(true);
+                iTweenExtensions.ScaleTo(statusIcon, Vector3.one, transitionTime, 0f, EaseType.easeInOutBounce);
+            }
+
+            private void AnimOutStatus(GameObject statusIcon)
+            {
+                statusIcon.transform.localScale = Vector3.one;
+                iTweenExtensions.ScaleTo(statusIcon, Vector3.zero, transitionTime, 0f, EaseType.easeInExpo);
+                //set active false in update
+            }
+
+            public void Init()
+            {
+                //add 
+                if (pieceStatusChange.add.HasValue && !FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.None))
+                {
+                    foreach (var statusIcon in pieceView.statusIcons)
+                    {
+                        if (FlagsHelper.IsSet(pieceStatusChange.add.Value, statusIcon.Key))
+                        {
+                            AnimInStatus(statusIcon.Value);
+                        }
+                    }
+
+                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Shield))
+                    {
+                        //TODO: animate shield coming up with scale tween
+                        pieceView.shield.SetActive(true);
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Paralyze))
+                    {
+                        pieceView.paralyze.transform.localScale = Vector3.one;
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Cloak))
+                    {
+                        pieceView.cloak.transform.localScale = Vector3.one;
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Root))
+                    {
+                        pieceView.root.SetActive(true);
+                    }
+                }
+                //remove
+                if (pieceStatusChange.remove.HasValue && !FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.None))
+                {
+                    foreach (var statusIcon in pieceView.statusIcons)
+                    {
+                        if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, statusIcon.Key))
+                        {
+                            AnimOutStatus(statusIcon.Value);
+                        }
+                    }
+
+                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Shield))
+                    {
+                        pieceView.shield.SetActive(false);
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Paralyze))
+                    {
+                        pieceView.paralyze.transform.localScale = Vector3.zero;
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Cloak))
+                    {
+                        pieceView.cloak.transform.localScale = Vector3.zero;
+                    }
+                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Root))
+                    {
+                        pieceView.root.SetActive(false);
+                    }
+                }
+            }
+            public void Update()
+            {
+                timeAccum += Time.deltaTime;
+
+                if (timeAccum > transitionTime)
+                {
+                    //disable any icons that were removed
+                    if (pieceStatusChange.remove.HasValue && !FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.None))
+                    {
+                        foreach (var statusIcon in pieceView.statusIcons)
+                        {
+                            if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, statusIcon.Key))
+                            {
+                                statusIcon.Value.SetActive(false);
+                            }
+                        }
+                    }
+
+                    Complete = true;
                 }
             }
         }

@@ -12,6 +12,7 @@ centauri-tac/[Ll]ibrary/
 *.user
 *.userprefs
 *.pidb
+.vs/
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt

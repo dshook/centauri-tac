@@ -23,7 +23,6 @@ namespace ctac
         public void Add(IAnimate animation)
         {
             animations.Add(animation);
-            animation.Init();
         }
 
         public void Update(float deltaTime)
@@ -42,6 +41,7 @@ namespace ctac
                 {
                     anim = animations[0];
                     animations.RemoveAt(0);
+                    anim.Init();
                     runningAnimations.Add(anim);
                     if (!anim.Async)
                     {

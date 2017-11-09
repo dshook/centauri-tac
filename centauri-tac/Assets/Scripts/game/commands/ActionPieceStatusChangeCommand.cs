@@ -36,6 +36,25 @@ namespace ctac
             piece.attack = pieceStatusChanged.newAttack ?? piece.attack;
             piece.movement = pieceStatusChanged.newMovement ?? piece.movement;
 
+            //if silenced we have to also remove the event client statuses, don't think we need to remove the event ones though 
+            //since they should get cleared from possible actions
+            if (pieceStatusChanged.add.HasValue && FlagsHelper.IsSet(pieceStatusChanged.add.Value, Statuses.Silence))
+            {
+                Statuses removing = Statuses.None;
+                if (piece.hasAura)
+                {
+                    FlagsHelper.Set(ref removing, Statuses.hasAura);
+                    piece.hasAura = false;
+                }
+
+                pieceStatusChanged.remove = pieceStatusChanged.remove ?? Statuses.None;
+                pieceStatusChanged.remove = pieceStatusChanged.remove | removing;
+
+                var newStatuses = piece.statuses;
+                FlagsHelper.Unset(ref newStatuses, removing);
+                piece.statuses = newStatuses;
+            }
+
             statusChangeSignal.Dispatch(pieceStatusChanged);
 
             debug.Log( 

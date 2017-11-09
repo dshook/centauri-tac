@@ -93,7 +93,7 @@ namespace ctac
                 baseRange = cardTemplate.range,
                 tags = spawnedPiece.tags ?? cardTemplate.tags,
                 buffs = new List<PieceBuffModel>(),
-                statuses = cardTemplate.statuses,
+                statuses = cardTemplate.statuses | (cardTemplate.range.HasValue ? Statuses.isRanged : Statuses.None),
             };
 
             SetInitialMoveAttackStatus(pieceModel);
@@ -121,7 +121,7 @@ namespace ctac
             dest.range = src.range;
             dest.baseRange = src.baseRange;
             dest.tags = src.tags;
-            dest.statuses = src.statuses;
+            dest.statuses = src.statuses | (src.range.HasValue ? Statuses.isRanged : Statuses.None);
             dest.buffs = src.buffs;
         }
 
@@ -139,7 +139,7 @@ namespace ctac
             dest.movement = src.movement;
             dest.range = src.range;
             dest.tags = src.tags;
-            dest.statuses = src.statuses;
+            dest.statuses = src.statuses | (src.range.HasValue ? Statuses.isRanged : Statuses.None);
             dest.metCondition = false;
 
             if (link)

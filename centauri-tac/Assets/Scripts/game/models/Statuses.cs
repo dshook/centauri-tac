@@ -5,17 +5,26 @@ namespace ctac
     [Flags]
     public enum Statuses
     {
-      None = 0,
-      Silence = 1,
-      Shield = 2,
-      Paralyze = 4,
-      Taunt = 8,
-      Cloak = 16,
-      TechResist = 32,
-      Root = 64,
-      Charge = 128,
-      CantAttack = 256,
-      DyadStrike = 512,
-      Jump = 1024
+        None       = 0,
+        Silence    = 1 << 0,
+        Shield     = 1 << 1,
+        Paralyze   = 1 << 2,
+        Taunt      = 1 << 3,
+        Cloak      = 1 << 4,
+        TechResist = 1 << 5,
+        Root       = 1 << 6,
+        Charge     = 1 << 7,
+        CantAttack = 1 << 8,
+        DyadStrike = 1 << 9,
+        Jump       = 1 << 10,
+
+
+        //The rest of these are fake client side only statuses derived from other properties
+        //Used mainly for consistency in showing the status icons
+        hasDeathEvent = 1 << 20,
+        hasEvent      = 1 << 21,
+        isRanged      = 1 << 22,
+        hasAura       = 1 << 23
+     
     }
 }

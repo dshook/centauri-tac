@@ -45,11 +45,19 @@ namespace ctac
             };
 
             var pieceModel = pieceService.CreatePiece(spawnedPiece);
+            var pieceView = pieceModel.gameObject.GetComponent<PieceView>();
             animationQueue.Add(new PieceView.SpawnAnim() {
-                piece = pieceModel.gameObject.GetComponent<PieceView>(),
+                piece = pieceView,
                 map = map,
                 mapService = mapService
             });
+            animationQueue.Add(
+                new PieceView.ChangeStatusAnim()
+                {
+                    pieceView = pieceView,
+                    pieceStatusChange = new PieceStatusChangeModel() { add = pieceModel.statuses, statuses = pieceModel.statuses }
+                }
+            );
 
             //Skip sending out the piece spawned signal since it hasn't actually properly been spawned yet
             //pieceSpawned.Dispatch(pieceModel);

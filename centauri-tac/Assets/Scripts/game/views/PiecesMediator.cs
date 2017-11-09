@@ -308,7 +308,13 @@ namespace ctac
 
             var view = piece.pieceView;
 
-            //TODO: animate in status effect icons
+            animationQueue.Add(
+                new PieceView.ChangeStatusAnim()
+                {
+                    pieceView = view,
+                    pieceStatusChange = pieceStatusChange
+                }
+            );
 
             //as above, we don't actually know change in this case, but pass in -1 to always show
             //the punch size

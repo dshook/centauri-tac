@@ -1,50 +1,70 @@
 using ctac.signals;
 using strange.extensions.command.impl;
+using System.Linq;
 
 namespace ctac
 {
     public class PossibleActionsCommand : Command
     {
-        [Inject]
-        public PossibleActions newPossibleActions { get; set; }
+        [Inject] public PossibleActions newPossibleActions { get; set; }
+        [Inject] public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public PossibleActionsReceivedSignal possibleActionsReceived { get; set; }
 
-        [Inject]
-        public PossibleActionsModel possibleActions { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public CardsModel cards { get; set; }
 
-        [Inject]
-        public PossibleActionsReceivedSignal possibleActionsReceived { get; set; }
-
-        [Inject]
-        public GamePlayersModel players { get; set; }
-
-        [Inject]
-        public PiecesModel pieces { get; set; }
-
-        [Inject]
-        public CardsModel cards { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         public override void Execute()
         {
             possibleActions.Update(newPossibleActions);
 
-            //update evented pieces without anim for now
-            //@TODO: add animation for icons
             foreach (var piece in pieces.Pieces)
             {
-                piece.hasDeathEvent = false;
-                piece.hasEvent = false;
-            }
+                var eventedPiece = possibleActions.eventedPieces.FirstOrDefault(ep => ep.pieceId == piece.id);
 
-            foreach (var eventedPiece in possibleActions.eventedPieces)
-            {
-                var piece = pieces.Piece(eventedPiece.pieceId);
-                if (eventedPiece.@event == "d") {
-                    piece.hasDeathEvent = true;
+                Statuses adding = Statuses.None;
+                Statuses removing = Statuses.None;
+                if (eventedPiece != null)
+                {
+                    if (eventedPiece.@event == "d" && !piece.hasDeathEvent)
+                    {
+                        piece.hasDeathEvent = true;
+                        adding = Statuses.hasDeathEvent;
+                    }
+                    else if (!piece.hasEvent)
+                    {
+                        piece.hasEvent = true;
+                        adding = Statuses.hasEvent;
+                    }
                 }
                 else
                 {
-                    piece.hasEvent = true;
+                    if (piece.hasDeathEvent)
+                    {
+                        removing = Statuses.hasDeathEvent;
+                        piece.hasDeathEvent = false;
+                    }
+                    if (piece.hasEvent)
+                    {
+                        removing = Statuses.hasEvent;
+                        piece.hasEvent = false;
+                    }
                 }
+
+                var newStatuses = piece.statuses;
+                FlagsHelper.Set(ref newStatuses, adding);
+                FlagsHelper.Unset(ref newStatuses, removing);
+                piece.statuses = newStatuses;
+
+                animationQueue.Add(
+                   new PieceView.ChangeStatusAnim()
+                   {
+                       pieceView = piece.pieceView,
+                       pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
+                   }
+                );
             }
 
             //update met condition cards

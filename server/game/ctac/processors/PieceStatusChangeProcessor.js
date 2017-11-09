@@ -37,6 +37,7 @@ export default class PieceStatusChangeProcessor
 
     //remove all statuses other than silence if it was silenced
     if(action.add & Statuses.Silence){
+      action.remove = piece.statuses & ~Statuses.Silence;
       piece.statuses = Statuses.Silence;
 
       //back out any buffs on the piece
