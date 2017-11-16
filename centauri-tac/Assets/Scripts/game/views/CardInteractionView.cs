@@ -9,12 +9,12 @@ namespace ctac
     {
         [Inject] public GameInputStatusModel gameInputStatus { get; set; }
 
-        internal Signal<GameObject, Vector3> clickSignal = new Signal<GameObject, Vector3>();
+        internal Signal<GameObject, Vector3> cardClickSignal = new Signal<GameObject, Vector3>();
         internal Signal<GameObject> activateSignal = new Signal<GameObject>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
         RaycastModel raycastModel;
 
-        GameObject draggedObject;
+        GameObject draggedCard;
         bool active = false;
         float dragTimer = 0f;
         float dragMin = 0.10f;
@@ -22,18 +22,13 @@ namespace ctac
         internal void init(RaycastModel rm)
         {
             active = true;
-            clickSignal.AddListener(onClick);
+            cardClickSignal.AddListener(onCardClick);
             raycastModel = rm;
         }
 
-        internal void Disable()
+        void onCardClick(GameObject g, Vector3 v)
         {
-            active = false;
-        }
-
-        void onClick(GameObject g, Vector3 v)
-        {
-            draggedObject = g;
+            draggedCard = g;
         }
 
         void Update()
@@ -56,13 +51,13 @@ namespace ctac
                 hoverSignal.Dispatch(null);
             }
 
-            if (draggedObject != null)
+            if (draggedCard != null)
             {
                 dragTimer += Time.deltaTime;
             }
 
             if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonUp("Fire1")) {
-                if (draggedObject != null && dragTimer > dragMin)
+                if (draggedCard != null && dragTimer > dragMin)
                 {
                     TestActivate();
                 }
@@ -71,7 +66,7 @@ namespace ctac
             if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
                 //if we're already dragging, test the activate, otherwise start dragging
-                if (draggedObject != null && dragTimer > dragMin)
+                if (draggedCard != null && dragTimer > dragMin)
                 {
                     TestActivate();
                 }
@@ -79,11 +74,11 @@ namespace ctac
                 {
                     if (hoverHit.HasValue)
                     {
-                        clickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
+                        cardClickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
                     }
                     else
                     {
-                        clickSignal.Dispatch(null, Vector3.zero);
+                        cardClickSignal.Dispatch(null, Vector3.zero);
                     }
                 }
             }
@@ -91,7 +86,7 @@ namespace ctac
             //right click et al deselects
             if (CrossPlatformInputManager.GetButtonDown("Fire2"))
             {
-                clickSignal.Dispatch(null, Vector3.zero);
+                cardClickSignal.Dispatch(null, Vector3.zero);
                 dragTimer = 0f;
             }
 
@@ -112,7 +107,7 @@ namespace ctac
             else
             {
                 activateSignal.Dispatch(null);
-                clickSignal.Dispatch(null, Vector3.zero);
+                cardClickSignal.Dispatch(null, Vector3.zero);
             }
             //if (raycastModel.worldHit.HasValue)
             //{
@@ -129,7 +124,7 @@ namespace ctac
 
         internal void ClearDrag()
         {
-            draggedObject = null;
+            draggedCard = null;
             dragTimer = 0f;
         }
     }

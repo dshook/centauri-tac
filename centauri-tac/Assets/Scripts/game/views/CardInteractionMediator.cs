@@ -41,14 +41,14 @@ namespace ctac
         [Inject] public IMapService mapService { get; set; }
 
         //for card targeting
-        private TargetModel targetModel;
+        private TargetModel cardTarget;
 
         //and for card choosing
         private ChooseModel chooseModel;
 
         public override void OnRegister()
         {
-            view.clickSignal.AddListener(onClick);
+            view.cardClickSignal.AddListener(onCardClick);
             view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
 
@@ -57,13 +57,13 @@ namespace ctac
 
         public override void OnRemove()
         {
-            view.clickSignal.RemoveListener(onClick);
+            view.cardClickSignal.RemoveListener(onCardClick);
             view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
         }
 
         //for clicking on a card directly
-        private void onClick(GameObject clickedObject, Vector3 point)
+        private void onCardClick(GameObject clickedObject, Vector3 point)
         {
             if(clickedObject == null)
             {
@@ -139,7 +139,7 @@ namespace ctac
             }
 
             //if targeting is in progress the target mediator will handle the activate
-            if (targetModel != null)
+            if (cardTarget != null)
             {
                 return true;
             }
@@ -187,7 +187,7 @@ namespace ctac
                 return true;
             }
 
-            if (draggedCard.needsTargeting(possibleActions) && targetModel == null)
+            if (draggedCard.needsTargeting(possibleActions) && cardTarget == null)
             {
                 needsTarget.Dispatch(draggedCard, gameTile);
                 return true;
@@ -205,13 +205,13 @@ namespace ctac
         [ListensTo(typeof(StartSelectTargetSignal))]
         public void onStartTarget(TargetModel target)
         {
-            targetModel = target;
+            cardTarget = target;
         }
 
         [ListensTo(typeof(CancelSelectTargetSignal))]
         public void onTargetCancel(CardModel card)
         {
-            targetModel = null;
+            cardTarget = null;
             if (chooseModel != null)
             {
                 debug.Log("Cancelling choose from target cancel");
@@ -225,7 +225,7 @@ namespace ctac
         [ListensTo(typeof(SelectTargetSignal))]
         public void onSelectedTarget(TargetModel t)
         {
-            targetModel = null;
+            cardTarget = null;
         }
 
         [ListensTo(typeof(ActivateCardSignal))]
@@ -263,12 +263,6 @@ namespace ctac
                     cardHovered.Dispatch(null);
                 }
             }
-        }
-
-        [ListensTo(typeof(GameFinishedSignal))]
-        public void onGameFinished(GameFinishedModel gf)
-        {
-            view.Disable();
         }
     }
 }
