@@ -41,22 +41,31 @@ namespace ctac
         [Inject] public ISoundService sounds { get; set; }
 
 
-        private CardModel draggedCard = null;
+        CardModel draggedCard = null;
+        Vector3 draggedCardInitialPosition;
+        float draggedCardTime = 0f;
 
         PieceModel selectedPiece = null;
         MovePathFoundModel movePath = null;
         TargetModel cardTarget = null;
         ChooseModel chooseModel;
         StartAbilityTargetModel abilityTarget = null;
-        CardView lastHoveredCard = null;
         const float singleClickThreshold = 0.5f;
+
+        enum ClickMode
+        {
+            Neutral,
+            CardSingleClicked,
+            CardDragging
+        }
+
+        ClickMode clickMode = ClickMode.Neutral;
 
 
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onClick);
             view.cardClickSignal.AddListener(onCardClick);
-            view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
             view.init(raycastModel);
         }
@@ -65,14 +74,120 @@ namespace ctac
         {
             view.clickSignal.RemoveListener(onClick);
             view.cardClickSignal.RemoveListener(onCardClick);
-            view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
         }
 
         //For clicking anything other than a card
         private void onClick(ClickModel clickModel)
         {
-            if (clickModel.clickedObject == null)
+            switch (clickMode) {
+                case ClickMode.Neutral:
+                    handleNeutralClick(clickModel);
+                    break;
+                case ClickMode.CardSingleClicked:
+                case ClickMode.CardDragging:
+                    handleClickWithCard(clickModel);
+                    break;
+            }
+        }
+
+        //for clicking on a card directly
+        private void onCardClick(CardClickModel cardClick)
+        {
+            var cardView = cardClick != null ? cardClick.clickedCard.GetComponent<CardView>() : null;
+            if(cardClick == null || cardView == null)
+            {
+                DeselectCard();
+                return;
+            }
+
+            //Test activation for dragged or clicked on spells
+            if (
+                cardView.card.isSpell 
+                && (clickMode == ClickMode.CardDragging || clickMode == ClickMode.CardSingleClicked)
+                && (Time.time - draggedCardTime) > singleClickThreshold
+            ){
+
+                if (!CardInsideCircle(cardView.rectTransform.anchoredPosition3D, 1.5f))
+                {
+                    if (doActivateWork(null))
+                    {
+                        sounds.PlaySound("playCard");
+                        DeselectCard();
+                        return;
+                    }
+                }
+                else
+                {
+                    DeselectCard();
+                    return;
+                }
+            }
+
+            if (cardClick.isUp)
+            {
+                //if we get an up click on an already activated card this should mean that we just single clicked on it to activate
+                //and we don't need to do anything else
+                if (cardView.card.activated)
+                {
+                    return;
+                }
+                //clicking up on the same dragged card
+                if (draggedCard != null && cardView.card == draggedCard && (Time.time - draggedCardTime) < singleClickThreshold)
+                {
+                    clickMode = ClickMode.CardSingleClicked;
+                    //shouldn't need to do anything further here since it should be handled on the initial click
+
+                    //activate if spell card has been dragged x distance
+                    //if less than that distance, deselect the spell
+                    return;
+                }
+            }
+            else
+            {
+                clickMode = ClickMode.CardDragging;
+            }
+
+            draggedCard = cardView.card;
+            draggedCardInitialPosition = cardView.gameObject.transform.position;
+            draggedCardTime = Time.time;
+
+            //Choose card interactions
+            if (chooseModel != null && draggedCard.tags.Contains(Constants.chooseCardTag))
+            {
+                chooseModel.chosenTemplateId = draggedCard.cardTemplateId;
+                cardChosen.Dispatch(chooseModel);
+                if (chooseModel.chooseFulfilled)
+                {
+                    activateCard.Dispatch(new ActivateModel()
+                    {
+                        cardActivated = chooseModel.choosingCard,
+                        optionalTarget = null,
+                        position = chooseModel.cardDeployPosition.position,
+                        pivotPosition = null,
+                        chooseCardTemplateId = chooseModel.chosenTemplateId
+                    });
+                    chooseModel = null;
+                }
+                else
+                {
+                    updateChoose.Dispatch(chooseModel);
+                    return;
+                }
+                return;
+            }
+
+            pieceSelected.Dispatch(null);
+            if (draggedCard.isMinion)
+            {
+                pieceSpawning.Dispatch(new CardSelectedModel() { card = draggedCard, point = cardClick.position });
+            }
+            cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = cardClick.position });
+        }
+
+        private void handleNeutralClick(ClickModel clickModel)
+        {
+            if (clickModel == null || clickModel.clickedObject == null)
             {
                 pieceClicked.Dispatch(null);
                 tileClicked.Dispatch(null);
@@ -97,7 +212,7 @@ namespace ctac
                 clickedPiece = clickModel.piece;
             }
 
-            if (clickedPiece != null && clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold)
+            if (clickedPiece != null)
             {
                 if (clickedPiece.piece.tags.Contains(Constants.targetPieceTag))
                 {
@@ -181,17 +296,14 @@ namespace ctac
 
                         if (!string.IsNullOrEmpty(errorMessage))
                         {
-                            message.Dispatch(new MessageModel() { message = errorMessage });
+                            message.Dispatch(new MessageModel() { message = errorMessage, duration = 1f });
                             return;
                         }
                     }
                 }
             }
 
-            if (clickModel.tile != null 
-                //don't select tiles when clicking and dragging around the map which has long click times
-                && (clickModel.clickTime.HasValue && clickModel.clickTime < singleClickThreshold)
-                )
+            if (clickModel.tile != null)
             {
                 var gameTile = clickModel.tile;
 
@@ -214,78 +326,65 @@ namespace ctac
             }
         }
 
-        //for clicking on a card directly
-        private void onCardClick(GameObject clickedObject, Vector3 point)
+        private void handleClickWithCard(ClickModel clickModel)
         {
-            if(clickedObject == null)
+            if (clickModel == null || clickModel.clickedObject == null)
             {
-                draggedCard = null;
-                cardSelected.Dispatch(null);
-                pieceSpawning.Dispatch(null);
-
+                DeselectCard();
                 return;
             }
 
-            var cardView = clickedObject.GetComponent<CardView>();
-            if (cardView == null) { return; }
-            
-            draggedCard = cardView.card;
+            //first check to see if we clicked on a piece or tile
+            //this logic is very similar to the neutral click handling but differs in some important ways
+            PieceView clickedPiece = null;
 
-            //Choose card interactions
-            if (chooseModel != null && draggedCard.tags.Contains(Constants.chooseCardTag))
+            if (clickModel.tile != null)
             {
-                chooseModel.chosenTemplateId = draggedCard.cardTemplateId;
-                cardChosen.Dispatch(chooseModel);
-                if (chooseModel.chooseFulfilled)
+                var pieceAtTile = pieces.PieceAt(clickModel.tile.position);
+                if (pieceAtTile != null)
                 {
-                    activateCard.Dispatch(new ActivateModel()
-                    {
-                        cardActivated = chooseModel.choosingCard,
-                        optionalTarget = null,
-                        position = chooseModel.cardDeployPosition.position,
-                        pivotPosition = null,
-                        chooseCardTemplateId = chooseModel.chosenTemplateId
-                    });
-                    chooseModel = null;
+                    clickedPiece = pieceAtTile.pieceView;
                 }
-                else
+            }
+            if (clickModel.piece)
+            {
+                clickedPiece = clickModel.piece;
+            }
+
+            if (clickedPiece != null)
+            {
+                if (clickedPiece.piece.tags.Contains(Constants.targetPieceTag))
                 {
-                    updateChoose.Dispatch(chooseModel);
+                    //clicking on phantom piece shouldn't do anything
                     return;
                 }
-                return;
+
+                //target click handling is elsewhere
+                if (cardTarget != null || abilityTarget != null)
+                {
+                    pieceClicked.Dispatch(clickedPiece);
+                }
             }
 
-            pieceSelected.Dispatch(null);
-            if (draggedCard.isMinion)
+            if (doActivateWork(clickModel.tile))
             {
-                pieceSpawning.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
+                sounds.PlaySound("playCard");
+                DeselectCard();
             }
-            cardSelected.Dispatch(new CardSelectedModel() { card = draggedCard, point = point });
         }
 
         //when you try to activate a card either by the click and drag click up or a click on a tile/piece
-        private void onActivate(GameObject activated)
-        {
-            sounds.PlaySound("playCard");
-            var itWorked = doActivateWork(activated);
-            if (itWorked)
-            {
-                view.ClearDrag();
-                cardSelected.Dispatch(null);
-            }
-        }
-
         //returns whether or not the activate was a good one or not
-        private bool doActivateWork(GameObject activated)
+        private bool doActivateWork(Tile gameTile)
         {
-            if (activated == null || draggedCard == null)
+            if (draggedCard == null)
             {
                 cardSelected.Dispatch(null);
                 return false;
             }
 
-            if (!activated.CompareTag("Tile"))
+            //skip for already activated
+            if (draggedCard.activated)
             {
                 return false;
             }
@@ -293,6 +392,10 @@ namespace ctac
             //if targeting is in progress the target mediator will handle the activate
             if (cardTarget != null)
             {
+                if (gameTile != null)
+                {
+                    tileClicked.Dispatch(gameTile);
+                }
                 return true;
             }
 
@@ -303,12 +406,10 @@ namespace ctac
                 return false;
             }
 
-            var gameTile = map.tiles.Get(activated.transform.position.ToTileCoordinates());
-
             if (draggedCard.isMinion)
             {
                 //basic sanity checks first
-                if (gameTile.unpassable)
+                if (gameTile == null || gameTile.unpassable)
                 {
                     message.Dispatch(new MessageModel() { message = "That location doesn't look safe!", duration = 1f });
                     return false;
@@ -348,12 +449,13 @@ namespace ctac
             activateCard.Dispatch(new ActivateModel()
             {
                 cardActivated = draggedCard,
-                position = gameTile.position,
+                position = gameTile != null ? gameTile.position : (Vector2?)null,
                 optionalTarget = null
             });
             return true;
         }
 
+        CardView lastHoveredCard = null;
         private void onHover(GameObject hoveredObject)
         {
             if (hoveredObject != null)
@@ -384,6 +486,19 @@ namespace ctac
             }
         }
 
+        private void DeselectCard()
+        {
+            draggedCard = null;
+            cardSelected.Dispatch(null);
+            pieceSpawning.Dispatch(null);
+            clickMode = ClickMode.Neutral;
+        }
+
+        private bool CardInsideCircle(Vector3 position, float boost)
+        {
+            var distToCenter = Vector2.Distance(position, Constants.cardCircleCenter);
+            return distToCenter < Constants.cardCircleRadius * boost;
+        }
 
         [ListensTo(typeof(StartSelectAbilityTargetSignal))]
         public void onStartAbilityTarget(StartAbilityTargetModel model)
@@ -423,12 +538,6 @@ namespace ctac
         }
 
 
-        [ListensTo(typeof(StartSelectTargetSignal))]
-        public void onStartTarget(TargetModel model)
-        {
-            cardTarget = model;
-        }
-
         [ListensTo(typeof(CancelSelectTargetSignal))]
         public void onTargetCancel(CardModel card)
         {
@@ -439,8 +548,14 @@ namespace ctac
                 cancelChoose.Dispatch(chooseModel);
             }
             chooseModel = null;
-            view.ClearDrag();
+            draggedCard = null;
             cardSelected.Dispatch(null);
+        }
+
+        [ListensTo(typeof(StartSelectTargetSignal))]
+        public void onStartTarget(TargetModel model)
+        {
+            cardTarget = model;
         }
 
         [ListensTo(typeof(SelectTargetSignal))]

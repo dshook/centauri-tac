@@ -10,8 +10,14 @@ namespace ctac
         public GameObject clickedObject { get; set; }
         public Tile tile { get; set; }
         public PieceView piece { get; set; }
+        public bool isDrag { get; set; }
+    }
+
+    public class CardClickModel
+    {
+        public GameObject clickedCard { get; set; }
+        public Vector3 position { get; set; }
         public bool isUp { get; set; }
-        public float? clickTime { get; set; }
     }
 
     public class ClickView : View
@@ -19,108 +25,90 @@ namespace ctac
         [Inject] public GameInputStatusModel gameInputStatus { get; set; }
 
         internal Signal<ClickModel> clickSignal = new Signal<ClickModel>();
-
-        internal Signal<GameObject, Vector3> cardClickSignal = new Signal<GameObject, Vector3>();
-        internal Signal<GameObject> activateSignal = new Signal<GameObject>();
+        internal Signal<CardClickModel> cardClickSignal = new Signal<CardClickModel>();
         internal Signal<GameObject> hoverSignal = new Signal<GameObject>();
         RaycastModel raycastModel;
 
         bool active = false;
-        GameObject draggedCard;
-        float dragTimer = 0f;
-        float dragMin = 0.10f;
+        const float singleClickThreshold = 0.5f;
+
+        //how far has the mouse been dragged total
+        float dragAccumulator = 0f;
+        const float dragDistThreshold = 10f;
+        bool isDragging = false;
+        Vector2 lastDragPos = Vector2.zero;
 
         internal void init(RaycastModel rm)
         {
             active = true;
             raycastModel = rm;
-            cardClickSignal.AddListener(onCardClick);
-        }
-
-        float clickTimeAccum = 0f;
-
-        void onCardClick(GameObject g, Vector3 v)
-        {
-            draggedCard = g;
         }
 
         void Update()
         {
             if (!active || !gameInputStatus.inputEnabled) { return; }
 
-            clickTimeAccum += Time.deltaTime;
-
-            if (CrossPlatformInputManager.GetButtonDown("Fire1") )
-            {
-                clickTimeAccum = 0f;
-                TestSelection(false, null);
-            }
-            if (CrossPlatformInputManager.GetButtonUp("Fire1"))
-            {
-                TestSelection(true, clickTimeAccum);
-            }
-
-            //right click et al deselects
-            if (CrossPlatformInputManager.GetButtonDown("Fire2"))
-            {
-                clickSignal.Dispatch(new ClickModel() { isUp = false });
-            }
-
-
-
-            var hoverHit = raycastModel.cardCanvasHit;
-
             //check to see if a card in a hand has been hovered
             //also check to see if the hit object has been destroyed in the meantime
-            if (hoverHit.HasValue 
-                && hoverHit.Value.collider != null
-                && hoverHit.Value.collider.gameObject.transform.parent.name == "cardCanvas"
+            var canvasHoverHit = raycastModel.cardCanvasHit;
+            if (canvasHoverHit.HasValue 
+                && canvasHoverHit.Value.collider != null
+                //make sure it's not a deck card hover
+                && canvasHoverHit.Value.collider.gameObject.transform.parent.name == "cardCanvas" 
             )
             {
-                hoverSignal.Dispatch(hoverHit.Value.collider.gameObject);
+                hoverSignal.Dispatch(canvasHoverHit.Value.collider.gameObject);
             }
             else
             {
                 hoverSignal.Dispatch(null);
             }
 
-            if (draggedCard != null)
+            if (isDragging)
             {
-                dragTimer += Time.deltaTime;
+                dragAccumulator += Vector2.Distance(lastDragPos, CrossPlatformInputManager.mousePosition);
+                lastDragPos = CrossPlatformInputManager.mousePosition;
             }
 
-            if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonUp("Fire1")) {
-                if (draggedCard != null && dragTimer > dragMin)
-                {
-                    TestActivate();
-                }
-            }
-
-            if (gameInputStatus.inputEnabled && CrossPlatformInputManager.GetButtonDown("Fire1"))
+            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                //if we're already dragging, test the activate, otherwise start dragging
-                if (draggedCard != null && dragTimer > dragMin)
+                isDragging = true;
+                lastDragPos = CrossPlatformInputManager.mousePosition;
+                dragAccumulator = 0f;
+
+                if (canvasHoverHit.HasValue)
                 {
-                    TestActivate();
+                    cardClickSignal.Dispatch(new CardClickModel(){
+                        clickedCard = canvasHoverHit.Value.collider.gameObject,
+                        position = canvasHoverHit.Value.point,
+                        isUp = false
+                    });
                 }
                 else
                 {
-                    if (hoverHit.HasValue)
-                    {
-                        cardClickSignal.Dispatch(hoverHit.Value.collider.gameObject, hoverHit.Value.point);
-                    }
-                    else
-                    {
-                        cardClickSignal.Dispatch(null, Vector3.zero);
-                    }
+                    //cardClickSignal.Dispatch(null);
                 }
+            }
+
+            if (CrossPlatformInputManager.GetButtonUp("Fire1")) {
+                isDragging = false;
+                if (canvasHoverHit.HasValue)
+                {
+                    cardClickSignal.Dispatch(new CardClickModel(){
+                        clickedCard = canvasHoverHit.Value.collider.gameObject,
+                        position = canvasHoverHit.Value.point,
+                        isUp = true
+                    });
+                }
+                TestWorldHit(true);
             }
 
             //right click et al deselects
             if (CrossPlatformInputManager.GetButtonDown("Fire2"))
             {
-                cardClickSignal.Dispatch(null, Vector3.zero);
-                dragTimer = 0f;
+                isDragging = false;
+                cardClickSignal.Dispatch(null);
+                clickSignal.Dispatch(null);
             }
 
             //if (camRay.origin != null)
@@ -129,7 +117,7 @@ namespace ctac
             //}
         }
 
-        void TestSelection(bool isUp, float? time)
+        void TestWorldHit(bool isUp)
         {
             if (raycastModel.worldHit.HasValue && !raycastModel.cardCanvasHit.HasValue)
             {
@@ -137,48 +125,14 @@ namespace ctac
                     clickedObject = raycastModel.worldHit.Value.collider.gameObject,
                     piece = raycastModel.piece,
                     tile = raycastModel.tile,
-                    isUp = isUp,
-                    clickTime = time
+                    isDrag = dragAccumulator > dragDistThreshold
                 });
             }
             else if(!raycastModel.cardCanvasHit.HasValue)
             {
-                clickSignal.Dispatch(new ClickModel() { isUp = isUp });
+                clickSignal.Dispatch(null);
             }
         }
-
-        bool TestActivate()
-        {
-            bool hit = false;
-            if (raycastModel.tile != null)
-            {
-                hit = true;
-                activateSignal.Dispatch(raycastModel.tile.gameObject);
-            }
-            else
-            {
-                activateSignal.Dispatch(null);
-                cardClickSignal.Dispatch(null, Vector3.zero);
-            }
-            //if (raycastModel.worldHit.HasValue)
-            //{
-            //    hit = true;
-            //    activateSignal.Dispatch(raycastModel.worldHit.Value.collider.gameObject);
-            //}
-            //else
-            //{
-            //    activateSignal.Dispatch(null);
-            //    clickSignal.Dispatch(null, Vector3.zero);
-            //}
-            return hit;
-        }
-
-        internal void ClearDrag()
-        {
-            draggedCard = null;
-            dragTimer = 0f;
-        }
-
     }
 }
 

@@ -30,10 +30,7 @@ namespace ctac {
         private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
-        private Vector3 cardCircleCenter = new Vector3(0, -590, 332);
-        private Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
-        private float cardCircleRadius = 480f;
-        private float cardAngleSpread = -5f;
+        private float cardAngleSpread = -2f;
 
         protected override void Start()
         {
@@ -72,7 +69,7 @@ namespace ctac {
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f + cardCountOffset * cardAngleSpread));
                 rectTransform.Rotate(Vector3.up, 180f, Space.Self);
 
-                dest = PointOnCircle(cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, opponentCardCircleCenter);
+                dest = PointOnCircle(Constants.cardCircleRadius, 270f + cardCountOffset * cardAngleSpread, Constants.opponentCardCircleCenter);
                 dest = dest.SetZ(dest.z + (-1.0f * c));
 
                 rectTransform.anchorMax = opponentAnchorPosition;
@@ -91,7 +88,7 @@ namespace ctac {
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
 
-                dest = PointOnCircle(cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, cardCircleCenter);
+                dest = PointOnCircle(Constants.cardCircleRadius, 90f + cardCountOffset * cardAngleSpread, Constants.cardCircleCenter);
                 dest = dest.SetZ(dest.z + (-1.0f * c));
 
                 //drag the selected card with the cursor

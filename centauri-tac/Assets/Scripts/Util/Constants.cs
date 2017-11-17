@@ -23,6 +23,11 @@ namespace ctac
         {
             "playMinion","death","damaged","healed","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
         };
+
+
+        public static Vector3 cardCircleCenter = new Vector3(0, -590, 332);
+        public static Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
+        public static float cardCircleRadius = 480f;
     }
 
     public enum InjectionKeys
