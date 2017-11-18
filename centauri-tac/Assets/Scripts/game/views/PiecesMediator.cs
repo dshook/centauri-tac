@@ -15,9 +15,30 @@ namespace ctac
 
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public MapModel map { get; set; }
+
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
+        [ListensTo(typeof(PieceSpawnedSignal))]
+        public void onPieceSpawn(PieceSpawnedModel piece)
+        {
+            if (piece.alreadyDeployed) return;
+
+            animationQueue.Add(new PieceView.SpawnAnim() {
+                piece = piece.piece.pieceView,
+                map = map,
+                mapService = mapService,
+                Async = piece.runAsync
+            });
+            animationQueue.Add(
+                new PieceView.ChangeStatusAnim()
+                {
+                    pieceView = piece.piece.pieceView,
+                    pieceStatusChange = new PieceStatusChangeModel() { add = piece.piece.statuses, statuses = piece.piece.statuses }
+                }
+            );
+        }
 
         [ListensTo(typeof(PieceMovedSignal))]
         public void onMove(PieceMovedModel pieceMoved)

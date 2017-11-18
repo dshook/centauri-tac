@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using TMPro;
+using ctac.signals;
 
 namespace ctac
 {
@@ -13,6 +14,7 @@ namespace ctac
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
 
         [Inject] public IMapCreatorService mapCreator { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
@@ -92,15 +94,16 @@ namespace ctac
 
                 //if (!spawnIds.Contains(minionCard.cardTemplateId)) { continue; }
                 var piecePosition = new Vector2(pRow * 2, pCol * 2);
-
-                pieceService.CreatePiece(new SpawnPieceModel()
+                var newSpawnPiece = new SpawnPieceModel()
                 {
                     pieceId = minionCard.cardTemplateId,
                     cardTemplateId = minionCard.cardTemplateId,
                     playerId = 1,
                     position = new PositionModel(piecePosition),
                     direction = Direction.South
-                });
+                };
+                var newPiece = pieceService.CreatePiece(newSpawnPiece);
+                pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = newSpawnPiece, piece = newPiece, runAsync = true });
 
                 //setup tile text on map
                 var tile = map.tiles[piecePosition];

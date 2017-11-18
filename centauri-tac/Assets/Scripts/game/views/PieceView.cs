@@ -294,7 +294,7 @@ namespace ctac {
         public class SpawnAnim : IAnimate
         {
             public bool Complete { get; set; }
-            public bool Async { get { return false; } }
+            public bool Async { get; set; }
             public float? postDelay { get { return null; } }
 
             public PieceView piece { get; set; }

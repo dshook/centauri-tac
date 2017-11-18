@@ -18,11 +18,9 @@ namespace ctac
 
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public MapModel map { get; set; }
-        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IDebugService debug { get; set; }
-        [Inject] public IMapService mapService { get; set; }
 
         public override void Execute()
         {
@@ -56,18 +54,6 @@ namespace ctac
             {
                 pieceModel = pieceService.CreatePiece(spawnedPiece);
                 var pieceView = pieceModel.gameObject.GetComponent<PieceView>();
-                animationQueue.Add(new PieceView.SpawnAnim() {
-                    piece = pieceView,
-                    map = map,
-                    mapService = mapService
-                });
-                animationQueue.Add(
-                    new PieceView.ChangeStatusAnim()
-                    {
-                        pieceView = pieceView,
-                        pieceStatusChange = new PieceStatusChangeModel() { add = pieceModel.statuses, statuses = pieceModel.statuses }
-                    }
-                );
             }
 
             pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = spawnedPiece, piece = pieceModel });
