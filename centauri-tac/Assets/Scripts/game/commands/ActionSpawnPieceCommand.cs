@@ -56,7 +56,7 @@ namespace ctac
                 var pieceView = pieceModel.gameObject.GetComponent<PieceView>();
             }
 
-            pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = spawnedPiece, piece = pieceModel });
+            pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = spawnedPiece, piece = pieceModel, alreadyDeployed = phantomPiece != null });
             debug.Log(string.Format("Spawned piece {0} for player {1}", spawnedPiece.cardTemplateId, spawnedPiece.playerId), socketKey);
         }
     }
