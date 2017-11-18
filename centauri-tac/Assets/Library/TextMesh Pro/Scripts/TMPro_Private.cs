@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.56.0b11
+// Release 1.0.55.2017.2.0b12
 
 
 #define PROFILE_ON
@@ -875,10 +875,30 @@ namespace TMPro
             if (m_isCullingEnabled)
             {
                 m_renderer.material.SetFloat("_CullMode", 2);
+
+                for (int i = 1; i < m_subTextObjects.Length && m_subTextObjects[i] != null; i++)
+                {
+                    Renderer renderer = m_subTextObjects[i].renderer;
+
+                    if (renderer != null)
+                    {
+                        renderer.material.SetFloat(ShaderUtilities.ShaderTag_CullMode, 2);
+                    }
+                }
             }
             else
             {
                 m_renderer.material.SetFloat("_CullMode", 0);
+
+                for (int i = 1; i < m_subTextObjects.Length && m_subTextObjects[i] != null; i++)
+                {
+                    Renderer renderer = m_subTextObjects[i].renderer;
+
+                    if (renderer != null)
+                    {
+                        renderer.material.SetFloat(ShaderUtilities.ShaderTag_CullMode, 0);
+                    }
+                }
             }
         }
 
@@ -1208,6 +1228,7 @@ namespace TMPro
                     if (tempFontAsset.GetInstanceID() != m_currentFontAsset.GetInstanceID())
                     {
                         isUsingFallback = true;
+                        isUsingAlternativeTypeface = false;
                         m_currentFontAsset = tempFontAsset;
                     }
                 }
@@ -1601,6 +1622,7 @@ namespace TMPro
             float bold_xAdvance_multiplier = 1; // Used to increase spacing between character when style is bold.
 
             m_baselineOffset = 0; // Used by subscript characters.
+            m_baselineOffsetStack.Clear();
 
             // Underline
             bool beginUnderline = false;

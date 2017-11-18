@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
+// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
 
@@ -184,9 +184,9 @@ namespace SVGImporter
         {            
             float aspect = 1f;
             if(svgAsset != null) aspect = assetBounds.size.x / assetBounds.size.y;
-            _previewResolution = Mathf.CeilToInt(windowRect.width);
-			return RenderTexture.GetTemporary(_previewResolution, 
-			                                  Mathf.CeilToInt(_previewResolution / aspect), 
+            _previewResolution = Mathf.Clamp(Mathf.CeilToInt(windowRect.width), 0, 8192);
+			return RenderTexture.GetTemporary(_previewResolution,
+                                              Mathf.Clamp(Mathf.CeilToInt(_previewResolution / aspect), 0, 8192), 
 			                                  24, 
 			                                  RenderTextureFormat.Default, 
 			                                  RenderTextureReadWrite.Default,
@@ -248,6 +248,7 @@ namespace SVGImporter
 
             _editorRenderer.gameObject.SetActive(true);
 			editorCamera.targetTexture = GetRenderTexture();
+            SVGAtlas.Instance.OnPreRender();
             editorCamera.Render();
             _editorRenderer.gameObject.SetActive(false);
         }
@@ -890,7 +891,7 @@ namespace SVGImporter
 				for(int i = 0; i < sharedMaterials.Length; i++)
 				{
 					if(sharedMaterials[i] == null) continue;
-					outputMaterials[i] = Instantiate<Material>(sharedMaterials[i]);
+					outputMaterials[i] = Instantiate(sharedMaterials[i]) as Material;
 					if(outputMaterials[i].HasProperty("_Params"))
 					{
 						outputMaterials[i].SetVector("_Params", new Vector4(gradientAtlas.width, gradientAtlas.height, SVGAtlas.defaultGradientWidth, SVGAtlas.defaultGradientHeight));

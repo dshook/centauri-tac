@@ -468,6 +468,7 @@ namespace SVGImporter
         {
             if(hasGradients)
             {
+                MonoBehaviour mb = reference as MonoBehaviour;                
                 if(SVGAtlas.beingDestroyed) return;
                 for(int i = 0; i < _sharedGradients.Length; i++)
                 {
@@ -488,6 +489,7 @@ namespace SVGImporter
         {
             if(hasGradients)
             {
+                MonoBehaviour mb = reference as MonoBehaviour;                
                 int totalReferences = 0;
                 if(SVGAtlas.beingDestroyed) return;
                 for(int i = 0; i < _sharedGradients.Length; i++)
@@ -1381,8 +1383,7 @@ namespace SVGImporter
                             if(outputShaders[i] == null) continue;
                             if(outputShaders[i].name == SVGShader.GradientColorOpaque.name ||
                                outputShaders[i].name == SVGShader.GradientColorAlphaBlended.name ||
-                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiased.name ||
-                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiasedCompressed.name)
+                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiased.name)
                             {
                                 hasGradients = true;
                                 break;

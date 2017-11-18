@@ -399,6 +399,11 @@ namespace TMPro
                 if (m_StringPosition > m_Text.Length)
                     m_StringPosition = m_StringSelectPosition = m_Text.Length;
 
+                // Set RectTransform relative position to top of viewport.
+                AdjustTextPositionRelativeToViewport(0);
+
+                m_forceRectTransformAdjustment = true;
+
                 SendOnValueChangedAndUpdateLabel();
             }
         }
@@ -620,6 +625,7 @@ namespace TMPro
         private bool hasSelection { get { return stringPositionInternal != stringSelectPositionInternal; } }
         private bool m_isSelected;
         private bool isStringPositionDirty;
+        private bool m_forceRectTransformAdjustment;
 
         /// <summary>
         /// Get: Returns the focus position as thats the position that moves around even during selection.
@@ -2832,7 +2838,7 @@ namespace TMPro
             //Debug.Log("String Char [" + m_Text[m_StringPosition] + "] at Index:" + m_StringPosition + "  Caret Char [" + currentCharacter.character + "] at Index:" + caretPositionInternal);
 
             // Adjust the position of the RectTransform based on the caret position in the viewport (only if we have focus).
-            if (isFocused && startPosition != m_LastPosition)
+            if (isFocused && startPosition != m_LastPosition || m_forceRectTransformAdjustment)
                 AdjustRectTransformRelativeToViewport(startPosition, height, currentCharacter.isVisible);
 
             m_LastPosition = startPosition;
@@ -3056,6 +3062,8 @@ namespace TMPro
 
                 m_isLastKeyBackspace = false;
             }
+
+            m_forceRectTransformAdjustment = false;
         }
 
         /// <summary>

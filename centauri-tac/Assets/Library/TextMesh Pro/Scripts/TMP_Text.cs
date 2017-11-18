@@ -1,7 +1,7 @@
 ﻿// Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.56.0b11
+// Release 1.0.55.2017.2.0b12
 
 
 using UnityEngine;
@@ -1318,7 +1318,7 @@ namespace TMPro
         [SerializeField]
         protected TextInputSources m_inputSource;
         protected string old_text; // Used by SetText to determine if the text has changed.
-        protected float old_arg0, old_arg1, old_arg2; // Used by SetText to determine if the args have changed.
+        //protected float old_arg0, old_arg1, old_arg2; // Used by SetText to determine if the args have changed.
 
 
         protected float m_fontScale; // Scaling of the font based on Atlas true Font Size and Rendered Font Size.  
@@ -1394,6 +1394,7 @@ namespace TMPro
 
         protected float m_padding = 0;
         protected float m_baselineOffset; // Used for superscript and subscript.
+        protected TMP_XmlTagStack<float> m_baselineOffsetStack = new TMP_XmlTagStack<float>(new float[16]);
         protected float m_xAdvance; // Tracks x advancement from character to character.
 
         protected TMP_TextElementType m_textElementType;
@@ -1726,9 +1727,9 @@ namespace TMPro
         /// <param name="text"></param>
         public void SetText(string text, bool syncTextInputBox)
         {
-            if (text == old_text) return;
+            //if (text == old_text) return;
 
-            old_text = text;
+            //old_text = text;
 
             m_inputSource = TextInputSources.SetCharArray;
 
@@ -1787,14 +1788,14 @@ namespace TMPro
         public void SetText(string text, float arg0, float arg1, float arg2)
         {
             // Early out if nothing has been changed from previous invocation.
-            if (text == old_text && arg0 == old_arg0 && arg1 == old_arg1 && arg2 == old_arg2)
-            {
-                return;
-            }
+            //if (text == old_text && arg0 == old_arg0 && arg1 == old_arg1 && arg2 == old_arg2)
+            //{
+            //    return;
+            //}
 
-            old_text = text;
-            old_arg1 = 255;
-            old_arg2 = 255;
+            //old_text = text;
+            //old_arg1 = 255;
+            //old_arg2 = 255;
 
             int decimalPrecision = 0;
             int index = 0;
@@ -1814,15 +1815,15 @@ namespace TMPro
                     switch (text[i + 1] - 48)
                     {
                         case 0: // 1st Arg
-                            old_arg0 = arg0;
+                            //old_arg0 = arg0;
                             AddFloatToCharArray(arg0, ref index, decimalPrecision);
                             break;
                         case 1: // 2nd Arg
-                            old_arg1 = arg1;
+                            //old_arg1 = arg1;
                             AddFloatToCharArray(arg1, ref index, decimalPrecision);
                             break;
                         case 2: // 3rd Arg
-                            old_arg2 = arg2;
+                            //old_arg2 = arg2;
                             AddFloatToCharArray(arg2, ref index, decimalPrecision);
                             break;
                     }
@@ -1972,8 +1973,12 @@ namespace TMPro
             m_char_buffer[writeIndex] = (char)0;
 
             m_inputSource = TextInputSources.SetCharArray;
-            m_havePropertiesChanged = true;
             m_isInputParsingRequired = true;
+            m_havePropertiesChanged = true;
+            m_isCalculateSizeRequired = true;
+
+            SetVerticesDirty();
+            SetLayoutDirty();
         }
 
 
@@ -1981,7 +1986,7 @@ namespace TMPro
         /// Character array containing the text to be displayed.
         /// </summary>
         /// <param name="sourceText"></param>
-        public void SetCharArray(int[] sourceText, int start, int length)
+        public void SetCharArray(char[] sourceText, int start, int length)
         {
             if (sourceText == null || sourceText.Length == 0 || length == 0)
                 return;
@@ -1993,11 +1998,13 @@ namespace TMPro
 
             int writeIndex = 0;
 
-            for (int i = 0; i < length; i++)
+            int i = start;
+            int end = start + length;
+            for (; i < end; i++)
             {
-                if (sourceText[start + i] == 92 && i < length - 1)
+                if (sourceText[i] == 92 && i < length - 1)
                 {
-                    switch ((int)sourceText[start + i + 1])
+                    switch ((int)sourceText[i + 1])
                     {
                         case 110: // \n LineFeed
                             if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
@@ -2057,7 +2064,7 @@ namespace TMPro
 
                 if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
 
-                m_char_buffer[writeIndex] = sourceText[start + i];
+                m_char_buffer[writeIndex] = sourceText[i];
                 writeIndex += 1;
             }
 
@@ -2068,7 +2075,106 @@ namespace TMPro
             m_inputSource = TextInputSources.SetCharArray;
             m_havePropertiesChanged = true;
             m_isInputParsingRequired = true;
+            m_isCalculateSizeRequired = true;
 
+            SetVerticesDirty();
+            SetLayoutDirty();
+        }
+
+
+        /// <summary>
+        /// Character array containing the text to be displayed.
+        /// </summary>
+        /// <param name="sourceText"></param>
+        public void SetCharArray(int[] sourceText, int start, int length)
+        {
+            if (sourceText == null || sourceText.Length == 0 || length == 0)
+                return;
+
+            if (m_char_buffer == null) m_char_buffer = new int[8];
+
+            // Clear the Style stack.
+            m_styleStack.Clear();
+
+            int writeIndex = 0;
+
+            int i = start;
+            int end = start + length;
+            for (; i < end; i++)
+            {
+                if (sourceText[i] == 92 && i < length - 1)
+                {
+                    switch ((int)sourceText[i + 1])
+                    {
+                        case 110: // \n LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+                            m_char_buffer[writeIndex] = (char)10;
+                            i += 1;
+                            writeIndex += 1;
+                            continue;
+                        case 114: // \r LineFeed
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+                            m_char_buffer[writeIndex] = (char)13;
+                            i += 1;
+                            writeIndex += 1;
+                            continue;
+                        case 116: // \t Tab
+                            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+                            m_char_buffer[writeIndex] = (char)9;
+                            i += 1;
+                            writeIndex += 1;
+                            continue;
+                    }
+                }
+
+                // Handle inline replacement of <stlye> and <br> tags.
+                if (sourceText[i] == 60)
+                {
+                    if (IsTagName(ref sourceText, "<BR>", i))
+                    {
+                        if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+                        m_char_buffer[writeIndex] = 10; ;
+                        writeIndex += 1;
+                        i += 3;
+
+                        continue;
+                    }
+                    else if (IsTagName(ref sourceText, "<STYLE=", i))
+                    {
+                        int srcOffset = 0;
+                        if (ReplaceOpeningStyleTag(ref sourceText, i, out srcOffset, ref m_char_buffer, ref writeIndex))
+                        {
+                            i = srcOffset;
+                            continue;
+                        }
+                    }
+                    else if (IsTagName(ref sourceText, "</STYLE>", i))
+                    {
+                        ReplaceClosingStyleTag(ref sourceText, i, ref m_char_buffer, ref writeIndex);
+
+                        // Strip </style> even if style is invalid.
+                        i += 7;
+                        continue;
+                    }
+                }
+
+                if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+                m_char_buffer[writeIndex] = sourceText[i];
+                writeIndex += 1;
+            }
+
+            if (writeIndex == m_char_buffer.Length) ResizeInternalArray(ref m_char_buffer);
+
+            m_char_buffer[writeIndex] = (char)0;
+
+            m_inputSource = TextInputSources.SetCharArray;
+            m_havePropertiesChanged = true;
+            m_isInputParsingRequired = true;
             m_isCalculateSizeRequired = true;
 
             SetVerticesDirty();
@@ -3594,8 +3700,7 @@ namespace TMPro
             float bold_xAdvance_multiplier = 1; // Used to increase spacing between character when style is bold.
 
             m_baselineOffset = 0; // Used by subscript characters.
-
-            //m_styleStack.Clear();
+            m_baselineOffsetStack.Clear();
 
             m_lineOffset = 0; // Amount of space between lines (font line spacing + m_linespacing).
             m_lineHeight = TMP_Math.FLOAT_UNSET;
@@ -3995,7 +4100,7 @@ namespace TMPro
 
                         // Text Auto-Sizing (text exceeding Width of container. 
                         #region Handle Text Auto-Sizing
-                        if (ignoreTextAutoSizing == false && m_currentFontSize > m_fontSizeMin)
+                        if (ignoreTextAutoSizing == false && defaultFontSize > m_fontSizeMin)
                         {
                             // Handle Character Width Adjustments
                             #region Character Width Adjustments
@@ -4009,13 +4114,13 @@ namespace TMPro
                             #endregion
 
                             // Adjust Point Size
-                            m_maxFontSize = m_currentFontSize;
+                            m_maxFontSize = defaultFontSize;
 
-                            m_currentFontSize -= Mathf.Max((m_currentFontSize - m_minFontSize) / 2, 0.05f);
-                            m_currentFontSize = (int)(Mathf.Max(m_currentFontSize, m_fontSizeMin) * 20 + 0.5f) / 20f;
+                            defaultFontSize -= Mathf.Max((defaultFontSize - m_minFontSize) / 2, 0.05f);
+                            defaultFontSize = (int)(Mathf.Max(defaultFontSize, m_fontSizeMin) * 20 + 0.5f) / 20f;
 
                             if (m_recursiveCount > 20) return new Vector2(renderedWidth, renderedHeight);
-                            Vector2 preferredValues = CalculatePreferredValues(m_currentFontSize, marginSize, false);
+                            Vector2 preferredValues = CalculatePreferredValues(defaultFontSize, marginSize, false);
                             return preferredValues;
                         }
                         #endregion End Text Auto-Sizing
@@ -4227,14 +4332,14 @@ namespace TMPro
             // Check Auto Sizing and increase font size to fill text container.
             #region Check Auto-Sizing (Upper Font Size Bounds)
             fontSizeDelta = m_maxFontSize - m_minFontSize;
-            if (!m_isCharacterWrappingEnabled && ignoreTextAutoSizing == false && fontSizeDelta > 0.051f && m_currentFontSize < m_fontSizeMax)
+            if (!m_isCharacterWrappingEnabled && ignoreTextAutoSizing == false && fontSizeDelta > 0.051f && defaultFontSize < m_fontSizeMax)
             {
-                m_minFontSize = m_currentFontSize;
-                m_currentFontSize += Mathf.Max((m_maxFontSize - m_currentFontSize) / 2, 0.05f);
-                m_currentFontSize = (int)(Mathf.Min(m_currentFontSize, m_fontSizeMax) * 20 + 0.5f) / 20f;
+                m_minFontSize = defaultFontSize;
+                defaultFontSize += Mathf.Max((m_maxFontSize - defaultFontSize) / 2, 0.05f);
+                defaultFontSize = (int)(Mathf.Min(defaultFontSize, m_fontSizeMax) * 20 + 0.5f) / 20f;
 
                 if (m_recursiveCount > 20) return new Vector2(renderedWidth, renderedHeight);
-                Vector2 preferredValues = CalculatePreferredValues(m_currentFontSize, marginSize, false);
+                Vector2 preferredValues = CalculatePreferredValues(defaultFontSize, marginSize, false);
                 return preferredValues;
             }
             #endregion End Auto-sizing Check
@@ -4310,11 +4415,11 @@ namespace TMPro
 
             Extents extent = new Extents(k_LargePositiveVector2, k_LargeNegativeVector2);
 
-            for (int i = 0; i < m_textInfo.characterCount && i < m_maxVisibleCharacters; i++)
+            for (int i = 0; i < m_textInfo.characterCount; i++)
             {
-                if (!m_textInfo.characterInfo[i].isVisible) continue;
+                if ((i > maxVisibleCharacters || m_textInfo.characterInfo[i].lineNumber > m_maxVisibleLines) && onlyVisibleCharacters) break;
 
-                if (m_textInfo.characterInfo[i].lineNumber > m_maxVisibleLines) break;
+                if (onlyVisibleCharacters && !m_textInfo.characterInfo[i].isVisible) continue;
 
                 extent.min.x = Mathf.Min(extent.min.x, m_textInfo.characterInfo[i].origin);
                 extent.min.y = Mathf.Min(extent.min.y, m_textInfo.characterInfo[i].descender);
@@ -4502,6 +4607,7 @@ namespace TMPro
             state.indentStack = m_indentStack;
             state.fontWeightStack = m_fontWeightStack;
             state.styleStack = m_styleStack;
+            state.baselineStack = m_baselineOffsetStack;
             state.actionStack = m_actionStack;
             state.materialReferenceStack = m_materialReferenceStack;
             state.lineJustificationStack = m_lineJustificationStack;
@@ -4577,6 +4683,7 @@ namespace TMPro
             m_indentStack = state.indentStack;
             m_fontWeightStack = state.fontWeightStack;
             m_styleStack = state.styleStack;
+            m_baselineOffsetStack = state.baselineStack;
             m_actionStack = state.actionStack;
             m_materialReferenceStack = state.materialReferenceStack;
             m_lineJustificationStack = state.lineJustificationStack;
@@ -6083,6 +6190,7 @@ namespace TMPro
                     case 6552: // <sub>
                     case 4728: // <SUB>
                         m_fontScaleMultiplier *= m_currentFontAsset.fontInfo.SubSize > 0 ? m_currentFontAsset.fontInfo.SubSize : 1;
+                        m_baselineOffsetStack.Push(m_baselineOffset);
                         m_baselineOffset += m_currentFontAsset.fontInfo.SubscriptOffset * m_fontScale * m_fontScaleMultiplier;
 
                         m_fontStyleStack.Add(FontStyles.Subscript);
@@ -6094,7 +6202,8 @@ namespace TMPro
                         {
                             if (m_fontScaleMultiplier < 1)
                             {
-                                m_baselineOffset -= m_currentFontAsset.fontInfo.SubscriptOffset * m_fontScale * m_fontScaleMultiplier;
+                                //m_baselineOffset -= m_currentFontAsset.fontInfo.SubscriptOffset * m_fontScale * m_fontScaleMultiplier;
+                                m_baselineOffset = m_baselineOffsetStack.Pop();
                                 m_fontScaleMultiplier /= m_currentFontAsset.fontInfo.SubSize > 0 ? m_currentFontAsset.fontInfo.SubSize : 1;
                             }
 
@@ -6105,6 +6214,7 @@ namespace TMPro
                     case 6566: // <sup>
                     case 4742: // <SUP>
                         m_fontScaleMultiplier *= m_currentFontAsset.fontInfo.SubSize > 0 ? m_currentFontAsset.fontInfo.SubSize : 1;
+                        m_baselineOffsetStack.Push(m_baselineOffset);
                         m_baselineOffset += m_currentFontAsset.fontInfo.SuperscriptOffset * m_fontScale * m_fontScaleMultiplier;
 
                         m_fontStyleStack.Add(FontStyles.Superscript);
@@ -6116,7 +6226,8 @@ namespace TMPro
                         {
                             if (m_fontScaleMultiplier < 1)
                             {
-                                m_baselineOffset -= m_currentFontAsset.fontInfo.SuperscriptOffset * m_fontScale * m_fontScaleMultiplier;
+                                //m_baselineOffset -= m_currentFontAsset.fontInfo.SuperscriptOffset * m_fontScale * m_fontScaleMultiplier;
+                                m_baselineOffset = m_baselineOffsetStack.Pop();
                                 m_fontScaleMultiplier /= m_currentFontAsset.fontInfo.SubSize > 0 ? m_currentFontAsset.fontInfo.SubSize : 1;
                             }
 
@@ -6956,6 +7067,10 @@ namespace TMPro
                                     }
 
                                     break;
+                                //case 45545: // size
+                                //case 32745: // SIZE
+
+                                //    break;
                                 default:
                                     if (nameHashCode != 2246877 && nameHashCode != 1619421)
                                         return false;

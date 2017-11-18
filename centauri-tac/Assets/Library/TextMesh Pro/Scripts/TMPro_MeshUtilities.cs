@@ -387,6 +387,7 @@ namespace TMPro
         public TMP_XmlTagStack<float> indentStack;
         public TMP_XmlTagStack<int> fontWeightStack;
         public TMP_XmlTagStack<int> styleStack;
+        public TMP_XmlTagStack<float> baselineStack;
         public TMP_XmlTagStack<int> actionStack;
         public TMP_XmlTagStack<MaterialReference> materialReferenceStack;
         public TMP_XmlTagStack<TextAlignmentOptions> lineJustificationStack;

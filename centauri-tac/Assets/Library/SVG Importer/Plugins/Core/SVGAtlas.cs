@@ -11,6 +11,7 @@ using System.Collections.Generic;
 namespace SVGImporter
 {
     using Rendering;
+	using Utils;
 
     public class SVGAtlasData
     {
@@ -247,20 +248,6 @@ namespace SVGImporter
                 return _ui;
             }
         }
-
-        protected Material _uiMask;
-        public Material uiMask 
-        {
-            get {
-                if(_uiMask == null)
-                {
-                    _uiMask = new Material(SVGShader.UIMask);
-                    _uiMask.hideFlags = HideFlags.DontSave;
-                    UpdateMaterialProperties(_uiMask);
-                }
-                return _uiMask;
-            }
-        }
         
         protected Material _uiAntialiased;
         public Material uiAntialiased 
@@ -392,7 +379,31 @@ namespace SVGImporter
             _atlasHasChanged = false;
             _beingDestroyed = false;
             AddFakeCamera();
+
             Camera.onPreRender += OnAtlasPreRender;
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.update += EditorUpdate;
+#endif
+        }
+
+#if UNITY_EDITOR
+        private void EditorUpdate()
+        {
+            if (!Application.isPlaying) OnAtlasPreRender(Camera.current);
+        }
+#endif
+        public void OnPreRender()
+        {            
+            OnAtlasPreRender();
+        }
+
+        protected void OnDestroy()
+        {
+            _beingDestroyed = true;
+            Camera.onPreRender -= OnAtlasPreRender;
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.update -= EditorUpdate;
+#endif
         }
 
         protected void AddFakeCamera()
@@ -405,28 +416,12 @@ namespace SVGImporter
                 camera.cullingMask = 0;
                 camera.useOcclusionCulling = false;
         }
-
-        protected void Update()
-        {
-            Camera.onPreRender -= OnAtlasPreRender;
-            Camera.onPreRender += OnAtlasPreRender;
-        }
-
-        public void OnPreRender()
-        {
-            OnAtlasPreRender();
-        }
-
+        
         public void OnAtlasPreRender(Camera camera = null)
         {
-//            Debug.Log("OnAtlasPreRender");
-            if(camera != null)
-            {
-                //Debug.Log("OnAtlasPreRender: "+camera.gameObject.name+", pixelHeight: "+pixelHeight);
-                SVGImporterSettings.UpdateAntialiasing(camera.pixelWidth, camera.pixelHeight);
-            }
+            SVGImporterSettings.UpdateAntialiasing();
 
-            if(_atlasHasChanged)
+            if (_atlasHasChanged)
             {
                 RebuildAtlas();
                 _atlasHasChanged = false;
@@ -434,12 +429,6 @@ namespace SVGImporter
                 UpdateMaterialList();
 #endif
             }
-        }
-
-        protected void OnDestroy()
-        {
-            _beingDestroyed = true;
-            Camera.onPreRender -= OnAtlasPreRender;
         }
 
         protected static SVGAtlas _Instance;
@@ -471,7 +460,6 @@ namespace SVGImporter
         public bool ContainsMaterial(Material material)
         {
             if(material == _ui) return true;
-            if(material == _uiMask) return true;
             if(material == _uiAntialiased) return true;
             if(material == _opaqueSolid) return true;
             if(material == _transparentSolid) return true;
@@ -492,7 +480,6 @@ namespace SVGImporter
             if(materials == null) materials = new List<Material>();
             materials.Clear();
             if(_ui != null) materials.Add(_ui);
-            if(_uiMask != null) materials.Add(_uiMask);
             if(_uiAntialiased != null) materials.Add(_uiAntialiased);
             if(_opaqueSolid != null) materials.Add(_opaqueSolid);
             if(_transparentSolid != null) materials.Add(_transparentSolid);
@@ -513,12 +500,7 @@ namespace SVGImporter
             {
                 DestroyObjectInternal(_ui);
                 _ui = null;
-            }
-            if(_uiMask != null)
-            {
-                DestroyObjectInternal(_uiMask);
-                _uiMask = null;
-            }
+            }            
             if(_uiAntialiased != null)
             {
                 DestroyObjectInternal(_uiAntialiased);
@@ -630,7 +612,6 @@ namespace SVGImporter
             AssignMaterialGradients(_transparentGradient, texture, gradientShapeTexture, gradientWidth, gradientHeight);
             AssignMaterialGradients(_transparentGradientAntialiased, texture, gradientShapeTexture, gradientWidth, gradientHeight);
             AssignMaterialGradients(_ui, texture, gradientShapeTexture, gradientWidth, gradientHeight);
-            AssignMaterialGradients(_uiMask, texture, gradientShapeTexture, gradientWidth, gradientHeight);
             AssignMaterialGradients(_uiAntialiased, texture, gradientShapeTexture, gradientWidth, gradientHeight);
 
 

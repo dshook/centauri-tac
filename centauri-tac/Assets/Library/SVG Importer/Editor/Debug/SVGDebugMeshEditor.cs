@@ -3,8 +3,8 @@ using UnityEditor;
 using System.Collections;
 
 [CustomEditor(typeof(SVGDebugMesh))]
-public class SVGDebugMeshEditor : Editor {
-
+public class SVGDebugMeshEditor : Editor
+{
     public enum DebugType
     {
         NONE,
@@ -75,7 +75,17 @@ public class SVGDebugMeshEditor : Editor {
 		}
 	}
 
-	public override void OnInspectorGUI()
+    static int startIndex = -1;
+    static int endIndex = -1;
+
+    private void OnEnable()
+    {
+
+        startIndex = -1;
+        endIndex = -1;
+    }
+
+    public override void OnInspectorGUI()
     {
         SVGDebugMesh debugMesh = (SVGDebugMesh)target;
         if(debugMesh != null)
@@ -126,7 +136,9 @@ public class SVGDebugMeshEditor : Editor {
             showPoints = EditorGUILayout.Toggle("Show Points", showPoints);
 			showLabels = EditorGUILayout.Toggle("Show Labels", showLabels);
 			showNormals = EditorGUILayout.Toggle("Show Normals", showNormals);
-            if(EditorGUI.EndChangeCheck())
+            startIndex = EditorGUILayout.IntField("Start Index", startIndex);
+            endIndex = EditorGUILayout.IntField("End Index", endIndex);
+            if (EditorGUI.EndChangeCheck())
             {
                 Repaint();
                 SceneView.RepaintAll();
@@ -159,11 +171,23 @@ public class SVGDebugMeshEditor : Editor {
 
                     Handles.matrix = debugMesh.transform.localToWorldMatrix;
                     int vertexCount = mesh.vertexCount;
+                    int start = 0;
+                    int end = vertexCount;
+
+                    if(startIndex > -1)
+                    {
+                        start = Mathf.Clamp(startIndex, 0, vertexCount - 1);
+                    }
+
+                    if(endIndex > -1)
+                    {
+                        end = Mathf.Clamp(endIndex, startIndex, vertexCount - 1);
+                    }
 
                     if(debugType != DebugType.NONE)
                     {
 
-                        for(int i = 0; i < vertexCount; i++)
+                        for(int i = start; i < end; i++)
                         {
                             if(showPoints) Handles.DrawWireDisc(vertices[i], Vector3.forward, HandleUtility.GetHandleSize(debugMesh.transform.position) * 0.1f);
                             switch(debugType)

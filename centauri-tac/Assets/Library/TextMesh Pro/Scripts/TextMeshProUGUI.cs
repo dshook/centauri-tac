@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.56.0b11
+// Release 1.0.55.2017.2.0b12
 
 
 using UnityEngine;
@@ -32,14 +32,8 @@ namespace TMPro
         /// </summary>
         public override Material materialForRendering
         {
-            get
-            {
-                if (m_sharedMaterial == null) return null;
-
-                return GetModifiedMaterial(m_sharedMaterial);
-            }
+            get { return TMP_MaterialManager.GetMaterialForRendering(this, m_sharedMaterial); }
         }
-
 
         /// <summary>
         /// Determines if the size of the text container will be adjusted to fit the text object when it is first created.
@@ -188,6 +182,9 @@ namespace TMPro
 
             m_isMaterialDirty = true;
             CanvasUpdateRegistry.RegisterCanvasElementForGraphicRebuild((ICanvasElement)this);
+
+            if (m_OnDirtyMaterialCallback != null)
+                m_OnDirtyMaterialCallback();
 
             //UpdateMaterial();
         }

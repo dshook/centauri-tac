@@ -18,7 +18,7 @@ namespace SVGImporter
         private static GUIContent s_Header;
         
 		private const string kSpecialThanksNames = "Thanks to my girlfriend Kate to her endless patience\nand support and also thanks to my beloved parents.";
-        private const string kSpecialThanksNamesTesters = "Thanks to Anders Gallon for his exquisite bugreports.";
+        private const string kSpecialThanksNamesTesters = "Thanks to Anders Gallon for his exquisite bugreports.\nBig thanks to JaimeAL for his great forum support!";
         
         private static GUIContent s_ClipperLogo;
         

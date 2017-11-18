@@ -805,7 +805,7 @@ namespace SVGImporter.Utils
     		}
     		mesh.uv2 = uvs;
     	}
-		#if !UNITY_4
+		#if !(UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9)
     	public static void ChangeMeshUV3 (Mesh mesh, Vector2 uv)
     	{
             int length = mesh.vertices.Length;
@@ -1100,7 +1100,7 @@ namespace SVGImporter.Utils
             Vector2[] uv2 = source.uv2;
             if(uv2 != null && uv2.Length > 0) destination.uv2 = (Vector2[])uv2.Clone();
 
-            #if !UNITY_4
+			#if !(UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_4_8 || UNITY_4_9)
             Vector2[] uv3 = source.uv3;
             if(uv3 != null && uv3.Length > 0) destination.uv3 = (Vector2[])uv3.Clone();
             

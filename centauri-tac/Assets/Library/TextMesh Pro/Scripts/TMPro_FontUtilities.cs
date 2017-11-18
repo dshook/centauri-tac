@@ -263,11 +263,12 @@ namespace TMPro
                 for (int i = 0; i < font.fallbackFontAssets.Count && glyph == null; i++)
                 {
                     TMP_FontAsset temp = font.fallbackFontAssets[i];
+                    if (temp == null) continue;
+
                     int id = temp.GetInstanceID();
 
                     // Skip over the fallback font asset in the event it is null or if already searched.
-                    if (temp == null || k_searchedFontAssets.Contains(id))
-                        continue;
+                    if (k_searchedFontAssets.Contains(id)) continue;
 
                     // Add to list of font assets already searched.
                     k_searchedFontAssets.Add(id);

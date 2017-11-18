@@ -5,7 +5,6 @@
 
 using UnityEngine;
 using System.Text;
-using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -112,6 +111,14 @@ namespace TMPro
 
             return x && y && z && w;
         }
+
+        //public static void AddElementAtIndex<T>(this T[] array, int writeIndex, T item)
+        //{
+        //    if (writeIndex >= array.Length)
+        //        System.Array.Resize(ref array, Mathf.NextPowerOfTwo(writeIndex + 1));
+
+        //    array[writeIndex] = item;
+        //}
 
         /// <summary>
         /// Insert item into array at index.

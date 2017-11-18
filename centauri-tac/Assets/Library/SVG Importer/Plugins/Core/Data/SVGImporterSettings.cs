@@ -19,6 +19,27 @@ namespace SVGImporter
                     if(_instance == null)
                     {
                         Debug.LogError("Cannot Load SVG Importer Settings! Please Move SVG Importer Settings in to Resource folder.");
+                        _instance = ScriptableObject.CreateInstance<SVGImporterSettings>();
+                        _instance.defaultSVGFormat = SVGAssetFormat.Transparent;
+                        _instance.defaultUseGradients = SVGUseGradients.Never;
+                        _instance.defaultAntialiasing = true;
+                        _instance.defaultAntialiasingWidth = 2f;
+                        _instance.defaultMeshCompression = SVGMeshCompression.High;
+                        _instance.defaultVerticesPerMeter = 1000;
+                        _instance.defaultScale = 0.001f;
+                        _instance.defaultDepthOffset = 0.01f;
+                        _instance.defaultCompressDepth = true;
+                        _instance.defaultCustomPivotPoint = false;
+                        _instance.defaultPivotPoint = new Vector2(0.5f, 0.5f);
+                        _instance.defaultGenerateCollider = false;
+                        _instance.defaultKeepSVGFile = false;
+                        _instance.defaultUseLayers = false;
+                        _instance.defaultIgnoreSVGCanvas = true;
+                        _instance.defaultOptimizeMesh = true;
+                        _instance.defaultGenerateNormals = false;
+                        _instance.defaultGenerateTangents = false;
+                        _instance.defaultSVGIcon = null;
+                        _instance.ignoreImportExceptions = true;
                     }
                 }
 
@@ -26,15 +47,9 @@ namespace SVGImporter
             }
         }
 
-        public static void UpdateAntialiasing(float screenWidth = 1f, float screenHeight = 1f)
+        public static void UpdateAntialiasing()
         {
-            float inverseWidth = 0f;
-            if(screenWidth > 0f) inverseWidth = 1f / screenWidth;
-            float inverseHeight = 0f;
-            if(screenHeight > 0f) inverseHeight = 1f / screenHeight;
-
-            Shader.SetGlobalVector("SVG_GRADIENT_ANTIALIASING_WIDTH", new Vector4(Get.defaultAntialiasingWidth * inverseWidth, Get.defaultAntialiasingWidth * inverseHeight, 0f, 0f));
-            Shader.SetGlobalVector("SVG_SOLID_ANTIALIASING_WIDTH", new Vector4(Get.defaultAntialiasingWidth * inverseWidth, Get.defaultAntialiasingWidth * inverseHeight, 0f, 0f));
+            Shader.SetGlobalFloat("SVG_ANTIALIASING_WIDTH", Get.defaultAntialiasingWidth);
         }
 
         protected static string _version = "1.1.3";

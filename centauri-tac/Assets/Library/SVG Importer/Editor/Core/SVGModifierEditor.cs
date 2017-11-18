@@ -1,4 +1,4 @@
-﻿// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
+// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
 
@@ -291,7 +291,7 @@ namespace SVGImporter
 			{
 				SVGAsset svgAsset = GetSVGAsset();
 				if(position.Contains(current.mousePosition))
-				{                    
+				{
 					int controlID = GUIUtility.GetControlID(controlIDHash, FocusType.Passive);
 					GUIUtility.hotControl = controlID;
 
@@ -331,7 +331,7 @@ namespace SVGImporter
 						{
 							SVGGUI.HilightLayer(layers[layerList.hilightedLayer]);
 						}
-					} 
+					}
 				}
 
 				if (GUI.changed) EditorUtility.SetDirty(target);

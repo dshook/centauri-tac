@@ -18,29 +18,36 @@ Shader "SVG Importer/UI/UI" {
  		_StencilReadMask ("Stencil Read Mask", Float) = 255
  		
  		_ColorMask ("Color Mask", Float) = 15
+		[Toggle(UNITY_UI_ALPHACLIP)] _UseUIAlphaClip("Use Alpha Clip", Float) = 0
 	}
 	
 	SubShader
 	{
-		Tags {"RenderType"="Transparent" "Queue"="Transparent" "IgnoreProjector" = "True"}
-		LOD 200
-		Lighting Off
-		ZTest [unity_GUIZTestMode]
-		ZWrite Off
-		Cull Off
-		
-		Stencil {
-			Ref [_Stencil]
-			ReadMask [_StencilReadMask]
-			WriteMask [_StencilWriteMask]						
-			Comp [_StencilComp]
-			Pass [_StencilOp]
+		Tags
+		{
+			"Queue" = "Transparent"
+			"IgnoreProjector" = "True"
+			"RenderType" = "Transparent"
+			"PreviewType" = "Plane"
+			"CanUseSpriteAtlas" = "False"
 		}
-		
+
+		Stencil
+		{
+			Ref[_Stencil]
+			Comp[_StencilComp]
+			Pass[_StencilOp]
+			ReadMask[_StencilReadMask]
+			WriteMask[_StencilWriteMask]
+		}
+
+		Cull Off
+		Lighting Off
+		ZWrite Off
+		ZTest[unity_GUIZTestMode]
 		Blend SrcAlpha OneMinusSrcAlpha
-		ColorMask [_ColorMask]		
-		Fog { Mode Off }
-		
+		ColorMask[_ColorMask]
+
 		Pass
 		{
 			CGPROGRAM

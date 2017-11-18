@@ -1,3 +1,28 @@
+
+- What happened to support? 
+https://forum.unity3d.com/threads/svg-importer-vector-graphics-unity-ui-supported-released.323618/
+
+Version 1.1.6
+Release Date: 2 August. 2017
+- Fixed, Antialiasing on negative scale
+- Updated Example projects
+- Added new Tutorials on Youtube
+https://www.youtube.com/watch?v=uYBqOPY8y2M
+
+Version 1.1.5
+Release Date: 19 July. 2017
+- Removed, SVG Camera
+- Fixed, Antialiasing
+- Code revision
+
+Version 1.1.4
+Release Date: 30 May. 2017
+- Added, Virtual Reality Support
+- Fixed, Shader compatibility for VR
+- Fixed, SVG Editor
+- Fixed, SVGImporterSettings
+- Updated, About screen
+
 Version 1.1.3
 Release Date: X July. 2016
 

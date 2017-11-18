@@ -283,20 +283,77 @@ namespace TMPro
         /// <returns></returns>
         public static int GetStencilID(GameObject obj)
         {
-            int count = 0;
+            // Implementation is almost copied from Unity UI
 
-            var maskComponents = TMP_ListPool<Mask>.Get();
+            var count = 0;
 
-            obj.GetComponentsInParent<Mask>(false, maskComponents);
-            for (int i = 0; i < maskComponents.Count; i++)
+            var transform = obj.transform;
+            var stopAfter = FindRootSortOverrideCanvas(transform);
+            if (transform == stopAfter)
+                return count;
+
+            var t = transform.parent;
+            var components = TMP_ListPool<Mask>.Get();
+            while (t != null)
             {
-                if (maskComponents[i].IsActive())
-                    count += 1;
-            }
+                t.GetComponents<Mask>(components);
+                for (var i = 0; i < components.Count; ++i)
+                {
+                    var mask = components[i];
+                    if (mask != null && mask.MaskEnabled() && mask.graphic.IsActive())
+                    {
+                        ++count;
+                        break;
+                    }
+                }
 
-            TMP_ListPool<Mask>.Release(maskComponents);
+                if (t == stopAfter)
+                    break;
+
+                t = t.parent;
+            }
+            TMP_ListPool<Mask>.Release(components);
 
             return Mathf.Min((1 << count) - 1, 255);
+        }
+
+
+        public static Material GetMaterialForRendering(MaskableGraphic graphic, Material baseMaterial)
+        {
+            if (baseMaterial == null)
+                return null;
+
+            var modifiers = TMP_ListPool<IMaterialModifier>.Get();
+            graphic.GetComponents(modifiers);
+
+            var result = baseMaterial;
+            for (int i = 0; i < modifiers.Count; i++)
+                result = modifiers[i].GetModifiedMaterial(result);
+
+            TMP_ListPool<IMaterialModifier>.Release(modifiers);
+
+            return result;
+        }
+
+        private static Transform FindRootSortOverrideCanvas(Transform start)
+        {
+            // Implementation is copied from Unity UI
+
+            var canvasList = TMP_ListPool<Canvas>.Get();
+            start.GetComponentsInParent(false, canvasList);
+            Canvas canvas = null;
+
+            for (int i = 0; i < canvasList.Count; ++i)
+            {
+                canvas = canvasList[i];
+
+                // We found the canvas we want to use break
+                if (canvas.overrideSorting)
+                    break;
+            }
+            TMP_ListPool<Canvas>.Release(canvasList);
+
+            return canvas != null ? canvas.transform : null;
         }
 
 
@@ -441,8 +498,6 @@ namespace TMPro
         }
 
 
-
-
         /// <summary>
         /// Function to release the fallback material.
         /// </summary>
@@ -474,7 +529,6 @@ namespace TMPro
                 ListFallbackMaterials();
             #endif
         }
-
 
 
         private class FallbackMaterial
@@ -578,7 +632,6 @@ namespace TMPro
             }
         }
 #endif
-
     }
 
 }

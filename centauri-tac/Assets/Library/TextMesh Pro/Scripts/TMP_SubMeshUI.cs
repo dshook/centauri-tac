@@ -134,9 +134,7 @@ namespace TMPro
         {
             get
             {
-                if (m_sharedMaterial == null) return null;
-
-                return GetModifiedMaterial(m_sharedMaterial);
+                return TMP_MaterialManager.GetMaterialForRendering(this, m_sharedMaterial);
             }
         }
 
@@ -588,6 +586,9 @@ namespace TMPro
             m_materialDirty = true;
 
             UpdateMaterial();
+
+            if (m_OnDirtyMaterialCallback != null)
+                m_OnDirtyMaterialCallback();
 
             //TMP_ITextElementUpdateManager.RegisterTextElementForGraphicRebuild(this);
 

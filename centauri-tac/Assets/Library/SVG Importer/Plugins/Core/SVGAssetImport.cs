@@ -164,8 +164,7 @@ namespace SVGImporter
                             if(outputShaders[i] == null) continue;
                             if(outputShaders[i].name == SVGShader.GradientColorOpaque.name ||
                                outputShaders[i].name == SVGShader.GradientColorAlphaBlended.name ||
-                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiased.name ||
-                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiasedCompressed.name)
+                               outputShaders[i].name == SVGShader.GradientColorAlphaBlendedAntialiased.name)
                             {
                                 hasGradients = true;
                                 break;

@@ -1,6 +1,7 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-float2 SVG_SOLID_ANTIALIASING_WIDTH;
+﻿// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
+// This code can only be used under the standard Unity Asset Store End User License Agreement
+// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
+#include "SVGImporterCG.cginc"
 
 struct vertex_input
 {
@@ -31,25 +32,10 @@ vertex_output vertexColor(vertex_input v)
 
 vertex_output vertexColorAntialiased(vertex_input_normal v)
 {
-    vertex_output o;
-	// Antialiasing	
-	// Perspective Camera
-	if(UNITY_MATRIX_P[3][3] == 0)
-	{
-		float4 vertex = v.vertex;
-		float objSpaceLength = length(ObjSpaceViewDir(vertex));
-		vertex.x += v.normal.x * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.x;
-		vertex.y += v.normal.y * objSpaceLength * SVG_SOLID_ANTIALIASING_WIDTH.y;
-		o.vertex = UnityObjectToClipPos(vertex);
-	// Orthographic Camera
-	} else {
-		o.vertex = UnityObjectToClipPos(v.vertex);
-		o.vertex.x += v.normal.x * SVG_SOLID_ANTIALIASING_WIDTH.x;
-		o.vertex.y += v.normal.y * SVG_SOLID_ANTIALIASING_WIDTH.y;
-	} 
-	
-    o.color = v.color;
-    return o;
+	vertex_output o;	
+	o.vertex = UnityObjectToClipPos(Antialiasing(v.vertex, v.normal));
+	o.color = v.color;
+	return o;
 }
 
 half4 fragmentColor(vertex_output i) : COLOR

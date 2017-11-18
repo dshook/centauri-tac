@@ -1,6 +1,7 @@
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-float2 SVG_GRADIENT_ANTIALIASING_WIDTH;
+// Copyright (C) 2015 Jaroslav Stehlik - All Rights Reserved
+// This code can only be used under the standard Unity Asset Store End User License Agreement
+// A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
+#include "SVGImporterCG.cginc"
 
 sampler2D _GradientColor;
 sampler2D _GradientShape;
@@ -55,22 +56,7 @@ vertex_output vertexGradients(vertex_input v)
 vertex_output vertexGradientsAntialiased(vertex_input_normal v)
 {
     vertex_output o;
-    // Antialiasing	
-	// Perspective Camera
-    if(UNITY_MATRIX_P[3][3] == 0)
-	{
-		float4 vertex = v.vertex;
-		float objSpaceLength = length(ObjSpaceViewDir(vertex));
-		vertex.x += v.normal.x * objSpaceLength * SVG_GRADIENT_ANTIALIASING_WIDTH.x;
-		vertex.y += v.normal.y * objSpaceLength * SVG_GRADIENT_ANTIALIASING_WIDTH.y;
-		o.vertex = UnityObjectToClipPos(vertex);
-	// Orthographic Camera
-	} else {
-		o.vertex = UnityObjectToClipPos(v.vertex);
-		o.vertex.x += v.normal.xy * SVG_GRADIENT_ANTIALIASING_WIDTH.x;
-		o.vertex.y += v.normal.xy * SVG_GRADIENT_ANTIALIASING_WIDTH.y;
-	} 
-	
+	o.vertex = UnityObjectToClipPos(Antialiasing(v.vertex, v.normal));
     o.uv0.xy = v.texcoord0;
     o.color = v.color;
 	
@@ -96,7 +82,7 @@ float4 fragmentGradientsOpaque(vertex_output i) : COLOR
 }
 
 float4 fragmentGradientsAlphaBlended(vertex_output i) : COLOR
-{
+{	
 	float gradient = dot(tex2D(_GradientShape, i.uv0), i.uv1) ;
 	float2 gradientColorUV = float2(i.uv0.z + gradient, i.uv0.w);
 	return tex2D(_GradientColor, gradientColorUV) * i.color;

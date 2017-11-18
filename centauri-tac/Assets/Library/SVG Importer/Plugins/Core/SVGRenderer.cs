@@ -159,15 +159,9 @@ namespace SVGImporter
 
         protected MeshFilter _meshFilter;
         public MeshFilter meshFilter {
-            get {
-                if(_meshFilter == null)
-                {   
-                    _meshFilter = GetComponent<MeshFilter>();
-                    if(_meshFilter == null) 
-                    {
-                        _meshFilter = gameObject.AddComponent<MeshFilter>();
-                    }
-                }
+            get
+            {
+                if (_meshFilter == null) GetComponent<MeshRenderer>();
                 return _meshFilter;
             }
         }
@@ -175,14 +169,7 @@ namespace SVGImporter
         protected MeshRenderer _meshRenderer;
         public MeshRenderer meshRenderer {
             get {
-                if(_meshRenderer == null)
-                {
-                    _meshRenderer = GetComponent<MeshRenderer>();
-                    if(_meshRenderer == null)
-                    {
-                        _meshRenderer = gameObject.AddComponent<MeshRenderer>();
-                    }
-                }
+                if (_meshRenderer == null) GetComponent<MeshRenderer>();
                 return _meshRenderer;
             }
         }
@@ -218,7 +205,15 @@ namespace SVGImporter
 #if UNITY_EDITOR
                 _lastSortingLayerID = value;
 #endif
-                meshRenderer.sortingLayerID = _sortingLayerID = value;
+                if(!SortingLayer.IsValid(value))
+                {
+                    Debug.LogWarning(this.name + ": This renderer has an invalid layer-id, resetting to default.");
+                    _sortingLayerID = SortingLayer.NameToID("Default");
+                } else
+                {
+                    _sortingLayerID = value;
+                }
+                meshRenderer.sortingLayerID = _sortingLayerID;
                 _sortingLayerName = meshRenderer.sortingLayerName;
             }
         }
@@ -310,8 +305,9 @@ namespace SVGImporter
         // We have to clear editor data and load runtime data
         // Also it handles duplicating game objects
         protected override void Awake()
-        {            
+        {
             base.Awake();
+            CacheComponents();            
             meshFilter.sharedMesh = null;
             if(_vectorGraphics != null)
             {
@@ -320,9 +316,9 @@ namespace SVGImporter
 
             Clear();
             PrepareForRendering(true);
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             UpdateTimeStamp();
-            #endif
+#endif
         }
 
         protected override void OnEnable()
@@ -331,6 +327,67 @@ namespace SVGImporter
             EnableMeshRenderer(true);
         }
 
+        // This method is invoked by Unity when rendering to Camera
+        void OnWillRenderObject()
+        {
+#if UNITY_EDITOR
+            UpdateTimeStamp();
+#endif
+            if (!meshRenderer.isPartOfStaticBatch)
+                PrepareForRendering();
+        }
+
+#if UNITY_EDITOR
+        void OnDrawGizmosSelected()
+        {
+            if (_vectorGraphics != null && _vectorGraphics.sharedMesh != null)
+            {
+                Bounds bounds = _vectorGraphics.bounds;
+                Matrix4x4 gizmoMatrix = Gizmos.matrix;
+                Gizmos.matrix = transform.localToWorldMatrix;
+                Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
+                Gizmos.DrawWireCube(bounds.center, bounds.size);
+                Gizmos.matrix = gizmoMatrix;
+            }
+        }
+#endif
+
+        protected override void OnDisable()
+        {
+            EnableMeshRenderer(false);
+            base.OnDisable();
+        }
+
+        protected override void OnDestroy()
+        {
+            if (_vectorGraphics != null)
+            {
+                _vectorGraphics.RemoveReference(this);
+            }
+            base.OnDestroy();
+        }
+
+        void CacheComponents()
+        {
+            if (_meshFilter == null)
+            {
+                _meshFilter = GetComponent<MeshFilter>();
+                if (_meshFilter == null)
+                {
+                    _meshFilter = gameObject.AddComponent<MeshFilter>();
+                }
+            }
+
+            if (_meshRenderer == null)
+            {
+                _meshRenderer = GetComponent<MeshRenderer>();
+                if (_meshRenderer == null)
+                {
+                    _meshRenderer = gameObject.AddComponent<MeshRenderer>();
+                }
+            }
+        }
+        
         public void UpdateRenderer()
         {
             PrepareForRendering(true);
@@ -472,7 +529,7 @@ namespace SVGImporter
                 _lastVectorGraphics = _vectorGraphics;
                 _lastColor = _color;
                 _lastType = _type;
-                _lastUseSharedMesh = useSharedMesh;
+                _lastUseSharedMesh = useSharedMesh;                
             }
         }
 
@@ -482,7 +539,7 @@ namespace SVGImporter
             SVGMesh.CombineMeshes(_layers, _mesh, out outputShaders, _vectorGraphics.useGradients, _vectorGraphics.format, _vectorGraphics.compressDepth, _vectorGraphics.antialiasing);
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         // Clear SVG Renderer when hit Reset in the Editor
         protected override void Reset()
         {
@@ -493,9 +550,9 @@ namespace SVGImporter
 
             base.Reset();
         }
-        #endif
+#endif
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         void UpdateTimeStamp()
         {
             if(!UnityEditor.EditorApplication.isPlaying)
@@ -512,17 +569,7 @@ namespace SVGImporter
                 }
             }
         }
-        #endif
-
-        // This method is invoked by Unity when rendering to Camera
-        void OnWillRenderObject()
-        {
-            #if UNITY_EDITOR
-            UpdateTimeStamp();
-            #endif
-            if(!meshRenderer.isPartOfStaticBatch)
-                PrepareForRendering();
-        }
+#endif
 
         protected Color32[] _finalColors;
         protected void UpdateColors(bool force = false)
@@ -799,7 +846,7 @@ namespace SVGImporter
             {
                 subMeshCount = _mesh.subMeshCount;
             } else {
-                subMeshCount = _sharedMesh.subMeshCount;
+                if(_sharedMesh != null) subMeshCount = _sharedMesh.subMeshCount;
             }
 
             if(_vectorGraphics.isOpaque)
@@ -875,36 +922,6 @@ namespace SVGImporter
 #endif
         }
         
-        #if UNITY_EDITOR
-        void OnDrawGizmosSelected()
-        {
-            if(_vectorGraphics != null && _vectorGraphics.sharedMesh != null)
-            {
-                Bounds bounds = _vectorGraphics.bounds;
-                Matrix4x4 gizmoMatrix = Gizmos.matrix;
-                Gizmos.matrix = transform.localToWorldMatrix;
-                Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
-                Gizmos.DrawWireCube(bounds.center, bounds.size);
-                Gizmos.matrix = gizmoMatrix;
-            }
-        }
-        #endif
-        
-        protected override void OnDisable()
-        {
-            EnableMeshRenderer(false);
-            base.OnDisable();
-        }
-
-        protected override void OnDestroy()
-        {
-            if(_vectorGraphics != null)
-            {
-                _vectorGraphics.RemoveReference(this);
-            }           
-            base.OnDestroy();
-        }
-
         void EnableMeshRenderer(bool value)
         {
 #if UNITY_EDITOR
@@ -1064,7 +1081,7 @@ namespace SVGImporter
             if(obj == null)
                 return;
             
-            #if UNITY_EDITOR
+#if UNITY_EDITOR
             if(!UnityEditor.AssetDatabase.Contains(obj))
             {
                 if(UnityEditor.EditorApplication.isPlaying)
@@ -1074,9 +1091,9 @@ namespace SVGImporter
                     DestroyImmediate(obj);
                 }
             }
-            #else
+#else
             Destroy(obj);
-            #endif
+#endif
         }
     }
 }

@@ -119,7 +119,7 @@ namespace SVGImporter
         }
 
         protected override void Awake()
-        {
+        {            
             Clear();
             UpdateMaterial();
             if(_vectorGraphics != null)
@@ -128,6 +128,17 @@ namespace SVGImporter
             }
             base.Awake();
         }
+
+        protected override void OnDestroy()
+        {
+            if (_vectorGraphics != null)
+            {
+                _vectorGraphics.RemoveReference(this);
+            }
+            base.OnDestroy();
+        }
+
+
 #if UNITY_EDITOR
         protected override void Reset()
         {
@@ -143,15 +154,7 @@ namespace SVGImporter
             UpdateMaterial();
         }
 #endif        
-        protected override void OnDestroy()
-        {
-            if(_vectorGraphics != null)
-            {
-                _vectorGraphics.RemoveReference(this);
-            }
-            base.OnDestroy();
-        }
-
+       
         /// <summary>
         /// Whether the Image has a border to work with.
         /// </summary>        
@@ -349,60 +352,9 @@ namespace SVGImporter
         Vector2[] uv3;
         Color32[] colors;
         Vector3[] normals;
-#if UNITY_4 || UNITY_5_0 || UNITY_5_1
-        protected override void OnFillVBO(List<UIVertex> vbo)
-        {
-            if (sharedMesh == null) { base.OnFillVBO(vbo); return; }
-
-            Mesh legacyUIMesh = _vectorGraphics.sharedLegacyUIMesh;
-            tempVBOLength = legacyUIMesh.vertexCount;
-            Vector3[] legacyVertices = legacyUIMesh.vertices;
-            Color32[] legacyColors = legacyUIMesh.colors32;
-
-            if(vertices == null || vertices.Length != tempVBOLength) vertices = new Vector3[tempVBOLength];
-            for(int i = 0; i < tempVBOLength; i++)
-            {
-                vertices[i] = legacyVertices[i];
-            }
-            if(colors == null || colors.Length != tempVBOLength) colors = new Color32[tempVBOLength];
-            for(int i = 0; i < tempVBOLength; i++)
-            {
-                colors[i] = legacyColors[i];
-            }
-            if(_vectorGraphics.hasGradients)
-            {
-                Vector2[] legacyUV0 = legacyUIMesh.uv;
-                Vector2[] legacyUV1 = legacyUIMesh.uv2;
-                if(uv == null || uv.Length != tempVBOLength) uv = new Vector2[tempVBOLength];
-                for(int i = 0; i < tempVBOLength; i++)
-                {
-                    uv[i] = legacyUV0[i];
-                }
-                if(uv2 == null || uv2.Length != tempVBOLength) uv2 = new Vector2[tempVBOLength];
-                for(int i = 0; i < tempVBOLength; i++)
-                {
-                    uv2[i] = legacyUV1[i];
-                }
-            }
-            if(_vectorGraphics.generateNormals)
-            {
-                Vector3[] legacyNormals = legacyUIMesh.normals;
-                if(normals == null || normals.Length != tempVBOLength) normals = new Vector3[tempVBOLength];
-                for(int i = 0; i < tempVBOLength; i++)
-                {
-                    normals[i] = legacyNormals[i];
-                }
-            }
-#elif UNITY_5_2_0 || UNITY_5_2_1
-        protected override void OnPopulateMesh(Mesh toFill)
-        {
-            if (sharedMesh == null) { base.OnPopulateMesh(toFill); return; }
-                VertexHelper vh = new VertexHelper();
-                Mesh mesh = sharedMesh;
-                tempVBOLength = mesh.vertexCount;
-#else
+        
         protected override void OnPopulateMesh(VertexHelper vh)
-        {
+        {           
             if (sharedMesh == null) { base.OnPopulateMesh(vh); return; }
             vh.Clear();
             Mesh mesh = sharedMesh;
@@ -414,9 +366,18 @@ namespace SVGImporter
             uv2 = mesh.uv2;
             colors = mesh.colors32;
             normals = mesh.normals;
-
-#endif            
+            
             if(vertexStream == null || vertexStream.Length != tempVBOLength) vertexStream = new UIVertex[tempVBOLength];
+
+
+            if (_vectorGraphics.antialiasing || _vectorGraphics.generateNormals)
+            {
+                canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1 | AdditionalCanvasShaderChannels.TexCoord2 | AdditionalCanvasShaderChannels.Normal;
+            }
+            else
+            {
+                canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1 | AdditionalCanvasShaderChannels.TexCoord2;
+            }
 
             Bounds bounds = sharedMesh.bounds;
             if(m_UsePivot)
@@ -434,7 +395,8 @@ namespace SVGImporter
                     vertexStream[i].position.y = v.y + InverseLerp(bounds.min.y, bounds.max.y, vertices[i].y) * v.w;
                     vertexStream[i].color = colors[i] * color;                    
                 }
-            } else {
+            } else
+            {
                 Vector4 v = GetDrawingDimensions(false);
                 
                 // LEFT = X, BOTTOM = Y, RIGHT = Z, TOP = W
@@ -477,8 +439,7 @@ namespace SVGImporter
                         size.y *= minHeight;
                         borderRect.w *= minHeight;
                         borderRect.y *= minHeight;
-                    }
-                    
+                    }                    
                 }
                 
                 float borderTop = transformRect.w - borderRect.w;
@@ -512,8 +473,8 @@ namespace SVGImporter
                     }                    
                 }
             }
-
-            if(_vectorGraphics.hasGradients || _vectorGraphics.useGradients == SVGUseGradients.Always)
+            
+            if (_vectorGraphics.hasGradients || _vectorGraphics.useGradients == SVGUseGradients.Always)
             {
                 if(uv != null && uv2 != null && tempVBOLength == uv.Length && tempVBOLength == uv2.Length)
                 {
@@ -524,6 +485,7 @@ namespace SVGImporter
                     }
                 }                
             }
+            
             if(_vectorGraphics.antialiasing)
             {
                 if(_vectorGraphics.antialiasing)
@@ -550,23 +512,7 @@ namespace SVGImporter
                 }
             }
             
-#if UNITY_4 || UNITY_5_0 || UNITY_5_1
-            vbo.AddRange(vertexStream);
-#elif UNITY_5_2_0 || UNITY_5_2_1                            
-            for(int i = 0; i < vertexStream.Length; i++)
-            {
-                vh.AddVert(vertexStream[i]);
-            }
-
-            for(int i = 0; i < triangles.Length; i+=3)
-            {
-                vh.AddTriangle(triangles[i], triangles[i + 1], triangles[i + 2]);
-            }
-
-            vh.FillMesh(toFill);
-#else
             vh.AddUIVertexStream(new List<UIVertex>(vertexStream), new List<int>(triangles));
-#endif
 
             _lastFrameChanged = Time.frameCount;
         }
@@ -591,16 +537,7 @@ namespace SVGImporter
             {
                 if(_defaultMaterial == null)
                 {
-                    #if UNITY_4 || UNITY_5_0 || UNITY_5_1
-                    if(!this.m_IncludeForMasking)
-                    {
-                        _defaultMaterial = SVGAtlas.Instance.ui;
-                    } else {
-                        _defaultMaterial = SVGAtlas.Instance.uiMask;
-                    }
-                    #else
                     _defaultMaterial = _vectorGraphics.sharedUIMaterial;
-                    #endif
                 }                
             }
         }

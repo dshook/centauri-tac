@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using System.Reflection;
+using System.Linq;
 
 public class SVGEditorHandles {
 
@@ -340,9 +341,9 @@ public class SVGEditorHandles {
 
     public static void BeginLines(Color color)
     {
-		#if !UNITY_4_6
-        typeof(HandleUtility).GetMethod("ApplyWireMaterial", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
-		#endif
+#if !UNITY_4_6
+        typeof(HandleUtility).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).First(m => m.Name == "ApplyWireMaterial" && m.GetParameters().Length == 0).Invoke(null, null);
+#endif
         GL.PushMatrix();
         GL.MultMatrix(Handles.matrix);
         GL.Begin(1);

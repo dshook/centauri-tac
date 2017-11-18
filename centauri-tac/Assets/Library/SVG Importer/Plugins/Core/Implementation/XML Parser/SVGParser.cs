@@ -275,8 +275,7 @@ namespace SVGImporter.Document
                     }
                     break;
             }
-
-        }
+        }    
 
         public void OnInlineElement(string name, AttributeList attrs)
         {

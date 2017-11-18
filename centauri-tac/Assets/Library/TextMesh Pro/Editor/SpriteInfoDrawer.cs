@@ -40,21 +40,22 @@ namespace TMPro.EditorUtilities
                 return;
             }
 
+            Vector2 spriteTexPosition = new Vector2(position.x, position.y);
             Vector2 spriteSize = new Vector2(65, 65);
             if (prop_width.floatValue >= prop_height.floatValue)
             {
                 spriteSize.y = prop_height.floatValue * spriteSize.x / prop_width.floatValue;
-                position.y += (spriteSize.x - spriteSize.y) / 2;
+                spriteTexPosition.y += (spriteSize.x - spriteSize.y) / 2;
             }
             else
             {
                 spriteSize.x = prop_width.floatValue * spriteSize.y / prop_height.floatValue;
-                position.x += (spriteSize.y - spriteSize.x) / 2;
+                spriteTexPosition.x += (spriteSize.y - spriteSize.x) / 2;
             }
-            
+
             // Compute the normalized texture coordinates
             Rect texCoords = new Rect(prop_x.floatValue / tex.width, prop_y.floatValue / tex.height, prop_width.floatValue / tex.width, prop_height.floatValue / tex.height);
-            GUI.DrawTextureWithTexCoords(new Rect(position.x + 5, position.y, spriteSize.x,  spriteSize.y), tex, texCoords, true);
+            GUI.DrawTextureWithTexCoords(new Rect(spriteTexPosition.x + 5, spriteTexPosition.y + 2.5f, spriteSize.x,  spriteSize.y), tex, texCoords, true);
 
             // We get Rect since a valid position may not be provided by the caller.
             Rect rect = new Rect(position.x, position.y, position.width, 49);

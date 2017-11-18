@@ -130,6 +130,12 @@ namespace TMPro
         public T[] itemStack;
         public int index;
 
+        private int m_capacity;
+        private T m_defaultItem;
+
+        private const int k_defaultCapacity = 4;
+        //static readonly T[] m_emptyStack = new T[0];
+
         /// <summary>
         /// Constructor to create a new item stack.
         /// </summary>
@@ -137,7 +143,10 @@ namespace TMPro
         public TMP_XmlTagStack(T[] tagStack)
         {
             itemStack = tagStack;
+            m_capacity = tagStack.Length;
             index = 0;
+
+            m_defaultItem = default(T);
         }
 
 
@@ -191,6 +200,33 @@ namespace TMPro
             }
 
             return itemStack[index - 1];
+        }
+
+        public void Push(T item)
+        {
+            if (index == m_capacity)
+            {
+                m_capacity *= 2;
+                if (m_capacity == 0)
+                    m_capacity = k_defaultCapacity;
+
+                System.Array.Resize(ref itemStack, m_capacity);
+            }
+
+            itemStack[index] = item;
+            index += 1;
+        }
+
+        public T Pop()
+        {
+            if (index == 0)
+                return default(T);
+
+            index -= 1;
+            T item = itemStack[index];
+            itemStack[index] = m_defaultItem;
+
+            return item;
         }
 
 
