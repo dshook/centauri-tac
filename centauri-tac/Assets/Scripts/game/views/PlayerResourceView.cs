@@ -27,11 +27,11 @@ namespace ctac
 
         internal void init(ISoundService s)
         {
-            currentEnergyText = transform.FindChild("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
-            maxEnergyText = transform.FindChild("MaxEnergyText").GetComponent<TextMeshProUGUI>();
+            currentEnergyText = transform.Find("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
+            maxEnergyText = transform.Find("MaxEnergyText").GetComponent<TextMeshProUGUI>();
 
-            fillRenderer = transform.FindChild("EnergyBarFill").GetComponent<MeshRenderer>();
-            fillRendererPreview = transform.FindChild("EnergyBarFillPreview").GetComponent<MeshRenderer>();
+            fillRenderer = transform.Find("EnergyBarFill").GetComponent<MeshRenderer>();
+            fillRendererPreview = transform.Find("EnergyBarFillPreview").GetComponent<MeshRenderer>();
             sounds = s;
         }
 

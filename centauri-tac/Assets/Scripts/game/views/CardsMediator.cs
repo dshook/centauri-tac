@@ -223,10 +223,10 @@ namespace ctac
         {
             debug.Log("Cleanup on aisle choose card");
 
-            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
+            var cardParent = contextView.transform.Find(Constants.cardCanvas);
 
-            var leftCard = cardParent.FindChild("Left Choice Card");
-            var rightCard = cardParent.FindChild("Right Choice Card");
+            var leftCard = cardParent.Find("Left Choice Card");
+            var rightCard = cardParent.Find("Right Choice Card");
 
             if (leftCard == null || rightCard == null)
             {

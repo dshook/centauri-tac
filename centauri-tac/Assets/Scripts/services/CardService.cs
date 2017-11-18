@@ -58,9 +58,9 @@ namespace ctac
         public void UpdateCardArt(CardModel model)
         {
             var render = loader.Load<Texture>("Models/" + model.cardTemplateId + "/render");
-            var displayWrapper = model.gameObject.transform.FindChild("DisplayWrapper").gameObject;
+            var displayWrapper = model.gameObject.transform.Find("DisplayWrapper").gameObject;
 
-            var front = displayWrapper.transform.FindChild("Front").gameObject;
+            var front = displayWrapper.transform.Find("Front").gameObject;
             var frontRenderer = front.GetComponent<MeshRenderer>();
 
             var cardImagePath = string.Format("Images/cards/common_{0}", model.race.ToString().ToLower());
@@ -85,7 +85,7 @@ namespace ctac
                     break;
             }
 
-            var art = displayWrapper.transform.FindChild("Art").gameObject;
+            var art = displayWrapper.transform.Find("Art").gameObject;
             var artRenderer = art.GetComponent<MeshRenderer>();
             if (render != null)
             {

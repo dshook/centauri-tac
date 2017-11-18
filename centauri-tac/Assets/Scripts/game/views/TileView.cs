@@ -36,7 +36,7 @@ namespace ctac {
         {
             if (tile != null)
             {
-                var indicator = transform.FindChild("TileIndicator").gameObject;
+                var indicator = transform.Find("TileIndicator").gameObject;
                 tileIndicator = indicator.gameObject.GetComponent<SVGRenderer>();
                 //arrows = tile.gameObject.transform.FindChild("Arrows").gameObject;
             }

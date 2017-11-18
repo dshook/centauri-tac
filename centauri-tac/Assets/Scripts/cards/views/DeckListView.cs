@@ -26,8 +26,8 @@ namespace ctac {
 
         protected override void Start()
         {
-            bgGO = transform.FindChild("Bg").gameObject;
-            nameGO = transform.FindChild("Name").gameObject;
+            bgGO = transform.Find("Bg").gameObject;
+            nameGO = transform.Find("Name").gameObject;
 
             bgImage = bgGO.GetComponent<SVGImage>();
             nameText = nameGO.GetComponent<TextMeshProUGUI>();

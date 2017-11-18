@@ -50,22 +50,22 @@ namespace ctac {
 
         protected override void Start()
         {
-            displayWrapper = card.gameObject.transform.FindChild("DisplayWrapper").gameObject;
-            costGO = displayWrapper.transform.FindChild("Cost").gameObject;
-            attackGO = displayWrapper.transform.FindChild("Attack").gameObject;
-            healthGO = displayWrapper.transform.FindChild("Health").gameObject;
-            nameGO = displayWrapper.transform.FindChild("Name").gameObject;
-            descriptionGO = displayWrapper.transform.FindChild("Descrip").gameObject;
-            move = displayWrapper.transform.FindChild("Movement").gameObject;
-            range = displayWrapper.transform.FindChild("Range").gameObject;
-            tribe = displayWrapper.transform.FindChild("Tribe").gameObject;
-            tribeBg = tribe.transform.FindChild("TribeBg").gameObject;
-            moveRangeUnderline = displayWrapper.transform.FindChild("MoveRangeUnderline").gameObject;
+            displayWrapper = card.gameObject.transform.Find("DisplayWrapper").gameObject;
+            costGO = displayWrapper.transform.Find("Cost").gameObject;
+            attackGO = displayWrapper.transform.Find("Attack").gameObject;
+            healthGO = displayWrapper.transform.Find("Health").gameObject;
+            nameGO = displayWrapper.transform.Find("Name").gameObject;
+            descriptionGO = displayWrapper.transform.Find("Descrip").gameObject;
+            move = displayWrapper.transform.Find("Movement").gameObject;
+            range = displayWrapper.transform.Find("Range").gameObject;
+            tribe = displayWrapper.transform.Find("Tribe").gameObject;
+            tribeBg = tribe.transform.Find("TribeBg").gameObject;
+            moveRangeUnderline = displayWrapper.transform.Find("MoveRangeUnderline").gameObject;
 
-            buffsPanel = displayWrapper.transform.FindChild("Buffs").gameObject;
-            buffBg = buffsPanel.transform.FindChild("BuffBg").gameObject;
-            buffName = buffsPanel.transform.FindChild("BuffName").gameObject;
-            buffAbility = buffsPanel.transform.FindChild("BuffAbility").gameObject;
+            buffsPanel = displayWrapper.transform.Find("Buffs").gameObject;
+            buffBg = buffsPanel.transform.Find("BuffBg").gameObject;
+            buffName = buffsPanel.transform.Find("BuffName").gameObject;
+            buffAbility = buffsPanel.transform.Find("BuffAbility").gameObject;
 
             costText = costGO.GetComponent<TextMeshPro>();
             attackText = attackGO.GetComponent<TextMeshPro>();
@@ -316,11 +316,11 @@ namespace ctac {
         {
             if(displayWrapper == null) return; //can't disable before init
 
-            Transform hoverChild = displayWrapper.transform.FindChild("HoverTip");
+            Transform hoverChild = displayWrapper.transform.Find("HoverTip");
             while (hoverChild != null)
             {
                 DestroyImmediate(hoverChild.gameObject);
-                hoverChild = displayWrapper.transform.FindChild("HoverTip");
+                hoverChild = displayWrapper.transform.Find("HoverTip");
             }
         }
 
@@ -404,8 +404,8 @@ namespace ctac {
                 //move the new text down (by subtracting) since coords are based on middle of the card
                 newHoverTip.transform.localPosition = cardTop + (tips * positionDelta);
 
-                var title = newHoverTip.transform.FindChild("Title").gameObject;
-                var descrip = newHoverTip.transform.FindChild("Descrip").gameObject;
+                var title = newHoverTip.transform.Find("Title").gameObject;
+                var descrip = newHoverTip.transform.Find("Descrip").gameObject;
 
                 var titleText = title.GetComponent<TextMeshPro>();
                 var descripText = descrip.GetComponent<TextMeshPro>();

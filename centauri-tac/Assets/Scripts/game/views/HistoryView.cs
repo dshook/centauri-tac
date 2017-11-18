@@ -73,8 +73,8 @@ namespace ctac
                 );
             }
 
-            var borderGo = newTile.transform.FindChild("Border").gameObject;
-            var cardGo = newTile.transform.FindChild("Card").gameObject;
+            var borderGo = newTile.transform.Find("Border").gameObject;
+            var cardGo = newTile.transform.Find("Card").gameObject;
 
             var borderSvg = borderGo.GetComponent<SVGImage>();
             var cardSvg = cardGo.GetComponent<SVGImage>();

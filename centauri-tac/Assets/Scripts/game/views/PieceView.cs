@@ -64,40 +64,40 @@ namespace ctac {
 
         protected override void Start()
         {
-            model = piece.gameObject.transform.FindChild("Model").gameObject;
-            faceCameraContainer = piece.gameObject.transform.FindChild("FaceCameraContainer").gameObject;
+            model = piece.gameObject.transform.Find("Model").gameObject;
+            faceCameraContainer = piece.gameObject.transform.Find("FaceCameraContainer").gameObject;
             anim = piece.gameObject.GetComponentInChildren<Animator>();
 
-            hpBarContainer = faceCameraContainer.transform.FindChild("HpBarContainer").gameObject;
-            hpBar = hpBarContainer.transform.FindChild("hpbar").gameObject;
-            hpBarfill = hpBarContainer.transform.FindChild("HpBarFill").gameObject;
+            hpBarContainer = faceCameraContainer.transform.Find("HpBarContainer").gameObject;
+            hpBar = hpBarContainer.transform.Find("hpbar").gameObject;
+            hpBarfill = hpBarContainer.transform.Find("HpBarFill").gameObject;
             hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
             hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
             hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
             hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
 
-            textContainer = hpBarContainer.transform.FindChild("TextContainer").gameObject;
-            attackGO = textContainer.transform.FindChild("Attack").gameObject;
-            healthGO = textContainer.transform.FindChild("Health").gameObject;
-            armorGO = textContainer.transform.FindChild("Armor").gameObject;
+            textContainer = hpBarContainer.transform.Find("TextContainer").gameObject;
+            attackGO = textContainer.transform.Find("Attack").gameObject;
+            healthGO = textContainer.transform.Find("Health").gameObject;
+            armorGO = textContainer.transform.Find("Armor").gameObject;
             attackText = attackGO.GetComponent<TextMeshPro>();
             healthText = healthGO.GetComponent<TextMeshPro>();
             armorText = armorGO.GetComponent<TextMeshPro>();
-            shield = faceCameraContainer.transform.FindChild("Shield").gameObject;
-            cloak = faceCameraContainer.transform.FindChild("Cloak").gameObject;
-            paralyze = faceCameraContainer.transform.FindChild("Paralyze").gameObject;
-            root = faceCameraContainer.transform.FindChild("Root").gameObject;
-            armorBG = faceCameraContainer.transform.FindChild("Armor").gameObject;
+            shield = faceCameraContainer.transform.Find("Shield").gameObject;
+            cloak = faceCameraContainer.transform.Find("Cloak").gameObject;
+            paralyze = faceCameraContainer.transform.Find("Paralyze").gameObject;
+            root = faceCameraContainer.transform.Find("Root").gameObject;
+            armorBG = faceCameraContainer.transform.Find("Armor").gameObject;
 
-            eventIconContainer = faceCameraContainer.transform.FindChild("EventIconContainer").gameObject;
-            eventIcon = eventIconContainer.transform.FindChild("Event").gameObject;
-            deathIcon = eventIconContainer.transform.FindChild("Death").gameObject;
-            rangeIcon = eventIconContainer.transform.FindChild("Range").gameObject;
-            auraIcon = eventIconContainer.transform.FindChild("Aura").gameObject;
-            tauntIcon = eventIconContainer.transform.FindChild("Taunt").gameObject;
-            cantAttackIcon = eventIconContainer.transform.FindChild("CantAttack").gameObject;
-            dyadStrikeIcon = eventIconContainer.transform.FindChild("DyadStrike").gameObject;
-            silenceIcon = eventIconContainer.transform.FindChild("Silence").gameObject;
+            eventIconContainer = faceCameraContainer.transform.Find("EventIconContainer").gameObject;
+            eventIcon = eventIconContainer.transform.Find("Event").gameObject;
+            deathIcon = eventIconContainer.transform.Find("Death").gameObject;
+            rangeIcon = eventIconContainer.transform.Find("Range").gameObject;
+            auraIcon = eventIconContainer.transform.Find("Aura").gameObject;
+            tauntIcon = eventIconContainer.transform.Find("Taunt").gameObject;
+            cantAttackIcon = eventIconContainer.transform.Find("CantAttack").gameObject;
+            dyadStrikeIcon = eventIconContainer.transform.Find("DyadStrike").gameObject;
+            silenceIcon = eventIconContainer.transform.Find("Silence").gameObject;
 
             statusIcons = new Dictionary<Statuses, GameObject>()
             {

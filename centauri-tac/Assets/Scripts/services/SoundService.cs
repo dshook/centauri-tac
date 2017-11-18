@@ -23,13 +23,13 @@ namespace ctac
             }
             else
             {
-                var soundsRoot = Camera.main.transform.FindChild("Sounds");
+                var soundsRoot = Camera.main.transform.Find("Sounds");
                 if (soundsRoot == null)
                 {
                     debug.LogWarning("No Sound root");
                     return;
                 }
-                var soundGO = soundsRoot.FindChild(clip);
+                var soundGO = soundsRoot.Find(clip);
 
                 if (soundGO == null)
                 {

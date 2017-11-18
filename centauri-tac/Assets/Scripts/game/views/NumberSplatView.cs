@@ -20,9 +20,9 @@ namespace ctac {
 
         void Start()
         {
-            damageSplatGo = transform.FindChild("Text").gameObject;
+            damageSplatGo = transform.Find("Text").gameObject;
             damageSplatText = damageSplatGo.GetComponent<TextMeshPro>();
-            damageSplatBonusGo = transform.FindChild("Bonus").gameObject;
+            damageSplatBonusGo = transform.Find("Bonus").gameObject;
             damageSplatBonusText = damageSplatBonusGo.GetComponent<TextMeshPro>();
 
             //damage vs heal

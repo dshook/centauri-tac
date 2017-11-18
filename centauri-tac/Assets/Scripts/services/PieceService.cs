@@ -65,7 +65,7 @@ namespace ctac
             //Set up new model if we have one
             if (pieceModelResource != null)
             {
-                var pieceModelChild = newPiece.transform.FindChild("Model");
+                var pieceModelChild = newPiece.transform.Find("Model");
                 pieceModelChild.DestroyChildren(true);
                 var newModelInstance = GameObject.Instantiate(pieceModelResource, pieceModelChild, false) as GameObject;
                 newModelInstance.transform.localPosition = Vector3.zero;

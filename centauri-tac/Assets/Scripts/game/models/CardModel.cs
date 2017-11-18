@@ -95,7 +95,7 @@ namespace ctac
         //moves the card from being under deck control to in play under card canvas
         public void SetCardInPlay(GameObject contextView)
         {
-            var cardParent = contextView.transform.FindChild(Constants.cardCanvas);
+            var cardParent = contextView.transform.Find(Constants.cardCanvas);
             gameObject.transform.SetParent(cardParent.transform);
         }
     }

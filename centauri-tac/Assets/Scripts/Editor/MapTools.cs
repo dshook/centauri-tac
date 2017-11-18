@@ -187,7 +187,7 @@ class MapTools : EditorWindow
     void SelectUnpassable()
     {
         var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.FindChild("Tiles");
+        var tileGO = mapGO.transform.Find("Tiles");
 
         var selected = new List<GameObject>();
         for (int t = 0; t < tileGO.childCount; t++)
@@ -209,7 +209,7 @@ class MapTools : EditorWindow
     void SelectClearable()
     {
         var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.FindChild("Tiles");
+        var tileGO = mapGO.transform.Find("Tiles");
 
         var selected = new List<GameObject>();
         for (int t = 0; t < tileGO.childCount; t++)
@@ -231,7 +231,7 @@ class MapTools : EditorWindow
     void SelectBreakable()
     {
         var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.FindChild("Props");
+        var tileGO = mapGO.transform.Find("Props");
 
         var selected = new List<GameObject>();
         for (int t = 0; t < tileGO.childCount; t++)
@@ -258,13 +258,13 @@ class MapTools : EditorWindow
     void FixTilePositions()
     {
         var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.FindChild("Tiles");
+        var tileGO = mapGO.transform.Find("Tiles");
 
         for (int t = 0; t < tileGO.childCount; t++)
         {
             var tile = tileGO.transform.GetChild(t);
 
-            var cube = tile.FindChild("cube");
+            var cube = tile.Find("cube");
 
             tile.transform.position = cube.transform.position + new Vector3(0, 0.5f, 0);
             cube.localPosition = new Vector3(0, -0.5f, 0);

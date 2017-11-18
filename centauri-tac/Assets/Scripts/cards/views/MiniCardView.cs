@@ -30,10 +30,10 @@ namespace ctac {
 
         protected override void Start()
         {
-            bgGO = transform.FindChild("Bg").gameObject;
-            costGO = transform.FindChild("Cost").gameObject;
-            nameGO = transform.FindChild("Name").gameObject;
-            quantityGO = transform.FindChild("Quantity").gameObject;
+            bgGO = transform.Find("Bg").gameObject;
+            costGO = transform.Find("Cost").gameObject;
+            nameGO = transform.Find("Name").gameObject;
+            quantityGO = transform.Find("Quantity").gameObject;
 
             bgImage = bgGO.GetComponent<SVGImage>();
             costText = costGO.GetComponent<TextMeshProUGUI>();
