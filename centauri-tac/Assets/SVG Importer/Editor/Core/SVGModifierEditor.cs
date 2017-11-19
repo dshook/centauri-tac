@@ -154,6 +154,14 @@ namespace SVGImporter
 			if(svgLayers == null || svgLayers.Length == 0) return;
 			int layersLength = svgLayers.Length;
 
+			if (manualUpdate.boolValue)
+			{
+				if(GUILayout.Button("Update"))
+				{
+					modifier.svgRenderer.UpdateRenderer();
+				}
+			}
+
 			EditorGUILayout.PropertyField(useSelection);
 			if(useSelection.boolValue)
 			{

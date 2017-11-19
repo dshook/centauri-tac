@@ -305,7 +305,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 111780}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -0, z: 5}
+  m_LocalPosition: {x: 2, y: 0.412, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 401572}
@@ -3784,8 +3784,8 @@ MonoBehaviour:
   manualUpdate: 1
   useSelection: 1
   layerSelection:
-    _layers: 030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000020000000100000000000000
-  color: {r: 0, g: 0.17013183, b: 0.4044118, a: 1}
+    _layers: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f0000001000000011000000
+  color: {r: 0.080287635, g: 0.12171725, b: 0.24264705, a: 1}
 --- !u!114 &114579050433653436
 MonoBehaviour:
   m_ObjectHideFlags: 1

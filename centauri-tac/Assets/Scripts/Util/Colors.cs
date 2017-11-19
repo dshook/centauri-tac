@@ -11,8 +11,8 @@ namespace ctac
 
         public static Color invisible = new Color(0f, 0f, 0f, 0f);
 
-        public static Color32 friendlyColor = ColorExtensions.HexToColor("#65ACFF");
-        public static Color32 enemyColor = ColorExtensions.HexToColor("#FF4949");
+        public static Color32 friendlyColor = ColorExtensions.HexToColor("#141F3E");
+        public static Color32 enemyColor = ColorExtensions.HexToColor("#3E1414");
 
         public static Color32 RarityCommon = ColorExtensions.HexToColor("#999999");
         public static Color32 RarityRare = ColorExtensions.HexToColor("#2598C5");
