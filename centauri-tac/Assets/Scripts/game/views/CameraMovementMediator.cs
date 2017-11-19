@@ -16,11 +16,11 @@ namespace ctac
             view.Init(raycastModel);
         }
 
-        [ListensTo(typeof(CardSelectedSignal))]
-        public void onCardSelected(CardSelectedModel card)
-        {
-            view.setDragEnabled(card == null);
-        }
+        //[ListensTo(typeof(CardSelectedSignal))]
+        //public void onCardSelected(CardSelectedModel card)
+        //{
+        //    view.setDragEnabled(card == null);
+        //}
 
         [ListensTo(typeof(HistoryHoverSignal))]
         public void onHistoryHover(bool h)

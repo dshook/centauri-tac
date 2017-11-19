@@ -56,7 +56,6 @@ namespace ctac {
 
         public Material meshMaterial;
         private Highlighter highlight;
-        private float outlineWidth = 0.01f;
         private Dictionary<Statuses, GameObject> statusIcons;
 
         public Animator anim;
@@ -189,52 +188,38 @@ namespace ctac {
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(Colors.targetOutlineColor);
-                meshMaterial.SetColor("_OutlineColor", Colors.targetOutlineColor);
-                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
             else if (piece.isSelected)
             {
                 highlight.enabled = true;
                 highlight.ConstantOn(Colors.selectedOutlineColor);
-                meshMaterial.SetColor("_OutlineColor", Colors.selectedOutlineColor);
-                meshMaterial.SetFloat("_Outline", outlineWidth);
             }else if (piece.currentPlayerHasControl) {
 
                 if (piece.canMove && piece.canAttack)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.moveAttackOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", Colors.moveAttackOutlineColor);
-                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canAttack && enemiesInRange)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.attackOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", Colors.attackOutlineColor);
-                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else if (piece.canMove)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.moveOutlineColor);
-                    meshMaterial.SetColor("_OutlineColor", Colors.moveOutlineColor);
-                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
                 else
                 {
                     highlight.ConstantOff();
                     highlight.enabled = false;
-                    meshMaterial.SetColor("_OutlineColor", Color.black);
-                    meshMaterial.SetFloat("_Outline", outlineWidth);
                 }
             }
             else
             {
                 highlight.ConstantOff();
                 highlight.enabled = false;
-                meshMaterial.SetColor("_OutlineColor", Color.black);
-                meshMaterial.SetFloat("_Outline", outlineWidth);
             }
 
         }

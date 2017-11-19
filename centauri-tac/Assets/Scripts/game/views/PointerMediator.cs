@@ -12,6 +12,8 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
+        [Inject] public IDebugService debug { get; set; }
+
         bool targeting = false;
 
         public override void OnRegister()
@@ -19,21 +21,38 @@ namespace ctac
             view.init(raycastModel);
         }
 
-        [ListensTo(typeof(CardSelectedSignal))]
-        public void onCardSelected(CardSelectedModel cardModel)
+        //[ListensTo(typeof(CardSelectedSignal))]
+        //public void onCardSelected(CardSelectedModel cardModel)
+        //{
+        //    if (cardModel != null && cardModel.card.gameObject != null)
+        //    {
+        //        //don't point for untargeted or un aread spells
+        //        if (cardModel.card.isSpell && !cardModel.card.needsTargeting(possibleActions))
+        //        {
+        //            return;
+        //        }
+        //        view.rectTransform(cardModel.card.gameObject);
+        //        debug.Log("Enabling pointer from selected card");
+        //    }
+        //    else if(!targeting)
+        //    {
+        //        view.disable();
+        //        debug.Log("Disabling pointer from selected card");
+        //    }
+        //}
+
+        [ListensTo(typeof(PieceSpawningSignal))]
+        public void onPieceSpawning(CardSelectedModel cardModel)
         {
-            if (cardModel != null && cardModel.card.gameObject != null)
+            if (cardModel != null)
             {
-                //don't point for untargeted or un aread spells
-                if (cardModel.card.isSpell && !cardModel.card.needsTargeting(possibleActions))
-                {
-                    return;
-                }
                 view.rectTransform(cardModel.card.gameObject);
+                debug.Log("Enabling pointer from deploying piece");
             }
-            else if(!targeting)
+            else
             {
                 view.disable();
+                debug.Log("Disabling pointer for piece spawning");
             }
         }
 

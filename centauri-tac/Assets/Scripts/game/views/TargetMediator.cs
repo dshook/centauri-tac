@@ -212,6 +212,15 @@ namespace ctac
 
         }
 
+        [ListensTo(typeof(PieceSpawningSignal))]
+        public void onPieceSpawning(CardSelectedModel cardModel)
+        {
+            if (cardModel == null && cardTarget != null)
+            {
+                cancelSelectTarget.Dispatch(cardTarget.targetingCard);
+            }
+        }
+
         [ListensTo(typeof(SelectTargetSignal))]
         public void onSelectTarget(TargetModel targetModel)
         {
