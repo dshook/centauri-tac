@@ -285,6 +285,8 @@ namespace SVGImporter
 		SceneView lastSceneView;
 		void OnSceneView(SceneView sceneView)
 		{
+			if (modifier == null) return;
+
 			lastSceneView = sceneView;
 			if(!useSelection.boolValue) selectingLayers = false;
 
