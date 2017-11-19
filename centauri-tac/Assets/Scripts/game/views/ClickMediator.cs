@@ -555,6 +555,7 @@ namespace ctac
             {
                 draggedCard = null;
                 draggedCardTime = Time.time;
+                lastHoveredCard = null;
             }
         }
 

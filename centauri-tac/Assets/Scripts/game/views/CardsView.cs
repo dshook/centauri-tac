@@ -160,6 +160,7 @@ namespace ctac {
             if (hoveredCard != null)
             {
                 hoveredCard.cardView.displayWrapper.SetActive(true);
+                hoverAccumulator = 0f;
             }
         }
 

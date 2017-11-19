@@ -94,6 +94,15 @@ namespace ctac
             hoverCardView.EnableHoverTips(loader);
         }
 
+        internal void hideCard()
+        {
+            cardVisible = false;
+            timer = 0f;
+            //hoverCardView.card.linkedPiece = null;
+            hoverCardView.gameObject.SetActive(false);
+            hoverCardView.DisableHoverTips();
+        }
+
         internal void showCardFromHand(CardModel cardToShow, Vector3 position, int spellDamage)
         {
             //copy over props from hovered to hover
@@ -142,14 +151,6 @@ namespace ctac
                 && r1.xMax > r2.xMax 
                 && r1.yMin < r2.yMin 
                 && r1.yMax > r2.yMax;
-        }
-
-        internal void hideCard()
-        {
-            cardVisible = false;
-            //hoverCardView.card.linkedPiece = null;
-            hoverCardView.gameObject.SetActive(false);
-            hoverCardView.DisableHoverTips();
         }
     }
 }

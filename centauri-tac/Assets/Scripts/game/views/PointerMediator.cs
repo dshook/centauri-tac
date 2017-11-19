@@ -14,32 +14,10 @@ namespace ctac
 
         [Inject] public IDebugService debug { get; set; }
 
-        bool targeting = false;
-
         public override void OnRegister()
         {
             view.init(raycastModel);
         }
-
-        //[ListensTo(typeof(CardSelectedSignal))]
-        //public void onCardSelected(CardSelectedModel cardModel)
-        //{
-        //    if (cardModel != null && cardModel.card.gameObject != null)
-        //    {
-        //        //don't point for untargeted or un aread spells
-        //        if (cardModel.card.isSpell && !cardModel.card.needsTargeting(possibleActions))
-        //        {
-        //            return;
-        //        }
-        //        view.rectTransform(cardModel.card.gameObject);
-        //        debug.Log("Enabling pointer from selected card");
-        //    }
-        //    else if(!targeting)
-        //    {
-        //        view.disable();
-        //        debug.Log("Disabling pointer from selected card");
-        //    }
-        //}
 
         [ListensTo(typeof(PieceSpawningSignal))]
         public void onPieceSpawning(CardSelectedModel cardModel)
@@ -47,12 +25,12 @@ namespace ctac
             if (cardModel != null)
             {
                 view.rectTransform(cardModel.card.gameObject);
-                debug.Log("Enabling pointer from deploying piece");
+                //debug.Log("Enabling pointer from deploying piece");
             }
             else
             {
                 view.disable();
-                debug.Log("Disabling pointer for piece spawning");
+                //debug.Log("Disabling pointer for piece spawning");
             }
         }
 
@@ -68,7 +46,6 @@ namespace ctac
             if (model.targetingCard != null && model.cardDeployPosition != null)
             {
                 view.worldPoint(model.cardDeployPosition.gameObject.transform);
-                targeting = true;
             }
             else if (model.targetingCard.isSpell)
             {
@@ -77,12 +54,10 @@ namespace ctac
                 if (model.targets == null && area == null) { return; }
 
                 view.rectTransform(model.targetingCard.gameObject);
-                targeting = true;
             }
             else
             {
                 view.disable();
-                targeting = false;
             }
         }
 
@@ -90,14 +65,12 @@ namespace ctac
         public void onCancelSelectTarget(CardModel card)
         {
             view.disable();
-            targeting = false;
         }
 
         [ListensTo(typeof(SelectTargetSignal))]
         public void onSelectTarget(TargetModel card)
         {
             view.disable();
-            targeting = false;
         }
 
         [ListensTo(typeof(StartSelectAbilityTargetSignal))]
@@ -106,12 +79,10 @@ namespace ctac
             if (model.targetingPiece != null && model.targetingPiece.gameObject != null)
             {
                 view.worldPoint(model.targetingPiece.gameObject.transform);
-                targeting = true;
             }
             else
             {
                 view.disable();
-                targeting = false;
             }
         }
 
@@ -119,21 +90,18 @@ namespace ctac
         public void onAbilityCancelSelectTarget(PieceModel card)
         {
             view.disable();
-            targeting = false;
         }
 
         [ListensTo(typeof(SelectAbilityTargetSignal))]
         public void onAbilitySelectTarget(StartAbilityTargetModel card, PieceModel piece)
         {
             view.disable();
-            targeting = false;
         }
 
         [ListensTo(typeof(StartChooseSignal))]
         public void onStartChoose(ChooseModel c)
         {
             view.disable();
-            targeting = false;
         }
 
     }
