@@ -87,6 +87,7 @@ namespace ctac
             if(cardClick == null || cardView == null)
             {
                 cardSelected.Dispatch(null);
+                pieceSpawning.Dispatch(null);
                 return;
             }
 
@@ -165,6 +166,7 @@ namespace ctac
             cardSelected.Dispatch(new CardSelectedModel() { card = cardView.card, point = cardClick.position });
         }
 
+        //Handle clicking on something NOT a card when a card has not been selected
         private void handleNeutralClick(ClickModel clickModel)
         {
             if (clickModel == null || clickModel.clickedObject == null)
@@ -306,6 +308,7 @@ namespace ctac
             }
         }
 
+        //Clicking on something that's NOT a card when a card has been selected
         private void handleClickWithCard(ClickModel clickModel)
         {
             if (clickModel == null || clickModel.clickedObject == null)
@@ -552,7 +555,6 @@ namespace ctac
             {
                 draggedCard = null;
                 draggedCardTime = Time.time;
-                pieceSpawning.Dispatch(null);
             }
         }
 
