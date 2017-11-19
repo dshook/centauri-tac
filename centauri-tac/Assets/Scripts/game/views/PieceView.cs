@@ -33,8 +33,7 @@ namespace ctac {
         public GameObject hpBar;
         public GameObject hpBarfill;
         public SVGAsset hpBarSvg;
-        public SVGAsset hpBarSvgEnemy;
-        public SVGRenderer hpBarSvgRenderer;
+        public SVGColorModifier hpBarColorModifier;
         public MeshRenderer hpBarFillRenderer;
         private Color32 hpBarFillFriendlyColor = Colors.friendlyColor;
         private Color32 hpBarFillEnemyColor = Colors.enemyColor;
@@ -72,8 +71,7 @@ namespace ctac {
             hpBar = hpBarContainer.transform.Find("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.Find("HpBarFill").gameObject;
             hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
-            hpBarSvgRenderer = hpBar.GetComponent<SVGRenderer>();
-            hpBarSvgEnemy = loader.Load<SVGAsset>("UI/hpbar enemy");
+            hpBarColorModifier = hpBar.GetComponent<SVGColorModifier>();
             hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
 
             textContainer = hpBarContainer.transform.Find("TextContainer").gameObject;
@@ -249,46 +247,23 @@ namespace ctac {
             var fillColor = hpBarFillFriendlyColor;
             if (!piece.currentPlayerHasControl)
             {
-                hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
                 fillColor = hpBarFillEnemyColor;
             }
-            else
-            {
-                hpBarSvgRenderer.vectorGraphics = hpBarSvg;
-            }
 
-            hpBarFillRenderer.material.SetColor("_Color", fillColor);
+            //hpBarFillRenderer.material.SetColor("_Color", fillColor);
+            hpBarColorModifier.color = fillColor;
             hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
             hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
 
             if (piece.baseHealth > hpBarHpCuttoff)
             {
-                hpBarFillRenderer.material.SetColor("_LineColor", fillColor);
+                hpBarFillRenderer.material.SetColor("_LineColor", Color.white);
             }
         }
 
         public void UpdateTurn()
         {
-            //gotta swap out the bar if it's an enemy for now
-            if (!piece.currentPlayerHasControl)
-            {
-                hpBarSvgRenderer.vectorGraphics = hpBarSvgEnemy;
-                hpBarFillRenderer.material.SetColor("_Color", hpBarFillEnemyColor);
-
-                if (piece.baseHealth > hpBarHpCuttoff)
-                {
-                    hpBarFillRenderer.material.SetColor("_LineColor", hpBarFillEnemyColor);
-                }
-            }
-            else
-            {
-                hpBarSvgRenderer.vectorGraphics = hpBarSvg;
-                hpBarFillRenderer.material.SetColor("_Color", hpBarFillFriendlyColor);
-                if (piece.baseHealth > hpBarHpCuttoff)
-                {
-                    hpBarFillRenderer.material.SetColor("_LineColor", hpBarFillFriendlyColor);
-                }
-            }
+            UpdateHpBar();
         }
 
         public class SpawnAnim : IAnimate

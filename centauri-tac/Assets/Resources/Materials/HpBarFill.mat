@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: HpBarMat
-  m_Shader: {fileID: 4800000, guid: 60791a9f8cfd14ea3b9383528fee950b, type: 3}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 1
+  m_Name: HpBarFill
+  m_Shader: {fileID: 4800000, guid: c45ac82e4c4173949a983ceda3180fa6, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -55,11 +55,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BorderWidth: 0.82
     - _BumpScale: 1
-    - _CurrentHp: 3
+    - _CurrentHp: 2
     - _Cutoff: 0.5
-    - _CutoffOffset: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _EndLineWidth: 0
@@ -67,25 +65,21 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Hp: 3
-    - _LineWidth: 0.01
-    - _MaxHp: 4
+    - _LineWidth: 0.004
+    - _MaxHp: 5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimFalloff: 1.59
-    - _Slope: 0.11
+    - _Slope: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _StartOffset: 0.013
+    - _StartOffset: 0
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.39607844, g: 0.6745098, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EndColor: {r: 0, g: 0, b: 0, a: 0}
-    - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _LineColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 1, g: 0, b: 0, a: 1}
