@@ -252,6 +252,7 @@ namespace ctac {
 
             //hpBarFillRenderer.material.SetColor("_Color", fillColor);
             hpBarColorModifier.color = fillColor;
+            hpBarColorModifier.svgRenderer.UpdateRenderer();
             hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
             hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
 
