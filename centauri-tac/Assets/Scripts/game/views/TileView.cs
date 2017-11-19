@@ -24,10 +24,10 @@ namespace ctac {
         Color attackColor = new Color(.9f, .4f, .4f);
         Color dimmedColor = new Color(.3f, .3f, .3f, .3f);
 
-#pragma warning disable
-        [SerializeField]
-        [EnumFlagsAttribute] TileHighlightStatus tileFlags;
-#pragma warning restore
+//#pragma warning disable
+//        [SerializeField]
+//        [EnumFlagsAttribute] TileHighlightStatus tileFlags;
+//#pragma warning restore
 
         //private MeshRenderer meshRenderer = null;
         //private GameObject arrows = null;
@@ -42,45 +42,49 @@ namespace ctac {
             }
         }
 
+
+        Color tint = Colors.invisible;
+        Color desiredColor = Colors.invisible;
+
         void Update()
         {
             if (tile == null) return;
             
-            tileFlags = tile.highlightStatus;
-            Color tint = Colors.invisible;
-            Color desiredColor = Colors.invisible;
+            //tileFlags = tile.highlightStatus;
+            tint = Colors.invisible;
+            desiredColor = Colors.invisible;
 
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Dimmed))
+            if ((tile.highlightStatus & TileHighlightStatus.Dimmed) != 0)
             {
                 tint += dimmedColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Highlighted))
+            if ((tile.highlightStatus & TileHighlightStatus.Highlighted) != 0)
             {
                 tint += hoverTint;
             }
 
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Selected)
-                || FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
+            if ((tile.highlightStatus & TileHighlightStatus.Selected) != 0
+                || (tile.highlightStatus & TileHighlightStatus.TargetTile) != 0)
             {
                 desiredColor = selectColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Movable))
+            if ((tile.highlightStatus & TileHighlightStatus.Movable) != 0)
             {
                 desiredColor = moveColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.MoveRange))
+            if ((tile.highlightStatus & TileHighlightStatus.MoveRange) != 0)
             {
                 desiredColor = moveRangeColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.PathFind))
+            if ((tile.highlightStatus & TileHighlightStatus.PathFind) != 0)
             {
                 desiredColor = pathFindColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.Attack))
+            if ((tile.highlightStatus & TileHighlightStatus.Attack) != 0)
             {
                 desiredColor = attackColor;
             }
-            if (FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.AttackRange))
+            if ((tile.highlightStatus & TileHighlightStatus.AttackRange) != 0)
             {
                 desiredColor = attackRangeTint;
             }
@@ -91,49 +95,6 @@ namespace ctac {
             }
 
             tileIndicator.color = desiredColor - tint;
-            //for tint only color changes just set the color, don't tween
-            //if (desiredColor == originalColor && tint != invisible)
-            //{
-            //}
-            //else
-            //{
-            //    desiredColor = desiredColor - tint;
-
-            //    ReallySetColor(desiredColor);
-
-                //if (desiredColor != meshRenderer.material.color)
-                //{
-                //    var existingTweens = gameObject.GetComponents<MaterialColorTween>();
-                //    if (existingTweens.Length == 0 || !existingTweens.Any(tw => tw.desiredColor == desiredColor))
-                //    {
-                //        var matTween = gameObject.AddComponent<MaterialColorTween>();
-                //        matTween.mat = meshRenderer.material;
-                //        matTween.desiredColor = desiredColor;
-                //        matTween.time = 0.5f;
-                //    }
-                //}
-            //}
-
-            //if (tile.showPieceRotation && !arrows.activeSelf)
-            //{
-            //    arrows.SetActive(true);
-            //}
-            //else if(!tile.showPieceRotation && arrows.activeSelf)
-            //{
-            //    arrows.SetActive(false);
-            //}
         }
-
-        //private void ReallySetColor(Color c)
-        //{
-        //    meshRenderer.material.SetFloat("_UseColor", 0.8f);
-        //    meshRenderer.material.SetColor("_Color", c);
-        //}
-
-        //private void ResetColor()
-        //{
-        //    meshRenderer.material.SetFloat("_UseColor", 0);
-        //    meshRenderer.material.SetColor("_Color", Color.white);
-        //}
     }
 }
