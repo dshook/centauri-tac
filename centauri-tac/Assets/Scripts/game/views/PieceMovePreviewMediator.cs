@@ -28,15 +28,7 @@ namespace ctac
                 mpfm.tiles.Insert(0, mpfm.startTile);
             }
 
-            //should be ranged attack case
-            if (mpfm.endTile != null)
-            {
-                view.onMovePath(new List<Tile>() { mpfm.startTile, mpfm.endTile }, true);
-            }
-            else
-            {
-                view.onMovePath(mpfm.tiles);
-            }
+            view.onMovePath(mpfm.tiles, mpfm.piece.isRanged || (mpfm.piece.statuses & Statuses.Flying) != 0);
 
             if (mpfm.isAttack)
             {

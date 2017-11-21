@@ -43,54 +43,35 @@ namespace ctac
             if (selectedPiece != null && tile != null && (selectedPiece.canMove || selectedPiece.canAttack))
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                var enemyOccupyingDest = pieces.Pieces.Any(m => 
+                var enemyOccupyingDest = pieces.Pieces.FirstOrDefault(m => 
                         m.tilePosition == tile.position 
                         && !m.currentPlayerHasControl
                         && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
                     );
+                var path = mapService.FindMovePath(selectedPiece, enemyOccupyingDest, tile);
 
-                //TODO: should also check for enemy in range?
-                if(selectedPiece.isRanged && enemyOccupyingDest || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Flying))
+                if (path != null)
                 {
-                    view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                     movePathFoundSignal.Dispatch(new MovePathFoundModel() {
+                        piece = selectedPiece,
                         startTile = gameTile,
-                        endTile = tile,
-                        isAttack = selectedPiece.canAttack && selectedPiece.isRanged
+                        tiles = path,
+                        isAttack = enemyOccupyingDest != null && selectedPiece.canAttack
                     });
                 }
-                //don't show move path for ranged units hovering over an enemy
-                else if (selectedPiece.isMelee || !enemyOccupyingDest )
+                else
                 {
-                    //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
-                    var boost = enemyOccupyingDest ? 1 : 0;
-                    var path = mapService.FindPath(gameTile, tile, (selectedPiece.movement - selectedPiece.moveCount) + boost, selectedPiece);
-                    view.toggleTileFlags(path, TileHighlightStatus.PathFind);
-
-
-                    if (path != null)
-                    {
-                        movePathFoundSignal.Dispatch(new MovePathFoundModel() {
-                            startTile = gameTile,
-                            tiles = path,
-                            isAttack = enemyOccupyingDest && selectedPiece.canAttack
-                        });
-                    }
-                    else
-                    {
-                        movePathFoundSignal.Dispatch(null);
-                    }
-
-                    if (enemyOccupyingDest && path != null )
-                    {
-                        view.onAttackTile(tile);
-                    }
-                    else
-                    {
-                        view.onAttackTile(null);
-                    }
+                    movePathFoundSignal.Dispatch(null);
                 }
-                
+
+                if (enemyOccupyingDest != null && path != null )
+                {
+                    view.onAttackTile(tile);
+                }
+                else
+                {
+                    view.onAttackTile(null);
+                }
             }
             else
             {

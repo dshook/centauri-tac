@@ -26,8 +26,8 @@ namespace ctac
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
 
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public IMapService mapService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
         {
@@ -35,18 +35,22 @@ namespace ctac
 
             var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == movePiece.pieceId);
             var toTileCoords = movePiece.to.Vector3.ToTileCoordinates();
-            Vector2 difference = toTileCoords - piece.tilePosition;
+            var distance = mapService.TileDistance(toTileCoords, piece.tilePosition);
             var toTile = map.tiles[toTileCoords];
             piece.tilePosition = toTileCoords;
 
+            if ((piece.statuses & Statuses.Flying) != 0)
+            {
+                piece.moveCount += distance;
+            }
             if (movePiece.isJump)
             {
                 piece.moveCount++;
             }
             else
             {
-                //theoretically this should always be 1 I think
-                piece.moveCount += (int)(Math.Abs(difference.x) + Math.Abs(difference.y));
+                //theoretically this should always be 1 in this case I think
+                piece.moveCount += distance;
             }
 
             //ranged can't move and attack
@@ -59,12 +63,11 @@ namespace ctac
             {
                 piece = piece,
                 to = toTile,
-                change = difference,
                 direction = movePiece.direction,
                 isTeleport = movePiece.isTeleport
             });
 
-            debug.Log( string.Format("Moved piece {0} to {1}", movePiece.pieceId, movePiece.to) , socketKey );
+            debug.Log(string.Format("Moved piece {0} to {1}", movePiece.pieceId, movePiece.to), socketKey);
         }
     }
 }

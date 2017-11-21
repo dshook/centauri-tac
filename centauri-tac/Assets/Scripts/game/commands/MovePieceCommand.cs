@@ -29,15 +29,7 @@ namespace ctac
         {
 
             var startTile = map.tiles.Get(pieceMoved.tilePosition);
-            List<Tile> path = null;
-            if ((pieceMoved.statuses & Statuses.Flying) != 0)
-            {
-                path = new List<Tile>() { dest };
-            }
-            else
-            {
-                path = mapService.FindPath(startTile, dest, pieceMoved.movement, pieceMoved);
-            }
+            List<Tile> path = mapService.FindMovePath(pieceMoved, null, dest);
             if (path == null || path.Count == 0) return;
             //format for server
             var serverPath = path.Select(x => new PositionModel(x.position) ).ToList();

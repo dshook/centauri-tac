@@ -16,7 +16,7 @@ namespace ctac
         Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
         int KingDistance(Vector2 a, Vector2 b);
-        List<Tile> FindPath(Tile start, Tile end, int maxDist, PieceModel piece);
+        List<Tile> FindMovePath(PieceModel piece, PieceModel attackingPiece, Tile end);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
         Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null);
         bool isHeightPassable(Tile start, Tile end);
@@ -260,7 +260,69 @@ namespace ctac
             );
         }
 
-        public List<Tile> FindPath(Tile start, Tile end, int maxDist, PieceModel piece)
+        /// <summary>
+        /// Find a path from piece to either the attacking piece or end tile
+        /// If attacking piece is passed the path will include the tile they're standing on
+        /// </summary>
+        public List<Tile> FindMovePath(PieceModel piece, PieceModel pieceAttacking, Tile end)
+        {
+            if (piece == null || (end != null && end.unpassable) || (pieceAttacking == null && end == null))
+            {
+                return null;
+            }
+
+            //use pieceAttacking if you want to attack a piece on a tile
+            if (end != null && pieceAttacking == null && pieces.Pieces.Any(m => m.tilePosition == end.position))
+            {
+                return null;
+            }
+
+            //For ranged units attacking within their range the move path is just the enemy position
+            if(
+                piece.isRanged 
+                && pieceAttacking != null 
+                && KingDistance(piece.tilePosition, pieceAttacking.tilePosition) <= piece.range
+            )
+            {
+                return new List<Tile>() { mapModel.tiles[pieceAttacking.tilePosition] };
+            }
+
+            //Flying pieces can be a bit trickier
+            if ((piece.statuses & Statuses.Flying) != 0)
+            {
+                if (pieceAttacking != null)
+                {
+                    //for attacking a piece with a flying unit we just need to get to an adjacent open tile that's within range
+                    var adjacent = GetMovableNeighbors(mapModel.tiles[pieceAttacking.tilePosition], piece);
+                    if (adjacent == null || adjacent.Count == 0)
+                    {
+                        return null;
+                    }
+                    var moveTo = adjacent.OrderBy(k => TileDistance(piece.tilePosition, k.Key)).FirstOrDefault();
+                    //don't need originating if they're already adjacent though
+                    if (moveTo.Value.position == piece.tilePosition)
+                    {
+                        return new List<Tile>() { mapModel.tiles[pieceAttacking.tilePosition] };
+                    }
+                    else
+                    {
+                        return new List<Tile>() { moveTo.Value, mapModel.tiles[pieceAttacking.tilePosition] };
+                    }
+                }
+                else if (end != null && TileDistance(piece.tilePosition, end.position) <= piece.movement - piece.moveCount)
+                {
+                    return new List<Tile>() { end };
+                }
+            }
+
+            //default cases where the piece is melee or a ranged unit that's just moving to a tile
+            //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
+            var boost = pieceAttacking != null ? 1 : 0;
+            var dest = pieceAttacking != null ? mapModel.tiles[pieceAttacking.tilePosition] : end;
+            return FindPath(mapModel.tiles[piece.tilePosition], dest, (piece.movement - piece.moveCount) + boost, piece);
+        }
+
+        private List<Tile> FindPath(Tile start, Tile end, int maxDist, PieceModel piece)
         {
             var ret = new List<Tile>();
             if(start == end) return ret;
@@ -423,7 +485,7 @@ namespace ctac
             //filter tiles that are too high/low to move to & are passable
             ret = ret.Where(t => 
                 !t.Value.unpassable 
-                && (isHeightPassable(t.Value, center) || FlagsHelper.IsSet(piece.statuses, Statuses.Flying))
+                && (isHeightPassable(t.Value, center) || (piece.statuses & Statuses.Flying) != 0)
             ).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination
