@@ -67,6 +67,7 @@ namespace ctac
                     var path = mapService.FindPath(gameTile, tile, (selectedPiece.movement - selectedPiece.moveCount) + boost, selectedPiece);
                     view.toggleTileFlags(path, TileHighlightStatus.PathFind);
 
+
                     if (path != null)
                     {
                         movePathFoundSignal.Dispatch(new MovePathFoundModel() {

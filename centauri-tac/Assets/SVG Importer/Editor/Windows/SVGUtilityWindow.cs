@@ -49,7 +49,7 @@ namespace SVGImporter
 		
 		protected Texture2D m_Texture;
 		
-		protected Rect m_TextureViewRect;
+		protected Rect m_TextureViewRect = default(Rect);
 		
 		protected Rect m_TextureRect;
 		

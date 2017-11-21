@@ -211,7 +211,7 @@ namespace SVGImporter.Rendering
         }
 
     //    static Matrix4x4 worldToLocalMatrix;
-        static Vector3 worldTransformPosition;
+        static Vector3 worldTransformPosition = Vector3.zero;
     //    static Quaternion worldTransformRotation;
 
         static public float gizmoRotation;
@@ -594,7 +594,8 @@ namespace SVGImporter.Rendering
             Vector2 diagonalB = (p1 - p2).normalized;
             Vector2 horizontal = (p2p0 - p1p3).normalized;
             Vector2 vertical = (p3p2 - p0p1).normalized;
-
+            
+#pragma warning disable
             Handles.DotCap(0, Vector2.Lerp(p2p0, p1p3, 0.5f), capRotation, transformCapSize);
             
             // p0
@@ -677,6 +678,7 @@ namespace SVGImporter.Rendering
             Handles.Label(p2, "   p2");
             Handles.Label(p3, "   p3");
             */
+#pragma warning restore
         }
     }
 }

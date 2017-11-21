@@ -468,7 +468,7 @@ namespace SVGImporter
         {
             if(hasGradients)
             {
-                MonoBehaviour mb = reference as MonoBehaviour;                
+                //MonoBehaviour mb = reference as MonoBehaviour;                
                 if(SVGAtlas.beingDestroyed) return;
                 for(int i = 0; i < _sharedGradients.Length; i++)
                 {
@@ -489,7 +489,7 @@ namespace SVGImporter
         {
             if(hasGradients)
             {
-                MonoBehaviour mb = reference as MonoBehaviour;                
+                //MonoBehaviour mb = reference as MonoBehaviour;                
                 int totalReferences = 0;
                 if(SVGAtlas.beingDestroyed) return;
                 for(int i = 0; i < _sharedGradients.Length; i++)
@@ -1601,7 +1601,6 @@ namespace SVGImporter
 
                 int vertexCount = _sharedMesh.vertexCount;
                 UnityEditor.MeshUtility.SetMeshCompression(_sharedMesh, GetModelImporterMeshCompression(_meshCompression));
-                if(_optimizeMesh) ;
                 if(_generateNormals)
                 {
                     if(!_antialiasing)

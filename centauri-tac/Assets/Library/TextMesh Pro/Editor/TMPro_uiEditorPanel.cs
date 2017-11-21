@@ -865,7 +865,7 @@ namespace TMPro.EditorUtilities
 
             // LEFT HANDLE
             Vector3 old_left = (handlePoints[0] + handlePoints[1]) * 0.5f;
-            Vector3 new_left = Handles.FreeMoveHandle(old_left, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotCap);
+            Vector3 new_left = Handles.FreeMoveHandle(old_left, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotHandleCap);
             bool hasChanged = false;
             if (old_left != new_left)
             {
@@ -877,7 +877,7 @@ namespace TMPro.EditorUtilities
 
             // TOP HANDLE
             Vector3 old_top = (handlePoints[1] + handlePoints[2]) * 0.5f;
-            Vector3 new_top = Handles.FreeMoveHandle(old_top, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotCap);
+            Vector3 new_top = Handles.FreeMoveHandle(old_top, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotHandleCap);
             if (old_top != new_top)
             {
                 float delta = old_top.y - new_top.y;
@@ -888,7 +888,7 @@ namespace TMPro.EditorUtilities
 
             // RIGHT HANDLE
             Vector3 old_right = (handlePoints[2] + handlePoints[3]) * 0.5f;
-            Vector3 new_right = Handles.FreeMoveHandle(old_right, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotCap);
+            Vector3 new_right = Handles.FreeMoveHandle(old_right, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotHandleCap);
             if (old_right != new_right)
             {
                 float delta = old_right.x - new_right.x;
@@ -899,7 +899,7 @@ namespace TMPro.EditorUtilities
 
             // BOTTOM HANDLE
             Vector3 old_bottom = (handlePoints[3] + handlePoints[0]) * 0.5f;
-            Vector3 new_bottom = Handles.FreeMoveHandle(old_bottom, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotCap);
+            Vector3 new_bottom = Handles.FreeMoveHandle(old_bottom, Quaternion.identity, HandleUtility.GetHandleSize(m_rectTransform.position) * 0.05f, Vector3.zero, Handles.DotHandleCap);
             if (old_bottom != new_bottom)
             {
                 float delta = old_bottom.y - new_bottom.y;

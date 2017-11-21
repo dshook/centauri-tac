@@ -226,7 +226,6 @@ namespace SVGImporter
                     "graphics Shader Level: "+SystemInfo.graphicsShaderLevel+"\n" +
                     "max Texture Size: "+SystemInfo.maxTextureSize+"\n" +
                     "npot Support: "+SystemInfo.npotSupport+"\n" +
-                    "supports Stencil: "+SystemInfo.supportsStencil+"\n" +
                     "supported Render Target Count: "+SystemInfo.supportedRenderTargetCount+"\n" +
                     "supports 3D Textures: "+SystemInfo.supports3DTextures+"\n" +
                     "supports Compute Shaders: "+SystemInfo.supportsComputeShaders+"\n" +

@@ -42,7 +42,6 @@ namespace ctac
 
 
         CardModel draggedCard = null;
-        Vector3 draggedCardInitialPosition;
         float draggedCardTime = 0f;
 
         PieceModel selectedPiece = null;
@@ -548,7 +547,6 @@ namespace ctac
             if (cardSelected != null)
             {
                 draggedCard = cardSelected.card;
-                draggedCardInitialPosition = cardSelected.card.gameObject.transform.position;
                 draggedCardTime = Time.time;
             }
             else

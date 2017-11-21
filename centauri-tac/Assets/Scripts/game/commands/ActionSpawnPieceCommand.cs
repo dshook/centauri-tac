@@ -53,7 +53,6 @@ namespace ctac
             else
             {
                 pieceModel = pieceService.CreatePiece(spawnedPiece);
-                var pieceView = pieceModel.gameObject.GetComponent<PieceView>();
             }
 
             pieceSpawned.Dispatch(new PieceSpawnedModel(){ spawnPieceAction = spawnedPiece, piece = pieceModel, alreadyDeployed = phantomPiece != null });

@@ -287,7 +287,9 @@ namespace SVGImporter
             textureImporter.isReadable = true;
             textureImporter.mipmapEnabled = false;
             textureImporter.spriteImportMode = SpriteImportMode.None;
+#pragma warning disable
             textureImporter.textureFormat = TextureImporterFormat.ARGB32;
+#pragma warning restore
             textureImporter.wrapMode = TextureWrapMode.Clamp;
         }
 
