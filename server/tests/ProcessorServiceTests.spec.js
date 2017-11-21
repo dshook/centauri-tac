@@ -448,10 +448,11 @@ export default class ProcessorServiceTests
       t.plan(4);
       this.setupTest();
 
-      var piece = this.spawnPiece(this.pieceState, 7, 1);
+      var piece = this.spawnPiece(this.pieceState, 105, 1);
       piece.position = new Position(0, 0, 0);
       piece.bornOn = -100; //fake the waiting for attack
       piece.attackCount = 0;
+      piece.moveCount = 0;
 
       let enemy = this.spawnPiece(this.pieceState, 7, 2);
       enemy.position = new Position(1, 0, 1);
