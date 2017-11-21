@@ -1,7 +1,7 @@
 // Copyright (C) 2014 - 2016 Stephan Bouchard - All Rights Reserved
 // This code can only be used under the standard Unity Asset Store End User License Agreement
 // A Copy of the EULA APPENDIX 1 is available at http://unity3d.com/company/legal/as_terms
-// Release 1.0.55.2017.2.0b12
+// Release 1.0.55.56.0b12
 
 //#define PROFILE_ON
 //#define PROFILE_PHASES_ON
