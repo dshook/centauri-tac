@@ -16,7 +16,7 @@ namespace ctac
         Charge     = 1 << 7,
         CantAttack = 1 << 8,
         DyadStrike = 1 << 9,
-        Jump       = 1 << 10,
+        Flying     = 1 << 10,
 
 
         //The rest of these are fake client side only statuses derived from other properties

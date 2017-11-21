@@ -46,20 +46,20 @@ namespace HighlightingSystem
 		/// <summary>
 		/// Controls see-through mode for highlighters or occluders. When set to true - highlighter in this mode will not be occluded by anything (except for see-through occluders). Occluder in this mode will overlap any highlighting.
 		/// </summary>
-		[HideInInspector]
+		//[HideInInspector]
 		public bool seeThrough;
 
 		/// <summary>
 		/// Controls occluder mode. Note that non-see-through highlighting occluders will be enabled only when frame depth buffer is not available!
 		/// </summary>
-		[HideInInspector]
+		//[HideInInspector]
 		public bool occluder;
 
 		/// <summary>
 		/// Force-render highlighting of this Highlighter. No culling is performed in this case (neither frustum nor occlusion culling) and renderers from all LOD levels will be always rendered. 
 		/// Please be considerate in enabling this mode, or you may experience performance degradation. 
 		/// </summary>
-		[HideInInspector]
+		//[HideInInspector]
 		public bool forceRender = false;
 		#endregion
 

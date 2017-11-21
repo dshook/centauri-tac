@@ -48,6 +48,7 @@ namespace ctac {
         public GameObject cantAttackIcon;
         public GameObject dyadStrikeIcon;
         public GameObject silenceIcon;
+        public GameObject flyingIcon;
 
         public GameObject model;
         private GameObject textContainer;
@@ -95,6 +96,7 @@ namespace ctac {
             cantAttackIcon = eventIconContainer.transform.Find("CantAttack").gameObject;
             dyadStrikeIcon = eventIconContainer.transform.Find("DyadStrike").gameObject;
             silenceIcon = eventIconContainer.transform.Find("Silence").gameObject;
+            flyingIcon = eventIconContainer.transform.Find("Flying").gameObject;
 
             statusIcons = new Dictionary<Statuses, GameObject>()
             {
@@ -106,6 +108,7 @@ namespace ctac {
                 {Statuses.hasEvent, eventIcon },
                 {Statuses.isRanged, rangeIcon },
                 {Statuses.hasAura, auraIcon },
+                {Statuses.Flying, flyingIcon },
             };
 
             var meshRenderer = model.GetComponentInChildren<MeshRenderer>();

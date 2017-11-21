@@ -13,7 +13,7 @@ var Statuses = Enum({
   Charge    : 128,
   CantAttack: 256,
   DyadStrike: 512,
-  Jump      : 1024
+  Flying    : 1024
 });
 export default Statuses;
 

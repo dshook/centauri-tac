@@ -337,11 +337,11 @@ namespace ctac {
             {"Paralyze",           "Minion cannot move or attack" },
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
-            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers." },
+            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers" },
             {"Root",               "Cannot move" },
             {"Charge",             "Minion can move and attack immediately" },
             {"Dyad Strike",        "Minion can attack twice per turn" },
-            {"Jump",               "Minion can jump up or down any height" },
+            {"Flying",             "Minion can fly up or down any height and over obstacles" },
         };
 
         public void EnableHoverTips(IResourceLoaderService loader)
@@ -381,7 +381,7 @@ namespace ctac {
                 if (FlagsHelper.IsSet(statuses, Statuses.Root)) { descriptionWords.Add("Root"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.Charge)) { descriptionWords.Add("Charge"); }
                 if (FlagsHelper.IsSet(statuses, Statuses.DyadStrike)) { descriptionWords.Add("Dyad Strike"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Jump)) { descriptionWords.Add("Jump"); }
+                if (FlagsHelper.IsSet(statuses, Statuses.Flying)) { descriptionWords.Add("Flying"); }
             }
 
             descriptionWords = descriptionWords.Distinct().ToList();

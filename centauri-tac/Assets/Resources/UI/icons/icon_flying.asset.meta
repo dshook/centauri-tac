@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 95235bbac08636141bc1b8a9377db270
+timeCreated: 1511226069
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg id=\"12a34ef2-9d44-4912-9cc5-7c6db430d338\" data-name=\"flying\"
+    xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\" viewBox=\"0
+    0 100 100\">\r\n  <title>icon</title>\r\n  <path d=\"M25.7,46C37.7,43.6,67.9,30.1,79,18.2,76.6,36.5,58,52,58,52a41.5,41.5,0,0,0,17-7.6C70.3,55.5,52,67.5,52,67.5a48.1,48.1,0,0,0,15.9-6.4C60.7,71.4,43.2,77.8,43.2,77.8s1.6,2.4,7.2,2.4c-7.9,3.2-27.8.8-33.4-7.9C38.5,69.8,56,57,56,57S24.4,72.4,18,70c5-5,6.9-8.1,7.7-12.1,30.2-9.5,42.1-25.4,42.1-25.4S45.6,51.6,26.5,53.9C27.3,53.1,28.1,49.2,25.7,46Z\"/>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 

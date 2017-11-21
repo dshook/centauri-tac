@@ -184,6 +184,15 @@ namespace ctac
             {
                 return new Dictionary<Vector2, Tile>();
             }
+            if ((piece.statuses & Statuses.Flying) != 0)
+            {
+                var tiles = GetTilesInRadius(piece.tilePosition, piece.movement - piece.moveCount);
+                //filter out all the unsuitable tile positions
+                return tiles.Where(t => 
+                    !t.Value.unpassable 
+                    && !pieces.Pieces.Any(m => m.tilePosition == t.Key)
+                ).ToDictionary(k => k.Key, v => v.Value);
+            }
             var ret = GetMovementTilesInRadius(piece.tilePosition, piece.movement - piece.moveCount, piece);
             //filter out friendly pieces from the mix finally. These are still in up until now since you can pass through them
             ret = ret.Where(t => !pieces.Pieces.Any(m => m.tilePosition == t.Key)
@@ -414,7 +423,7 @@ namespace ctac
             //filter tiles that are too high/low to move to & are passable
             ret = ret.Where(t => 
                 !t.Value.unpassable 
-                && (isHeightPassable(t.Value, center) || FlagsHelper.IsSet(piece.statuses, Statuses.Jump))
+                && (isHeightPassable(t.Value, center) || FlagsHelper.IsSet(piece.statuses, Statuses.Flying))
             ).ToDictionary(k => k.Key, v => v.Value);
 
             //filter out tiles with enemies on them that aren't the destination

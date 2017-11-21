@@ -11,7 +11,7 @@ namespace ctac
     {
         [Inject] public TileHighlightView view { get; set; }
         
-        [Inject] public TileHoverSignal tileHover { get; set; }
+        //[Inject] public TileHoverSignal tileHover { get; set; }
 
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
@@ -36,7 +36,7 @@ namespace ctac
 
         public void onTileHover(Tile tile)
         {
-            tileHover.Dispatch(tile);
+            //tileHover.Dispatch(tile);
             view.onTileHover(tile);
 
             //Unit pathfinding highlighting
@@ -49,8 +49,18 @@ namespace ctac
                         && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
                     );
 
+                //TODO: should also check for enemy in range?
+                if(selectedPiece.isRanged && enemyOccupyingDest || FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Flying))
+                {
+                    view.toggleTileFlags(null, TileHighlightStatus.PathFind);
+                    movePathFoundSignal.Dispatch(new MovePathFoundModel() {
+                        startTile = gameTile,
+                        endTile = tile,
+                        isAttack = selectedPiece.canAttack && selectedPiece.isRanged
+                    });
+                }
                 //don't show move path for ranged units hovering over an enemy
-                if (!enemyOccupyingDest || selectedPiece.isMelee)
+                else if (selectedPiece.isMelee || !enemyOccupyingDest )
                 {
                     //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
                     var boost = enemyOccupyingDest ? 1 : 0;
@@ -79,15 +89,7 @@ namespace ctac
                         view.onAttackTile(null);
                     }
                 }
-                else
-                {
-                    view.toggleTileFlags(null, TileHighlightStatus.PathFind);
-                    movePathFoundSignal.Dispatch(new MovePathFoundModel() {
-                        startTile = gameTile,
-                        endTile = tile,
-                        isAttack = selectedPiece.canAttack
-                    });
-                }
+                
             }
             else
             {

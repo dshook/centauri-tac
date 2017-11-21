@@ -52,7 +52,7 @@ export default class MovePieceProcessor
         return queue.cancel(action);
       }
     }
-
+    let isFlying = !!(piece.statuses & Statuses.Flying);
     if(!action.isJump && (piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
       this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
       return queue.cancel(action);
@@ -71,7 +71,7 @@ export default class MovePieceProcessor
     }
 
     //check height differential
-    if(!action.isJump && !(piece.statuses & Statuses.Jump) ){
+    if(!action.isJump && !isFlying ){
       if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
         this.log.warn('Cannot move piece %j up height diff', piece);
         return queue.cancel(action);
@@ -79,7 +79,7 @@ export default class MovePieceProcessor
     }
 
     let travelDistance = this.mapState.tileDistance(currentTile.position, destinationTile.position);
-    if(!action.isJump && travelDistance > 1){
+    if(!action.isJump && !isFlying && travelDistance > 1){
       this.log.warn('Cannot move piece %j more than 1 at a time', piece);
       return queue.cancel(action);
     }
@@ -96,7 +96,12 @@ export default class MovePieceProcessor
     piece.direction = action.direction;
 
     //Jumps only counts as a single move but everything else is based on distance which should be 1
-    if (action.isJump)
+    //for non flying moves
+    if(isFlying){
+      action.isJump = true;
+      piece.moveCount += travelDistance;
+    }
+    else if (action.isJump)
     {
       piece.moveCount++;
     }
