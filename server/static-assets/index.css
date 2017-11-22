@@ -18,7 +18,7 @@ body {
   height: 100%;
   overflow: auto;
 
-  background: linear-gradient(#ddbe98, #8c8a92);
+  background-color: #160e15;
 }
 
 h1, h2, h3, h4, h5{
@@ -29,9 +29,23 @@ a {
   color: #bb3631;
 }
 
-.section {
+.site-content{
   max-width: 1024px;
-  min-width: 750px;
+  min-width: 400px;
+  border: 15px solid #8c8a92;
+  box-sizing: border-box;
+  position: relative;
+  padding: 15px;
+  margin: 0 auto;
+  margin-top: 15px;
+
+  background-color: #ddbe98;
+  background-image: linear-gradient(#ddbe98, #8c8a92);
+
+  box-shadow: inset 0px 0px 0px 15px #ddbe98;
+}
+
+.section {
   margin: 0 auto;
   text-align: center;
 }
@@ -40,6 +54,8 @@ a {
   display:block;
   margin-left:auto;
   margin-right:auto;
+  width: 100%;
+  max-width: 703px;
 }
 
 .separator{
@@ -61,3 +77,57 @@ a {
   padding: 30px;
   width: 390px;
 }
+
+
+
+.stars-holder {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}
+
+.star{
+  border-radius: 50%;
+  background: #483343;
+  position: absolute;
+}
+
+.stars1 {
+  width: 3px;
+  height: 3px;
+  // animation: animStar 400s linear infinite;
+}
+
+.stars2 {
+  width: 5px;
+  height: 5px;
+  // animation: animStar 300s linear infinite;
+}
+
+.stars3 {
+  width: 7px;
+  height: 7px;
+  animation: animStar 500s linear infinite;
+}
+
+
+#stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: 202px 1480px #3a2936 , 1767px 270px #3a2936;
+  animation: animStar 300s linear infinite;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
