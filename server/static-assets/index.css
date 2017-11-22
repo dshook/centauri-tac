@@ -6,7 +6,9 @@
 html {
   box-sizing: border-box;
   height: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
+  /* To smooth any scrolling behavior */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -31,18 +33,18 @@ a {
 
 .site-content{
   max-width: 1024px;
-  min-width: 400px;
+  min-width: 300px;
   border: 15px solid #8c8a92;
   box-sizing: border-box;
   position: relative;
   padding: 15px;
-  margin: 0 auto;
+  margin: 10px auto;
   margin-top: 15px;
 
   background-color: #ddbe98;
-  background-image: linear-gradient(#ddbe98, #8c8a92);
+  // background-image: linear-gradient(#ddbe98, #8c8a92);
 
-  box-shadow: inset 0px 0px 0px 15px #ddbe98;
+  box-shadow: inset 0px 0px 0px 15px #ce9f67;
 }
 
 .section {
@@ -75,7 +77,7 @@ a {
   display: inline-block;
   vertical-align: top;
   padding: 30px;
-  width: 390px;
+  max-width: 390px;
 }
 
 
@@ -110,17 +112,9 @@ a {
 .stars3 {
   width: 7px;
   height: 7px;
-  animation: animStar 500s linear infinite;
+  // animation: animStar 500s linear infinite;
 }
 
-
-#stars {
-  width: 1px;
-  height: 1px;
-  background: transparent;
-  box-shadow: 202px 1480px #3a2936 , 1767px 270px #3a2936;
-  animation: animStar 300s linear infinite;
-}
 
 @keyframes animStar {
   from {

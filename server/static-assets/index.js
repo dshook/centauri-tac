@@ -3,8 +3,8 @@
 })();
 
 function createStars(){
-  createStarSize(700, 'stars1');
-  createStarSize(200, 'stars2');
+  createStarSize(500, 'stars1');
+  createStarSize(150, 'stars2');
   createStarSize(100, 'stars3');
 }
 
@@ -13,8 +13,8 @@ function createStarSize(number, size){
 
   for(var i = 0; i < number; i++){
     var div = document.createElement("div");
-    div.style.left = randomInt(0, 2000) + "px";
-    div.style.top  = randomInt(0, 2000) + "px";
+    div.style.left = (randomInt(0, 10000) / 100) + "%";
+    div.style.top  = (randomInt(0, 10000) / 100) + "%";
     div.setAttribute('class', 'star ' + size)
     starsHolder.appendChild(div);
   }
