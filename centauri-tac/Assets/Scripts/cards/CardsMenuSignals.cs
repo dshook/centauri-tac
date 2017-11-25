@@ -23,6 +23,8 @@ namespace ctac.signals
     [Singleton] public class SavingDeckSignal : Signal<DeckModel> { } 
     //the actual save signal triggering the server command
     [Singleton] public class SaveDeckSignal : Signal<DeckModel> { }
+    //Clear client side list of decks for new list to come in
+    [Singleton] public class ClearDecksSignal : Signal { }
     [Singleton] public class DeckSavedSignal : Signal<DeckModel, SocketKey> { }
     [Singleton] public class DeckSaveFailedSignal : Signal<string, SocketKey> { }
 

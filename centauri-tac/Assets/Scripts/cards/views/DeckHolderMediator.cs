@@ -34,6 +34,12 @@ namespace ctac
             view.deckSaved(deck);
         }
 
+        [ListensTo(typeof(ClearDecksSignal))]
+        public void onClearDecks()
+        {
+            view.clearDecks();
+        }
+
     }
 }
 

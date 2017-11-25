@@ -103,7 +103,7 @@ namespace ctac
             var ws = sockets.Get(key);
             if (ws.ReadyState != WebSocketState.Open)
             {
-                debug.LogWarning("Trying to make a request to disconnected web socket", key);
+                debug.LogWarning("Cannot make request to disconnected web socket", key);
                 yield return null;
             }
 

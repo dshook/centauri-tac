@@ -20,6 +20,7 @@ namespace ctac
         [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public DeleteDeckSignal deleteDeck { get; set; }
+        [Inject] public ClearDecksSignal clearDecks { get; set; }
 
         [Inject] public GetDecksSignal getDecks { get; set; }
         [Inject] public SaveDeckSignal saveDeck { get; set; }
@@ -66,6 +67,7 @@ namespace ctac
         public void onGotDecks(ServerDecksModel decks, SocketKey key)
         {
             debug.Log("Got Decks: " + decks.decks.Count);
+            clearDecks.Dispatch();
             foreach (var deck in decks.decks)
             {
                 newDeck.Dispatch(deck);

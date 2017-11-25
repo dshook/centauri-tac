@@ -43,10 +43,7 @@ namespace ctac
             usernamePanel.SetActive(false);
 
             //disable buttons initially until the login is settled
-            playButton.interactable = false;
-            cardsButton.interactable = false;
-            optionsButton.interactable = false;
-            aboutButton.interactable = false;
+            disableButtons();
 
         }
 
@@ -64,7 +61,7 @@ namespace ctac
                     queueText.text += ".";
                     if (queueText.text.Length > 68)
                     {
-                        queueText.text = "Queueing\n";
+                        queueText.text = "Queuing\n";
                     }
                 }
             }
@@ -91,6 +88,13 @@ namespace ctac
             cardsButton.interactable = true;
             //optionsButton.interactable = true;
         }
+        internal void disableButtons()
+        {
+            playButton.interactable = false;
+            cardsButton.interactable = false;
+            optionsButton.interactable = false;
+            aboutButton.interactable = false;
+        }
 
         internal bool queueing = false;
         internal void SetQueueing(bool status)
@@ -98,12 +102,12 @@ namespace ctac
             queueing = status;
             if (status)
             {
-                queueText.gameObject.SetActive(true);
+                setMessage("Queuing");
                 playText.text = "Stop";
             }
             else
             {
-                queueText.gameObject.SetActive(false);
+                setMessage("");
                 playText.text = "Play";
             }
         }
@@ -113,18 +117,24 @@ namespace ctac
             //disable play button and 
             queueing = false;
 
-            queueText.gameObject.SetActive(true);
-            queueText.text = "Loading " + (100f * scaledPerc).ToString("F0");
+            setMessage("Loading " + (100f * scaledPerc).ToString("F0"));
 
             if (scaledPerc >= 1f)
             {
-                queueText.text = "Loading Complete";
+                setMessage("Loading Complete");
             }
         }
 
-        internal void setErrorMessage(string text)
+        internal void setMessage(string text)
         {
-            queueText.gameObject.SetActive(true);
+            if (string.IsNullOrEmpty(text))
+            {
+                queueText.gameObject.SetActive(false);
+            }
+            else
+            {
+                queueText.gameObject.SetActive(true);
+            }
             queueText.text = text;
         }
     }

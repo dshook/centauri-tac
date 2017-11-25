@@ -46,6 +46,16 @@ namespace ctac
             UpdateList();
         }
 
+        internal void clearDecks()
+        {
+            for(int i = 0; i < decksList.Count; i++)
+            {
+                Destroy(decksList[i].gameObject);
+            }
+            decksList.Clear();
+            UpdateList();
+        }
+
         //once deck is saved on the server and has a real ID find the corresponding deck and update
         internal void deckSaved(DeckModel deck)
         {

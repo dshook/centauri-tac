@@ -17,6 +17,7 @@ namespace ctac
         [Inject] public AuthLogoutSignal authLogout { get; set; }
 
         [Inject] public AuthLobbySignal authLobby { get; set; }
+        [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
 
@@ -114,6 +115,7 @@ namespace ctac
             loggedInPlayer = player;
             loggedInKey = key;
             view.SetUsername("Welcome " + player.email.Substring(0, player.email.IndexOf('@')));
+            view.setMessage("");
             authLobby.Dispatch(loggedInPlayer, loggedInKey);
         }
 
@@ -124,7 +126,7 @@ namespace ctac
             if (loginStatus.status == false)
             {
                 debug.LogError("Could not log into lobby service: " + loginStatus.message);
-                view.setErrorMessage("Lobby server unavailable now, please try again later");
+                view.setMessage("Lobby server unavailable now, please try again later");
                 return;
             }
             view.SetButtonsActive(loginStatus.status);
@@ -181,12 +183,22 @@ namespace ctac
         {
             if (key.componentName == "auth")
             {
-                view.setErrorMessage("Cannot connect to server,\nplease check your connection and retry");
+                view.setMessage("Cannot connect to server,\nplease check your connection and retry");
             }
             else
             {
-                view.setErrorMessage("Lost connection to server, please try again later");
+                view.setMessage("Lost connection to server, please try again later");
             }
+            view.disableButtons();
+            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.mainMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            StartCoroutine(retryConnection());
+        }
+
+        private IEnumerator retryConnection()
+        {
+            yield return new WaitForSeconds(3f);
+            debug.Log("Retrying connection for main menu");
+            serverAuthSignal.Dispatch();
         }
     }
 }
