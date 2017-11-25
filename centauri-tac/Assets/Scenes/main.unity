@@ -2417,37 +2417,37 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSelect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnEndTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
@@ -3621,37 +3621,37 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSelect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnEndTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
@@ -6657,6 +6657,7 @@ Material:
   m_ShaderKeywords: MASK_SOFT
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -11524,37 +11525,37 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSelect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnEndTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
@@ -18750,37 +18751,37 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SubmitEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnSelect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+SelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnEndTextSelection:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+TextSelectionEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=1.0.0.0,
+    m_TypeName: TMPro.TMP_InputField+OnChangeEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
@@ -19048,9 +19049,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0017369688
     y: 0
-    width: 1
+    width: 0.99652606
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -19250,6 +19251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03bb9cdb45e9d2d41b0683cd695994b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableUICasts: 1
 --- !u!114 &2019263999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20422,9 +20424,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0017369688
     y: 0
-    width: 1
+    width: 0.99652606
     height: 1
   near clip plane: 90
   far clip plane: 1600

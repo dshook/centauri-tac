@@ -27,8 +27,6 @@ namespace ctac
 
         public override void Execute()
         {
-
-            var startTile = map.tiles.Get(pieceMoved.tilePosition);
             List<Tile> path = mapService.FindMovePath(pieceMoved, null, dest);
             if (path == null || path.Count == 0) return;
             //format for server

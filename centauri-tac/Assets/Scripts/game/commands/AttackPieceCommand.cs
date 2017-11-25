@@ -29,8 +29,6 @@ namespace ctac
         {
             //attack is a combination of move to target and then attack 
             var attacker = pieces.Piece(attackModel.attackingPieceId);
-            var startTile = map.tiles.Get(attacker.tilePosition);
-            var destTile = map.tiles.Get(pieces.Piece(attackModel.targetPieceId).tilePosition);
             List<Tile> path = null;
             if (attacker.isMelee)
             {

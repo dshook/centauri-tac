@@ -25,6 +25,7 @@ namespace ctac {
 
         protected override void Awake()
         {
+            base.Awake();
             rectTransform = GetComponent<RectTransform>();
         }
 

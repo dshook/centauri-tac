@@ -10,7 +10,8 @@ namespace ctac
     public class RaycastView : View
     {
         [Inject] public RaycastModel model { get; set; }
-        [Inject] public MapModel map { get; set; } 
+        [Inject] public MapModel map { get; set; }
+        public bool enableUICasts;
         private Camera cardCamera;
         EventSystem eventSystem;
 
@@ -33,7 +34,7 @@ namespace ctac
             model.cardCanvasHit = null;
 
             //Ignore any raycasts if we're over a UI object
-            if (eventSystem.IsPointerOverGameObject())
+            if (eventSystem.IsPointerOverGameObject() && !enableUICasts)
             {
                 return;
             }
