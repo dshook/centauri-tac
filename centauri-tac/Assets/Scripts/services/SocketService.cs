@@ -155,7 +155,7 @@ namespace ctac
         }
 
         private void onSocketClose(SocketKey key, object sender, CloseEventArgs e) {
-            debug.Log("Socket Close: " + key.clientId.ToShort() + " " + key.componentName + " " + e.Reason, key);
+            debug.Log(string.Format("Socket Close: {0} {1} {2} {3}", key.clientId.ToShort(), key.componentName, e.Reason, e.Code), key);
             if (e.Code == 1000)
             {
                 //Normal disconnect

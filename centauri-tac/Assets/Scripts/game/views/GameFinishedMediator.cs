@@ -7,10 +7,13 @@ namespace ctac
     {
         [Inject] public GameFinishedView view { get; set; }
 
+        [Inject] public GameFinishedSignal gameFinished { get; set; }
         [Inject] public LeaveGameSignal leaveSignal { get; set; }
 
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public GameInputStatusModel gameInputStatus { get; set; }
+
+        [Inject] public IDebugService debug { get; set; }
 
         public override void OnRegister()
         {
@@ -29,7 +32,11 @@ namespace ctac
         {
             gameInputStatus.inputEnabled = false;
 
-            if (gameFinished.winnerId == players.Me.id)
+            if (gameFinished.isDisconnect)
+            {
+                view.onFinish("Disconnected from server :(");
+            }
+            else if (gameFinished.winnerId == players.Me.id)
             {
                 view.onFinish("Victory!");
             }
@@ -44,6 +51,13 @@ namespace ctac
             leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"), true);
         }
 
+        [ListensTo(typeof(SocketHangupSignal))]
+        public void onSocketDisconnect(SocketKey key)
+        {
+            //For now game is over on DC
+            debug.Log("Finishing game from disconnect");
+            gameFinished.Dispatch(new GameFinishedModel() { id = 9999, winnerId = -1, isDisconnect = true });
+        }
     }
 }
 
