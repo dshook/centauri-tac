@@ -64,17 +64,22 @@ namespace ctac
 
         void UpdateRotation()
         {
+            var updateRotateOrigin = true;
             if (rotateDragging)
             {
                 var mouseDiff = CrossPlatformInputManager.mousePosition - rotateOrigin;
-                RotateCamera(mouseDiff.x);
+
+                //Don't update our rotate origin when we've snapped to a position so rotation doesn't get stuck at the snap point
+                updateRotateOrigin = RotateCamera(mouseDiff.x);
             }
 
-            //if (CrossPlatformInputManager.GetButtonDown("Fire3"))
             if (CrossPlatformInputManager.GetButton("Fire3"))
             {
                 rotateDragging = true;
-                rotateOrigin = CrossPlatformInputManager.mousePosition;
+                if (updateRotateOrigin)
+                {
+                    rotateOrigin = CrossPlatformInputManager.mousePosition;
+                }
             }
             if (CrossPlatformInputManager.GetButtonUp("Fire3"))
             {
@@ -84,15 +89,36 @@ namespace ctac
         }
 
         Vector3 rotateWorldPosition = Vector3.zero;
-        private void RotateCamera(float amount) 
+        static readonly float[] snapPositions = new float[]{45f, 135f, 225f, 315f};
+        float snapThreshold = 5f;
+
+        //Returns whether or not the camera snapped
+        private bool RotateCamera(float amount) 
         {
             //find the point the camera is looking at on an imaginary plane at 0f height
             LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
-            var destCameraAngle = (0.5f * amount);
+            var destCameraAngle = (0.3f * amount);
 
             //then rotate around it
             cam.transform.RotateAround(rotateWorldPosition, Vector3.up, destCameraAngle);
+
+            //snapping
+            var camYRot = cam.transform.rotation.eulerAngles.y;
+            float? amtToSnap = null;
+            for (var i = 0; i < snapPositions.Length; i++)
+            {
+                if (Math.Abs(camYRot - snapPositions[i]) < snapThreshold)
+                {
+                    amtToSnap = snapPositions[i] - camYRot;
+                }
+            }
+            if (amtToSnap.HasValue)
+            {
+                cam.transform.RotateAround(rotateWorldPosition, Vector3.up, amtToSnap.Value);
+            }
+
+            return !amtToSnap.HasValue;
         }
 
         public IEnumerator RotateCamera(Vector3 point, Vector3 axis, float angle, float time)
