@@ -8,11 +8,11 @@ namespace ctac
 {
     public class CameraMovementView : View
     {
-        private Vector3 dragOrigin;
+        Vector3 dragOrigin;
+        Vector3 mouseDiff;
 
-        private Vector3 mouseDiff;
-
-        private RaycastModel raycastModel;
+        RaycastModel raycastModel;
+        Camera cam;
 
         private bool dragEnabled = true;
         public bool zoomEnabled = true;
@@ -22,27 +22,30 @@ namespace ctac
         float rotateTimer = 0f;
 
         float zoomLevel = 1f;
+        const float camPanSpeed = 0.2f;
 
         public void Init(RaycastModel rm)
         {
+            cam = Camera.main;
             raycastModel = rm;
-            Camera.main.orthographicSize = CameraOrthoSize();
+            cam.orthographicSize = CameraOrthoSize();
         }
 
         void Update()
         {
-            Camera.main.orthographicSize = Mathf.Lerp(CameraOrthoSize(), Camera.main.orthographicSize, 0.5f);
+            cam.orthographicSize = Mathf.Lerp(CameraOrthoSize(), cam.orthographicSize, 0.5f);
 
             rotateTimer += Time.deltaTime;
 
-            if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
-            {
-                RotateCamera(true);
-            }
-            if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
-            {
-                RotateCamera(false);
-            }
+            //TODO: change to middle mouse down drag
+            //if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
+            //{
+            //    RotateCamera(true);
+            //}
+            //if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
+            //{
+            //    RotateCamera(false);
+            //}
 
             if (zoomEnabled)
             {
@@ -73,10 +76,10 @@ namespace ctac
             rotateTimer = 0f;
 
             //find the point the camera is looking at on an imaginary plane at 0f height
-            LinePlaneIntersection(out rotateWorldPosition, Camera.main.transform.position, Camera.main.transform.forward, Vector3.up, Vector3.zero);
+            LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
             //then rotate around it
-            var destCameraAngle = rotateLeft ? Camera.main.transform.rotation.y + -90 : Camera.main.transform.rotation.y + 90;
+            var destCameraAngle = rotateLeft ? cam.transform.rotation.y + -90 : cam.transform.rotation.y + 90;
 
             StartCoroutine(RotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.8f));
         }
@@ -91,13 +94,13 @@ namespace ctac
             { // until we're done
                 step += Time.deltaTime * rate; //increase the step
                 smoothStep = Mathf.SmoothStep(0.0f, 1.0f, step); //get the smooth step
-                Camera.main.transform.RotateAround(point, axis, angle * (smoothStep - lastStep));
+                cam.transform.RotateAround(point, axis, angle * (smoothStep - lastStep));
                 lastStep = smoothStep; //store the smooth step
                 yield return null;
             }
             //finish any left-over
             if (step > 1.0)
-                Camera.main.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
+                cam.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
         }
 
         private float camMax = 1.7f;
@@ -123,6 +126,29 @@ namespace ctac
                 return;
             }
 
+            Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
+            Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
+            //up
+            if (CrossPlatformInputManager.GetAxis("Vertical") > 0.2)
+            {
+                cam.transform.position += upDownMoveDirection * camPanSpeed;
+            }
+            //down
+            if (CrossPlatformInputManager.GetAxis("Vertical") < -0.2)
+            {
+                cam.transform.position -= upDownMoveDirection * camPanSpeed;
+            }
+            //right
+            if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
+            {
+                cam.transform.position += rightLeftMoveDirection * camPanSpeed;
+            }
+            //left
+            if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
+            {
+                cam.transform.position -= rightLeftMoveDirection * camPanSpeed;
+            }
+
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
                 dragging = false;
@@ -131,17 +157,17 @@ namespace ctac
 
             if (dragging)
             {
-                var mousePos = Camera.main.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
-                mouseDiff = mousePos - dragOrigin;
-
-                Camera.main.transform.position -= mouseDiff;
+                var mousePos = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
+                mouseDiff = (mousePos - dragOrigin);
+                //var newPos = cam.transform.position -= mouseDiff;
+                cam.transform.position -= mouseDiff.SetY(0);
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
                 if (raycastModel.cardCanvasHit == null)
                 {
-                    dragOrigin = Camera.main.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
+                    dragOrigin = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
                     dragging = true;
                 }
             }
@@ -157,13 +183,13 @@ namespace ctac
         {
             Vector3 currentWorldPos;
             var destPosition = new Vector3(tilePos.x, 0, tilePos.y); //convert tile coords to full vec3
-            LinePlaneIntersection(out currentWorldPos, Camera.main.transform.position, Camera.main.transform.forward, Vector3.up, Vector3.zero);
+            LinePlaneIntersection(out currentWorldPos, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
-            var finalPosition = Camera.main.transform.position + destPosition - currentWorldPos;
+            var finalPosition = cam.transform.position + destPosition - currentWorldPos;
 
             //Camera.main.transform.position += finalPosition;
 
-            iTweenExtensions.MoveTo(Camera.main.gameObject, finalPosition, transitionTime, 0f);
+            iTweenExtensions.MoveTo(cam.gameObject, finalPosition, transitionTime, 0f);
         }
 
         //Get the intersection between a line and a plane. 
