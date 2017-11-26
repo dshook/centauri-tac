@@ -26,7 +26,6 @@ namespace ctac
         public TextMeshProUGUI username;
         public TextMeshProUGUI queueText;
 
-        private TextMeshProUGUI playText;
 
         internal void init()
         {
@@ -37,8 +36,6 @@ namespace ctac
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
             logoutButton.onClick.AddListener(() => clickLogoutSignal.Dispatch());
 
-            playText = playButton.GetComponentInChildren<TextMeshProUGUI>();
-
             username.text = "";
             usernamePanel.SetActive(false);
 
@@ -47,24 +44,8 @@ namespace ctac
 
         }
 
-        float accum = 0;
         void Update()
         {
-            accum += Time.deltaTime;
-
-            if (queueing)
-            {
-                if (accum > 1f)
-                {
-                    accum = 0f;
-                    //Queueing = 8 characters
-                    queueText.text += ".";
-                    if (queueText.text.Length > 68)
-                    {
-                        queueText.text = "Queuing\n";
-                    }
-                }
-            }
         }
 
         internal void SetButtonsActive(bool active)
@@ -96,34 +77,6 @@ namespace ctac
             aboutButton.interactable = false;
         }
 
-        internal bool queueing = false;
-        internal void SetQueueing(bool status)
-        {
-            queueing = status;
-            if (status)
-            {
-                setMessage("Queuing");
-                playText.text = "Stop";
-            }
-            else
-            {
-                setMessage("");
-                playText.text = "Play";
-            }
-        }
-
-        internal void SetLoadingProgress(float scaledPerc)
-        {
-            //disable play button and 
-            queueing = false;
-
-            setMessage("Loading " + (100f * scaledPerc).ToString("F0"));
-
-            if (scaledPerc >= 1f)
-            {
-                setMessage("Loading Complete");
-            }
-        }
 
         internal void setMessage(string text)
         {

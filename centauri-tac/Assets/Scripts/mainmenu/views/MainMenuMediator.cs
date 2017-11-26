@@ -18,8 +18,6 @@ namespace ctac
 
         [Inject] public AuthLobbySignal authLobby { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
-        [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
-        [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
 
         [Inject] public LobbyModel lobbyModel { get; set; }
 
@@ -57,14 +55,7 @@ namespace ctac
 
         private void onPlayClicked()
         {
-            if (!view.queueing && lobbyModel.lobbyKey != null)
-            {
-                mmQueue.Dispatch(lobbyModel.lobbyKey);
-            }
-            if (view.queueing && lobbyModel.lobbyKey != null)
-            {
-                mmDequeue.Dispatch(lobbyModel.lobbyKey);
-            }
+            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.playMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
         }
 
         private void onCardsClicked()
@@ -78,7 +69,6 @@ namespace ctac
 
         private void onAboutClicked()
         {
-            StartCoroutine("LoadLevel", "pieces");
         }
 
         private void onLeaveClicked()
@@ -131,51 +121,6 @@ namespace ctac
             }
             view.SetButtonsActive(loginStatus.status);
             view.enableButtons();
-        }
-
-        [ListensTo(typeof(MatchmakerStatusSignal))]
-        private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
-        {
-            lobbyModel.lobbyKey = key;
-            view.SetQueueing(model.inQueue);
-        }
-
-        [ListensTo(typeof(GameLoggedInSignal))]
-        private void onCurrentGame(LoginStatusModel gameLogin, SocketKey key)
-        {
-            if (gameLogin.status)
-            {
-                StartCoroutine("LoadLevel", "1");
-            }
-            else
-            {
-                //TODO more graceful handling?
-                debug.LogError("Could not log into game " + gameLogin.message);
-            }
-        }
-
-        public IEnumerator LoadLevel(string level)
-        {
-            view.SetButtonsActive(false);
-            AsyncOperation async = SceneManager.LoadSceneAsync(level, LoadSceneMode.Single);
-
-            while (async.progress < 0.9f)
-            {
-                var scaledPerc = 0.5f * async.progress / 0.9f;
-                view.SetLoadingProgress(scaledPerc);
-            }
-
-            async.allowSceneActivation = true;
-            float perc = 0.5f;
-            while (!async.isDone)
-            {
-                yield return null;
-                perc = Mathf.Lerp(perc, 1f, 0.05f);
-                view.SetLoadingProgress(perc);
-            }
-
-            view.SetLoadingProgress(1.0f);
-
         }
 
         [ListensTo(typeof(SocketHangupSignal))]
