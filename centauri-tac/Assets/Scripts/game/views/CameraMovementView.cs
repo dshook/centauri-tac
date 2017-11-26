@@ -21,6 +21,7 @@ namespace ctac
 
         float zoomLevel = 1f;
         const float camPanSpeed = 0.3f;
+        const float camPanThreshold = 0.2f;
 
         Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
         Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
@@ -135,27 +136,19 @@ namespace ctac
                 dragging = false;
                 return;
             }
-            upDownMoveDirection = cam.transform.forward.SetY(0).normalized;
+            //When moving the view up or down we actually need to move the camera position in both x and z so it stays at the same height
+            //include the fudge factor to get the mouse panning right. There's probably a rotation to solve this properly
+            upDownMoveDirection = cam.transform.forward.SetY(0).normalized * (1.2f + Math.Abs(cam.transform.forward.y));
+
+            //Arrows
             //up
-            if (CrossPlatformInputManager.GetAxis("Vertical") > 0.2)
-            {
-                cam.transform.position += upDownMoveDirection * camPanSpeed;
-            }
-            //down
-            if (CrossPlatformInputManager.GetAxis("Vertical") < -0.2)
-            {
-                cam.transform.position -= upDownMoveDirection * camPanSpeed;
-            }
+            if (CrossPlatformInputManager.GetAxis("Vertical")   >  camPanThreshold) { cam.transform.position += upDownMoveDirection * camPanSpeed; }
             //right
-            if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
-            {
-                cam.transform.position += rightLeftMoveDirection * camPanSpeed;
-            }
+            if (CrossPlatformInputManager.GetAxis("Horizontal") >  camPanThreshold) { cam.transform.position += rightLeftMoveDirection * camPanSpeed; }
+            //down
+            if (CrossPlatformInputManager.GetAxis("Vertical")   < -camPanThreshold) { cam.transform.position -= upDownMoveDirection * camPanSpeed; }
             //left
-            if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
-            {
-                cam.transform.position -= rightLeftMoveDirection * camPanSpeed;
-            }
+            if (CrossPlatformInputManager.GetAxis("Horizontal") < -camPanThreshold) { cam.transform.position -= rightLeftMoveDirection * camPanSpeed; }
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
