@@ -24,6 +24,9 @@ namespace ctac
         float zoomLevel = 1f;
         const float camPanSpeed = 0.2f;
 
+        Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
+        Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
+
         public void Init(RaycastModel rm)
         {
             cam = Camera.main;
@@ -125,9 +128,6 @@ namespace ctac
                 dragging = false;
                 return;
             }
-
-            Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
-            Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
             //up
             if (CrossPlatformInputManager.GetAxis("Vertical") > 0.2)
             {
@@ -158,9 +158,8 @@ namespace ctac
             if (dragging)
             {
                 var mousePos = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
-                mouseDiff = (mousePos - dragOrigin);
-                //var newPos = cam.transform.position -= mouseDiff;
-                cam.transform.position -= mouseDiff.SetY(0);
+                mouseDiff = mousePos - dragOrigin;
+                cam.transform.position -= fixCameraMoveVector(mouseDiff);
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
@@ -178,6 +177,13 @@ namespace ctac
             dragEnabled = selected;
         }
 
+        //Convert a y movement in the cameras position to x & z movements
+        //This prevents the camera from getting too high and going outside of the bounds
+        Vector3 fixCameraMoveVector(Vector3 vec)
+        {
+            return (vec.y * upDownMoveDirection) + vec.SetY(0);
+        }
+
         //move the camera so it's focused on a world point
         internal void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
         {
@@ -185,6 +191,7 @@ namespace ctac
             var destPosition = new Vector3(tilePos.x, 0, tilePos.y); //convert tile coords to full vec3
             LinePlaneIntersection(out currentWorldPos, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
+            //TODO: probably needs to be fixed for the y height?
             var finalPosition = cam.transform.position + destPosition - currentWorldPos;
 
             //Camera.main.transform.position += finalPosition;
