@@ -12,14 +12,12 @@ namespace ctac
         RaycastModel raycastModel;
         Camera cam;
 
-        private bool dragEnabled = true;
+        public bool dragEnabled = true;
         public bool zoomEnabled = true;
 
         Vector3 dragOrigin;
         Vector3 mouseDiff;
         bool dragging = false;
-
-        float rotateTimer = 0f;
 
         float zoomLevel = 1f;
         const float camPanSpeed = 0.2f;
@@ -41,25 +39,15 @@ namespace ctac
         {
             cam.orthographicSize = Mathf.Lerp(CameraOrthoSize(), cam.orthographicSize, 0.5f);
 
-            rotateTimer += Time.deltaTime;
+            UpdateRotation();
 
-            //TODO: change to middle mouse down drag
-            if (CrossPlatformInputManager.GetButtonDown("Fire3"))
-            {
-                rotateDragging = true;
-                rotateOrigin = CrossPlatformInputManager.mousePosition;
-            }
-            if (CrossPlatformInputManager.GetButtonUp("Fire3"))
-            {
-                rotateDragging = false;
-            }
+            UpdateZoom();
 
-            if (rotateDragging)
-            {
-                var mouseDiff = CrossPlatformInputManager.mousePosition - rotateOrigin;
-                RotateCamera(mouseDiff.x);
-            }
+            UpdateDragging();
+        }
 
+        void UpdateZoom()
+        {
             if (zoomEnabled)
             {
                 if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
@@ -71,30 +59,39 @@ namespace ctac
                     ZoomInOut(false);
                 }
             }
-
-            UpdateDragging();
         }
 
-        private float CameraOrthoSize()
+        void UpdateRotation()
         {
-            //Adjust camera zoom based on screen size and zoom level
-            return (Screen.height / 96.0f / 2.0f) * zoomLevel;
+            if (rotateDragging)
+            {
+                var mouseDiff = CrossPlatformInputManager.mousePosition - rotateOrigin;
+                RotateCamera(mouseDiff.x);
+            }
+
+            //if (CrossPlatformInputManager.GetButtonDown("Fire3"))
+            if (CrossPlatformInputManager.GetButton("Fire3"))
+            {
+                rotateDragging = true;
+                rotateOrigin = CrossPlatformInputManager.mousePosition;
+            }
+            if (CrossPlatformInputManager.GetButtonUp("Fire3"))
+            {
+                rotateDragging = false;
+            }
+
         }
 
         Vector3 rotateWorldPosition = Vector3.zero;
         private void RotateCamera(float amount) 
         {
-            //if(rotateTimer < 1f) return; //for stopping multiple rotations overlapping
-            //rotateTimer = 0f;
-
             //find the point the camera is looking at on an imaginary plane at 0f height
             LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
-            //then rotate around it
-            //cam.transform.rotation.eulerAngles.y +
-            var destCameraAngle = (0.05f * amount);
+            var destCameraAngle = (0.5f * amount);
 
-            StartCoroutine(RotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.2f));
+            //then rotate around it
+            cam.transform.RotateAround(rotateWorldPosition, Vector3.up, destCameraAngle);
         }
 
         public IEnumerator RotateCamera(Vector3 point, Vector3 axis, float angle, float time)
@@ -116,18 +113,18 @@ namespace ctac
                 cam.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
         }
 
-        private float camMax = 1.7f;
-        private float camMin = 0.6f;
+        private float camZoomMax = 1.7f;
+        private float camZoomMin = 0.6f;
         private float zoomSpeed = 0.10f;
         private void ZoomInOut(bool zoomIn)
         {
             if (zoomIn)
             {
-                zoomLevel = Math.Max(camMin, zoomLevel - zoomSpeed);
+                zoomLevel = Math.Max(camZoomMin, zoomLevel - zoomSpeed);
             }
             else
             {
-                zoomLevel = Math.Min(camMax, zoomLevel + zoomSpeed);
+                zoomLevel = Math.Min(camZoomMax, zoomLevel + zoomSpeed);
             }
         }
 
@@ -180,11 +177,6 @@ namespace ctac
                     dragging = true;
                 }
             }
-        }
-
-        internal void setDragEnabled(bool selected)
-        {
-            dragEnabled = selected;
         }
 
         //Convert a y movement in the cameras position to x & z movements
@@ -253,6 +245,12 @@ namespace ctac
 
             //scale the vector
             return vectorNormalized *= size;
+        }
+
+        private float CameraOrthoSize()
+        {
+            //Adjust camera zoom based on screen size and zoom level
+            return (Screen.height / 96.0f / 2.0f) * zoomLevel;
         }
     }
 }
