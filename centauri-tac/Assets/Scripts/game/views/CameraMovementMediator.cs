@@ -1,6 +1,7 @@
 using strange.extensions.mediation.impl;
 using ctac.signals;
 using UnityEngine;
+using System.Linq;
 
 namespace ctac
 {
@@ -10,6 +11,7 @@ namespace ctac
 
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
+        [Inject] public MapModel map { get; set; }
 
         public override void OnRegister()
         {
@@ -34,6 +36,24 @@ namespace ctac
             if (piece.piece.isHero && piece.piece.playerId == players.Me.id) {
                 view.MoveToTile(piece.piece.tilePosition);
             }
+        }
+
+        [ListensTo(typeof(MapCreatedSignal))]
+        public void onMapCreated()
+        {
+            //calculate and update camera movement bounds based on map size
+            var minX = map.tileList.Min(t => t.position.x);
+            var maxX = map.tileList.Max(t => t.position.x);
+            var minZ = map.tileList.Min(t => t.position.y);
+            var maxZ = map.tileList.Max(t => t.position.y);
+
+            float camMargin = 10f;
+
+            view.camBounds = new Vector4(
+                minX - camMargin,
+                minZ - camMargin,
+                maxX + camMargin,
+                maxZ + camMargin);
         }
     }
 }

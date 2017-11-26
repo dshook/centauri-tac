@@ -2,25 +2,24 @@
 using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
 using System;
-using System.Collections;
 
 namespace ctac
 {
     public class CameraMovementView : View
     {
+        public bool dragEnabled = true;
+        public bool zoomEnabled = true;
+        public Vector4 camBounds = Vector4.zero;
 
         RaycastModel raycastModel;
         Camera cam;
-
-        public bool dragEnabled = true;
-        public bool zoomEnabled = true;
 
         Vector3 dragOrigin;
         Vector3 mouseDiff;
         bool dragging = false;
 
         float zoomLevel = 1f;
-        const float camPanSpeed = 0.3f;
+        const float camPanSpeed = 0.2f;
         const float camPanThreshold = 0.2f;
 
         Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
@@ -121,25 +120,6 @@ namespace ctac
             return !amtToSnap.HasValue;
         }
 
-        public IEnumerator RotateCamera(Vector3 point, Vector3 axis, float angle, float time)
-        {
-            var step = 0.0f; //non-smoothed
-            var rate = 1.0f / time; //amount to increase non-smooth step by
-            var smoothStep = 0.0f; //smooth step this time
-            var lastStep = 0.0f; //smooth step last time
-            while (step < 1.0)
-            { // until we're done
-                step += Time.deltaTime * rate; //increase the step
-                smoothStep = Mathf.SmoothStep(0.0f, 1.0f, step); //get the smooth step
-                cam.transform.RotateAround(point, axis, angle * (smoothStep - lastStep));
-                lastStep = smoothStep; //store the smooth step
-                yield return null;
-            }
-            //finish any left-over
-            if (step > 1.0)
-                cam.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
-        }
-
         private float camZoomMax = 1.7f;
         private float camZoomMin = 0.6f;
         private float zoomSpeed = 0.10f;
@@ -165,6 +145,7 @@ namespace ctac
             //When moving the view up or down we actually need to move the camera position in both x and z so it stays at the same height
             //include the fudge factor to get the mouse panning right. There's probably a rotation to solve this properly
             upDownMoveDirection = cam.transform.forward.SetY(0).normalized * (1.2f + Math.Abs(cam.transform.forward.y));
+            rightLeftMoveDirection = Quaternion.Euler(0, 90f, 0) * upDownMoveDirection;
 
             //Arrows
             //up
@@ -196,6 +177,17 @@ namespace ctac
                     dragOrigin = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
                     dragging = true;
                 }
+            }
+
+            if (camBounds != Vector4.zero)
+            {
+                var camPos = cam.transform.position;
+                camPos.x = Mathf.Max(camPos.x, camBounds.x);
+                camPos.x = Mathf.Min(camPos.x, camBounds.z);
+                camPos.z = Mathf.Max(camPos.z, camBounds.y);
+                camPos.z = Mathf.Min(camPos.z, camBounds.w);
+
+                cam.transform.position = camPos;
             }
         }
 
