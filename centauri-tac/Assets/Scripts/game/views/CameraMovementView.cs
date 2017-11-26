@@ -20,7 +20,7 @@ namespace ctac
         bool dragging = false;
 
         float zoomLevel = 1f;
-        const float camPanSpeed = 0.2f;
+        const float camPanSpeed = 0.3f;
 
         Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
         Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
@@ -135,6 +135,7 @@ namespace ctac
                 dragging = false;
                 return;
             }
+            upDownMoveDirection = cam.transform.forward.SetY(0).normalized;
             //up
             if (CrossPlatformInputManager.GetAxis("Vertical") > 0.2)
             {

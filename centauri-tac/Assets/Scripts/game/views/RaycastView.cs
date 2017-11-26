@@ -19,6 +19,7 @@ namespace ctac
         int tileLayer = -1;
         new void Awake()
         {
+            base.Awake();
             cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
             cardCanvasLayer = LayerMask.GetMask(Constants.cardCanvas);
             tileLayer = LayerMask.GetMask("Tile");
