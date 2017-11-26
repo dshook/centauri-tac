@@ -287,6 +287,8 @@ namespace ctac {
                 //originTile = map.tiles[piece.piece.tilePosition];
                 oneRing = mapService.GetKingTilesInRadius(piece.piece.tilePosition, 1).Values.ToList();
                 twoRing = mapService.GetKingTilesInRadius(piece.piece.tilePosition, 2).Values.Except(oneRing).ToList();
+
+                iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeInQuart);
             }
             public void Update()
             {
@@ -296,8 +298,6 @@ namespace ctac {
                     Complete = true;
                     return;
                 }
-
-                iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeInQuart);
 
                 if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
                 {
@@ -337,11 +337,11 @@ namespace ctac {
             public Vector3 destAngle { get; set; }
             private float rotateSpeed = 0.3f;
 
-            public void Init() { }
+            public void Init() {
+                iTweenExtensions.RotateTo(piece.model.gameObject, destAngle, rotateSpeed, 0f);
+            }
             public void Update()
             {
-                iTweenExtensions.RotateTo(piece.model.gameObject, destAngle, rotateSpeed, 0f);
-
                 if (Vector3.Distance(piece.model.gameObject.transform.rotation.eulerAngles, destAngle) < 0.01)
                 {
                     piece.model.gameObject.transform.rotation = Quaternion.Euler(destAngle);
@@ -367,49 +367,41 @@ namespace ctac {
             private float curveMult = 1.0f;
             private BezierSpline moveSpline;
             private SplineWalker walker;
-            private bool firstRun = true;
 
             public void Init()
             {
                 moveSpline = GameObject.Find("PieceMoveSpline").GetComponent<BezierSpline>();
+
+                piece.isMoving = true;
+                var start = piece.gameObject.transform.position;
+                var diffVector = destination - start;
+
+                if (isTeleport)
+                {
+                    curveMult = 100f;
+                }
+
+                var secondControl = (diffVector * 0.2f) + (curveHeight * diffVector.magnitude * curveMult) + start;
+                var thirdControl = (diffVector * 0.8f) + (curveHeight * diffVector.magnitude * curveMult) + start;
+
+                moveSpline.SetControlPoint(0, start);
+                moveSpline.SetControlPoint(1, secondControl);
+                moveSpline.SetControlPoint(2, thirdControl);
+                moveSpline.SetControlPoint(3, destination);
+
+                walker = piece.gameObject.AddComponent<SplineWalker>();
+                walker.spline = moveSpline;
+                walker.duration = moveTime;
+                walker.lookForward = false;
+                walker.mode = SplineWalkerMode.Once;
+
+                if (anim != null)
+                {
+                    anim.SetTrigger("onMove");
+                }
             }
             public void Update()
             {
-                //TODO: might be able to put this in init with change to when init runs
-                if (firstRun)
-                {
-                    firstRun = false;
-
-                    piece.isMoving = true;
-                    var start = piece.gameObject.transform.position;
-                    var diffVector = destination - start;
-
-                    if (isTeleport)
-                    {
-                        curveMult = 100f;
-                    }
-
-                    var secondControl = (diffVector * 0.2f) + (curveHeight * diffVector.magnitude * curveMult) + start;
-                    var thirdControl = (diffVector * 0.8f) + (curveHeight * diffVector.magnitude * curveMult) + start;
-
-                    moveSpline.SetControlPoint(0, start);
-                    moveSpline.SetControlPoint(1, secondControl);
-                    moveSpline.SetControlPoint(2, thirdControl);
-                    moveSpline.SetControlPoint(3, destination);
-
-                    walker = piece.gameObject.AddComponent<SplineWalker>();
-                    walker.spline = moveSpline;
-                    walker.duration = moveTime;
-                    walker.lookForward = false;
-                    walker.mode = SplineWalkerMode.Once;
-
-                    if (anim != null)
-                    {
-                        anim.SetTrigger("onMove");
-                    }
-                }
-
-                //if (Vector3.Distance(piece.gameObject.transform.position, destination) < 0.01)
                 if(walker.progress > 0.99 && !Complete)
                 {
                     piece.gameObject.transform.position = destination;
@@ -484,9 +476,7 @@ namespace ctac {
             public int change { get; set; }
             private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
 
-            public void Init() { }
-            public void Update()
-            {
+            public void Init() {
                 if(text == null) return;
 
                 text.text = current.ToString();
@@ -506,6 +496,9 @@ namespace ctac {
                 {
                     text.color = Color.white;
                 }
+            }
+            public void Update()
+            {
                 Complete = true;
                 animFinished.Dispatch(piece);
             }
@@ -601,10 +594,10 @@ namespace ctac {
                         anim.SetTrigger("onDeath");
                     }
                 }
+                iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
             }
             public void Update()
             {
-                iTweenExtensions.ScaleTo(piece.gameObject, Vector3.zero, 1.5f, 0, EaseType.easeInQuart);
                 if (piece.gameObject.transform.localScale.x < 0.01f)
                 {
                     piece.gameObject.transform.localScale = Vector3.zero;

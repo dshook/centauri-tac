@@ -431,9 +431,7 @@ namespace ctac {
             public int change { get; set; }
             private Vector3 punchSize = new Vector3(1.5f, 1.5f, 1.5f);
 
-            public void Init() { }
-            public void Update()
-            {
+            public void Init() {
                 if (text == null) return;
 
                 text.text = current.ToString();
@@ -453,6 +451,9 @@ namespace ctac {
                 {
                     text.color = Color.white;
                 }
+            }
+            public void Update()
+            {
                 Complete = true;
             }
         }
