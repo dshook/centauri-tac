@@ -8,8 +8,6 @@ namespace ctac
 {
     public class CameraMovementView : View
     {
-        Vector3 dragOrigin;
-        Vector3 mouseDiff;
 
         RaycastModel raycastModel;
         Camera cam;
@@ -17,6 +15,8 @@ namespace ctac
         private bool dragEnabled = true;
         public bool zoomEnabled = true;
 
+        Vector3 dragOrigin;
+        Vector3 mouseDiff;
         bool dragging = false;
 
         float rotateTimer = 0f;
@@ -26,6 +26,9 @@ namespace ctac
 
         Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
         Vector3 rightLeftMoveDirection = new Vector3(0.5f, 0, -0.5f);
+
+        Vector3 rotateOrigin;
+        bool rotateDragging = false;
 
         public void Init(RaycastModel rm)
         {
@@ -41,14 +44,21 @@ namespace ctac
             rotateTimer += Time.deltaTime;
 
             //TODO: change to middle mouse down drag
-            //if (CrossPlatformInputManager.GetAxis("Horizontal") > 0.2)
-            //{
-            //    RotateCamera(true);
-            //}
-            //if (CrossPlatformInputManager.GetAxis("Horizontal") < -0.2)
-            //{
-            //    RotateCamera(false);
-            //}
+            if (CrossPlatformInputManager.GetButtonDown("Fire3"))
+            {
+                rotateDragging = true;
+                rotateOrigin = CrossPlatformInputManager.mousePosition;
+            }
+            if (CrossPlatformInputManager.GetButtonUp("Fire3"))
+            {
+                rotateDragging = false;
+            }
+
+            if (rotateDragging)
+            {
+                var mouseDiff = CrossPlatformInputManager.mousePosition - rotateOrigin;
+                RotateCamera(mouseDiff.x);
+            }
 
             if (zoomEnabled)
             {
@@ -72,19 +82,19 @@ namespace ctac
         }
 
         Vector3 rotateWorldPosition = Vector3.zero;
-        private void RotateCamera(bool rotateLeft)
+        private void RotateCamera(float amount) 
         {
-            if(rotateTimer < 1f) return;
-
-            rotateTimer = 0f;
+            //if(rotateTimer < 1f) return; //for stopping multiple rotations overlapping
+            //rotateTimer = 0f;
 
             //find the point the camera is looking at on an imaginary plane at 0f height
             LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
 
             //then rotate around it
-            var destCameraAngle = rotateLeft ? cam.transform.rotation.y + -90 : cam.transform.rotation.y + 90;
+            //cam.transform.rotation.eulerAngles.y +
+            var destCameraAngle = (0.05f * amount);
 
-            StartCoroutine(RotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.8f));
+            StartCoroutine(RotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.2f));
         }
 
         public IEnumerator RotateCamera(Vector3 point, Vector3 axis, float angle, float time)
