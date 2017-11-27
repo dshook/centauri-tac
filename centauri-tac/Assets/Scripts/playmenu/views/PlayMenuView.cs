@@ -9,6 +9,7 @@ namespace ctac
     {
         public Button leaveButton;
         public Button playButton;
+        public GameObject deckHolder;
 
         public TextMeshProUGUI queueText;
         private TextMeshProUGUI playText;
@@ -30,7 +31,7 @@ namespace ctac
                     accum = 0f;
                     //Queueing = 8 characters
                     queueText.text += ".";
-                    if (queueText.text.Length > 68)
+                    if (queueText.text.Length > 28)
                     {
                         queueText.text = "Queuing\n";
                     }
@@ -44,7 +45,7 @@ namespace ctac
             queueing = status;
             if (status)
             {
-                setMessage("Queuing");
+                setMessage("Queuing\n");
                 playText.text = "Stop";
             }
             else

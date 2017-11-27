@@ -17,7 +17,7 @@ namespace ctac
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
         [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
-        [Inject] public EditDeckSignal editDeck { get; set; }
+        [Inject] public SelectDeckSignal editDeck { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }

@@ -11,10 +11,8 @@ namespace ctac
 {
     public class CardsMenuView : View
     {
-        public Signal clickLeaveSignal = new Signal();
         public Signal<Races> clickNewDeckSignal = new Signal<Races>();
         public Signal<DeckModel> clickSaveDeckSignal = new Signal<DeckModel>();
-        public Signal clickCancelDeckSignal = new Signal();
         public Signal<DeckModel> clickDeleteDeckSignal = new Signal<DeckModel>();
 
 
@@ -75,10 +73,8 @@ namespace ctac
             cardService = cs;
             cardDirectory = cd;
 
-            leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
             newDeckButton.onClick.AddListener(onNewDeckClick);
             saveDeckButton.onClick.AddListener(onSaveDeckClick);
-            cancelDeckButton.onClick.AddListener(onCancelDeckClick);
             deleteDeckButton.onClick.AddListener(onDeleteDeckClick);
 
             venusiansButton.onClick.AddListener(() => onFactionSelect(Races.Venusians));
@@ -332,11 +328,11 @@ namespace ctac
             ShowDeckHolder(true);
         }
         
-        void onCancelDeckClick()
+        internal void onCancelDeck()
         {
             editingDeck = null;
             ShowDeckHolder(true);
-            clickCancelDeckSignal.Dispatch();
+            ResetRaceFilters();
         }
 
         //swap the cards out for faction selection buttons
@@ -348,7 +344,7 @@ namespace ctac
         }
 
         //Show either deck holder, or the deck edit holder
-        void ShowDeckHolder(bool show)
+        public void ShowDeckHolder(bool show)
         {
             float showXPos = -74f;
             float hideXPos = 400f;

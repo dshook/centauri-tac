@@ -17,6 +17,7 @@ namespace ctac
         [Inject] public MatchmakerQueueSignal mmQueue { get; set; }
         [Inject] public MatchmakerDequeueSignal mmDequeue { get; set; }
 
+        [Inject] public SwitchLobbyViewSignal moveLobbyView { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
 
         public override void OnRegister()
@@ -45,7 +46,7 @@ namespace ctac
 
         private void onLeaveClicked()
         {
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.mainMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            moveLobbyView.Dispatch(LobbyScreens.main);
         }
 
         [ListensTo(typeof(MatchmakerStatusSignal))]

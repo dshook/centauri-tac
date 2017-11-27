@@ -34,7 +34,7 @@ namespace ctac
             view.removeCard(card);
         }
 
-        [ListensTo(typeof(EditDeckSignal))]
+        [ListensTo(typeof(SelectDeckSignal))]
         public void onEditDeck(DeckModel deck)
         {
             view.EditDeck(deck);

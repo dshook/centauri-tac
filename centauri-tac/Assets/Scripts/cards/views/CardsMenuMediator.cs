@@ -16,7 +16,7 @@ namespace ctac
         [Inject] public ICardService cardService { get; set; }
 
         [Inject] public NewDeckSignal newDeck { get; set; }
-        [Inject] public EditDeckSignal editDeck { get; set; }
+        [Inject] public SelectDeckSignal editDeck { get; set; }
         [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public DeleteDeckSignal deleteDeck { get; set; }
@@ -27,25 +27,24 @@ namespace ctac
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
+        [Inject] public SwitchLobbyViewSignal moveLobbyView { get; set; }
 
         public override void OnRegister()
         {
-            view.clickLeaveSignal.AddListener(onLeaveClicked);
-
             view.clickNewDeckSignal.AddListener(onNewDeck);
             view.clickSaveDeckSignal.AddListener(onSaveDeck);
-            view.clickCancelDeckSignal.AddListener(onCancelDeck);
             view.clickDeleteDeckSignal.AddListener(onDeleteDeck);
+
+            view.leaveButton.onClick.AddListener(onLeaveClicked);
+            view.cancelDeckButton.onClick.AddListener(() => cancelDeck.Dispatch());
 
             view.init(cardService, cardDirectory);
         }
 
         public override void OnRemove()
         {
-            view.clickLeaveSignal.RemoveListener(onLeaveClicked);
             view.clickNewDeckSignal.RemoveListener(onNewDeck);
             view.clickSaveDeckSignal.RemoveListener(onSaveDeck);
-            view.clickCancelDeckSignal.RemoveListener(onCancelDeck);
             view.clickDeleteDeckSignal.RemoveListener(onDeleteDeck);
         }
 
@@ -95,7 +94,7 @@ namespace ctac
             editDeck.Dispatch(dm);
         }
 
-        [ListensTo(typeof(EditDeckSignal))]
+        [ListensTo(typeof(SelectDeckSignal))]
         private void onEditDeck(DeckModel deck)
         {
             view.onEditDeck(deck);
@@ -124,15 +123,15 @@ namespace ctac
             debug.Log("Deck Save failed: " + message, key);
         }
 
-        private void onCancelDeck()
+        [ListensTo(typeof(CancelDeckSignal))]
+        public void onCancelDeck()
         {
-            view.ResetRaceFilters();
-            cancelDeck.Dispatch();
+            view.onCancelDeck();
         }
 
         private void onLeaveClicked()
         {
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.mainMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            moveLobbyView.Dispatch(LobbyScreens.main);
         }
 
         public IEnumerator LoadLevel(string level)

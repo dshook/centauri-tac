@@ -26,6 +26,8 @@ namespace ctac
         public TextMeshProUGUI username;
         public TextMeshProUGUI queueText;
 
+        public GameObject CardsMenu;
+        public GameObject PlayMenu;
 
         internal void init()
         {

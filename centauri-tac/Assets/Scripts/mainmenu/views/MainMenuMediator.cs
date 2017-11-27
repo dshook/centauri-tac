@@ -19,6 +19,9 @@ namespace ctac
         [Inject] public AuthLobbySignal authLobby { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
 
+        [Inject] public CancelDeckSignal cancelDeck { get; set; }
+
+        [Inject] public SwitchLobbyViewSignal moveLobbyView { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
 
         PlayerModel loggedInPlayer = null;
@@ -27,7 +30,7 @@ namespace ctac
         public override void OnRegister()
         {
             lobbyModel.cardCamera = Camera.allCameras.FirstOrDefault(x => x.name == Constants.cardCamera);
-            lobbyModel.cardCamera.transform.position = lobbyModel.mainMenuPosition;
+            lobbyModel.cardCamera.transform.position = LobbyModel.lobbyPositions[LobbyScreens.main];
 
             view.clickPlaySignal.AddListener(onPlayClicked);
             view.clickCardsSignal.AddListener(onCardsClicked);
@@ -55,12 +58,12 @@ namespace ctac
 
         private void onPlayClicked()
         {
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.playMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            moveLobbyView.Dispatch(LobbyScreens.play);
         }
 
         private void onCardsClicked()
         {
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.cardsMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            moveLobbyView.Dispatch(LobbyScreens.cards);
         }
 
         private void onOptionsClicked()
@@ -135,7 +138,7 @@ namespace ctac
                 view.setMessage("Lost connection to server, please try again later");
             }
             view.disableButtons();
-            lobbyModel.cardCamera.gameObject.MoveTo(lobbyModel.mainMenuPosition, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+            moveLobbyView.Dispatch(LobbyScreens.main);
             StartCoroutine(retryConnection());
         }
 
@@ -144,6 +147,16 @@ namespace ctac
             yield return new WaitForSeconds(3f);
             debug.Log("Retrying connection for main menu");
             serverAuthSignal.Dispatch();
+        }
+
+        [ListensTo(typeof(SwitchLobbyViewSignal))]
+        public void onChangeLobbyScreen(LobbyScreens screen)
+        {
+            var position = LobbyModel.lobbyPositions[screen];
+
+            lobbyModel.cardCamera.gameObject.MoveTo(position, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
+
+            cancelDeck.Dispatch();
         }
     }
 }

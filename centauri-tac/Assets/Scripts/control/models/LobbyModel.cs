@@ -1,16 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ctac
 {
+    public enum LobbyScreens {
+        main,
+        cards,
+        play
+    }
     //Holds data that needs to be persisted across lobby scenes
     public class LobbyModel
     {
         public SocketKey lobbyKey = null; //holds the key to the lobby castle for making requests
         public Camera cardCamera = null;
 
-        public Vector3 mainMenuPosition = new Vector3(0, 100, 60);
-        public Vector3 cardsMenuPosition = new Vector3(225, 100, 60);
-        public Vector3 playMenuPosition = new Vector3(0, 250, 60);
+        public static Dictionary<LobbyScreens, Vector3> lobbyPositions = new Dictionary<LobbyScreens, Vector3>()
+        {
+            { LobbyScreens.main, new Vector3(0, 100, 60) },
+            { LobbyScreens.cards, new Vector3(225, 100, 60) },
+            { LobbyScreens.play, new Vector3(0, 250, 60) },
+        };
+
         public float menuTransitionTime = 0.8f;
 
     }
