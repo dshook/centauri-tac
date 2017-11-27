@@ -59,7 +59,7 @@ export default class GameStore
   /**
    * Join player to a game, need to make sure they're disconnected elswere
    */
-  async playerJoin(playerId, gameId)
+  async playerJoin(playerId, gameId, deckId)
   {
     const resp = await this.sql.query(`
         select game_id as id, state
@@ -83,9 +83,9 @@ export default class GameStore
     }
 
     await this.sql.query(`
-        insert into game_players (player_id, game_id, state)
-        values (@playerId, @gameId, 1)
-        `, {playerId, gameId});
+        insert into game_players (player_id, game_id, state, player_deck_id)
+        values (@playerId, @gameId, 1, @deckId)
+        `, {playerId, gameId, deckId});
   }
 
   /**

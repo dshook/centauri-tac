@@ -24,7 +24,7 @@ export default class DeckStore
     let sql = `
       select *
       from player_decks
-      where player_id = @playerId
+      where player_id = @playerId and is_deleted = false
     `;
 
     const resp = await this.sql.tquery(PlayerDeck)(sql, {playerId});
@@ -110,12 +110,8 @@ export default class DeckStore
     }
 
     await this.sql.query(`
-      delete from deck_cards
-      where deck_id = @deckId
-    ` , {deckId});
-
-    await this.sql.query(`
-      delete from player_decks
+      update player_decks
+      set is_deleted = true
       where id = @deckId and player_id = @playerId
     ` , {deckId, playerId});
 

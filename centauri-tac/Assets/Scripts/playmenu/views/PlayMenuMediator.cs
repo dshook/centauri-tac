@@ -38,7 +38,7 @@ namespace ctac
         {
             if (!view.queueing && lobbyModel.lobbyKey != null)
             {
-                mmQueue.Dispatch(lobbyModel.lobbyKey);
+                mmQueue.Dispatch(new QueueModel() { deckId = selectedDeck != null ? (int?)selectedDeck.id : null }, lobbyModel.lobbyKey);
             }
             if (view.queueing && lobbyModel.lobbyKey != null)
             {

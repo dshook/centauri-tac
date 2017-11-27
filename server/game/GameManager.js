@@ -22,7 +22,7 @@ export default class GameManager
   /**
    * Start new game instance based on info
    */
-  async create(name, playerId)
+  async create(name)
   {
     // registers the game
 
@@ -38,8 +38,7 @@ export default class GameManager
     );
 
     if(game == null){
-      this.log.info('Could not create game for %s component: %s player: %s'
-        ,name, playerId);
+      this.log.error('Could not create game %s', name);
       return null;
     }
 
@@ -47,9 +46,6 @@ export default class GameManager
 
     // instantiates game on the game host
     await this.emitter.emit('game', game);
-
-    // have host join the game (will fire update events)
-    await this.playerJoin(playerId, game.id);
 
     const host = new GameHost(game, this.emitter);
     await host.startInstance();
@@ -67,7 +63,7 @@ export default class GameManager
   /**
    * Drop a player into a running game host
    */
-  async playerJoin(playerId, gameId)
+  async playerJoin(playerId, gameId, deckId)
   {
     const currentGameId = await this.games.currentGameId(playerId);
 
@@ -78,7 +74,7 @@ export default class GameManager
     }
 
     // insert to DB
-    await this.games.playerJoin(playerId, gameId);
+    await this.games.playerJoin(playerId, gameId, deckId);
 
     // Fire update events
     const game = await this.games.getActive(gameId);

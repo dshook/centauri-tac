@@ -23,7 +23,7 @@ export default class Matchmaker
   /**
    * Enter a player into the queue
    */
-  async queuePlayer(playerId, client)
+  async queuePlayer(client, playerId, deckId)
   {
     this.log.info('Trying to find player %s in queue %j', playerId, this.queue);
     if (this.queue.find(x => x.playerId === playerId)) {
@@ -32,7 +32,7 @@ export default class Matchmaker
     }
 
     // add as waiting status
-    const entry = {playerId, status: WAITING};
+    const entry = {playerId, deckId, status: WAITING};
     this.queue.push(entry);
     this.log.info('player %s waiting, %s in queue', playerId, this.queue.length);
     await this._emitStatus(playerId, true, false);
@@ -54,7 +54,7 @@ export default class Matchmaker
   /**
    * Drop em
    */
-  async dequeuePlayer(playerId, client)
+  async dequeuePlayer(client, playerId)
   {
     const index = this.queue.findIndex(x => x.playerId === playerId);
 
@@ -83,21 +83,21 @@ export default class Matchmaker
       return;
     }
 
-    const [pid1, pid2] = ready.map(x => x.playerId);
-    const playerIds = [pid1, pid2];
+    const matchedPlayers = ready.slice(0, 2);
+    const playerIds = matchedPlayers.map(m => m.playerId);
 
     // remove from original queue
     _.remove(this.queue, x => playerIds.some(id => id === x.playerId));
-    this.log.info('removed %s from queue, now %s left',
-        playerIds.length, this.queue.length);
+    this.log.info('removed %s from queue, now %s left', playerIds.length, this.queue.length);
 
-    await this._emitStatus(pid1, false, true);
-    await this._emitStatus(pid2, false, true);
+    for(let playerId of playerIds){
+      await this._emitStatus(playerId, false, true);
+    }
 
     // boom
     const name = '';
     this.log.info('match found! creating game for %s', playerIds.join(','));
-    await this.emitter.emit('gamelist:createFor', {name, playerIds});
+    await this.emitter.emit('gamelist:createFor', {name, matchedPlayers});
   }
 
   /**

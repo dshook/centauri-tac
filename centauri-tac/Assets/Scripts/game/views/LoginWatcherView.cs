@@ -30,8 +30,9 @@ namespace ctac
         private Dictionary<SocketKey, LoginWatch> loginStatuses = new Dictionary<SocketKey, LoginWatch>();
         private Dictionary<Credentials, bool> tryLoginStatuses = new Dictionary<Credentials, bool>();
 
-        new void Start()
+        protected override void Awake()
         {
+            base.Awake();
         }
 
         private void onTryLogin(Credentials c)

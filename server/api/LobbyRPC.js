@@ -26,7 +26,8 @@ export default class LobbyRPC
   async queuePlayer(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.matchmaker.queuePlayer(playerId, client);
+    const {deckId} = params;
+    await this.matchmaker.queuePlayer(client, playerId, deckId);
   }
 
   /**
@@ -37,7 +38,7 @@ export default class LobbyRPC
   async dequeuePlayer(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.matchmaker.dequeuePlayer(playerId, client);
+    await this.matchmaker.dequeuePlayer(client, playerId);
   }
 
   /**

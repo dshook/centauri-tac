@@ -33,29 +33,28 @@ export default class GameRPC
   }
 
   /**
-   * Client wants to create a game
+   * Client wants to create a game... not used now but maybe someday for custom games
    */
   @on('create')
   async createGame({name}, auth)
   {
     const playerId = auth.sub.id;
-    await this.manager.create(name, playerId);
+    const game = await this.manager.create(name);
+    await this.manager.playerJoin(playerId, game.id, null);
   }
 
   /**
    * Component is building a game for a set of players
    */
   @on('gamelist:createFor')
-  async createGameFor({name, playerIds})
+  async createGameFor({name, matchedPlayers})
   {
-    const [host, ...others] = playerIds;
-
-    const game = await this.manager.create(name, host);
+    const game = await this.manager.create(name);
 
     if(!game) return;
 
-    for (const id of others) {
-      await this.manager.playerJoin(id, game.id);
+    for (const matchedPlayer of matchedPlayers) {
+      await this.manager.playerJoin(matchedPlayer.playerId, game.id, matchedPlayer.deckId);
     }
   }
 
