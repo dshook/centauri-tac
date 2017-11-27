@@ -40,6 +40,12 @@ namespace ctac
             view.clearDecks();
         }
 
+        [ListensTo(typeof(SelectDeckSignal))]
+        public void onSelectDeck(DeckModel deck)
+        {
+            view.selectDeck(deck);
+        }
+
     }
 }
 

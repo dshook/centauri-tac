@@ -95,9 +95,16 @@ namespace ctac
         }
 
         [ListensTo(typeof(SelectDeckSignal))]
-        private void onEditDeck(DeckModel deck)
+        private void onSelectDeck(DeckModel deck)
         {
-            view.onEditDeck(deck);
+            if (deck != null)
+            {
+                view.onEditDeck(deck);
+            }
+            else
+            {
+                view.onCancelDeck();
+            }
         }
 
         private void onSaveDeck(DeckModel deck)

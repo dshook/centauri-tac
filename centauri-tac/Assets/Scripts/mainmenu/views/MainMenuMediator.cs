@@ -20,6 +20,7 @@ namespace ctac
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
 
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
+        [Inject] public SelectDeckSignal selectDeck { get; set; }
 
         [Inject] public SwitchLobbyViewSignal moveLobbyView { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
@@ -156,7 +157,9 @@ namespace ctac
 
             lobbyModel.cardCamera.gameObject.MoveTo(position, lobbyModel.menuTransitionTime, 0f, EaseType.easeOutExpo);
 
+            //Clear out any selected deck from play menu in the cards menu
             cancelDeck.Dispatch();
+            selectDeck.Dispatch(null);
         }
     }
 }

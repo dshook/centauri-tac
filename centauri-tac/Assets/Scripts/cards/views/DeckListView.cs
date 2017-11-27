@@ -18,6 +18,8 @@ namespace ctac {
 
         public SVGImage bgImage;
 
+        public bool isSelected = false;
+
         protected override void Awake()
         {
             base.Awake();
@@ -41,6 +43,11 @@ namespace ctac {
 
             nameText.text = deck.name;
             bgImage.color = Colors.RacePrimaries[deck.race];
+
+            if (isSelected)
+            {
+                bgImage.color = Colors.selectedOutlineColor;
+            }
         }
 
         public void UpdateText()

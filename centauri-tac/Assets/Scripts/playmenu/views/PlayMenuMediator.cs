@@ -20,6 +20,8 @@ namespace ctac
         [Inject] public SwitchLobbyViewSignal moveLobbyView { get; set; }
         [Inject] public LobbyModel lobbyModel { get; set; }
 
+        DeckModel selectedDeck = null;
+
         public override void OnRegister()
         {
             view.init();
@@ -68,6 +70,12 @@ namespace ctac
                 //TODO more graceful handling?
                 debug.LogError("Could not log into game " + gameLogin.message);
             }
+        }
+
+        [ListensTo(typeof(SelectDeckSignal))]
+        public void onSelectDeck(DeckModel deck)
+        {
+            selectedDeck = deck;
         }
 
         public IEnumerator LoadLevel(string level)

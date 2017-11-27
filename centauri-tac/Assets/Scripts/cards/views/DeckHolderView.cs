@@ -56,6 +56,14 @@ namespace ctac
             UpdateList();
         }
 
+        internal void selectDeck(DeckModel deck)
+        {
+            for(int i = 0; i < decksList.Count; i++)
+            {
+                decksList[i].isSelected = deck == null ? false : deck.id == decksList[i].deck.id;
+            }
+        }
+
         //once deck is saved on the server and has a real ID find the corresponding deck and update
         internal void deckSaved(DeckModel deck)
         {
