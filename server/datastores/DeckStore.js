@@ -16,10 +16,10 @@ export default class DeckStore
   }
 
   /**
-   * All player decks
+   * All player decks, or a specific one
    */
   @hrtime('fetched decks %s ms')
-  async getDecks(playerId)
+  async getDecks(playerId, deckId = null)
   {
     let sql = `
       select *
@@ -27,7 +27,11 @@ export default class DeckStore
       where player_id = @playerId and is_deleted = false
     `;
 
-    const resp = await this.sql.tquery(PlayerDeck)(sql, {playerId});
+    if(deckId){
+      sql += ' and id = @deckId';
+    }
+
+    const resp = await this.sql.tquery(PlayerDeck)(sql, {playerId, deckId});
 
     let decks = resp.toArray();
     let deckResolves = [];

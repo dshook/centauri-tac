@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import GameHost from './GameHost.js';
+import PlayerDeck from 'models/PlayerDeck';
 
 /**
  * Manages all the game hosts and adding and removing clients from them
@@ -8,9 +9,10 @@ import GameHost from './GameHost.js';
 @loglevel
 export default class GameManager
 {
-  constructor(games, emitter, componentsConfig)
+  constructor(games, decks, emitter, componentsConfig)
   {
     this.games = games;
+    this.decks = decks;
     this.emitter = emitter;
     this.componentsConfig = componentsConfig;
 
@@ -22,7 +24,7 @@ export default class GameManager
   /**
    * Start new game instance based on info
    */
-  async create(name)
+  async create(name, expectedPlayers)
   {
     // registers the game
 
@@ -44,10 +46,25 @@ export default class GameManager
 
     this.log.info('Created game %s %s', game.id, game.name);
 
+    // look up the players decks they joined with to share with the game
+    let deckInfo = await Promise.all(expectedPlayers.map(
+      async p => {
+        if(!p.deckId){
+          //testing for now joining with no deck specified, create a placeholder
+          return PlayerDeck.fromData({
+            playerId: p.playerId,
+            race: p.playerId % 2 === 0 ? 2 : 3
+          });
+        }
+        let deck = await this.decks.getDecks(p.playerId, p.deckId);
+        return deck[0];
+      }
+    ));
+
     // instantiates game on the game host
     await this.emitter.emit('game', game);
 
-    const host = new GameHost(game, this.emitter);
+    const host = new GameHost(game, deckInfo, this.emitter);
     await host.startInstance();
     this.gameHosts.push(host);
 

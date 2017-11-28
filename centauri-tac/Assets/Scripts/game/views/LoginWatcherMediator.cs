@@ -9,18 +9,11 @@ namespace ctac
 
         [Inject] public MatchmakerQueueSignal matchmakerQueue { get; set; }
 
-        public override void OnRegister()
-        {
-        }
-
-        public override void OnRemove()
-        {
-        }
-
 
         [ListensTo(typeof(LobbyLoggedInSignal))]
         public void onLobbyLogin(LoginStatusModel lsm, SocketKey key)
         {
+            //Auto queue to matchmaker in dev 
             matchmakerQueue.Dispatch(new QueueModel(), key);
         }
     }

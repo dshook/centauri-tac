@@ -49,7 +49,7 @@ export default class GameRPC
   @on('gamelist:createFor')
   async createGameFor({name, matchedPlayers})
   {
-    const game = await this.manager.create(name);
+    const game = await this.manager.create(name, matchedPlayers);
 
     if(!game) return;
 

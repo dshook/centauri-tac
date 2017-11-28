@@ -16,8 +16,9 @@ export default class CentauriTacGame
   constructor(
     queue,
     players,
+    deckInfo,
     game,
-    host,
+    hostManager,
     cardDirectory,
     cardState,
     playerResourceState,
@@ -26,8 +27,9 @@ export default class CentauriTacGame
   )
   {
     this.players = players;
+    this.deckInfo = deckInfo;
     this.game = game;
-    this.host = host;
+    this.hostManager = hostManager;
     this.queue = queue;
     this.cardDirectory = cardDirectory;
     this.cardState = cardState;
@@ -51,20 +53,26 @@ export default class CentauriTacGame
     this.log.info('starting game!');
 
     // update game info
-    await this.host.setGameState(3);
-    await this.host.setAllowJoin(false);
+    await this.hostManager.setGameState(3);
+    await this.hostManager.setAllowJoin(false);
 
     // bootup the main controller
-    await this.host.addController(GameController);
+    await this.hostManager.addController(GameController);
 
     //set map state current map based on game
     this.mapState.setMap(this.game.map);
 
+    let playerDeckInfo = [
+      this.deckInfo.find(d => d.playerId === this.players[0].id),
+      this.deckInfo.find(d => d.playerId === this.players[1].id),
+    ];
+    this.log.info('player deck info: %j', playerDeckInfo);
+
     // spawn game pieces for two players
     let allHeroes = this.cardDirectory.getByTag('Hero');
     let heroes = [
-      allHeroes.find(h => h.cardTemplateId === 1902),
-      allHeroes.find(h => h.cardTemplateId === 1903)
+      allHeroes.find(h => h.race == playerDeckInfo[0].race),
+      allHeroes.find(h => h.race == playerDeckInfo[1].race)
     ];
 
     this.queue.push(new SpawnPiece({
@@ -86,7 +94,7 @@ export default class CentauriTacGame
       let player = this.players[p];
       this.playerResourceState.init(player.id);
       this.cardState.initPlayer(player.id);
-      this.queue.push(new SpawnDeck(player.id, heroes[p].race));
+      this.queue.push(new SpawnDeck(player.id));
     }
 
     //draw initial cards
@@ -102,7 +110,7 @@ export default class CentauriTacGame
   }
 
   /**
-   * Host is shutting us down
+   * Manager is shutting us down
    */
   @on('shutdown')
   shutdown()

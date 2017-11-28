@@ -22,12 +22,13 @@ import GameEventService from './ctac/services/GameEventService.js';
 @loglevel
 export default class GameHost extends EventEmitter
 {
-  constructor(game, emitter)
+  constructor(game, deckInfo, emitter)
   {
     super();
 
     this.log.info('created new GameHost for game %s', game.id);
     this.game = game;
+    this.deckInfo = deckInfo;
     this.emitter = emitter;
 
     // Relay emitted events to instance
@@ -54,9 +55,10 @@ export default class GameHost extends EventEmitter
     app.container.registerValue('players', this.players);
     app.container.registerValue('binder', this.binder);
     app.container.registerValue('game', this.game);
+    app.container.registerValue('deckInfo', this.deckInfo);
 
-    const manager = new HostManager(app.container, this.binder, this.game, this.emitter);
-    app.container.registerValue('host', manager);
+    const hostManager = new HostManager(app.container, this.binder, this.game, this.emitter);
+    app.container.registerValue('hostManager', hostManager);
 
     app.service(ActionQueueService);
     app.service(MapService);
@@ -68,7 +70,7 @@ export default class GameHost extends EventEmitter
 
     await app.start();
 
-    manager.addController(CentauriTacGame);
+    hostManager.addController(CentauriTacGame);
   }
 
   /**

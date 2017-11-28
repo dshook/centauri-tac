@@ -13,9 +13,9 @@ import RotatePiece from '../actions/RotatePiece.js';
 @loglevel
 export default class GameController
 {
-  constructor(host, players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
+  constructor(hostManager, players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
   {
-    this.host = host;
+    this.hostManager = hostManager;
     this.players = players;
     this.queue = queue;
     this.pieceState = pieceState;
@@ -235,7 +235,7 @@ export default class GameController
       let winner = this.players.find(w => w.id != loser);
       this.log.info('player %s LOSES, player %s WINS!', loser, winner.id);
       this.gameEventService.shutdown();
-      this.host.completeGame(winner.id);
+      this.hostManager.completeGame(winner.id);
     }
   }
 
