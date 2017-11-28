@@ -23,7 +23,7 @@ export default class Matchmaker
   /**
    * Enter a player into the queue
    */
-  async queuePlayer(client, playerId, deckId)
+  async queuePlayer(playerId, deckId)
   {
     this.log.info('Trying to find player %s in queue %j', playerId, this.queue);
     if (this.queue.find(x => x.playerId === playerId)) {
@@ -45,7 +45,7 @@ export default class Matchmaker
     }
     else {
       this.log.info('player %s already in game %s, removing from queue', playerId, game.id);
-      await this.dequeuePlayer(playerId, client);
+      await this.dequeuePlayer(playerId);
       await this._emitStatus(playerId, false, true);
       await this.emitter.emit('game:current', {game, playerId});
     }
@@ -54,7 +54,7 @@ export default class Matchmaker
   /**
    * Drop em
    */
-  async dequeuePlayer(client, playerId)
+  async dequeuePlayer(playerId)
   {
     const index = this.queue.findIndex(x => x.playerId === playerId);
 

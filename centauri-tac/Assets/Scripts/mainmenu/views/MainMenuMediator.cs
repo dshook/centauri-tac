@@ -140,7 +140,8 @@ namespace ctac
             }
             view.disableButtons();
             moveLobbyView.Dispatch(LobbyScreens.main);
-            StartCoroutine(retryConnection());
+            StopCoroutine("retryConnection");
+            StartCoroutine("retryConnection");
         }
 
         private IEnumerator retryConnection()

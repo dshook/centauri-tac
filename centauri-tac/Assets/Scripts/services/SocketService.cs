@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using WebSocketSharp;
 using ctac.signals;
+using System.Linq;
 
 namespace ctac
 {
@@ -14,6 +15,7 @@ namespace ctac
         void Request(Guid clientId, string componentName, string methodName, object data = null);
 
         void Disconnect(SocketKey key);
+        void Disconnect(Guid clientId);
         void Disconnect(Guid clientId, string componentName);
 
         bool IsSocketOpen(SocketKey key);
@@ -101,7 +103,7 @@ namespace ctac
         private IEnumerator MakeRequest(SocketKey key, string methodName, object data)
         {
             var ws = sockets.Get(key);
-            if (ws.ReadyState != WebSocketState.Open)
+            if (ws == null || ws.ReadyState != WebSocketState.Open)
             {
                 debug.LogWarning("Cannot make request to disconnected web socket", key);
                 yield return null;
@@ -190,6 +192,19 @@ namespace ctac
         public void Disconnect(Guid clientId, string componentName)
         {
             Disconnect(new SocketKey(clientId, componentName));
+        }
+
+        public void Disconnect(Guid clientId)
+        {
+            //break out the list of socket keys so we don't delete from what we're looping on
+            var socketKeyList = sockets.Select(s => s.Key).ToList();
+            foreach (var socketKey in socketKeyList)
+            {
+                if (socketKey.clientId == clientId)
+                {
+                    Disconnect(socketKey);
+                }
+            }
         }
 
         public void Disconnect(SocketKey key)

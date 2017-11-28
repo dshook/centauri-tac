@@ -27,7 +27,7 @@ export default class LobbyRPC
   {
     const playerId = auth.sub.id;
     const {deckId} = params;
-    await this.matchmaker.queuePlayer(client, playerId, deckId);
+    await this.matchmaker.queuePlayer(playerId, deckId);
   }
 
   /**
@@ -38,7 +38,7 @@ export default class LobbyRPC
   async dequeuePlayer(client, params, auth)
   {
     const playerId = auth.sub.id;
-    await this.matchmaker.dequeuePlayer(client, playerId);
+    await this.matchmaker.dequeuePlayer(playerId);
   }
 
   /**
@@ -55,9 +55,18 @@ export default class LobbyRPC
     this.clients.add(client);
 
     // drop player when they DC
-    const playerId = auth.sub.id;
-    client.once('close', () => this.matchmaker.dequeuePlayer(playerId, client));
-    client.once('close', () => this.clients.delete(client));
+    client.once('close', () => this.disconnectClient(client, 'close'));
+    client.once('error', () => this.disconnectClient(client, 'error'));
+    client.once('disconnected', () => this.disconnectClient(client, 'disconnect'));
+  }
+
+  disconnectClient(client, reason){
+    let playerId = client && client.auth ? client.auth.sub.id : null;
+    this.log.info('Closing connection for %s for player %s', reason, playerId);
+    if(playerId){
+      this.matchmaker.dequeuePlayer(playerId);
+    }
+    this.clients.delete(client)
   }
 
   /**
@@ -135,6 +144,7 @@ export default class LobbyRPC
 
   //prolly should index them
   sendToPlayer(playerId, message, data){
+    this.log.info('Lobby Clients %j', [...this.clients].map(c => c.auth));
     for (const c of this.clients) {
       const {id} = c.auth.sub;
       if (playerId === id) {
