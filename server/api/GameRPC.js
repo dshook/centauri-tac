@@ -11,7 +11,7 @@ export default class GameRPC
     this.games = games;
     this.manager = gameManager;
 
-    this.clients = new Set();
+    this.clients = {};
   }
 
   /**
@@ -64,11 +64,9 @@ export default class GameRPC
   @on('game:current')
   _broadcastCurrentGame({game, playerId})
   {
-    for (const c of this.clients) {
-      const {id} = c.auth.sub;
-      if (playerId === id) {
-        c.send('game:current', game);
-      }
+    let client = this.clients[playerId];
+    if(client){
+      client.send('game:current', game);
     }
   }
 
@@ -80,17 +78,31 @@ export default class GameRPC
   {
     if (!auth.sub) { return; }
 
-    this.clients.add(client);
+    let playerId = client.auth.sub.id || null;
+
+    if(!playerId){
+      this.log.warn('Connecting client missing auth creds');
+      return;
+    }
+
+    if(this.clients[playerId]){
+      this.bye(this.clients[playerId], 'reconnect')
+    }
+    this.clients[playerId] = client;
   }
 
   /**
    * For now, a disconnect is going to be the same as an intentional part
    */
   @rpc.disconnected()
-  bye(client)
+  bye(client, reason)
   {
+    let playerId = client && client.auth ? client.auth.sub.id : null;
+    this.log.info('Closing connection for %s for player %s', reason || 'dc', playerId);
     this.manager.playerPart(client);
-    this.clients.delete(client);
+    if(playerId){
+      delete this.clients[playerId];
+    }
   }
 
   /**
