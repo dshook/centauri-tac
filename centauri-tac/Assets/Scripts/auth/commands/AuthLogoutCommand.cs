@@ -15,7 +15,6 @@ namespace ctac
         {
             foreach (var player in players.players)
             {
-                //socketService.Disconnect(new SocketKey(player.clientId, "auth"));
                 socketService.Disconnect(player.clientId);
             }
 

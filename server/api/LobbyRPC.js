@@ -15,7 +15,7 @@ export default class LobbyRPC
   {
     this.matchmaker = matchmaker;
     this.cardManager = cardManager;
-    this.clients = new Set();
+    this.clients = {};
   }
 
   /**
@@ -52,7 +52,18 @@ export default class LobbyRPC
       return;
     }
 
-    this.clients.add(client);
+    let playerId = client && client.auth ? client.auth.sub.id : null;
+
+    if(!playerId){
+      this.log.warn('Connecting client missing auth creds');
+      return;
+    }
+
+    if(this.clients[playerId]){
+      this.disconnectClient(this.clients[playerId], 'reconnect')
+    }
+
+    this.clients[playerId] = client;
 
     // drop player when they DC
     client.once('close', () => this.disconnectClient(client, 'close'));
@@ -65,8 +76,8 @@ export default class LobbyRPC
     this.log.info('Closing connection for %s for player %s', reason, playerId);
     if(playerId){
       this.matchmaker.dequeuePlayer(playerId);
+      delete this.clients[playerId];
     }
-    this.clients.delete(client)
   }
 
   /**
@@ -142,14 +153,11 @@ export default class LobbyRPC
     this.log.info('Deleted deck %s for player %s', deckId, playerId);
   }
 
-  //prolly should index them
   sendToPlayer(playerId, message, data){
-    this.log.info('Lobby Clients %j', [...this.clients].map(c => c.auth));
-    for (const c of this.clients) {
-      const {id} = c.auth.sub;
-      if (playerId === id) {
-        c.send(message, data);
-      }
+    // this.log.info('Lobby Clients %j', Object.keys(this.clients));
+    let client = this.clients[playerId];
+    if(client){
+      client.send(message, data);
     }
   }
 }
