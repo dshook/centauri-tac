@@ -31,7 +31,6 @@ namespace ctac
         public override void OnRegister()
         {
             view.clickSignal.AddListener(onClick);
-            view.activateSignal.AddListener(onActivate);
             view.hoverSignal.AddListener(onHover);
 
             view.init(raycastModel);
@@ -40,7 +39,6 @@ namespace ctac
         public override void OnRemove()
         {
             view.clickSignal.RemoveListener(onClick);
-            view.activateSignal.RemoveListener(onActivate);
             view.hoverSignal.RemoveListener(onHover);
         }
 
@@ -78,33 +76,6 @@ namespace ctac
             }
             debug.Log("Clicked End");
 
-        }
-
-        //when you try to activate a card either by the click and drag click up or a click on a tile/piece
-        private void onActivate(GameObject activated)
-        {
-            var itWorked = doActivateWork(activated);
-            if (itWorked)
-            {
-                view.ClearDrag();
-            }
-        }
-
-        //returns whether or not the activate was a good one or not
-        private bool doActivateWork(GameObject activated)
-        {
-            if (activated == null || draggedCard == null)
-            {
-                cardSelected.Dispatch(null);
-                return false;
-            }
-            return false;
-        }
-
-        [ListensTo(typeof(ActivateCardSignal))]
-        private void onCardActivated(ActivateModel a)
-        {
-            cardSelected.Dispatch(null);
         }
 
         private CardView lastHoveredCard = null;

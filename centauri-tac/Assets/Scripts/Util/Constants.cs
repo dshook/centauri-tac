@@ -5,7 +5,8 @@ namespace ctac
 {
     public static class Constants
     {
-        public static float hoverTime = 0.65f;
+        public static float hoverTime = 0.45f;
+        public const float dragDistThreshold = 10f;
         public static float cameraRaycastDist = 150f;
 
         //can't move up more than this change in height
@@ -37,7 +38,7 @@ namespace ctac
             { Races.Martians, "UI/faction icons/faction_Martians"},
             { Races.Grex, "UI/faction icons/faction_Grex"},
             { Races.Phaenon, "UI/faction icons/faction_Phaenon"},
-            { Races.Lost, "UI/faction icons/faction_Lost"},
+            { Races.Lost, "UI/faction icons/faction_The Lost"},
         };
     }
 

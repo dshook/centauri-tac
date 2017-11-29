@@ -30,11 +30,9 @@ namespace ctac
         RaycastModel raycastModel;
 
         bool active = false;
-        const float singleClickThreshold = 0.5f;
 
         //how far has the mouse been dragged total
         float dragAccumulator = 0f;
-        const float dragDistThreshold = 10f;
         bool isDragging = false;
         Vector2 lastDragPos = Vector2.zero;
 
@@ -125,7 +123,7 @@ namespace ctac
                     clickedObject = raycastModel.worldHit.Value.collider.gameObject,
                     piece = raycastModel.piece,
                     tile = raycastModel.tile,
-                    isDrag = dragAccumulator > dragDistThreshold
+                    isDrag = dragAccumulator > Constants.dragDistThreshold
                 });
             }
             else if(!raycastModel.cardCanvasHit.HasValue)
