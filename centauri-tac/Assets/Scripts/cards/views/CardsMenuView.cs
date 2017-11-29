@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using System.Linq;
 using System;
+using System.Collections;
 
 namespace ctac
 {
@@ -286,12 +287,12 @@ namespace ctac
         void onNewDeckClick()
         {
             //swip swap the cards showing for the race selection buttons
-            ShowRaceSelectionButtons(true);
+            StartCoroutine(ShowRaceSelectionButtons(true));
         }
 
         void onFactionSelect(Races race)
         {
-            ShowRaceSelectionButtons(false);
+            StartCoroutine(ShowRaceSelectionButtons(false));
             clickNewDeckSignal.Dispatch(race);
         }
 
@@ -336,8 +337,12 @@ namespace ctac
         }
 
         //swap the cards out for faction selection buttons
-        void ShowRaceSelectionButtons(bool show)
+        //Have to do this in a coroutine for now to prevent the mouse up from selecting the card
+        //behind the panel when a new deck is selected. This is because the onClick events for the buttons
+        //don't go through the interaction stuff of course
+        IEnumerator ShowRaceSelectionButtons(bool show)
         {
+            yield return new WaitForSeconds(0.0f);
             cardHolder.SetActive(!show);
             cardControls.SetActive(!show);
             factionSelection.SetActive(show);
