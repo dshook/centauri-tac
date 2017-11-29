@@ -25,7 +25,7 @@ namespace ctac
         [ListensTo(typeof(DeckDeletedSignal))]
         public void onRemoveFromDeck(DeckModel deck)
         {
-            view.removeCard(deck);
+            view.removeDeck(deck);
         }
 
         [ListensTo(typeof(DeckSavedSignal))]

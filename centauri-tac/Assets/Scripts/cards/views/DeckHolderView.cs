@@ -39,10 +39,11 @@ namespace ctac
             UpdateList();
         }
 
-        internal void removeCard(DeckModel deck)
+        internal void removeDeck(DeckModel deck)
         {
-            decksList.Remove(deck.deckListView);
-            Destroy(deck.deckListView.gameObject);
+            var deckView = decksList.FirstOrDefault(d => d.deck.id == deck.id);
+            decksList.Remove(deckView);
+            Destroy(deckView.gameObject);
             UpdateList();
         }
 
