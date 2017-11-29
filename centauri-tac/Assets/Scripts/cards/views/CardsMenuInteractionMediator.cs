@@ -17,7 +17,7 @@ namespace ctac
 
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
         [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
-        [Inject] public SelectDeckSignal editDeck { get; set; }
+        [Inject] public SelectDeckSignal selectDeck { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -52,6 +52,7 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
+                debug.Log("Clicked Null");
                 return;
             }
 
@@ -60,6 +61,7 @@ namespace ctac
             {
                 draggedCard = cardView.card;
                 addCardToDeck.Dispatch(draggedCard);
+                debug.Log("Clicked Card View");
                 return;
             }
 
@@ -72,8 +74,9 @@ namespace ctac
             var deckList = clickedObject.GetComponent<DeckListView>();
             if (deckList != null)
             {
-                editDeck.Dispatch(deckList.deck);
+                selectDeck.Dispatch(deckList.deck);
             }
+            debug.Log("Clicked End");
 
         }
 

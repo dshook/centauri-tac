@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_Earthlings
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636365418948365544
+  _lastTimeModified: 636475190953238953
   _documentAsset: {fileID: 114783240717499530}
-  _sharedMesh: {fileID: 43986064152198384}
+  _sharedMesh: {fileID: 43701653606367982}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
   _colliderShape: []
-  _format: 1
+  _format: 2
   _useGradients: 1
   _meshCompression: 0
   _optimizeMesh: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43986064152198384
+--- !u!43 &43701653606367982
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

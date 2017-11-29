@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_The Lost
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636365418948810525
+  _lastTimeModified: 636475190953498955
   _documentAsset: {fileID: 114380032360667126}
-  _sharedMesh: {fileID: 43348205474724342}
+  _sharedMesh: {fileID: 43261754528190196}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
   _colliderShape: []
-  _format: 1
+  _format: 2
   _useGradients: 1
   _meshCompression: 0
   _optimizeMesh: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43348205474724342
+--- !u!43 &43261754528190196
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

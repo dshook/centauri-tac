@@ -7,6 +7,9 @@ namespace ctac
     public static class Colors
     {
         public static Color32 white = Color.white;
+        public static Color32 lightGray = ColorExtensions.HexToColor("#CCCCCC");
+        public static Color32 darkGray = ColorExtensions.HexToColor("#555555");
+        public static Color32 darkerGray = ColorExtensions.HexToColor("#333333");
         public static Color32 transparentWhite = new Color(1, 1, 1, 0);
 
         public static Color invisible = new Color(0f, 0f, 0f, 0f);

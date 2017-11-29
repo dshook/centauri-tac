@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_Neutral
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636365418948875451
+  _lastTimeModified: 636475190953663954
   _documentAsset: {fileID: 114125964185417268}
-  _sharedMesh: {fileID: 43483019112511990}
+  _sharedMesh: {fileID: 43049512885991872}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
   _colliderShape: []
-  _format: 1
+  _format: 2
   _useGradients: 1
   _meshCompression: 0
   _optimizeMesh: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43483019112511990
+--- !u!43 &43049512885991872
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

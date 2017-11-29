@@ -16,7 +16,7 @@ namespace ctac
         [Inject] public ICardService cardService { get; set; }
 
         [Inject] public NewDeckSignal newDeck { get; set; }
-        [Inject] public SelectDeckSignal editDeck { get; set; }
+        [Inject] public SelectDeckSignal selectDeck { get; set; }
         [Inject] public SavingDeckSignal savingDeck { get; set; }
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public DeleteDeckSignal deleteDeck { get; set; }
@@ -91,7 +91,7 @@ namespace ctac
                 race = raceSelected
             };
             newDeck.Dispatch(dm);
-            editDeck.Dispatch(dm);
+            selectDeck.Dispatch(dm);
         }
 
         [ListensTo(typeof(SelectDeckSignal))]
@@ -122,6 +122,7 @@ namespace ctac
         public void onDeckSaved(DeckModel deck, SocketKey key)
         {
             view.onDeckSaved();
+            selectDeck.Dispatch(null);
         }
 
         [ListensTo(typeof(DeckSaveFailedSignal))]
@@ -134,6 +135,7 @@ namespace ctac
         public void onCancelDeck()
         {
             view.onCancelDeck();
+            selectDeck.Dispatch(null);
         }
 
         private void onLeaveClicked()

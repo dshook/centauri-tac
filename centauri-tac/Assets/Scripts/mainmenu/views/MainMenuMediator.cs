@@ -160,7 +160,6 @@ namespace ctac
 
             //Clear out any selected deck from play menu in the cards menu
             cancelDeck.Dispatch();
-            selectDeck.Dispatch(null);
         }
     }
 }

@@ -28,6 +28,17 @@ namespace ctac
         public static Vector3 cardCircleCenter = new Vector3(0, -590, 332);
         public static Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
         public static float cardCircleRadius = 480f;
+
+        public static Dictionary<Races, string> RaceIconPaths = new Dictionary<Races, string>()
+        {
+            { Races.Neutral, "UI/faction icons/faction_Neutral"},
+            { Races.Venusians, "UI/faction icons/faction_Venusians"},
+            { Races.Earthlings, "UI/faction icons/faction_Earthlings" },
+            { Races.Martians, "UI/faction icons/faction_Martians"},
+            { Races.Grex, "UI/faction icons/faction_Grex"},
+            { Races.Phaenon, "UI/faction icons/faction_Phaenon"},
+            { Races.Lost, "UI/faction icons/faction_Lost"},
+        };
     }
 
     public enum InjectionKeys

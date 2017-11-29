@@ -108,7 +108,6 @@ namespace ctac
 
             var deckListView = newDeck.AddComponent<DeckListView>();
             deckListView.deck = deck;
-            deck.deckListView = deckListView;
 
             //TODO: id from server prolly
             deck.id = deck.id != 0 ? deck.id : fakeDeckId;

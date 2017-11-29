@@ -17,9 +17,6 @@ namespace ctac
         public Races race { get; set; }
         public bool isValid { get; set; }
         public List<CardInDeckModel> cards = new List<CardInDeckModel>();
-
-        [JsonIgnore]
-        public DeckListView deckListView { get; set; }
     }
 
     //Very abbreviated form of a card in a deck that matches the server model

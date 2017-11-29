@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: faction_Phaenon
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636366341733393606
+  _lastTimeModified: 636475190953589045
   _documentAsset: {fileID: 114753054753293324}
-  _sharedMesh: {fileID: 43779864078487498}
+  _sharedMesh: {fileID: 43441075380651860}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
   _colliderShape: []
-  _format: 1
+  _format: 2
   _useGradients: 1
   _meshCompression: 0
   _optimizeMesh: 1
@@ -44,12 +44,12 @@ MonoBehaviour:
     height: 100
   _useLayers: 0
   _layers: []
---- !u!43 &43779864078487498
+--- !u!43 &43441075380651860
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: faction_Aensians_Aensians
+  m_Name: faction_Phaenon
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
