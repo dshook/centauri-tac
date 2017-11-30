@@ -163,7 +163,8 @@ namespace ctac
             {
                 //find play radius depending on the card to show spawning area for a piece
                 var playerHero = pieces.Hero(cardModel.card.playerId);
-                var kingTiles = mapService.GetKingTilesInRadius(playerHero.tilePosition, 1);
+                var allowableDistance = (cardModel.card.statuses & Statuses.Airdrop) != 0 ? 4 : 1;
+                var kingTiles = mapService.GetKingTilesInRadius(playerHero.tilePosition, allowableDistance);
                 var heroTile = mapService.Tile(playerHero.tilePosition);
                 var piecePositions = pieces.Pieces.Select(p => p.tilePosition);
                 List<Tile> playableTiles = kingTiles.Values.ToList()

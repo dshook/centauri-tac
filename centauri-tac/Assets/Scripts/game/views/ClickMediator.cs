@@ -401,7 +401,8 @@ namespace ctac
                     return false;
                 }
                 var kingDist = mapService.KingDistance(pieces.Hero(draggedCard.playerId).tilePosition, gameTile.position);
-                if (kingDist > 1)
+                var allowableDistance = (draggedCard.statuses & Statuses.Airdrop) != 0 ? 4 : 1;
+                if (kingDist > allowableDistance)
                 {
                     message.Dispatch(new MessageModel() { message = "You must play your minions close to your hero!", duration = 1f });
                     return false;

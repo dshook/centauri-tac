@@ -17,6 +17,7 @@ namespace ctac
         CantAttack = 1 << 8,
         DyadStrike = 1 << 9,
         Flying     = 1 << 10,
+        Airdrop    = 1 << 11,
 
 
         //The rest of these are fake client side only statuses derived from other properties

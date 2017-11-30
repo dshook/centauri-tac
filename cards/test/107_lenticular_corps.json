@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 107,
+	"name": "Lenticular Corps",
+	"description": "<b>Airdrop</b>",
+	"cost": 2,
+	"attack": 2,
+	"health": 3,
+	"movement": 3,
+  "statuses": 2048,
+	"tags": ["Minion"]
+}

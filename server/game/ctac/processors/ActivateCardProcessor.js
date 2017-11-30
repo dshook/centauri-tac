@@ -2,6 +2,7 @@ import SpawnPiece from '../actions/SpawnPiece.js';
 import PlaySpell from '../actions/PlaySpell.js';
 import Message from '../actions/Message.js';
 import ActivateCard from '../actions/ActivateCard.js';
+import Statuses from '../models/Statuses.js';
 import loglevel from 'loglevel-decorator';
 
 /**
@@ -47,8 +48,9 @@ export default class ActivateCardProcessor
     //check to make sure the card was played in a valid spot
     if(cardPlayed.isMinion){
       let playerHero = this.pieceState.hero(action.playerId);
+      let allowableDistance = (cardPlayed.statuses & Statuses.Airdrop) != 0 ? 4 : 1;
       let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
-      if(kingDist > 1){
+      if(kingDist > allowableDistance){
         this.log.warn('Cannot play minion that far away, dist %s'
           , kingDist);
         queue.push(new Message('You must play your minions close to your hero!', action.playerId));

@@ -332,6 +332,7 @@ namespace ctac {
             {"Volatile",           "Does something when damaged" },
             {"Spell Damage",       "Spells do one more damage for each spell damage point" },
 
+            {"Airdrop",            "Minion can spawn in a larger area around your hero" },
             {"Silence",            "Negates a minions card text, abilities, and status effects" },
             {"Holtz Shield",       "Absorbes all damage a minion takes on the first hit" },
             {"Paralyze",           "Minion cannot move or attack" },
