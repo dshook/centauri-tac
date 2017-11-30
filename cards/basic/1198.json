@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 1198,
+	"name": "Card 1198",
+	"description": "",
+  "cost": 4,
+  "attack": 3,
+  "health": 4,
+  "movement": 5,
+  "race": 0,
+  "tags": ["Minion"]
+}

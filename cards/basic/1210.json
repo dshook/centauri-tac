@@ -1,0 +1,13 @@
+{
+	"cardTemplateId": 1210,
+	"name": "Card 1210",
+	"description": "<b>Tech Resist</b>",
+  "cost": 6,
+  "attack": 5,
+  "health": 2,
+  "movement": 3,
+  "range": 3,
+  "race": 0,
+  "statuses": 32,
+  "tags": ["Minion"]
+}

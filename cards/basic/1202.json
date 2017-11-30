@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 1202,
+	"name": "Card 1202",
+	"description": "<b>Synthesis</b>: Deal 2 damage to an enemy minion",
+  "cost": 4,
+  "attack": 2,
+  "health": 3,
+  "movement": 3,
+  "race": 0,
+  "tags": ["Minion"],
+	"eventcode": "PlayMinion{ Hit(ENEMY & MINION, 2) }"
+}

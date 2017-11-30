@@ -1,11 +1,11 @@
 {
-	"cardTemplateId": 1010,
-	"name": "Test 10",
+	"cardTemplateId": 1193,
+	"name": "Card 1193",
 	"description": "",
-  "cost": 2,
+  "cost": 3,
   "attack": 3,
   "health": 3,
   "movement": 3,
-  "race": 2,
+  "race": 0,
   "tags": ["Minion"]
 }

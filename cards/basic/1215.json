@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 1215,
+	"name": "Card 1215",
+	"description": "<b>Taunt</b>",
+  "cost": 7,
+  "attack": 6,
+  "health": 5,
+  "movement": 4,
+  "race": 0,
+  "statuses": 8,
+  "tags": ["Minion"]
+}
