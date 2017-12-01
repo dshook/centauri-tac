@@ -8,5 +8,5 @@
   "movement": 3,
   "race": 0,
   "tags": ["Minion"],
-	"eventcode": "PlayMinion{ Hit(ENEMY & MINION, 2) }"
+	"eventcode": "playMinion{ Hit(ENEMY & MINION, 2) }"
 }

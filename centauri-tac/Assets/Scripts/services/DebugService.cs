@@ -27,6 +27,7 @@ namespace ctac
         public void PostConstruct()
         {
             quit.AddListener(Dump);
+            Application.logMessageReceived += HandleException;
         }
         private object _logLock = new object();
 
@@ -92,6 +93,14 @@ namespace ctac
                 return (string) message;
             }
             return JsonConvert.SerializeObject(message);
+        }
+
+        void HandleException(string condition, string stackTrace, LogType type)
+        {
+            if (type == LogType.Exception || type == LogType.Error)
+            {
+                LogError(condition + "\n\n" + stackTrace);
+            }
         }
     }
 
