@@ -13,6 +13,7 @@ namespace ctac
 
         //filled out by server
         public int? spellDamage { get; set; }
+        public int? cardTemplateId { get; set; }
 
         [JsonIgnore]
         public CardModel card { get; set; }

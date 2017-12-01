@@ -99,6 +99,7 @@ export default class ActivateCardProcessor
     }
 
     action.spellDamage = this.pieceState.totalSpellDamage(action.playerId);
+    action.cardTemplateId = cardPlayed.cardTemplateId;
 
     queue.complete(action);
     this.log.info('player %s played card %s at %s',

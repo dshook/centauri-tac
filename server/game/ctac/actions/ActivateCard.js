@@ -24,5 +24,7 @@ export default class ActivateCard extends BaseAction
 
     //Gets filled out by the server telling you how much spell damage was present when the card was played
     this.spellDamage = 0;
+    //And fill out what card it was for enemy cards
+    this.cardTemplateId = 0;
   }
 }

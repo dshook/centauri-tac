@@ -25,6 +25,7 @@ namespace ctac
 
         [Inject] public IDebugService debug { get; set; }
         [Inject] public ISoundService sounds { get; set; }
+        [Inject] public ICardService cardService { get; set; }
 
         public override void OnRegister()
         {
@@ -73,7 +74,10 @@ namespace ctac
             if(act.card.playerId == players.Me.id){
                 cardDestroyed.Dispatch(act.card);
             }else{
-                //spellDamage = act.spellDamage
+                //enemy cards activated we have to update the cards to show the real info 
+                //since this is the first time we're learning of it
+                act.card.cardView.UpdateText(act.spellDamage ?? 0);
+                cardService.UpdateCardArt(act.card);
                 animationQueue.Add(new CardsView.ShowEnemyCardPlayedAnim()
                 {
                     card = act.card,
