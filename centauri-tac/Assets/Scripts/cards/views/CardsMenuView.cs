@@ -68,6 +68,7 @@ namespace ctac
         Dictionary<Races, bool> raceFilters;
 
         DeckModel editingDeck = null;
+        Races defaultRace = Races.Neutral;
 
         internal void init(ICardService cs, CardDirectory cd)
         {
@@ -106,11 +107,13 @@ namespace ctac
             };
             foreach (var toggle in raceToggles)
             {
-                toggle.Value.isOn = false;
+                var startingFilterValue = false;
+                if(toggle.Key == defaultRace){ startingFilterValue = true; }
+
+                toggle.Value.isOn = startingFilterValue;
                 toggle.Value.interactable = true;
                 toggle.Value.onValueChanged.AddListener((value) => onToggleSelect(value, toggle.Key));
-                raceFilters.Add(toggle.Key, false);
-
+                raceFilters.Add(toggle.Key, startingFilterValue);
             }
 
             //create all the card game objects that will be recycled
@@ -147,7 +150,9 @@ namespace ctac
                     || c.description.ToLower().Contains(stringFilter)
                     || c.tags.Any(t => t.ToLower().Contains(stringFilter))
                 )
-                .Where(c => allowAllRaces || raceFilters[c.race]);
+                .Where(c => allowAllRaces || raceFilters[c.race])
+                .OrderBy(c => c.cost)
+                .ThenBy(c => c.name);
 
             remainingCardsToShow = cardList.Count() - offset - pageSize;
 
@@ -386,7 +391,7 @@ namespace ctac
         {
             foreach (var toggle in raceToggles)
             {
-                toggle.Value.isOn = false;
+                toggle.Value.isOn = toggle.Key == defaultRace ? true : false;
                 toggle.Value.interactable = true;
             }
         }

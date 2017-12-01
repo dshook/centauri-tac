@@ -50,7 +50,6 @@ namespace ctac
             {
                 draggedCard = null;
                 cardSelected.Dispatch(null);
-                debug.Log("Clicked Null");
                 return;
             }
 
@@ -59,7 +58,6 @@ namespace ctac
             {
                 draggedCard = cardView.card;
                 addCardToDeck.Dispatch(draggedCard);
-                debug.Log("Clicked Card View");
                 return;
             }
 
@@ -74,8 +72,6 @@ namespace ctac
             {
                 selectDeck.Dispatch(deckList.deck);
             }
-            debug.Log("Clicked End");
-
         }
 
         private CardView lastHoveredCard = null;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace ctac
 {
@@ -49,6 +50,9 @@ namespace ctac
         public CardModel NewFromTemplate(int cardId, int cardTemplateId, int playerId)
         {
             var cardTemplate = Card(cardTemplateId);
+            if(cardTemplate == null){
+                throw new Exception("Card template Id " + cardTemplateId + " not found in directory");
+            }
 
             return new CardModel()
                 {
