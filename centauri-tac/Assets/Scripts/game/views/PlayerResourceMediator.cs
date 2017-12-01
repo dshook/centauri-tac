@@ -44,7 +44,7 @@ namespace ctac
         public void onResourceSet(SetPlayerResourceModel m)
         {
             //if not for me, leave it be
-            if(m.playerId != playerId) return;
+            if(m == null || m.playerId != playerId) return;
 
             updateView();
             if (m.newMax == 0)

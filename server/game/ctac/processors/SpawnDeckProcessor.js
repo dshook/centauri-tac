@@ -39,6 +39,7 @@ export default class SpawnDeckProcessor
 
         this.cardState.addToDeck(playerId, cardClone);
       }
+      this.cardState.shuffleDeck(playerId);
 
     }else{
       //but for testing, spawn a random deck

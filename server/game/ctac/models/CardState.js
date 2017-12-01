@@ -56,6 +56,11 @@ export default class CardState
     return newCard.id;
   }
 
+  //Seems like this should have been in sooner than 2 years into the project...
+  shuffleDeck(playerId){
+    this.decks[playerId] = this.decks[playerId].sort((a, b) => 0.5 - Math.random());
+  }
+
   addToHand(playerId, card){
     if(!card.id){
       card.id = this.nextId++;
