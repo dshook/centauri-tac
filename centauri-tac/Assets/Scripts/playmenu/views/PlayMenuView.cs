@@ -83,8 +83,8 @@ namespace ctac
 
         internal void SetButtonsActive(bool active)
         {
-            playButton.gameObject.SetActive(active);
-            leaveButton.gameObject.SetActive(active);
+            playButton.interactable = active;
+            leaveButton.interactable = active;
         }
     }
 }

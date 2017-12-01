@@ -55,11 +55,23 @@ namespace ctac
         private void onMatchmakerStatus(MatchmakerStatusModel model, SocketKey key)
         {
             lobbyModel.lobbyKey = key;
-            view.SetQueueing(model.inQueue);
+            if(model.beingMatched){
+                view.SetButtonsActive(false);
+                view.SetLoadingProgress(0);
+            }else{
+                view.SetQueueing(model.inQueue);
+            }
+        }
+
+        [ListensTo(typeof(CurrentGameSignal))]
+        private void onCurrentGame(GameMetaModel game, SocketKey key)
+        {
+            view.SetButtonsActive(false);
+            view.SetLoadingProgress(0.05f);
         }
 
         [ListensTo(typeof(GameLoggedInSignal))]
-        private void onCurrentGame(LoginStatusModel gameLogin, SocketKey key)
+        private void onGameLoggedIn(LoginStatusModel gameLogin, SocketKey key)
         {
             if (gameLogin.status)
             {
@@ -80,7 +92,6 @@ namespace ctac
 
         public IEnumerator LoadLevel(string level)
         {
-            view.SetButtonsActive(false);
             AsyncOperation async = SceneManager.LoadSceneAsync(level, LoadSceneMode.Single);
 
             while (async.progress < 0.9f)
