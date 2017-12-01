@@ -68,7 +68,7 @@ namespace ctac {
             for(int c = 0; c < opponentCards.Count; c++) 
             {
                 var card = opponentCards[c];
-                if(card.activated) continue;
+                if(card.activated || !card.inHand) continue;
                 var rectTransform = card.rectTransform;
                 var cardCountOffset = 0 - ((opponentCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 180f + cardCountOffset * cardAngleSpread));
@@ -88,7 +88,7 @@ namespace ctac {
             for(int c = 0; c < playerCards.Count; c++) 
             {
                 var card = playerCards[c];
-                if(card.activated) continue;
+                if(card.activated || !card.inHand) continue;
                 var rectTransform = card.rectTransform;
                 var cardCountOffset = 0 - ((playerCards.Count - 1) / 2) + c;
                 rectTransform.rotation = Quaternion.Euler(new Vector3(0, 0, cardCountOffset * cardAngleSpread));
@@ -157,7 +157,6 @@ namespace ctac {
         }
 
 
-
         internal void onCardSelected(CardSelectedModel card, bool needsArrow)
         {
             selectedCard = card;
@@ -223,7 +222,9 @@ namespace ctac {
             private Vector3 playerDest = new Vector3(0, 0, -12f);
             Vector3 dest;
 
-            public void Init() {
+            public void Init() { }
+            public void Update()
+            {
                 dest = playerDest;
                 if (isOpponentCard)
                 {
@@ -235,10 +236,8 @@ namespace ctac {
                 {
                     iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
                 }
+
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
-            }
-            public void Update()
-            {
                 if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
                 {
                     if (!isOpponentCard)
@@ -372,7 +371,6 @@ namespace ctac {
             public CardModel card { get; set; }
 
             private float animTime = 1.5f;
-            private Vector3 opponentDest = new Vector3(0, 150, 50);
 
             private float elapsedTime = 0f;
             Vector3 dest;

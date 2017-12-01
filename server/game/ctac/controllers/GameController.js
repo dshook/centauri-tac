@@ -5,6 +5,7 @@ import AttackPiece from '../actions/AttackPiece.js';
 import ActivateAbility from '../actions/ActivateAbility.js';
 import ActivateCard from '../actions/ActivateCard.js';
 import RotatePiece from '../actions/RotatePiece.js';
+import DrawCard from '../actions/DrawCard.js';
 
 /**
  * Deals with handling turn stuff and processing the action queue. "low level"
@@ -258,7 +259,19 @@ export default class GameController
     if(action.serverOnly) return;
     if(action.private && action.playerId && action.playerId !== player.id) return;
 
+    let finalAction = this.censorInformation(player, action, cancelled);
     const verb = cancelled ? 'actionCancelled:' : 'action:';
-    player.client.send(verb + action.constructor.name, action);
+    player.client.send(verb + action.constructor.name, finalAction);
+  }
+
+  //Remove info from actions before sending it to players
+  censorInformation(player, action, cancelled){
+    if(action instanceof DrawCard && player.id != action.playerId && !action.overdrew){
+      let censoredAction = Object.assign({}, action);
+      censoredAction.cardTemplateId = null;
+      return censoredAction;
+    }
+
+    return action;
   }
 }

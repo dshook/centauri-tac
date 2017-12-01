@@ -90,6 +90,34 @@ namespace ctac
                 return;
             }
 
+            //Choose card interactions
+            if (chooseModel != null && draggedCard.tags.Contains(Constants.chooseCardTag))
+            {
+                chooseModel.chosenTemplateId = draggedCard.cardTemplateId;
+                cardChosen.Dispatch(chooseModel);
+                if (chooseModel.chooseFulfilled)
+                {
+                    activateCard.Dispatch(new ActivateModel()
+                    {
+                        cardActivated = chooseModel.choosingCard,
+                        optionalTarget = null,
+                        position = chooseModel.cardDeployPosition.position,
+                        pivotPosition = null,
+                        chooseCardTemplateId = chooseModel.chosenTemplateId
+                    });
+                    chooseModel = null;
+                }
+                else
+                {
+                    updateChoose.Dispatch(chooseModel);
+                    return;
+                }
+                return;
+            }
+
+            //Everything else below this should rely on the card being in a players hand
+            if(!cardView.card.inHand){ return; }
+
             //Test activation for dragged or clicked on spells
             if (
                 cardView.card.isSpell 
@@ -130,31 +158,6 @@ namespace ctac
                 if ((Time.time - draggedCardTime) < singleClickThreshold) {
                     return;
                 }
-            }
-
-            //Choose card interactions
-            if (chooseModel != null && draggedCard.tags.Contains(Constants.chooseCardTag))
-            {
-                chooseModel.chosenTemplateId = draggedCard.cardTemplateId;
-                cardChosen.Dispatch(chooseModel);
-                if (chooseModel.chooseFulfilled)
-                {
-                    activateCard.Dispatch(new ActivateModel()
-                    {
-                        cardActivated = chooseModel.choosingCard,
-                        optionalTarget = null,
-                        position = chooseModel.cardDeployPosition.position,
-                        pivotPosition = null,
-                        chooseCardTemplateId = chooseModel.chosenTemplateId
-                    });
-                    chooseModel = null;
-                }
-                else
-                {
-                    updateChoose.Dispatch(chooseModel);
-                    return;
-                }
-                return;
             }
 
             pieceSelected.Dispatch(null);

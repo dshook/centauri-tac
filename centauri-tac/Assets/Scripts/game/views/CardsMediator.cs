@@ -86,6 +86,7 @@ namespace ctac
         public void onDestroyCard(int cardId)
         {
             var card = cards.Cards.FirstOrDefault(c => c.id == cardId);
+            card.inHand = false;
             if (card == null)
             {
                 debug.LogError("Could not destroy card from card Id");
@@ -120,6 +121,14 @@ namespace ctac
             });
         }
 
+        [ListensTo(typeof(CardDrawShownSignal))]
+        public void onCardDrawnShown(CardModel card)
+        {
+            card.inHand = true;
+            UpdateCardsPlayableStatus(cards.Cards);
+            view.updateCards(PlayerCards(), OpponentCards());
+        }
+
         [ListensTo(typeof(CardGivenSignal))]
         public void onCardGiven(CardModel card)
         {
@@ -133,14 +142,6 @@ namespace ctac
             });
 
             onCardDrawn(card);
-        }
-
-        [ListensTo(typeof(CardDrawShownSignal))]
-        public void onCardDrawnShown(CardModel card)
-        {
-            cards.Cards.Add(card);
-            UpdateCardsPlayableStatus(cards.Cards);
-            view.updateCards(PlayerCards(), OpponentCards());
         }
 
         [ListensTo(typeof(CardDiscardedSignal))]
@@ -198,13 +199,13 @@ namespace ctac
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
 
-            return cards.Cards.Where(c => c.playerId == players.Me.id).ToList();
+            return cards.Cards.Where(c => c.inHand && c.playerId == players.Me.id).ToList();
         }
         private List<CardModel> OpponentCards()
         {
             if(cards == null || cards.Cards == null) return new List<CardModel>();
 
-            return cards.Cards.Where(c => c.playerId != players.Me.id).ToList();
+            return cards.Cards.Where(c => c.inHand && c.playerId != players.Me.id).ToList();
         }
 
         [ListensTo(typeof(PlayerResourceSetSignal))]

@@ -8,6 +8,7 @@ namespace ctac
         CardModel CreateCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null);
         void SetupGameObject(CardModel model, GameObject cardGameObject);
         void UpdateCardArt(CardModel model);
+        void CopyCard(CardModel src, CardModel dest);
     }
 
     public class CardService : ICardService
@@ -95,6 +96,26 @@ namespace ctac
             {
                 artRenderer.material.SetTexture("_MainTex", null);
             }
+        }
+
+        public void CopyCard(CardModel src, CardModel dest){
+
+            dest.cardTemplateId = src.cardTemplateId;
+            dest.playerId = src.playerId;
+            dest.name = src.name;
+            dest.description = src.description;
+            dest.cost = src.cost;
+            dest.baseCost = src.baseCost;
+            dest.attack = src.attack;
+            dest.health = src.health;
+            dest.movement = src.movement;
+            dest.range = src.range;
+            dest.tags = src.tags;
+            dest.playable = src.playable;
+            dest.buffs = src.buffs;
+            dest.statuses = src.statuses;
+            dest.rarity = src.rarity;
+            dest.race = src.race;
         }
     }
 }

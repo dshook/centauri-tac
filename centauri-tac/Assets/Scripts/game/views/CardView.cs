@@ -153,7 +153,7 @@ namespace ctac {
                     tribeText.text = "";
                 }
             }
-            else
+            else if(card.isSpell)
             {
                 //must be a spell
                 moveRangeUnderline.SetActive(false);
@@ -349,6 +349,8 @@ namespace ctac {
         {
             var cardTop = new Vector2(151.6f, 97.8f);
             var positionDelta = new Vector2(0, -77.1f);
+
+            if(String.IsNullOrEmpty(card.description)) return;
 
             //find description words to make tips on
             var descriptionMatches = Regex.Matches(card.description, @"<b>(.*?)<\/b>", RegexOptions.Multiline);

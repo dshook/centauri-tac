@@ -92,6 +92,9 @@ namespace ctac
         //when the card has been activated and should be going through animation
         public bool activated { get; set; }
 
+        //when the card is in a players hand and is able to be used
+        public bool inHand { get; set; }
+
         //moves the card from being under deck control to in play under card canvas
         public void SetCardInPlay(GameObject contextView)
         {
