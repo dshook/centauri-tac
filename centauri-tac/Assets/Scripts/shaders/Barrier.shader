@@ -37,7 +37,7 @@
 			struct v2f
 			{
 				float2 uv : TEXCOORD0;
-				float3 viewDir : TEXCOORD2;
+				// float3 viewDir : TEXCOORD2;
 				float3 objectPos : TEXCOORD3;
 				float4 vertex : SV_POSITION;
 				float3 normal : NORMAL;
