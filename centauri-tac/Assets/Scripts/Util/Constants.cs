@@ -30,6 +30,11 @@ namespace ctac
         public static Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
         public static float cardCircleRadius = 480f;
 
+        public static Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
+        public static Vector2 topLeftAnchor = new Vector2(0, 1);
+        public static Vector2 topLeftCardOffset = new Vector2(-20f, 0f);
+        public static float cardHoverZPos = 100f;
+
         public static Dictionary<Races, string> RaceIconPaths = new Dictionary<Races, string>()
         {
             { Races.Neutral, "UI/faction icons/faction_Neutral"},

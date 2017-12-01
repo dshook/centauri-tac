@@ -11,7 +11,6 @@ namespace ctac
         [Inject] public SocketKey socketKey { get; set; }
 
         [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
-        [Inject] public DestroyCardSignal destroyCard { get; set; }
 
         [Inject]
         public ActionsProcessedModel processedActions { get; set; }
@@ -25,11 +24,6 @@ namespace ctac
         public override void Execute()
         {
             if (!processedActions.Verify(spawnedPiece.id)) return;
-
-            if (spawnedPiece.cardInstanceId.HasValue)
-            {
-                destroyCard.Dispatch(spawnedPiece.cardInstanceId.Value);
-            }
 
             //search for phantom piece that was created when targeting started to update props from real spawn event
             var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));

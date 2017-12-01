@@ -98,6 +98,8 @@ export default class ActivateCardProcessor
       throw 'Card played must be either a minion or a spell';
     }
 
+    action.spellDamage = this.pieceState.totalSpellDamage(action.playerId);
+
     queue.complete(action);
     this.log.info('player %s played card %s at %s',
       action.playerId, cardPlayed.name, action.position);

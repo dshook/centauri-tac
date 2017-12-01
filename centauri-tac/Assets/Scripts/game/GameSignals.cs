@@ -123,7 +123,8 @@ namespace ctac.signals
     [Singleton] public class CardHoveredSignal : Signal<CardModel> { }
     [Singleton] public class ActivateCardSignal : Signal<ActivateModel> { }
     [Singleton] public class ActionCancelledActivateCardSignal : Signal<ActivateCardModel, SocketKey> { }
-    [Singleton] public class ActionActivateCardSignal : Signal<ActivateCardModel> { }
+    [Singleton] public class ActionActivateCardSignal : Signal<ActivateCardModel, SocketKey> { }
+    [Singleton] public class CardActivatedSignal : Signal<ActivateCardModel> { }
     [Singleton] public class DestroyCardSignal : Signal<int> { }
     [Singleton] public class CardDestroyedSignal : Signal<CardModel> { }
 

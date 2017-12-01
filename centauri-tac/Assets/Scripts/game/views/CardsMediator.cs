@@ -57,10 +57,29 @@ namespace ctac
             view.onCardHovered(card);
         }
 
+        //when playing from the client
         [ListensTo(typeof(ActivateCardSignal))]
         public void onCardActivated(ActivateModel act)
         {
             act.cardActivated.activated = true;
+        }
+
+        //when the server tells us it has been
+        [ListensTo(typeof(CardActivatedSignal))]
+        public void onCardActuallyActivated(ActivateCardModel act)
+        {
+            if(act.card == null) return;
+
+            if(act.card.playerId == players.Me.id){
+                cardDestroyed.Dispatch(act.card);
+            }else{
+                //spellDamage = act.spellDamage
+                animationQueue.Add(new CardsView.ShowEnemyCardPlayedAnim()
+                {
+                    card = act.card,
+                    destroyCard = destroyCard,
+                });
+            }
         }
 
         [ListensTo(typeof(DestroyCardSignal))]
@@ -84,7 +103,7 @@ namespace ctac
         {
             cards.Cards.Remove(card);
             Destroy(card.gameObject);
-            view.init(PlayerCards(), OpponentCards());
+            view.updateCards(PlayerCards(), OpponentCards());
         }
 
         [ListensTo(typeof(CardDrawnSignal))]
@@ -121,7 +140,7 @@ namespace ctac
         {
             cards.Cards.Add(card);
             UpdateCardsPlayableStatus(cards.Cards);
-            view.init(PlayerCards(), OpponentCards());
+            view.updateCards(PlayerCards(), OpponentCards());
         }
 
         [ListensTo(typeof(CardDiscardedSignal))]
@@ -160,7 +179,7 @@ namespace ctac
         [ListensTo(typeof(TurnEndedSignal))]
         public void onTurnEnded(GameTurnModel turns)
         {
-            view.init(PlayerCards(), OpponentCards());
+            view.updateCards(PlayerCards(), OpponentCards());
             UpdateCardsPlayableStatus(cards.Cards);
         }
 

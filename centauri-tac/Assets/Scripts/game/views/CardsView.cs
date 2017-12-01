@@ -38,10 +38,15 @@ namespace ctac {
 
         public void init(List<CardModel> playerCards, List<CardModel> opponentCards)
         {
-            this.playerCards = playerCards;
-            this.opponentCards = opponentCards;
+            updateCards(playerCards, opponentCards);
             cardCanvasHelper = GameObject.Find(Constants.cardCanvas).GetComponent<CardCanvasHelperView>();
             canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
+        }
+
+        public void updateCards(List<CardModel> playerCards, List<CardModel> opponentCards)
+        {
+            this.playerCards = playerCards;
+            this.opponentCards = opponentCards;
         }
 
         void Update()
@@ -187,10 +192,11 @@ namespace ctac {
             public CardDestroyedSignal cardDestroyed { get; set; }
             public CardModel card { get; set; }
 
-            public void Init() { }
+            public void Init() {
+                iTweenExtensions.ScaleTo(card.gameObject, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
+            }
             public void Update()
             {
-                iTweenExtensions.ScaleTo(card.gameObject, Vector3.zero, 0.5f, 0, EaseType.easeInCubic);
                 if (card.gameObject.transform.localScale.x < 0.01f)
                 {
                     card.gameObject.transform.localScale = Vector3.zero;
@@ -215,11 +221,10 @@ namespace ctac {
             private float animTime = 0.2f;
             private Vector3 opponentDest = new Vector3(0, 250, -12f);
             private Vector3 playerDest = new Vector3(0, 0, -12f);
+            Vector3 dest;
 
-            public void Init() {}
-            public void Update()
-            {
-                Vector3 dest = playerDest;
+            public void Init() {
+                dest = playerDest;
                 if (isOpponentCard)
                 {
                     animTime = 0.3f;
@@ -231,6 +236,9 @@ namespace ctac {
                     iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
                 }
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+            }
+            public void Update()
+            {
                 if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
                 {
                     if (!isOpponentCard)
@@ -298,19 +306,20 @@ namespace ctac {
 
             private float elapsedTime = 0f;
 
-            public void Init() { }
-            public void Update()
-            {
-                elapsedTime += Time.deltaTime;
+            public void Init() { 
                 Vector3 dest = Vector3.zero;
                 if (isOpponentCard)
                 {
                     animTime = 0.3f;
                     dest = opponentDest;
                 }
-                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
 
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+            }
+            public void Update()
+            {
+                elapsedTime += Time.deltaTime;
                 if (elapsedTime > animTime)
                 {
                     Complete = true;
@@ -333,11 +342,13 @@ namespace ctac {
             private float animTime = 0.5f;
             private Vector3 dest = new Vector3(250, 0, 0);
 
-            public void Init() { }
-            public void Update()
-            {
+            public void Init() 
+            { 
                 iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, animTime, 0, EaseType.easeOutCubic);
                 iTweenExtensions.MoveToLocal(card.gameObject, dest, animTime, 0, EaseType.easeOutCubic);
+            }
+            public void Update()
+            {
                 if (Vector3.Distance(card.gameObject.transform.localPosition, dest) < 0.08f)
                 {
                     card.gameObject.transform.localPosition = dest;
@@ -347,6 +358,46 @@ namespace ctac {
                         cardDestroyed = cardDestroyed
                     });
                     Complete = true;
+                }
+            }
+        }
+
+        public class ShowEnemyCardPlayedAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return true; } }
+            public float? postDelay { get { return null; } }
+
+            public DestroyCardSignal destroyCard { get; set; }
+            public CardModel card { get; set; }
+
+            private float animTime = 1.5f;
+            private Vector3 opponentDest = new Vector3(0, 150, 50);
+
+            private float elapsedTime = 0f;
+            Vector3 dest;
+
+            public void Init() { 
+
+                iTweenExtensions.RotateTo(card.gameObject, Vector3.zero, 0.5f, 0, EaseType.easeOutCubic);
+                var canvas = GameObject.Find("Canvas").gameObject.GetComponent<Canvas>();
+
+                card.cardView.rectTransform.SetAnchor(Constants.topLeftAnchor);
+                var hWidth = card.cardView.rectTransform.sizeDelta;
+                var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (Constants.topLeftCardOffset * canvas.scaleFactor);
+
+                dest = new Vector3(position.x, position.y, Constants.cardHoverZPos);
+            }
+            public void Update()
+            {
+                elapsedTime += Time.deltaTime;
+
+                card.cardView.rectTransform.anchoredPosition3D = iTween.Vector3Update(card.cardView.rectTransform.anchoredPosition3D, dest, 3f);
+
+                if (elapsedTime > animTime)
+                {
+                    Complete = true;
+                    destroyCard.Dispatch(card.id);
                 }
             }
         }

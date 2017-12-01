@@ -6,9 +6,6 @@ namespace ctac
     public class ActionPlaySpellCommand : Command
     {
         [Inject]
-        public DestroyCardSignal destroyCard { get; set; }
-
-        [Inject]
         public PlaySpellModel cardActivated { get; set; }
 
         [Inject]
@@ -21,7 +18,6 @@ namespace ctac
         {
             if(!processedActions.Verify(cardActivated.id)) return;
 
-            destroyCard.Dispatch(cardActivated.cardInstanceId);
             spellPlayed.Dispatch(new SpellPlayedModel() { playSpellAction = cardActivated });
         }
     }

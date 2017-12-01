@@ -16,7 +16,6 @@ namespace ctac
         float timer = 0f;
         bool cardVisible = false;
         bool active = true;
-        float zPos = 100f;
         float miniCardzPos = -5f;
 
         private string hoverName = "Hover Card";
@@ -25,9 +24,6 @@ namespace ctac
 
         private Vector2 cardAnchor = new Vector2(0.5f, 0);
         private Vector2 miniCardAnchor = new Vector2(1f, 0.5f);
-        //private Vector2 centerAnchor = new Vector2(0.5f, 0.5f);
-        private Vector2 topLeftAnchor = new Vector2(0, 1);
-        private Vector2 topLeftOffset = new Vector2(-20f, 0f);
 
         internal void init()
         {
@@ -112,7 +108,7 @@ namespace ctac
             hoverCardView.card.gameObject = hoverCardView.gameObject;
 
             hoverCardView.rectTransform.SetAnchor(cardAnchor);
-            var displayPosition = new Vector3(position.x, 90f, zPos);
+            var displayPosition = new Vector3(position.x, 90f, Constants.cardHoverZPos);
             showCard(displayPosition, spellDamage);
         }
 
@@ -136,11 +132,11 @@ namespace ctac
 
             hoverCardView.UpdateBuffsDisplay();
 
-            hoverCardView.rectTransform.SetAnchor(topLeftAnchor);
+            hoverCardView.rectTransform.SetAnchor(Constants.topLeftAnchor);
             var hWidth = hoverCardView.rectTransform.sizeDelta;
-            var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (topLeftOffset * canvas.scaleFactor);
+            var position = new Vector2(hWidth.x / 2, -hWidth.y / 2) + (Constants.topLeftCardOffset * canvas.scaleFactor);
 
-            showCard(new Vector3(position.x, position.y, zPos), spellDamage);
+            showCard(new Vector3(position.x, position.y, Constants.cardHoverZPos), spellDamage);
         }
 
         internal bool onScreen(Vector2 position, Vector2 hWidth)
