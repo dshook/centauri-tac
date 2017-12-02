@@ -48,16 +48,29 @@ namespace ctac
 
         void UpdateZoom()
         {
-            if (zoomEnabled)
+            if (!zoomEnabled) { return; }
+
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
-                {
-                    ZoomInOut(true);
-                }
-                if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
-                {
-                    ZoomInOut(false);
-                }
+                ZoomInOut(true);
+            }
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                ZoomInOut(false);
+            }
+        }
+        private float camZoomMax = 1.7f;
+        private float camZoomMin = 0.6f;
+        private float zoomSpeed = 0.10f;
+        private void ZoomInOut(bool zoomIn)
+        {
+            if (zoomIn)
+            {
+                zoomLevel = Math.Max(camZoomMin, zoomLevel - zoomSpeed);
+            }
+            else
+            {
+                zoomLevel = Math.Min(camZoomMax, zoomLevel + zoomSpeed);
             }
         }
 
@@ -89,7 +102,7 @@ namespace ctac
 
         Vector3 rotateWorldPosition = Vector3.zero;
         static readonly float[] snapPositions = new float[]{45f, 135f, 225f, 315f};
-        float snapThreshold = 5f;
+        float snapThreshold = 8f;
 
         //Returns whether or not the camera snapped
         private bool RotateCamera(float amount) 
@@ -120,21 +133,6 @@ namespace ctac
             return !amtToSnap.HasValue;
         }
 
-        private float camZoomMax = 1.7f;
-        private float camZoomMin = 0.6f;
-        private float zoomSpeed = 0.10f;
-        private void ZoomInOut(bool zoomIn)
-        {
-            if (zoomIn)
-            {
-                zoomLevel = Math.Max(camZoomMin, zoomLevel - zoomSpeed);
-            }
-            else
-            {
-                zoomLevel = Math.Min(camZoomMax, zoomLevel + zoomSpeed);
-            }
-        }
-
         private void UpdateDragging()
         {
             if (!dragEnabled)
@@ -143,7 +141,7 @@ namespace ctac
                 return;
             }
             //When moving the view up or down we actually need to move the camera position in both x and z so it stays at the same height
-            //include the fudge factor to get the mouse panning right. There's probably a rotation to solve this properly
+            //include the fudge factor to get the mouse dragging right. There's probably a rotation to solve this properly
             upDownMoveDirection = cam.transform.forward.SetY(0).normalized * (1.2f + Math.Abs(cam.transform.forward.y));
             rightLeftMoveDirection = Quaternion.Euler(0, 90f, 0) * upDownMoveDirection;
 
@@ -167,11 +165,14 @@ namespace ctac
             {
                 var mousePos = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
                 mouseDiff = mousePos - dragOrigin;
-                cam.transform.position -= fixCameraMoveVector(mouseDiff);
+                //Convert a y movement in the cameras position to x & z movements
+                //This prevents the camera from getting too high and going outside of the bounds
+                cam.transform.position -= (mouseDiff.y * upDownMoveDirection) + mouseDiff.SetY(0);
             }
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
+                //Check to make sure we didn't click on a card
                 if (raycastModel.cardCanvasHit == null)
                 {
                     dragOrigin = cam.ScreenToWorldPoint(CrossPlatformInputManager.mousePosition);
@@ -191,13 +192,6 @@ namespace ctac
             }
         }
 
-        //Convert a y movement in the cameras position to x & z movements
-        //This prevents the camera from getting too high and going outside of the bounds
-        Vector3 fixCameraMoveVector(Vector3 vec)
-        {
-            return (vec.y * upDownMoveDirection) + vec.SetY(0);
-        }
-
         //move the camera so it's focused on a world point
         internal void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
         {
@@ -207,8 +201,6 @@ namespace ctac
 
             //TODO: probably needs to be fixed for the y height?
             var finalPosition = cam.transform.position + destPosition - currentWorldPos;
-
-            //Camera.main.transform.position += finalPosition;
 
             iTweenExtensions.MoveTo(cam.gameObject, finalPosition, transitionTime, 0f);
         }
