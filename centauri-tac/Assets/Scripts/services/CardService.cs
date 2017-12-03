@@ -1,4 +1,5 @@
 using ctac.util;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ctac
@@ -112,7 +113,7 @@ namespace ctac
             dest.range = src.range;
             dest.tags = src.tags;
             dest.playable = src.playable;
-            dest.buffs = src.buffs;
+            dest.buffs = src.buffs ?? new List<CardBuffModel>();
             dest.statuses = src.statuses;
             dest.rarity = src.rarity;
             dest.race = src.race;
