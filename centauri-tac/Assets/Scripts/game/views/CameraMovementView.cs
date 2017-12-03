@@ -19,7 +19,7 @@ namespace ctac
         bool dragging = false;
 
         float zoomLevel = 1f;
-        const float camPanSpeed = 0.2f;
+        const float camPanSpeed = 2.5f;
         const float camPanThreshold = 0.2f;
 
         Vector3 upDownMoveDirection = new Vector3(1, 0, 1);
@@ -148,13 +148,13 @@ namespace ctac
 
             //Arrows
             //up
-            if (CrossPlatformInputManager.GetAxis("Vertical")   >  camPanThreshold) { cam.transform.position += upDownMoveDirection * camPanSpeed; }
+            if (CrossPlatformInputManager.GetAxis("Vertical")   >  camPanThreshold) { cam.transform.position += upDownMoveDirection * camPanSpeed * Time.deltaTime; }
             //right
-            if (CrossPlatformInputManager.GetAxis("Horizontal") >  camPanThreshold) { cam.transform.position += rightLeftMoveDirection * camPanSpeed; }
+            if (CrossPlatformInputManager.GetAxis("Horizontal") >  camPanThreshold) { cam.transform.position += rightLeftMoveDirection * camPanSpeed * Time.deltaTime; }
             //down
-            if (CrossPlatformInputManager.GetAxis("Vertical")   < -camPanThreshold) { cam.transform.position -= upDownMoveDirection * camPanSpeed; }
+            if (CrossPlatformInputManager.GetAxis("Vertical")   < -camPanThreshold) { cam.transform.position -= upDownMoveDirection * camPanSpeed * Time.deltaTime; }
             //left
-            if (CrossPlatformInputManager.GetAxis("Horizontal") < -camPanThreshold) { cam.transform.position -= rightLeftMoveDirection * camPanSpeed; }
+            if (CrossPlatformInputManager.GetAxis("Horizontal") < -camPanThreshold) { cam.transform.position -= rightLeftMoveDirection * camPanSpeed * Time.deltaTime; }
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
