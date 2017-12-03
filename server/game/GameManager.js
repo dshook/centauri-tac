@@ -44,7 +44,7 @@ export default class GameManager
       return null;
     }
 
-    this.log.info('Created game %s %s', game.id, game.name);
+    this.log.info('Created game %s %s, expectedPlayers %j', game.id, game.name, expectedPlayers);
 
     // look up the players decks they joined with to share with the game
     let deckInfo = await Promise.all(expectedPlayers.map(
@@ -60,6 +60,8 @@ export default class GameManager
         return deck[0];
       }
     ));
+
+    this.log.info('Got Deck info for expected players %j', deckInfo);
 
     // instantiates game on the game host
     await this.emitter.emit('game', game);

@@ -2,6 +2,8 @@ version: '2.1'
 services:
   db:
     image: postgres:9.6.3-alpine
+    volumes:
+      - "~/pgdata:/var/lib/postgresql/data/pgdata"
     environment:
       POSTGRES_PASSWORD: example
 
