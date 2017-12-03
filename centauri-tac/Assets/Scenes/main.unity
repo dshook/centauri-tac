@@ -1935,7 +1935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaveButton: {fileID: 1660314634}
   playButton: {fileID: 263392243}
-  deckHolder: {fileID: 0}
+  deckHolder: {fileID: 1943814284}
   queueText: {fileID: 469571242}
 --- !u!114 &210139816
 MonoBehaviour:
@@ -20518,9 +20518,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.04090908
     y: 0
-    width: 1
+    width: 0.91818184
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -21895,9 +21895,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.04090908
     y: 0
-    width: 1
+    width: 0.91818184
     height: 1
   near clip plane: 90
   far clip plane: 1600

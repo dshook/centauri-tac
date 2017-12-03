@@ -88,6 +88,9 @@ namespace ctac
         public void onSelectDeck(DeckModel deck)
         {
             selectedDeck = deck;
+            if(deck != null){
+                view.playButton.interactable = true;
+            }
         }
 
         public IEnumerator LoadLevel(string level)

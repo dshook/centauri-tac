@@ -17,6 +17,9 @@ namespace ctac
         internal void init()
         {
             playText = playButton.GetComponentInChildren<TextMeshProUGUI>();
+
+            //disable till deck is selected
+            playButton.interactable = false;
         }
 
         float accum = 0;
@@ -47,11 +50,13 @@ namespace ctac
             {
                 setMessage("Queuing\n");
                 playText.text = "Stop";
+                deckHolder.SetActive(false);
             }
             else
             {
                 setMessage("");
                 playText.text = "Play";
+                deckHolder.SetActive(true);
             }
         }
 
