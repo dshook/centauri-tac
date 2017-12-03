@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 108,
+	"name": "Cleaving Cavalier",
+	"description": "<b>Cleave</b>",
+	"cost": 2,
+	"attack": 2,
+	"health": 3,
+	"movement": 3,
+  "statuses": 4096,
+	"tags": ["Minion"]
+}

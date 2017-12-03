@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: c236bcb77d716e64cae4b61d35a872f3
+timeCreated: 1512320832
+licenseType: Free
+NativeFormatImporter:
+  mainObjectFileID: 11400000
+  userData: "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"100\" height=\"100\"
+    viewBox=\"0 0 100 100\">\r\n  <title>icon</title>\r\n  <g id=\"bf4f47b5-97f2-412e-b301-17cad67db35e\"
+    data-name=\"cleave\">\r\n    <ellipse cx=\"41.5\" cy=\"27\" rx=\"7.5\" ry=\"19\"
+    style=\"fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width: 3.5px\"/>\r\n
+    \   <ellipse cx=\"78\" cy=\"58.5\" rx=\"7.5\" ry=\"19\" style=\"fill: #fff;stroke:
+    #000;stroke-miterlimit: 10;stroke-width: 3.5px\"/>\r\n    <ellipse cx=\"60\" cy=\"40.5\"
+    rx=\"7.5\" ry=\"19\" style=\"fill: #fff;stroke: #000;stroke-miterlimit: 10;stroke-width:
+    4px\"/>\r\n    <g>\r\n      <line x1=\"25.5\" y1=\"80.5\" x2=\"60.7\" y2=\"40.9\"
+    style=\"fill: none;stroke: #000;stroke-miterlimit: 10;stroke-width: 4px\"/>\r\n
+    \     <path d=\"M65.5,35.5A36.3,36.3,0,0,0,63,47l-2.9-5.3-5.6-2.2A36.2,36.2,0,0,0,65.5,35.5Z\"/>\r\n
+    \   </g>\r\n    <g>\r\n      <path d=\"M25.5,80.5C36,61.3,40.5,37,42.1,25.2\"
+    style=\"fill: none;stroke: #000;stroke-miterlimit: 10;stroke-width: 4px\"/>\r\n
+    \     <path d=\"M43,18a36.3,36.3,0,0,0,4.4,10.9L42,26.1l-5.9,1.4A36.2,36.2,0,0,0,43,18Z\"/>\r\n
+    \   </g>\r\n    <g>\r\n      <path d=\"M26,80C44.5,68.6,66.1,62,77,59.2\" style=\"fill:
+    none;stroke: #000;stroke-miterlimit: 10;stroke-width: 4px\"/>\r\n      <path d=\"M84,57.5a36.3,36.3,0,0,0-8.6,8l.7-6-3.4-5.1A36.2,36.2,0,0,0,84,57.5Z\"/>\r\n
+    \   </g>\r\n  </g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 
