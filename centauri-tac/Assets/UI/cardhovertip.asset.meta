@@ -3,19 +3,20 @@ guid: 5fb5028d0f1144546bc62aeff7897264
 timeCreated: 1489022677
 licenseType: Free
 NativeFormatImporter:
-  userData: "<svg id=\"Layer_1\" data-name=\"Layer 1\" xmlns=\"http://www.w3.org/2000/svg\"
-    width=\"393.39\" height=\"347.01\" viewBox=\"0 0 393.39 347.01\">\r\n  <defs>\r\n
-    \   <style>\r\n      .cls-1, .cls-2 {\r\n        fill: none;\r\n        stroke-miterlimit:
-    10;\r\n      }\r\n\r\n      .cls-1 {\r\n        stroke: #000;\r\n        stroke-width:
-    6px;\r\n      }\r\n\r\n      .cls-2 {\r\n        stroke: #fff;\r\n        stroke-width:
-    3px;\r\n      }\r\n\r\n      .cls-3 {\r\n        fill: #999;\r\n        opacity:
-    0.7;\r\n      }\r\n    </style>\r\n  </defs>\r\n  <title>cardhovertip</title>\r\n
-    \ <rect class=\"cls-1\" x=\"106\" y=\"79.43\" width=\"341.01\" height=\"341.01\"
-    transform=\"translate(496.39 423.44) rotate(-180)\"/>\r\n  <rect class=\"cls-2\"
-    x=\"108.43\" y=\"81.86\" width=\"336.15\" height=\"336.15\" transform=\"translate(496.39
-    423.44) rotate(-180)\"/>\r\n  <rect class=\"cls-3\" x=\"109.85\" y=\"83.28\" width=\"333.3\"
-    height=\"333.3\" transform=\"translate(496.39 423.44) rotate(-180)\"/>\r\n  <path
-    d=\"M84.16,133.88c-0.61,24.13,8.39,38,6.56,75.68-0.05,7-8.54,24.25-34.11,39.25,25.58,10,34.08,32.31,34.13,39.29,1.82,37.64-7.16,51.58-6.55,75.72s18.92,59.62,18.92,59.62V76.52S84.77,109.75,84.16,133.88Z\"
-    transform=\"translate(-56.62 -76.43)\"/>\r\n</svg>\r\n"
+  mainObjectFileID: -1
+  userData: "<svg id=\"d9387eee-8483-4276-ace3-9e8575d7f58b\" data-name=\"Layer 1\"
+    xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"
+    width=\"402.7\" height=\"356.3\" viewBox=\"0 0 402.7 356.3\">\r\n  <defs>\r\n
+    \   <linearGradient id=\"9cee159a-d16f-443d-a3d6-4b91abe172e7\" x1=\"276.5\" y1=\"81.81\"
+    x2=\"276.5\" y2=\"418.06\" gradientTransform=\"translate(553 499.9) rotate(180)\"
+    gradientUnits=\"userSpaceOnUse\">\r\n      <stop offset=\"0\" stop-color=\"#ddbe98\"/>\r\n
+    \     <stop offset=\"1\" stop-color=\"#ab9174\"/>\r\n    </linearGradient>\r\n
+    \ </defs>\r\n  <title>cardhovertip</title>\r\n  <rect x=\"104.4\" y=\"77.8\" width=\"344.3\"
+    height=\"344.25\" transform=\"translate(501.1 428.1) rotate(-180)\" style=\"fill:
+    none;stroke: #000;stroke-miterlimit: 10;stroke-width: 12px\"/>\r\n  <rect x=\"108.4\"
+    y=\"81.8\" width=\"336.3\" height=\"336.25\" transform=\"translate(501.1 428.1)
+    rotate(-180)\" style=\"fill: url(#9cee159a-d16f-443d-a3d6-4b91abe172e7)\"/>\r\n
+    \ <path d=\"M79.5,130.7c-.6,24.8,8.4,39,6.6,77.7-.1,7.2-8.5,24.9-34.1,40.3,25.6,10.3,34.1,33.2,34.1,40.3,1.8,38.6-7.2,52.9-6.5,77.7s18.9,61.2,18.9,61.2V71.8S80.1,105.9,79.5,130.7Z\"
+    transform=\"translate(-51.9 -71.8)\"/>\r\n</svg>\r\n"
   assetBundleName: 
   assetBundleVariant: 

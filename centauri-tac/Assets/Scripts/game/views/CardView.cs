@@ -3,9 +3,9 @@ using strange.extensions.mediation.impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace ctac {
     public class CardView : View
@@ -310,115 +310,6 @@ namespace ctac {
             }
 
             buffBg.transform.localScale = buffBg.transform.localScale.SetY(buffTextHeight * 2 + bottomPadding);
-        }
-
-        public void DisableHoverTips()
-        {
-            if(displayWrapper == null) return; //can't disable before init
-
-            Transform hoverChild = displayWrapper.transform.Find("HoverTip");
-            while (hoverChild != null)
-            {
-                DestroyImmediate(hoverChild.gameObject);
-                hoverChild = displayWrapper.transform.Find("HoverTip");
-            }
-        }
-
-        public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
-        {
-            {"Ability",            "Active ability to use with energy cost in parenthesis" },
-            {"Synthesis",          "Does something when played" },
-            {"Demise",             "Does something when the minion dies" },
-            {"Volatile",           "Does something when damaged" },
-            {"Spell Damage",       "Spells do one more damage for each spell damage point" },
-
-            {"Airdrop",            "Minion can spawn in a larger area around your hero" },
-            {"Silence",            "Negates a minions card text, abilities, and status effects" },
-            {"Holtz Shield",       "Absorbes all damage a minion takes on the first hit" },
-            {"Paralyze",           "Minion cannot move or attack" },
-            {"Taunt",              "Minions entering the area of influence must attack this minion." },
-            {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
-            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers" },
-            {"Root",               "Cannot move" },
-            {"Charge",             "Minion can move and attack immediately" },
-            {"Dyad Strike",        "Minion can attack twice per turn" },
-            {"Flying",             "Minion can fly up or down any height and over obstacles" },
-        };
-
-        public void EnableHoverTips(IResourceLoaderService loader)
-        {
-            var cardTop = new Vector2(151.6f, 97.8f);
-            var positionDelta = new Vector2(0, -77.1f);
-
-            if(String.IsNullOrEmpty(card.description)) return;
-
-            //find description words to make tips on
-            var descriptionMatches = Regex.Matches(card.description, @"<b>(.*?)<\/b>", RegexOptions.Multiline);
-            var descriptionWords = new List<string>();
-            foreach (Match match in descriptionMatches)
-            {
-                //second group should be the real match
-                if (match.Groups.Count > 1)
-                {
-                    var descripWord = match.Groups[1].Value;
-                    var parenIndex = descripWord.IndexOf('(');
-                    //if the word has parens in it like Ability(1) does, strip off everything from the paren on
-                    if (parenIndex >= 0)
-                    {
-                        descripWord = descripWord.Substring(0, parenIndex);
-                    }
-                    descriptionWords.Add(descripWord);
-                }
-            }
-
-            //if there's a linked piece with status effects, add those in too
-            if (card.linkedPiece != null)
-            {
-                var statuses = card.linkedPiece.statuses;
-                if (FlagsHelper.IsSet(statuses, Statuses.Silence)) { descriptionWords.Add("Silence"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Shield)) { descriptionWords.Add("Holtz Shield"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Paralyze)) { descriptionWords.Add("Paralyze"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Taunt)) { descriptionWords.Add("Taunt"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Cloak)) { descriptionWords.Add("Cloak"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.TechResist)) { descriptionWords.Add("Tech Resist"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Root)) { descriptionWords.Add("Root"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Charge)) { descriptionWords.Add("Charge"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.DyadStrike)) { descriptionWords.Add("Dyad Strike"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Flying)) { descriptionWords.Add("Flying"); }
-            }
-
-            descriptionWords = descriptionWords.Distinct().ToList();
-
-            if(descriptionWords.Count == 0) return;
-
-            var hoverTipPrefab = loader.Load<GameObject>("HoverTip");
-
-            int tips = 0;
-            foreach (var descriptionWord in descriptionWords)
-            {
-                if (!keywordDescrips.ContainsKey(descriptionWord)) { continue; }
-
-                var description = keywordDescrips[descriptionWord];
-
-                var newHoverTip = Instantiate(hoverTipPrefab);
-                newHoverTip.transform.SetParent(displayWrapper.transform, false);
-                newHoverTip.name = "HoverTip";
-
-                //move the new text down (by subtracting) since coords are based on middle of the card
-                newHoverTip.transform.localPosition = cardTop + (tips * positionDelta);
-
-                var title = newHoverTip.transform.Find("Title").gameObject;
-                var descrip = newHoverTip.transform.Find("Descrip").gameObject;
-
-                var titleText = title.GetComponent<TextMeshPro>();
-                var descripText = descrip.GetComponent<TextMeshPro>();
-
-                titleText.text = descriptionWord;
-                descripText.text = description;
-
-                tips++;
-            }
-
         }
 
         public class UpdateTextAnim : IAnimate

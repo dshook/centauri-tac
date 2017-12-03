@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public AddCardToDeckSignal addCardToDeck { get; set; }
         [Inject] public RemoveCardFromDeckSignal removeCardFromDeck { get; set; }
         [Inject] public SelectDeckSignal selectDeck { get; set; }
+        [Inject] public CardHoverTipSignal cardHoverTipSignal { get; set; }
 
         [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
@@ -87,7 +88,7 @@ namespace ctac
                     {
                         lastHoveredCard = cardView;
                         //cardHovered.Dispatch(cardView.card);
-                        cardView.EnableHoverTips(loader);
+                        cardHoverTipSignal.Dispatch(cardView);
                     }
                 }
                 if (hoveredObject.CompareTag("MiniCard"))
@@ -104,7 +105,7 @@ namespace ctac
             {
                 if (lastHoveredCard != null)
                 {
-                    lastHoveredCard.DisableHoverTips();
+                    cardHoverTipSignal.Dispatch(null);
                     lastHoveredCard = null;
                     cardHovered.Dispatch(null);
                 }

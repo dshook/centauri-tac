@@ -1,6 +1,7 @@
 using UnityEngine;
 using strange.extensions.mediation.impl;
 using strange.extensions.signal.impl;
+using ctac.signals;
 
 namespace ctac
 {
@@ -10,6 +11,7 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
+        [Inject] public CardHoverTipSignal cardHoverTipSignal { get; set; }
 
         public GameObject cardCanvas = null;
 
@@ -87,7 +89,7 @@ namespace ctac
             hideCard();
             timer = 0f;
             cardVisible = true;
-            hoverCardView.EnableHoverTips(loader);
+            cardHoverTipSignal.Dispatch(hoverCardView);
         }
 
         internal void hideCard()
@@ -96,7 +98,7 @@ namespace ctac
             timer = 0f;
             //hoverCardView.card.linkedPiece = null;
             hoverCardView.gameObject.SetActive(false);
-            hoverCardView.DisableHoverTips();
+            cardHoverTipSignal.Dispatch(null);
         }
 
         internal void showCardFromHand(CardModel cardToShow, Vector3 position, int spellDamage)
