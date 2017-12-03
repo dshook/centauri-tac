@@ -104,6 +104,15 @@ namespace ctac
             );
             var card = cards.Card(spellPlayed.playSpellAction.cardInstanceId);
             currentItem.triggeringCard = CopyCard(card);
+
+            if(spellPlayed.playSpellAction.targetPieceId.HasValue){
+                var targetPiece = pieces.Piece(spellPlayed.playSpellAction.targetPieceId.Value);
+                currentItem.pieceChanges.Add(new GenericPieceChange()
+                {
+                    type = HistoryPieceChangeType.Spawner,
+                    originalPiece = CopyPiece(targetPiece),
+                });
+            }
         }
 
         [ListensTo(typeof(TurnEndedSignal))]
