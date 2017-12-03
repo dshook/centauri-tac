@@ -111,7 +111,7 @@ namespace ctac
             dest.health = src.health;
             dest.movement = src.movement;
             dest.range = src.range;
-            dest.tags = src.tags;
+            dest.tags = src.tags ?? new List<string>();
             dest.playable = src.playable;
             dest.buffs = src.buffs ?? new List<CardBuffModel>();
             dest.statuses = src.statuses;
