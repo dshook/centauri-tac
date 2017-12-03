@@ -46,34 +46,6 @@ namespace ctac
             UpdateDragging();
         }
 
-        void UpdateZoom()
-        {
-            if (!zoomEnabled) { return; }
-
-            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
-            {
-                ZoomInOut(true);
-            }
-            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
-            {
-                ZoomInOut(false);
-            }
-        }
-        private float camZoomMax = 1.7f;
-        private float camZoomMin = 0.6f;
-        private float zoomSpeed = 0.10f;
-        private void ZoomInOut(bool zoomIn)
-        {
-            if (zoomIn)
-            {
-                zoomLevel = Math.Max(camZoomMin, zoomLevel - zoomSpeed);
-            }
-            else
-            {
-                zoomLevel = Math.Min(camZoomMax, zoomLevel + zoomSpeed);
-            }
-        }
-
         void UpdateRotation()
         {
             var updateRotateOrigin = true;
@@ -105,7 +77,7 @@ namespace ctac
         float snapThreshold = 8f;
 
         //Returns whether or not the camera snapped
-        private bool RotateCamera(float amount) 
+        bool RotateCamera(float amount) 
         {
             //find the point the camera is looking at on an imaginary plane at 0f height
             LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
@@ -133,7 +105,36 @@ namespace ctac
             return !amtToSnap.HasValue;
         }
 
-        private void UpdateDragging()
+        void UpdateZoom()
+        {
+            if (!zoomEnabled) { return; }
+
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                ZoomInOut(true);
+            }
+            if (CrossPlatformInputManager.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                ZoomInOut(false);
+            }
+        }
+
+        float camZoomMax = 1.7f;
+        float camZoomMin = 0.6f;
+        float zoomSpeed = 0.10f;
+        void ZoomInOut(bool zoomIn)
+        {
+            if (zoomIn)
+            {
+                zoomLevel = Math.Max(camZoomMin, zoomLevel - zoomSpeed);
+            }
+            else
+            {
+                zoomLevel = Math.Min(camZoomMax, zoomLevel + zoomSpeed);
+            }
+        }
+
+        void UpdateDragging()
         {
             if (!dragEnabled)
             {
@@ -193,7 +194,7 @@ namespace ctac
         }
 
         //move the camera so it's focused on a world point
-        internal void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
+        public void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
         {
             Vector3 currentWorldPos;
             var destPosition = new Vector3(tilePos.x, 0, tilePos.y); //convert tile coords to full vec3
@@ -207,7 +208,7 @@ namespace ctac
 
         //Get the intersection between a line and a plane. 
         //If the line and plane are not parallel, the function outputs true, otherwise false.
-        public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)
+        public bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)
         {
 
             float length;
@@ -242,7 +243,7 @@ namespace ctac
         }
 
         //create a vector of direction "vector" with length "size"
-        public static Vector3 SetVectorLength(Vector3 vector, float size)
+        public Vector3 SetVectorLength(Vector3 vector, float size)
         {
             //normalize the vector
             Vector3 vectorNormalized = Vector3.Normalize(vector);
@@ -251,7 +252,7 @@ namespace ctac
             return vectorNormalized *= size;
         }
 
-        private float CameraOrthoSize()
+        float CameraOrthoSize()
         {
             //Adjust camera zoom based on screen size and zoom level
             return (Screen.height / 96.0f / 2.0f) * zoomLevel;
