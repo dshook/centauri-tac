@@ -56,7 +56,6 @@ namespace ctac
                     buffs = new List<CardBuffModel>()
                 };
             }
-            cards.Cards.Add(newCardModel);
 
             if (!decks.Cards.Any(x => x.playerId == cardDraw.playerId))
             {
@@ -72,6 +71,7 @@ namespace ctac
             cardService.SetupGameObject(newCardModel, cardGameObject);
             newCardModel.SetCardInPlay(contextView);
 
+            cards.Cards.Add(newCardModel);
             cardDrawn.Dispatch(newCardModel);
 
             debug.Log(string.Format("Player {0} drew card {1} {2}", cardDraw.playerId, cardDraw.cardId, newCardModel.name), socketKey);

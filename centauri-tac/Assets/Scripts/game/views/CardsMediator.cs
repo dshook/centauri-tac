@@ -72,7 +72,7 @@ namespace ctac
             if(act.card == null) return;
 
             if(act.card.playerId == players.Me.id){
-                cardDestroyed.Dispatch(act.card);
+                destroyCard.Dispatch(act.card.id);
             }else{
                 //enemy cards activated we have to update the cards to show the real info 
                 //since this is the first time we're learning of it
