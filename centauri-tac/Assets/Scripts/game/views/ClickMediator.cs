@@ -302,6 +302,7 @@ namespace ctac
                     && FlagsHelper.IsSet(gameTile.highlightStatus, TileHighlightStatus.MoveRange)
                     && selectedPiece != null
                     && selectedPiece.canMove
+                    && !clickModel.isDrag
                     )
                 {
                     movePiece.Dispatch(selectedPiece, gameTile);
