@@ -62,11 +62,12 @@ export default class CentauriTacGame
     //set map state current map based on game
     this.mapState.setMap(this.game.map);
 
-    this.log.info('player deck info: %j', playerDeckInfo);
+    this.log.info('deck info: %j', this.deckInfo);
     let playerDeckInfo = [
       this.deckInfo.find(d => d.playerId === this.players[0].id),
       this.deckInfo.find(d => d.playerId === this.players[1].id),
     ];
+    this.log.info('player deck info: %j', playerDeckInfo);
 
     // spawn game pieces for two players
     let allHeroes = this.cardDirectory.getByTag('Hero');
