@@ -35,9 +35,11 @@ export default class SpawnDeckProcessor
     //all legit cases should have cards in the deck
     if(playerDeckInfo.cards && playerDeckInfo.cards.length){
       for(let c = 0; c < playerDeckInfo.cards.length; c++){
-        let cardClone = this.cardDirectory.newFromId(playerDeckInfo.cards[c].cardTemplateId);
+        for(let q = 0; q < playerDeckInfo.cards[c].quantity; q++){
+          let cardClone = this.cardDirectory.newFromId(playerDeckInfo.cards[c].cardTemplateId);
 
-        this.cardState.addToDeck(playerId, cardClone);
+          this.cardState.addToDeck(playerId, cardClone);
+        }
       }
       this.cardState.shuffleDeck(playerId);
 
