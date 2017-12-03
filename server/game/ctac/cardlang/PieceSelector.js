@@ -133,6 +133,15 @@ export default class PieceSelector{
         case 'FLYING':
           return this.allPieces.filter(p => p.statuses & Statuses.Flying);
           break;
+        case 'AIRDROP':
+          return this.allPieces.filter(p => p.statuses & Statuses.Airdrop);
+          break;
+        case 'CLEAVE':
+          return this.allPieces.filter(p => p.statuses & Statuses.Cleave);
+          break;
+        case 'PIERCING':
+          return this.allPieces.filter(p => p.statuses & Statuses.Piercing);
+          break;
         default:
           throw 'Invalid piece type selector ' + selector;
       }

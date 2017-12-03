@@ -16,6 +16,8 @@ var Statuses = Enum({
   DyadStrike : 1 << 9,
   Flying     : 1 << 10,
   Airdrop    : 1 << 11,
+  Cleave     : 1 << 12,
+  Piercing   : 1 << 13,
 });
 export default Statuses;
 
