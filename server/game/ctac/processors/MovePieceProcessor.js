@@ -132,10 +132,17 @@ export default class MovePieceProcessor
       let tauntPositions = this.mapState.getKingTilesInRadius(tauntPiece.position, 1);
       if(tauntPositions.length > 0 &&
           tauntPositions.find(p => p.tileEquals(piece.position)
-            && this.mapState.isHeightPassable(this.mapState.getTile(tauntPiece.position), destinationTile)
           )
         )
       {
+        //additional game logic shiet to make sure it's a valid taunt attack
+        if(
+            !this.mapState.isHeightPassable(this.mapState.getTile(tauntPiece.position), destinationTile)
+            || (tauntPiece.statuses & Statuses.Cloak)
+        ){
+          continue;
+        }
+
         this.log.info('Piece %s stepped onto a taunt area of %s', piece.id, tauntPiece.id);
         //cancel any upcoming move actions so we don't move past the taunt
         this.cancelUpcomingMoves(queue, piece);

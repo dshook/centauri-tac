@@ -64,21 +64,29 @@ export default class AttackPieceProcessor
         return queue.cancel(action);
     }
 
-    if(!action.isTauntAttack && (attacker.statuses & Statuses.Paralyze || attacker.statuses & Statuses.CantAttack)){
-      this.log.warn('Cannot attack with piece %s with status %s', attacker.id, attacker.statuses);
+    if(!action.isTauntAttack && (attacker.statuses & Statuses.CantAttack)){
+      this.log.warn('Cannot attack with piece %s with Cant Attack', attacker.id, attacker.statuses);
       queue.push(new Message('Unable to attack with this status!', action.playerId));
       return queue.cancel(action);
     }
 
-    if(target.statuses & Statuses.Cloak){
+    if(attacker.statuses & Statuses.Paralyze){
+      this.log.info('Cannot attack with piece %s when paralyzed', attacker.id);
+      return queue.cancel(action);
+    }
+
+    if(!action.isTauntAttack && (target.statuses & Statuses.Cloak)){
       this.log.warn('Cannot attack piece %s with Cloak', target.id);
       queue.push(new Message('Cannot attack a cloaked minion!', action.playerId));
       return queue.cancel(action);
     }
 
     //check if piece is 'old' enough to attack
-    if(attacker.bornOn === null ||
-      ((this.turnState.currentTurn - attacker.bornOn) < 1 && !(attacker.statuses & Statuses.Charge))
+    if(!action.isTauntAttack && 
+      (
+        attacker.bornOn === null ||
+        ((this.turnState.currentTurn - attacker.bornOn) < 1 && !(attacker.statuses & Statuses.Charge))
+      )
     ){
       this.log.warn('Piece %s must wait a turn to attack', attacker.id);
       queue.push(new Message('Minions need time to prepare!', action.playerId));
@@ -86,7 +94,7 @@ export default class AttackPieceProcessor
     }
 
     let maxAttacks = (attacker.statuses & Statuses.DyadStrike) ? 2 : 1;
-    if(attacker.attackCount >= maxAttacks){
+    if(!action.isTauntAttack && attacker.attackCount >= maxAttacks){
       this.log.warn('Piece %s has already attacked', attacker.id);
       queue.push(new Message('Piece has already attacked!', action.playerId));
       return queue.cancel(action);
@@ -109,14 +117,12 @@ export default class AttackPieceProcessor
     //   bonusMsg = 'Backstab';
     // }
 
-    //do double checks for paralyze and can't attack here if it's a taunt attack
-    if(!action.isTauntAttack || !(attacker.statuses & Statuses.CantAttack || attacker.statuses & Statuses.Paralyze)){
-      queue.push(new PieceHealthChange({pieceId: action.targetPieceId, change: -attacker.attack, bonus, bonusMsg}));
-    }
+    queue.push(new PieceHealthChange({pieceId: action.targetPieceId, change: -attacker.attack, bonus, bonusMsg}));
 
     //counter attack if in range
     if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
-      if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
+      //if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
+      if(!(target.statuses & Statuses.Paralyze)){
         queue.push(new PieceHealthChange({pieceId: action.attackingPieceId, change: -target.attack}));
       }
     }
