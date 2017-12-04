@@ -500,12 +500,14 @@ namespace ctac
             if (selectedPiece != null)
             {
                 selectedPiece.isSelected = false;
+                selectedPiece.pieceView.UpdateHpBar();
             }
             selectedPiece = pieceSelected;
 
             if (selectedPiece != null)
             {
                 selectedPiece.isSelected = true;
+                selectedPiece.pieceView.UpdateHpBar();
             }
         }
 

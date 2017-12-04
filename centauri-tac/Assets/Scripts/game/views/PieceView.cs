@@ -239,7 +239,11 @@ namespace ctac {
         {
             //gotta swap out the bar if it's an enemy for now
             var fillColor = hpBarFillFriendlyColor;
-            if (!piece.currentPlayerHasControl)
+            if(piece.isSelected)
+            {
+                fillColor = Colors.selectedOutlineColor;
+            } 
+            else if (!piece.currentPlayerHasControl)
             {
                 fillColor = hpBarFillEnemyColor;
             }
