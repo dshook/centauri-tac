@@ -1566,7 +1566,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 31.49997
+      value: 31.5
       objectReference: {fileID: 0}
     - target: {fileID: 22487496, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_AnchoredPosition.y
@@ -2685,9 +2685,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.03348729
+    x: 0.0036854744
     y: 0
-    width: 0.9330254
+    width: 0.99262905
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -6132,9 +6132,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.03348729
+    x: 0.0036854744
     y: 0
-    width: 0.9330254
+    width: 0.99262905
     height: 1
   near clip plane: 90
   far clip plane: 1600
@@ -6909,6 +6909,26 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545752413893426, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: color.r
+      value: 0.77205884
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545752413893426, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: color.g
+      value: 0.185341
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545752413893426, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: color.b
+      value: 0.051092133
+      objectReference: {fileID: 0}
+    - target: {fileID: 114545752413893426, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: manualUpdate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
