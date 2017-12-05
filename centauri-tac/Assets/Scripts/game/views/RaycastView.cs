@@ -53,14 +53,8 @@ namespace ctac
             //world hit for everything else, but also ignore UI layer hits
             if (Physics.Raycast(camRay, out objectHit, Constants.cameraRaycastDist))
             {
-                //walk up 3 levels at most to try to see if we're in a piece
-                //kinda nasty but avoids having to remember to set the piece tag on every single piece
                 var hitGO = objectHit.collider.gameObject;
-                if (hitGO.CompareTag("Piece")
-                    || (hitGO.transform.parent != null && hitGO.transform.parent.CompareTag("Piece"))
-                    || (hitGO.transform.parent != null && hitGO.transform.parent.parent != null && hitGO.transform.parent.parent.CompareTag("Piece"))
-                    || (hitGO.transform.parent != null && hitGO.transform.parent.parent != null && hitGO.transform.parent.parent.parent != null && hitGO.transform.parent.parent.parent.CompareTag("Piece"))
-                )
+                if (hitGO.CompareTag("Piece"))
                 {
                     model.piece = objectHit.collider.gameObject.GetComponentInParent<PieceView>();
                 }

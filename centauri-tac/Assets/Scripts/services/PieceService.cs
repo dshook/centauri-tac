@@ -72,6 +72,13 @@ namespace ctac
                 //newModelInstance.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0, 0));
             }
 
+            //go through all the mesh colliders in the piece and tag them as piece so the raycast can know what its hitting
+            var meshColliders = newPiece.transform.GetComponentsInChildren<MeshCollider>();
+            foreach (var meshCollider in meshColliders)
+            {
+                meshCollider.gameObject.tag = "Piece";
+            }
+
             var cardTemplate = cardDirectory.Card(spawnedPiece.cardTemplateId);
 
             var pieceModel = new PieceModel()

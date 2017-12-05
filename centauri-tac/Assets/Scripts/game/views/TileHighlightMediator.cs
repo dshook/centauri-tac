@@ -31,11 +31,14 @@ namespace ctac
 
         void Update()
         {
-            onTileHover(raycastModel.tile);
+            onTileHover(raycastModel.tile, raycastModel.piece);
         }
 
-        public void onTileHover(Tile tile)
+        public void onTileHover(Tile tile, PieceView piece)
         {
+            if(piece != null){
+                tile = map.tiles[piece.piece.tilePosition];
+            }
             //tileHover.Dispatch(tile);
             view.onTileHover(tile);
 
@@ -293,7 +296,7 @@ namespace ctac
                     //find diff to get just attack tiles
                     //also take friendly units and untargetable enemies like Cloak
                     attackTiles = attackTiles
-                        .Except(moveTiles)
+                        //.Except(moveTiles)
                         .Where(t => {
                             var occupyingPiece = pieces.Pieces.FirstOrDefault(m => m.tilePosition == t.position);
                             return !t.unpassable
