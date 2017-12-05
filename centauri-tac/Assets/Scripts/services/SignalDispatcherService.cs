@@ -25,7 +25,7 @@ namespace ctac
         private object _queueLock = new object();
 
         [Inject]
-        public ServiceTypeMapModel typeMap { get; set; }
+        public MessageToSignalModel typeMap { get; set; }
 
         [Inject]
         public IDebugService debug { get; set; }

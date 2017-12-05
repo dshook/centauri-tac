@@ -21,6 +21,9 @@ namespace ctac.signals
     public class SocketHangupSignal : Signal<SocketKey> { }
 
     [Singleton]
+    public class SocketAlreadySignedInSignal : Signal<SocketKey> { }
+
+    [Singleton]
     public class PingSignal : Signal<int, SocketKey> { }
 }
 

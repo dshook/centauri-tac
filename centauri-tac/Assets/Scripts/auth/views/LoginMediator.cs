@@ -28,10 +28,13 @@ namespace ctac
         }
 
         [ListensTo(typeof(NeedLoginSignal))]
-        private void onNeedLogin()
+        private void onNeedLogin(string message)
         {
             view.enabled = true;
             view.holder.SetActive(true);
+            if(!string.IsNullOrEmpty(message)){
+                view.setMessage(message);
+            }
             view.init();
         }
 

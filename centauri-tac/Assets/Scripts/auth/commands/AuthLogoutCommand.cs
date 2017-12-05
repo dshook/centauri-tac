@@ -20,7 +20,7 @@ namespace ctac
 
             PlayerPrefs.SetString(CtacConst.playerToken, null);
 
-            needLogin.Dispatch();
+            needLogin.Dispatch(null);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace ctac
             }
             else
             {
-                needLoginSignal.Dispatch();
+                needLoginSignal.Dispatch(null);
             }
         }
 

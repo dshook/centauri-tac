@@ -18,6 +18,7 @@ namespace ctac
 
         [Inject] public AuthLobbySignal authLobby { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
+        [Inject] public NeedLoginSignal needLogin { get; set; }
 
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public SelectDeckSignal selectDeck { get; set; }
@@ -89,7 +90,7 @@ namespace ctac
         }
 
         [ListensTo(typeof(NeedLoginSignal))]
-        public void onNeedLogin()
+        public void onNeedLogin(string message)
         {
             view.SetButtonsActive(false);
             view.SetUsername("");
@@ -130,6 +131,19 @@ namespace ctac
         [ListensTo(typeof(SocketHangupSignal))]
         public void onSocketDisconnect(SocketKey key)
         {
+            onDisconnect(key);
+        }
+
+        [ListensTo(typeof(SocketAlreadySignedInSignal))]
+        public void onSocketAlreadySignedIn(SocketKey key)
+        {
+            //if we sign in from somewhere else, disconnect everything and prompt for re login
+            debug.Log("Signed in from another location, booting client");
+            socket.Disconnect(key.clientId);
+            needLogin.Dispatch("Another device has signed into your account, please log in again");
+        }
+
+        void onDisconnect(SocketKey key){
             if (key.componentName == "auth")
             {
                 view.setMessage("Cannot connect to server,\nplease check your connection and retry");

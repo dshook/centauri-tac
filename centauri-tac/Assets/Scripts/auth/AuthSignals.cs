@@ -22,7 +22,7 @@ namespace ctac.signals
     public class PlayerFetchedFinishedSignal : Signal<PlayerModel, SocketKey> { }
 
     [Singleton]
-    public class NeedLoginSignal : Signal { }
+    public class NeedLoginSignal : Signal<string> { }
 
     [Singleton]
     public class ComponentLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }

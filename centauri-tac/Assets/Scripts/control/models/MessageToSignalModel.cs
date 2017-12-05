@@ -11,10 +11,10 @@ namespace ctac
     /// Maps string types for messages received through sockets to signal types
     /// </summary>
     [Singleton]
-    public class ServiceTypeMapModel
+    public class MessageToSignalModel
     {
         private Dictionary<string, Type> map;
-        public ServiceTypeMapModel()
+        public MessageToSignalModel()
         {
             map = new Dictionary<string, Type>()
             {
@@ -22,6 +22,7 @@ namespace ctac
                 {"socket:open", typeof(SocketConnectSignal) },
                 {"socket:close", typeof(SocketCloseSignal) },
                 {"socket:hangup", typeof(SocketHangupSignal) },
+                {"socket:alreadysignedin", typeof(SocketAlreadySignedInSignal) },
 
                 {"login", typeof(ComponentLoggedInSignal) },
                 {"me", typeof(PlayerFetchedSignal) },

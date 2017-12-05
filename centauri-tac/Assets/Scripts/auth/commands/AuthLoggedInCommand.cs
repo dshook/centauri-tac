@@ -25,7 +25,7 @@ namespace ctac
             }
             else
             {
-                needLogin.Dispatch();
+                needLogin.Dispatch(null);
             }
         }
     }

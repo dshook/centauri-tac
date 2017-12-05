@@ -60,9 +60,13 @@ namespace ctac
         public void onBadPassword(string userMessage)
         {
             newButtonTextColor = new Color(0.6f, 0.1f, 0.1f);
+            setMessage(userMessage);
+        }
+
+        public void setMessage(string userMessage){
             message.text = userMessage;
             message.color = Color.white;
-            iTween.ColorTo(message.gameObject, Color.clear, 4f);
+            iTween.ColorTo(message.gameObject, Color.clear, 6f);
         }
 
         void onClick()

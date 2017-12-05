@@ -74,6 +74,11 @@ export default class LobbyRPC
   disconnectClient(client, reason){
     let playerId = client && client.auth ? client.auth.sub.id : null;
     this.log.info('Closing connection for %s for player %s', reason, playerId);
+    if(reason === 'reconnect'){
+      //boot any still connected clients out on reconnect
+      client.send("socket:alreadysignedin", {});
+      client.disconnect();
+    }
     if(playerId){
       this.matchmaker.dequeuePlayer(playerId);
       delete this.clients[playerId];
