@@ -8,7 +8,12 @@ namespace ctac {
     public class TileView : MonoBehaviour
     {
         public Tile tile;
-        private SVGRenderer tileIndicator;
+
+        GameObject tileIndicatorGO;
+        SVGRenderer tileIndicator;
+
+        GameObject attackIndicatorGO;
+        SVGRenderer attackIndicator;
 
         //these are just used for map editing and saving
         public bool unpassable = false;
@@ -36,15 +41,18 @@ namespace ctac {
         {
             if (tile != null)
             {
-                var indicator = transform.Find("TileIndicator").gameObject;
-                tileIndicator = indicator.gameObject.GetComponent<SVGRenderer>();
-                //arrows = tile.gameObject.transform.FindChild("Arrows").gameObject;
+                tileIndicatorGO = transform.Find("TileIndicator").gameObject;
+                tileIndicator = tileIndicatorGO.gameObject.GetComponent<SVGRenderer>();
+
+                attackIndicatorGO = transform.Find("AttackIndicator").gameObject;
+                attackIndicator = attackIndicatorGO.gameObject.GetComponent<SVGRenderer>();
             }
         }
 
 
         Color tint = Colors.invisible;
         Color desiredColor = Colors.invisible;
+        Color desiredAttackColor = Colors.invisible;
 
         void Update()
         {
@@ -53,6 +61,7 @@ namespace ctac {
             //tileFlags = tile.highlightStatus;
             tint = Colors.invisible;
             desiredColor = Colors.invisible;
+            desiredAttackColor = Colors.invisible;
 
             if ((tile.highlightStatus & TileHighlightStatus.Dimmed) != 0)
             {
@@ -82,11 +91,11 @@ namespace ctac {
             }
             if ((tile.highlightStatus & TileHighlightStatus.Attack) != 0)
             {
-                desiredColor = attackColor;
+                desiredAttackColor = attackColor;
             }
             if ((tile.highlightStatus & TileHighlightStatus.AttackRange) != 0)
             {
-                desiredColor = attackRangeTint;
+                desiredAttackColor = attackRangeTint;
             }
 
             if (tile.highlightStatus == 0)
@@ -94,7 +103,19 @@ namespace ctac {
                 desiredColor = Colors.invisible;
             }
 
-            tileIndicator.color = desiredColor - tint;
+            if(desiredColor != Colors.invisible){
+                tileIndicatorGO.SetActive(true);
+                tileIndicator.color = desiredColor - tint;
+            }else{
+                tileIndicatorGO.SetActive(false);
+            }
+
+            if(desiredAttackColor != Colors.invisible){
+                attackIndicatorGO.SetActive(true);
+                attackIndicator.color = desiredAttackColor;
+            }else{
+                attackIndicatorGO.SetActive(false);
+            }
         }
     }
 }

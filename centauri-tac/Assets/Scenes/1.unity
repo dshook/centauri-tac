@@ -1151,6 +1151,82 @@ MonoBehaviour:
 Transform:
   m_PrefabParentObject: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
   m_PrefabInternal: {fileID: 612944970}
+--- !u!1001 &294864035
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1632602875}
+    m_Modifications:
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 23000011363838452, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33000012609033418, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33917248492045716, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23932654905904306, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33593127258984424, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23462210471247976, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 160946, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_Name
+      value: Tile (5)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &305072717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,9 +2761,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0036854744
+    x: 0
     y: 0
-    width: 0.99262905
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -2865,7 +2941,7 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 118136, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -4579,111 +4655,10 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!1001 &1123568360
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1632602875}
-    m_Modifications:
-    - target: {fileID: 23000011363838452, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Materials.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 160946, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_Name
-      value: Tile (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 23000011363838452, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 33000012609033418, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 451848, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 475708, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456074, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 33888837091502976, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 23976836561600774, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4590598605044990, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 33917248492045716, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4202810366901858, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 23932654905904306, guid: cba6996ea37aeb146a29ca965ab470cf,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-  m_IsPrefabParent: 0
 --- !u!4 &1123568361 stripped
 Transform:
   m_PrefabParentObject: {fileID: 407524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
-  m_PrefabInternal: {fileID: 1123568360}
+  m_PrefabInternal: {fileID: 294864035}
 --- !u!21 &1129426391
 Material:
   serializedVersion: 6
@@ -6132,9 +6107,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0036854744
+    x: 0
     y: 0
-    width: 0.99262905
+    width: 1
     height: 1
   near clip plane: 90
   far clip plane: 1600
