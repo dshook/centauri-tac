@@ -195,7 +195,6 @@ namespace ctac
             }
             updateTauntTiles(piece);
             view.onTileSelected(null);
-            view.toggleTileFlags(null, TileHighlightStatus.Movable);
             setAttackRangeTiles(null);
             onPieceHover(null);
         }

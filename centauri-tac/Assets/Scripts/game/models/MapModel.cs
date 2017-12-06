@@ -57,15 +57,14 @@ namespace ctac
     public enum TileHighlightStatus
     {
         //None              = (1 << 0),
-        Highlighted       = (1 << 0),
-        Selected          = (1 << 1),
-        Movable           = (1 << 2),
-        PathFind          = (1 << 3),
-        Attack            = (1 << 4),
-        MoveRange         = (1 << 5),
-        AttackRange       = (1 << 6),
-        TargetTile        = (1 << 7),
-        Dimmed            = (1 << 8)
+        Highlighted       = (1 << 0), //hovering over the tile
+        Selected          = (1 << 1), //deploying a piece to the tile
+        MoveRange         = (1 << 2), //we can move to this tile
+        PathFind          = (1 << 3), //tiles part of the found move path
+        Attack            = (1 << 4), //there's an enemy piece we can actually attack
+        AttackRange       = (1 << 5), //we can attack this tile
+        TargetTile        = (1 << 6), //tiles part of a targeting area
+        Dimmed            = (1 << 7)
 
     }
 }
