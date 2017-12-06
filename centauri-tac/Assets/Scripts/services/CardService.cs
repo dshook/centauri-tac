@@ -82,8 +82,8 @@ namespace ctac
                 case Rarities.Exotic:
                     frontRenderer.material.SetColor("_RarityColor", Colors.RarityExotic);
                     break;
-                case Rarities.Mythical:
-                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityMythical);
+                case Rarities.Ascendant:
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityAscendant);
                     break;
             }
 

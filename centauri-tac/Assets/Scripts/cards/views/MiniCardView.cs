@@ -76,8 +76,8 @@ namespace ctac {
                 case Rarities.Exotic:
                     bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityExotic, 0.2f);
                     break;
-                case Rarities.Mythical:
-                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityMythical, 0.3f);
+                case Rarities.Ascendant:
+                    bgImage.color = ColorExtensions.DesaturateColor(Colors.RarityAscendant, 0.3f);
                     break;
             }
 

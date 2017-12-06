@@ -95,7 +95,7 @@ namespace ctac
 
             if (foundCard != null)
             {
-                if (foundCard.quantity == 2 || foundCard.quantity + quantity > 2 || foundCard.card.rarity == Rarities.Mythical)
+                if (foundCard.quantity == 2 || foundCard.quantity + quantity > 2 || foundCard.card.rarity == Rarities.Ascendant)
                 {
                     cardsMessage.Dispatch("Can't fit any more of that card in the deck");
                     return;

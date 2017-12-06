@@ -51,7 +51,7 @@ export default class CardManager
     }
 
     if(deck.cards.find(c =>
-      this.cardDirectory.directory[c.cardTemplateId].rarity === Rarities.Mythical
+      this.cardDirectory.directory[c.cardTemplateId].rarity === Rarities.Ascendant
       && c.quantity > 1)
     ){
       throw new DeckStoreError('Only 1 of each Mythical card is allowed in your deck');

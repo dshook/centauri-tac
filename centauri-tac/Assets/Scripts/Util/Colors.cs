@@ -20,7 +20,7 @@ namespace ctac
         public static Color32 RarityCommon = ColorExtensions.HexToColor("#999999");
         public static Color32 RarityRare = ColorExtensions.HexToColor("#2598C5");
         public static Color32 RarityExotic = ColorExtensions.HexToColor("#64FF07");
-        public static Color32 RarityMythical = ColorExtensions.HexToColor("#FF0000");
+        public static Color32 RarityAscendant = ColorExtensions.HexToColor("#FF0000");
         
         public static Color32 cardMetCondition = ColorExtensions.HexToColor("740000");
 

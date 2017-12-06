@@ -6,7 +6,7 @@ var Rarities = Enum({
   Common: 0,
   Rare: 1,
   Exotic: 2,
-  Mythical: 3,
+  Ascendant: 3,
 });
 export default Rarities;
 
