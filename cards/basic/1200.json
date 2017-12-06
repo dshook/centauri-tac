@@ -4,7 +4,7 @@
 	"description": "",
   "cost": 4,
   "attack": 3,
-  "health": 1,
+  "health": 2,
   "movement": 4,
   "range": 3,
   "race": 0,
