@@ -8,18 +8,21 @@ namespace ctac
     public class PlayerResourceView : View
     {
         public bool isOpponent;
+        public GameObject turnCountdown = null;
 
         TextMeshProUGUI currentEnergyText;
         TextMeshProUGUI maxEnergyText;
         MeshRenderer fillRenderer;
         MeshRenderer fillRendererPreview;
 
+        RectTransform turnCountdownProgressRect = null;
+
         ISoundService sounds;
 
         float turnLengthMs = 0f;
         float turnEndBufferLengthMs = 0f;
 
-        float timerAccum = 0f;
+        float timerAccumMs = 0f;
         bool animatingEnergy = false;
         float maxEnergy = 0f;
 
@@ -32,6 +35,11 @@ namespace ctac
 
             fillRenderer = transform.Find("EnergyBarFill").GetComponent<MeshRenderer>();
             fillRendererPreview = transform.Find("EnergyBarFillPreview").GetComponent<MeshRenderer>();
+
+            if(turnCountdown != null){
+                turnCountdownProgressRect = turnCountdown.transform.Find("progress fill").GetComponent<RectTransform>();
+            }
+
             sounds = s;
         }
 
@@ -39,16 +47,31 @@ namespace ctac
         {
             if(!animatingEnergy || turnLengthMs == 0f) return;
 
-            timerAccum += Time.deltaTime;
+            timerAccumMs += Time.deltaTime * 1000f;
 
-            //Start playing a turn finished sound when the end turn buffer starts
-            if (!playedIncomingTurn && timerAccum > (turnLengthMs - turnEndBufferLengthMs) / 1000f)
+            //Start playing a turn finished sound when the end turn buffer starts for us
+            var isInEndBuffer = timerAccumMs > (turnLengthMs - turnEndBufferLengthMs);
+            if (!isOpponent && !playedIncomingTurn && isInEndBuffer)
             {
                 sounds.PlaySound("turnFinish");
                 playedIncomingTurn = true;
             }
+
+            if(turnCountdown != null){
+                if(isInEndBuffer)
+                {
+                    turnCountdown.SetActive(true);
+                    //what % are we through the end turn buffer, inversed
+                    var inverseProgress = Mathf.Clamp(1 - (timerAccumMs - (turnLengthMs - turnEndBufferLengthMs)) / turnEndBufferLengthMs, 0, 1f);
+                    turnCountdownProgressRect.localScale = turnCountdownProgressRect.localScale.SetX(inverseProgress);
+                }
+                else
+                {
+                    turnCountdown.SetActive(false);
+                }
+            }
             
-            var progress = Math.Min(maxEnergy, maxEnergy * ((timerAccum * 1000f) / turnLengthMs));
+            var progress = Math.Min(maxEnergy, maxEnergy * (timerAccumMs / turnLengthMs));
             fillRendererPreview.material.SetFloat("_CurrentHp", progress);
         }
 
@@ -73,7 +96,7 @@ namespace ctac
         internal void updatePreview(float maxEn)
         {
             maxEnergy = maxEn;
-            timerAccum = 0f;
+            timerAccumMs = 0f;
             animatingEnergy = true;
             playedIncomingTurn = false;
             fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
