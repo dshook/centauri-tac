@@ -28,7 +28,7 @@ namespace ctac {
         Color attackRangeTint = new Color(1f, .1f, .1f);
         Color attackColor = new Color(.9f, .4f, .4f);
         Color dimmedColor = new Color(.3f, .3f, .3f, .3f);
-        Color disabledColor = ColorExtensions.HexToColor("d4d4d4");
+        Color disabledColor = ColorExtensions.HexToColor("4d4d4d");
 
 //#pragma warning disable
 //        [SerializeField]
@@ -78,10 +78,16 @@ namespace ctac {
             {
                 desiredColor = selectColor;
             }
+
+            if((tile.highlightStatus & TileHighlightStatus.MoveRangeTotal) != 0)
+            {
+                desiredColor = disabledColor;
+            }
             if ((tile.highlightStatus & TileHighlightStatus.MoveRange) != 0)
             {
                 desiredColor = moveRangeColor;
             }
+
             if ((tile.highlightStatus & TileHighlightStatus.PathFind) != 0)
             {
                 desiredColor = pathFindColor;

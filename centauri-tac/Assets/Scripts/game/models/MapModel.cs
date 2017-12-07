@@ -60,11 +60,13 @@ namespace ctac
         Highlighted       = (1 << 0), //hovering over the tile
         Selected          = (1 << 1), //deploying a piece to the tile
         MoveRange         = (1 << 2), //we can move to this tile
-        PathFind          = (1 << 3), //tiles part of the found move path
-        Attack            = (1 << 4), //there's an enemy piece we can actually attack
-        AttackRange       = (1 << 5), //we can attack this tile
-        TargetTile        = (1 << 6), //tiles part of a targeting area
-        Dimmed            = (1 << 7)
+        MoveRangeTotal    = (1 << 3), //with our total move range we can move range to this tile, regardless of how much we've already moved
+        PathFind          = (1 << 4), //tiles part of the found move path
+        Attack            = (1 << 5), //there's an enemy piece we can actually attack
+        AttackRange       = (1 << 6), //we can attack this tile
+        AttackRangeTotal  = (1 << 7), //we can attack this tile regardless of if we've already attacked or not
+        TargetTile        = (1 << 8), //tiles part of a targeting area
+        Dimmed            = (1 << 9)
 
     }
 }

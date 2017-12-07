@@ -137,7 +137,7 @@ namespace ctac
                 view.onTileSelected(null);
                 //view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
                 setAttackRangeTiles(null);
-                view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
+                updatePieceMoveRange(null, null);
                 return;
             }
 
@@ -149,14 +149,7 @@ namespace ctac
 
             view.onTileSelected(gameTile);
 
-            if (selectedPiece.canMove)
-            {
-                //find movement
-                var moveTiles = mapService.GetMovementTilesInRadius(selectedPiece);
-                //take out the central one
-                moveTiles.Remove(gameTile.position);
-                view.toggleTileFlags(moveTiles.Values.ToList(), TileHighlightStatus.MoveRange);
-            }
+            updatePieceMoveRange(selectedPiece, gameTile);
         }
 
         [ListensTo(typeof(PieceSpawningSignal))]
@@ -225,20 +218,18 @@ namespace ctac
         {
             if(isDeployingPiece) return;
 
-            if (piece != null 
-                && selectedPiece == null 
-                && piece.canMove //might be an issue with checking hasMoved inside of canMove
-                )
+            Tile gameTile = null;
+            if (piece != null && selectedPiece == null)
             {
+                gameTile = map.tiles.Get(piece.tilePosition);
                 updatePieceAttackRange(piece);
+                updatePieceMoveRange(piece, gameTile);
+                //setAttackRangeTiles(null);
             }
-            else
+            else if(piece == null && selectedPiece == null)
             {
-                if (selectedPiece == null)
-                {
-                    view.toggleTileFlags(null, TileHighlightStatus.MoveRange, true);
-                    setAttackRangeTiles(null);
-                }
+                updatePieceAttackRange(null);
+                updatePieceMoveRange(null, null);
             }
 
             //attacking enemy at range
@@ -253,7 +244,6 @@ namespace ctac
                 if (mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition)
                     <= selectedPiece.range.Value)
                 {
-                    var gameTile = map.tiles.Get(piece.tilePosition);
                     view.onAttackTile(gameTile);
                 }
                 else
@@ -270,7 +260,7 @@ namespace ctac
         private void updatePieceAttackRange(PieceModel piece)
         {
             //check for ranged units first since they can't move and attack
-            if (!piece.canAttack)
+            if (piece == null || !piece.canAttack)
             {
                 setAttackRangeTiles(null, false);
             }
@@ -283,13 +273,14 @@ namespace ctac
             {
                 //melee units
 
-                var movePositions = mapService.GetMovementTilesInRadius(piece);
-                var moveTiles = movePositions.Values.ToList();
+                var movePositions = mapService.GetMovementTilesInRadius(piece, false);
+                // var moveTiles = movePositions.Values.ToList();
 
                 List<Tile> attackTiles = null;
                 if (piece.canAttack)
                 {
-                    var attackPositions = mapService.Expand(movePositions.Keys.ToList(), 1);
+                    var movePositionList = movePositions != null ? movePositions.Keys.ToList() : new List<Vector2>(){ piece.tilePosition };
+                    var attackPositions = mapService.Expand(movePositionList, 1);
                     attackTiles = attackPositions.Values.ToList();
 
                     //find diff to get just attack tiles
@@ -311,12 +302,35 @@ namespace ctac
                 }
 
                 //take out the central one
-                var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
-                moveTiles.Remove(center);
+                // var center = moveTiles.FirstOrDefault(t => t.position == piece.tilePosition);
+                // moveTiles.Remove(center);
 
-                view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
+                // view.toggleTileFlags(moveTiles, TileHighlightStatus.MoveRange, true);
                 setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
             }
+        }
+
+        private void updatePieceMoveRange(PieceModel piece, Tile gameTile)
+        {
+            if(piece == null)
+            {
+                view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
+                view.toggleTileFlags(null, TileHighlightStatus.MoveRangeTotal);
+                return;
+            }
+
+            //find movement
+            var moveTiles = mapService.GetMovementTilesInRadius(piece, false);
+            var totalMoveTiles = mapService.GetMovementTilesInRadius(piece, true);
+            //take out the central one
+            if(moveTiles != null){
+                moveTiles.Remove(gameTile.position);
+            }
+            if(totalMoveTiles != null){
+                totalMoveTiles.Remove(gameTile.position);
+            }
+            view.toggleTileFlags(moveTiles != null ? moveTiles.Values.ToList() : null, TileHighlightStatus.MoveRange);
+            view.toggleTileFlags(totalMoveTiles != null ? totalMoveTiles.Values.ToList() : null, TileHighlightStatus.MoveRangeTotal);
         }
 
         [ListensTo(typeof(PieceFinishedMovingSignal))]
