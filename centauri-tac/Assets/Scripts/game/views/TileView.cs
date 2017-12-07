@@ -25,7 +25,7 @@ namespace ctac {
         Color moveColor = new Color(.4f, .4f, .9f);
         Color moveRangeColor = ColorExtensions.HexToColor("D2D2FF");
         Color pathFindColor = ColorExtensions.HexToColor("7478FF");
-        Color attackRangeTint = new Color(1f, .1f, .1f);
+        Color attackRangeColor = ColorExtensions.HexToColor("FF5656");
         Color attackColor = new Color(.9f, .4f, .4f);
         Color dimmedColor = new Color(.3f, .3f, .3f, .3f);
         Color disabledColor = ColorExtensions.HexToColor("4d4d4d");
@@ -87,18 +87,22 @@ namespace ctac {
             {
                 desiredColor = moveRangeColor;
             }
-
             if ((tile.highlightStatus & TileHighlightStatus.PathFind) != 0)
             {
                 desiredColor = pathFindColor;
             }
-            if ((tile.highlightStatus & TileHighlightStatus.Attack) != 0)
+
+            if ((tile.highlightStatus & TileHighlightStatus.AttackRangeTotal) != 0)
             {
-                desiredAttackColor = attackColor;
+                desiredAttackColor = disabledColor;
             }
             if ((tile.highlightStatus & TileHighlightStatus.AttackRange) != 0)
             {
-                desiredAttackColor = attackRangeTint;
+                desiredAttackColor = attackRangeColor;
+            }
+            if ((tile.highlightStatus & TileHighlightStatus.Attack) != 0)
+            {
+                desiredAttackColor = attackColor;
             }
 
             if (tile.highlightStatus == 0)
