@@ -356,7 +356,9 @@ namespace ctac
         public void onPieceSpawn(PieceSpawnedModel piece)
         {
             updateTauntTiles();
-            pieceNotDeploying();
+            if(piece.piece.playerId == players.Me.id ){
+                pieceNotDeploying();
+            }
         }
 
         [ListensTo(typeof(ActionCancelledSpawnPieceSignal))]

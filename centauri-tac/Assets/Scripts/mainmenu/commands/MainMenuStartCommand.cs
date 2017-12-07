@@ -42,18 +42,18 @@ namespace ctac
                 config.baseUrl = "http://server.solaria.online:10123/";
             }
 
-            //if we're coming back from another scene we don't need to refetch the player
             if (players.players.Count == 0)
             {
                 serverAuthSignal.Dispatch();
+                cardDirectory.LoadCards();
             }
             else
             {
+                //if we're coming back from another scene we don't need to refetch the player
                 var firstPlayer = players.players[0];
                 playerFetched.Dispatch(firstPlayer, new SocketKey(firstPlayer.clientId, "auth"));
             }
 
-            cardDirectory.LoadCards();
             cardKickoff.Dispatch();
         }
     }

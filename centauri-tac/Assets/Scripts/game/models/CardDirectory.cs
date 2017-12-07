@@ -13,6 +13,7 @@ namespace ctac
 
         public void LoadCards()
         {
+            directory.Clear();
             //fetch all cards from disk
             foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
             {
