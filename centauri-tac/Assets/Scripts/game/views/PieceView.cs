@@ -37,6 +37,8 @@ namespace ctac {
         public MeshRenderer hpBarFillRenderer;
         private Color32 hpBarFillFriendlyColor = Colors.friendlyColor;
         private Color32 hpBarFillEnemyColor = Colors.enemyColor;
+        private GameObject canAttackIndicator;
+        private GameObject canMoveIndicator;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -75,6 +77,8 @@ namespace ctac {
             hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
             hpBarColorModifier = hpBar.GetComponent<SVGColorModifier>();
             hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
+            canAttackIndicator = hpBarContainer.transform.Find("canAttack").gameObject;
+            canMoveIndicator = hpBarContainer.transform.Find("canMove").gameObject;
 
             textContainer = hpBarContainer.transform.Find("TextContainer").gameObject;
             attackGO = textContainer.transform.Find("Attack").gameObject;
@@ -193,6 +197,9 @@ namespace ctac {
 
             faceCameraContainer.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
+            var canAttack = piece.canAttack;
+            var canMove = piece.canMove;
+
             if (targetCandidate)
             {
                 highlight.enabled = true;
@@ -204,17 +211,17 @@ namespace ctac {
                 highlight.ConstantOn(Colors.selectedOutlineColor);
             }else if (piece.currentPlayerHasControl) {
 
-                if (piece.canMove && piece.canAttack)
+                if (canMove && canAttack)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.moveAttackOutlineColor);
                 }
-                else if (piece.canAttack && enemiesInRange)
+                else if (canAttack && enemiesInRange)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.attackOutlineColor);
                 }
-                else if (piece.canMove)
+                else if (canMove)
                 {
                     highlight.enabled = true;
                     highlight.ConstantOn(Colors.moveOutlineColor);
@@ -230,6 +237,19 @@ namespace ctac {
                 highlight.ConstantOff();
                 highlight.enabled = false;
             }
+
+            if(canAttack){
+                canAttackIndicator.SetActive(true);
+            }else{
+                canAttackIndicator.SetActive(false);
+            }
+
+            if(canMove){
+                canMoveIndicator.SetActive(true);
+            }else{
+                canMoveIndicator.SetActive(false);
+            }
+
 
         }
 
