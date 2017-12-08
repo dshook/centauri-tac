@@ -2437,6 +2437,20 @@
       },
       "propName": "metalTileConnectCorner",
       "breakable": false
+    },
+    {
+      "transform": {
+        "x": 10.0,
+        "y": 0.41,
+        "z": 11.0
+      },
+      "rotation": {
+        "x": 270.019775,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "propName": "pipeStraight",
+      "breakable": false
     }
   ]
 }

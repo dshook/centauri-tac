@@ -1492,7 +1492,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &16725527
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2207,7 +2206,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &34525473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3401,7 +3399,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &66740182
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3576,7 +3573,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &73818429
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5186,7 +5182,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &107177307
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5779,7 +5774,7 @@ Prefab:
       value: metalTileDouble (2)
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 114287739841611652, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &115647638 stripped
@@ -8017,7 +8012,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &161282517
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8738,7 +8732,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &173556336
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9303,7 +9296,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &188664839
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9550,7 +9542,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &192402234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9610,7 +9601,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &195096269
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9702,7 +9692,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &200364617
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9762,7 +9751,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &200999076
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10244,7 +10232,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &218162518
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10820,7 +10807,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &226183482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11715,7 +11701,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &256907638
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11775,7 +11760,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &257280005
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12741,7 +12725,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &280548319
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14189,7 +14172,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &314369657
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14585,7 +14567,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &325779970
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14760,7 +14741,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &330522436
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15988,7 +15968,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &349257584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16838,7 +16817,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &369192544
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17320,7 +17298,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &379160041
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17567,7 +17544,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &386794355
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17883,7 +17859,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &396199374
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18557,7 +18532,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &403308147
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20566,7 +20540,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &466311130
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23059,7 +23032,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &511379210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23366,7 +23338,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &517330688
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -23592,7 +23563,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &527836869
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24044,7 +24014,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &539081400
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24192,7 +24161,7 @@ Prefab:
       value: metalTileDouble (1)
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 114287739841611652, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &543778369 stripped
@@ -25611,7 +25580,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &574218061
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25754,7 +25722,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &574997230
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26389,7 +26356,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &586849756
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -29315,7 +29281,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &652677422
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30203,7 +30168,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &667268216
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30731,7 +30695,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &685467770
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31437,7 +31400,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &703649260
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31868,7 +31830,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &712350070
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32539,7 +32500,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &727878460
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32874,7 +32834,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &735018032
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33468,7 +33427,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &738729345
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -33528,7 +33486,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &740186533
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34325,7 +34282,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &754170432
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34544,7 +34500,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 3
+  m_AdditionalShaderChannelsFlag: 27
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -35818,7 +35774,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &786924482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -36578,7 +36533,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &803529629
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37106,7 +37060,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &814003195
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37415,7 +37368,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &823370172
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37694,7 +37646,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &829284901
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37754,7 +37705,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &832500626
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -37971,7 +37921,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &836029806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38377,7 +38326,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &847977724
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38861,7 +38809,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &852331527
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39648,7 +39595,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &866359357
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40253,7 +40199,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &873639937
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40387,7 +40332,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &878985015
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40764,7 +40708,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &885061207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41439,7 +41382,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &897757918
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -42274,7 +42216,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &909193034
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43009,7 +42950,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &930421236
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43069,7 +43009,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &930731767
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -43993,7 +43932,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &951253350
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45013,7 +44951,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &974132091
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45756,7 +45693,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &983424920
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -45816,7 +45752,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &984089528
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46475,7 +46410,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1001725652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -46885,7 +46819,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1021204043
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -47185,7 +47118,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1032220527
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49492,7 +49424,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1084417439
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49988,7 +49919,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1092389968
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50205,7 +50135,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1093790034
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50505,7 +50434,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1100607988
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52201,7 +52129,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1149035310
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52758,7 +52685,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1157321257
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53134,7 +53060,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1161702351}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: -0}
   m_LocalScale: {x: 49.93646, y: 49.936462, z: 49.936462}
   m_Children: []
   m_Father: {fileID: 1919064448}
@@ -53920,7 +53846,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1173516712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54063,7 +53988,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1174203582
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54692,7 +54616,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1198637293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55146,7 +55069,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1209851417
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55662,7 +55584,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1230082231
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57428,7 +57349,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1278175966
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57814,7 +57734,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1287363912
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -58622,7 +58541,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1299520037
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -58860,7 +58778,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1304207114
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -59264,7 +59181,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 1
-  tileFlags: 0
 --- !u!65 &1307306655
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -59715,7 +59631,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 1
-  tileFlags: 0
 --- !u!65 &1313316401
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60873,7 +60788,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1331252207
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60933,7 +60847,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1333156720
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -61399,7 +61312,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1340091746
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -61604,7 +61516,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1345756014
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62332,7 +62243,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1354407757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62717,7 +62627,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1371297513
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64760,7 +64669,7 @@ Prefab:
       value: 90
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 114287739841611652, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1414070972 stripped
@@ -65989,7 +65898,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1442672316
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66310,7 +66218,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1446625647
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67410,7 +67317,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1467035327
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68140,7 +68046,7 @@ Transform:
   - {fileID: 290682891}
   - {fileID: 589732954}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!21 &1492681558
 Material:
@@ -68412,20 +68318,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 54
       objectReference: {fileID: 0}
-    - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -89.98
-      objectReference: {fileID: 0}
-    - target: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 1842799438650424, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
       propertyPath: m_Name
       value: metalTileDouble (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114287739841611652, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a18a37481310f20499a164f5eaf5be0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1494129808 stripped
@@ -68433,23 +68330,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4089385688809300, guid: a18a37481310f20499a164f5eaf5be0b,
     type: 2}
   m_PrefabInternal: {fileID: 1494129807}
---- !u!1 &1494129809 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1842799438650424, guid: a18a37481310f20499a164f5eaf5be0b,
-    type: 2}
-  m_PrefabInternal: {fileID: 1494129807}
---- !u!114 &1494129810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1494129809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 195ff41c230cad94487cb02f33376c42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  breakable: 0
 --- !u!1 &1494757620
 GameObject:
   m_ObjectHideFlags: 0
@@ -69237,7 +69117,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1508145758
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69297,7 +69176,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1509142114
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69624,7 +69502,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1514694820
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70161,7 +70038,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1519956279
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71279,7 +71155,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1539371406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71511,9 +71386,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0036854744
     y: 0
-    width: 1
+    width: 0.99262905
     height: 1
   near clip plane: 0.3
   far clip plane: 300
@@ -71744,7 +71619,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1544585717
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -71836,7 +71710,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1551463784
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72136,7 +72009,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1557572509
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72491,7 +72363,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1565965239
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -75405,9 +75276,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0036854744
     y: 0
-    width: 1
+    width: 0.99262905
     height: 1
   near clip plane: 90
   far clip plane: 1600
@@ -76046,7 +75917,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1648637611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -76358,7 +76228,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1657846435
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -76522,7 +76391,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1661050374
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77068,7 +76936,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1675405478
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77582,7 +77449,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1687099871
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -77604,15 +77470,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0.553
       objectReference: {fileID: 0}
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_LocalRotation.x
@@ -77665,6 +77531,103 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23693728784586816, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23842840570655162, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1775279372439798, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23379727615065036, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23379727615065036, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492280374020298, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492280374020298, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23244566569619416, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23244566569619416, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1254393831983456, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23456759346978184, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23456759346978184, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1451456412844966, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23468615682799594, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23468615682799594, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23323960505634228, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23323960505634228, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 224925158924747724, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224329338310190342, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224931918246552178, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
@@ -77889,7 +77852,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1693719635
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78584,7 +78546,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1711758666
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78727,7 +78688,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1712701673
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78870,7 +78830,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1713605552
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79308,7 +79267,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1722613421
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79437,7 +79395,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1725454036
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -79850,7 +79807,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1741675990
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -80025,7 +79981,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1744525984
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -81919,7 +81874,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1788549211
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -82829,7 +82783,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1816036396
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -83468,7 +83421,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1827876661
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -83584,6 +83536,7 @@ Transform:
   - {fileID: 2024439917}
   - {fileID: 792264939}
   - {fileID: 203612732}
+  - {fileID: 1900037368}
   m_Father: {fileID: 589732954}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -84114,7 +84067,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1842173763
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -84944,7 +84896,6 @@ MonoBehaviour:
   unpassable: 1
   clearable: 1
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1866330411
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -86687,7 +86638,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1900024998
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -86705,7 +86655,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1831944359}
     m_Modifications:
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalPosition.x
@@ -86725,7 +86675,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_LocalRotation.z
@@ -86737,11 +86687,24 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 78
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 99.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 99.99997
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84b90547f29d22a47a2f30b6b5db71c7, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1900037368 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4183149796519254, guid: 84b90547f29d22a47a2f30b6b5db71c7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1900037367}
 --- !u!1 &1900525820
 GameObject:
   m_ObjectHideFlags: 0
@@ -86904,7 +86867,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1903855996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -86964,7 +86926,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1904410849
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -87347,7 +87308,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1909787896
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -87645,7 +87605,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1919064450
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89185,7 +89144,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1944310668
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90419,7 +90377,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &1977052602
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -91722,7 +91679,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &2009798665
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -92733,7 +92689,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &2032339504
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -93761,7 +93716,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &2050502428
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -95405,7 +95359,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &2105946604
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -96268,7 +96221,6 @@ MonoBehaviour:
   unpassable: 0
   clearable: 0
   isStartTile: 0
-  tileFlags: 0
 --- !u!65 &2124962491
 BoxCollider:
   m_ObjectHideFlags: 0
