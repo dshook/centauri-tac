@@ -3,10 +3,10 @@ import _ from 'lodash';
 import Enum from 'enum';
 
 var Direction = Enum({
-  North: 1,
-  East : 2,
-  South: 3,
-  West : 4
+  North: 1, //plus z
+  East : 2, //plus x
+  South: 3, //minus z
+  West : 4  //minus x
 });
 export default Direction;
 
@@ -55,4 +55,33 @@ export function faceDirection(position1, position2){
     targetDirection = Direction.South;
   }
   return targetDirection;
+}
+
+//Gets the adjacent tiles for cleave given an attacker position and the direction they're facing
+export function cleavePositions(position, direction){
+  switch(direction)
+  {
+    case 1:
+      return [position.addXYZ(1,0,1), position.addXYZ(-1,0,1)];
+    case 2:
+      return [position.addXYZ(1,0,-1), position.addXYZ(1,0,1)];
+    case 3:
+      return [position.addXYZ(1,0,-1), position.addXYZ(-1,0,-1)];
+    case 4:
+      return [position.addXYZ(-1,0,-1), position.addXYZ(-1,0,1)];
+  }
+}
+
+export function piercePositions(position, direction){
+  switch(direction)
+  {
+    case 1:
+      return [position.addZ(2), position.addZ(3)];
+    case 2:
+      return [position.addX(2), position.addX(3)];
+    case 3:
+      return [position.addZ(-2), position.addZ(-3)];
+    case 4:
+      return [position.addX(-2), position.addX(-3)];
+  }
 }

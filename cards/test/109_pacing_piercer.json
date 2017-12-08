@@ -1,0 +1,11 @@
+{
+	"cardTemplateId": 109,
+	"name": "Pacing Piercer",
+	"description": "<b>Piercing</b>",
+	"cost": 1,
+	"attack": 1,
+	"health": 3,
+	"movement": 3,
+  "statuses": 8192,
+	"tags": ["Minion"]
+}

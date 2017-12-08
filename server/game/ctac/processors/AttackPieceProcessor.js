@@ -2,9 +2,10 @@ import Statuses from '../models/Statuses.js';
 import AttackPiece from '../actions/AttackPiece.js';
 import PieceHealthChange from '../actions/PieceHealthChange.js';
 import PieceStatusChange from '../actions/PieceStatusChange.js';
-import {faceDirection} from '../models/Direction.js';
+import TilesCleared from '../actions/TilesCleared.js';
 import loglevel from 'loglevel-decorator';
 import Message from '../actions/Message.js';
+import {faceDirection, cleavePositions, piercePositions} from '../models/Direction.js';
 
 /**
  * Handle the units attacking each other
@@ -124,6 +125,28 @@ export default class AttackPieceProcessor
       //if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
       if(!(target.statuses & Statuses.Paralyze)){
         queue.push(new PieceHealthChange({pieceId: action.attackingPieceId, change: -target.attack}));
+      }
+    }
+
+    //cleave and piercing checks
+    let extraHitPositions = null;
+    if(attacker.statuses & Statuses.Cleave){
+      extraHitPositions = cleavePositions(attacker.position, attacker.direction);
+    }
+    if(attacker.statuses & Statuses.Piercing){
+      extraHitPositions = piercePositions(attacker.position, attacker.direction);
+    }
+    if(extraHitPositions && extraHitPositions.length){
+      var extraHitPieces = extraHitPositions.map(p => this.pieceState.pieceAt(p.x, p.z)).filter(p => p);
+      for (const extraHitPiece of extraHitPieces) {
+        if(extraHitPiece.playerId === attacker.playerId) continue;
+
+        queue.push(new PieceHealthChange({pieceId: extraHitPiece.id, change: -attacker.attack, bonus, bonusMsg}));
+      }
+
+      let clearableTiles = this.mapState.map.tiles.filter(t => t.clearable && extraHitPositions.some(p => p.tileEquals(t.position)));
+      if(clearableTiles.length){
+        queue.push(new TilesCleared(clearableTiles.map(t => t.position)));
       }
     }
 
