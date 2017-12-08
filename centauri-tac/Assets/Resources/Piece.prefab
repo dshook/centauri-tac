@@ -3984,7 +3984,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114000013246490106
@@ -4006,7 +4006,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114000013440206776
@@ -4185,7 +4185,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114194803189924982
@@ -4207,7 +4207,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114211789312234248
@@ -4229,7 +4229,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114237204014766332
@@ -4251,7 +4251,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114245967567696384
@@ -4273,7 +4273,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114259927835058060
@@ -4295,7 +4295,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114289382707338286
@@ -4339,7 +4339,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114318547130886114
@@ -4361,7 +4361,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114410787825189308
@@ -4383,7 +4383,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114511704512250708
@@ -4443,7 +4443,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114600094903576002
@@ -4499,7 +4499,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114660475336751920
@@ -4521,7 +4521,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114677431585190962
@@ -4543,7 +4543,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114684812061807842
@@ -4565,7 +4565,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114701477925770130
@@ -4587,7 +4587,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114754372273265712
@@ -4609,7 +4609,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114921662135803706
@@ -4631,7 +4631,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: -1
+  _sortingOrder: 1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114971980523315042
@@ -4653,7 +4653,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: 2
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!137 &137777975404110930
