@@ -8,8 +8,6 @@ namespace ctac
 {
     public class MapMediator : Mediator
     {
-        [Inject] public TilesClearedSignal tilesCleared { get; set; }
-
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         [Inject] public MapModel map { get; set; }

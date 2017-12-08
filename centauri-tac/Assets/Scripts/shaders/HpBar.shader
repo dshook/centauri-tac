@@ -21,6 +21,9 @@ Shader "Custom/HpBar"
         //Cull Off ZWrite On ZTest Always
          Tags{"Queue"="Transparent"}
          Blend SrcAlpha OneMinusSrcAlpha
+         Lighting Off	
+         ZWrite Off
+         Cull Off	
 
         Pass
         {

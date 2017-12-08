@@ -501,6 +501,7 @@ namespace ctac
             {
                 selectedPiece.isSelected = false;
                 selectedPiece.pieceView.UpdateHpBar();
+                selectedPiece.pieceView.UpdateSelection(false);
             }
             selectedPiece = pieceSelected;
 
@@ -508,6 +509,7 @@ namespace ctac
             {
                 selectedPiece.isSelected = true;
                 selectedPiece.pieceView.UpdateHpBar();
+                selectedPiece.pieceView.UpdateSelection(true);
             }
         }
 

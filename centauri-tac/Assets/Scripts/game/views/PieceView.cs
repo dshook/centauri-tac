@@ -32,13 +32,15 @@ namespace ctac {
         public GameObject hpBarContainer;
         public GameObject hpBar;
         public GameObject hpBarfill;
-        public SVGAsset hpBarSvg;
+        public SVGRenderer hpBarRenderer;
         public SVGColorModifier hpBarColorModifier;
-        public MeshRenderer hpBarFillRenderer;
+        public SpriteRenderer hpBarFillRenderer;
         private Color32 hpBarFillFriendlyColor = Colors.friendlyColor;
         private Color32 hpBarFillEnemyColor = Colors.enemyColor;
         private GameObject canAttackIndicator;
         private GameObject canMoveIndicator;
+        private SVGRenderer canAttackRenderer;
+        private SVGRenderer canMoveRenderer;
 
         public GameObject faceCameraContainer;
         public GameObject eventIconContainer;
@@ -74,11 +76,13 @@ namespace ctac {
             hpBarContainer = faceCameraContainer.transform.Find("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.Find("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.Find("HpBarFill").gameObject;
-            hpBarFillRenderer = hpBarfill.GetComponent<MeshRenderer>();
+            hpBarFillRenderer = hpBarfill.GetComponent<SpriteRenderer>();
             hpBarColorModifier = hpBar.GetComponent<SVGColorModifier>();
-            hpBarSvg = loader.Load<SVGAsset>("UI/hpbar");
+            hpBarRenderer = hpBar.GetComponent<SVGRenderer>();
             canAttackIndicator = hpBarContainer.transform.Find("canAttack").gameObject;
             canMoveIndicator = hpBarContainer.transform.Find("canMove").gameObject;
+            canAttackRenderer = canAttackIndicator.GetComponent<SVGRenderer>();
+            canMoveRenderer = canMoveIndicator.GetComponent<SVGRenderer>();
 
             textContainer = hpBarContainer.transform.Find("TextContainer").gameObject;
             attackGO = textContainer.transform.Find("Attack").gameObject;
@@ -244,6 +248,7 @@ namespace ctac {
                 canAttackIndicator.SetActive(false);
             }
 
+
             if(canMove){
                 canMoveIndicator.SetActive(true);
             }else{
@@ -277,6 +282,29 @@ namespace ctac {
             if (piece.baseHealth > hpBarHpCuttoff)
             {
                 hpBarFillRenderer.material.SetColor("_LineColor", Color.white);
+            }
+        }
+
+        //Brute force changing all the sorting orders for things that need to appear in front of the other hp bar shiet
+        //Reset everything back to normal once this piece isn't selected anymore
+        public void UpdateSelection(bool isSelected)
+        {
+            int sortChange = isSelected ? 10 : -10;
+
+            attackText.sortingOrder += sortChange;
+            healthText.sortingOrder += sortChange;
+            armorText.sortingOrder += sortChange;
+            hpBarRenderer.sortingOrder += sortChange;
+            hpBarFillRenderer.sortingOrder += sortChange;
+            canAttackRenderer.sortingOrder += sortChange;
+            canMoveRenderer.sortingOrder += sortChange;
+
+            //also all the status icons
+            foreach(var icon in statusIcons.Values){
+                var iconRenderers = icon.GetComponents<SVGRenderer>();
+                foreach(var renderer in iconRenderers){
+                    renderer.sortingOrder += sortChange;
+                }
             }
         }
 
