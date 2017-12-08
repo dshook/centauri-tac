@@ -11,7 +11,7 @@ namespace ctac
 
         Tile hoveredTile = null;
         Tile selectedTile = null;
-        Tile attackTile = null;
+        List<Tile> attackTiles = null;
 
         public GameObject tileCursor = null; 
 
@@ -39,17 +39,27 @@ namespace ctac
             }
         }
 
-        internal void onAttackTile(Tile newTile)
+        internal void onAttackTile(List<Tile> newTiles)
         {
-            if (attackTile != null)
+            if (attackTiles != null)
             {
-                FlagsHelper.Unset(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
+                foreach (var tile in attackTiles)
+                {
+                    if(tile == null) continue;
+                    FlagsHelper.Unset(ref tile.highlightStatus, TileHighlightStatus.Attack);
+                    tile.pieceIndicatorView.SetStatus(false);
+                }
             }
 
-            attackTile = newTile;
-            if (attackTile != null)
+            attackTiles = newTiles;
+            if (attackTiles != null)
             {
-                FlagsHelper.Set(ref attackTile.highlightStatus, TileHighlightStatus.Attack);
+                foreach (var tile in attackTiles)
+                {
+                    if(tile == null) continue;
+                    FlagsHelper.Set(ref tile.highlightStatus, TileHighlightStatus.Attack);
+                    tile.pieceIndicatorView.SetStatus(true, true);
+                }
             }
         }
 

@@ -19,8 +19,11 @@ namespace ctac
         List<Tile> FindMovePath(PieceModel piece, PieceModel attackingPiece, Tile end);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
         Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null);
+        List<Tile> CleavePositions(Vector2 position, Direction direction);
+        List<Tile> PiercePositions(Vector2 position, Direction direction);
         bool isHeightPassable(Tile start, Tile end);
         Tile Tile(Vector2 position);
+        Direction FaceDirection(Vector2 start, Vector2 end);
     }
 
     public class MapService : IMapService
@@ -514,6 +517,81 @@ namespace ctac
             return ret;
         }
 
+        public List<Tile> CleavePositions(Vector2 position, Direction direction)
+        {
+            List<Vector2> positions = null;
+            switch(direction)
+            {
+                case Direction.North:
+                    positions = new List<Vector2>(){position.Add(1,1), position.Add(-1,1)};
+                    break;
+                case Direction.East:
+                    positions = new List<Vector2>(){position.Add(1,-1), position.Add(1,1)};
+                    break;
+                case Direction.South:
+                    positions = new List<Vector2>(){position.Add(1,-1), position.Add(-1,-1)};
+                    break;
+                case Direction.West:
+                    positions = new List<Vector2>(){position.Add(-1,-1), position.Add(-1,1)};
+                    break;
+            }
+            var attackTiles = new List<Tile>();
+            positions.ForEach(p => {
+                var tile = mapModel.tiles.Get(p);
+                if(tile != null) attackTiles.Add(tile);
+            });
+            return attackTiles;
+        }
+
+        public List<Tile> PiercePositions(Vector2 position, Direction direction)
+        {
+            List<Vector2> positions = null;
+            switch(direction)
+            {
+                case Direction.North:
+                    positions = new List<Vector2>(){ position.AddY(2), position.AddY(3)};
+                    break;
+                case Direction.East:
+                    positions = new List<Vector2>(){position.AddX(2), position.AddX(3)};
+                    break;
+                case Direction.South:
+                    positions = new List<Vector2>(){position.AddY(-2), position.AddY(-3)};
+                    break;
+                case Direction.West:
+                    positions = new List<Vector2>(){position.AddX(-2), position.AddX(-3)};
+                    break;
+            }
+            var attackTiles = new List<Tile>();
+            positions.ForEach(p => {
+                var tile = mapModel.tiles.Get(p);
+                if(tile != null) attackTiles.Add(tile);
+            });
+            return attackTiles;
+        }
+
+        //If a piece goes from start to end what direction will they be facing at end?
+        public Direction FaceDirection(Vector2 start, Vector2 end)
+        {
+            var difference = end - start;
+            var targetDirection = Direction.South;
+            if (difference.x > 0)
+            {
+                targetDirection = Direction.East;
+            }
+            else if (difference.x < 0)
+            {
+                targetDirection = Direction.West;
+            }
+            else if (difference.y > 0)
+            {
+                targetDirection = Direction.North;
+            }
+            else if (difference.y < 0)
+            {
+                targetDirection = Direction.South;
+            }
+            return targetDirection;
+        }
     }
 }
 

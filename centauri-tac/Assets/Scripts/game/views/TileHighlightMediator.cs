@@ -69,7 +69,24 @@ namespace ctac
 
                 if (enemyOccupyingDest != null && path != null )
                 {
-                    view.onAttackTile(tile);
+                    var attackTiles = new List<Tile>(){tile};
+                    if(selectedPiece.isMelee){
+                        //work out what direction the piece will be facing if they walk over and attack
+                        var endPosition = path.Count > 1 ? path[path.Count - 2].position : selectedPiece.tilePosition;
+                        var endDirection = mapService.FaceDirection( 
+                            endPosition,
+                            path[path.Count - 1].position
+                        );
+                        if ((selectedPiece.statuses & Statuses.Cleave) != 0)
+                        {
+                            attackTiles.AddRange(mapService.CleavePositions(endPosition, endDirection));
+                        }
+                        if ((selectedPiece.statuses & Statuses.Piercing) != 0)
+                        {
+                            attackTiles.AddRange(mapService.PiercePositions(endPosition, endDirection));
+                        }
+                    }
+                    view.onAttackTile(attackTiles);
                 }
                 else
                 {
@@ -233,19 +250,33 @@ namespace ctac
                 updatePieceMoveRange(null, null);
             }
 
-            //attacking enemy at range
+            //attacking enemy 
             if (
                 selectedPiece != null
                 && selectedPiece.attackCount < selectedPiece.maxAttacks
                 && piece != null
                 && piece != selectedPiece
-                && selectedPiece.isRanged
+                && piece.playerId != selectedPiece.playerId
                 )
             {
-                if (mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition)
-                    <= selectedPiece.range.Value)
+                var tileDistance = mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition);
+
+                if (selectedPiece.isRanged && tileDistance <= selectedPiece.range.Value)
                 {
-                    view.onAttackTile(gameTile);
+                    view.onAttackTile( new List<Tile>(){gameTile});
+                }
+                else if(selectedPiece.isMelee && tileDistance == 1)
+                {
+                    var attackTiles = new List<Tile>(){gameTile};
+                    if ((selectedPiece.statuses & Statuses.Cleave) != 0)
+                    {
+                        attackTiles.AddRange(mapService.CleavePositions(selectedPiece.tilePosition, selectedPiece.direction));
+                    }
+                    if ((selectedPiece.statuses & Statuses.Piercing) != 0)
+                    {
+                        attackTiles.AddRange(mapService.PiercePositions(selectedPiece.tilePosition, selectedPiece.direction));
+                    }
+                    view.onAttackTile(attackTiles);
                 }
                 else
                 {

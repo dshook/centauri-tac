@@ -22,7 +22,7 @@ namespace ctac {
 
         Color hoverTint = new Color(.2f, .2f, .2f, .2f);
         Color selectColor = new Color(.4f, .9f, .4f);
-        Color moveColor = new Color(.4f, .4f, .9f);
+        //Color moveColor = new Color(.4f, .4f, .9f);
         Color moveRangeColor = ColorExtensions.HexToColor("D2D2FF");
         Color pathFindColor = ColorExtensions.HexToColor("7478FF");
         Color attackRangeColor = ColorExtensions.HexToColor("FF5656");
