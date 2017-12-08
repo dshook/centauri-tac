@@ -1922,6 +1922,34 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 23462210471247976, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23462210471247976, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23000011363838452, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 33593127258984424, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205082352247676, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 111524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
   m_IsPrefabParent: 0
@@ -2809,7 +2837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _downsampleFactor: 1
-  _iterations: 2
+  _iterations: 1
   _blurMinSpread: 1
   _blurSpread: 0
   _blurIntensity: 1
@@ -3306,6 +3334,45 @@ Prefab:
         type: 2}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 23000011363838452, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 111524, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1205082352247676, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23462210471247976, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23462210471247976, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 33593127258984424, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011425666868, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: _vectorGraphics
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b9b9c3943cb72845907193b4f68b9b7,
+        type: 2}
+    - target: {fileID: 114000011425666868, guid: cba6996ea37aeb146a29ca965ab470cf,
+        type: 2}
+      propertyPath: _lastTimeModified
+      value: 299751309
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cba6996ea37aeb146a29ca965ab470cf, type: 2}

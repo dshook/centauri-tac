@@ -29,6 +29,7 @@ namespace ctac {
         Color attackColor = new Color(.9f, .4f, .4f);
         Color dimmedColor = new Color(.3f, .3f, .3f, .3f);
         Color disabledColor = ColorExtensions.HexToColor("4d4d4d");
+        Color disabledAttackColor = ColorExtensions.HexToColor("6d6d6d");
 
 //#pragma warning disable
 //        [SerializeField]
@@ -94,7 +95,7 @@ namespace ctac {
 
             if ((tile.highlightStatus & TileHighlightStatus.AttackRangeTotal) != 0)
             {
-                desiredAttackColor = disabledColor;
+                desiredAttackColor = disabledAttackColor;
             }
             if ((tile.highlightStatus & TileHighlightStatus.AttackRange) != 0)
             {

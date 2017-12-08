@@ -59,7 +59,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 1}
+  m_LocalPosition: {x: 0, y: 0.64, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 475708}
@@ -360,8 +360,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _type: 0
-  _lastTimeModified: 636077701453004904
-  _vectorGraphics: {fileID: 11400000, guid: 4074c1c45bd351c479355b08a915c2aa, type: 2}
+  _lastTimeModified: 636483513270261645
+  _vectorGraphics: {fileID: 11400000, guid: 5b9b9c3943cb72845907193b4f68b9b7, type: 2}
   _color: {r: 0.9558824, g: 0.20382789, b: 0.25050712, a: 1}
   _opaqueMaterial: {fileID: 0}
   _transparentMaterial: {fileID: 0}
