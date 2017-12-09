@@ -17914,7 +17914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1541362522
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18660,7 +18660,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 27
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!1 &1629100883
 GameObject:
@@ -22109,10 +22109,10 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0.024752498
-    width: 1
-    height: 0.950495
+    x: 0.04453212
+    y: 0
+    width: 0.91093576
+    height: 1
   near clip plane: 0.3
   far clip plane: 30
   field of view: 60
@@ -23498,10 +23498,10 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
-    y: 0.024752498
-    width: 1
-    height: 0.950495
+    x: 0.04453212
+    y: 0
+    width: 0.91093576
+    height: 1
   near clip plane: 90
   far clip plane: 1600
   field of view: 60
