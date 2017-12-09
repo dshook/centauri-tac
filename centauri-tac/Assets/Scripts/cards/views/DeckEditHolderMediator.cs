@@ -38,7 +38,7 @@ namespace ctac
         public void onEditDeck(DeckModel deck)
         {
             view.EditDeck(deck);
-            active = true;
+            active = deck != null;
         }
 
         [ListensTo(typeof(SaveDeckSignal))]
