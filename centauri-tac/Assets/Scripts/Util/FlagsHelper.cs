@@ -1,4 +1,6 @@
-﻿namespace ctac
+﻿using System;
+
+namespace ctac
 {
     // The casts to object in the below code are an unfortunate necessity due to
     // C#'s restriction against a where T : Enum constraint. (There are ways around
@@ -28,6 +30,16 @@
             int flagValue = (int)(object)flag;
 
             flags = (T)(object)(flagsValue & (~flagValue));
+        }
+
+        public static T TryParse<T>(string valueToParse, T defaultValue)
+        {
+            var returnValue = defaultValue;
+            if (Enum.IsDefined(typeof(T), valueToParse))
+            {
+                returnValue = (T)Enum.Parse(typeof(T), valueToParse);
+            }
+            return returnValue;
         }
     }
 }

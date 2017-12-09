@@ -19,6 +19,11 @@ namespace ctac
             {
                 string cardText = File.ReadAllText(file);
                 var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
+
+                //figure out card set based on folder it's in
+                var lastDirectory = Directory.GetParent(file).Name;
+                cardTemplate.cardSet = FlagsHelper.TryParse(lastDirectory, CardSets.none);
+
                 AddCard(cardTemplate);
             }
         }

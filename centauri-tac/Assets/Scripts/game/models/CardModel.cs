@@ -26,6 +26,8 @@ namespace ctac
 
         public List<CardBuffModel> buffs { get; set; }
 
+        [JsonIgnore]
+        public CardSets cardSet { get; set; }
 
         [JsonIgnore]
         public GameObject gameObject { get; set; }

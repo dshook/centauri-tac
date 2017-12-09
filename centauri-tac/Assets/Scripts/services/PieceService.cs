@@ -99,6 +99,7 @@ namespace ctac
                 range = cardTemplate.range,
                 baseRange = cardTemplate.range,
                 tags = spawnedPiece.tags ?? cardTemplate.tags,
+                cardSet = cardTemplate.cardSet,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses | (cardTemplate.range.HasValue ? Statuses.isRanged : Statuses.None),
             };
@@ -130,6 +131,7 @@ namespace ctac
             dest.tags = src.tags;
             dest.statuses = src.statuses | (src.range.HasValue ? Statuses.isRanged : Statuses.None);
             dest.buffs = src.buffs;
+            dest.cardSet = src.cardSet;
         }
 
         public void CopyPieceToCard(PieceModel src, CardModel dest, bool link)
@@ -146,6 +148,7 @@ namespace ctac
             dest.movement = src.movement;
             dest.range = src.range;
             dest.tags = src.tags;
+            dest.cardSet = src.cardSet;
             dest.statuses = src.statuses | (src.range.HasValue ? Statuses.isRanged : Statuses.None);
             dest.metCondition = false;
 

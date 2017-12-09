@@ -117,6 +117,7 @@ namespace ctac
             dest.statuses = src.statuses;
             dest.rarity = src.rarity;
             dest.race = src.race;
+            dest.cardSet = src.cardSet;
         }
     }
 }

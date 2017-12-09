@@ -47,6 +47,9 @@ namespace ctac
         public bool isSelected { get; set; }
 
         [JsonIgnore]
+        public CardSets cardSet { get; set; }
+
+        [JsonIgnore]
         public int maxAttacks
         {
             get
