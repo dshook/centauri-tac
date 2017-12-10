@@ -75,7 +75,7 @@ namespace ctac
 
         static Dictionary<Races, string> starterDeckNames = new Dictionary<Races, string>()
         {
-            {Races.Venusians, "Victory by Patience" },
+            {Races.Vae, "Victory by Patience" },
             {Races.Earthlings, "Easy PZ" },
             {Races.Martians, "March to Victory" },
             {Races.Grex, "Gratuitous Explosions" },

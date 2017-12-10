@@ -6,7 +6,7 @@ namespace ctac
     public enum Races
     {
         Neutral = 0,
-        Venusians = 1,
+        Vae = 1,
         Earthlings = 2,
         Martians = 3,
         Grex = 4,

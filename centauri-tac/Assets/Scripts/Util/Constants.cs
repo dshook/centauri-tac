@@ -22,9 +22,13 @@ namespace ctac
 
         public static List<string> eventTags = new List<string>()
         {
-            "playMinion","death","damaged","healed","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded"
+            "playMinion","death","damaged","healed","attacks","ability","cardDrawn","turnEnd","turnStart","playSpell","cardDiscarded","chargeChange"
         };
 
+        public static List<string> autoCardTags = new List<string>()
+        {
+            "Minion", "Ranged", "Melee"
+        };
 
         public static Vector3 cardCircleCenter = new Vector3(0, -590, 332);
         public static Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
@@ -38,7 +42,7 @@ namespace ctac
         public static Dictionary<Races, string> RaceIconPaths = new Dictionary<Races, string>()
         {
             { Races.Neutral, "UI/faction icons/faction_Neutral"},
-            { Races.Venusians, "UI/faction icons/faction_Venusians"},
+            { Races.Vae, "UI/faction icons/faction_Venusians"},
             { Races.Earthlings, "UI/faction icons/faction_Earthlings" },
             { Races.Martians, "UI/faction icons/faction_Martians"},
             { Races.Grex, "UI/faction icons/faction_Grex"},

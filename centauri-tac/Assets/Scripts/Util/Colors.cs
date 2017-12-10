@@ -45,7 +45,7 @@ namespace ctac
         public static Dictionary<Races, Color32> RacePrimaries = new Dictionary<Races, Color32>()
         {
             { Races.Neutral, ColorExtensions.HexToColor("#000000") },
-            { Races.Venusians, ColorExtensions.HexToColor("FFEC2A") },
+            { Races.Vae, ColorExtensions.HexToColor("FFEC2A") },
             { Races.Earthlings, ColorExtensions.HexToColor("#1100C5") },
             { Races.Martians, ColorExtensions.HexToColor("#EF3100") },
             { Races.Grex, ColorExtensions.HexToColor("#3F1D0B") },
@@ -56,7 +56,7 @@ namespace ctac
         public static Dictionary<Races, Color32> RaceSecondaries = new Dictionary<Races, Color32>()
         {
             { Races.Neutral, ColorExtensions.HexToColor("#808080") },
-            { Races.Venusians, ColorExtensions.HexToColor("#FFFFFF") },
+            { Races.Vae, ColorExtensions.HexToColor("#FFFFFF") },
             { Races.Earthlings, ColorExtensions.HexToColor("#238B00") },
             { Races.Martians, ColorExtensions.HexToColor("#FBA700") },
             { Races.Grex, ColorExtensions.HexToColor("#16B063") },

@@ -7,6 +7,7 @@
 	"health": 2,
 	"movement": 3,
 	"tags": ["Minion"],
+	"race": 6,
 	"eventcode": "
 		playMinion{
 			Buff(MINION & TARGET, 'Help the Needy', attack(-2) )

@@ -143,7 +143,8 @@ namespace ctac {
 
                 //check for tribes
                 //whitelist/blacklist/or new field for tribes?  blacklist tags for now
-                var tribeTag = card.tags.Where(t => t != "Minion" && !Constants.eventTags.Contains(t)).FirstOrDefault();
+                
+                var tribeTag = card.tags.Where(t => !Constants.autoCardTags.Contains(t) && !Constants.eventTags.Contains(t)).FirstOrDefault();
                 if (tribeTag != null)
                 {
                     tribeText.text = tribeTag;

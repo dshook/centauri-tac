@@ -85,7 +85,7 @@ namespace ctac
             saveDeckButton.onClick.AddListener(onSaveDeckClick);
             deleteDeckButton.onClick.AddListener(onDeleteDeckClick);
 
-            venusiansButton.onClick.AddListener(() => onFactionSelect(Races.Venusians));
+            venusiansButton.onClick.AddListener(() => onFactionSelect(Races.Vae));
             earthlingsButton.onClick.AddListener(() => onFactionSelect(Races.Earthlings));
             martiansButton.onClick.AddListener(() => onFactionSelect(Races.Martians));
             grexButton.onClick.AddListener(() => onFactionSelect(Races.Grex));
@@ -102,7 +102,7 @@ namespace ctac
             //manually wire this up for now
             raceToggles = new Dictionary<Races, Toggle>()
             {
-                {Races.Venusians, venusiansToggle },
+                {Races.Vae, venusiansToggle },
                 {Races.Earthlings, earthlingsToggle },
                 {Races.Martians, martiansToggle },
                 {Races.Grex, grexToggle },
