@@ -1,5 +1,6 @@
 using strange.extensions.mediation.impl;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -17,6 +18,7 @@ namespace ctac
 
         int cardCanvasLayer = -1;
         int tileLayer = -1;
+        int uiLayer = 5;
         new void Awake()
         {
             base.Awake();
@@ -35,9 +37,19 @@ namespace ctac
             model.cardCanvasHit = null;
 
             //Ignore any raycasts if we're over a UI object
+            //Have to do this wrangling to see if we're actually over a UI layer object and not something else the 
+            //event system thinks it controls
             if (eventSystem.IsPointerOverGameObject() && !enableUICasts)
             {
-                return;
+                PointerEventData pointerData = new PointerEventData(eventSystem);
+                pointerData.position = CrossPlatformInputManager.mousePosition;
+
+                var results = new List<RaycastResult>();
+                eventSystem.RaycastAll(pointerData, results);
+                if (results.Count > 0 && results.Any(r => r.gameObject.layer == uiLayer))
+                {
+                    return;
+                }
             }
 
             //test click position to see if we hit the ground
