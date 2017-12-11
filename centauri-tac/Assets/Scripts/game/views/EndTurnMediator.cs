@@ -21,6 +21,8 @@ namespace ctac
         [Inject] public TurnEndedSignal turnEnded { get; set; }
         [Inject] public MoveCameraToTileSignal moveCamSignal { get; set; }
 
+        [Inject] public CardSelectedSignal cardSelected { get; set; }
+        [Inject] public PieceSpawningSignal pieceSpawning { get; set; }
 
         [Inject] public ISocketService socket { get; set; }
         [Inject] public IDebugService debug { get; set; }
@@ -82,6 +84,10 @@ namespace ctac
         {
             var text = "End Turn";
             view.onTurnEnded(text);
+
+            //also cancel any other actions that could still be going on from the last turn
+            cardSelected.Dispatch(null);
+            pieceSpawning.Dispatch(null);
         }
 
         [ListensTo(typeof(ActionKickoffSignal))]
