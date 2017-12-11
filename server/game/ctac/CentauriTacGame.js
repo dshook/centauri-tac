@@ -6,6 +6,7 @@ import DrawCard from './actions/DrawCard.js';
 import SpawnDeck from './actions/SpawnDeck.js';
 //import Position from './models/Position.js';
 import Direction from './models/Direction.js';
+import { clearTimeout } from 'timers';
 
 /**
  * Root controller deal for the game. Manage's state
@@ -47,8 +48,17 @@ export default class CentauriTacGame
     //maybe someday there will be more players...
     if (this.players.length !== 2) {
       this.log.info('waiting for both players to join before starting');
+
+      //set waiting time for other players to join
+      this.playerConnectTimeout = setTimeout(() => {
+        this.log.info('Player connect timeout expired. Giving the win to %s', this.players[0].id);
+        this.hostManager.completeGame(this.players[0].id, 'Your opponent never connected :(');
+        }
+        , 30000);
       return;
     }
+
+    clearTimeout(this.playerConnectTimeout);
 
     this.log.info('starting game!');
 

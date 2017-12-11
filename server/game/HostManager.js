@@ -48,12 +48,12 @@ export default class HostManager
   /**
    * Game won/lost
    */
-  async completeGame(winningPlayerId)
+  async completeGame(winningPlayerId, message)
   {
     this.log.info('Player %s won!', winningPlayerId);
 
     const gameId = this.game.id;
-    await this.emitter.emit('game:completed', {gameId, winningPlayerId});
+    await this.emitter.emit('game:completed', {gameId, winningPlayerId, message});
   }
 
   /**

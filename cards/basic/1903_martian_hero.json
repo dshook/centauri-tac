@@ -4,7 +4,7 @@
 	"description": "<b>Ability(2)</b>: Give a friendly minion +1/+1",
 	"cost": 0,
 	"attack": 2,
-	"health": 50,
+	"health": 30,
 	"movement": 2,
   "race": 3,
 	"tags": ["Hero"],

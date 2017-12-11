@@ -166,7 +166,7 @@ export default class GameManager
 
     // no longer active (zombie game)
     if (!game) {
-      await this.completeGame(game.id, null);
+      await this.completeGame(game.id, null, '');
       return;
     }
 
@@ -175,7 +175,7 @@ export default class GameManager
 
     let winner = (gamePlayers || []).find(p => p.id !== playerId);
 
-    await this.completeGame(game.id, winner ? winner.id : null);
+    await this.completeGame(game.id, winner ? winner.id : null, 'Your opponent disconnected :(');
 
     // Broadcast updated model
     await this.emitter.emit('game', game);
@@ -193,9 +193,9 @@ export default class GameManager
   /**
    * Complete a game and assign a winner
    */
-  async completeGame(gameId, winningPlayerId = null)
+  async completeGame(gameId, winningPlayerId, message)
   {
-    this.log.info('completing game %s with winner %s', gameId, '' + winningPlayerId);
+    this.log.info('completing game %s with winner %s message %s', gameId, '' + winningPlayerId, message);
 
     // remove from registry
     await this.games.complete(gameId, winningPlayerId);
@@ -217,6 +217,7 @@ export default class GameManager
       player.client.send('game:finished', {
           id: 99999,
           winnerId: winningPlayerId,
+          message: message || (player.id === winningPlayerId ? 'Victory!' : 'Defeat :(')
         }
       );
     }

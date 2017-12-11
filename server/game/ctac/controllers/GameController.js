@@ -236,7 +236,7 @@ export default class GameController
       let winner = this.players.find(w => w.id != loser);
       this.log.info('player %s LOSES, player %s WINS!', loser, winner.id);
       this.gameEventService.shutdown();
-      this.hostManager.completeGame(winner.id);
+      this.hostManager.completeGame(winner.id, null);
     }
   }
 

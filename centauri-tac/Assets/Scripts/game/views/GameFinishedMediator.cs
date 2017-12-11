@@ -32,18 +32,7 @@ namespace ctac
         {
             gameInputStatus.inputEnabled = false;
 
-            if (gameFinished.isDisconnect)
-            {
-                view.onFinish("Disconnected from server :(");
-            }
-            else if (gameFinished.winnerId == players.Me.id)
-            {
-                view.onFinish("Victory!");
-            }
-            else
-            {
-                view.onFinish("Defeat :(");
-            }
+            view.onFinish(gameFinished.message);
         }
 
         private void onLeaveClicked()
@@ -56,7 +45,7 @@ namespace ctac
         {
             //For now game is over on DC
             debug.Log("Finishing game from disconnect");
-            gameFinished.Dispatch(new GameFinishedModel() { id = 9999, winnerId = -1, isDisconnect = true });
+            gameFinished.Dispatch(new GameFinishedModel() { id = 9999, winnerId = -1, message = "Disconnected from server :(", isDisconnect = true });
         }
     }
 }

@@ -27,9 +27,9 @@ export default class GameRPC
    * Game completed message
    */
   @on('game:completed')
-  async completed({gameId, winningPlayerId})
+  async completed({gameId, winningPlayerId, message})
   {
-    await this.manager.completeGame(gameId, winningPlayerId);
+    await this.manager.completeGame(gameId, winningPlayerId, message);
   }
 
   /**
