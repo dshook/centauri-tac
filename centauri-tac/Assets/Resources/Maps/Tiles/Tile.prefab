@@ -59,7 +59,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 160946}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.64, z: 2}
+  m_LocalPosition: {x: 0, y: 0.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 475708}
@@ -367,7 +367,7 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: -1
   _overrideSorter: 0
   _overrideSorterChildren: 0
 --- !u!114 &114156432622125514
@@ -425,6 +425,6 @@ MonoBehaviour:
   _transparentMaterial: {fileID: 0}
   _sortingLayerID: 0
   _sortingLayerName: 
-  _sortingOrder: 0
+  _sortingOrder: -1
   _overrideSorter: 0
   _overrideSorterChildren: 0
