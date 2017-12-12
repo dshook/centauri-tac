@@ -39,5 +39,11 @@ build-client-win:
 build-client-win-dev:
 	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.WinDevBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
 
+build-client-osx:
+	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.MacBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
+
+build-client-osx-dev:
+	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.MacDevBuild -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
+
 build-client-all:
 	"C:\Program Files\Unity\Editor\Unity.exe" -batchmode -quit -executeMethod BuildScript.BuildAll -projectPath "C:\Users\dillo_000.DILLON\Documents\Programming\centauri-tac\centauri-tac"
