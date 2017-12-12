@@ -220,7 +220,7 @@ possibleRandSelector
   : selector
   | targetExpr
      { $$ = { left: $1}; }
-  | random'('target')'
+  | random'('targetExpr')'
      { $$ = { random: true, selector: { left: $3} }; }
   | random'('selector')'
      { $$ = { random: true, selector: $3 }; }
