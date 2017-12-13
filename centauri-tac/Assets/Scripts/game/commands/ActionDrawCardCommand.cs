@@ -39,6 +39,7 @@ namespace ctac
             if(existingCard != null){
                 if (cardDraw.cardTemplateId.HasValue) {
                     cardService.CopyCard(cardDirectory.Card(cardDraw.cardTemplateId.Value), existingCard);
+                    cardService.UpdateCardArt(existingCard);
                     existingCard.playerId = cardDraw.playerId;
                 }
                 return;
