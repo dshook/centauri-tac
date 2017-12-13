@@ -2,6 +2,8 @@
 using UnityStandardAssets.CrossPlatformInput;
 using strange.extensions.mediation.impl;
 using System;
+using System.Collections;
+using System.Linq;
 
 namespace ctac
 {
@@ -27,6 +29,7 @@ namespace ctac
 
         Vector3 rotateOrigin;
         bool rotateDragging = false;
+        float rotateTimer = 0f;
 
         public void Init(RaycastModel rm)
         {
@@ -37,6 +40,8 @@ namespace ctac
 
         void Update()
         {
+            rotateTimer += Time.deltaTime;
+
             cam.orthographicSize = Mathf.Lerp(CameraOrthoSize(), cam.orthographicSize, 0.5f);
 
             UpdateRotation();
@@ -48,6 +53,15 @@ namespace ctac
 
         void UpdateRotation()
         {
+            if (CrossPlatformInputManager.GetAxis("Rotation") > 0.2)
+            {
+               KeyRotateCamera(true);
+            }
+            if (CrossPlatformInputManager.GetAxis("Rotation") < -0.2)
+            {
+               KeyRotateCamera(false);
+            }
+
             var updateRotateOrigin = true;
             if (rotateDragging)
             {
@@ -105,6 +119,49 @@ namespace ctac
             return !amtToSnap.HasValue;
         }
 
+        private void KeyRotateCamera(bool rotateLeft)
+        {
+            if(rotateTimer < 1f) return;
+
+            rotateTimer = 0f;
+
+            //find the point the camera is looking at on an imaginary plane at 0f height
+            LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
+
+            //then rotate around it
+            var destCameraAngle = rotateLeft ? -90f : 90f;
+
+            //find the nearest snap angle and compensate our dest angle
+            var finalCameraAngle = cam.transform.rotation.eulerAngles.y + destCameraAngle;
+            if (finalCameraAngle < 0) { finalCameraAngle += 360; }
+            if (finalCameraAngle > 360) { finalCameraAngle -= 360; }
+
+            var closestSnap = snapPositions.OrderBy(p => Math.Abs(finalCameraAngle - p)).First();
+            destCameraAngle += closestSnap - finalCameraAngle;
+
+            StartCoroutine(SmoothRotateCamera(rotateWorldPosition, Vector3.up, destCameraAngle, 0.8f));
+        }
+
+        public IEnumerator SmoothRotateCamera(Vector3 point, Vector3 axis, float angle, float time)
+        {
+            var step = 0.0f; //non-smoothed
+            var rate = 1.0f / time; //amount to increase non-smooth step by
+            var smoothStep = 0.0f; //smooth step this time
+            var lastStep = 0.0f; //smooth step last time
+            while (step < 1.0)
+            { // until we're done
+                step += Time.deltaTime * rate; //increase the step
+                smoothStep = Mathf.SmoothStep(0.0f, 1.0f, step); //get the smooth step
+                cam.transform.RotateAround(point, axis, angle * (smoothStep - lastStep));
+                lastStep = smoothStep; //store the smooth step
+                yield return null;
+            }
+            //finish any left-over
+            if (step > 1.0)
+                cam.transform.RotateAround(point, axis, angle * (1.0f - lastStep));
+        }
+
+
         void UpdateZoom()
         {
             if (!zoomEnabled) { return; }
@@ -155,6 +212,7 @@ namespace ctac
             if (CrossPlatformInputManager.GetAxis("Vertical")   < -camPanThreshold) { cam.transform.position -= upDownMoveDirection * camPanSpeed * Time.deltaTime; }
             //left
             if (CrossPlatformInputManager.GetAxis("Horizontal") < -camPanThreshold) { cam.transform.position -= rightLeftMoveDirection * camPanSpeed * Time.deltaTime; }
+
 
             if (CrossPlatformInputManager.GetButtonUp("Fire1"))
             {
