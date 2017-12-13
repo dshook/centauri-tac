@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: energybar
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636233220157038276
+  _lastTimeModified: 636487232861341959
   _documentAsset: {fileID: 114000010295169604}
-  _sharedMesh: {fileID: 43565277461621628}
+  _sharedMesh: {fileID: 43081465214376290}
   _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
   _colliderShape: []
-  _format: 1
+  _format: 2
   _useGradients: 1
   _meshCompression: 0
   _optimizeMesh: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
     height: 2
   _useLayers: 0
   _layers: []
---- !u!43 &43565277461621628
+--- !u!43 &43081465214376290
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

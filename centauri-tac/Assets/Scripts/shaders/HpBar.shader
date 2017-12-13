@@ -87,7 +87,7 @@ Shader "Custom/HpBar"
             fixed4 frag (Frag i) : SV_Target
             {
                 fixed4 c = _Color;
-                float spacing = (1.0 - _Slope - _StartOffset - _EndOffset) / _MaxHp;
+                float spacing = (1.0 - _Slope - _StartOffset - (_EndOffset / 2) - (_EndLineWidth * 2)) / _MaxHp;
 
                 //cut off beginning section
                 if(i.uv.x - _StartOffset - (i.uv.y * _Slope) + _LineWidth < 0){
@@ -99,7 +99,8 @@ Shader "Custom/HpBar"
                     i.uv.x 
                     + ((_MaxHp - _CurrentHp) * spacing ) //factor for how much hp is missing
                     + ((1 - i.uv.y) * _Slope) //angle it
-                    + _EndOffset 
+                    + (_EndOffset / 2)
+                    + (_EndLineWidth * 2)
                     - (_LineWidth * 2) //give the last line some breathing room
                     > 1
                 ){
@@ -114,12 +115,13 @@ Shader "Custom/HpBar"
                     float xPos = itr * spacing + _StartOffset;
                     c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), c, _LineColor, _LineWidth);
                 }
-                //draw final line
-                float xPos = _CurrentHp * spacing + _StartOffset + _LineWidth;
-                c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), c, _LineColor, _LineWidth);
 
                 //draw end color line
                 c += drawLine(p, float2(1 - _EndOffset - _EndLineWidth, 0), float2(1 - _EndOffset + _Slope - _EndLineWidth, 1), c, _EndColor, _EndLineWidth);
+
+                //draw final line
+                float xPos = _CurrentHp * spacing + _StartOffset + _LineWidth;
+                c += drawLine(p, float2(xPos, 0), float2(xPos + _Slope, 1), c, _LineColor, _LineWidth);
 
                 return c;
             }
