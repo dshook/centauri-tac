@@ -57,7 +57,7 @@ Material:
     m_Floats:
     - _BorderWidth: 0.82
     - _BumpScale: 1
-    - _CurrentHp: 2.76
+    - _CurrentHp: 3
     - _Cutoff: 0.5
     - _CutoffOffset: 0
     - _DetailNormalMapScale: 1
@@ -85,7 +85,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 0.22745098, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EndColor: {r: 0.99264705, g: 0.63666326, b: 0, a: 1}
+    - _EndColor: {r: 0.44705883, g: 0.101960786, b: 0, a: 1}
     - _HighlightColor: {r: 1, g: 1, b: 1, a: 1}
     - _LineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 0, b: 0, a: 1}

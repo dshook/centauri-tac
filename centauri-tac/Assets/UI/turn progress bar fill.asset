@@ -11,10 +11,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
   m_Name: turn progress bar fill
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636482086414316470
+  _lastTimeModified: 636487312986160692
   _documentAsset: {fileID: 114112273919046786}
-  _sharedMesh: {fileID: 43703678262140636}
-  _antialiasing: 1
+  _sharedMesh: {fileID: 43843287893824094}
+  _antialiasing: 0
   _generateCollider: 0
   _keepSVGFile: 0
   _ignoreSVGCanvas: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
   _sliceMesh: 0
   _sharedGradients: []
   _sharedShaders:
-  - SVG Importer/SolidColor/SolidColorAlphaBlendedAntialiased
+  - SVG Importer/SolidColor/SolidColorAlphaBlended
   _canvasRectangle:
     serializedVersion: 2
     x: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
     height: 7.3
   _useLayers: 0
   _layers: []
---- !u!43 &43703678262140636
+--- !u!43 &43843287893824094
 Mesh:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -54,10 +54,10 @@ Mesh:
   m_SubMeshes:
   - serializedVersion: 2
     firstByte: 0
-    indexCount: 42
+    indexCount: 6
     topology: 0
     firstVertex: 0
-    vertexCount: 18
+    vertexCount: 4
     localAABB:
       m_Center: {x: 96.3495, y: 0, z: 0}
       m_Extent: {x: 96.3495, y: 3.6645002, z: 0}
@@ -73,22 +73,22 @@ Mesh:
   m_IsReadable: 1
   m_KeepVertices: 1
   m_KeepIndices: 1
-  m_IndexBuffer: 00000100020001000000030006000700040004000500060008000700060009000a0007000700080009000b000a0009000c000d000a000a000b000c000e000d000c000f0010000d000d000e000f00110010000f00
+  m_IndexBuffer: 000001000200010000000300
   m_Skin: []
   m_VertexData:
-    m_CurrentChannels: 7
-    m_VertexCount: 18
+    m_CurrentChannels: 5
+    m_VertexCount: 4
     m_Channels:
     - stream: 0
       offset: 0
       format: 0
       dimension: 3
     - stream: 0
-      offset: 12
+      offset: 0
       format: 0
-      dimension: 3
+      dimension: 0
     - stream: 0
-      offset: 24
+      offset: 12
       format: 2
       dimension: 4
     - stream: 0
@@ -111,8 +111,8 @@ Mesh:
       offset: 0
       format: 0
       dimension: 0
-    m_DataSize: 504
-    _typelessdata: 000000002c876ac000000000000000000000000000000000000000fff2b240432c876a4000000000000000000000000000000000000000fff2b240432c876ac000000000000000000000000000000000000000ff000000002c876a4000000000000000000000000000000000000000fff2b240432c876ac000000000000000000000008000000000000000fff2b240432c876ac00000000000000000000080bf0000000000000000000000002c876ac00000000000000000000080bf0000000000000000000000002c876ac000000000000000000000008000000000000000ff000000002c876ac000000000000080bf000000800000000000000000000000002c876a4000000000000080bf000000800000000000000000000000002c876a4000000000000000000000008000000000000000ff000000002c876a4000000000000000000000803f0000000000000000f2b240432c876a4000000000000000000000803f0000000000000000f2b240432c876a4000000000000000000000008000000000000000fff2b240432c876a40000000000000803f000000800000000000000000f2b240432c876ac0000000000000803f000000800000000000000000f2b240432c876ac000000000000000000000008000000000000000fff2b240432c876ac00000000000000000000080bf0000000000000000
+    m_DataSize: 64
+    _typelessdata: 000000002c876ac000000000000000fff2b240432c876a4000000000000000fff2b240432c876ac000000000000000ff000000002c876a4000000000000000ff
   m_CompressedMesh:
     m_Vertices:
       m_NumItems: 0

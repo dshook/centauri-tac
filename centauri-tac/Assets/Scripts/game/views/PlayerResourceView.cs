@@ -28,6 +28,8 @@ namespace ctac
 
         bool playedIncomingTurn = false;
 
+        const float maxEndLineWidth = 0.436f; //What the end line has to be set to to fill the whole bar
+
         internal void init(ISoundService s)
         {
             currentEnergyText = transform.Find("CurrentEnergyText").GetComponent<TextMeshProUGUI>();
@@ -71,7 +73,7 @@ namespace ctac
                 }
             }
             
-            var progress = Math.Min(maxEnergy, maxEnergy * (timerAccumMs / turnLengthMs));
+            var progress = Mathf.Clamp(timerAccumMs / turnLengthMs , 0, 1);
             fillRendererPreview.material.SetFloat("_CurrentHp", progress);
         }
 
@@ -99,7 +101,7 @@ namespace ctac
             timerAccumMs = 0f;
             animatingEnergy = true;
             playedIncomingTurn = false;
-            fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
+            // fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
         }
 
         internal void setOn(bool on)
@@ -111,6 +113,12 @@ namespace ctac
         {
             turnLengthMs = turnLen;
             turnEndBufferLengthMs = turnBuffer;
+
+            //Set the end line buffer time appropriately on the bar
+            if(fillRenderer != null){
+                var bufferPercentage = turnEndBufferLengthMs / (turnLengthMs);
+                fillRenderer.material.SetFloat("_EndLineWidth", bufferPercentage * maxEndLineWidth);
+            }
         }
     }
 }
