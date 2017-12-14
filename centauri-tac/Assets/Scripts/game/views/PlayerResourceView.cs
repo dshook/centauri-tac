@@ -52,7 +52,7 @@ namespace ctac
             timerAccumMs += Time.deltaTime * 1000f;
 
             //Start playing a turn finished sound when the end turn buffer starts for us
-            var isInEndBuffer = timerAccumMs > (turnLengthMs - turnEndBufferLengthMs);
+            var isInEndBuffer = timerAccumMs > turnLengthMs;
             if (!isOpponent && !playedIncomingTurn && isInEndBuffer)
             {
                 sounds.PlaySound("turnFinish");
@@ -64,7 +64,7 @@ namespace ctac
                 {
                     turnCountdown.SetActive(true);
                     //what % are we through the end turn buffer, inversed
-                    var inverseProgress = Mathf.Clamp(1 - (timerAccumMs - (turnLengthMs - turnEndBufferLengthMs)) / turnEndBufferLengthMs, 0, 1f);
+                    var inverseProgress = Mathf.Clamp(1 - (timerAccumMs - turnLengthMs) / turnEndBufferLengthMs, 0, 1f);
                     turnCountdownProgressRect.localScale = turnCountdownProgressRect.localScale.SetX(inverseProgress);
                 }
                 else
@@ -73,7 +73,7 @@ namespace ctac
                 }
             }
             
-            var progress = Mathf.Clamp(timerAccumMs / turnLengthMs , 0, 1);
+            var progress = Mathf.Clamp(timerAccumMs / (turnLengthMs + turnEndBufferLengthMs) , 0, 1);
             fillRendererPreview.material.SetFloat("_CurrentHp", progress);
         }
 
@@ -116,7 +116,7 @@ namespace ctac
 
             //Set the end line buffer time appropriately on the bar
             if(fillRenderer != null){
-                var bufferPercentage = turnEndBufferLengthMs / (turnLengthMs);
+                var bufferPercentage = turnEndBufferLengthMs / (turnLengthMs + turnEndBufferLengthMs);
                 fillRenderer.material.SetFloat("_EndLineWidth", bufferPercentage * maxEndLineWidth);
             }
         }

@@ -20,13 +20,13 @@ export default class GameEventService
     this.autoTurnInterval = new IntervalTimer(
       'Auto Turn Interval',
       () => this.passTurn(),
-      this.turnLength(game, turnState.currentTurn),
+      this.turnLength(game, turnState.currentTurn) + game.turnEndBufferLengthMs,
       1
     );
     this.autoEnergyInterval = new IntervalTimer(
       'Auto Energy Interval',
       () => this.giveEnergy(),
-      this.turnLength(game, turnState.currentTurn) - game.turnEndBufferLengthMs
+      this.turnLength(game, turnState.currentTurn)
     );
 
     this.gameKickoff = new IntervalTimer(
@@ -91,7 +91,7 @@ export default class GameEventService
 
     //now reset the turn interval for the next turn
     this.autoTurnInterval.stop();
-    this.autoTurnInterval.changeInterval(this.turnLength(this.game, this.turnState.currentTurn));
+    this.autoTurnInterval.changeInterval(this.turnLength(this.game, this.turnState.currentTurn) + this.game.turnEndBufferLengthMs);
     this.autoTurnInterval.start();
   }
 
@@ -107,9 +107,10 @@ export default class GameEventService
   //setup the timer to distribute the energy over the turn
   startTurnEnergyTimer(currentTurn){
     let neededEnergy = currentTurn - 1; //one is auto given by the turn processor
-    let intervalLength = (this.turnLength(this.game, currentTurn) - this.game.turnEndBufferLengthMs) / currentTurn;
-    this.log.info('Setting up energy timer for turn %s. Interval %s', currentTurn, intervalLength);
     if(neededEnergy <= 0) return;
+
+    let intervalLength = this.turnLength(this.game, neededEnergy) / currentTurn;
+    this.log.info('Setting up energy timer for turn %s. Interval %s', currentTurn, intervalLength);
 
     this.autoEnergyInterval.stop();
     this.autoEnergyInterval.setMaxFires(neededEnergy);
