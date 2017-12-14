@@ -24,7 +24,6 @@ namespace ctac
 
         float timerAccumMs = 0f;
         bool animatingEnergy = false;
-        float maxEnergy = 0f;
 
         bool playedIncomingTurn = false;
 
@@ -95,13 +94,11 @@ namespace ctac
             prevResource = resource;
         }
 
-        internal void updatePreview(float maxEn)
+        internal void updatePreview()
         {
-            maxEnergy = maxEn;
             timerAccumMs = 0f;
             animatingEnergy = true;
             playedIncomingTurn = false;
-            // fillRendererPreview.material.SetFloat("_MaxHp", maxEnergy);
         }
 
         internal void setOn(bool on)

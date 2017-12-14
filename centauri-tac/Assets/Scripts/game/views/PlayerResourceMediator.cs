@@ -36,7 +36,7 @@ namespace ctac
 
             if (!passTurn.isClientSwitch)
             {
-                view.updatePreview(playerResources.maxResources[playerId]);
+                view.updatePreview();
             }
         }
 
@@ -49,7 +49,7 @@ namespace ctac
             updateView();
             if (m.newMax == 0)
             {
-                view.updatePreview(m.newMax);
+                view.updatePreview();
             }
         }
 

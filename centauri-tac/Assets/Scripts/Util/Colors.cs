@@ -23,6 +23,7 @@ namespace ctac
         public static Color32 RarityAscendant = ColorExtensions.HexToColor("#FF0000");
         
         public static Color32 cardMetCondition = ColorExtensions.HexToColor("740000");
+        public static Color32 cardPlayable = ColorExtensions.HexToColor("2650C9");
 
         public static Color32 numberSplatDamageColor = ColorExtensions.HexToColor("FD0000");
         public static Color32 numberSplatDamageColorBot = ColorExtensions.HexToColor("470000");

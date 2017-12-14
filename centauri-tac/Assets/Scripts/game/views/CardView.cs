@@ -10,6 +10,8 @@ using System.Text.RegularExpressions;
 namespace ctac {
     public class CardView : View
     {
+        [Inject] public IResourceLoaderService loader { get; set; }
+
         public CardModel card { get; set; }
         public RectTransform rectTransform { get; set; }
         public int? staticSpellDamage = null;
@@ -25,6 +27,7 @@ namespace ctac {
         public GameObject tribe;
         public GameObject tribeBg;
         public GameObject moveRangeUnderline;
+        public GameObject highlight;
 
         public GameObject buffsPanel;
         public GameObject buffBg;
@@ -50,6 +53,8 @@ namespace ctac {
 
         protected override void Start()
         {
+            base.Start();
+
             displayWrapper = card.gameObject.transform.Find("DisplayWrapper").gameObject;
             costGO = displayWrapper.transform.Find("Cost").gameObject;
             attackGO = displayWrapper.transform.Find("Attack").gameObject;
@@ -61,6 +66,7 @@ namespace ctac {
             tribe = displayWrapper.transform.Find("Tribe").gameObject;
             tribeBg = tribe.transform.Find("TribeBg").gameObject;
             moveRangeUnderline = displayWrapper.transform.Find("MoveRangeUnderline").gameObject;
+            highlight = displayWrapper.transform.Find("Highlight").gameObject;
 
             buffsPanel = displayWrapper.transform.Find("Buffs").gameObject;
             buffBg = buffsPanel.transform.Find("BuffBg").gameObject;
@@ -86,6 +92,13 @@ namespace ctac {
 
         void Update()
         {
+            if(card.playable){
+                highlight.SetActive(true);
+                costText.fontMaterial = loader.Load<Material>("Fonts/Eboracum SDF Number Glow On");
+            }else{
+                highlight.SetActive(false);
+                costText.fontMaterial = loader.Load<Material>("Fonts/Eboracum SDF Number Glow");
+            }
         }
 
         public void UpdateText(int currentSpellDamage)

@@ -26,8 +26,6 @@ namespace ctac {
         private Vector3 dest;
 
         //private Vector2 cardDimensions = new Vector2(156, 258.2f);
-        private Material cardGlowMat = null;
-        private Material cardOutlineMat = null;
 
         private float hoverAccumulator = 0f;
         private float cardAngleSpread = -2f;
@@ -52,15 +50,6 @@ namespace ctac {
         void Update()
         {
             if(playerCards == null || opponentCards == null) return;
-
-            //set up card cost glowing material first time
-            if (cardGlowMat == null && playerCards.Count > 1)
-            {
-                cardOutlineMat = playerCards[0].cardView.costText.fontSharedMaterial;
-                cardGlowMat = new Material(cardOutlineMat);
-                cardGlowMat.SetFloat(ShaderUtilities.ID_GlowPower, 0.4f);
-                cardGlowMat.SetFloat(ShaderUtilities.ID_OutlineWidth, 0.0f);
-            }
 
             //position opponents cards
             //might need to DRY it up sometime but rule of three still holds
@@ -135,15 +124,6 @@ namespace ctac {
                 rectTransform.anchorMin = anchorPosition;
                 rectTransform.pivot = anchorPosition;
                 rectTransform.anchoredPosition3D = iTween.Vector3Update(rectTransform.anchoredPosition3D, dest, 10.0f);
-
-                if (card.playable && cardGlowMat != null)
-                {
-                    card.cardView.costText.fontMaterial = cardGlowMat;
-                }
-                else if(cardOutlineMat != null)
-                {
-                    card.cardView.costText.fontMaterial = cardOutlineMat;
-                }
             }
         }
 
