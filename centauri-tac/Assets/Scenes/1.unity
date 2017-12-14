@@ -187,16 +187,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 23243905393305446, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 33789372436347578, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 3316220, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Mesh
       value: 
@@ -298,14 +288,6 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 11402536, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 81cfd8c3be4ec9142b1e9642a5f14127, type: 2}
-    - target: {fileID: 2375904, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 81cfd8c3be4ec9142b1e9642a5f14127, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0

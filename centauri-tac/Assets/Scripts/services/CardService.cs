@@ -33,10 +33,11 @@ namespace ctac
             {
                 newCard.transform.SetParent(parent, false);
             }
-            newCard.name = "Player " + cardModel.playerId + " Card " + cardModel.id;
 
             cardModel.gameObject = newCard;
             cardModel.rectTransform = newCard.GetComponent<RectTransform>();
+
+            UpdateCardName(cardModel);
 
             if (cardModel.cardTemplateId != 0)
             {
@@ -55,6 +56,7 @@ namespace ctac
             model.cardView = cardView;
             
             UpdateCardArt(model);
+            UpdateCardName(model);
         }
 
         public void UpdateCardArt(CardModel model)
@@ -118,6 +120,15 @@ namespace ctac
             dest.rarity = src.rarity;
             dest.race = src.race;
             dest.cardSet = src.cardSet;
+
+            UpdateCardName(dest);
+        }
+
+        public void UpdateCardName(CardModel card)
+        {
+            if (card == null || card.gameObject == null) return;
+
+            card.gameObject.name = string.Format("Player {0} Card {1} Template {2}", card.playerId, card.id, card.cardTemplateId);
         }
     }
 }

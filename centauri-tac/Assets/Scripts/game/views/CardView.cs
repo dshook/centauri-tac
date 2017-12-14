@@ -46,6 +46,8 @@ namespace ctac {
         public TextMeshPro buffNameText;
         public TextMeshPro buffAbilityText;
 
+        public SplineText nameSpline;
+
         protected override void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -83,6 +85,12 @@ namespace ctac {
             tribeText = tribe.GetComponent<TextMeshPro>();
             buffNameText = buffName.GetComponent<TextMeshPro>();
             buffAbilityText = buffAbility.GetComponent<TextMeshPro>();
+
+
+            //the spline text on the name seems to think the text is getting changed every update loop so for now
+            //manually tell it when to update
+            nameSpline = nameGO.GetComponent<SplineText>();
+            nameSpline.manualUpdate = true;
         
             //hopefully this won't cause any issues updating the text with 0 spell damage
             //it should get updated shortly after on queue process completion
@@ -112,6 +120,8 @@ namespace ctac {
             costText.text = card.cost.ToString();
             nameText.text = card.name;
             descriptionText.text = card.description;
+
+            nameSpline.UpdateTextPosition();
 
             if      (card.cost > card.baseCost) { costText.color = Color.red; }
             else if (card.cost < card.baseCost) { costText.color = Color.green; }

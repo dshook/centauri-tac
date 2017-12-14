@@ -6,6 +6,7 @@ using System.Linq;
 [ExecuteInEditMode]
 public class SplineText : MonoBehaviour
 {
+    public bool manualUpdate;
     public float characterWidthMult = 0.01f;
     //public float length; // Currently Only Informational
     public BezierSpline vertexCurve;
@@ -31,6 +32,8 @@ public class SplineText : MonoBehaviour
 
     void Update()
     {
+        if (manualUpdate) return;
+
         if(m_TextComponent.havePropertiesChanged)
         {
             UpdateTextPosition();
@@ -49,7 +52,7 @@ public class SplineText : MonoBehaviour
         textAlign = m_TextComponent.alignment; 
     }
 
-    void UpdateTextPosition()
+    public void UpdateTextPosition()
     {
         // Make sure I have the thigs I need to get the data to deform text
         if (m_TextComponent == null)
