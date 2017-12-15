@@ -155,7 +155,7 @@ namespace ctac
                 //view.toggleTileFlags(null, TileHighlightStatus.Movable, true);
                 setAttackRangeTiles(null);
                 view.toggleTileFlags(null, TileHighlightStatus.AttackRangeTotal);
-                updatePieceMoveRange(null, null);
+                updatePieceMoveRange(null);
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace ctac
 
             view.onTileSelected(gameTile);
 
-            updatePieceMoveRange(selectedPiece, gameTile);
+            updatePieceMoveRange(selectedPiece);
         }
 
         [ListensTo(typeof(PieceSpawningSignal))]
@@ -242,12 +242,12 @@ namespace ctac
             {
                 gameTile = map.tiles.Get(piece.tilePosition);
                 updatePieceAttackRange(piece);
-                updatePieceMoveRange(piece, gameTile);
+                updatePieceMoveRange(piece);
             }
             else if(piece == null && selectedPiece == null)
             {
                 updatePieceAttackRange(null);
-                updatePieceMoveRange(null, null);
+                updatePieceMoveRange(null);
             }
 
             //attacking enemy 
@@ -354,7 +354,7 @@ namespace ctac
                 );
         }
 
-        private void updatePieceMoveRange(PieceModel piece, Tile gameTile)
+        private void updatePieceMoveRange(PieceModel piece)
         {
             if(piece == null)
             {
@@ -362,6 +362,7 @@ namespace ctac
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRangeTotal);
                 return;
             }
+            var gameTile = map.tiles.Get(piece.tilePosition);
 
             //find movement
             var moveTiles = mapService.GetMovementTilesInRadius(piece, false);
@@ -402,6 +403,8 @@ namespace ctac
         public void onTurnEnded(GameTurnModel gameTurn)
         {
             updateTauntTiles();
+            updatePieceMoveRange(selectedPiece);
+            updatePieceAttackRange(selectedPiece);
         }
 
         [ListensTo(typeof(PieceStatusChangeSignal))]
