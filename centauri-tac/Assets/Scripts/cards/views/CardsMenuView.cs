@@ -223,7 +223,6 @@ namespace ctac
                 surrogateCard.rectTransform = cardGameObject.GetComponent<RectTransform>();
                 surrogateCard.cardView = cardView;
                 cardService.UpdateCardArt(surrogateCard);
-                surrogateCard.cardView.UpdateText(0);
 
                 //now position to the grid
                 surrogateCard.gameObject.transform.SetParent(cardHolder.transform);
@@ -236,7 +235,12 @@ namespace ctac
                 var destPosition = new Vector3(xPos, yPos);
                 //surrogateCard.rectTransform.anchoredPosition3D = animStartPosition + destPosition;
                 surrogateCard.rectTransform.anchoredPosition3D = destPosition;
+
                 surrogateCard.gameObject.SetActive(true);
+
+                //have to update the text after setting active for some reason to get the text spline to 
+                //update correctly
+                surrogateCard.cardView.UpdateText(0);
                 //iTweenExtensions.MoveToLocal(card.gameObject, destPosition, animTime, 0f);
             }
 
