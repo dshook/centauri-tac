@@ -18,13 +18,13 @@ export default class GameEventService
     this.turnState = turnState;
 
     this.autoTurnInterval = new IntervalTimer(
-      'Auto Turn Interval',
+      'Auto Turn Interval Game ' + this.game.id,
       () => this.passTurn(),
       this.turnLength(game, turnState.currentTurn) + game.turnEndBufferLengthMs,
       1
     );
     this.autoEnergyInterval = new IntervalTimer(
-      'Auto Energy Interval',
+      'Auto Energy Interval Game ' + this.game.id,
       () => this.giveEnergy(),
       this.turnLength(game, turnState.currentTurn)
     );
@@ -45,28 +45,28 @@ export default class GameEventService
 
   shutdown()
   {
-    this.log.info('Killing Game Event Timers');
+    this.log.info('Killing Game Event Timers for Game ' + this.game.id);
     for(let timer of this.registeredTimers){
       timer.stop();
     }
   }
 
   pauseAll(){
-    this.log.info('Pausing Game Event Timers');
+    this.log.info('Pausing Game Event Timers for Game ' + this.game.id);
     for(let timer of this.registeredTimers){
       timer.pause();
     }
   }
 
   stopAll(){
-    this.log.info('Stopping Game Event Timers');
+    this.log.info('Stopping Game Event Timers for Game ' + this.game.id);
     for(let timer of this.registeredTimers){
       timer.stop();
     }
   }
 
   resumeAll(){
-    this.log.info('Resuming Game Event Timers');
+    this.log.info('Resuming Game Event Timers for Game ' + this.game.id);
     for(let timer of this.registeredTimers){
       timer.resume();
     }
@@ -96,7 +96,7 @@ export default class GameEventService
   }
 
   giveEnergy(){
-    this.log.info('Giving out energy');
+    this.log.info('Giving out energy Game ' + this.game.id);
     for(let player of this.players){
       this.queue.push(new SetPlayerResource(player.id, 1));
     }
@@ -110,7 +110,7 @@ export default class GameEventService
     if(neededEnergy <= 0) return;
 
     let intervalLength = this.turnLength(this.game, neededEnergy) / currentTurn;
-    this.log.info('Setting up energy timer for turn %s. Interval %s', currentTurn, intervalLength);
+    this.log.info('Setting up energy timer for turn %s. Interval %s Game %s', currentTurn, intervalLength, this.game.id);
 
     this.autoEnergyInterval.stop();
     this.autoEnergyInterval.setMaxFires(neededEnergy);

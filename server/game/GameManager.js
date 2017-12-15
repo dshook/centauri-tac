@@ -205,6 +205,7 @@ export default class GameManager
 
     // possible a shutdown message would happen before the game was actually
     // started, so dont barf over it
+    // Also possible if both players part simultaneously
     if (!~index) {
       this.log.info('game %s isnt running on this component', gameId);
       return;
