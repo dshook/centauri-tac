@@ -121,7 +121,7 @@ namespace ctac {
             nameText.text = card.name;
             descriptionText.text = card.description;
 
-            nameSpline.UpdateTextPosition();
+            //nameSpline.UpdateTextPosition();
 
             if      (card.cost > card.baseCost) { costText.color = Color.red; }
             else if (card.cost < card.baseCost) { costText.color = Color.green; }

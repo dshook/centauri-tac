@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c58451ee63c8d42991f16e9595c479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manualUpdate: 1
+  manualUpdate: 0
   characterWidthMult: 0.005
   vertexCurve: {fileID: 11457044}
   m_TextComponent: {fileID: 11478366}
