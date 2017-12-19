@@ -51,8 +51,9 @@ export default class CentauriTacGame
 
       //set waiting time for other players to join
       this.playerConnectTimeout = setTimeout(() => {
-        this.log.info('Player connect timeout expired. Giving the win to %s', this.players[0].id);
-        this.hostManager.completeGame(this.players[0].id, 'Your opponent never connected :(');
+        let winningPlayerId = this.players[0] ? this.players[0].id : null;
+        this.log.info('Player connect timeout expired. Giving the win to %s', winningPlayerId);
+        this.hostManager.completeGame(winningPlayerId, 'Your opponent never connected :(');
         }
         , 30000);
       return;
