@@ -45,10 +45,10 @@ export default class TurnProcessor
 
     //give some handouts
     for(let player of this.players){
-      let max = this.playerResourceState.incriment(player.id, 1);
-      this.playerResourceState.reset(player.id);
+      let {max, current} = this.playerResourceState.incrimentForTurn(player.id, 1);
+      //this.playerResourceState.reset(player.id);
+      // let current = this.playerResourceState.adjust(player.id, 1, true);
 
-      let current = this.playerResourceState.adjust(player.id, 1);
       action.playerResources.push({
         playerId: player.id,
         current,

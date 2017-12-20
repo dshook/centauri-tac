@@ -11,22 +11,30 @@ export default class PlayerResourceState
     //map from playerId -> resource
     this.resources = {};
     this.maxResources = {};
-    this.charges = {};
+    this.neededResources = {}; //how much energy each player will get this turn, should be max - any carryover
     this.resourceCap = 10;
+
+    this.charges = {};
   }
 
   init(playerId){
     if(this.resources[playerId] === undefined){
       this.resources[playerId] = 0;
       this.maxResources[playerId] = 0;
+      this.neededResources[playerId] = 0;
       this.charges[playerId] = 0;
     }
   }
 
-  incriment(playerId, amount){
+  incrimentForTurn(playerId, amount){
     this.maxResources[playerId] += amount;
     this.maxResources[playerId] = Math.min(this.maxResources[playerId], this.resourceCap);
-    return this.maxResources[playerId];
+    this.adjust(playerId, 1, true);
+    this.neededResources[playerId] = this.getMax(playerId) - this.get(playerId);
+    return {
+      max: this.maxResources[playerId],
+      current: this.resources[playerId]
+    };
   }
 
   refill(playerId){
@@ -39,13 +47,19 @@ export default class PlayerResourceState
     return this.resources[playerId];
   }
 
-  adjust(playerId, amount){
+  adjust(playerId, amount, capAtMaxResources = false){
     this.resources[playerId] += amount;
-    //limit the change to zero and the max.  Don't cap at maxResources so you can
-    //temporarily go over
+    //limit the change to zero and the max.  Don't cap at maxResources so you can temporarily go over if flag isn't set
     this.resources[playerId] = Math.max(this.resources[playerId], 0);
     this.resources[playerId] = Math.min(this.resources[playerId], this.resourceCap);
+    if(capAtMaxResources){
+      this.resources[playerId] = Math.min(this.resources[playerId], this.maxResources[playerId]);
+    }
     return this.resources[playerId];
+  }
+
+  changeNeeded(playerId, amount){
+    this.neededResources[playerId] += amount;
   }
 
   get(playerId){
@@ -53,6 +67,9 @@ export default class PlayerResourceState
   }
   getMax(playerId){
     return this.maxResources[playerId];
+  }
+  getNeeded(playerId){
+    return this.neededResources[playerId];
   }
 
   getByPath(resourceKey, playerId){
