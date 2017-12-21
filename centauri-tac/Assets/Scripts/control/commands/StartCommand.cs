@@ -113,17 +113,17 @@ namespace ctac
                 debug.LogWarning("Trying to start game without current game");
                 return;
             }
-            //fetch map from disk, eventually comes from server
-            string mapContents = File.ReadAllText(string.Format("../maps/{0}.json", currentGame.game.map));
+            // //fetch map from disk, eventually comes from server
+            // string mapContents = File.ReadAllText(string.Format("../maps/{0}.json", currentGame.game.map));
 
-            var mapModel = JsonConvert.DeserializeObject<MapImportModel>(mapContents);
+            //var mapModel = JsonConvert.DeserializeObject<MapImportModel>(currentGame.game.mapData);
             debug.Log("Loaded Map");
 
             //fetch all cards from disk
             cardDirectory.LoadCards();
             debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
 
-            mapCreator.CreateMap(mapModel);
+            mapCreator.CreateMap(currentGame.game.mapData);
         }
     }
 }
