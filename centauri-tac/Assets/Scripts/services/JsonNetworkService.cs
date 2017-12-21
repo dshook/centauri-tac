@@ -5,12 +5,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using ctac.signals;
+using strange.extensions.signal.impl;
 
 namespace ctac
 {
     public interface IJsonNetworkService
     {
         void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null);
+        void GetJson<T>(string url, Signal<T> doneLoading) where T : class;
         //Instead of an EventDispatcher, we put the actual Signals into the Interface
         FulfillWebServiceRequestSignal fulfillSignal { get; }
     }
@@ -27,6 +29,9 @@ namespace ctac
         public FulfillWebServiceRequestSignal fulfillSignal { get; set; }
 
         [Inject]
+        public ConfigModel config { get; set; }
+
+        [Inject]
         public IDebugService debug { get; set; }
 
         public void Request(string componentName, string methodName, Type type, Dictionary<string, string> data = null)
@@ -35,7 +40,7 @@ namespace ctac
             root.StartCoroutine(MakeRequest(componentName, methodName, type, data));
         }
 
-        private IEnumerator MakeRequest( string componentName, string methodName, Type type, Dictionary<string, string> data)
+        private IEnumerator MakeRequest(string componentName, string methodName, Type type, Dictionary<string, string> data)
         {
             var url = componentModel.getComponentURL(componentName) + "/" + methodName;
 
@@ -52,6 +57,29 @@ namespace ctac
                 debug.LogError("Could not deserialize json " + e.Message);
             }
             fulfillSignal.Dispatch(url, ret);
+        }
+
+        public void GetJson<T>(string url, Signal<T> doneLoading) where T : class
+        {
+            MonoBehaviour root = contextView.GetComponent<PersistentSignalsRoot>();
+            root.StartCoroutine(GetJsonCo(url, doneLoading));
+        }
+        private IEnumerator GetJsonCo<T>(string url, Signal<T> doneLoading) where T : class
+        {
+            var fullUrl = config.baseUrl + url;
+            WWW www = new WWW(fullUrl);
+
+            yield return www;
+
+            try
+            {
+                var ret = JsonConvert.DeserializeObject(www.text, typeof(T)) as T;
+                doneLoading.Dispatch(ret);
+            }
+            catch (Exception e)
+            {
+                debug.LogError("Could not deserialize json " + e.Message + " for " + fullUrl);
+            }
         }
     }
 }

@@ -62,13 +62,13 @@ class BuildScript
         var path = buildPath(build);
         FileUtil.DeleteFileOrDirectory(path);
         BuildPipeline.BuildPlayer(EnabledLevels(), path + "bin/" + programName, target, options);
-        CopyAssets(path);
+        //CopyAssets(path);
     }
 
-    private static void CopyAssets(string path)
-    {
-        FileUtil.CopyFileOrDirectory("../cards", path + "cards");
-        FileUtil.CopyFileOrDirectory("../maps", path + "maps");
-    }
+    // private static void CopyAssets(string path)
+    // {
+    //     FileUtil.CopyFileOrDirectory("../cards", path + "cards");
+    //     FileUtil.CopyFileOrDirectory("../maps", path + "maps");
+    // }
 
 }

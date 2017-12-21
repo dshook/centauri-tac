@@ -15,15 +15,24 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public MapModel map { get; set; }
         [Inject] public PieceSpawnedSignal pieceSpawned { get; set; }
+        [Inject] public CardsLoadedSignal cardsLoaded { get; set; }
 
         [Inject] public IMapCreatorService mapCreator { get; set; }
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
         [Inject] public IDebugService debug { get; set; }
+        [Inject] public IJsonNetworkService network { get; set; }
 
         public override void Execute()
         {
-            cardDirectory.LoadCards();
+            Retain();
+            cardsLoaded.AddListener(cardsFinishedLoading);
+            cardDirectory.LoadCards(network, cardsLoaded);
+        }
+
+        private void cardsFinishedLoading()
+        {
+            Release();
             debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
             var minionCards = cardDirectory.directory.Where(c => c.isMinion || c.isHero).ToList();
             

@@ -18,7 +18,9 @@ namespace ctac
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public CardsKickoffSignal cardKickoff { get; set; }
+        [Inject] public CardsLoadedSignal cardsLoaded { get; set; }
 
+        [Inject] public IJsonNetworkService network { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -45,15 +47,24 @@ namespace ctac
             if (players.players.Count == 0)
             {
                 serverAuthSignal.Dispatch();
-                cardDirectory.LoadCards();
+
+                Retain();
+                cardsLoaded.AddListener(cardsFinishedLoading);
+                cardDirectory.LoadCards(network, cardsLoaded);
             }
             else
             {
                 //if we're coming back from another scene we don't need to refetch the player
                 var firstPlayer = players.players[0];
                 playerFetched.Dispatch(firstPlayer, new SocketKey(firstPlayer.clientId, "auth"));
+                cardKickoff.Dispatch();
             }
 
+        }
+
+        private void cardsFinishedLoading()
+        {
+            Release();
             cardKickoff.Dispatch();
         }
     }

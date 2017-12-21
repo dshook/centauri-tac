@@ -14,6 +14,7 @@ export default class CardDirectory
   constructor(gameConfig)
   {
     this.directory = {};
+    this.rawDirectory = []; //un-cardified and un-indexed
     this.parser = CardLang.parser;
 
     var cardRequires = {};
@@ -93,6 +94,7 @@ export default class CardDirectory
     }
 
     this.directory[c.cardTemplateId] = deepFreeze(c);
+    this.rawDirectory.push(card);
   }
 
   getByTag(tags){

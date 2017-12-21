@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public JoinGameSignal joinGame { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
         [Inject] public GameLoggedInSignal gameLoggedIn { get; set; }
+        [Inject] public CardsLoadedSignal cardsLoaded { get; set; }
 
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardsModel cards { get; set; }
@@ -25,6 +26,7 @@ namespace ctac
         [Inject] public CardDirectory cardDirectory { get; set; }
 
         [Inject] public IMapCreatorService mapCreator { get; set; }
+        [Inject] public IJsonNetworkService network { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
         public override void Execute()
@@ -106,8 +108,6 @@ namespace ctac
         //Call to load the map once the currentGame is sorted out
         void LoadGame()
         {
-            Release();
-
             if (currentGame == null || currentGame.game == null)
             {
                 debug.LogWarning("Trying to start game without current game");
@@ -119,11 +119,16 @@ namespace ctac
             //var mapModel = JsonConvert.DeserializeObject<MapImportModel>(currentGame.game.mapData);
             debug.Log("Loaded Map");
 
-            //fetch all cards from disk
-            cardDirectory.LoadCards();
-            debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
+            cardsLoaded.AddListener(cardsFinishedLoading);
+            cardDirectory.LoadCards(network, cardsLoaded);
 
             mapCreator.CreateMap(currentGame.game.mapData);
+        }
+
+        private void cardsFinishedLoading()
+        {
+            debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
+            Release();
         }
     }
 }

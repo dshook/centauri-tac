@@ -1,8 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+using strange.extensions.signal.impl;
 
 namespace ctac
 {
@@ -10,22 +9,40 @@ namespace ctac
     public class CardDirectory
     {
         public List<CardModel> directory = new List<CardModel>();
+        Signal<List<CardModel>> directoryLoaded = new Signal<List<CardModel>>();
 
-        public void LoadCards()
+        Signal finishedLoading = null; //real nasty but hey... should only call load once
+        public void LoadCards(IJsonNetworkService network, Signal finishedLoadingSignal)
         {
             directory.Clear();
-            //fetch all cards from disk
-            foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
+            var directoryUrl = "components/game/rest/cards/directory";
+
+            directoryLoaded.AddOnce(CardsLoaded);
+            finishedLoading = finishedLoadingSignal;
+            network.GetJson(directoryUrl, directoryLoaded);
+            
+            
+            ////fetch all cards from disk
+            //foreach (string file in Directory.GetFiles("../cards", "*.json", SearchOption.AllDirectories))
+            //{
+            //    string cardText = File.ReadAllText(file);
+            //    var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
+
+            //    //figure out card set based on folder it's in
+            //    var lastDirectory = Directory.GetParent(file).Name;
+            //    cardTemplate.cardSet = FlagsHelper.TryParse(lastDirectory, CardSets.none);
+
+            //    AddCard(cardTemplate);
+            //}
+        }
+
+        public void CardsLoaded(List<CardModel> cards)
+        {
+            foreach (var card in cards)
             {
-                string cardText = File.ReadAllText(file);
-                var cardTemplate = JsonConvert.DeserializeObject<CardModel>(cardText);
-
-                //figure out card set based on folder it's in
-                var lastDirectory = Directory.GetParent(file).Name;
-                cardTemplate.cardSet = FlagsHelper.TryParse(lastDirectory, CardSets.none);
-
-                AddCard(cardTemplate);
+                AddCard(card);
             }
+            finishedLoading.Dispatch();
         }
 
         public void AddCard(CardModel card)

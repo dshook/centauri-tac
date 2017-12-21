@@ -30,6 +30,7 @@ namespace ctac.signals
     [Singleton] public class TileHoverSignal : Signal<Tile> { }
 
     [Singleton] public class MapCreatedSignal : Signal { }
+    [Singleton] public class CardsLoadedSignal : Signal { }
 
     [Singleton] public class PieceSelectedSignal : Signal<PieceModel> { }
 
