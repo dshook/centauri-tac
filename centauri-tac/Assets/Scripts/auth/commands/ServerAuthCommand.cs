@@ -28,7 +28,7 @@ namespace ctac
         public override void Execute()
         {
             //determine if we need to authenticate with the server to fetch a token
-            var playerToken = PlayerPrefs.GetString(CtacConst.playerToken);
+            var playerToken = PlayerPrefs.GetString(Constants.playerToken);
             if (!string.IsNullOrEmpty(playerToken))
             {
                 var newPlayer = new PlayerModel()

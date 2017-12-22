@@ -49,7 +49,7 @@ namespace ctac
                         token = token
                     });
                 }
-                PlayerPrefs.SetString(CtacConst.playerToken, token);
+                PlayerPrefs.SetString(Constants.playerToken, token);
 
             }
 

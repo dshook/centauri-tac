@@ -18,7 +18,7 @@ namespace ctac
                 socketService.Disconnect(player.clientId);
             }
 
-            PlayerPrefs.SetString(CtacConst.playerToken, null);
+            PlayerPrefs.SetString(Constants.playerToken, null);
 
             needLogin.Dispatch(null);
         }

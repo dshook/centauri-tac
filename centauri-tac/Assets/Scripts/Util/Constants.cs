@@ -5,6 +5,8 @@ namespace ctac
 {
     public static class Constants
     {
+        public const string playerToken = "playerToken";
+
         public static float hoverTime = 0.45f;
         public const float dragDistThreshold = 10f;
         public static float cameraRaycastDist = 150f;
@@ -69,6 +71,8 @@ namespace ctac
             {"Dyad Strike",        "Minion can attack twice per turn" },
             {"Flying",             "Minion can fly up or down any height and over obstacles" },
             {"Airdrop",            "Minion can spawn in a larger area around your hero" },
+            {"Piercing",           "This minion's attacks also hit the two characters behind its target" },
+            {"Cleave",             "This minion's attacks also hit the two characters on either side of its target" },
         };
     }
 

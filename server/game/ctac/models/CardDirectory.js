@@ -31,6 +31,7 @@ export default class CardDirectory
         try{
           //remove some whitespace before json parsing because json is a stupid format sometimes
           cardRequires[filename] = JSON.parse(contents.replace(/[\t\r\n]/g, ''));
+          cardRequires[filename].cardSet = cardSet;
         }catch(e){
           this.log.error('Error loading card ' + filename, e, e.stack);
         }
