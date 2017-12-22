@@ -27,7 +27,11 @@ namespace ctac
 
         private void onLeaveClicked(bool returnToMainMenu)
         {
-            leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"), returnToMainMenu);
+            returnToMainMenu = true;
+#if UNITY_EDITOR
+            returnToMainMenu = false;
+#endif
+            leaveSignal.Dispatch(returnToMainMenu);
         }
 
     }

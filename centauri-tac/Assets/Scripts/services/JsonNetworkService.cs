@@ -71,15 +71,16 @@ namespace ctac
 
             yield return www;
 
+            T ret = default(T);
             try
             {
-                var ret = JsonConvert.DeserializeObject(www.text, typeof(T)) as T;
-                doneLoading.Dispatch(ret);
+                ret = JsonConvert.DeserializeObject(www.text, typeof(T)) as T;
             }
             catch (Exception e)
             {
-                debug.LogError("Could not deserialize json " + e.Message + " for " + fullUrl);
+                debug.LogError(string.Format("Could not deserialize json for {0}. Error: {1} ", fullUrl, e));
             }
+            doneLoading.Dispatch(ret);
         }
     }
 }

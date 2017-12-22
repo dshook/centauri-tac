@@ -17,7 +17,7 @@ namespace ctac
             directory.Clear();
             var directoryUrl = "components/game/rest/cards/directory";
 
-            directoryLoaded.AddOnce(CardsLoaded);
+            directoryLoaded.AddListener(CardsLoaded);
             finishedLoading = finishedLoadingSignal;
             network.GetJson(directoryUrl, directoryLoaded);
             

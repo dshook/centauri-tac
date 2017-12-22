@@ -75,8 +75,11 @@ namespace ctac
             commandBinder.Bind<PlayerFetchedSignal>().To<PlayerFetchedCommand>().To<AuthLobbyFromGameCommand>(); 
 
             commandBinder.Bind<CurrentGameSignal>().To<AuthGameCommand>();
-            commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
-            commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
+            // commandBinder.Bind<GameLoggedInSignal>().To<JoinGameCommand>();
+            // commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
+
+            commandBinder.Bind<GameLoggedInSignal>().To<StartGameCommand>();
+            //commandBinder.Bind<PlayerJoinedSignal>().To<StartGameCommand>();
 
         }
     }

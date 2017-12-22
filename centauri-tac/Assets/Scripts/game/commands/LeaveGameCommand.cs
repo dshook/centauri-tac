@@ -10,9 +10,6 @@ namespace ctac
         public ISocketService socket { get; set; }
 
         [Inject]
-        public SocketKey socketKey { get; set; }
-
-        [Inject]
         public bool returnToMainMenu { get; set; }
 
         [Inject]

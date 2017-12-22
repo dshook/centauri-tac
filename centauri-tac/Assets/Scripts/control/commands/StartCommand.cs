@@ -9,16 +9,18 @@ namespace ctac
 {
     public class StartCommand : Command
     {
-
         [Inject] public ConfigModel config { get; set; }
-
 
         [Inject] public TryLoginSignal tryLoginSignal { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public JoinGameSignal joinGame { get; set; }
         [Inject] public CurrentGameModel currentGame { get; set; }
-        [Inject] public GameLoggedInSignal gameLoggedIn { get; set; }
-        [Inject] public CardsLoadedSignal cardsLoaded { get; set; }
+        [Inject] public CardsLoadedSignal cardsLoadedSignal { get; set; }
+        [Inject] public MatchmakerQueueSignal matchmakerQueue { get; set; }
+
+        [Inject] public GameLoggedInSignal gameLoggedInSignal { get; set; }
+        [Inject] public CurrentGameSignal currentGameSignal { get; set; }
+        [Inject] public LobbyLoggedInSignal lobbyLoggedInSignal { get; set; }
 
         [Inject] public PiecesModel piecesModel { get; set; }
         [Inject] public CardsModel cards { get; set; }
@@ -29,14 +31,21 @@ namespace ctac
         [Inject] public IJsonNetworkService network { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
+        bool isStandaloneLaunch = false;
+
         public override void Execute()
         {
+            currentGameSignal.AddListener(onCurrentGame);
+            gameLoggedInSignal.AddListener(onGameLoggedIn);
+            lobbyLoggedInSignal.AddListener(onLobbyLogin);
+
             Retain();
             Cleanup();
 
             //Starting up the game not from main menu
             if (currentGame == null || currentGame.game == null)
             {
+                isStandaloneLaunch = true;
                 //override config from settings on disk if needed
                 string configContents = File.ReadAllText("./config.json");
                 if (!string.IsNullOrEmpty(configContents))
@@ -45,7 +54,6 @@ namespace ctac
                     var diskConfig = JsonConvert.DeserializeObject<ConfigModel>(configContents);
                     diskConfig.CopyProperties(config);
                 }
-
 #if DEBUG
                 if (config.players.Count > 0)
                 {
@@ -59,20 +67,76 @@ namespace ctac
                     debug.LogWarning("Standalone game launch not supported without config");
                     return;
                 }
-                gameLoggedIn.AddOnce(onGameLoggedIn);
 #endif
             }
-            else
+
+            LoadGame();
+        }
+
+        public void onCurrentGame(GameMetaModel game, SocketKey key)
+        {
+            LoadGame();
+        }
+
+        Dictionary<SocketKey, LoginStatusModel> gameLogins = new Dictionary<SocketKey, LoginStatusModel>();
+
+        public void onGameLoggedIn(LoginStatusModel status, SocketKey key)
+        {
+            gameLogins.Add(key, status);
+            TestLoadReady();
+        }
+
+        //Call to load the map once the currentGame is sorted out
+        bool loading = false;
+        void LoadGame()
+        {
+            if (currentGame == null || currentGame.game == null)
             {
-                //let the server know we're ready
-                joinGame.Dispatch(new LoginStatusModel() { status = true } , currentGame.me);
-                LoadGame();
+                debug.LogWarning("Trying to start game without current game");
+                return;
+            }
+            if(loading){
+                debug.Log("Already Loading"); //Don't double load in dev mode
+                return;
+            }
+            loading = true;
+
+            cardsLoadedSignal.AddListener(cardsFinishedLoading);
+            cardDirectory.LoadCards(network, cardsLoadedSignal);
+
+            mapCreator.CreateMap(currentGame.game.mapData);
+            debug.Log("Loaded Map " + currentGame.game.map);
+        }
+
+        bool cardsLoaded = false;
+        private void cardsFinishedLoading()
+        {
+            debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
+            cardsLoaded = true;
+            cardsLoadedSignal.RemoveListener(cardsFinishedLoading);
+            TestLoadReady();
+        }
+
+        //Coordinate between all (dev) players logging into the game and the cards being loaded
+        //Only join the game if both have happened to tell the server we're ready to go
+        private void TestLoadReady()
+        {
+            if(!cardsLoaded) return;
+
+            if((!isStandaloneLaunch && gameLogins.Count > 1) || (config.players == null || config.players.Count == 0 || gameLogins.Count >= config.players.Count)){
+                debug.Log("All players loaded, joining game now");
+                foreach(var gameLogin in gameLogins){
+                    //let the server know we're ready
+                    joinGame.Dispatch(new LoginStatusModel() { status = true } , gameLogin.Key);
+                }
+                Release();
             }
         }
 
-        void onGameLoggedIn(LoginStatusModel status, SocketKey key)
+        public void onLobbyLogin(LoginStatusModel lsm, SocketKey key)
         {
-            LoadGame();
+            //Auto queue to matchmaker in dev 
+            matchmakerQueue.Dispatch(new QueueModel(), key);
         }
 
         //Get rid of all the junk in the editor scene
@@ -103,32 +167,6 @@ namespace ctac
             var dbgButtons = GameObject.Find("DebugButtons");
             GameObject.DestroyImmediate(dbgButtons);
 #endif
-        }
-
-        //Call to load the map once the currentGame is sorted out
-        void LoadGame()
-        {
-            if (currentGame == null || currentGame.game == null)
-            {
-                debug.LogWarning("Trying to start game without current game");
-                return;
-            }
-            // //fetch map from disk, eventually comes from server
-            // string mapContents = File.ReadAllText(string.Format("../maps/{0}.json", currentGame.game.map));
-
-            //var mapModel = JsonConvert.DeserializeObject<MapImportModel>(currentGame.game.mapData);
-            debug.Log("Loaded Map");
-
-            cardsLoaded.AddListener(cardsFinishedLoading);
-            cardDirectory.LoadCards(network, cardsLoaded);
-
-            mapCreator.CreateMap(currentGame.game.mapData);
-        }
-
-        private void cardsFinishedLoading()
-        {
-            debug.Log("Loaded " + cardDirectory.directory.Count + " cards");
-            Release();
         }
     }
 }

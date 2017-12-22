@@ -19,6 +19,7 @@ namespace ctac
         [Inject] public AuthLobbySignal authLobby { get; set; }
         [Inject] public ServerAuthSignal serverAuthSignal { get; set; }
         [Inject] public NeedLoginSignal needLogin { get; set; }
+        [Inject] public CardsKickoffSignal cardKickoff { get; set; }
 
         [Inject] public CancelDeckSignal cancelDeck { get; set; }
         [Inject] public SelectDeckSignal selectDeck { get; set; }
@@ -28,6 +29,8 @@ namespace ctac
 
         PlayerModel loggedInPlayer = null;
         SocketKey loggedInKey = null;
+        bool lobbyLoggedIn = false;
+        bool cardsLoaded = false;
 
         public override void OnRegister()
         {
@@ -124,8 +127,24 @@ namespace ctac
                 view.setMessage("Lobby server unavailable now, please try again later");
                 return;
             }
-            view.SetButtonsActive(loginStatus.status);
-            view.enableButtons();
+            lobbyLoggedIn = loginStatus.status;
+            TryFinishLoading();
+        }
+
+        [ListensTo(typeof(CardsKickoffSignal))]
+        private void onCardsKickoff()
+        {
+            cardsLoaded = true;
+            TryFinishLoading();
+        }
+
+        //Make sure cards are loaded and lobby is logged in before enabling buttons
+        private void TryFinishLoading()
+        {
+            if(cardsLoaded && lobbyLoggedIn){
+                view.SetButtonsActive(true);
+                view.enableButtons();
+            }
         }
 
         [ListensTo(typeof(SocketHangupSignal))]

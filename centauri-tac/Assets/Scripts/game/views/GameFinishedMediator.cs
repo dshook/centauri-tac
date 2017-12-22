@@ -37,7 +37,7 @@ namespace ctac
 
         private void onLeaveClicked()
         {
-            leaveSignal.Dispatch(new SocketKey(players.Me.clientId, "game"), true);
+            leaveSignal.Dispatch(true);
         }
 
         [ListensTo(typeof(SocketHangupSignal))]
