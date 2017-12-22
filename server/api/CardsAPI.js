@@ -23,9 +23,6 @@ export default class CardsAPI
   async directory(req)
   {
     try {
-      await new Promise(res => {
-        setTimeout(() => res(), 2000);
-      })
       return this.cardDirectory.rawDirectory;
     }
     catch (err) {

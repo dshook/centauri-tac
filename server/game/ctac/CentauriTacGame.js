@@ -37,6 +37,16 @@ export default class CentauriTacGame
     this.playerResourceState = playerResourceState;
     this.gameEventService = gameEventService;
     this.mapState = mapState;
+
+    //set waiting time for other players to join
+    this.playerConnectTimeout = setTimeout(() => {
+      if(this.players.length !== 2){
+        let winningPlayerId = this.players[0] ? this.players[0].id : null;
+        this.log.info('Player connect timeout expired. Giving the win to %s', winningPlayerId);
+        this.hostManager.completeGame(winningPlayerId, 'Your opponent never connected :(');
+      }
+    }
+    , 20000);
   }
 
   /**
@@ -49,13 +59,6 @@ export default class CentauriTacGame
     if (this.players.length !== 2) {
       this.log.info('waiting for both players to join before starting');
 
-      //set waiting time for other players to join
-      this.playerConnectTimeout = setTimeout(() => {
-        let winningPlayerId = this.players[0] ? this.players[0].id : null;
-        this.log.info('Player connect timeout expired. Giving the win to %s', winningPlayerId);
-        this.hostManager.completeGame(winningPlayerId, 'Your opponent never connected :(');
-        }
-        , 30000);
       return;
     }
 

@@ -31,8 +31,13 @@ namespace ctac
         [Inject] public IJsonNetworkService network { get; set; }
         [Inject] public IDebugService debug { get; set; }
 
-        bool isStandaloneLaunch = false;
+        bool isStandaloneLaunch = false; //is the game launching by itself with config for both of the players?
+        bool loading = false;
 
+        /// <summary>
+        /// Bootstrap the game up. This command and its state persists between launches though so make sure to 
+        /// clean up and reset between launches
+        /// </summary>
         public override void Execute()
         {
             currentGameSignal.AddListener(onCurrentGame);
@@ -75,6 +80,7 @@ namespace ctac
 
         public void onCurrentGame(GameMetaModel game, SocketKey key)
         {
+            Cleanup();
             LoadGame();
         }
 
@@ -82,12 +88,15 @@ namespace ctac
 
         public void onGameLoggedIn(LoginStatusModel status, SocketKey key)
         {
-            gameLogins.Add(key, status);
+            if(!gameLogins.ContainsKey(key)){
+                gameLogins.Add(key, status);
+            }else{
+                gameLogins[key] = status;
+            }
             TestLoadReady();
         }
 
         //Call to load the map once the currentGame is sorted out
-        bool loading = false;
         void LoadGame()
         {
             if (currentGame == null || currentGame.game == null)
@@ -121,22 +130,41 @@ namespace ctac
         //Only join the game if both have happened to tell the server we're ready to go
         private void TestLoadReady()
         {
+            var finished = false;
             if(!cardsLoaded) return;
 
-            if((!isStandaloneLaunch && gameLogins.Count > 1) || (config.players == null || config.players.Count == 0 || gameLogins.Count >= config.players.Count)){
+            if (!isStandaloneLaunch)
+            {
+                debug.Log("Player loaded, joining game now");
+                joinGame.Dispatch(new LoginStatusModel() { status = true } , currentGame.me);
+                finished = true;
+            }
+            else if(config.players == null || config.players.Count == 0 || gameLogins.Count >= config.players.Count){
                 debug.Log("All players loaded, joining game now");
                 foreach(var gameLogin in gameLogins){
                     //let the server know we're ready
                     joinGame.Dispatch(new LoginStatusModel() { status = true } , gameLogin.Key);
                 }
+                finished = true;
+            }
+
+            if (finished)
+            {
+                loading = false;
                 Release();
+                currentGameSignal.RemoveListener(onCurrentGame);
+                gameLoggedInSignal.RemoveListener(onGameLoggedIn);
+                lobbyLoggedInSignal.RemoveListener(onLobbyLogin);
             }
         }
 
         public void onLobbyLogin(LoginStatusModel lsm, SocketKey key)
         {
-            //Auto queue to matchmaker in dev 
-            matchmakerQueue.Dispatch(new QueueModel(), key);
+            if (isStandaloneLaunch)
+            {
+                //Auto queue to matchmaker in dev 
+                matchmakerQueue.Dispatch(new QueueModel(), key);
+            }
         }
 
         //Get rid of all the junk in the editor scene

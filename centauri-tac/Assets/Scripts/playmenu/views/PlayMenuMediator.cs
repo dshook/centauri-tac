@@ -30,8 +30,13 @@ namespace ctac
             view.leaveButton.onClick.AddListener(onLeaveClicked);
         }
 
-        public override void OnRemove()
+        [ListensTo(typeof(MainMenuStartSignal))]
+        private void onMainMenuStart()
         {
+            //Reset things when the main menu is loaded, such as coming back from a game.
+            debug.Log("Resetting play menu");
+            view.SetButtonsActive(true);
+            view.SetQueueing(false);
         }
 
         private void onPlayClicked()
@@ -59,6 +64,7 @@ namespace ctac
                 view.SetButtonsActive(false);
                 view.SetLoadingProgress(0);
             }else{
+                debug.Log("Now queueing");
                 view.SetQueueing(model.inQueue);
             }
         }
@@ -113,7 +119,6 @@ namespace ctac
             }
 
             view.SetLoadingProgress(1.0f);
-
         }
 
 
