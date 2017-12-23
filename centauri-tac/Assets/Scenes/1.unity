@@ -2828,6 +2828,7 @@ GameObject:
   - component: {fileID: 611969538}
   - component: {fileID: 611969543}
   - component: {fileID: 611969544}
+  - component: {fileID: 611969545}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2868,9 +2869,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0070904493
+    x: 0.028588086
     y: 0
-    width: 0.9858191
+    width: 0.9428238
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -2990,6 +2991,18 @@ MonoBehaviour:
   maxAspectDenomenator: 10
   minAspectNumerator: 4
   minAspectDenomenator: 3
+--- !u!114 &611969545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 611969537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 79a0545000027d345ba5467fa87241bd, type: 2}
 --- !u!1001 &612944970
 Prefab:
   m_ObjectHideFlags: 0
@@ -6608,9 +6621,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.0070904493
+    x: 0.028588086
     y: 0
-    width: 0.9858191
+    width: 0.9428238
     height: 1
   near clip plane: 90
   far clip plane: 1600

@@ -48,10 +48,11 @@ Shader "Custom/CardArt"
 			float4 frag (v2f i) : SV_Target
 			{
 
-				float4 disp = tex2D(_DisplaceTex, i.uv);
+				//float4 disp = tex2D(_DisplaceTex, i.uv);
 
 				float4 col = tex2D(_MainTex, i.uv);
-				return col * disp * col.a;
+				//return col * disp * col.a;
+				return col * col.a;
 			}
 			ENDCG
 		}
