@@ -61,7 +61,7 @@ class BuildScript
     {
         var path = buildPath(build);
         FileUtil.DeleteFileOrDirectory(path);
-        BuildPipeline.BuildPlayer(EnabledLevels(), path + "bin/" + programName, target, options);
+        BuildPipeline.BuildPlayer(EnabledLevels(), path + "/" + programName, target, options);
         //CopyAssets(path);
     }
 

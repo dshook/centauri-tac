@@ -77,7 +77,11 @@ namespace ctac
         public void Dump()
         {
             string path = "./client_log.json";
-            File.WriteAllText(path, JsonConvert.SerializeObject(entries));
+            try{
+                File.WriteAllText(path, JsonConvert.SerializeObject(entries));
+            }catch(Exception){
+                //TODO: need to find a better way to upload logs to server to collect.
+            }
         }
 
         private string KeyFmt(SocketKey key)
