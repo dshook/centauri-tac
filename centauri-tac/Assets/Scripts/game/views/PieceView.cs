@@ -65,6 +65,8 @@ namespace ctac {
         private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
 
+        private bool prevCanAttack, prevCanMove, prevHpBarPulsing = false;
+
         public Animator anim;
 
         protected override void Start()
@@ -204,56 +206,74 @@ namespace ctac {
             var canAttack = piece.canAttack;
             var canMove = piece.canMove;
 
+            var hpBarTargetColor = Colors.invisible;
+            var hpBarPulse = false;
+
+            //Figure out what color the hp bar should be 
             if (targetCandidate)
             {
-                highlight.enabled = true;
-                highlight.ConstantOn(Colors.targetOutlineColor);
+                hpBarTargetColor = Colors.targetOutlineColor;
+                hpBarPulse = true;
             }
             else if (piece.isSelected)
             {
-                highlight.enabled = true;
-                highlight.ConstantOn(Colors.selectedOutlineColor);
-            }else if (piece.currentPlayerHasControl) {
-
-                if (canMove && canAttack)
-                {
-                    highlight.enabled = true;
-                    highlight.ConstantOn(Colors.moveAttackOutlineColor);
-                }
-                else if (canAttack && enemiesInRange)
-                {
-                    highlight.enabled = true;
-                    highlight.ConstantOn(Colors.attackOutlineColor);
-                }
-                else if (canMove)
-                {
-                    highlight.enabled = true;
-                    highlight.ConstantOn(Colors.moveOutlineColor);
-                }
-                else
-                {
-                    highlight.ConstantOff();
-                    highlight.enabled = false;
-                }
+                hpBarTargetColor = Colors.selectedOutlineColor;
             }
-            else
+
+            if (piece.currentPlayerHasControl) {
+                hpBarTargetColor = hpBarFillFriendlyColor;
+            }else{
+                hpBarTargetColor = hpBarFillEnemyColor;
+            }
+
+            if (canMove || (canAttack && enemiesInRange))
             {
-                highlight.ConstantOff();
-                highlight.enabled = false;
+                hpBarPulse = true;
             }
 
+            //Set it, and make it pulse if it needs to and the value changed
+            if(hpBarTargetColor != Colors.invisible){
+                hpBarRenderer.color = hpBarTargetColor;
+            }
+
+            if(hpBarPulse != prevHpBarPulsing){
+                if(hpBarPulse){
+                    hpBar.ColorTo( ColorExtensions.DesaturateColor(hpBarTargetColor,1.0f), 1.5f, 0f, LoopType.pingPong);
+                }else{
+                    Destroy(hpBar.GetComponent<iTween>());
+                    hpBarRenderer.color = hpBarTargetColor;
+                }
+            }
+
+            prevHpBarPulsing = hpBarPulse;
+
+            //Update the attack and move indicators as well
             if(canAttack){
                 canAttackIndicator.SetActive(true);
+                if(prevCanAttack == false){
+                    canAttackIndicator.ColorTo(Color.white, 1.5f, 0f, LoopType.pingPong);
+                }
             }else{
+                if(prevCanAttack == true){
+                    canAttackIndicator.ColorTo(Colors.attackOutlineColor, 0.0f, 0f);
+                }
                 canAttackIndicator.SetActive(false);
             }
+            prevCanAttack = canAttack;
 
 
             if(canMove){
                 canMoveIndicator.SetActive(true);
+                if(prevCanMove == false){
+                    canMoveIndicator.ColorTo(Color.white, 1.5f, 0f, LoopType.pingPong);
+                }
             }else{
+                if(prevCanMove == true){
+                    canMoveIndicator.ColorTo(Colors.moveOutlineColor, 0.0f, 0f);
+                }
                 canMoveIndicator.SetActive(false);
             }
+            prevCanMove = canMove;
 
 
         }
@@ -274,8 +294,9 @@ namespace ctac {
             }
 
             //hpBarFillRenderer.material.SetColor("_Color", fillColor);
-            hpBarColorModifier.color = fillColor;
-            hpBarColorModifier.svgRenderer.UpdateRenderer();
+            hpBarRenderer.color = fillColor;
+            // hpBarColorModifier.color = fillColor;
+            // hpBarColorModifier.svgRenderer.UpdateRenderer();
             hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
             hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
 

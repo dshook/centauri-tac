@@ -32,8 +32,8 @@ namespace ctac
 
         public static Color32 targetOutlineColor = ColorExtensions.HexToColor("E1036C");
         public static Color32 moveAttackOutlineColor = ColorExtensions.HexToColor("63FF32");
-        public static Color32 moveOutlineColor = ColorExtensions.HexToColor("006BFF");
-        public static Color32 attackOutlineColor = ColorExtensions.HexToColor("FF5E2E");
+        public static Color32 moveOutlineColor = ColorExtensions.HexToColor("006241");
+        public static Color32 attackOutlineColor = ColorExtensions.HexToColor("EA2200");
         public static Color32 selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
         public static Color32 tauntEnemyColor = ColorExtensions.HexToColor("#E52600");
