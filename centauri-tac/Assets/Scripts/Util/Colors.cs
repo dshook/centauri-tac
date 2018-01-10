@@ -30,7 +30,7 @@ namespace ctac
         public static Color32 numberSplatHealColor = ColorExtensions.HexToColor("00F00B");
         public static Color32 numberSplatHealColorBot = ColorExtensions.HexToColor("006504");
 
-        public static Color32 targetOutlineColor = ColorExtensions.HexToColor("E1036C");
+        public static Color32 targetOutlineColor = ColorExtensions.HexToColor("9403E1");
         public static Color32 moveAttackOutlineColor = ColorExtensions.HexToColor("63FF32");
         public static Color32 moveOutlineColor = ColorExtensions.HexToColor("006241");
         public static Color32 attackOutlineColor = ColorExtensions.HexToColor("EA2200");

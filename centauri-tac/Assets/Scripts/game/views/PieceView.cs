@@ -213,13 +213,13 @@ namespace ctac {
             //Figure out what color the hp bar should be 
             if (piece.currentPlayerHasControl) {
                 hpBarTargetColor = hpBarFillFriendlyColor;
+
+                if (canMove || (canAttack && enemiesInRange))
+                {
+                    hpBarPulse = true;
+                }
             }else{
                 hpBarTargetColor = hpBarFillEnemyColor;
-            }
-
-            if (canMove || (canAttack && enemiesInRange))
-            {
-                hpBarPulse = true;
             }
 
             if (targetCandidate)
@@ -240,7 +240,7 @@ namespace ctac {
             if(hpBarPulse != prevHpBarPulsing || hpBarTargetColor != prevHpBarColor){
                 if(hpBarPulse){
                     var targetColor = hpBarTargetColor.ToHSV();
-                    targetColor.V += 0.4f;
+                    targetColor.V += 0.5f;
                     targetColor.S += 0.2f;
                     // targetColor.H += 0.05f;
 
@@ -249,10 +249,10 @@ namespace ctac {
                     hpBarOutlineRenderer.color = outlineColor;
 
                     Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
-                    hpBarOutlineRenderer.gameObject.ColorTo( targetColor.ToColor(), 0.6f, 0f, LoopType.pingPong);
+                    hpBarOutlineRenderer.gameObject.ColorTo( targetColor.ToColor(), 0.5f, 0f, LoopType.pingPong);
                 }else{
                     Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
-                    hpBarRenderer.color = Colors.invisible;
+                    hpBarOutlineRenderer.color = Colors.invisible;
                 }
             }
 
