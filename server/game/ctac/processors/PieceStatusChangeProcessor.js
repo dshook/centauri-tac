@@ -28,6 +28,14 @@ export default class PieceStatusChangeProcessor
       return queue.cancel(action);
     }
 
+    if(piece.range){
+      if((action.add & Statuses.Piercing) || (action.add & Statuses.Cleave)){
+        this.log.info('Ignoring pierce or cleave add to ranged piece %s', action.pieceId);
+        action.add = action.add & ~Statuses.Piercing;
+        action.add = action.add & ~Statuses.Cleave;
+      }
+    }
+
     if(action.add){
       piece.statuses = piece.statuses | action.add;
     }
