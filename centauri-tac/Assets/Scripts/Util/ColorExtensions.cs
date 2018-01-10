@@ -34,5 +34,62 @@ namespace ctac.util
             float new_b = c.b + amount * (L - c.b);
             return new Color(new_r, new_g, new_b);
         }
+
+        public static HSVColor ToHSV(this Color c){
+            float H,S,V;
+
+            Color.RGBToHSV(c, out H, out S, out V);
+
+            return new HSVColor(){ H = H, S = S, V = V, A = c.a };
+        }
+
+        public static Color ToColor(this HSVColor hsvc){
+            var c = Color.HSVToRGB(hsvc.H, hsvc.S, hsvc.V);
+            c.a = hsvc.A;
+            return c;
+        }
+    }
+
+    public class HSVColor 
+    {
+        float h;
+        public float H 
+        {
+           get{ return h; }
+           set{
+               h = value;
+               //try to rotate around the values if they exceed the boundaries, but clamp just to make sure
+               if(h > 1) h -= 1;
+               if(h < 0) h += 1;
+               h = Mathf.Clamp(value, 0, 1f);
+           }
+        }
+
+        float s;
+        public float S 
+        {
+           get{ return s; }
+           set{
+               s = Mathf.Clamp(value, 0, 1f);
+           }
+        }
+
+        float v;
+        public float V 
+        {
+           get{ return v; }
+           set{
+               v = Mathf.Clamp(value, 0, 1f);
+           }
+        }
+
+        float a;
+        public float A
+        {
+           get{ return a; }
+           set{
+               a = Mathf.Clamp(value, 0, 1f);
+           }
+        }
     }
 }

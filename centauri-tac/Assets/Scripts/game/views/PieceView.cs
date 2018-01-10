@@ -33,7 +33,7 @@ namespace ctac {
         public GameObject hpBar;
         public GameObject hpBarfill;
         public SVGRenderer hpBarRenderer;
-        public SVGColorModifier hpBarColorModifier;
+        public SVGRenderer hpBarOutlineRenderer;
         public SpriteRenderer hpBarFillRenderer;
         private Color32 hpBarFillFriendlyColor = Colors.friendlyColor;
         private Color32 hpBarFillEnemyColor = Colors.enemyColor;
@@ -65,7 +65,8 @@ namespace ctac {
         private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
 
-        private bool prevCanAttack, prevCanMove, prevHpBarPulsing = false;
+        private bool prevHpBarPulsing = false;
+        private Color prevHpBarColor = Colors.invisible;
 
         public Animator anim;
 
@@ -79,8 +80,8 @@ namespace ctac {
             hpBar = hpBarContainer.transform.Find("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.Find("HpBarFill").gameObject;
             hpBarFillRenderer = hpBarfill.GetComponent<SpriteRenderer>();
-            hpBarColorModifier = hpBar.GetComponent<SVGColorModifier>();
             hpBarRenderer = hpBar.GetComponent<SVGRenderer>();
+            hpBarOutlineRenderer = hpBarContainer.transform.Find("hpbar outline").gameObject.GetComponent<SVGRenderer>();
             canAttackIndicator = hpBarContainer.transform.Find("canAttack").gameObject;
             canMoveIndicator = hpBarContainer.transform.Find("canMove").gameObject;
             canAttackRenderer = canAttackIndicator.GetComponent<SVGRenderer>();
@@ -210,16 +211,6 @@ namespace ctac {
             var hpBarPulse = false;
 
             //Figure out what color the hp bar should be 
-            if (targetCandidate)
-            {
-                hpBarTargetColor = Colors.targetOutlineColor;
-                hpBarPulse = true;
-            }
-            else if (piece.isSelected)
-            {
-                hpBarTargetColor = Colors.selectedOutlineColor;
-            }
-
             if (piece.currentPlayerHasControl) {
                 hpBarTargetColor = hpBarFillFriendlyColor;
             }else{
@@ -231,51 +222,46 @@ namespace ctac {
                 hpBarPulse = true;
             }
 
+            if (targetCandidate)
+            {
+                hpBarTargetColor = Colors.targetOutlineColor;
+                hpBarPulse = true;
+            }
+            else if (piece.isSelected)
+            {
+                hpBarTargetColor = Colors.selectedOutlineColor;
+            }
+
             //Set it, and make it pulse if it needs to and the value changed
             if(hpBarTargetColor != Colors.invisible){
                 hpBarRenderer.color = hpBarTargetColor;
             }
 
-            if(hpBarPulse != prevHpBarPulsing){
+            if(hpBarPulse != prevHpBarPulsing || hpBarTargetColor != prevHpBarColor){
                 if(hpBarPulse){
-                    hpBar.ColorTo( ColorExtensions.DesaturateColor(hpBarTargetColor,1.0f), 1.5f, 0f, LoopType.pingPong);
+                    var targetColor = hpBarTargetColor.ToHSV();
+                    targetColor.V += 0.4f;
+                    targetColor.S += 0.2f;
+                    // targetColor.H += 0.05f;
+
+                    var outlineColor = targetColor.ToColor();
+                    outlineColor.a = 0.3f;
+                    hpBarOutlineRenderer.color = outlineColor;
+
+                    Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
+                    hpBarOutlineRenderer.gameObject.ColorTo( targetColor.ToColor(), 0.6f, 0f, LoopType.pingPong);
                 }else{
-                    Destroy(hpBar.GetComponent<iTween>());
-                    hpBarRenderer.color = hpBarTargetColor;
+                    Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
+                    hpBarRenderer.color = Colors.invisible;
                 }
             }
 
             prevHpBarPulsing = hpBarPulse;
+            prevHpBarColor = hpBarTargetColor;
 
             //Update the attack and move indicators as well
-            if(canAttack){
-                canAttackIndicator.SetActive(true);
-                if(prevCanAttack == false){
-                    canAttackIndicator.ColorTo(Color.white, 1.5f, 0f, LoopType.pingPong);
-                }
-            }else{
-                if(prevCanAttack == true){
-                    canAttackIndicator.ColorTo(Colors.attackOutlineColor, 0.0f, 0f);
-                }
-                canAttackIndicator.SetActive(false);
-            }
-            prevCanAttack = canAttack;
-
-
-            if(canMove){
-                canMoveIndicator.SetActive(true);
-                if(prevCanMove == false){
-                    canMoveIndicator.ColorTo(Color.white, 1.5f, 0f, LoopType.pingPong);
-                }
-            }else{
-                if(prevCanMove == true){
-                    canMoveIndicator.ColorTo(Colors.moveOutlineColor, 0.0f, 0f);
-                }
-                canMoveIndicator.SetActive(false);
-            }
-            prevCanMove = canMove;
-
-
+            canAttackIndicator.SetActive(canAttack);
+            canMoveIndicator.SetActive(canMove);
         }
 
 
