@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class ActionsProcessedModel
     {
         public List<int> processedActions = new List<int>();

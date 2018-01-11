@@ -11,23 +11,31 @@ namespace ctac
         {
         }
 
-        public void BindSingletons(Type[] assemblyTypes)
+        public void BindSingletons(Type[] assemblyTypes, Type singletonType, bool crossContext)
         {
             //bind up all the singleton signals
             //note that this will not inject any types that are bound so these should be plain data classes
             foreach (Type type in assemblyTypes)
             {
-                if (type.GetCustomAttributes(typeof(SingletonAttribute), true).Length > 0)
+                if (type.GetCustomAttributes(singletonType, true).Length > 0)
                 {
                     var interfaceName = "I" + type.Name;
                     var implementedInterface = type.GetInterfaces().Where(x => x.Name == interfaceName).FirstOrDefault();
                     if (implementedInterface != null)
                     {
-                        injectionBinder.Bind(implementedInterface).To(Activator.CreateInstance(type)).ToSingleton().CrossContext();
+                        var sing = injectionBinder.Bind(implementedInterface).To(Activator.CreateInstance(type)).ToSingleton();
+                        if (crossContext)
+                        {
+                            sing.CrossContext();
+                        }
                     }
                     else
                     {
-                        injectionBinder.Bind(type).To(Activator.CreateInstance(type)).ToSingleton().CrossContext();
+                        var sing = injectionBinder.Bind(type).To(Activator.CreateInstance(type)).ToSingleton();
+                        if (crossContext)
+                        {
+                            sing.CrossContext();
+                        }
                     }
                 }
             }

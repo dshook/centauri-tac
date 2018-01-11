@@ -242,7 +242,7 @@ namespace ctac {
                     var targetColor = hpBarTargetColor.ToHSV();
                     targetColor.V += 0.5f;
                     targetColor.S += 0.2f;
-                    // targetColor.H += 0.05f;
+                    targetColor.H -= 0.08f;
 
                     var outlineColor = targetColor.ToColor();
                     outlineColor.a = 0.3f;

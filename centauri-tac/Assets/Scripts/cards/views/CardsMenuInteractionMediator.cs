@@ -20,7 +20,6 @@ namespace ctac
         [Inject] public SelectDeckSignal selectDeck { get; set; }
         [Inject] public CardHoverTipSignal cardHoverTipSignal { get; set; }
 
-        [Inject] public CardsModel cards { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
 
         private CardModel draggedCard = null;

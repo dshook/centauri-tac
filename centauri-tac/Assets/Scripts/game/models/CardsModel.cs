@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class CardsModel
     {
         public List<CardModel> Cards = new List<CardModel>();

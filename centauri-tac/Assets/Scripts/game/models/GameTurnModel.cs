@@ -2,7 +2,7 @@
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class GameTurnModel
     {
         public int currentTurn { get; set; }

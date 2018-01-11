@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace ctac
 {
+    //ideally would be game singleton but hover card mediator needs to know about spell damage
     [Singleton]
     public class PossibleActionsModel
     {

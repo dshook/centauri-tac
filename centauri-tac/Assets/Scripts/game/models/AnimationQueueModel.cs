@@ -11,7 +11,7 @@ namespace ctac
         float? postDelay { get; }
     }
 
-    [Singleton]
+    [GameSingleton]
     public class AnimationQueueModel
     {
         private List<IAnimate> animations = new List<IAnimate>();

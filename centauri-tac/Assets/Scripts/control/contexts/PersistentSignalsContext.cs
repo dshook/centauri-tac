@@ -51,7 +51,7 @@ namespace ctac
             injectionBinder.Bind<ICrossContextInjectionBinder>().To(injectionBinder).CrossContext();
 
             var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes();
-            BindSingletons(assemblyTypes);
+            BindSingletons(assemblyTypes, typeof(SingletonAttribute), true);
 
             //special injection of a direct view since the dispatcher service needs to be a mono behavior
             var signalDispatch = GameObject.FindObjectOfType<SignalDispatcherService>();

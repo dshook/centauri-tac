@@ -2,7 +2,7 @@
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class PlayerResourcesModel
     {
         //Dictionary from playerId to resource amount

@@ -136,14 +136,14 @@ namespace ctac
             if (!isStandaloneLaunch)
             {
                 debug.Log("Player loaded, joining game now");
-                joinGame.Dispatch(new LoginStatusModel() { status = true } , currentGame.me);
+                joinGame.Dispatch(new LoginStatusModel() { status = true } , currentGame.me, currentGame.game);
                 finished = true;
             }
             else if(config.players == null || config.players.Count == 0 || gameLogins.Count >= config.players.Count){
                 debug.Log("All players loaded, joining game now");
                 foreach(var gameLogin in gameLogins){
                     //let the server know we're ready
-                    joinGame.Dispatch(new LoginStatusModel() { status = true } , gameLogin.Key);
+                    joinGame.Dispatch(new LoginStatusModel() { status = true } , gameLogin.Key, currentGame.game);
                 }
                 finished = true;
             }

@@ -65,6 +65,7 @@ namespace ctac
             injectionBinder.Bind<ICardService>().To<CardService>().ToSingleton();
             injectionBinder.Bind<IPieceService>().To<PieceService>().ToSingleton();
 
+            BindSingletons(assemblyTypes, typeof(GameSingletonAttribute), false);
             BindViews(assemblyTypes);
             BindSignals(assemblyTypes);
 

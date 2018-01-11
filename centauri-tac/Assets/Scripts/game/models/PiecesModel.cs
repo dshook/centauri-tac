@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class PiecesModel
     {
         public List<PieceModel> Pieces { get; set; }

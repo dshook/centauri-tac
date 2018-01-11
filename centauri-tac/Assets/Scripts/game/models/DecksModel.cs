@@ -2,7 +2,7 @@
 
 namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class DecksModel
     {
         public List<CardModel> Cards = new List<CardModel>();

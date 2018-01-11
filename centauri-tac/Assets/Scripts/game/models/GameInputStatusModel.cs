@@ -1,6 +1,6 @@
 ﻿namespace ctac
 {
-    [Singleton]
+    [GameSingleton]
     public class GameInputStatusModel
     {
         public bool inputEnabled = false;
