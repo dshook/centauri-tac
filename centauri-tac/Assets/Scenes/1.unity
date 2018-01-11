@@ -2869,9 +2869,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.03138855
+    x: 0.028588086
     y: 0
-    width: 0.9372229
+    width: 0.9428238
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -3670,9 +3670,42 @@ Prefab:
       propertyPath: _color.b
       value: 0.77254903
       objectReference: {fileID: 0}
+    - target: {fileID: 224894486727675042, guid: b2076f680ccc99d4a95eb1b13dda5a86,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 499856, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 490628, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000011603070170, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 479424, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 484616, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 497862, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &698102363 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 401572, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
+  m_PrefabInternal: {fileID: 698102362}
 --- !u!1 &698240177
 GameObject:
   m_ObjectHideFlags: 0
@@ -6543,6 +6576,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db0c11aea2170704e8371eff8cece12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1424831503
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 698102363}
+    m_Modifications:
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4442302085107216, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 491fb549eed078b488fea5438280fec0, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1462897672
 GameObject:
   m_ObjectHideFlags: 0
@@ -6636,9 +6711,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.03138855
+    x: 0.028588086
     y: 0
-    width: 0.9372229
+    width: 0.9428238
     height: 1
   near clip plane: 90
   far clip plane: 1600
