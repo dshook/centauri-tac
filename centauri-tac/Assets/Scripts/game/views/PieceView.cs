@@ -281,14 +281,17 @@ namespace ctac {
 
             //hpBarFillRenderer.material.SetColor("_Color", fillColor);
             hpBarRenderer.color = fillColor;
-            // hpBarColorModifier.color = fillColor;
-            // hpBarColorModifier.svgRenderer.UpdateRenderer();
-            hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
-            hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
 
-            if (piece.baseHealth > hpBarHpCuttoff)
+            //Not sure exactly why I need to make this null check but on OSX you sometimes get a NRE here
+            if(hpBarFillRenderer.material != null)
             {
-                hpBarFillRenderer.material.SetColor("_LineColor", Color.white);
+                hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
+                hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
+
+                if (piece.baseHealth > hpBarHpCuttoff)
+                {
+                    hpBarFillRenderer.material.SetColor("_LineColor", Color.white);
+                }
             }
         }
 
