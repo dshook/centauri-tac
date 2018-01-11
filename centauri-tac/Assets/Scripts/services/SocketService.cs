@@ -180,6 +180,11 @@ namespace ctac
                     }
                 );
             }
+
+            if (sockets.ContainsKey(key))
+            {
+                sockets.Remove(key);
+            }
         }
 
         public bool IsSocketOpen(SocketKey key)
