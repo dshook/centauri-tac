@@ -388,7 +388,7 @@ namespace ctac
         public void onPieceSpawn(PieceSpawnedModel piece)
         {
             updateTauntTiles();
-            if(piece.piece.playerId == players.Me.id ){
+            if(piece == null || piece.piece.playerId == players.Me.id ){
                 pieceNotDeploying();
             }
         }
