@@ -11,6 +11,8 @@ namespace ctac
         public List<CardModel> directory = new List<CardModel>();
         Signal<List<CardModel>> directoryLoaded = new Signal<List<CardModel>>();
 
+        //TODO: Card directory should cache the data locally and only refetch it from the server if the hash has changed
+        // which can be served up on a diff route
         Signal finishedLoading = null; //real nasty but hey... should only call load once
         public void LoadCards(IJsonNetworkService network, Signal finishedLoadingSignal)
         {

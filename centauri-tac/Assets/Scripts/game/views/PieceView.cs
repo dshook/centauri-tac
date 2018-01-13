@@ -283,7 +283,7 @@ namespace ctac {
             hpBarRenderer.color = fillColor;
 
             //Not sure exactly why I need to make this null check but on OSX you sometimes get a NRE here
-            if(hpBarFillRenderer.material != null)
+            if(hpBarFillRenderer != null && hpBarFillRenderer.material != null)
             {
                 hpBarFillRenderer.material.SetFloat("_CurrentHp", piece.health);
                 hpBarFillRenderer.material.SetFloat("_MaxHp", piece.maxBuffedHealth);
