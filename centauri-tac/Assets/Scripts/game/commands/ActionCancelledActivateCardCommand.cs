@@ -32,7 +32,7 @@ namespace ctac
             }
 
             //reset activated flag
-            var card = cards.Cards.FirstOrDefault(c => c.id == activateCancelled.cardInstanceId);
+            var card = cards.Card(activateCancelled.cardInstanceId);
             if (card != null)
             {
                 card.activated = false;

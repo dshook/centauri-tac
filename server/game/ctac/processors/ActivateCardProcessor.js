@@ -71,7 +71,7 @@ export default class ActivateCardProcessor
         return queue.cancel(action, true);
       }
 
-      //mostly all good if we make it this far, individual processors could still potentiall cancel their own action
+      //mostly all good if we make it this far, individual processors could still potentially cancel their own action
       queue.push(new SpawnPiece(
         {
           playerId: action.playerId,

@@ -10,15 +10,13 @@ namespace ctac
         void SetupGameObject(CardModel model, GameObject cardGameObject);
         void UpdateCardArt(CardModel model);
         void CopyCard(CardModel src, CardModel dest);
+        ActivateCardModel ActivateCardInstance(CardsModel cards, CardDirectory cardDirectory, int cardInstanceId, int cardTemplateId, int? spellDamage);
     }
 
     public class CardService : ICardService
     {
-        [Inject]
-        public IDebugService debug { get; set; }
-
-        [Inject]
-        public IResourceLoaderService loader { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
 
         public CardModel CreateCard(CardModel cardModel, Transform parent, Vector3? spawnPosition = null)
         {
@@ -129,6 +127,31 @@ namespace ctac
             if (card == null || card.gameObject == null) return;
 
             card.gameObject.name = string.Format("Player {0} Card {1} Template {2}", card.playerId, card.id, card.cardTemplateId);
+        }
+
+        //Sets up the local copy of an activated card from spawn piece or play spell and returns the activate card model
+        //that needs to be dispatched
+        public ActivateCardModel ActivateCardInstance(CardsModel cards, CardDirectory cardDirectory, int cardInstanceId, int cardTemplateId, int? spellDamage)
+        {
+            var card = cards.Card(cardInstanceId);
+            if(card == null){ return null; }
+
+            var cardActivated = new ActivateCardModel(){
+                playerId = card.playerId,
+                cardInstanceId = cardInstanceId,
+                cardTemplateId = cardTemplateId,
+                spellDamage = spellDamage,
+                card = card
+            };
+
+            card.activated = true; //just in case, should already be set
+
+            //enemy cards that are activated need to be filled out with the info now that we have it
+            if(card.cardTemplateId == 0 && cardActivated.cardTemplateId.HasValue){
+                CopyCard(cardDirectory.Card(cardActivated.cardTemplateId.Value), card);
+                card.playerId = cardActivated.playerId;
+            }
+            return cardActivated;
         }
     }
 }

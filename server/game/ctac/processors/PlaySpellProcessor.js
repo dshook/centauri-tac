@@ -40,6 +40,9 @@ export default class PlaySpellProcessor
     })){
 
       this.cardState.playCard(action.playerId, action.cardInstanceId);
+
+      action.spellDamage = this.pieceState.totalSpellDamage(action.playerId);
+
       queue.complete(action);
       queue.push(new SetPlayerResource(action.playerId, -playedCard.cost));
       this.statsState.setStat('COMBOCOUNT', 1 + this.statsState.getStat('COMBOCOUNT', action.playerId), action.playerId);

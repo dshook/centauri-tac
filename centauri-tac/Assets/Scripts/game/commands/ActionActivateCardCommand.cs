@@ -19,20 +19,10 @@ namespace ctac
         public override void Execute()
         {
             if(!processedActions.Verify(cardActivated.id)) return;
+
+            //Activate card no longer really does anything because the subsequent spawn piece or play spell commands could cancel
+            //From invalid targets or anything else. So the activate card is in each of those commands, as well as cancelling in each of those
             
-            var card = cards.Card(cardActivated.cardInstanceId);
-            cardActivated.card = card;
-            if(card != null){
-                card.activated = true; //just in case, should already be set
-
-                //enemy cards that are activated need to be filled out with the info now that we have it
-                if(card.cardTemplateId == 0 && cardActivated.cardTemplateId.HasValue){
-                    cardService.CopyCard(cardDirectory.Card(cardActivated.cardTemplateId.Value), card);
-                    card.playerId = cardActivated.playerId;
-                }
-            }
-
-            cardActivatedSignal.Dispatch(cardActivated);
         }
     }
 }

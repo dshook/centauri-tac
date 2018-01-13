@@ -13,5 +13,8 @@ export default class PlaySpell extends BaseAction
     this.targetPieceId = targetPieceId;
     this.pivotPosition = pivotPosition ? new Position(pivotPosition.x, pivotPosition.y, pivotPosition.z) : null;
     this.chooseCardTemplateId = chooseCardTemplateId;
+
+    //Gets filled out by the server telling you how much spell damage was present when the card was played
+    this.spellDamage = 0;
   }
 }

@@ -7,5 +7,8 @@
         public int playerId { get; set; }
         public PositionModel position { get; set; }
         public int? targetPieceId { get; set; }
+
+        //filled out by server
+        public int? spellDamage { get; set; }
     }
 }
