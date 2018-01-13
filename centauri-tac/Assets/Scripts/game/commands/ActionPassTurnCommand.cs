@@ -1,5 +1,6 @@
 using strange.extensions.command.impl;
 using ctac.signals;
+using UnityEngine;
 
 namespace ctac
 {
@@ -45,6 +46,16 @@ namespace ctac
             {
                 piece.moveCount = 0;
                 piece.attackCount = 0;
+
+                //stop the z's
+                var sleeping = piece.pieceView.faceCameraContainer.transform.Find("Sleeping Status");
+                if(sleeping != null){
+                    var particle = sleeping.GetComponent<ParticleSystem>();
+                    if(particle != null){
+                        particle.Stop();
+                    }
+                    GameObject.Destroy(particle.gameObject, 3f);
+                }
             }
 
             debug.Log("Turn Ended");

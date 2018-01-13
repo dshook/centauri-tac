@@ -332,6 +332,7 @@ namespace ctac {
             public PieceView piece { get; set; }
             public MapModel map { get; set; }
             public IMapService mapService { get; set; }
+            public IResourceLoaderService loader { get; set; }
 
             private Vector3 destPosition { get; set; }
             private Vector3 startOffset = new Vector3(0, 8f, 0);
@@ -342,9 +343,11 @@ namespace ctac {
             //private Tile originTile { get; set; }
             private List<Tile> oneRing { get; set; }
             private List<Tile> twoRing { get; set; }
+            private GameObject sleepingStatusParticle;
 
             public void Init()
             {
+                sleepingStatusParticle = loader.Load<GameObject>("Particles/Sleeping Status");
 
                 destPosition = map.tiles[piece.piece.tilePosition].fullPosition;
                 piece.gameObject.transform.position = destPosition + startOffset;
@@ -391,6 +394,13 @@ namespace ctac {
                         Destroy(remainingTween);
                     }
                     Complete = true;
+
+                    //Add in the sleeping sickness particles if the piece can't attack which should be everyone except charge
+                    if(!piece.piece.canAttack){
+                        var newZs = GameObject.Instantiate(sleepingStatusParticle, new Vector3(0f, 0.3f, -0.15f), Quaternion.Euler(-90f, 0, 45f));
+                        newZs.transform.SetParent(piece.faceCameraContainer.transform, false);
+                        newZs.name = "Sleeping Status";
+                    }
                 }
             }
         }

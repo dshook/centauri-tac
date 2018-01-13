@@ -29,6 +29,7 @@ namespace ctac
                 piece = piece.piece.pieceView,
                 map = map,
                 mapService = mapService,
+                loader = loader,
                 Async = piece.runAsync
             });
             animationQueue.Add(

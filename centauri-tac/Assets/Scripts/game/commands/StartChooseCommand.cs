@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IMapService mapService { get; set; }
         [Inject] public ICardService cardService { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -77,7 +78,8 @@ namespace ctac
                 {
                     piece = pieceView,
                     map = map,
-                    mapService = mapService
+                    mapService = mapService,
+                    loader = loader
                 });
                 animationQueue.Add(
                     new PieceView.ChangeStatusAnim()
