@@ -176,6 +176,7 @@ class MapTools : EditorWindow
         mapCreator.contextView = contextGO;
         mapCreator.mapCreated = new MapCreatedSignal();
         mapCreator.mapModel = new MapModel();
+        mapCreator.loader = new ResourceLoaderService();
 
         //fetch map from disk, eventually comes from server
         string mapContents = File.ReadAllText(string.Format("../maps/{0}.json", levelName));

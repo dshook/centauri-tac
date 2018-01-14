@@ -16,12 +16,8 @@ namespace ctac
         [Inject(InjectionKeys.GameSignalsRoot)]
         public GameObject contextView { get; set; }
 
-        [Inject]
-        public MapCreatedSignal mapCreated { get; set; }
-
-        [Inject]
-        public MapModel mapModel { get; set; }
-
+        [Inject] public MapCreatedSignal mapCreated { get; set; }
+        [Inject] public MapModel mapModel { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
         GameObject mapTilePrefab;
@@ -81,7 +77,7 @@ namespace ctac
             }
 
             setupTiles(map.tiles, tilesGO, false, map.startingPositions);
-            setupTiles(dedupedCosmeticTiles, goMap, true, null);
+            setupTiles(dedupedCosmeticTiles, tilesGO, true, null);
 
             setupProps(propsGO, map.props);
 
@@ -108,6 +104,7 @@ namespace ctac
 
                 //set up material
                 var tileRenderer = newTileGO.transform.Find("cube").GetComponent<MeshRenderer>();
+                t.material = string.IsNullOrEmpty(t.material) ? "rock" : t.material;
                 if (!mapMaterials.ContainsKey(t.material))
                 {
                     Debug.LogError("Material " + t.material + " not loaded");
