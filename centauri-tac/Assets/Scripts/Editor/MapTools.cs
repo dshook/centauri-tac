@@ -23,6 +23,9 @@ class MapTools : EditorWindow
     }
 
     string levelName;
+    int selectTileX;
+    int selectTileZ;
+
     void OnGUI()
     {
         levelName = EditorGUILayout.TextField("Level Name: ", levelName);
@@ -66,6 +69,15 @@ class MapTools : EditorWindow
         if (GUILayout.Button("Fix Tile Positions"))
         {
             FixTilePositions();
+        }
+
+        GUILayout.Label("Select Tile By Position");
+
+        selectTileX = EditorGUILayout.IntField("Tile X", selectTileX);
+        selectTileZ = EditorGUILayout.IntField("Tile Z", selectTileZ);
+
+        if(GUILayout.Button("Find Tile")){
+            FindTileByPos(selectTileX, selectTileZ);
         }
     }
 
@@ -274,6 +286,26 @@ class MapTools : EditorWindow
             collider.center = new Vector3(0, -0.5f, 0);
 
         }
+    }
+
+    void FindTileByPos(int x, int z)
+    {
+
+        var mapGO = GameObject.Find("Map");
+        var tileGO = mapGO.transform.Find("Tiles");
+
+        var selected = new List<GameObject>();
+        for (int t = 0; t < tileGO.childCount; t++)
+        {
+            var tile = tileGO.transform.GetChild(t);
+
+            if ((int)tile.transform.position.x == x && (int)tile.transform.position.z == z)
+            {
+                selected.Add(tile.gameObject);
+            }
+        }
+
+        Selection.objects = selected.ToArray();
     }
 
 }
