@@ -3,7 +3,7 @@
 	"name": "Venusian Hero",
 	"description": "<b>Ability(2)</b>: Give friendly minions near your hero +0/+3",
 	"cost": 0,
-	"attack": 2,
+	"attack": 0,
 	"health": 30,
 	"movement": 2,
   "race": 1,

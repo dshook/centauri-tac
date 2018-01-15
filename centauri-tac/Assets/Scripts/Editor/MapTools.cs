@@ -26,6 +26,9 @@ class MapTools : EditorWindow
     int selectTileX;
     int selectTileZ;
 
+    float randomMin = 0;
+    float randomMax = 1;
+
     void OnGUI()
     {
         levelName = EditorGUILayout.TextField("Level Name: ", levelName);
@@ -78,6 +81,14 @@ class MapTools : EditorWindow
 
         if(GUILayout.Button("Find Tile")){
             FindTileByPos(selectTileX, selectTileZ);
+        }
+
+        GUILayout.Label("Randomize tile height in Range");
+        randomMin = EditorGUILayout.FloatField("Min", randomMin);
+        randomMax = EditorGUILayout.FloatField("Max", randomMax);
+
+        if(GUILayout.Button("Randomize")){
+            RandomizeHeights(randomMin, randomMax);
         }
     }
 
@@ -306,6 +317,18 @@ class MapTools : EditorWindow
         }
 
         Selection.objects = selected.ToArray();
+    }
+
+    void RandomizeHeights(float min, float max)
+    {
+        for(int i = 0; i < Selection.gameObjects.Length; i++){
+            var selected = Selection.gameObjects[i];
+            var tv  = selected.GetComponent<TileView>();
+            if(tv == null) continue;
+
+            var pos = selected.transform.position;
+            selected.transform.position = new Vector3(pos.x, UnityEngine.Random.Range(min, max), pos.z);
+        }
     }
 
 }
