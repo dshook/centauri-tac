@@ -19,6 +19,7 @@
     "build-map": "node ./util/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
     "build-docker": "docker build -t stac:latest -f ./docker/Dockerfile .",
+    "sync-cards": "node ./util/sync-sheet.js",
     "lint": "eslint server/**",
     "cloc": "cloc --exclude-dir=node_modules,.git,art,build --exclude-ext=xml .",
     "cloc-csharp": "cloc ./centauri-tac/assets/scripts"
@@ -75,6 +76,7 @@
     "ws": "^1.1.0"
   },
   "devDependencies": {
+    "google-sheets-node-api": "^0.3.0",
     "jison": "^0.4.17",
     "tap-spec": "^4.1.1"
   }
