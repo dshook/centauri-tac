@@ -19,7 +19,7 @@
     "build-map": "node ./util/generate-map.js",
     "build-lang": "jison ./lang/cardlang.jison -o ./lang/cardlang.js",
     "build-docker": "docker build -t stac:latest -f ./docker/Dockerfile .",
-    "sync-cards": "node ./util/sync-sheet.js",
+    "sync-cards": "node ./util/sync-cards.js",
     "lint": "eslint server/**",
     "cloc": "cloc --exclude-dir=node_modules,.git,art,build --exclude-ext=xml .",
     "cloc-csharp": "cloc ./centauri-tac/assets/scripts"
