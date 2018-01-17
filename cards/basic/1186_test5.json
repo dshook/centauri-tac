@@ -1,7 +1,7 @@
 {
-	"cardTemplateId": 1186,
-	"name": "Card 1186",
-	"description": "",
+  "cardTemplateId": 1186,
+  "name": "",
+  "description": "",
   "cost": 1,
   "attack": 2,
   "health": 1,
