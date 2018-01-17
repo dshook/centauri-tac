@@ -1,11 +1,12 @@
 {
 	"cardTemplateId": 1221,
-	"name": "Card 1221",
-	"description": "",
+  "name": "",
+  "description": "",
   "cost": 10,
   "attack": 10,
   "health": 10,
-  "movement": 2,
+  "movement": 3,
   "race": 0,
+  "rarity": 0,
   "tags": ["Minion"]
 }

@@ -1,12 +1,13 @@
 {
 	"cardTemplateId": 1196,
-	"name": "Card 1196",
-	"description": "<b>Spell Damage</b> 1",
+  "name": "",
+  "description": "<b>Spell Damage</b>: 1",
   "cost": 3,
   "attack": 2,
   "health": 1,
-  "movement": 3,
+  "movement": 4,
   "range": 2,
+  "rarity": 0,
   "spellDamage": 1,
   "race": 0,
   "tags": ["Minion"]

@@ -271,6 +271,10 @@ namespace ctac
                             {
                                 errorMessage = "Can't Get to Target";
                             }
+                            else if (selectedPiece.attackCount >= selectedPiece.maxAttacks)
+                            {
+                                errorMessage = "Minion has already attacked this turn!";
+                            }
                             else
                             {
                                 errorMessage = "Minions need time to prepare!";

@@ -24,8 +24,8 @@ var rarities = {
   Ascendant: 4,
 };
 
-const minSyncRow = 186;
-const maxSyncRow = 187;
+const minSyncRow = 182;
+const maxSyncRow = 221;
 
 const rowOffset = -2; //I think because starting from row 0 plus the header row?
 const cardSet = 'basic';
@@ -118,6 +118,10 @@ function replaceVal(contents, keyValues) {
       // In this case the prop isn't in the file and we need to stick it somewhere
       // Going to arbitrarily choose after line 9 because it should be after the basic props but before the eventcode
       lines.splice(9, 0, updatedLine);
+
+      if(!lines[8].endsWith(',')){
+        lines[8] += ',';
+      }
     }
   }
   return lines.join('\n');

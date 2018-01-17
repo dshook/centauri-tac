@@ -1,12 +1,13 @@
 {
 	"cardTemplateId": 1197,
-	"name": "Card 1197",
-	"description": "<b>Airdrop</b>",
+  "name": "",
+  "description": "<b>Airdrop</b>",
   "cost": 3,
   "attack": 2,
   "health": 3,
   "movement": 3,
   "race": 0,
+  "rarity": 0,
   "statuses": 2048,
   "tags": ["Minion"]
 }

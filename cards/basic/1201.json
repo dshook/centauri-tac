@@ -1,11 +1,12 @@
 {
 	"cardTemplateId": 1201,
-	"name": "Card 1201",
-	"description": "",
+  "name": "",
+  "description": "<b>Synthesis</b>: Silence a minion",
   "cost": 4,
-  "attack": 4,
-  "health": 4,
-  "movement": 3,
+  "attack": 3,
+  "health": 3,
+  "movement": 4,
   "race": 0,
+  "rarity": 0,
   "tags": ["Minion"]
 }

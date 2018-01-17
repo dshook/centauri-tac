@@ -292,6 +292,30 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_text
+      value: '<b>Really(2)</b>: long desc<br>More text'
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_fontSize
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textInfo.characterCount
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textInfo.spaceCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textInfo.wordCount
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
