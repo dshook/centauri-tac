@@ -39,3 +39,5 @@ npm-debug.log
 .idea/
 centauri-tac/Tests/Tests/bin/
 art/export/
+maps/export.json
+util/stac-card-sync.json
