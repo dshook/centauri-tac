@@ -21,7 +21,7 @@ COPY ./migrations ./migrations
 COPY ./server ./server
 COPY ./tests ./tests
 
-RUN yarn install
+RUN yarn install --production
 
 #script to wait for db to come up
 COPY ./docker/wait-for-command.sh .
