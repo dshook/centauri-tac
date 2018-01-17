@@ -7,6 +7,7 @@
   "health": 1,
   "movement": 0,
   "range": 2,
+  "rarity": 0,
   "race": 0,
   "tags": ["Minion"]
 }

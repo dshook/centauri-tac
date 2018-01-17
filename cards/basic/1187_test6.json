@@ -1,12 +1,13 @@
 {
 	"cardTemplateId": 1187,
   "name": "",
-	"description": "<b>Synthesis</b>: Draw a Card",
+  "description": "<b>Synthesis</b>: Draw a Card",
   "cost": 2,
   "attack": 1,
   "health": 1,
   "movement": 2,
   "race": 0,
+  "rarity": 0,
   "tags": ["Minion"],
 	"eventcode": "playMinion{ DrawCard(PLAYER) }"
 }

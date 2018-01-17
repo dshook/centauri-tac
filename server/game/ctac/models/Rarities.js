@@ -1,12 +1,12 @@
 import _ from 'lodash';
-
 import Enum from 'enum';
 
 var Rarities = Enum({
-  Common: 0,
-  Rare: 1,
-  Exotic: 2,
-  Ascendant: 3,
+  Free: 0,
+  Common: 1,
+  Rare: 2,
+  Exotic: 3,
+  Ascendant: 4,
 });
 export default Rarities;
 

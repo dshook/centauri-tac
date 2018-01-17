@@ -6,6 +6,24 @@ var fs = promise.promisifyAll(require('fs'));
 var creds = require('./stac-card-sync.json');
 var GoogleSpreadsheet = require("google-sheets-node-api");
 
+//These should obviously mirror what's in the files, just don't want to deal with the import problem or transpilation right now
+var races = {
+  Neutral: 0,
+  Vae: 1,
+  Earthlings: 2,
+  Martians: 3,
+  Grex: 4,
+  Phaenon: 5,
+  Lost: 6,
+};
+var rarities = {
+  Free: 0,
+  Common: 1,
+  Rare: 2,
+  Exotic: 3,
+  Ascendant: 4,
+};
+
 const minSyncRow = 186;
 const maxSyncRow = 187;
 
@@ -44,12 +62,16 @@ async function run() {
     if (foundCard) {
       foundCard = replaceVal(foundCard, {
         "name": sheetRow.name,
+        "description": sheetRow.description,
         "cost": +sheetRow.cost,
         "attack": +sheetRow.attack,
         "health": +sheetRow.health,
         "movement": +sheetRow.move,
         "range": sheetRow.range == '' ? null : +sheetRow.range,
         "spellDamage": sheetRow.spdmg == '' ? null : +sheetRow.spdmg,
+        "race": races[sheetRow.race] !== undefined ? races[sheetRow.race] : null,
+        "rarity": rarities[sheetRow.rarity] !== undefined ? rarities[sheetRow.rarity] : null,
+        "tags": [sheetRow.cardtype, sheetRow.tribe].filter(t => t)
       });
 
       await fs.writeFileAsync(directoryPath + "/" + foundKey, foundCard)
@@ -78,7 +100,12 @@ function replaceVal(contents, keyValues) {
   for (const propName of Object.keys(keyValues)) {
     let value = keyValues[propName];
     let propIndex = lines.findIndex(l => l.trim().startsWith(`"${propName}"`));
-    let updatedLine = `  "${propName}": ${JSON.stringify(value)},`;
+    let updatedLine = `  "${propName}": ${JSON.stringify(value)}`;
+    
+    //check for the stupid trailing comma
+    if(propIndex > -1 && (!lines[propIndex + 1] || !lines[propIndex + 1].match(/^\}$/gi))){
+      updatedLine += ',';
+    }
 
     if (propIndex > -1) {
       if (value === null) {

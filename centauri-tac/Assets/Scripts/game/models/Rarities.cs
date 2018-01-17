@@ -5,9 +5,10 @@ namespace ctac
     [Flags]
     public enum Rarities
     {
-      Common = 0,
-      Rare = 1,
-      Exotic = 2,
-      Ascendant = 3, 
+      Free = 0,
+      Common = 1,
+      Rare = 2,
+      Exotic = 3,
+      Ascendant = 4, 
     }
 }
