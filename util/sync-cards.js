@@ -78,14 +78,19 @@ function replaceVal(contents, keyValues) {
   for (const propName of Object.keys(keyValues)) {
     let value = keyValues[propName];
     let propIndex = lines.findIndex(l => l.trim().startsWith(`"${propName}"`));
+    let updatedLine = `  "${propName}": ${JSON.stringify(value)},`;
 
     if (propIndex > -1) {
       if (value === null) {
         //if value is null we shouldn't have this prop at all so remove it from the lines
         lines.splice(propIndex, 1);
       } else {
-        lines[propIndex] = `  "${propName}": ${JSON.stringify(value)},`;
+        lines[propIndex] = updatedLine;
       }
+    }else if(value !== null){
+      // In this case the prop isn't in the file and we need to stick it somewhere
+      // Going to arbitrarily choose after line 9 because it should be after the basic props but before the eventcode
+      lines.splice(9, 0, updatedLine);
     }
   }
   return lines.join('\n');
