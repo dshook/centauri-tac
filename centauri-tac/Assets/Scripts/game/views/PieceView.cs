@@ -177,7 +177,7 @@ namespace ctac {
                 topCollider = collider;
             }
 
-            //walk up the parent chain (stopping at the Model node) to find the total combined scale.  
+            //walk up the parent chain (stopping at the Model node) to find the total combined scale.
             //Realistically it should only be one intermediate scaling anything
             //Have to use the top collider as the scalar
             Vector3 combinedScale = topCollider.transform.localScale;
@@ -210,7 +210,7 @@ namespace ctac {
             var hpBarTargetColor = Colors.invisible;
             var hpBarPulse = false;
 
-            //Figure out what color the hp bar should be 
+            //Figure out what color the hp bar should be
             if (piece.currentPlayerHasControl) {
                 hpBarTargetColor = hpBarFillFriendlyColor;
 
@@ -230,6 +230,10 @@ namespace ctac {
             else if (piece.isSelected)
             {
                 hpBarTargetColor = Colors.selectedOutlineColor;
+            }
+            else if(piece.tags.Contains(Constants.targetPieceTag))
+            {
+                hpBarTargetColor = Colors.ghostPieceColor;
             }
 
             //Set it, and make it pulse if it needs to and the value changed
@@ -268,20 +272,6 @@ namespace ctac {
         private const int hpBarHpCuttoff = 14;
         public void UpdateHpBar()
         {
-            //gotta swap out the bar if it's an enemy for now
-            var fillColor = hpBarFillFriendlyColor;
-            if(piece.isSelected)
-            {
-                fillColor = Colors.selectedOutlineColor;
-            } 
-            else if (!piece.currentPlayerHasControl)
-            {
-                fillColor = hpBarFillEnemyColor;
-            }
-
-            //hpBarFillRenderer.material.SetColor("_Color", fillColor);
-            hpBarRenderer.color = fillColor;
-
             //Not sure exactly why I need to make this null check but on OSX you sometimes get a NRE here
             if(hpBarFillRenderer != null && hpBarFillRenderer.material != null)
             {
@@ -744,7 +734,7 @@ namespace ctac {
 
             public void Init()
             {
-                //add 
+                //add
                 if (pieceStatusChange.add.HasValue && !FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.None))
                 {
                     foreach (var statusIcon in pieceView.statusIcons)

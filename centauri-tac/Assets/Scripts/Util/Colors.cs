@@ -17,11 +17,13 @@ namespace ctac
         public static Color32 friendlyColor = ColorExtensions.HexToColor("#0D3BC5");
         public static Color32 enemyColor = ColorExtensions.HexToColor("#C52F0D");
 
+        public static Color32 ghostPieceColor = ColorExtensions.HexToColor("#c5c5c5");
+
         public static Color32 RarityCommon = ColorExtensions.HexToColor("#999999");
         public static Color32 RarityRare = ColorExtensions.HexToColor("#2598C5");
         public static Color32 RarityExotic = ColorExtensions.HexToColor("#64FF07");
         public static Color32 RarityAscendant = ColorExtensions.HexToColor("#FF0000");
-        
+
         public static Color32 cardMetCondition = ColorExtensions.HexToColor("740000");
         public static Color32 cardPlayable = ColorExtensions.HexToColor("2650C9");
 
