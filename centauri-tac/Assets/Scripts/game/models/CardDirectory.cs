@@ -49,6 +49,7 @@ namespace ctac
                     card.tags.Add("Melee");
                 }
             }
+            card.name = string.IsNullOrEmpty(card.name) ? card.cardTemplateId.ToString() : card.name;
 
             directory.Add(card);
         }
