@@ -46,6 +46,7 @@ namespace ctac
             {
                 piece.moveCount = 0;
                 piece.attackCount = 0;
+                piece.age++;
 
                 //stop the z's
                 var sleeping = piece.pieceView.faceCameraContainer.transform.Find("Sleeping Status");

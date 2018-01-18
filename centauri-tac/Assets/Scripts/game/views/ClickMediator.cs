@@ -120,7 +120,7 @@ namespace ctac
 
             //Test activation for dragged or clicked on spells
             if (
-                cardView.card.isSpell 
+                cardView.card.isSpell
                 && (draggedCard != null)
                 && (Time.time - draggedCardTime) > singleClickThreshold
             ){
@@ -179,7 +179,7 @@ namespace ctac
                 return;
             }
 
-            //first check to see if the tile we clicked on has a piece, 
+            //first check to see if the tile we clicked on has a piece,
             //if it does, treat that the same as if we clicked the piece directly
             PieceView clickedPiece = null;
 
@@ -271,13 +271,18 @@ namespace ctac
                             {
                                 errorMessage = "Can't Get to Target";
                             }
+                            else if(selectedPiece.age == 0 && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Charge))
+                            {
+                                errorMessage = "Minions need time to prepare!";
+                            }
                             else if (selectedPiece.attackCount >= selectedPiece.maxAttacks)
                             {
                                 errorMessage = "Minion has already attacked this turn!";
                             }
                             else
                             {
-                                errorMessage = "Minions need time to prepare!";
+                                //Shouldn't be able to hit this one anymore
+                                errorMessage = "Minion Can't Attack";
                             }
                         }
 

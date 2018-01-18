@@ -55,7 +55,7 @@ namespace ctac
             var spawnPosition = map.tiles[spawnedPiece.position.Vector2].fullPosition + new Vector3(0, 100f, 0);
 
             var newPiece = GameObject.Instantiate(
-                piecePrefab, 
+                piecePrefab,
                 spawnPosition,
                 Quaternion.identity
             ) as GameObject;
@@ -102,6 +102,7 @@ namespace ctac
                 cardSet = cardTemplate.cardSet,
                 buffs = new List<PieceBuffModel>(),
                 statuses = cardTemplate.statuses | (cardTemplate.range.HasValue ? Statuses.isRanged : Statuses.None),
+                age = 0
             };
 
             SetInitialMoveAttackStatus(pieceModel);

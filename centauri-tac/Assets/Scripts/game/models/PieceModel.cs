@@ -49,6 +49,9 @@ namespace ctac
         [JsonIgnore]
         public CardSets cardSet { get; set; }
 
+        [JsonIgnore] //in turn-years
+        public int age { get; set; }
+
         [JsonIgnore]
         public int maxAttacks
         {
@@ -108,8 +111,8 @@ namespace ctac
         {
             get
             {
-                return attack > 0 
-                    && attackCount < maxAttacks 
+                return attack > 0
+                    && attackCount < maxAttacks
                     && !FlagsHelper.IsSet(statuses, Statuses.CantAttack)
                     && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
             }
