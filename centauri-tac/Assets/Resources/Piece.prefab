@@ -289,12 +289,12 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224894486727675042}
-  - {fileID: 497862}
   - {fileID: 499856}
+  - {fileID: 490628}
+  - {fileID: 497862}
+  - {fileID: 4000011603070170}
   - {fileID: 484616}
   - {fileID: 479424}
-  - {fileID: 490628}
-  - {fileID: 4000011603070170}
   m_Father: {fileID: 414184}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -394,7 +394,7 @@ Transform:
   m_Children:
   - {fileID: 4665741667302414}
   m_Father: {fileID: 401572}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &484212
 Transform:
@@ -421,7 +421,7 @@ Transform:
   m_Children:
   - {fileID: 467976}
   m_Father: {fileID: 401572}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &490628
 Transform:
@@ -435,7 +435,7 @@ Transform:
   m_Children:
   - {fileID: 436638}
   m_Father: {fileID: 401572}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &497862
 Transform:
@@ -451,7 +451,7 @@ Transform:
   - {fileID: 4616045355427582}
   - {fileID: 4081802396951466}
   m_Father: {fileID: 401572}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -828.53503, z: 0}
 --- !u!4 &499856
 Transform:
@@ -465,7 +465,7 @@ Transform:
   m_Children:
   - {fileID: 448514}
   m_Father: {fileID: 401572}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &2306274
 MeshRenderer:
@@ -969,9 +969,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011603070170}
+  - component: {fileID: 65385753292996554}
   m_Layer: 0
   m_Name: HpBarContainer
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2170,7 +2171,7 @@ Transform:
   - {fileID: 4456644778991794}
   - {fileID: 4000012015041224}
   m_Father: {fileID: 401572}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012015041224
 Transform:
@@ -3884,7 +3885,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1909385504551008}
-  m_Mesh: {fileID: 43742564328135580, guid: c236bcb77d716e64cae4b61d35a872f3, type: 2}
+  m_Mesh: {fileID: 43411401530720620, guid: c236bcb77d716e64cae4b61d35a872f3, type: 2}
 --- !u!33 &33319477742537546
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -4018,6 +4019,18 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 53453423096fc2149a857ed88edef8a1, type: 3}
+--- !u!65 &65385753292996554
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010013689410}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.33, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &95423099694791894
 Animator:
   serializedVersion: 3
@@ -4636,7 +4649,7 @@ MonoBehaviour:
   _type: 0
   _lastTimeModified: 636466468960123879
   _vectorGraphics: {fileID: 11400000, guid: 3f4558e6908aa774f9b47d260a49779f, type: 2}
-  _color: {r: 0.77254903, g: 0.18431373, b: 0.050980393, a: 1}
+  _color: {r: 0.050980393, g: 0.23137255, b: 0.77254903, a: 1}
   _opaqueMaterial: {fileID: 2100000, guid: 926e08cfd59aeb24e8f012469850d238, type: 2}
   _transparentMaterial: {fileID: 2100000, guid: 926e08cfd59aeb24e8f012469850d238,
     type: 2}
@@ -5198,7 +5211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 6.515002, y: -6}
+  m_AnchoredPosition: {x: 5.315, y: -6}
   m_SizeDelta: {x: 0.3, y: 0.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224893681000951504
