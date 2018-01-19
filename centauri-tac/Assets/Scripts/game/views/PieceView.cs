@@ -433,18 +433,14 @@ namespace ctac {
 
             public PieceView piece { get; set; }
             public Vector3 destAngle { get; set; }
-            private float rotateSpeed = 0.3f;
+            private float rotateSpeed = 0.6f;
 
             public void Init() {
                 iTweenExtensions.RotateTo(piece.model.gameObject, destAngle, rotateSpeed, 0f);
             }
             public void Update()
             {
-                if (Vector3.Distance(piece.model.gameObject.transform.rotation.eulerAngles, destAngle) < 0.01)
-                {
-                    piece.model.gameObject.transform.rotation = Quaternion.Euler(destAngle);
-                    Complete = true;
-                }
+                Complete = true;
             }
         }
 

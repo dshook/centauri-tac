@@ -2893,9 +2893,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.016604245
+    x: 0.021597981
     y: 0
-    width: 0.9667915
+    width: 0.95680404
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -6110,7 +6110,7 @@ GameObject:
   - component: {fileID: 1358048327}
   - component: {fileID: 1358048326}
   - component: {fileID: 1358048328}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: ServerMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6739,9 +6739,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.016604245
+    x: 0.021597981
     y: 0
-    width: 0.9667915
+    width: 0.95680404
     height: 1
   near clip plane: 90
   far clip plane: 1600
