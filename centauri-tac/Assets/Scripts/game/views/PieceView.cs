@@ -64,6 +64,7 @@ namespace ctac {
         public Material meshMaterial;
         private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
+        private float idealHpBarYPos = 0f;
 
         public Animator anim;
 
@@ -73,7 +74,7 @@ namespace ctac {
             faceCameraContainer = piece.gameObject.transform.Find("FaceCameraContainer").gameObject;
             anim = piece.gameObject.GetComponentInChildren<Animator>();
 
-            hpBarContainer = faceCameraContainer.transform.Find("HpBarContainer").gameObject;
+            hpBarContainer = piece.gameObject.transform.transform.Find("HpBarContainer").gameObject;
             hpBar = hpBarContainer.transform.Find("hpbar").gameObject;
             hpBarfill = hpBarContainer.transform.Find("HpBarFill").gameObject;
             hpBarFillRenderer = hpBarfill.GetComponent<SpriteRenderer>();
@@ -188,8 +189,9 @@ namespace ctac {
             topVertex.Scale(combinedScale);
 
             hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(
-                topVertex.y + 0.25f
+                topVertex.y + 0.15f
             );
+            idealHpBarYPos = hpBarContainer.transform.localPosition.y;
             //Debug.Log(string.Format("{0} top vert y {1} hpbar pos {2}", piece.cardTemplateId, topVertex.y, hpBarContainer.transform.localPosition.y));
 
             UpdateHpBar();
@@ -199,7 +201,16 @@ namespace ctac {
         {
             if(piece == null) return;
 
-            faceCameraContainer.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+            var cameraRot = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
+            faceCameraContainer.transform.rotation = cameraRot;
+            hpBarContainer.transform.rotation = cameraRot;
+
+            //As the camera zooms out, increase the size of the hpbar and faceCamera stuff so they're still ledgible
+            var cameraScale = Vector3.one * Mathf.Clamp(Camera.main.orthographicSize * 0.5f , 1, 3f);
+            faceCameraContainer.transform.localScale = cameraScale;
+            hpBarContainer.transform.localScale = cameraScale;
+            //slightly bump up the position of the hp bar as you zoom out so it doesn't overlap
+            hpBarContainer.transform.localPosition = hpBarContainer.transform.localPosition.SetY(idealHpBarYPos + faceCameraContainer.transform.localScale.x * 0.1f);
 
             UpdateHpBarColors();
         }
