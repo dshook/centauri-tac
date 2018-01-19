@@ -65,9 +65,6 @@ namespace ctac {
         private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
 
-        private bool prevHpBarPulsing = false;
-        private Color prevHpBarColor = Colors.invisible;
-
         public Animator anim;
 
         protected override void Start()
@@ -204,19 +201,38 @@ namespace ctac {
 
             faceCameraContainer.transform.rotation = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0);
 
+            UpdateHpBarColors();
+        }
+
+
+        private Color prevOutlineColorTo = Colors.invisible;
+        private bool reverseLoop = false;
+        private float runningTime = 0f;
+        public void UpdateHpBarColors()
+        {
             var canAttack = piece.canAttack;
             var canMove = piece.canMove;
 
             var hpBarTargetColor = Colors.invisible;
-            var hpBarPulse = false;
+            var outlineColorFrom = Colors.invisible;
+            var outlineColorTo = Colors.invisible;
 
             //Figure out what color the hp bar should be
             if (piece.currentPlayerHasControl) {
                 hpBarTargetColor = hpBarFillFriendlyColor;
 
-                if (canMove || (canAttack && enemiesInRange))
+                if (canMove)
                 {
-                    hpBarPulse = true;
+                    outlineColorTo = Colors.canMoveColor;
+                }
+                if (canAttack && enemiesInRange)
+                {
+                    if(canMove)
+                    {
+                        outlineColorFrom = Colors.canAttackColor;
+                    }else{
+                        outlineColorTo = Colors.canAttackColor;
+                    }
                 }
             }else{
                 hpBarTargetColor = hpBarFillEnemyColor;
@@ -225,7 +241,7 @@ namespace ctac {
             if (targetCandidate)
             {
                 hpBarTargetColor = Colors.targetOutlineColor;
-                hpBarPulse = true;
+                outlineColorTo = hpBarTargetColor;
             }
             else if (piece.isSelected)
             {
@@ -236,38 +252,52 @@ namespace ctac {
                 hpBarTargetColor = Colors.ghostPieceColor;
             }
 
-            //Set it, and make it pulse if it needs to and the value changed
             if(hpBarTargetColor != Colors.invisible){
                 hpBarRenderer.color = hpBarTargetColor;
             }
 
-            if(hpBarPulse != prevHpBarPulsing || hpBarTargetColor != prevHpBarColor){
-                if(hpBarPulse){
-                    var targetColor = hpBarTargetColor.ToHSV();
-                    targetColor.V += 0.5f;
-                    targetColor.S += 0.2f;
-                    targetColor.H -= 0.08f;
-
-                    var outlineColor = targetColor.ToColor();
-                    outlineColor.a = 0.3f;
-                    hpBarOutlineRenderer.color = outlineColor;
-
-                    Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
-                    hpBarOutlineRenderer.gameObject.ColorTo( targetColor.ToColor(), 0.5f, 0f, LoopType.pingPong);
-                }else{
-                    Destroy(hpBarOutlineRenderer.GetComponent<iTween>());
-                    hpBarOutlineRenderer.color = Colors.invisible;
-                }
+            //default color from value if we need to pulse the outline and don't have one explicitly set
+            if(outlineColorTo != Colors.invisible && outlineColorFrom == Colors.invisible){
+                outlineColorFrom = new Color(hpBarTargetColor.r, hpBarTargetColor.g, hpBarTargetColor.b, 0.3f);
             }
 
-            prevHpBarPulsing = hpBarPulse;
-            prevHpBarColor = hpBarTargetColor;
+            //Should we be pulsing the outline
+            if(outlineColorTo != Colors.invisible){
+                const float time = 0.5f;
+                if(prevOutlineColorTo != outlineColorTo){
+                    //newly starting to pulse;
+                    runningTime = 0f;
+                }
+
+	            runningTime += Time.deltaTime;
+                var percentage = 0f;
+                if(reverseLoop){
+                    percentage = 1 - runningTime/time;
+                }else{
+                    percentage = runningTime/time;
+                }
+
+                hpBarOutlineRenderer.color = new Color(
+                    Mathf.Lerp(outlineColorFrom.r, outlineColorTo.r, percentage),
+                    Mathf.Lerp(outlineColorFrom.g, outlineColorTo.g, percentage),
+                    Mathf.Lerp(outlineColorFrom.b, outlineColorTo.b, percentage),
+                    Mathf.Lerp(outlineColorFrom.a, outlineColorTo.a, percentage)
+                );
+
+                if(percentage >= 1f || percentage <= 0f){
+                    reverseLoop = !reverseLoop;
+                    runningTime = 0f;
+                }
+            }else{
+                hpBarOutlineRenderer.color = Colors.invisible;
+            }
+
+            prevOutlineColorTo = outlineColorTo;
 
             //Update the attack and move indicators as well
             canAttackIndicator.SetActive(canAttack);
             canMoveIndicator.SetActive(canMove);
         }
-
 
         private const int hpBarHpCuttoff = 14;
         public void UpdateHpBar()

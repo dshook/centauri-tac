@@ -54,7 +54,9 @@ namespace ctac
 
         public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
         {
+            {"Aura",               "Keep this minion alive to gain the Aura effect" },
             {"Ability",            "Active ability to use with energy cost in parenthesis" },
+            {"Bribe",              "Your opponent can pay the Bribe energy cost to charm this minion" },
             {"Synthesis",          "Does something when played" },
             {"Demise",             "Does something when the minion dies" },
             {"Volatile",           "Does something when damaged" },

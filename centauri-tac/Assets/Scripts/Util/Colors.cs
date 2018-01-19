@@ -17,6 +17,9 @@ namespace ctac
         public static Color32 friendlyColor = ColorExtensions.HexToColor("#0D3BC5");
         public static Color32 enemyColor = ColorExtensions.HexToColor("#C52F0D");
 
+        public static Color32 canMoveColor = ColorExtensions.HexToColor("#00BAFF");
+        public static Color32 canAttackColor = ColorExtensions.HexToColor("#FF003A");
+
         public static Color32 ghostPieceColor = ColorExtensions.HexToColor("#c5c5c5");
 
         public static Color32 RarityCommon = ColorExtensions.HexToColor("#999999");
