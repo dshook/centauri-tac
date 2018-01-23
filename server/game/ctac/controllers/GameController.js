@@ -14,7 +14,7 @@ import DrawCard from '../actions/DrawCard.js';
 @loglevel
 export default class GameController
 {
-  constructor(hostManager, players, queue, pieceState, turnState, possibleActions, gameConfig, gameEventService)
+  constructor(hostManager, players, queue, pieceState, turnState, cardState, possibleActions, gameConfig, gameEventService)
   {
     this.hostManager = hostManager;
     this.players = players;
@@ -23,6 +23,7 @@ export default class GameController
     this.possibleActions = possibleActions;
     this.gameEventService = gameEventService;
     this.turnState = turnState;
+    this.cardState = cardState;
     this.config = gameConfig;
   }
 
@@ -98,13 +99,19 @@ export default class GameController
    * Move a piece
    */
   @on('playerCommand', x => x === 'move')
-  movePiece(command, data)
+  movePiece(command, data, player)
   {
+    this.log.info('Player %j moving piece', player);
     let {pieceId, route} = data;
 
     var piece = this.pieceState.piece(pieceId);
     if(!piece){
       this.log.warn('Could not find piece %s to move %j', pieceId, this.pieceState);
+      return;
+    }
+    if(!this.checkPlayerAuthCommand(player, piece))
+    {
+      this.log.warn('Player %j not authorized to move piece %j', player, piece);
       return;
     }
 
@@ -118,13 +125,18 @@ export default class GameController
   }
 
   @on('playerCommand', x => x === 'moveattack')
-  moveAttackPiece(command, data)
+  moveAttackPiece(command, data, player)
   {
     let {attackingPieceId, targetPieceId, route} = data;
 
     var piece = this.pieceState.piece(attackingPieceId);
     if(!piece){
       this.log.warn('Could not find piece %s to attack with %j', attackingPieceId, this.pieceState);
+      return;
+    }
+    if(!this.checkPlayerAuthCommand(player, piece))
+    {
+      this.log.warn('Player %j not authorized to move piece %j', player, piece);
       return;
     }
 
@@ -139,9 +151,16 @@ export default class GameController
   }
 
   @on('playerCommand', x => x === 'activatecard')
-  activateCard(command, data)
+  activateCard(command, data, player)
   {
     let {playerId, cardInstanceId, position, targetPieceId, pivotPosition, chooseCardTemplateId} = data;
+
+    let card = this.cardState.hands[playerId].find(c => c.id === cardInstanceId);
+    if(!this.checkPlayerAuthCommand(player, card))
+    {
+      this.log.warn('Player %j not authorized to activeate card %j', player, card);
+      return;
+    }
 
     this.queue.push(new ActivateCard(playerId, cardInstanceId, position, targetPieceId, pivotPosition, chooseCardTemplateId));
 
@@ -149,18 +168,35 @@ export default class GameController
   }
 
   @on('playerCommand', x => x === 'rotate')
-  rotatePiece(command, data)
+  rotatePiece(command, data, player)
   {
     let {pieceId, direction} = data;
+
+    var piece = this.pieceState.piece(pieceId);
+
+    if(!this.checkPlayerAuthCommand(player, piece))
+    {
+      this.log.warn('Player %j not authorized to move piece %j', player, piece);
+      return;
+    }
+
     this.queue.push(new RotatePiece(pieceId, direction));
 
     this.queue.processUntilDone();
   }
 
   @on('playerCommand', x => x === 'activateability')
-  activateAbility(command, data)
+  activateAbility(command, data, player)
   {
     let {pieceId, targetPieceId} = data;
+
+    var piece = this.pieceState.piece(pieceId);
+
+    if(!this.checkPlayerAuthCommand(player, piece))
+    {
+      this.log.warn('Player %j not authorized to move piece %j', player, piece);
+      return;
+    }
 
     this.queue.push(new ActivateAbility(pieceId, targetPieceId));
 
@@ -273,5 +309,13 @@ export default class GameController
     }
 
     return action;
+  }
+
+  //Checks to see if the player is authorized to make the command
+  //This just checks the data object (a piece or card) to see if the player id matches
+  checkPlayerAuthCommand(player, dataObj){
+    if(!dataObj || !dataObj.playerId) return false;
+
+    return player.id === dataObj.playerId;
   }
 }

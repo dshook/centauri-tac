@@ -209,90 +209,87 @@ namespace ctac
                 {
                     pieceClicked.Dispatch(clickedPiece);
                 }
-                else if (clickedPiece.piece.currentPlayerHasControl)
-                {
-                    pieceSelected.Dispatch(clickedPiece.piece);
-                    return; //return here so further actions based on this click (like move) can't be fired off from the same click
-                }
-                else
+                else if( selectedPiece != null && selectedPiece.id != clickedPiece.piece.id && !clickedPiece.piece.currentPlayerHasControl )
                 {
                     //check to see if we have a valid attack, and throw a message error for all the ways its wrong
-                    if ( selectedPiece != null && selectedPiece.id != clickedPiece.piece.id )
+                    string errorMessage = null;
+                    if (FlagsHelper.IsSet(clickedPiece.piece.statuses, Statuses.Cloak))
                     {
-                        string errorMessage = null;
-                        if (FlagsHelper.IsSet(clickedPiece.piece.statuses, Statuses.Cloak))
+                        errorMessage = "Can't attack the cloaked unit until they attack!";
+                    }
+                    else if (clickedPiece.piece.isMoving)
+                    {
+                        //debug.Log("Clicked on moving piece");
+                    }
+                    else if (selectedPiece.canAttack && movePath != null)
+                    {
+                        //find the tile the piece will end up on when attacking for melee which is the second to last tile in the list,
+                        //ranged can attack up or down slopes
+                        var tileToAttackFrom = movePath.tiles != null && movePath.tiles.Count >= 2
+                            ? movePath.tiles[movePath.tiles.Count - 2]
+                            : movePath.startTile;
+                        if (selectedPiece.isRanged ||
+                            mapService.isHeightPassable(tileToAttackFrom, mapService.Tile(clickedPiece.piece.tilePosition))
+                        )
                         {
-                            errorMessage = "Can't attack the cloaked unit until they attack!";
-                        }
-                        else if (clickedPiece.piece.isMoving)
-                        {
-                            //debug.Log("Clicked on moving piece");
-                        }
-                        else if (selectedPiece.canAttack && movePath != null)
-                        {
-                            //find the tile the piece will end up on when attacking for melee which is the second to last tile in the list,
-                            //ranged can attack up or down slopes
-                            var tileToAttackFrom = movePath.tiles != null && movePath.tiles.Count >= 2
-                                ? movePath.tiles[movePath.tiles.Count - 2]
-                                : movePath.startTile;
-                            if (selectedPiece.isRanged ||
-                                mapService.isHeightPassable(tileToAttackFrom, mapService.Tile(clickedPiece.piece.tilePosition))
-                            )
+                            attackPiece.Dispatch(new AttackPieceModel()
                             {
-                                attackPiece.Dispatch(new AttackPieceModel()
-                                {
-                                    attackingPieceId = selectedPiece.id,
-                                    targetPieceId = clickedPiece.piece.id
-                                });
-                                pieceSelected.Dispatch(null);
-                            }
-                            else
-                            {
-                                errorMessage = "Can't attack up that slope!";
-                            }
-
+                                attackingPieceId = selectedPiece.id,
+                                targetPieceId = clickedPiece.piece.id
+                            });
+                            pieceSelected.Dispatch(null);
                         }
                         else
                         {
-                            //now figure out why they can't attack
-                            if (selectedPiece.attack <= 0)
-                            {
-                                errorMessage = "Minion has no attack";
-                            }
-                            else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
-                            {
-                                errorMessage = "Minion Can't Attack";
-                            }
-                            else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
-                            {
-                                errorMessage = "Minion is Paralyzed!";
-                            }
-                            else if (selectedPiece.canAttack && movePath == null)
-                            {
-                                errorMessage = "Can't Get to Target";
-                            }
-                            else if(selectedPiece.age == 0 && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Charge))
-                            {
-                                errorMessage = "Minions need time to prepare!";
-                            }
-                            else if (selectedPiece.attackCount >= selectedPiece.maxAttacks)
-                            {
-                                errorMessage = "Minion has already attacked this turn!";
-                            }
-                            else
-                            {
-                                //Shouldn't be able to hit this one anymore
-                                errorMessage = "Minion Can't Attack";
-                            }
+                            errorMessage = "Can't attack up that slope!";
                         }
 
-
-                        if (!string.IsNullOrEmpty(errorMessage))
+                    }
+                    else
+                    {
+                        //now figure out why they can't attack
+                        if (selectedPiece.attack <= 0)
                         {
-                            message.Dispatch(new MessageModel() { message = errorMessage, duration = 1f });
-                            return;
+                            errorMessage = "Minion has no attack";
+                        }
+                        else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.CantAttack))
+                        {
+                            errorMessage = "Minion Can't Attack";
+                        }
+                        else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
+                        {
+                            errorMessage = "Minion is Paralyzed!";
+                        }
+                        else if (selectedPiece.canAttack && movePath == null)
+                        {
+                            errorMessage = "Can't Get to Target";
+                        }
+                        else if(selectedPiece.age == 0 && !FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Charge))
+                        {
+                            errorMessage = "Minions need time to prepare!";
+                        }
+                        else if (selectedPiece.attackCount >= selectedPiece.maxAttacks)
+                        {
+                            errorMessage = "Minion has already attacked this turn!";
+                        }
+                        else
+                        {
+                            //Shouldn't be able to hit this one anymore
+                            errorMessage = "Minion Can't Attack";
                         }
                     }
+
+
+                    if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        message.Dispatch(new MessageModel() { message = errorMessage, duration = 1f });
+                        return;
+                    }
+                }
+                else
+                {
+                    pieceSelected.Dispatch(clickedPiece.piece);
+                    return; //return here so further actions based on this click (like move) can't be fired off from the same click
                 }
             }
 

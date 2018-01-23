@@ -10,7 +10,7 @@ namespace ctac
     public class TileHighlightMediator : Mediator
     {
         [Inject] public TileHighlightView view { get; set; }
-        
+
         //[Inject] public TileHoverSignal tileHover { get; set; }
 
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
@@ -43,11 +43,16 @@ namespace ctac
             view.onTileHover(tile);
 
             //Unit pathfinding highlighting
-            if (selectedPiece != null && tile != null && (selectedPiece.canMove || selectedPiece.canAttack))
+            if (
+                selectedPiece != null
+                && selectedPiece.currentPlayerHasControl
+                && tile != null
+                && (selectedPiece.canMove || selectedPiece.canAttack)
+            )
             {
                 var gameTile = map.tiles.Get(selectedPiece.tilePosition);
-                var enemyOccupyingDest = pieces.Pieces.FirstOrDefault(m => 
-                        m.tilePosition == tile.position 
+                var enemyOccupyingDest = pieces.Pieces.FirstOrDefault(m =>
+                        m.tilePosition == tile.position
                         && !m.currentPlayerHasControl
                         && !FlagsHelper.IsSet(m.statuses, Statuses.Cloak)
                     );
@@ -73,7 +78,7 @@ namespace ctac
                     if(selectedPiece.isMelee){
                         //work out what direction the piece will be facing if they walk over and attack
                         var endPosition = path.Count > 1 ? path[path.Count - 2].position : selectedPiece.tilePosition;
-                        var endDirection = mapService.FaceDirection( 
+                        var endDirection = mapService.FaceDirection(
                             endPosition,
                             path[path.Count - 1].position
                         );
@@ -102,9 +107,9 @@ namespace ctac
 
             //display area preview on area targeting
             if (
-                selectingArea != null 
-                && selectingArea.area != null 
-                && selectingArea.area.isCursor 
+                selectingArea != null
+                && selectingArea.area != null
+                && selectingArea.area.isCursor
                 && !selectingArea.area.stationaryArea
                 && tile != null
                 && FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile)
@@ -127,8 +132,8 @@ namespace ctac
                         if (selectingArea.selectedPosition != null)
                         {
                             tiles = mapService.GetLineTiles(
-                                selectingArea.selectedPosition.Value, 
-                                tile.position, 
+                                selectingArea.selectedPosition.Value,
+                                tile.position,
                                 selectingArea.area.size,
                                 selectingArea.area.bothDirections ?? false
                              ).Values.ToList();
@@ -182,7 +187,7 @@ namespace ctac
                 var heroTile = mapService.Tile(playerHero.tilePosition);
                 var piecePositions = pieces.Pieces.Select(p => p.tilePosition);
                 List<Tile> playableTiles = kingTiles.Values.ToList()
-                    .Where(t => 
+                    .Where(t =>
                         !piecePositions.Contains(t.position)
                         && mapService.isHeightPassable(t, heroTile)
                         && !t.unpassable
@@ -250,7 +255,7 @@ namespace ctac
                 updatePieceMoveRange(null);
             }
 
-            //attacking enemy 
+            //attacking enemy
             if (
                 selectedPiece != null
                 && selectedPiece.attackCount < selectedPiece.maxAttacks
@@ -292,7 +297,7 @@ namespace ctac
         private void updatePieceAttackRange(PieceModel piece)
         {
             //check for ranged units first since they can't move and attack
-            if (piece == null)
+            if (piece == null || !piece.currentPlayerHasControl)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.AttackRangeTotal);
                 setAttackRangeTiles(null, false);
@@ -348,15 +353,15 @@ namespace ctac
                 && (
                     occupyingPiece == null
                     || (
-                        occupyingPiece.playerId != piece.playerId 
-                        && (occupyingPiece.statuses & Statuses.Cloak) == 0 
+                        occupyingPiece.playerId != piece.playerId
+                        && (occupyingPiece.statuses & Statuses.Cloak) == 0
                         )
                 );
         }
 
         private void updatePieceMoveRange(PieceModel piece)
         {
-            if(piece == null)
+            if(piece == null || !piece.currentPlayerHasControl)
             {
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRange);
                 view.toggleTileFlags(null, TileHighlightStatus.MoveRangeTotal);
@@ -432,7 +437,7 @@ namespace ctac
             {
                 var kingTiles = mapService.GetKingTilesInRadius(tauntPiece.tilePosition, 1);
                 //filter tiles that are too high/low to protect
-                kingTiles = kingTiles.Where(t => 
+                kingTiles = kingTiles.Where(t =>
                     mapService.isHeightPassable(t.Value, mapService.Tile(tauntPiece.tilePosition))
                 ).ToDictionary(k => k.Key, v => v.Value);
 
