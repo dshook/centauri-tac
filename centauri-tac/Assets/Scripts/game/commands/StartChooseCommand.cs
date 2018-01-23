@@ -45,14 +45,14 @@ namespace ctac
             var leftGameObject = leftCardModel.gameObject;
             var rightGameObject = rightCardModel.gameObject;
 
-            leftGameObject.name = "Left Choice Card";
-            rightGameObject.name = "Right Choice Card";
-
             cardService.SetupGameObject(leftCardModel, leftGameObject);
             leftCardModel.SetCardInPlay(contextView);
 
             cardService.SetupGameObject(rightCardModel, rightGameObject);
             rightCardModel.SetCardInPlay(contextView);
+
+            leftGameObject.name = "Left Choice Card";
+            rightGameObject.name = "Right Choice Card";
 
             SetCardXPos(leftCardModel, -140f);
             SetCardXPos(rightCardModel, 140f);
