@@ -3,6 +3,8 @@ Shader "Custom/Piece" {
     _Color ("Main Color", Color) = (.5,.5,.5,1)
     _OutlineColor ("Outline Color", Color) = (0,0,0,1)
     _MainTex ("Base (RGB)", 2D) = "white" { }
+    _Ramp ("Toon Ramp (RGB)", 2D) = "gray" {}
+    _Atten ("Atten", Range(0.0, 1.0)) = 0.5
   }
 
   CGINCLUDE
@@ -11,11 +13,13 @@ Shader "Custom/Piece" {
     struct appdata {
       float4 vertex : POSITION;
       float3 normal : NORMAL;
+      float2 uv : TEXCOORD0;
     };
 
     struct v2f {
       float4 pos : POSITION;
       float4 color : COLOR;
+      float2 uv : TEXCOORD0;
     };
 
     uniform float4 _OutlineColor;
@@ -26,6 +30,7 @@ Shader "Custom/Piece" {
       o.pos = UnityObjectToClipPos(v.vertex);
 
       o.color = _OutlineColor;
+      o.uv = v.uv;
       return o;
     }
   ENDCG
@@ -35,7 +40,7 @@ Shader "Custom/Piece" {
 
     // note that a vertex shader is specified here but its using the one above
     Pass {
-      Name "OUTLINE"
+      Name "OUTLINE_OCCLUSION"
       Tags { "LightMode" = "Always" }
       Cull Off
       ZWrite Off
@@ -59,69 +64,45 @@ Shader "Custom/Piece" {
       ENDCG
     }
 
-    Pass {
-      Name "BASE"
-      ZWrite On
-      ZTest LEqual
-      Blend SrcAlpha OneMinusSrcAlpha
-      Material {
-        Diffuse [_Color]
-        Ambient [_Color]
+    CGPROGRAM
+      #pragma surface surf ToonRamp
+
+      sampler2D _Ramp;
+      float _Atten;
+
+      // custom lighting function that uses a texture ramp based
+      // on angle between light direction and normal
+      #pragma lighting ToonRamp exclude_path:prepass
+      inline half4 LightingToonRamp (SurfaceOutput s, half3 lightDir, half atten)
+      {
+        #ifndef USING_DIRECTIONAL_LIGHT
+        lightDir = normalize(lightDir);
+        #endif
+
+        half d = dot (s.Normal, lightDir)*0.5 + 0.5;
+        half3 ramp = tex2D (_Ramp, float2(d,d)).rgb;
+
+        half4 c;
+        c.rgb = s.Albedo  * _LightColor0.rgb * (ramp * _Atten) * (atten * 2);
+        c.a = 0;
+        return c;
       }
-      Lighting On
-      SetTexture [_MainTex] {
-        ConstantColor [_Color]
-        Combine texture * constant
+
+
+      sampler2D _MainTex;
+      float4 _Color;
+
+      struct Input {
+        float2 uv_MainTex : TEXCOORD0;
+      };
+
+      void surf (Input IN, inout SurfaceOutput o) {
+        half4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+        o.Albedo = c.rgb;
+        o.Alpha = c.a;
       }
-      SetTexture [_MainTex] {
-        Combine previous * primary DOUBLE
-      }
-    }
+    ENDCG
   }
-
-  // SubShader {
-  //   Tags { "Queue" = "Transparent" }
-
-  //   Pass {
-  //     Name "OUTLINE"
-  //     Tags { "LightMode" = "Always" }
-  //     Cull Front
-  //     ZWrite Off
-  //     ZTest Always
-  //     ColorMask RGB
-
-  //     // you can choose what kind of blending mode you want for the outline
-  //     Blend SrcAlpha OneMinusSrcAlpha // Normal
-  //     //Blend One One // Additive
-  //     //Blend One OneMinusDstColor // Soft Additive
-  //     //Blend DstColor Zero // Multiplicative
-  //     //Blend DstColor SrcColor // 2x Multiplicative
-
-  //     CGPROGRAM
-  //       #pragma vertex vert
-  //     ENDCG
-  //     SetTexture [_MainTex] { combine primary }
-  //   }
-
-  //   Pass {
-  //     Name "BASE"
-  //     ZWrite On
-  //     ZTest LEqual
-  //     Blend SrcAlpha OneMinusSrcAlpha
-  //     Material {
-  //       Diffuse [_Color]
-  //       Ambient [_Color]
-  //     }
-  //     Lighting On
-  //     SetTexture [_MainTex] {
-  //       ConstantColor [_Color]
-  //       Combine texture * constant
-  //     }
-  //     SetTexture [_MainTex] {
-  //       Combine previous * primary DOUBLE
-  //     }
-  //   }
-  // }
 
   Fallback "Diffuse"
 }
