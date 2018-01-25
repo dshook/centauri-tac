@@ -48,7 +48,8 @@ export default class ActivateCardProcessor
     //check to make sure the card was played in a valid spot
     if(cardPlayed.isMinion){
       let playerHero = this.pieceState.hero(action.playerId);
-      let allowableDistance = (cardPlayed.statuses & Statuses.Airdrop) != 0 ? 4 : 1;
+      let isAirdrop = (cardPlayed.statuses & Statuses.Airdrop) != 0;
+      let allowableDistance = isAirdrop ? 4 : 1;
       let kingDist = this.mapState.kingDistance(playerHero.position, action.position);
       if(kingDist > allowableDistance){
         this.log.warn('Cannot play minion that far away, dist %s'
@@ -60,7 +61,7 @@ export default class ActivateCardProcessor
       //check height differential
       let currentTile = this.mapState.getTile(playerHero.position);
       let destinationTile = this.mapState.getTile(action.position)
-      if(!this.mapState.isHeightPassable(currentTile, destinationTile)){
+      if(!isAirdrop && !this.mapState.isHeightPassable(currentTile, destinationTile)){
         this.log.warn('Cannot play minion up that much height diff');
         queue.push(new Message("Can't reach!", action.playerId));
         return queue.cancel(action, true);
