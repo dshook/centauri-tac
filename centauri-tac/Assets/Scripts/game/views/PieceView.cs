@@ -61,7 +61,7 @@ namespace ctac {
         public bool targetCandidate = false;
         public bool enemiesInRange = false;
 
-        public Material meshMaterial;
+        public List<Material> meshMaterials = new List<Material>();
         private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
         private float idealHpBarYPos = 0f;
@@ -126,15 +126,28 @@ namespace ctac {
                 {Statuses.Piercing, piercingIcon },
             };
 
-            var meshRenderer = model.GetComponentInChildren<MeshRenderer>();
-            if (meshRenderer == null)
+            //Get all the materials (which should be instances of the piece shader except in edge cases for sub parts or glowing things)
+            //Make sure the outline color of the shared material is transparent so the piece doesn't occlude itself when we set the outline color
+            //to be friendly or enemy
+            var meshRenderers = model.GetComponentsInChildren<MeshRenderer>();
+            if (meshRenderers != null)
             {
-                var skinnedMeshRenderer = model.GetComponentInChildren<SkinnedMeshRenderer>();
-                meshMaterial = skinnedMeshRenderer.material;
+                foreach(var meshRenderer in meshRenderers){
+                    meshMaterials.Add(meshRenderer.material);
+                    foreach(var sharedMat in meshRenderer.sharedMaterials){
+                        sharedMat.SetColor("_OutlineColor", Colors.transparentWhite);
+                    }
+                }
             }
-            else
+            var skinnedMeshRenderers = model.GetComponentsInChildren<SkinnedMeshRenderer>();
+            if(skinnedMeshRenderers != null)
             {
-                meshMaterial = meshRenderer.material;
+                foreach(var meshRenderer in skinnedMeshRenderers){
+                    meshMaterials.Add(meshRenderer.material);
+                    foreach(var sharedMat in meshRenderer.sharedMaterials){
+                        sharedMat.SetColor("_OutlineColor", Colors.transparentWhite);
+                    }
+                }
             }
 
             highlight = model.GetComponentInChildren<Highlighter>();
@@ -206,7 +219,7 @@ namespace ctac {
             hpBarContainer.transform.rotation = cameraRot;
 
             //As the camera zooms out, increase the size of the hpbar and faceCamera stuff so they're still ledgible
-            var cameraScale = Vector3.one * Mathf.Clamp(Camera.main.orthographicSize * 0.5f , 1, 3f);
+            var cameraScale = Vector3.one * Mathf.Clamp(Camera.main.orthographicSize * 0.4f , 1, 3f);
             faceCameraContainer.transform.localScale = cameraScale;
             hpBarContainer.transform.localScale = cameraScale;
             //slightly bump up the position of the hp bar as you zoom out so it doesn't overlap
@@ -323,6 +336,11 @@ namespace ctac {
                 {
                     hpBarFillRenderer.material.SetColor("_LineColor", Color.white);
                 }
+            }
+
+            //also update the pieces occlusion color based on if they're friendly or not
+            foreach(var meshMaterial in meshMaterials){
+                meshMaterial.SetColor("_OutlineColor", piece.currentPlayerHasControl ? Colors.friendlyColor : Colors.enemyColor);
             }
         }
 
