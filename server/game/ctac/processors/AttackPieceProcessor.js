@@ -5,6 +5,7 @@ import PieceStatusChange from '../actions/PieceStatusChange.js';
 import TilesCleared from '../actions/TilesCleared.js';
 import loglevel from 'loglevel-decorator';
 import Message from '../actions/Message.js';
+import Constants from '../util/Constants.js';
 import {faceDirection, cleavePositions, piercePositions} from '../models/Direction.js';
 
 /**
@@ -83,7 +84,7 @@ export default class AttackPieceProcessor
     }
 
     //check if piece is 'old' enough to attack
-    if(!action.isTauntAttack && 
+    if(!action.isTauntAttack &&
       (
         attacker.bornOn === null ||
         ((this.turnState.currentTurn - attacker.bornOn) < 1 && !(attacker.statuses & Statuses.Charge))
@@ -117,6 +118,10 @@ export default class AttackPieceProcessor
     //   bonus = -1;
     //   bonusMsg = 'Backstab';
     // }
+    if(rangedAttack && (attackerTile.position.y - targetTile.position.y) >= Constants.heightDeltaThreshold ){
+      bonus = -1;
+      bonusMsg = 'High Ground';
+    }
 
     queue.push(new PieceHealthChange({pieceId: action.targetPieceId, change: -attacker.attack, bonus, bonusMsg}));
 

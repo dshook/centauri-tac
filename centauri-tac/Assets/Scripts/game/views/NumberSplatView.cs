@@ -41,16 +41,18 @@ namespace ctac {
                 damageSplatBonusText.colorGradient = new VertexGradient(Color.white, Color.white, Colors.numberSplatHealColorBot, Colors.numberSplatHealColorBot);
             }
 
-            damageSplatText.text = string.Format("{0:+#;-#;0}", change);
 
             if (bonus.HasValue && bonus != 0)
             {
-                damageSplatBonusText.text = Math.Abs(bonus.Value).ToString(); //+ " " + bonusText;
+                damageSplatBonusText.text = bonusText;
+                change += bonus.Value;
             }
             else
             {
                 damageSplatBonusText.text = "";
             }
+
+            damageSplatText.text = string.Format("{0:+#;-#;0}", change);
 
             if (animate)
             {

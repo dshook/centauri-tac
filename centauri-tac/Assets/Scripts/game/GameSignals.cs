@@ -21,6 +21,7 @@ namespace ctac.signals
 
     [Singleton] public class ActionMessageSignal : Signal<MessageModel, SocketKey> { }
     [Singleton] public class MessageSignal : Signal<MessageModel> { }
+    [Singleton] public class CursorMessageSignal : Signal<MessageModel> { }
 
     [Singleton] public class ActionKickoffSignal : Signal<KickoffModel, SocketKey> { }
 

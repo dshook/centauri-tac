@@ -72,7 +72,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012379771124}
   m_LocalRotation: {x: -0, y: 0.38268346, z: -0, w: 0.9238795}
-  m_LocalPosition: {x: 1.682, y: 0.91, z: 1.713}
+  m_LocalPosition: {x: 3.6820002, y: 1.322, z: 3.713}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224000010274012996}
@@ -188,7 +188,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 10
+  m_text: -2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 08005a598a61d454e8059cde2dc08e47, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a68b53b3c4ecf054885694260eb1caae, type: 2}
@@ -222,8 +222,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_textAlignment: 5
-  m_isAlignmentEnumConverted: 0
+  m_textAlignment: 514
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -252,7 +252,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.02142036, y: 0, z: 0.028658628, w: 0.10981417}
+  m_margin: {x: 0.1474539, y: 0, z: 0.20224237, w: 0.10981417}
   m_textInfo:
     textComponent: {fileID: 0}
     characterCount: 2
@@ -308,7 +308,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: +1
+  m_text: High Ground
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 08005a598a61d454e8059cde2dc08e47, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: a68b53b3c4ecf054885694260eb1caae, type: 2}
@@ -319,12 +319,12 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4278190291
   m_fontColor: {r: 0.8308824, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
+  m_enableVertexGradient: 1
   m_fontColorGradient:
     topLeft: {r: 1, g: 1, b: 1, a: 1}
     topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 0.2784314, g: 0, b: 0, a: 1}
+    bottomRight: {r: 0.2784314, g: 0, b: 0, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -335,15 +335,15 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 2.65
+  m_fontSize: 1.4
   m_fontSizeBase: 2.65
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_textAlignment: 5
-  m_isAlignmentEnumConverted: 0
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 1
+  m_fontSizeMax: 2
+  m_fontStyle: 1
+  m_textAlignment: 513
+  m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
   m_lineSpacing: 0
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
-  m_enableKerning: 0
+  m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -372,12 +372,12 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0.38340586}
+  m_margin: {x: 0, y: 0.030459523, z: 0.64824295, w: 0.41361374}
   m_textInfo:
     textComponent: {fileID: 0}
-    characterCount: 2
+    characterCount: 11
     spriteCount: 0
-    spaceCount: 0
+    spaceCount: 1
     wordCount: 2
     linkCount: 0
     lineCount: 1
@@ -454,6 +454,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.257, y: -0.12397812}
+  m_AnchoredPosition: {x: 0.95, y: -0.12397812}
   m_SizeDelta: {x: 1.6069261, y: 0.7891875}
   m_Pivot: {x: 0.5, y: 0.5}

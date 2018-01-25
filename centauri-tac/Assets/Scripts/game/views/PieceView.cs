@@ -7,7 +7,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using ctac.util;
-using HighlightingSystem;
 
 namespace ctac {
     public class PieceView : View
@@ -62,7 +61,6 @@ namespace ctac {
         public bool enemiesInRange = false;
 
         public List<Material> meshMaterials = new List<Material>();
-        private Highlighter highlight;
         private Dictionary<Statuses, GameObject> statusIcons;
         private float idealHpBarYPos = 0f;
 
@@ -149,11 +147,6 @@ namespace ctac {
                     }
                 }
             }
-
-            highlight = model.GetComponentInChildren<Highlighter>();
-            highlight.seeThrough = true;
-            highlight.occluder = true;
-            highlight.enabled = false;
 
             attackText.text = piece.attack.ToString();
             healthText.text = piece.health.ToString();

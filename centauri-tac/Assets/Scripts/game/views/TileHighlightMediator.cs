@@ -15,6 +15,7 @@ namespace ctac
 
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
+        [Inject] public CursorMessageSignal cursorMessageSignal { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -244,9 +245,13 @@ namespace ctac
             if(isDeployingPiece) return;
 
             Tile gameTile = null;
+            string cursorMessage = null;
+            if(piece != null){
+                gameTile = map.tiles.Get(piece.tilePosition);
+            }
+
             if (piece != null && selectedPiece == null)
             {
-                gameTile = map.tiles.Get(piece.tilePosition);
                 updatePieceAttackRange(piece);
                 updatePieceMoveRange(piece);
             }
@@ -259,6 +264,7 @@ namespace ctac
             //attacking enemy
             if (
                 selectedPiece != null
+                && selectedPiece.currentPlayerHasControl
                 && selectedPiece.attackCount < selectedPiece.maxAttacks
                 && piece != null
                 && piece != selectedPiece
@@ -266,10 +272,18 @@ namespace ctac
                 )
             {
                 var tileDistance = mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition);
+                var kingDistance = mapService.KingDistance(selectedPiece.tilePosition, piece.tilePosition);
 
-                if (selectedPiece.isRanged && tileDistance <= selectedPiece.range.Value)
+                if (selectedPiece.isRanged && kingDistance <= selectedPiece.range.Value)
                 {
                     view.onAttackTile( new List<Tile>(){gameTile});
+
+                    var attackingFromTile = map.tiles.Get(selectedPiece.tilePosition);
+                    //b-b-b-bonus
+                    if(tileDistance > 1 && attackingFromTile.fullPosition.y - gameTile.fullPosition.y >= Constants.heightDeltaThreshold)
+                    {
+                        cursorMessage = "+1 High Ground";
+                    }
                 }
                 else if(selectedPiece.isMelee && tileDistance == 1)
                 {
@@ -292,6 +306,12 @@ namespace ctac
             else
             {
                 view.onAttackTile(null);
+            }
+
+            if(!string.IsNullOrEmpty(cursorMessage)){
+                cursorMessageSignal.Dispatch(new MessageModel(){message = cursorMessage});
+            }else{
+                cursorMessageSignal.Dispatch(null);
             }
         }
 

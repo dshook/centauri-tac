@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 110,
+	"name": "Drop Shot",
+	"description": "<b>Airdrop</b>",
+	"cost": 1,
+	"attack": 1,
+	"health": 3,
+	"range": 4,
+	"movement": 3,
+  "statuses": 2048,
+	"tags": ["Minion"]
+}
