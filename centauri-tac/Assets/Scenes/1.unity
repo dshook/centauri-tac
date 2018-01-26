@@ -356,7 +356,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 33000010120723748, guid: b2076f680ccc99d4a95eb1b13dda5a86,
         type: 2}
@@ -2991,9 +2991,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.025592983
+    x: 0.021597981
     y: 0
-    width: 0.94881403
+    width: 0.95680404
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -5802,11 +5802,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -5877,14 +5877,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 11482278, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
-      propertyPath: tileCursor
-      value: 
-      objectReference: {fileID: 1049081185}
     - target: {fileID: 11435744, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
       propertyPath: cardCanvas
       value: 
       objectReference: {fileID: 2006314273}
+    - target: {fileID: 11482278, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
+      propertyPath: tileCursor
+      value: 
+      objectReference: {fileID: 1049081185}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
   m_IsPrefabParent: 0
@@ -6750,9 +6750,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.025592983
+    x: 0.021597981
     y: 0
-    width: 0.94881403
+    width: 0.95680404
     height: 1
   near clip plane: 90
   far clip plane: 1600

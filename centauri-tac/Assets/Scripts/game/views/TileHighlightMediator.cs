@@ -16,6 +16,7 @@ namespace ctac
         [Inject] public MovePathFoundSignal movePathFoundSignal { get; set; }
         [Inject] public TauntTilesUpdatedSignal tauntTilesSignal { get; set; }
         [Inject] public CursorMessageSignal cursorMessageSignal { get; set; }
+        [Inject] public CursorSignal cursorSignal { get; set; }
 
         [Inject] public MapModel map { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -42,6 +43,7 @@ namespace ctac
             }
             //tileHover.Dispatch(tile);
             view.onTileHover(tile);
+            CursorStyles cursorStyle = CursorStyles.Default;
 
             //Unit pathfinding highlighting
             if (
@@ -67,6 +69,7 @@ namespace ctac
                         tiles = path,
                         isAttack = enemyOccupyingDest != null && selectedPiece.canAttack
                     });
+                    cursorStyle = CursorStyles.Walking;
                 }
                 else
                 {
@@ -92,19 +95,21 @@ namespace ctac
                             attackTiles.AddRange(mapService.PiercePositions(endPosition, endDirection));
                         }
                     }
-                    view.onAttackTile(attackTiles);
+                    onAttackTile(attackTiles);
                 }
                 else
                 {
-                    view.onAttackTile(null);
+                    onAttackTile(null);
                 }
             }
             else
             {
                 view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                 movePathFoundSignal.Dispatch(null);
-                view.onAttackTile(null);
+                onAttackTile(null);
             }
+
+            cursorSignal.Dispatch(cursorStyle);
 
             //display area preview on area targeting
             if (
@@ -230,7 +235,7 @@ namespace ctac
             }
             else
             {
-                StartCoroutine(WaitAndCall(0.3f));
+                StartCoroutine(WaitAndCall(0.2f));
             }
         }
 
@@ -276,7 +281,7 @@ namespace ctac
 
                 if (selectedPiece.isRanged && kingDistance <= selectedPiece.range.Value)
                 {
-                    view.onAttackTile( new List<Tile>(){gameTile});
+                    onAttackTile( new List<Tile>(){gameTile});
 
                     var attackingFromTile = map.tiles.Get(selectedPiece.tilePosition);
                     //b-b-b-bonus
@@ -296,16 +301,16 @@ namespace ctac
                     {
                         attackTiles.AddRange(mapService.PiercePositions(selectedPiece.tilePosition, selectedPiece.direction));
                     }
-                    view.onAttackTile(attackTiles);
+                    onAttackTile(attackTiles);
                 }
                 else
                 {
-                    view.onAttackTile(null);
+                    onAttackTile(null);
                 }
             }
             else
             {
-                view.onAttackTile(null);
+                onAttackTile(null);
             }
 
             if(!string.IsNullOrEmpty(cursorMessage)){
@@ -313,6 +318,11 @@ namespace ctac
             }else{
                 cursorMessageSignal.Dispatch(null);
             }
+        }
+
+        void onAttackTile(List<Tile> newTiles){
+            cursorSignal.Dispatch(newTiles != null ? CursorStyles.Attack : CursorStyles.Default);
+            view.onAttackTile(newTiles);
         }
 
         private void updatePieceAttackRange(PieceModel piece)
