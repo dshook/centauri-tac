@@ -567,6 +567,7 @@ namespace ctac {
             {
                 var newNumberSplat = Instantiate(numberSplat, parent, true) as GameObject;
                 newNumberSplat.transform.localPosition = new Vector3(0, 0.5f, -0.85f);
+                newNumberSplat.transform.localRotation = Quaternion.identity;
                 var view = newNumberSplat.GetComponent<NumberSplatView>();
                 view.change = change;
                 view.bonus = bonus;
