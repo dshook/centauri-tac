@@ -29,11 +29,14 @@ namespace ctac
 
         private PieceModel selectedPiece = null;
         private TargetModel selectingArea = null;
+        private MovePathFoundModel movePath = null;
         private bool isDeployingPiece = false;
 
         void Update()
         {
-            onTileHover(raycastModel.tile, raycastModel.piece);
+            if(raycastModel.cardCanvasHit == null){
+                onTileHover(raycastModel.tile, raycastModel.piece);
+            }
         }
 
         public void onTileHover(Tile tile, PieceView piece)
@@ -43,7 +46,6 @@ namespace ctac
             }
             //tileHover.Dispatch(tile);
             view.onTileHover(tile);
-            CursorStyles cursorStyle = CursorStyles.Default;
 
             //Unit pathfinding highlighting
             if (
@@ -69,47 +71,21 @@ namespace ctac
                         tiles = path,
                         isAttack = enemyOccupyingDest != null && selectedPiece.canAttack
                     });
-                    cursorStyle = CursorStyles.Walking;
+                    if(enemyOccupyingDest == null){ cursorSignal.Dispatch(CursorStyles.Walking); }
                 }
                 else
                 {
                     movePathFoundSignal.Dispatch(null);
+                    cursorSignal.Dispatch(CursorStyles.Default);
                 }
 
-                if (enemyOccupyingDest != null && path != null )
-                {
-                    var attackTiles = new List<Tile>(){tile};
-                    if(selectedPiece.isMelee){
-                        //work out what direction the piece will be facing if they walk over and attack
-                        var endPosition = path.Count > 1 ? path[path.Count - 2].position : selectedPiece.tilePosition;
-                        var endDirection = mapService.FaceDirection(
-                            endPosition,
-                            path[path.Count - 1].position
-                        );
-                        if ((selectedPiece.statuses & Statuses.Cleave) != 0)
-                        {
-                            attackTiles.AddRange(mapService.CleavePositions(endPosition, endDirection));
-                        }
-                        if ((selectedPiece.statuses & Statuses.Piercing) != 0)
-                        {
-                            attackTiles.AddRange(mapService.PiercePositions(endPosition, endDirection));
-                        }
-                    }
-                    onAttackTile(attackTiles);
-                }
-                else
-                {
-                    onAttackTile(null);
-                }
             }
             else
             {
                 view.toggleTileFlags(null, TileHighlightStatus.PathFind);
                 movePathFoundSignal.Dispatch(null);
-                onAttackTile(null);
+                cursorSignal.Dispatch(CursorStyles.Default);
             }
-
-            cursorSignal.Dispatch(cursorStyle);
 
             //display area preview on area targeting
             if (
@@ -290,16 +266,22 @@ namespace ctac
                         cursorMessage = "+1 High Ground";
                     }
                 }
-                else if(selectedPiece.isMelee && tileDistance == 1)
+                else if(selectedPiece.isMelee && movePath != null)
                 {
                     var attackTiles = new List<Tile>(){gameTile};
+                    //work out what direction the piece will be facing if they walk over and attack
+                    var endPosition = movePath.tiles.Count > 1 ? movePath.tiles[movePath.tiles.Count - 2].position : selectedPiece.tilePosition;
+                    var endDirection = mapService.FaceDirection(
+                        endPosition,
+                        movePath.tiles[movePath.tiles.Count - 1].position
+                    );
                     if ((selectedPiece.statuses & Statuses.Cleave) != 0)
                     {
-                        attackTiles.AddRange(mapService.CleavePositions(selectedPiece.tilePosition, selectedPiece.direction));
+                        attackTiles.AddRange(mapService.CleavePositions(endPosition, endDirection));
                     }
                     if ((selectedPiece.statuses & Statuses.Piercing) != 0)
                     {
-                        attackTiles.AddRange(mapService.PiercePositions(selectedPiece.tilePosition, selectedPiece.direction));
+                        attackTiles.AddRange(mapService.PiercePositions(endPosition, endDirection));
                     }
                     onAttackTile(attackTiles);
                 }
@@ -535,6 +517,12 @@ namespace ctac
             view.toggleTileFlags(null, TileHighlightStatus.AttackRangeTotal);
             selectingArea = null;
             updateSelectHighlights(null);
+        }
+
+        [ListensTo(typeof(MovePathFoundSignal))]
+        public void onMovePathFound(MovePathFoundModel mpf)
+        {
+            movePath = mpf;
         }
 
         private void updateSelectHighlights(TargetModel model)

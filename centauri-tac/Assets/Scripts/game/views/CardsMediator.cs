@@ -12,6 +12,7 @@ namespace ctac
         [Inject] public DestroyCardSignal destroyCard { get; set; }
         [Inject] public CardDestroyedSignal cardDestroyed { get; set; }
         [Inject] public CardDrawShownSignal cardDrawShown { get; set; }
+        [Inject] public CursorSignal cursorSignal { get; set; }
 
         [Inject] public CancelChooseSignal cancelChoose { get; set; }
         [Inject] public CardChosenSignal cardChosen { get; set; }
@@ -56,6 +57,7 @@ namespace ctac
         public void onCardHovered(CardModel card)
         {
             view.onCardHovered(card);
+            cursorSignal.Dispatch(CursorStyles.Default);
         }
 
         //when playing from the client
@@ -74,7 +76,7 @@ namespace ctac
             if(act.card.playerId == players.Me.id){
                 destroyCard.Dispatch(act.card.id);
             }else{
-                //enemy cards activated we have to update the cards to show the real info 
+                //enemy cards activated we have to update the cards to show the real info
                 //since this is the first time we're learning of it
                 act.card.cardView.UpdateText(act.spellDamage ?? 0);
                 cardService.UpdateCardArt(act.card);
@@ -142,7 +144,7 @@ namespace ctac
             animationQueue.Add(new CardsView.GiveCardAnim()
             {
                 card = card,
-                isOpponentCard = isOpponent 
+                isOpponentCard = isOpponent
             });
 
             onCardDrawn(card);
@@ -191,7 +193,7 @@ namespace ctac
         [ListensTo(typeof(ServerQueueProcessEnd))]
         public void onQueueProcessComplete(int t)
         {
-            //update text on all cards when the queue completes to catch updates 
+            //update text on all cards when the queue completes to catch updates
             //to playable status, cost, etc
             foreach (var card in cards.Cards)
             {
@@ -223,7 +225,7 @@ namespace ctac
             foreach (var card in cards)
             {
                 if ( card.playerId == players.Me.id
-                   && playerResources.resources.ContainsKey(card.playerId) 
+                   && playerResources.resources.ContainsKey(card.playerId)
                    && card.cost <= playerResources.resources[card.playerId])
                 {
                     //Check for spells that need targets but don't have any

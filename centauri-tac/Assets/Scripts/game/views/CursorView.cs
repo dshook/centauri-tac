@@ -15,6 +15,7 @@ namespace ctac
     {
         Dictionary<CursorStyles, Texture2D> cursorDict;
         Dictionary<CursorStyles, Vector2> cursorOffsets;
+        CursorStyles? prevStyle = null;
 
         internal void init(IResourceLoaderService loader)
         {
@@ -41,7 +42,10 @@ namespace ctac
 
         internal void setStyle(CursorStyles style)
         {
-            Cursor.SetCursor(cursorDict[style], cursorOffsets[style], CursorMode.Auto);
+            if(style != prevStyle){
+                Cursor.SetCursor(cursorDict[style], cursorOffsets[style], CursorMode.Auto);
+                prevStyle = style;
+            }
         }
 
     }
