@@ -326,6 +326,11 @@ namespace ctac
                 return;
             }
 
+            //If deploying a minion ignore drags around the map
+            if(clickModel.isDrag && (draggedCard != null && draggedCard.isMinion)){
+                return;
+            }
+
             //first check to see if we clicked on a piece or tile
             //this logic is very similar to the neutral click handling but differs in some important ways
             PieceView clickedPiece = null;
