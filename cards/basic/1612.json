@@ -1,0 +1,13 @@
+{
+	"cardTemplateId": 1612,
+  "name": "",
+  "description": "<b>Demise</b>: Draw a card",
+  "cost": 3,
+  "attack": 2,
+  "health": 2,
+  "movement": 3,
+  "race": 0,
+  "rarity": 0,
+  "tags": ["Minion"],
+	"eventcode": "death{ DrawCard(PLAYER) }"
+}

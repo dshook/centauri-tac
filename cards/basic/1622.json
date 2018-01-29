@@ -1,0 +1,13 @@
+{
+  "cardTemplateId": 1622,
+  "name": "",
+  "description": "<b>Spell Damage</b>: 1",
+  "cost": 5,
+  "attack": 4,
+  "health": 4,
+  "movement": 4,
+  "rarity": 0,
+  "spellDamage": 1,
+  "race": 0,
+  "tags": ["Minion"]
+}

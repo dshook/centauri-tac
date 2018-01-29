@@ -1,0 +1,18 @@
+{
+	"cardTemplateId": 1000,
+	"name": "Vae Hero",
+	"description": "<b>Ability(2)</b>: Give friendly minions near your hero +0/+3",
+	"cost": 0,
+	"attack": 0,
+	"health": 30,
+	"movement": 2,
+  "race": 1,
+	"tags": ["Hero"],
+	"eventcode": "ability(2, 1, 'Energy Rations'){
+    Buff(
+      Area(Square, 1, SELF) & FRIENDLY & MINION,
+      'Energy Ration',
+      health(3)
+    )
+  }"
+}

@@ -1,0 +1,12 @@
+{
+	"cardTemplateId": 1638,
+  "name": "",
+  "description": "<b>Demise</b>: Give all minions without text +3/+3",
+  "cost": 9,
+  "attack": 9,
+  "health": 7,
+  "movement": 6,
+  "race": 0,
+  "rarity": 0,
+  "tags": ["Minion"]
+}

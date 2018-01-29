@@ -1,0 +1,14 @@
+{
+	"cardTemplateId": 1100,
+	"name": "Earthling Hero",
+	"description": "<b>Ability(2)</b>: Summon a 2/2 Pollux",
+	"cost": 0,
+	"attack": 0,
+	"health": 30,
+	"movement": 2,
+  "race": 2,
+	"tags": ["Hero"],
+	"eventcode": "ability(2, 1, 'Summon Underling'){
+    Spawn(1102, 1)
+  }"
+}
