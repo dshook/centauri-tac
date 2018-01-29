@@ -26,7 +26,7 @@ export default class CardDirectory
     for(let cardSet of gameConfig.cardSets){
       //NAS-T  required for heroku it seems
       var directoryPath = __dirname + '/../../../../cards/' + cardSet;
-      fs.readdirSync(directoryPath).map(function (filename) {
+      fs.readdirSync(directoryPath).map((filename) => {
         let contents = fs.readFileSync(directoryPath + "/" + filename, "utf8");
         try{
           //remove some whitespace before json parsing because json is a stupid format sometimes
