@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1641,
+  "name": "Wall",
+  "description": "",
+  "cost": 0,
+  "attack": 0,
+  "health": 3,
+  "movement": 0,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

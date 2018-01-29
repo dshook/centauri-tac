@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1712,
+  "name": "Storm's Eye",
+  "description": "<b>Synthesis</b>: Deal 5 damage to all surrounding enemies",
+  "cost": 8,
+  "attack": 5,
+  "health": 5,
+  "movement": 0,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1673,
+  "name": "",
+  "description": "<b>Flying</b>",
+  "cost": 4,
+  "attack": 2,
+  "health": 3,
+  "movement": 2,
+  "range": 4,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

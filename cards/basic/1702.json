@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1702,
+  "name": "",
+  "description": "<b>Flying</b><br><b>Bribe</b>: 4",
+  "cost": 7,
+  "attack": 5,
+  "health": 5,
+  "movement": 3,
+  "range": 3,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion",
+    "Mercenary"
+  ]
+}

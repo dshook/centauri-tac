@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1663,
+  "name": "",
+  "description": "<b>Empower</b>: Gain +1 Range",
+  "cost": 3,
+  "attack": 3,
+  "health": 2,
+  "movement": 1,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

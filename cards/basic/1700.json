@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1700,
+  "name": "",
+  "description": "<b>Aura</b>: Give all friendly minions +1/+1",
+  "cost": 7,
+  "attack": 7,
+  "health": 7,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1680,
+  "name": "Copyfather",
+  "description": "<b>Synthesis</b>: Transform into a copy of an enemy minion",
+  "cost": 4,
+  "attack": 3,
+  "health": 3,
+  "movement": 2,
+  "range": 3,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

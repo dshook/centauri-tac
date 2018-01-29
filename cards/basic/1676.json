@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1676,
+  "name": "Zen Emeritus",
+  "description": "<b>Synthesis</b>: Swap the attack and health of a minion.<br><b>Spell Damage</b>: 1",
+  "cost": 4,
+  "attack": 4,
+  "health": 2,
+  "movement": 3,
+  "range": null,
+  "spellDamage": 1,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1687,
+  "name": "Ordo Stalker",
+  "description": "Cloak. Bribe: 5",
+  "cost": 5,
+  "attack": 4,
+  "health": 2,
+  "movement": 3,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion",
+    "Mercenary"
+  ]
+}

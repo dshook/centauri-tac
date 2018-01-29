@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1709,
+  "name": "XK-277: Hugo",
+  "description": "<b>Aura</b>: Give all XK's +0/+2",
+  "cost": 8,
+  "attack": 7,
+  "health": 9,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion",
+    "XK"
+  ]
+}

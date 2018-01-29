@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1718,
+  "name": "Aldebaran's Cannon",
+  "description": "Attacks also damage adjacent characters",
+  "cost": 10,
+  "attack": 8,
+  "health": 8,
+  "movement": 0,
+  "range": 5,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

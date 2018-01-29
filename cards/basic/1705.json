@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1705,
+  "name": "Tev's Enigma",
+  "description": "<b>Demise</b>: Charm a random enemy minion with 7 or less health",
+  "cost": 7,
+  "attack": 6,
+  "health": 5,
+  "movement": 4,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

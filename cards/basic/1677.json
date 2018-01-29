@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1677,
+  "name": "",
+  "description": "<b>Taunt</b>",
+  "cost": 4,
+  "attack": 2,
+  "health": 4,
+  "movement": 1,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

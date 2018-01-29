@@ -46,7 +46,8 @@ async function run() {
 
   for (let i = minSyncRow; i <= maxSyncRow; i++) {
     var sheetRow = rows[i + rowOffset];
-    let cardTemplateId = sheetRow.id;
+    let cardTemplateId = parseInt(sheetRow.id);
+
 
     var foundKey = null;
     for (const key of Object.keys(cards)) {

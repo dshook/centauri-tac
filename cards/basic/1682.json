@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1682,
+  "name": "Ablutomaniac",
+  "description": "<b>Tech Resist</b>",
+  "cost": 5,
+  "attack": 5,
+  "health": 5,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

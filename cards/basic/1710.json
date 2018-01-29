@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1710,
+  "name": "",
+  "description": "At the end of each turn deal 4 damage to all enemy minions in a large cross and X",
+  "cost": 8,
+  "attack": 8,
+  "health": 5,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

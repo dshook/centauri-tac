@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1647,
+  "name": "",
+  "description": "<b>Synthesis</b>: Deal 1 damage to an enemy",
+  "cost": 1,
+  "attack": 1,
+  "health": 1,
+  "movement": 2,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

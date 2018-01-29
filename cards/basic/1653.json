@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1653,
+  "name": "Valus Probe",
+  "description": "<b>Synthesis</b>: Fly to a tile within 3 spaces",
+  "cost": 2,
+  "attack": 2,
+  "health": 2,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion",
+    "Interloper"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1657,
+  "name": "",
+  "description": "<b>Aura</b>: Give adjacent minions +0/+2",
+  "cost": 2,
+  "attack": 0,
+  "health": 3,
+  "movement": 0,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion",
+    "Artifact"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1674,
+  "name": "",
+  "description": "<b>Airdrop</b><br><b>Holtz Shield</b>",
+  "cost": 4,
+  "attack": 3,
+  "health": 3,
+  "movement": 2,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

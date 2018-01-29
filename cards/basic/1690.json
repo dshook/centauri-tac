@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1690,
+  "name": "Polaris",
+  "description": "<b>Synthesis</b>: If Procyon is in play, add Z to your hand. If Pollux is in play, add XX to your hand",
+  "cost": 5,
+  "attack": 6,
+  "health": 4,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

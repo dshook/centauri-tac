@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1697,
+  "name": "Agoraphobe",
+  "description": "Has -1/-1 for each adjacent character",
+  "cost": 6,
+  "attack": 8,
+  "health": 8,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

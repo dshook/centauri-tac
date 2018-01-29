@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1664,
+  "name": "",
+  "description": "<b>Dyad Strike</b>",
+  "cost": 3,
+  "attack": 2,
+  "health": 1,
+  "movement": 2,
+  "range": 3,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

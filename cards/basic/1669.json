@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1669,
+  "name": "Disintegrating Orb",
+  "description": "<b>Demise</b>: Deal 2 damage to all adjacent minions",
+  "cost": 3,
+  "attack": 2,
+  "health": 2,
+  "movement": 2,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

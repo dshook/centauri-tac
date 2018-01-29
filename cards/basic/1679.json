@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1679,
+  "name": "Copymother",
+  "description": "<b>Synthesis</b>: Transform into a copy of a friendly minion",
+  "cost": 4,
+  "attack": 4,
+  "health": 4,
+  "movement": 4,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

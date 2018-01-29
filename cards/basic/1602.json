@@ -1,6 +1,6 @@
 {
 	"cardTemplateId": 1602,
-  "name": "",
+  "name": "XK-05: Chupacabra",
   "description": "",
   "cost": 1,
   "attack": 2,
@@ -8,5 +8,5 @@
   "movement": 2,
   "race": 0,
   "rarity": 0,
-  "tags": ["Minion"]
+  "tags": ["Minion","XK"]
 }

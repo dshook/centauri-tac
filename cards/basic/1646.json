@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1646,
+  "name": "",
+  "description": "<b>Airdrop</b>",
+  "cost": 1,
+  "attack": 1,
+  "health": 1,
+  "movement": 1,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1706,
+  "name": "",
+  "description": "<b>Ability(2)</b>: Deal damage to enemy minions equal to their attack in a medium diamond",
+  "cost": 7,
+  "attack": 3,
+  "health": 7,
+  "movement": 3,
+  "range": 4,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion",
+    "Archon"
+  ]
+}

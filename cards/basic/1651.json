@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1651,
+  "name": "XK-23: Vaquero",
+  "description": "",
+  "cost": 2,
+  "attack": 3,
+  "health": 2,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion",
+    "XK"
+  ]
+}

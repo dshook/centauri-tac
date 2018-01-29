@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1685,
+  "name": "Tesla Spire",
+  "description": "<b>Taunt</b>",
+  "cost": 5,
+  "attack": 5,
+  "health": 6,
+  "movement": 0,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

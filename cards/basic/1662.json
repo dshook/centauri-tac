@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1662,
+  "name": "Writhing Bunch",
+  "description": "<b>Synthesis</b>: Deal 2 damage randomly split between all other characters",
+  "cost": 3,
+  "attack": 2,
+  "health": 3,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

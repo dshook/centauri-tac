@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1711,
+  "name": "... Metacortex",
+  "description": "<b>Aura</b>: All friendly characters in a medium square get +2/+2 and +2 movement",
+  "cost": 8,
+  "attack": 4,
+  "health": 8,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

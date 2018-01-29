@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1719,
+  "name": "Arcturus",
+  "description": "<b>Taunt</b> at 7-9 Health<br><b>Dyad Strike<b> at 4-6 health<br><b>Cloak</b> at 1-3 health",
+  "cost": 10,
+  "attack": 7,
+  "health": 10,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1695,
+  "name": "",
+  "description": "<b>Volatile</b>: Gain +3 Attack",
+  "cost": 6,
+  "attack": 3,
+  "health": 5,
+  "movement": 3,
+  "range": 3,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

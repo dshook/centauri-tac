@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1665,
+  "name": "Antikythera Monolith",
+  "description": "At the end of each turn draw a card and take 1 damage",
+  "cost": 3,
+  "attack": 2,
+  "health": 2,
+  "movement": 0,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion",
+    "Artifact"
+  ]
+}

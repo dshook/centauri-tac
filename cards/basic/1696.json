@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1696,
+  "name": "",
+  "description": "<b>Synthesis</b>: Draw a Card.<br><b>Piercing</b>",
+  "cost": 6,
+  "attack": 4,
+  "health": 5,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

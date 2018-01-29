@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1672,
+  "name": "",
+  "description": "<b>Demise</b>: Summon a 2/1 dude",
+  "cost": 4,
+  "attack": 3,
+  "health": 2,
+  "movement": 4,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

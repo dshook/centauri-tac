@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1678,
+  "name": "Peace Officer",
+  "description": "<b>Aura</b>: ALL characters in a cross get -3/0",
+  "cost": 4,
+  "attack": 2,
+  "health": 5,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

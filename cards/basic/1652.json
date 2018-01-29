@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1652,
+  "name": "",
+  "description": "<b>Demise</b>: Deal 1 damage to a random enemy",
+  "cost": 2,
+  "attack": 1,
+  "health": 2,
+  "movement": 2,
+  "range": 2,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1703,
+  "name": "",
+  "description": "<b>Synthesis</b>: Set an enemy minion's attack to 1",
+  "cost": 7,
+  "attack": 3,
+  "health": 9,
+  "movement": 4,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

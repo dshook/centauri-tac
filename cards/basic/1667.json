@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1667,
+  "name": "Seeker of the Source",
+  "description": "Whenever your opponent plays a spell gain +2/-1",
+  "cost": 3,
+  "attack": 1,
+  "health": 4,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion",
+    "Mutation"
+  ]
+}

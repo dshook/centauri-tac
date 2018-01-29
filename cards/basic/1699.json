@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1699,
+  "name": "",
+  "description": "<b>Airdrop</b><br><b>Ability(1)</b>: Deal 4 damage to all adjacent characters",
+  "cost": 6,
+  "attack": 4,
+  "health": 5,
+  "movement": 3,
+  "range": 3,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 4,
+  "tags": [
+    "Minion",
+    "Interloper"
+  ]
+}

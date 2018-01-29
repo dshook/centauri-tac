@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1655,
+  "name": "",
+  "description": "<b>Synthesis</b>: If you have a minion on the board draw a card",
+  "cost": 2,
+  "attack": 2,
+  "health": 2,
+  "movement": 2,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

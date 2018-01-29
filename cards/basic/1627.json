@@ -1,11 +1,11 @@
 {
 	"cardTemplateId": 1627,
   "name": "",
-  "description": "<b>Holtz Shield</b>",
+  "description": "<b>Empower</b>: Gain a <b>Holtz Shield</b>",
   "cost": 6,
   "attack": 5,
   "health": 5,
-  "movement": 3,
+  "movement": 4,
   "race": 0,
   "rarity": 0,
   "statuses": 2,

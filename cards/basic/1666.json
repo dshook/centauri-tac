@@ -1,0 +1,17 @@
+{
+  "cardTemplateId": 1666,
+  "name": "XK-37: La Barrera",
+  "description": "<b>Taunt</b><br><b>Aura</b>: Give your XK's +0/+1",
+  "cost": 3,
+  "attack": 1,
+  "health": 3,
+  "movement": 3,
+  "range": null,
+  "spellDamage": null,
+  "race": 0,
+  "rarity": 2,
+  "tags": [
+    "Minion",
+    "XK"
+  ]
+}
