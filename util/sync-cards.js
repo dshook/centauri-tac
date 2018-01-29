@@ -24,13 +24,12 @@ var rarities = {
   Ascendant: 4,
 };
 
-const minSyncRow = 182;
-const maxSyncRow = 221;
+const minSyncRow = 189;
+const maxSyncRow = 308;
 
 const rowOffset = -2; //I think because starting from row 0 plus the header row?
 const cardSet = 'basic';
 const directoryPath = __dirname + '/../cards/' + cardSet;
-const setIdPrefix = 1000;
 
 async function run() {
   var cards = await loadCards();
@@ -47,11 +46,12 @@ async function run() {
 
   for (let i = minSyncRow; i <= maxSyncRow; i++) {
     var sheetRow = rows[i + rowOffset];
+    let cardTemplateId = sheetRow.id;
 
     var foundKey = null;
     for (const key of Object.keys(cards)) {
       let cti = getVal(cards[key], 'cardTemplateId');
-      if (cti === i + setIdPrefix) {
+      if (cti === cardTemplateId) {
         foundKey = key;
         break;
       }
@@ -59,22 +59,27 @@ async function run() {
     var foundCard = foundKey ? cards[foundKey] : null;
     console.log('Found Card ' + foundKey);
 
+    let updateData = {
+      "name": sheetRow.name,
+      "description": sheetRow.description,
+      "cost": +sheetRow.cost,
+      "attack": +sheetRow.attack,
+      "health": +sheetRow.health,
+      "movement": +sheetRow.move,
+      "range": sheetRow.range == '' ? null : +sheetRow.range,
+      "spellDamage": sheetRow.spdmg == '' ? null : +sheetRow.spdmg,
+      "race": races[sheetRow.race] !== undefined ? races[sheetRow.race] : null,
+      "rarity": rarities[sheetRow.rarity] !== undefined ? rarities[sheetRow.rarity] : null,
+      "tags": [sheetRow.cardtype, sheetRow.tribe].filter(t => t)
+    };
     if (foundCard) {
-      foundCard = replaceVal(foundCard, {
-        "name": sheetRow.name,
-        "description": sheetRow.description,
-        "cost": +sheetRow.cost,
-        "attack": +sheetRow.attack,
-        "health": +sheetRow.health,
-        "movement": +sheetRow.move,
-        "range": sheetRow.range == '' ? null : +sheetRow.range,
-        "spellDamage": sheetRow.spdmg == '' ? null : +sheetRow.spdmg,
-        "race": races[sheetRow.race] !== undefined ? races[sheetRow.race] : null,
-        "rarity": rarities[sheetRow.rarity] !== undefined ? rarities[sheetRow.rarity] : null,
-        "tags": [sheetRow.cardtype, sheetRow.tribe].filter(t => t)
-      });
+      foundCard = replaceVal(foundCard, updateData);
 
       await fs.writeFileAsync(directoryPath + "/" + foundKey, foundCard)
+    } else{
+      var newCard = {cardTemplateId: cardTemplateId};
+      Object.assign(newCard, updateData);
+      await fs.writeFileAsync(directoryPath + "/" + cardTemplateId + ".json", JSON.stringify(newCard, null, 2))
     }
   }
 }
@@ -101,7 +106,7 @@ function replaceVal(contents, keyValues) {
     let value = keyValues[propName];
     let propIndex = lines.findIndex(l => l.trim().startsWith(`"${propName}"`));
     let updatedLine = `  "${propName}": ${JSON.stringify(value)}`;
-    
+
     //check for the stupid trailing comma
     if(propIndex > -1 && (!lines[propIndex + 1] || !lines[propIndex + 1].match(/^\}$/gi))){
       updatedLine += ',';
