@@ -52,7 +52,7 @@ namespace ctac
             var cardView = cardGameObject.AddComponent<CardView>();
             cardView.card = model;
             model.cardView = cardView;
-            
+
             UpdateCardArt(model);
             UpdateCardName(model);
         }
@@ -73,6 +73,9 @@ namespace ctac
             }
 
             switch (model.rarity) {
+                case Rarities.Free:
+                    frontRenderer.material.SetColor("_RarityColor", Colors.RarityFree);
+                    break;
                 case Rarities.Common:
                     frontRenderer.material.SetColor("_RarityColor", Colors.RarityCommon);
                     break;
