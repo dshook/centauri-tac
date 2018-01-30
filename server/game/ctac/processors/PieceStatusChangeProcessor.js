@@ -28,54 +28,28 @@ export default class PieceStatusChangeProcessor
       return queue.cancel(action);
     }
 
-    if(piece.range){
-      if((action.add & Statuses.Piercing) || (action.add & Statuses.Cleave)){
-        this.log.info('Ignoring pierce or cleave add to ranged piece %s', action.pieceId);
-        action.add = action.add & ~Statuses.Piercing;
-        action.add = action.add & ~Statuses.Cleave;
-      }
-    }
-
+    let statusChanges = null;
     if(action.add){
-      piece.statuses = piece.statuses | action.add;
+      statusChanges = piece.addStatuses(action.add, this.cardEvaluator);
     }
     if(action.remove){
-      piece.statuses = piece.statuses & ~action.remove;
+      //remove can't change attributes for now
+      piece.removeStatuses(action.remove, this.cardEvaluator);
     }
 
-    //remove all statuses other than silence if it was silenced
-    if(action.add & Statuses.Silence){
-      action.remove = piece.statuses & ~Statuses.Silence;
-      piece.statuses = Statuses.Silence;
+    if(statusChanges){
+      if(statusChanges.addStatus){ action.add = statusChanges.addStatus; }
+      if(statusChanges.removeStatus){ action.remove = statusChanges.removeStatus; }
 
-      //back out any buffs on the piece
-      if(piece.buffs.length > 0){
+      for(let attrib of attributes){
+        if(!statusChanges[attrib]) continue;
 
-        for(let b = piece.buffs.length - 1; b >= 0; b--){
-          let buff = piece.buffs[b];
-          let buffChange = piece.removeBuff(buff);
+        let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+        action[attrib] = statusChanges[attrib];
+        action[newAttrib] = statusChanges[newAttrib];
 
-          if(!buffChange){
-            this.log.error('Cannot unbuff piece %j with buff %j', piece, buff);
-            continue;
-          }
-
-          for(let attrib of attributes){
-            let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
-            action[attrib] = buffChange[attrib];
-            action[newAttrib] = buffChange[newAttrib];
-
-            this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
-          }
-        }
+        this.log.info('un buffing piece %s to %s %s', piece.id, piece[attrib], attrib);
       }
-
-      //aura and events go bye bye
-      piece.aura = null;
-      piece.events = null;
-
-      //remove timers for this piece
-      this.cardEvaluator.cleanupTimers(piece);
     }
 
     action.statuses = piece.statuses;

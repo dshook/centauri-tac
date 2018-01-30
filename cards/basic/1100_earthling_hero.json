@@ -9,6 +9,6 @@
   "race": 2,
 	"tags": ["Hero"],
 	"eventcode": "ability(2, 1, 'Summon Underling'){
-    Spawn(1102, 1)
+    Spawn(1131, 1)
   }"
 }

@@ -13,7 +13,9 @@ export default class PieceBuff extends BaseAction
     health,
     movement,
     range,
-    spellDamage
+    spellDamage,
+    addStatus,
+    removeStatus
   })
   {
     super();
@@ -26,6 +28,13 @@ export default class PieceBuff extends BaseAction
     //compare expression that tells when the buff should be enabled or not
     this.condition = condition || null;
     this.enabled = true;
+
+    //statuses to add or remove
+    this.addStatus = addStatus;
+    this.removeStatus = removeStatus;
+
+    //final statuses updated by processor
+    this.statuses = null;
 
     //changes in stats, not abs amount
     this.attack      = attack      || null;

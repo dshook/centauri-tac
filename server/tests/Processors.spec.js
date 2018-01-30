@@ -26,6 +26,7 @@ players.push(Player.fromTest(1));
 players.push(Player.fromTest(2));
 app.container.registerValue('players', players);
 app.container.registerValue('gameConfig', {cardSets: ['test']});
+app.container.registerValue('deckInfo', []);
 app.service(MapService);
 app.service(GameDataService);
 app.service(CardService);

@@ -321,6 +321,8 @@ pNumber
 buffAttribute
   : attribute'('eNumber')'
     { $$ = { attribute: $attribute, amount: $3 }; }
+  | status'('pBool')'
+    { $$ = { status: $status, adding: $3 }; }
   ;
 
 pText

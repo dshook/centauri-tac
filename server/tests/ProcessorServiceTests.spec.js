@@ -670,5 +670,33 @@ export default class ProcessorServiceTests
       t.ok(walls[2].position.tileEquals(new Position(3,0,1)), 'Third wall in right position');
 
     });
+
+    test('Buff With Condition and status', async (t) => {
+      t.plan(7);
+      this.setupTest();
+
+      this.spawnCards();
+
+      let piece = this.spawnPiece(this.pieceState, 111, 1);
+
+      //make sure the buff gets applied
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece);
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.statuses, 256, 'Cant Attack');
+      t.equal(piece.buffs.length, 1, 'Piece has Buff');
+      t.equal(piece.buffs[0].enabled, false, 'Buff is not enabled');
+
+      //now for the damage to activate the buff
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: -1}));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.statuses, 0, 'Cant Attack Removed');
+      t.equal(piece.health, 4, 'Health Damage');
+      t.equal(piece.buffs.length, 1, 'Buff is still there');
+      t.equal(piece.buffs[0].enabled, true, 'Buff is enabled');
+    });
   }
 }

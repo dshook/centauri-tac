@@ -8,5 +8,11 @@
   "movement": 2,
   "race": 0,
   "rarity": 0,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "
+		playMinion{
+			Buff(MINION & TARGET, 'Threshing Scythe', attack(2) )
+			endTurnTimer(1, false, RemoveBuff(SAVED, 'Threshing Scythe'))
+		}
+	"
 }

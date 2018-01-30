@@ -37,8 +37,10 @@ export default class PieceBuffProcessor
       && action.movement == null
       && action.range == null
       && action.spellDamage == null
+      && !action.addStatus
+      && !action.removeStatus
     ){
-      this.log.warn('No attributes to change for piece %s', action.pieceId);
+      this.log.warn('No attributes to change for piece %s, buff %j', action.pieceId, action);
       return queue.cancel(action);
     }
 
@@ -50,7 +52,7 @@ export default class PieceBuffProcessor
         return queue.cancel(action);
       }
 
-      let buffChange = piece.removeBuff(buff);
+      let buffChange = piece.removeBuff(buff, this.cardEvaluator);
 
       if(!buffChange){
         this.log.error('Cannot unbuff piece %j with buff %j', piece, buff);
@@ -64,7 +66,7 @@ export default class PieceBuffProcessor
 
     }else{
 
-      let buffChange = piece.addBuff(action);
+      let buffChange = piece.addBuff(action, this.cardEvaluator);
 
       //if the buff has a condition and the condition is not met then disable it immediately
       //and don't send it to the client
@@ -90,6 +92,7 @@ export default class PieceBuffProcessor
       this.log.info('buffing piece %s to %j', piece.id, buffChange);
 
     }
+
 
     if(piece.health <= 0){
       this.cardEvaluator.evaluatePieceEvent('death', piece);

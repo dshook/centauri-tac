@@ -28,6 +28,6 @@ namespace ctac
         hasEvent      = 1 << 21,
         isRanged      = 1 << 22,
         hasAura       = 1 << 23
-     
+
     }
 }

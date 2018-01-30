@@ -10481,6 +10481,11 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -10880,6 +10885,11 @@ Prefab:
     - target: {fileID: 1286689705849958, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -11292,6 +11302,15 @@ Prefab:
     - target: {fileID: 1286689705849958, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000011479183274, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -12019,6 +12038,11 @@ Prefab:
     - target: {fileID: 1286689705849958, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -14001,6 +14025,11 @@ Prefab:
     - target: {fileID: 11478366, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -17767,6 +17796,11 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -21083,6 +21117,11 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -21716,6 +21755,11 @@ Prefab:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
   m_IsPrefabParent: 0
@@ -22208,9 +22252,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.028588086
+    x: 0.022480607
     y: 0
-    width: 0.9428238
+    width: 0.9550388
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -23597,9 +23641,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.028588086
+    x: 0.022480607
     y: 0
-    width: 0.9428238
+    width: 0.9550388
     height: 1
   near clip plane: 90
   far clip plane: 1600

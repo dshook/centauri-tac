@@ -36,12 +36,12 @@ export default class UpdateBuffsProcessor
         if(result.length > 0){
           if(!buff.enabled){
             //switch to enabled
-            buffChange = piece.enableBuff(buff);
+            buffChange = piece.enableBuff(buff, this.cardEvaluator);
           }
         }else{
           if(buff.enabled){
             //switch to disabled
-            buffChange = piece.disableBuff(buff);
+            buffChange = piece.disableBuff(buff, this.cardEvaluator);
           }
         }
 

@@ -418,6 +418,7 @@ export default class CardEvaluator{
               break;
             }
             //Buff(pieceSelector, buffName, [optional condition expression], attribute(amount), ...moreAttributes)
+            //Note that the attributes can also be Statuses with a true or false to add (or remove) the status
             case 'Buff':
             {
               this.selector.selectPieces(action.args[0], pieceSelectorParams);
@@ -427,13 +428,24 @@ export default class CardEvaluator{
               let buffParams = {}
               let attributeIndex = 2;
               let condition = null;
+              buffParams.addStatus = buffParams.removeStatus = 0;
               if(action.args[2] && action.args[2].compareExpression){
                 attributeIndex = 3;
                 condition = action.args[2];
               }
               let buffAttributes = action.args.slice(attributeIndex);
               for(let buffAttribute of buffAttributes){
-                buffParams[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
+                if(buffAttribute.attribute){
+                  buffParams[buffAttribute.attribute] = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
+                }else if(buffAttribute.status){
+                  if(buffAttribute.adding){
+                    buffParams.addStatus |= Statuses[buffAttribute.status];
+                  }else{
+                    buffParams.removeStatus |= Statuses[buffAttribute.status];
+                  }
+                }else{
+                  this.log.error('Unrecognized buff attribute %j', buffAttribute);
+                }
               }
               buffParams.condition = condition;
               buffParams.name = buffName;
