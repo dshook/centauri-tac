@@ -51,8 +51,7 @@ Shader "Custom/Card"
 			{
 
 				float4 disp = tex2D(_DisplaceTex, i.uv);
-				float4 rarity = tex2D(_RarityMask, i.uv);
-				rarity = rarity * _RarityColor;
+				float4 rarity = tex2D(_RarityMask, i.uv) * _RarityColor;
 
 				float4 col = tex2D(_MainTex, i.uv);
 
