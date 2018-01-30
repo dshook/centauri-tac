@@ -28,7 +28,7 @@ namespace ctac
         private MonoBehaviour root;
 
         [Inject] public IDebugService debug { get; set; }
-        [Inject] public ComponentModel componentModel { get; set; } 
+        [Inject] public ComponentModel componentModel { get; set; }
         [Inject] public SignalDispatcherService signalDispatcher { get; set; }
         [Inject] public SocketConnectSignal connectSignal { get; set; }
         [Inject] public QuitSignal quit { get; set; }
@@ -68,7 +68,7 @@ namespace ctac
         private IEnumerator ConnectAndRequest(SocketKey key, string methodName, object data)
         {
             yield return root.StartCoroutine(SocketConnect(key));
-           
+
             yield return root.StartCoroutine(MakeRequest(key, methodName, data));
         }
 
@@ -227,11 +227,12 @@ namespace ctac
 
         void DestroySockets()
         {
-            foreach (var ws in sockets)
+            var toClose = sockets.Values.ToList();
+            foreach (var ws in toClose)
             {
-                if (ws.Value.ReadyState == WebSocketState.Open || ws.Value.ReadyState == WebSocketState.Connecting)
+                if (ws.ReadyState == WebSocketState.Open || ws.ReadyState == WebSocketState.Connecting)
                 {
-                    ws.Value.Close(CloseStatusCode.Normal, "Client shut down");
+                    ws.Close(CloseStatusCode.Normal, "Client shut down");
                 }
             }
         }
