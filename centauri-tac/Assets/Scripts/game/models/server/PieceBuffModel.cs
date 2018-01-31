@@ -15,5 +15,10 @@
         public int? newHealth { get; set; }
         public int? newMovement { get; set; }
         public int? newRange { get; set; }
+
+        public Statuses? addStatus { get; set; }
+        public Statuses? removeStatus { get; set; }
+
+        public Statuses statuses { get; set; }
     }
 }

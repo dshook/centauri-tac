@@ -18,5 +18,7 @@ export default class PieceStatusChange extends BaseAction
     this.newAttack = null;
     this.newHealth = null;
     this.newMovement = null;
+    this.newRange = null;
+    this.newSpellDamage = null;
   }
 }

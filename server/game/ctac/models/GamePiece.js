@@ -3,7 +3,9 @@ import Position from './Position.js';
 import Direction from './Direction.js';
 import Statuses from './Statuses.js';
 import attributes from '../util/Attributes.js';
+import loglevel from 'loglevel-decorator';
 
+@loglevel
 export default class GamePiece
 {
   constructor()

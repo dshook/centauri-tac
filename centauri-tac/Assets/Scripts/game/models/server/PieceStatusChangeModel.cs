@@ -11,5 +11,7 @@
         public int? newAttack { get; set; }
         public int? newHealth { get; set; }
         public int? newMovement { get; set; }
+        public int? newRange { get; set; }
+        public int? newSpellDamage { get; set; }
     }
 }

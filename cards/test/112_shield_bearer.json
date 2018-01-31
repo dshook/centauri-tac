@@ -1,0 +1,16 @@
+{
+	"cardTemplateId": 112,
+  "name": "Shield Bearer",
+	"description": "<b>Synthesis</b>: Give a minion <b>Holtz Shield</b> and +3/0",
+  "cost": 2,
+  "attack": 1,
+  "health": 5,
+  "movement": 4,
+  "race": 0,
+  "rarity": 2,
+  "tags": ["Minion"],
+	"eventcode": "playMinion{
+		Buff(MINION & TARGET, 'Shield Slave', Shield(true), attack(3))
+	}
+	"
+}

@@ -146,6 +146,36 @@ namespace ctac
             }
         }
 
+        //What a lame signature
+        public void UpdateStatuses(Statuses? add, Statuses? remove, Statuses newStatuses, int? newRange, out Statuses added, out Statuses removed)
+        {
+            added = add ?? Statuses.None;
+            removed = remove ?? Statuses.None;
+
+            if (range.HasValue && newRange.HasValue && newRange.Value == 0)
+            {
+                removed = Statuses.isRanged;
+            }
+            if ((!range.HasValue || range == 0) && newRange.HasValue && newRange > 0)
+            {
+                added = Statuses.isRanged;
+            }
+
+            //if silenced we have to also remove the event client statuses, don't think we need to remove the event ones though
+            //since they should get cleared from possible actions
+            if ((add & Statuses.Silence) != 0)
+            {
+                if (hasAura)
+                {
+                    FlagsHelper.Set(ref removed, Statuses.hasAura);
+                    hasAura = false;
+                }
+
+            }
+
+            statuses = newStatuses;
+        }
+
     }
 
 }

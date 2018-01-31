@@ -93,6 +93,7 @@ export default class PieceBuffProcessor
 
     }
 
+    action.statuses = piece.statuses;
 
     if(piece.health <= 0){
       this.cardEvaluator.evaluatePieceEvent('death', piece);

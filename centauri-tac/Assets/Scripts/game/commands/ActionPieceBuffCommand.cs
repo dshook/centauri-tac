@@ -39,28 +39,23 @@ namespace ctac
             piece.attack = pieceBuff.newAttack ?? piece.attack;
             piece.movement = pieceBuff.newMovement ?? piece.movement;
 
-            //some client side hackery here. If the buff changes range we have to fake a status change update to 
-            //add or remove the range icon on the piece
             Statuses adding = Statuses.None;
             Statuses removing = Statuses.None;
-            if (piece.range.HasValue && pieceBuff.newRange.HasValue && pieceBuff.newRange.Value == 0)
-            {
-                removing = Statuses.isRanged;
-            }
-            if ((!piece.range.HasValue || piece.range == 0) && pieceBuff.newRange.HasValue && pieceBuff.newRange > 0)
-            {
-                adding = Statuses.isRanged;
-            }
-            
+            //some client side hackery here. If the buff changes range we have to fake a status change update to
+            //add or remove the range icon on the piece, also have to check the client statuses, duplicated in piece status change
+            piece.UpdateStatuses(pieceBuff.addStatus, pieceBuff.removeStatus, pieceBuff.statuses, pieceBuff.newRange, out adding, out removing);
+
             piece.range = pieceBuff.newRange ?? piece.range;
 
             if (adding != Statuses.None || removing != Statuses.None)
             {
-                var newStatuses = piece.statuses;
-                FlagsHelper.Set(ref newStatuses, adding);
-                FlagsHelper.Unset(ref newStatuses, removing);
-                piece.statuses = newStatuses;
-
+                debug.Log(
+                    string.Format(
+                        "Piece buff for {0} added {1} statuses lost {2} result {3}"
+                        , pieceBuff.pieceId, adding, removing, pieceBuff.statuses
+                    )
+                    , socketKey
+                );
                 pieceStatusChange.Dispatch(new PieceStatusChangeModel()
                 {
                     pieceId = piece.id,
