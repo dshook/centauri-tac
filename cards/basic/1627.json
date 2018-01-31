@@ -8,6 +8,10 @@
   "movement": 4,
   "race": 0,
   "rarity": 0,
-  "statuses": 2,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    ability(FRIENDLY & HERO){
+      GiveStatus(SELF, Shield)
+    }
+  "
 }

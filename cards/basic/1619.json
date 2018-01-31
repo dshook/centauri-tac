@@ -8,5 +8,6 @@
   "movement": 4,
   "race": 0,
   "rarity": 0,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "playMinion{ GiveStatus(MINION & TARGET, Silence ) }"
 }

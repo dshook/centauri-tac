@@ -927,6 +927,11 @@ export default class CardEvaluator{
 
       if(!ability) continue;
 
+      if(!ability.args.length || ability.args[0].left ){
+        //If the ability event on the piece is to react to other pieces using abilities don't consider it as a piece ability
+        continue;
+      }
+
       let targetPieceIds = this.findActionTargets(ability.actions, playerId, true) || [];
       targets.push({
         pieceId: piece.id,
