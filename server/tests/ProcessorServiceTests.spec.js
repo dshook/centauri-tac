@@ -671,8 +671,8 @@ export default class ProcessorServiceTests
 
     });
 
-    test('Buff With Condition and status', async (t) => {
-      t.plan(7);
+    test('Buff With Condition and Status', async (t) => {
+      t.plan(8);
       this.setupTest();
 
       this.spawnCards();
@@ -697,6 +697,12 @@ export default class ProcessorServiceTests
       t.equal(piece.health, 4, 'Health Damage');
       t.equal(piece.buffs.length, 1, 'Buff is still there');
       t.equal(piece.buffs[0].enabled, true, 'Buff is enabled');
+
+      this.queue.push(new PieceStatusChange({pieceId: piece.id, add: Statuses.Silence}));
+
+      await this.queue.processUntilDone();
+
+      t.equal(piece.statuses, Statuses.Silence, 'Only status is silence');
     });
   }
 }

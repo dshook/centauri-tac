@@ -173,7 +173,6 @@ export default class GamePiece
     //remove all statuses other than silence if it was silenced
     if(add & Statuses.Silence){
       action.removeStatus = this.statuses & ~Statuses.Silence;
-      this.statuses = Statuses.Silence;
 
       //back out any buffs on the this
       if(this.buffs.length > 0){
@@ -200,6 +199,7 @@ export default class GamePiece
       //aura and events go bye bye
       this.aura = null;
       this.events = null;
+      this.statuses = Statuses.Silence;
 
       //remove timers for this piece
       cardEvaluator.cleanupTimers(this);
