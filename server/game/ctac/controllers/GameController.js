@@ -14,7 +14,7 @@ import DrawCard from '../actions/DrawCard.js';
 @loglevel
 export default class GameController
 {
-  constructor(hostManager, players, queue, pieceState, turnState, cardState, possibleActions, gameConfig, gameEventService)
+  constructor(hostManager, players, queue, pieceState, turnState, cardState, possibleActions, gameConfig, gameEventService, selector)
   {
     this.hostManager = hostManager;
     this.players = players;
@@ -25,6 +25,7 @@ export default class GameController
     this.turnState = turnState;
     this.cardState = cardState;
     this.config = gameConfig;
+    this.selector = selector;
   }
 
   /**
@@ -192,12 +193,34 @@ export default class GameController
 
     var piece = this.pieceState.piece(pieceId);
 
-    if(!this.checkPlayerAuthCommand(player, piece))
-    {
-      this.log.warn('Player %j not authorized to move piece %j', player, piece);
+    let ability = piece.events.find(e => e.event === 'ability');
+
+    if(!ability){
+      this.log.warn('Piece %j has no ability to activate', piece);
       return;
     }
 
+    this.log.info('Ability found');
+    let allowedToUseEnemyAbility = false;
+
+    //Check to see if the piece allows enemies to use its ability
+    this.log.warn('BS args %j', ability.args);
+    if(ability.args.length && ability.args[3]){
+      let playerSelected = this.selector.selectPlayer(piece.playerId, ability.args[3]);
+      this.log.warn('Activating player %s. Piece player id %s, Player selected %s arg3 %j', player.id, piece.playerId, playerSelected, ability.args[3]);
+      if(playerSelected === player.id){
+        allowedToUseEnemyAbility = true;
+        this.log.info('Enemy allowed');
+      }
+    }
+
+    if(!allowedToUseEnemyAbility && !this.checkPlayerAuthCommand(player, piece))
+    {
+      this.log.warn('Player %j not authorized to activate piece ability %j', player, piece);
+      return;
+    }
+
+    this.log.info('Adding activate ability');
     this.queue.push(new ActivateAbility(pieceId, targetPieceId));
 
     this.queue.processUntilDone();

@@ -9,5 +9,8 @@
   "race": 0,
   "rarity": 0,
   "statuses": 8,
-  "tags": ["Minion","Mercenary"]
+  "tags": ["Minion","Mercenary"],
+	"eventcode": "ability(7, 1, 'Bribe 1633', OPPONENT){
+    Charm(SELF)
+  }"
 }

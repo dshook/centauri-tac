@@ -915,12 +915,15 @@ export default class CardEvaluator{
   //   [
   //     {pieceId: 2, ability: 'x', abilityCost: 0, abilityChargeTime: 0, abilityCooldown: 0, targetPieceIds: [4,5,6]}
   //   ]
+  //Needs to be documented in a better place but the args to the ability event are:
+  // ability(cost, chargeTime, name, playerSelector?)
+  // OR
+  // ability(pieceSelector)
+  // to trigger on pieces using abilities
   findPossibleAbilities(pieces, playerId){
     let targets = [];
 
-    let playerPieces = pieces.filter(x => x.playerId === playerId);
-
-    for(let piece of playerPieces){
+    for(let piece of pieces){
       if(!piece.events) continue;
 
       let ability = piece.events.find(e => e.event === 'ability');
@@ -929,6 +932,14 @@ export default class CardEvaluator{
 
       if(!ability.args.length || ability.args[0].left ){
         //If the ability event on the piece is to react to other pieces using abilities don't consider it as a piece ability
+        continue;
+      }
+
+      //Check to see if the piece ability is for this player, either they have the optional arg to select which player or just the default of player
+      if(ability.args[3]){
+        let playerSelected = this.selector.selectPlayer(piece.playerId, ability.args[3]);
+        if(playerSelected !== playerId){ continue; }
+      } else if(piece.playerId != playerId){
         continue;
       }
 
