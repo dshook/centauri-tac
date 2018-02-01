@@ -12,5 +12,9 @@
   "rarity": 2,
   "tags": [
     "Minion"
-  ]
+  ],
+	"eventcode": "playMinion{
+		Count(FRIENDLY & MINION - SELF) > 0 && DrawCard(PLAYER)
+	}
+	"
 }

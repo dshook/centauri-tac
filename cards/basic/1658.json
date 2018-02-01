@@ -12,5 +12,11 @@
   "rarity": 3,
   "tags": [
     "Minion"
-  ]
+  ],
+	"eventcode": "
+		ability(0, 1, 'Helical Swap'){
+			SetAttribute(SELF, attack, SelectAttribute(SELF, health))
+			SetAttribute(SELF, health, SelectAttribute(SELF, attack))
+		}
+	"
 }

@@ -6,10 +6,9 @@
   "attack": 2,
   "health": 2,
   "movement": 2,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 4,
+  "statuses": 2064,
   "tags": [
     "Minion"
   ]

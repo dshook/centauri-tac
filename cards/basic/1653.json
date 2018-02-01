@@ -6,12 +6,11 @@
   "attack": 2,
   "health": 2,
   "movement": 3,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 1,
   "tags": [
     "Minion",
     "Interloper"
-  ]
+  ],
+	"eventcode": "playMinion{ Move(SELF, CURSOR & Area(Square, 3, SELF), false) }"
 }
