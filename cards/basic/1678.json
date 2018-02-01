@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1678,
   "name": "Peace Officer",
-  "description": "<b>Aura</b>: ALL characters in a cross get -3/0",
+  "description": "<b>Aura</b>: ALL characters in a medium cross get -3/0",
   "cost": 4,
   "attack": 2,
   "health": 5,
@@ -12,5 +12,13 @@
   "rarity": 2,
   "tags": [
     "Minion"
-  ]
+  ],
+	"eventcode": "playMinion{
+		Aura(
+			SELF,
+      Area(Cross, 3, CURSOR) & CHARACTER - SELF,
+			'Calm Down!',
+      attack(-3)
+		)
+	}"
 }

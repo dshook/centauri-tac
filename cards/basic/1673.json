@@ -7,7 +7,7 @@
   "health": 3,
   "movement": 2,
   "range": 4,
-  "spellDamage": null,
+  "statuses": 1024,
   "race": 0,
   "rarity": 1,
   "tags": [

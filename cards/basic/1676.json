@@ -6,11 +6,14 @@
   "attack": 4,
   "health": 2,
   "movement": 3,
-  "range": null,
   "spellDamage": 1,
   "race": 0,
   "rarity": 2,
   "tags": [
     "Minion"
-  ]
+  ],
+	"eventcode": "playSpell{
+		SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health))
+		SetAttribute(TARGET & MINION, health, SelectAttribute(TARGET, attack))
+	}"
 }

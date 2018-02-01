@@ -13,5 +13,8 @@
   "tags": [
     "Minion",
     "Artifact"
-  ]
+  ],
+	"eventcode": "playMinion{
+		endTurnTimer(1, 1, DrawCard(PLAYER), Hit(SELF, 1))
+	}"
 }

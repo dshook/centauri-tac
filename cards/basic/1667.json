@@ -13,5 +13,6 @@
   "tags": [
     "Minion",
     "Mutation"
-  ]
+  ],
+	"eventcode": "playSpell(OPPONENT){ Buff(SELF, 'Source Rage', attack(2), health(-1) ) }"
 }

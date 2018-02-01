@@ -1,17 +1,26 @@
 {
   "cardTemplateId": 1671,
   "name": "XK-101: El Hefe",
-  "description": "<b>Aura</b>: Give ALL XK's +1/+1 and Cleave",
+  "description": "<b>Aura</b>: Give ALL XK's +2/+1 and +1 Movement",
   "cost": 3,
   "attack": 1,
   "health": 3,
   "movement": 2,
   "range": 2,
-  "spellDamage": null,
   "race": 0,
   "rarity": 4,
   "tags": [
     "Minion",
     "XK"
-  ]
+  ],
+	"eventcode": "playMinion{
+		Aura(
+			SELF,
+			Tagged('XK'),
+			'El Látigo',
+      health(2),
+      attack(1),
+      movement(1)
+		)
+	}"
 }

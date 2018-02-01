@@ -1,16 +1,19 @@
 {
   "cardTemplateId": 1672,
   "name": "",
-  "description": "<b>Demise</b>: Summon a 2/1 dude",
+  "description": "<b>Demise</b>: Summon a 1/1 Scrap Husk with <b>Taunt</b>",
   "cost": 4,
   "attack": 3,
   "health": 2,
   "movement": 4,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 1,
   "tags": [
     "Minion"
-  ]
+  ],
+  "eventcode": "
+    death{
+      Spawn(1603, 1)
+    }
+  "
 }

@@ -12,5 +12,6 @@
   "rarity": 3,
   "tags": [
     "Minion"
-  ]
+  ],
+	"eventcode": "playMinion(ENEMY){ Buff(ACTIVATOR, 'Depleted Soul', attack(-1) ) }"
 }

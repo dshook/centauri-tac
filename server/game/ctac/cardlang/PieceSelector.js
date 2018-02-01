@@ -74,7 +74,7 @@ export default class PieceSelector{
           return this.allPieces.filter(p => !p.description);
           break;
         case 'DAMAGED':
-          return this.allPieces.filter(p => p.health < p.baseHealth);
+          return this.allPieces.filter(p => p.health < p.maxBuffedHealth);
           break;
         case 'MELEE':
           return this.allPieces.filter(p => !p.range);

@@ -6,8 +6,7 @@
   "attack": 3,
   "health": 3,
   "movement": 2,
-  "range": null,
-  "spellDamage": null,
+  "statuses": 2050,
   "race": 0,
   "rarity": 1,
   "tags": [
