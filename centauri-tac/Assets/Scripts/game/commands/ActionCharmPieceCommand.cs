@@ -28,6 +28,7 @@ namespace ctac
             var piece = pieces.Piece(charmedPiece.pieceId);
             piece.playerId = charmedPiece.newPlayerId;
             piece.currentPlayerHasControl = players.Me.id == piece.playerId;
+            piece.age = 0;
 
             pieceService.SetInitialMoveAttackStatus(piece);
 

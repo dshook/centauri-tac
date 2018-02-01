@@ -124,9 +124,10 @@ namespace ctac
             if(piece == null) return;
 
             animationQueue.Add(
-                new PieceView.UpdateHpBarAnim()
+                new PieceView.CharmAnim()
                 {
-                    piece = piece.pieceView
+                    piece = piece.pieceView,
+                    loader = loader
                 }
             );
         }
@@ -243,7 +244,7 @@ namespace ctac
                         textGO = view.attackGO,
                         current = view.piece.attack,
                         original = view.piece.baseAttack,
-                        change = -1, 
+                        change = -1,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -259,7 +260,7 @@ namespace ctac
                         textGO = view.healthGO,
                         current = view.piece.health,
                         original = view.piece.baseHealth,
-                        change = -1, 
+                        change = -1,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -291,7 +292,7 @@ namespace ctac
                         textGO = view.attackGO,
                         current = view.piece.attack,
                         original = view.piece.baseAttack,
-                        change = pieceBuff.attack.Value, 
+                        change = pieceBuff.attack.Value,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -307,7 +308,7 @@ namespace ctac
                         textGO = view.healthGO,
                         current = view.piece.health,
                         original = view.piece.baseHealth,
-                        change = pieceBuff.health.Value, 
+                        change = pieceBuff.health.Value,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -349,7 +350,7 @@ namespace ctac
                         textGO = view.attackGO,
                         current = view.piece.attack,
                         original = view.piece.baseAttack,
-                        change = -1, 
+                        change = -1,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -365,7 +366,7 @@ namespace ctac
                         textGO = view.healthGO,
                         current = view.piece.health,
                         original = view.piece.baseHealth,
-                        change = -1, 
+                        change = -1,
                         animFinished = pieceTextAnimFinished,
                         piece = view.piece
                     }
@@ -395,7 +396,7 @@ namespace ctac
                     textGO = view.attackGO,
                     current = view.piece.attack,
                     original = view.piece.baseAttack,
-                    change = -1, 
+                    change = -1,
                     animFinished = pieceTextAnimFinished,
                     piece = view.piece
                 }
@@ -407,7 +408,7 @@ namespace ctac
                     textGO = view.healthGO,
                     current = view.piece.health,
                     original = view.piece.baseHealth,
-                    change = -1, 
+                    change = -1,
                     animFinished = pieceTextAnimFinished,
                     piece = view.piece
                 }

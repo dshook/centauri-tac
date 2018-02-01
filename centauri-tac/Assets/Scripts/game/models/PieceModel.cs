@@ -49,7 +49,7 @@ namespace ctac
         [JsonIgnore]
         public CardSets cardSet { get; set; }
 
-        [JsonIgnore] //in turn-years
+        [JsonIgnore] //in turn-years, but gets reset on charm
         public int age { get; set; }
 
         [JsonIgnore]

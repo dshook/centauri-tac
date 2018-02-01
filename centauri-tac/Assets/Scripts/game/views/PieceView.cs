@@ -365,6 +365,16 @@ namespace ctac {
             UpdateHpBar();
         }
 
+        public void CreateSleepingStatus(GameObject sleepingStatusParticle){
+
+            //Add in the sleeping sickness particles if the piece can't attack which should be everyone except charge
+            if(!piece.canAttack){
+                var newZs = GameObject.Instantiate(sleepingStatusParticle, new Vector3(0f, 0.3f, -0.15f), Quaternion.Euler(-90f, 0, 45f));
+                newZs.transform.SetParent(faceCameraContainer.transform, false);
+                newZs.name = "Sleeping Status";
+            }
+        }
+
         public class SpawnAnim : IAnimate
         {
             public bool Complete { get; set; }
@@ -437,15 +447,11 @@ namespace ctac {
                     }
                     Complete = true;
 
-                    //Add in the sleeping sickness particles if the piece can't attack which should be everyone except charge
-                    if(!piece.piece.canAttack){
-                        var newZs = GameObject.Instantiate(sleepingStatusParticle, new Vector3(0f, 0.3f, -0.15f), Quaternion.Euler(-90f, 0, 45f));
-                        newZs.transform.SetParent(piece.faceCameraContainer.transform, false);
-                        newZs.name = "Sleeping Status";
-                    }
+                    piece.CreateSleepingStatus(sleepingStatusParticle);
                 }
             }
         }
+
 
         public class RotateAnim : IAnimate
         {
@@ -677,6 +683,28 @@ namespace ctac {
             public void Update()
             {
                 piece.UpdateHpBar();
+                Complete = true;
+            }
+        }
+
+        public class CharmAnim : IAnimate
+        {
+            public bool Complete { get; set; }
+            public bool Async { get { return false; } }
+            public float? postDelay { get { return null; } }
+
+            public PieceView piece { get; set; }
+            public IResourceLoaderService loader { get; set; }
+
+            GameObject sleepingStatusParticle;
+
+            public void Init() {
+                sleepingStatusParticle = loader.Load<GameObject>("Particles/Sleeping Status");
+            }
+            public void Update()
+            {
+                piece.UpdateHpBar();
+                piece.CreateSleepingStatus(sleepingStatusParticle);
                 Complete = true;
             }
         }
