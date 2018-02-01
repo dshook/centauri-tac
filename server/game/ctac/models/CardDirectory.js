@@ -72,7 +72,7 @@ export default class CardDirectory
         let cardEvents = this.parser.parse(card.eventcode);
         c.events = cardEvents;
       }catch(e){
-        let message = `Unable to parse card ${card.name} : ${e.message}`;
+        let message = `Unable to parse card ${card.cardTemplateId} ${card.name} : ${e.message}`;
         this.log.error(message);
         //throw again so you don't run the server with a bad card
         throw message;

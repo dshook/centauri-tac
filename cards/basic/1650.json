@@ -13,5 +13,13 @@
   "tags": [
     "Minion",
     "Mercenary"
-  ]
+  ],
+  "eventcode": "
+    playMinion(FRIENDLY - SELF){
+      Buff(SELF, 'Bounty of the Wanted', attack(1), health(1))
+    }
+    ability(5, 1, 'Bribe 1650', OPPONENT){
+      Charm(SELF)
+    }
+  "
 }

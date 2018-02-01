@@ -79,7 +79,12 @@ async function run() {
       await fs.writeFileAsync(directoryPath + "/" + foundKey, foundCard)
     } else{
       var newCard = {cardTemplateId: cardTemplateId};
-      Object.assign(newCard, updateData);
+      //map over props but skip null value ones
+      for (const key in updateData){
+        const element = updateData[key];
+        if(element === null){ continue; }
+        newCard[key] = element;
+      }
       await fs.writeFileAsync(directoryPath + "/" + cardTemplateId + ".json", JSON.stringify(newCard, null, 2))
     }
   }

@@ -6,11 +6,14 @@
   "attack": 1,
   "health": 1,
   "movement": 2,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 2,
   "tags": [
     "Minion"
-  ]
+  ],
+  "eventcode": "
+    playMinion{
+      Hit(ENEMY & TARGET, 1)
+    }
+  "
 }

@@ -1,12 +1,15 @@
 {
 	"cardTemplateId": 1638,
-  "name": "",
-  "description": "<b>Demise</b>: Give all minions without text +3/+3",
+  "name": "Tribal Eldar",
+  "description": "<b>Demise</b>: Give ALL minions without text +3/+3",
   "cost": 9,
   "attack": 9,
   "health": 7,
   "movement": 6,
   "race": 0,
   "rarity": 0,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "death{
+    Buff(BASIC & MINION, 'Tribal Knowledge', attack(3), health(3))
+  }"
 }

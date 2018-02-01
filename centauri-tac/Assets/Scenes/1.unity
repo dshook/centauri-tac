@@ -187,11 +187,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 11450986, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_fontMaterial
       value: 
@@ -252,6 +247,11 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 23492203469018180, guid: 2336dc9c6c9abe14daa63135e8ab4ec5,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3316220, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Mesh
       value: 
@@ -267,10 +267,6 @@ Prefab:
     - target: {fileID: 3371156, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11478366, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_havePropertiesChanged
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11478366, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_isInputParsingRequired
@@ -291,30 +287,6 @@ Prefab:
     - target: {fileID: 3389298, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_text
-      value: '<b>Really(2)</b>: long desc<br>More text'
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_fontSize
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_textInfo.characterCount
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_textInfo.spaceCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_textInfo.wordCount
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 11483494, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
-      propertyPath: m_textInfo.lineCount
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2336dc9c6c9abe14daa63135e8ab4ec5, type: 2}
@@ -2991,9 +2963,9 @@ Camera:
   m_BackGroundColor: {r: 0.04411763, g: 0.04411763, b: 0.04411763, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.021597981
+    x: 0
     y: 0
-    width: 0.95680404
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 30
@@ -6750,9 +6722,9 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.021597981
+    x: 0
     y: 0
-    width: 0.95680404
+    width: 1
     height: 1
   near clip plane: 90
   far clip plane: 1600

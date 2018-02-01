@@ -6,12 +6,15 @@
   "attack": 1,
   "health": 1,
   "movement": 3,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 1,
   "tags": [
     "Minion",
     "mutation"
-  ]
+  ],
+  "eventcode": "
+    ability(FRIENDLY & HERO){
+      Buff(SELF, 'Unsightly Growth', attack(1), health(1))
+    }
+  "
 }
