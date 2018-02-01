@@ -9,11 +9,12 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class ActivateAbilityProcessor
 {
-  constructor(playerResourceState, pieceState, cardEvaluator)
+  constructor(playerResourceState, pieceState, cardEvaluator, selector)
   {
     this.playerResourceState = playerResourceState;
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
+    this.selector = selector;
   }
   /**
    * Proc
@@ -40,18 +41,24 @@ export default class ActivateAbilityProcessor
     let abilityCost = ability.args[0];
     let abilityChargeTime = ability.args[1];
     let abilityName = ability.args[2];
+    let playerId = piece.playerId;
+    //Check to see if the piece ability is for the other player
+    if(ability.args[3]){
+      playerId = this.selector.selectPlayer(piece.playerId, ability.args[3]);
+    }
+
     //check to see if they have enough energy to play
-    if(abilityCost > this.playerResourceState.get(piece.playerId)){
+    if(abilityCost > this.playerResourceState.get(playerId)){
       this.log.warn('Not enough resources for player %s to use ability %j'
-        , piece.playerId, ability);
-      queue.push(new Message('You don\'t have enough energy to activate the ability!', piece.playerId));
+        , playerId, ability);
+      queue.push(new Message('You don\'t have enough energy to activate the ability!', playerId));
       return queue.cancel(action);
     }
 
     if(piece.abilityCharge < abilityChargeTime){
       this.log.warn('Ability not charged. Pice abilityCharge %s need %s'
         , piece.abilityCharge, abilityChargeTime);
-      queue.push(new Message('Ability needs time to charge!', piece.playerId));
+      queue.push(new Message('Ability needs time to charge!', playerId));
       return queue.cancel(action);
     }
 
@@ -62,12 +69,12 @@ export default class ActivateAbilityProcessor
       piece.abilityCharge = 0;
 
       this.log.info('used ability %s for player %s',
-        ability.args[2], piece.playerId);
-      queue.push(new SetPlayerResource(piece.playerId, -abilityCost));
+        ability.args[2], playerId);
+      queue.push(new SetPlayerResource(playerId, -abilityCost));
     }else{
       //be sure to emit the cancel event so the client can respond
       this.log.info('Ability %s for player %s SCRUBBED',
-        abilityName, piece.playerId);
+        abilityName, playerId);
       return queue.cancel(action, true);
     }
   }

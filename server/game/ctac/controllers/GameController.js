@@ -204,10 +204,8 @@ export default class GameController
     let allowedToUseEnemyAbility = false;
 
     //Check to see if the piece allows enemies to use its ability
-    this.log.warn('BS args %j', ability.args);
     if(ability.args.length && ability.args[3]){
       let playerSelected = this.selector.selectPlayer(piece.playerId, ability.args[3]);
-      this.log.warn('Activating player %s. Piece player id %s, Player selected %s arg3 %j', player.id, piece.playerId, playerSelected, ability.args[3]);
       if(playerSelected === player.id){
         allowedToUseEnemyAbility = true;
         this.log.info('Enemy allowed');

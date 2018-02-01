@@ -19,14 +19,16 @@ namespace ctac
 
         private TextMeshProUGUI buttonText;
         private PlayerResourcesModel playerResources;
+        private GamePlayersModel players { get; set; }
 
-        internal void init(PlayerResourcesModel playerResources, PieceModel piece)
+        internal void init(PlayerResourcesModel playerResources, PieceModel piece, GamePlayersModel players)
         {
             abilityButton.onClick.AddListener(() => onClick());
             abilityButton.interactable = false;
             buttonText = abilityButton.GetComponentInChildren<TextMeshProUGUI>();
             this.playerResources = playerResources;
             this.piece = piece;
+            this.players = players;
         }
 
         void Update()
@@ -35,10 +37,10 @@ namespace ctac
 
             buttonText.text = string.Format("({0}) {1}", ability.abilityCost, ability.ability);
 
-            abilityButton.interactable = 
-                gameInputStatus.inputEnabled 
+            abilityButton.interactable =
+                gameInputStatus.inputEnabled
                 && ability.abilityCooldown == 0
-                && ability.abilityCost <= playerResources.resources[piece.playerId];
+                && ability.abilityCost <= playerResources.resources[players.Me.id];
         }
 
         void onClick()

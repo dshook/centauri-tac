@@ -15,6 +15,7 @@ namespace ctac
         [Inject] public StartSelectAbilityTargetSignal startSelectTarget { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
+        [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PlayerResourcesModel playerResources { get; set; }
         [Inject] public PossibleActionsModel possibleActions { get; set; }
 
@@ -29,7 +30,7 @@ namespace ctac
             if (view.ability != null)
             {
                 var piece = pieces.Piece(view.ability.pieceId);
-                view.init(playerResources, piece);
+                view.init(playerResources, piece, players);
             }
         }
 
