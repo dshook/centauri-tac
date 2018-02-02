@@ -8,7 +8,5 @@
   "movement": 0,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion"
-  ]
+  "tags": ["Minion"]
 }

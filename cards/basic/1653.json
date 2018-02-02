@@ -8,9 +8,6 @@
   "movement": 3,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion",
-    "Interloper"
-  ],
+  "tags": ["Minion","Interloper"],
 	"eventcode": "playMinion{ Move(SELF, CURSOR & Area(Square, 3, SELF), false) }"
 }

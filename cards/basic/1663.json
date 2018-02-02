@@ -1,6 +1,6 @@
 {
   "cardTemplateId": 1663,
-  "name": "",
+  "name": "Calculated Deadeye",
   "description": "<b>Empower</b>: Gain +1 Range",
   "cost": 3,
   "attack": 3,
@@ -9,9 +9,7 @@
   "range": 2,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
   "eventcode": "
     ability(FRIENDLY & HERO){
       Buff(SELF, 'Arc Calculated', range(1))

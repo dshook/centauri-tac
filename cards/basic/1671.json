@@ -9,10 +9,7 @@
   "range": 2,
   "race": 0,
   "rarity": 4,
-  "tags": [
-    "Minion",
-    "XK"
-  ],
+  "tags": ["Minion","XK"],
 	"eventcode": "playMinion{
 		Aura(
 			SELF,

@@ -7,13 +7,9 @@
   "health": 2,
   "movement": 3,
   "range": 2,
-  "spellDamage": null,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion",
-    "Mercenary"
-  ],
+  "tags": ["Minion","Mercenary"],
 	"eventcode": "ability(5, 1, 'Bribe 1687', OPPONENT){
     Charm(SELF)
   }"

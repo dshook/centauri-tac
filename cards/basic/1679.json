@@ -8,9 +8,7 @@
   "movement": 4,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
   "eventcode": "playMinion{
     Transform(SELF, false, TARGET & FRIENDLY & MINION) }
   "

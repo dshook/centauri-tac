@@ -6,13 +6,8 @@
   "attack": 1,
   "health": 4,
   "movement": 3,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 2,
-  "tags": [
-    "Minion",
-    "Mutation"
-  ],
+  "tags": ["Minion","Mutation"],
 	"eventcode": "playSpell(OPPONENT){ Buff(SELF, 'Source Rage', attack(2), health(-1) ) }"
 }

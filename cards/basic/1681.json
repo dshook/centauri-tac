@@ -1,16 +1,13 @@
 {
   "cardTemplateId": 1681,
   "name": "Zin Progenitor",
-  "description": "<b>Demise</b>: Summon 2 flying 1/1 guys",
+  "description": "<b>Demise</b>: Summon 3 flying 1/1 guys in a large square",
   "cost": 4,
-  "attack": 3,
-  "health": 4,
+  "attack": 2,
+  "health": 2,
   "movement": 2,
   "range": 2,
-  "spellDamage": null,
   "race": 0,
   "rarity": 4,
-  "tags": [
-    "Minion"
-  ]
+  "tags": ["Minion"]
 }

@@ -10,7 +10,5 @@
   "statuses": 1024,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion"
-  ]
+  "tags": ["Minion"]
 }

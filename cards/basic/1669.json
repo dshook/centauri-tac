@@ -7,11 +7,8 @@
   "health": 2,
   "movement": 2,
   "range": 2,
-  "spellDamage": null,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
 	"eventcode": "death{ Hit(Area(Square, 1, SELF), 2) }"
 }

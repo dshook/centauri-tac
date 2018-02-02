@@ -7,11 +7,7 @@
   "health": 7,
   "movement": 3,
   "range": 4,
-  "spellDamage": null,
   "race": 0,
   "rarity": 4,
-  "tags": [
-    "Minion",
-    "Archon"
-  ]
+  "tags": ["Minion","Archon"]
 }

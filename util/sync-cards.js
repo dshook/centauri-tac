@@ -119,7 +119,18 @@ function replaceVal(contents, keyValues) {
     }
 
     if (propIndex > -1) {
-      if (value === null) {
+      if(lines[propIndex].endsWith('[') || lines[propIndex].endsWith('[\r') ){
+        //check for multiline arrays written out by json formatter and splice it out
+        let endBracketIndex = lines.findIndex((val, idx) =>
+          idx > propIndex && (val.endsWith(']') || val.endsWith('],') || val.endsWith(']\r') || val.endsWith('],\r'))
+        );
+        //check for the stupid trailing comma again...
+        if(lines[endBracketIndex + 1].match(/^\}$/gi)){
+          updatedLine = updatedLine.substring(0, updatedLine.length - 1);
+        }
+
+        lines.splice(propIndex, endBracketIndex - propIndex + 1, updatedLine);
+      } if (value === null) {
         //if value is null we shouldn't have this prop at all so remove it from the lines
         lines.splice(propIndex, 1);
       } else {

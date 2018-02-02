@@ -7,12 +7,9 @@
   "health": 3,
   "movement": 2,
   "range": 2,
-  "spellDamage": null,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
 	"eventcode": "
 		ability(0, 1, 'Helical Swap'){
 			SetAttribute(SELF, attack, SelectAttribute(SELF, health))

@@ -8,10 +8,7 @@
   "movement": 3,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion",
-    "mutation"
-  ],
+  "tags": ["Minion","mutation"],
   "eventcode": "
     ability(FRIENDLY & HERO){
       Buff(SELF, 'Unsightly Growth', attack(1), health(1))

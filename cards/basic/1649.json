@@ -9,7 +9,5 @@
   "spellDamage": 1,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion"
-  ]
+  "tags": ["Minion"]
 }

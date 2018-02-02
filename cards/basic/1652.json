@@ -9,9 +9,7 @@
   "range": 2,
   "race": 0,
   "rarity": 1,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
   "eventcode": "
     death{
       Hit(Random(ENEMY), 1)

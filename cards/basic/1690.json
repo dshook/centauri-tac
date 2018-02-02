@@ -6,11 +6,7 @@
   "attack": 6,
   "health": 4,
   "movement": 3,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 4,
-  "tags": [
-    "Minion"
-  ]
+  "tags": ["Minion"]
 }

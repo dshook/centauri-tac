@@ -6,14 +6,9 @@
   "attack": 2,
   "health": 2,
   "movement": 0,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 2,
-  "tags": [
-    "Minion",
-    "Artifact"
-  ],
+  "tags": ["Minion","Artifact"],
 	"eventcode": "playMinion{
 		endTurnTimer(1, 1, DrawCard(PLAYER), Hit(SELF, 1))
 	}"

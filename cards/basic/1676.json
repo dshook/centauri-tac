@@ -9,9 +9,7 @@
   "spellDamage": 1,
   "race": 0,
   "rarity": 2,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
 	"eventcode": "playSpell{
 		SetAttribute(TARGET & MINION, attack, SelectAttribute(TARGET, health))
 		SetAttribute(TARGET & MINION, health, SelectAttribute(TARGET, attack))

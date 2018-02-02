@@ -6,12 +6,8 @@
   "attack": 2,
   "health": 4,
   "movement": 3,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 3,
-  "tags": [
-    "Minion"
-  ],
+  "tags": ["Minion"],
 	"eventcode": "playMinion(ENEMY){ Buff(ACTIVATOR, 'Depleted Soul', attack(-1) ) }"
 }
