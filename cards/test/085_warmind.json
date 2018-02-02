@@ -8,7 +8,7 @@
 	"movement": 3,
 	"tags": ["Minion"],
 	"eventcode": "playMinion{
-		Buff(SELF, 'Uprising', SelectAttribute(SELF, health) < SelectAttribute(SELF, baseHealth), attack(2))
+		Buff(SELF, 'Uprising', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), attack(2))
 	}
 	"
 }

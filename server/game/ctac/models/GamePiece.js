@@ -114,6 +114,8 @@ export default class GamePiece
       let statusAction = this.removeStatuses(buff.removeStatus, cardEvaluator);
       Object.assign(action, statusAction);
     }
+    action.statuses = this.statuses;
+
     return action
   }
 
@@ -153,6 +155,7 @@ export default class GamePiece
       //merge the status action into the buff action, the attribute changes from status should be the most up to date
       Object.assign(action, statusAction);
     }
+    action.statuses = this.statuses;
 
     return action;
   }

@@ -1,12 +1,17 @@
 {
   "cardTemplateId": 1692,
-  "name": "",
-  "description": "<b>Demise</b>: Summon 1/1 guy with flying",
+  "name": "Minor Magnate",
+  "description": "<b>Synthesis</b>: Summon a 1/1 Regal Attendant with <b>Holtz Shield</b>",
   "cost": 6,
-  "attack": 5,
+  "attack": 4,
   "health": 5,
   "movement": 2,
   "race": 0,
   "rarity": 1,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    playMinion{
+      Spawn(1642, 1)
+    }
+  "
 }

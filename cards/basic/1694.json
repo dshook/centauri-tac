@@ -9,5 +9,6 @@
   "range": 4,
   "race": 0,
   "rarity": 2,
+  "statuses": 1024,
   "tags": ["Minion","Interloper"]
 }

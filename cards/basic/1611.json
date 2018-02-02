@@ -11,7 +11,7 @@
   "statuses": 256,
   "tags": ["Minion"],
 	"eventcode": "playMinion{
-		Buff(SELF, 'Exonerated', SelectAttribute(SELF, health) < SelectAttribute(SELF, baseHealth), CantAttack(false))
+		Buff(SELF, 'Exonerated', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), CantAttack(false))
 	}
 	"
 }
