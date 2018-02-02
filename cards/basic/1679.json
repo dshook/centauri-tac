@@ -6,11 +6,12 @@
   "attack": 4,
   "health": 4,
   "movement": 4,
-  "range": null,
-  "spellDamage": null,
   "race": 0,
   "rarity": 3,
   "tags": [
     "Minion"
-  ]
+  ],
+  "eventcode": "playMinion{
+    Transform(SELF, false, TARGET & FRIENDLY & MINION) }
+  "
 }
