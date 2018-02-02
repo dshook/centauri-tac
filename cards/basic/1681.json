@@ -9,5 +9,10 @@
   "range": 2,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    death{
+      Spawn(1643, 4) * 3
+    }
+  "
 }

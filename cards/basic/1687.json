@@ -10,7 +10,7 @@
   "race": 0,
   "rarity": 3,
   "tags": ["Minion","Mercenary"],
-	"eventcode": "ability(5, 1, 'Bribe 1687', OPPONENT){
+	"eventcode": "ability(5, 1, 'Bribe Ordo Stalker', OPPONENT){
     Charm(SELF)
   }"
 }

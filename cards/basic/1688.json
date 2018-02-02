@@ -8,5 +8,10 @@
   "movement": 3,
   "race": 0,
   "rarity": 3,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    death{
+      DrawCard(OPPONENT) * 2
+    }
+  "
 }

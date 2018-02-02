@@ -8,5 +8,6 @@
   "movement": 3,
   "race": 0,
   "rarity": 1,
+  "statuses": 32,
   "tags": ["Minion"]
 }
