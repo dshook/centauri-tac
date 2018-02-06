@@ -4,9 +4,14 @@
   "description": "<b>Synthesis</b>: Set an enemy minion's attack to 1",
   "cost": 7,
   "attack": 3,
-  "health": 9,
+  "health": 7,
   "movement": 4,
   "race": 0,
   "rarity": 3,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    playMinion{
+      SetAttribute(ENEMY & MINION, attack, 1)
+    }
+  "
 }

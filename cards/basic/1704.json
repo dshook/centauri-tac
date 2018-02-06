@@ -8,5 +8,8 @@
   "movement": 4,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "damaged{
+    Hit(Area(Cross, 4, SELF), 4)
+  }"
 }

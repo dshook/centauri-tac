@@ -8,5 +8,8 @@
   "movement": 3,
   "race": 0,
   "rarity": 3,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+		Buff(SELF, 'Pumped Up', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), attack(3))
+  "
 }

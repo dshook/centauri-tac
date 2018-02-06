@@ -8,5 +8,10 @@
   "movement": 3,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "
+	    playSpell{
+	      AttachCode(MINION, death{ Summon(1603, 1) } )
+	    }
+	"
 }

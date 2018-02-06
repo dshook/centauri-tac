@@ -1,6 +1,6 @@
 {
   "cardTemplateId": 1700,
-  "name": "",
+  "name": "Warmind",
   "description": "<b>Aura</b>: Give all friendly minions +1/+1",
   "cost": 7,
   "attack": 7,
@@ -8,5 +8,14 @@
   "movement": 3,
   "race": 0,
   "rarity": 1,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "playMinion{
+		Aura(
+			SELF,
+			FRIENDLY & MINION,
+			'Mouth for War',
+			attack(1),
+			health(1)
+		)
+	}"
 }
