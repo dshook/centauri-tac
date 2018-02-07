@@ -9,5 +9,8 @@
   "range": 4,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion","Archon"]
+  "tags": ["Minion","Archon"],
+	"eventcode": "ability(2, 1, 'Diamond Darrel'){
+    Hit(ENEMY & MINION & Area(Diamond, 3), SelectAttribute(SELF, attack) )
+  }"
 }

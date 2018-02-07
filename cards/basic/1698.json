@@ -10,8 +10,8 @@
   "rarity": 4,
   "tags": ["Minion"],
 	"eventcode": "
-	    playSpell{
-	      AttachCode(MINION, death{ Summon(1603, 1) } )
-	    }
+    playSpell{
+      AttachCode(MINION, death{ Spawn(1603, 1) } )
+    }
 	"
 }

@@ -8,5 +8,10 @@
   "movement": 4,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    death{
+      Charm(Random(ENEMY & MINION & (SelectAttribute(MINION, health) <= 7) ))
+    }
+  "
 }

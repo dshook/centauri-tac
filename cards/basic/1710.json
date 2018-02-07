@@ -8,5 +8,8 @@
   "movement": 3,
   "race": 0,
   "rarity": 3,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "playMinion{
+		endTurnTimer(1, 1, Hit(Area(Cross, 4, SELF) | Area(Diagonal, 4, SELF, North, true) | Area(Diagonal, 4, SELF, East, true), 4))
+	}"
 }

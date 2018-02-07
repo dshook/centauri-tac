@@ -10,6 +10,8 @@
   "rarity": 3,
   "tags": ["Minion"],
   "eventcode": "
-		Buff(SELF, 'Pumped Up', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), attack(3))
+    playMinion{
+      Buff(SELF, 'Pumped Up', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), attack(3))
+    }
   "
 }

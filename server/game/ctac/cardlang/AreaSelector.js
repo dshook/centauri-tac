@@ -1,5 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import EvalError from './EvalError.js';
+import {Direction, adjacentPosition} from '../models/Direction';
 
  @loglevel
 export default class AreaSelector{
@@ -96,6 +97,10 @@ export default class AreaSelector{
         if(pieceSelectorParams.pivotPosition){
           pivotPosition = pieceSelectorParams.pivotPosition;
         }
+      }else if(pivotSelector && pivotSelector.areaDirection){
+        //select relative directions to the center position
+        let selectedDirection = Direction[pivotSelector.areaDirection];
+        pivotPosition = adjacentPosition(centerPosition, selectedDirection, areaType === 'Diagonal')
       }else if(pivotSelector){
         let pivotPieces = this.selector.selectPieces(pivotSelector, pieceSelectorParams);
         let pivotPiece = pivotPieces[0];

@@ -34,6 +34,34 @@ export function directionOf(dir1, dir2){
   }
 }
 
+export function adjacentPosition(position, direction, isDiagonal = false){
+  if(isDiagonal){
+    switch(direction)
+    {
+      case 1:
+        return position.addXYZ(1,0,1);
+      case 2:
+        return position.addXYZ(1,0,-1);
+      case 3:
+        return position.addXYZ(-1,0,-1);
+      case 4:
+        return position.addXYZ(-1,0,1);
+    }
+  }else{
+    switch(direction)
+    {
+      case 1:
+        return position.addXYZ(0,0,1);
+      case 2:
+        return position.addXYZ(1,0,0);
+      case 3:
+        return position.addXYZ(0,0,-1);
+      case 4:
+        return position.addXYZ(-1,0,0);
+    }
+  }
+}
+
 //given a start and finishing position return the direction you should turn
 export function faceDirection(position1, position2){
   let difference = position1.sub(position2);

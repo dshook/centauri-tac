@@ -86,6 +86,9 @@
 (Cross|Square|Line|Diagonal|Row|Diamond)
   return 'area'
 
+(North|East|South|West)
+  return 'areaDirection'
+
 (Area)
   return 'Area'
 (Tagged)
@@ -214,6 +217,7 @@ argument_item
   | comparisonExpression -> $1
   | actionargs -> $1
   | eventList -> $1
+  | pAreaDirection -> $1
   ;
 
 possibleRandSelector
@@ -331,4 +335,9 @@ pText
 
 pBool
   : bool -> $1 == 'true'
+;
+
+pAreaDirection
+  : areaDirection
+     { $$ = {areaDirection: $areaDirection}; }
 ;
