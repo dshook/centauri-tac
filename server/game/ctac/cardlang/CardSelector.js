@@ -55,7 +55,7 @@ export default class CardSelector{
           return this.allCards.filter(p => p.inHand);
           break;
         case 'DIRECTORY':
-          return this.allCards; //Actual directory selection handled in allCards in constructor
+          return this.allCards.filter(p => !p.uncollectible); //Actual directory selection handled in allCards in constructor
           break;
         default:
           throw 'Invalid card type selector ' + selector;

@@ -315,8 +315,8 @@ eNumber
      { $$ = { stat: true, path: $1 }; }
   | resource'('possibleRandSelector')'
      { $$ = { resource: $1, selector: $3 }; }
-  | selectCardTemplateId'('arguments')'
-     { $$ = { selectCardTemplateId: true, args: $3 }; }
+  | selectCardTemplateId'('possibleRandSelector')'
+     { $$ = { selectCardTemplateId: true, cardSelector: $3 }; }
   ;
 
 numberList

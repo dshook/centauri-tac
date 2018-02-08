@@ -43,6 +43,11 @@ export default class SpawnPieceProcessor
 
     let cardPlayed = this.cardDirectory.directory[action.cardTemplateId];
 
+    if(!cardPlayed){
+      this.log.warn('Cannot find cardTemplateId %s in directory to spawn', action.cardTemplateId);
+      return queue.cancel(action, true);
+    }
+
     //check if played in an unoccupied spot
     let occupyingPiece = this.pieceState.pieceAt(action.position.x, action.position.z);
     if(occupyingPiece){

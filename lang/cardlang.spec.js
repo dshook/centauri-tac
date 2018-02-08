@@ -993,33 +993,31 @@ test('Adv Select Card Template Id', t => {
           "args": [
             {
               "selectCardTemplateId": true,
-              "args": [
-                {
-                  "random": true,
-                  "selector": {
-                    "left": {
-                      "left": "DIRECTORY",
-                      "op": "&",
-                      "right": "MINION"
-                    },
+              "cardSelector": {
+                "random": true,
+                "selector": {
+                  "left": {
+                    "left": "DIRECTORY",
                     "op": "&",
-                    "right": {
-                      "compareExpression": true,
-                      "left": {
-                        "eNumber": true,
-                        "attributeSelector": {
-                          "left": "DIRECTORY",
-                          "op": "&",
-                          "right": "MINION"
-                        },
-                        "attribute": "attack"
+                    "right": "MINION"
+                  },
+                  "op": "&",
+                  "right": {
+                    "compareExpression": true,
+                    "left": {
+                      "eNumber": true,
+                      "attributeSelector": {
+                        "left": "DIRECTORY",
+                        "op": "&",
+                        "right": "MINION"
                       },
-                      "op": ">",
-                      "right": 1
-                    }
+                      "attribute": "attack"
+                    },
+                    "op": ">",
+                    "right": 1
                   }
                 }
-              ]
+              }
             },
             1
           ]

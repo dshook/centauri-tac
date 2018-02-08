@@ -198,7 +198,11 @@ export default class Selector{
       let resourceKey = input.resource;
       return this.playerResourceState.getByPath(resourceKey, selectedPlayer);
     }else if(input.selectCardTemplateId){
-      //input.isRandom
+      let selectedCards = this.selectCards(input.cardSelector, pieceSelectorParams);
+      if(selectedCards.length > 0){
+        return selectedCards[0].cardTemplateId;
+      }
+      return 0;
     }
     return input;
   }
