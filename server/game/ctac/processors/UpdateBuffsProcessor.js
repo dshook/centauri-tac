@@ -26,11 +26,15 @@ export default class UpdateBuffsProcessor
       for(let buff of piece.buffs){
         if(!buff.condition) continue;
 
-        let result = this.selector.compareExpression(buff.condition, this.pieceState.pieces,
+        let result = this.selector.compareExpression(
+          buff.condition,
+          this.pieceState.pieces,
           {
             selfPiece: piece,
             controllingPlayerId: piece.playerId
-          });
+          },
+          this.selector.selectPieces
+        );
 
         let buffChange = null;
         if(result.length > 0){

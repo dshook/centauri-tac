@@ -78,6 +78,7 @@ export default class PieceBuffProcessor
             selfPiece: piece,
             controllingPlayerId: piece.playerId
           }
+          , this.selector.selectPieces
         );
         if(buffConditionResult.length === 0){
           this.log.info("piece %s didn't meet buff condition", piece.id, buffChange);

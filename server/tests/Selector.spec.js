@@ -373,7 +373,7 @@ test('Raw Comparison expression', t => {
     };
 
   let compareNumberResult = selector.compareExpression(
-    compareNumbers, pieceStateMix, {selfPiece, controllingPlayerId: 1}
+    compareNumbers, pieceStateMix, {selfPiece, controllingPlayerId: 1}, selector.selectPieces
   );
   t.equal(compareNumberResult.length, 0, 'Compare returned nothing');
 
@@ -401,7 +401,7 @@ test('Raw Comparison expression', t => {
       }
     };
   t.equal(
-    selector.compareExpression(compareTwoAttribute, pieceStateMix, {selfPiece, controllingPlayerId: 1} ).length
+    selector.compareExpression(compareTwoAttribute, pieceStateMix, {selfPiece, controllingPlayerId: 1}, selector.selectPieces ).length
     , 0
     , 'Compare on two attribute selectors with more than one piece returns empty'
   );
@@ -431,7 +431,7 @@ test('Raw Comparison expression', t => {
     };
 
   t.equal(
-    selector.compareExpression(compareTwoAttributeSingle, pieceStateMix, {selfPiece, controllingPlayerId: 1} )
+    selector.compareExpression(compareTwoAttributeSingle, pieceStateMix, {selfPiece, controllingPlayerId: 1}, selector.selectPieces)
     , pieceStateMix
     , 'Compare on two single pieces returns the pieces back'
   );
@@ -747,6 +747,60 @@ test('Adv Card Selections', t => {
       right: 'HAND'
     }, {controllingPlayerId: 1});
   t.equal(exclusive.length, 0, 'Got nothin for both hand and deck');
+});
+
+test('Card Directory Selections', t => {
+  let select =
+    {
+      left: 'DIRECTORY',
+      op: '&',
+      right: 'HERO'
+    };
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix, null, null, cardDirectory);
+  let selection = selector.selectCards(select, {controllingPlayerId: 1});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 4, 'Got 4 test heroes in test directory');
+  t.ok(selection[0] instanceof Card, 'First element is a card');
+  t.ok(selection[0].isHero, 'First card is a hero');
+  t.end();
+});
+
+test('Card Directory Random Selection with attribute', t => {
+  let select = {
+    "random": true,
+    "selector": {
+      "left": {
+        "left": "DIRECTORY",
+        "op": "&",
+        "right": "MINION"
+      },
+      "op": "&",
+      "right": {
+        "compareExpression": true,
+        "left": {
+          "eNumber": true,
+          "attributeSelector": {
+            "left": "DIRECTORY",
+            "op": "&",
+            "right": "MINION"
+          },
+          "attribute": "cost"
+        },
+        "op": "==",
+        "right": 1
+      }
+    }
+  };
+
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix, null, null, cardDirectory);
+  let selection = selector.selectCards(select, {controllingPlayerId: 1});
+
+  t.ok(Array.isArray(selection), 'Got back an Array');
+  t.equal(selection.length, 1, 'Got back just one random card: ' + selection[0].name);
+  t.ok(selection[0] instanceof Card, 'First element is a card');
+  t.ok(selection[0].isMinion, 'First card is a minion');
+  t.end();
 });
 
 function spawnPiece(pieceState, cardTemplateId, playerId, position){

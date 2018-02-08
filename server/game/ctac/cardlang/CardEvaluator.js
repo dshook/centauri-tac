@@ -100,7 +100,7 @@ export default class CardEvaluator{
         let pieceSelectorParams = {selfPiece: piece, activatingPiece, controllingPlayerId: piece.playerId};
 
         if(cardEvent.condition){
-          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams, this.selector.selectPieces);
           if(compareResult.length === 0){
             continue;
           }
@@ -157,7 +157,7 @@ export default class CardEvaluator{
 
         if(cardEvent.condition){
           let pieceSelectorParams = {selfPiece: piece, activatingPiece: piece, controllingPlayerId: piece.playerId};
-          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams, this.selector.selectPieces);
           if(compareResult.length === 0){
             continue;
           }
@@ -227,7 +227,7 @@ export default class CardEvaluator{
 
         if(cardEvent.condition){
           let pieceSelectorParams = {selfPiece: piece, activatingPiece: piece, controllingPlayerId: piece.playerId};
-          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams);
+          let compareResult = this.selector.compareExpression(cardEvent.condition, this.pieceState, pieceSelectorParams, this.selector.selectPieces);
           if(compareResult.length === 0){
             continue;
           }
@@ -293,7 +293,7 @@ export default class CardEvaluator{
 
         //check to see if we should even do this action
         if(action.condition){
-          let compareResult = this.selector.compareExpression(action.condition, this.pieceState, pieceSelectorParams)
+          let compareResult = this.selector.compareExpression(action.condition, this.pieceState, pieceSelectorParams, this.selector.selectPieces)
           if(compareResult.length === 0){
             continue;
           }
@@ -1126,7 +1126,7 @@ export default class CardEvaluator{
           isTimer: false
         };
 
-        let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams);
+        let compareResult = this.selector.compareExpression(cardEventAction.condition, this.pieceState, pieceSelectorParams, this.selector.selectPieces);
         if(compareResult.length === 0){
           continue;
         }

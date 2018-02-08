@@ -153,7 +153,7 @@ export default class PieceSelector{
 
     //first check if this is a compare expression
     if(selector.compareExpression){
-      return this.selector.compareExpression(selector, this.allPieces, this.pieceSelectorParams);
+      return this.selector.compareExpression(selector, this.allPieces, this.pieceSelectorParams, this.selector.selectPieces);
     }
 
     //ordinary case of recursing the piece selections

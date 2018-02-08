@@ -208,19 +208,19 @@ export default class Selector{
   //compare is also only between two eNumbers, though the attribute selector needs to be evaluated seperately
   //if two attribute selectors are used, they must resolve to 1 piece on each side of the comparison
   //can be coerced to a bool by looking if there were pieces returned or not
-  compareExpression(selector, pieces, pieceSelectorParams){
+  compareExpression(selector, objs, selectorParams, selectFunc){
     let leftResult, rightResult;
 
     if(selector.left.attributeSelector){
-      leftResult = this.selectPieces(selector.left.attributeSelector, pieceSelectorParams);
+      leftResult = selectFunc.call(this, selector.left.attributeSelector, selectorParams);
     }else{
-      leftResult = this.eventualNumber(selector.left, pieceSelectorParams);
+      leftResult = this.eventualNumber(selector.left, selectorParams);
     }
 
     if(selector.right.attributeSelector){
-      rightResult = this.selectPieces(selector.right.attributeSelector, pieceSelectorParams);
+      rightResult = selectFunc.call(this, selector.right.attributeSelector, selectorParams);
     }else{
-      rightResult = this.eventualNumber(selector.right, pieceSelectorParams);
+      rightResult = this.eventualNumber(selector.right, selectorParams);
     }
 
     let leftIsArray = Array.isArray(leftResult);
@@ -235,7 +235,7 @@ export default class Selector{
       let rVal = rightResult[0][selector.right.attribute];
       let compareResult = this.CompareFromString(lVal, rVal, selector.op);
       if(compareResult){
-        return pieces;
+        return objs;
       }else{
         return [];
       }
@@ -243,7 +243,7 @@ export default class Selector{
       //two number case
       let compareResult = this.CompareFromString(leftResult, rightResult, selector.op);
       if(compareResult){
-        return pieces;
+        return objs;
       }else{
         return [];
       }
@@ -252,7 +252,7 @@ export default class Selector{
       //let array = leftIsArray ? leftResult : rightResult;
       let number = leftIsArray ? rightResult : leftResult;
       let attribute = leftIsArray ? selector.left.attribute : selector.right.attribute;
-      return pieces.filter(p => this.CompareFromString(p[attribute], number, selector.op));
+      return objs.filter(p => this.CompareFromString(p[attribute], number, selector.op));
     }
   }
 

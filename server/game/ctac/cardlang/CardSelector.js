@@ -68,8 +68,7 @@ export default class CardSelector{
 
     //first check if this is a compare expression
     if(selector.compareExpression){
-      //throw 'Compare expression not supported for card selection';
-      return this.selector.compareExpression(selector, this.allCards, this.cardSelectorParams);
+      return this.selector.compareExpression(selector, this.allCards, this.cardSelectorParams, this.selector.selectCards);
     }
 
     //ordinary case of recursing the piece selections
