@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1710,
   "name": "",
-  "description": "At the end of each turn deal 4 damage to all enemy minions in a large cross and X",
+  "description": "<b>Synthesis</b>: Shuffle a copy of a minion into your deck",
   "cost": 8,
   "attack": 8,
   "health": 5,
@@ -10,6 +10,6 @@
   "rarity": 3,
   "tags": ["Minion"],
 	"eventcode": "playMinion{
-		endTurnTimer(1, 1, Hit(Area(Cross, 4, SELF) | Area(Diagonal, 4, SELF, North, true) | Area(Diagonal, 4, SELF, East, true), 4))
+		ShuffleToDeck(PLAYER, SelectAttribute(TARGET & MINION, cardTemplateId))
 	}"
 }

@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1698,
   "name": "",
-  "description": "<b>Synthesis</b>: Give ALL minions: <b>Demise</b>: Summon a 1/1 taunt guy",
+  "description": "<b>Synthesis</b>: Give ALL minions: <b>Demise</b>: Controlling player draws a card",
   "cost": 6,
   "attack": 5,
   "health": 6,
@@ -11,7 +11,7 @@
   "tags": ["Minion"],
 	"eventcode": "
     playSpell{
-      AttachCode(MINION, death{ Spawn(1603, 1) } )
+      AttachCode(MINION, death{ DrawCard(PLAYER) } )
     }
 	"
 }
