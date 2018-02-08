@@ -512,7 +512,7 @@ export default class CardEvaluator{
             //This means to spawn a piece in each of the tiles returned by the area selector
             case 'Spawn':
             {
-              let cardTemplateId = action.args[0];
+              let cardTemplateId = this.selector.eventualNumber(action.args[0], pieceSelectorParams);
               let placeArg = action.args[1];
               if(placeArg.left && placeArg.left.area){
                 //if it's an area, eval the tiles now rather than at exec time since they shouldn't be changing

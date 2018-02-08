@@ -7,14 +7,16 @@ import AreaSelector from './AreaSelector.js';
 
 @loglevel
 export default class Selector{
-  constructor(players, pieceState, mapState, cardState, statsState, playerResourceState){
+  constructor(players, pieceState, mapState, cardState, statsState, playerResourceState, cardDirectory){
     this.players = players;
     this.pieceState = pieceState;
-    this.cardState = cardState;
     this.areaSelector = new AreaSelector(this, mapState);
     this.mapState = mapState;
     this.statsState = statsState;
     this.playerResourceState = playerResourceState;
+    //For card selector
+    this.cardState = cardState;
+    this.cardDirectory = cardDirectory;
   }
 
   selectPlayer(controllingPlayerId, selector){
@@ -92,6 +94,8 @@ export default class Selector{
   }
 
   //similar to select pieces but a more limited set of selections
+  //You must specify in the selector if it's a directory or (deck or hand) selection
+  //Directory selections match on the template id, while deck and hand selections match on the instance id
   selectCards(selector, cardSelectorParams){
     //for now, only way to get a single card from a selector is from random
     if(selector.random && selector.selector){
@@ -101,9 +105,17 @@ export default class Selector{
       }
       return [];
     }
+    let isDirectorySelect = this.doesSelectorUse(selector, 'DIRECTORY');
+    let isInstanceSelect = this.doesSelectorUse(selector, 'DECK') || this.doesSelectorUse(selector, 'HAND');
+
+    if(!isDirectorySelect && !isInstanceSelect){
+      throw 'Card selection must specify directory, deck, or hand';
+    }
+
     return new CardSelector(
       this,
-      cardSelectorParams
+      cardSelectorParams,
+      isDirectorySelect
     ).Select(selector);
   }
 
@@ -135,10 +147,16 @@ export default class Selector{
     if(selector === identifier || selector.right === identifier){
       return true;
     }
+
+    let leftUses = false;
+    let rightUses = false;
     if(selector.left){
-      return this.doesSelectorUse(selector.left, identifier);
+      leftUses = this.doesSelectorUse(selector.left, identifier);
     }
-    return false;
+    if(selector.right){
+      rightUses = this.doesSelectorUse(selector.right, identifier);
+    }
+    return leftUses || rightUses;
   }
 
   //returns t/f if the selector works with the comparison function
@@ -179,6 +197,8 @@ export default class Selector{
       let selectedPlayer = this.selectPlayer(pieceSelectorParams.controllingPlayerId, input.selector);
       let resourceKey = input.resource;
       return this.playerResourceState.getByPath(resourceKey, selectedPlayer);
+    }else if(input.selectCardTemplateId){
+      //input.isRandom
     }
     return input;
   }

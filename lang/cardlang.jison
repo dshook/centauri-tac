@@ -34,7 +34,11 @@
   return 'target'
 
 // selectors
-(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC|SPELL|DECK|HAND|MELEE|RANGED)
+(ENEMY|CHARACTER|MINION|FRIENDLY|HERO|DAMAGED|BASIC|MELEE|RANGED)
+  return 'target'
+
+//Card specific selectors
+(SPELL|DECK|HAND|DIRECTORY)
   return 'target'
 
 //status selectors
@@ -53,6 +57,8 @@
   return 'count'
 (CardCount)
   return 'cardCount'
+(SelectCardTemplateId)
+  return 'selectCardTemplateId'
 
 //Player resource eNumbers
 (Charges|Resources)
@@ -309,6 +315,8 @@ eNumber
      { $$ = { stat: true, path: $1 }; }
   | resource'('possibleRandSelector')'
      { $$ = { resource: $1, selector: $3 }; }
+  | selectCardTemplateId'('arguments')'
+     { $$ = { selectCardTemplateId: true, args: $3 }; }
   ;
 
 numberList

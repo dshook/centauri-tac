@@ -161,16 +161,17 @@ export default class PieceSelector{
 
     if(selector.op && selector.right){
       let rightResult = this.Select(selector.right);
+      let pieceEquality = (a,b) => a.id === b.id;
 
       switch(selector.op){
         case '|':
-          return Union(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Union(leftResult, rightResult, pieceEquality);
           break;
         case '&':
-          return Intersection(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Intersection(leftResult, rightResult, pieceEquality);
           break;
         case '-':
-          return Difference(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Difference(leftResult, rightResult, pieceEquality);
           break;
       }
 

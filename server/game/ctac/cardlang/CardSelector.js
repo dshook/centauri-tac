@@ -2,8 +2,12 @@ import {Union, Intersection, Difference} from '../util/SetOps.js';
 
 //Recursive card selector that takes the selector args from cardlang
 export default class CardSelector{
-  constructor(selector, cardSelectorParams){
-    this.allCards = selector.cardState.cards;
+  constructor(selector, cardSelectorParams, isDirectorySelect){
+    this.isDirectorySelect = isDirectorySelect;
+    this.inPlayCards = selector.cardState.cards;
+    this.directory = Object.keys(selector.cardDirectory.directory).map(k => selector.cardDirectory.directory[k]);
+
+    this.allCards = isDirectorySelect ? this.directory : this.inPlayCards;
 
     this.controllingPlayerId = cardSelectorParams.controllingPlayerId;
     this.selector = selector;
@@ -30,10 +34,19 @@ export default class CardSelector{
           return this.allCards.filter(p => p.playerId != this.controllingPlayerId);
           break;
         case 'MINION':
-          return this.allCards.filter(p => p.tags.includes('Minion'));
+          return this.allCards.filter(p => p.isMinion);
           break;
         case 'SPELL':
-          return this.allCards.filter(p => p.tags.includes('Spell'));
+          return this.allCards.filter(p => p.isSpell);
+          break;
+        case 'HERO':
+          return this.allCards.filter(p => p.isHero);
+          break;
+        case 'MELEE':
+          return this.allCards.filter(p => !p.range);
+          break;
+        case 'RANGED':
+          return this.allCards.filter(p => p.range);
           break;
         case 'DECK':
           return this.allCards.filter(p => p.inDeck);
@@ -41,6 +54,11 @@ export default class CardSelector{
         case 'HAND':
           return this.allCards.filter(p => p.inHand);
           break;
+        case 'DIRECTORY':
+          return this.allCards; //Actual directory selection handled in allCards in constructor
+          break;
+        default:
+          throw 'Invalid card type selector ' + selector;
       }
     }
 
@@ -50,7 +68,8 @@ export default class CardSelector{
 
     //first check if this is a compare expression
     if(selector.compareExpression){
-      throw 'Compare expression not supported for card selection';
+      //throw 'Compare expression not supported for card selection';
+      return this.selector.compareExpression(selector, this.allCards, this.cardSelectorParams);
     }
 
     //ordinary case of recursing the piece selections
@@ -59,15 +78,19 @@ export default class CardSelector{
     if(selector.op && selector.right){
       let rightResult = this.Select(selector.right);
 
+      let cardEquality = this.isDirectorySelect ?
+        (a,b) => a.cardTemplateId === b.cardTemplateId :
+        (a,b) => a.id === b.id ;
+
       switch(selector.op){
         case '|':
-          return Union(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Union(leftResult, rightResult, cardEquality);
           break;
         case '&':
-          return Intersection(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Intersection(leftResult, rightResult, cardEquality);
           break;
         case '-':
-          return Difference(leftResult, rightResult, (a,b) => a.id === b.id);
+          return Difference(leftResult, rightResult, cardEquality);
           break;
       }
 

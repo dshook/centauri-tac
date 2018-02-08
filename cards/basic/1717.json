@@ -8,5 +8,12 @@
   "movement": 3,
   "race": 0,
   "rarity": 2,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+  "eventcode": "
+    death{
+      Spawn(
+        SelectCardTemplateId(Random(DIRECTORY & MINION & (SelectAttribute(DIRECTORY & MINION, cost) == 3)))
+      , 1)
+    }
+  "
 }

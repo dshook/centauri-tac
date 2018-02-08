@@ -672,17 +672,19 @@ test('Card Basic Selections', t => {
   t.plan(6);
   let select =
     {
-      left: 'FRIENDLY'
+      left: 'HAND',
+      op: '&',
+      right: 'FRIENDLY'
     };
-  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix, null, null, cardDirectory);
   let selection = selector.selectCards(select, {controllingPlayerId: 1});
 
   t.ok(Array.isArray(selection), 'Got back an Array');
-  t.equal(selection.length, 4, 'Got only friendly Cards');
+  t.equal(selection.length, 2, 'Got only friendly Cards');
   t.ok(selection[0] instanceof Card, 'First element is a card');
   t.equal(selection[0].playerId, 1, 'First card is for the right player');
 
-  let emptySelector = new Selector(players, pieceStateMix, mapState, noCards);
+  let emptySelector = new Selector(players, pieceStateMix, mapState, noCards, null, null, cardDirectory);
   let emptySelection = emptySelector.selectCards(select, {controllingPlayerId: 1});
   t.ok(Array.isArray(emptySelection), 'Got back an Array');
   t.equal(emptySelection.length, 0, 'Got nothin');
@@ -690,7 +692,7 @@ test('Card Basic Selections', t => {
 
 test('Adv Card Selections', t => {
   t.plan(12);
-  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix);
+  let selector = new Selector(players, pieceStateMix, mapState, cardStateMix, null, null, cardDirectory);
   let fMinions = selector.selectCards({
       left: 'DECK',
       op: '&',
@@ -703,20 +705,26 @@ test('Adv Card Selections', t => {
   t.ok(fMinions[0].tags.includes('Minion'), 'First card is a minion');
 
   let eMinions = selector.selectCards({
-      left: 'ENEMY',
-      op: '-',
-      right: 'SPELL'
-    }, {controllingPlayerId: 1});
-  t.equal(eMinions.length, 2, 'Got only enemy Minions');
+      "left": {
+        "left": "HAND",
+        "op": "&",
+        "right": "ENEMY"
+      },
+      "op": "-",
+      "right": "SPELL"
+    } , {controllingPlayerId: 1});
+  t.equal(eMinions.length, 1, 'Got only enemy Minions');
   t.equal(eMinions[0].playerId, 2, 'First card is for the right player');
   t.ok(eMinions[0].tags.includes('Minion'), 'First card is a minion');
 
   let tagged = selector.selectCards({
-      left: {
+      left: 'HAND',
+      op: '&',
+      right: {
         tag: 'Minion'
       }
     }, {controllingPlayerId: 1});
-  t.equal(tagged.length, 4, 'Got tagged minions in hand');
+  t.equal(tagged.length, 2, 'Got tagged minions in hand');
   t.ok(tagged[0].tags.includes('Minion'), 'First tagged is minion');
 
   let unions = selector.selectCards({

@@ -970,3 +970,64 @@ test('Conditional event', t => {
   t.deepEqual(d, expectedPlay);
 
 });
+
+test('Adv Select Card Template Id', t => {
+  t.plan(1);
+
+  let input = `
+    death{
+      Spawn(
+        SelectCardTemplateId(Random(DIRECTORY & MINION & (SelectAttribute(DIRECTORY & MINION, attack) > 1)))
+      , 1)
+    }
+  `;
+
+  let d = parser.parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "death",
+      "actions": [
+        {
+          "action": "Spawn",
+          "args": [
+            {
+              "selectCardTemplateId": true,
+              "args": [
+                {
+                  "random": true,
+                  "selector": {
+                    "left": {
+                      "left": "DIRECTORY",
+                      "op": "&",
+                      "right": "MINION"
+                    },
+                    "op": "&",
+                    "right": {
+                      "compareExpression": true,
+                      "left": {
+                        "eNumber": true,
+                        "attributeSelector": {
+                          "left": "DIRECTORY",
+                          "op": "&",
+                          "right": "MINION"
+                        },
+                        "attribute": "attack"
+                      },
+                      "op": ">",
+                      "right": 1
+                    }
+                  }
+                }
+              ]
+            },
+            1
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+
+});

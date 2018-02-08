@@ -35,6 +35,9 @@ export default class Card
   get isMinion(){
     return this.tags.includes('Minion');
   }
+  get isHero(){
+    return this.tags.includes('Hero');
+  }
 
   //only cost supported right now
   addBuff(buff){
