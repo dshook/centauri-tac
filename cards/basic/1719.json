@@ -8,5 +8,11 @@
   "movement": 3,
   "race": 0,
   "rarity": 4,
-  "tags": ["Minion"]
+  "tags": ["Minion"],
+	"eventcode": "playMinion{
+		Buff(SELF, 'Mad', SelectAttribute(SELF, health) <= 9, Taunt(true))
+		Buff(SELF, 'As', SelectAttribute(SELF, health) <= 6, DyadStrike(true), Taunt(false))
+		Buff(SELF, 'Fuck', SelectAttribute(SELF, health) <= 3, Cloak(true), DyadStrike(false), Taunt(false))
+	}
+	"
 }
