@@ -163,7 +163,7 @@ namespace ctac
 
             //if silenced we have to also remove the event client statuses, don't think we need to remove the event ones though
             //since they should get cleared from possible actions
-            if ((add & Statuses.Silence) != 0)
+            if (add.HasValue && (add.Value & Statuses.Silence) != 0)
             {
                 if (hasAura)
                 {
