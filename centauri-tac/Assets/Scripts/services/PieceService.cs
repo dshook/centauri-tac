@@ -148,9 +148,13 @@ namespace ctac
             dest.health = src.health;
             dest.movement = src.movement;
             dest.range = src.range;
+            dest.uncollectible = templateCard.uncollectible;
             dest.tags = src.tags;
-            dest.cardSet = src.cardSet;
             dest.statuses = src.statuses | (src.range.HasValue ? Statuses.isRanged : Statuses.None);
+            dest.rarity = templateCard.rarity;
+            dest.race = templateCard.race;
+            dest.cardSet = templateCard.cardSet;
+            dest.cardSet = src.cardSet;
             dest.metCondition = false;
 
             if (link)

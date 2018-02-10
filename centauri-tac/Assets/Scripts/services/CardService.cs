@@ -115,12 +115,12 @@ namespace ctac
             dest.movement = src.movement;
             dest.range = src.range;
             dest.tags = src.tags ?? new List<string>();
-            dest.playable = src.playable;
-            dest.buffs = src.buffs ?? new List<CardBuffModel>();
             dest.statuses = src.statuses;
             dest.rarity = src.rarity;
             dest.race = src.race;
+            dest.buffs = src.buffs ?? new List<CardBuffModel>();
             dest.cardSet = src.cardSet;
+            dest.playable = src.playable;
 
             UpdateCardName(dest);
         }

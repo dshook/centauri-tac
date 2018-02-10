@@ -183,6 +183,7 @@ namespace ctac
 
             hoverCardView.UpdateText(spellDamage);
             hoverCardView.UpdateBuffsDisplay();
+            cardService.UpdateCardArt(hoverCardView.card);
 
             //now for the fun positioning
 
