@@ -46,6 +46,13 @@ export default class PieceActionProcessor
     if(selected && selected.length > 0){
       for(let s of selected){
         let actionParams = Object.assign({}, action.actionParams, {pieceId: s.id});
+
+        //Kinda hacky but the selected piece is used to select each piece within the expansion of the piece action
+        //So if the action is using the piece selector params to select things or run eNumbers, set the selected piece
+        if(actionParams.pieceSelectorParams){
+          actionParams.pieceSelectorParams.selectedPiece = s;
+        }
+
         let newAction = new action.actionClass(actionParams);
         newAction.activatingPieceId = action.activatingPieceId;
 

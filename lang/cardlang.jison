@@ -22,7 +22,7 @@
   return 'target'
 
 // neutral piece targets
-(TARGET|SELF|ACTIVATOR)
+(TARGET|SELF|ACTIVATOR|SELECTED)
   return 'target'
 
 // targets for area selection

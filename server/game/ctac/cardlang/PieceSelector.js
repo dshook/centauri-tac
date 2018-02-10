@@ -18,13 +18,6 @@ export default class PieceSelector{
     this.controllingPlayerId = pieceSelectorParams.controllingPlayerId;
     this.selector = selector;
     this.pieceSelectorParams = pieceSelectorParams;
-
-    // 'optional' params that are only used in some selectors
-    this.selfPiece = pieceSelectorParams.selfPiece;
-    this.activatingPiece = pieceSelectorParams.activatingPiece;
-    this.targetPieceId = pieceSelectorParams.targetPieceId;
-    this.savedPieces = pieceSelectorParams.savedPieces;
-    this.isSpell = pieceSelectorParams.isSpell;
   }
 
   Select(selector){
@@ -83,25 +76,29 @@ export default class PieceSelector{
           return this.allPieces.filter(p => p.range);
           break;
         case 'ACTIVATOR':
-          if(!this.activatingPiece) return [];
-          return [this.activatingPiece];
+          if(!this.pieceSelectorParams.activatingPiece) return [];
+          return [this.pieceSelectorParams.activatingPiece];
           break;
         case 'SELF':
-          if(!this.selfPiece) return [];
-          return [this.selfPiece];
+          if(!this.pieceSelectorParams.selfPiece) return [];
+          return [this.pieceSelectorParams.selfPiece];
+          break;
+        case 'SELECTED':
+          if(!this.pieceSelectorParams.selectedPiece) return [];
+          return [this.pieceSelectorParams.selectedPiece];
           break;
         case 'TARGET':
           return this.allPieces.filter(p =>
-            (!this.targetPieceId || p.id === this.targetPieceId)
+            (!this.pieceSelectorParams.targetPieceId || p.id === this.pieceSelectorParams.targetPieceId)
             && !(p.statuses & Statuses.Cloak)
-            && (!this.isSpell || !(p.statuses & Statuses.TechResist))
-            && (!this.selfPiece || p.id !== this.selfPiece.id) //can't target yourself
+            && (!this.pieceSelectorParams.isSpell || !(p.statuses & Statuses.TechResist))
+            && (!this.pieceSelectorParams.selfPiece || p.id !== this.pieceSelectorParams.selfPiece.id) //can't target yourself
           );
           break;
         case 'SAVED':
-          if(!this.savedPieces) return [];
+          if(!this.pieceSelectorParams.savedPieces) return [];
           //Use an implicit intersection with all pieces in case one of the saved pieces is now gone
-          return Intersection(this.allPieces, this.savedPieces, (a,b) => a.id === b);
+          return Intersection(this.allPieces, this.pieceSelectorParams.savedPieces, (a,b) => a.id === b);
           break;
         case 'SILENCE':
           return this.allPieces.filter(p => p.statuses & Statuses.Silence);
