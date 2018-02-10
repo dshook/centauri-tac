@@ -48,7 +48,7 @@ export default class PieceHealthChangeProcessor
     let removeShield = false;
 
     //check for shield and nullify damage
-    if((piece.statuses & Statuses.Shield) == Statuses.Shield){
+    if(action.change < 0 && (piece.statuses & Statuses.Shield) == Statuses.Shield){
       action.change = 0;
       action.bonus = 0;
       removeShield = true;
