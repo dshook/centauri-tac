@@ -5,5 +5,7 @@
         public int pieceId { get; set; }
 
         public PieceModel updatedPiece { get; set; }
+
+        public Statuses oldStatuses { get; set; }
     }
 }

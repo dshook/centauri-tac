@@ -812,7 +812,7 @@ namespace ctac {
             public void Init()
             {
                 //add
-                if (pieceStatusChange.add.HasValue && !FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.None))
+                if (pieceStatusChange.add.HasValue && (pieceStatusChange.add.Value != Statuses.None))
                 {
                     foreach (var statusIcon in pieceView.statusIcons)
                     {
@@ -841,7 +841,7 @@ namespace ctac {
                     }
                 }
                 //remove
-                if (pieceStatusChange.remove.HasValue && !FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.None))
+                if (pieceStatusChange.remove.HasValue && (pieceStatusChange.remove.Value != Statuses.None))
                 {
                     foreach (var statusIcon in pieceView.statusIcons)
                     {

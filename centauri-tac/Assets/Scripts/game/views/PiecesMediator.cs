@@ -420,6 +420,22 @@ namespace ctac
                     piece = view
                 }
             );
+
+            //figure out added and removed statuses based on previous and current status states
+            Statuses add = piece.statuses & (piece.statuses ^ transformed.oldStatuses);
+            Statuses remove = transformed.oldStatuses & (piece.statuses ^ transformed.oldStatuses);
+
+            animationQueue.Add(
+                new PieceView.ChangeStatusAnim()
+                {
+                    pieceView = view,
+                    pieceStatusChange = new PieceStatusChangeModel() {
+                        add = add,
+                        remove = remove,
+                        statuses = piece.statuses
+                    }
+                }
+            );
         }
 
         [ListensTo(typeof(PieceTextAnimationFinishedSignal))]

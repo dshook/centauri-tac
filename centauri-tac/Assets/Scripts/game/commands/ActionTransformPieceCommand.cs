@@ -36,6 +36,7 @@ namespace ctac
 
             var piece = piecesModel.Pieces.FirstOrDefault(x => x.id == transformPiece.pieceId);
 
+            transformPiece.oldStatuses = piece.statuses;
             pieceService.CopyPropertiesFromPiece(transformPiece.updatedPiece, piece);
 
             pieceTransformed.Dispatch(transformPiece);
