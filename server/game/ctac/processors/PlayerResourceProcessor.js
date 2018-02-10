@@ -25,7 +25,7 @@ export default class PlayerResourceProcessor
       return queue.cancel(action, false);
     }
     if(action.permanent){
-      this.playerResourceState.incriment(action.playerId, action.change);
+      this.playerResourceState.incrimentForTurn(action.playerId, action.change);
     }
     if(action.filled){
       this.playerResourceState.adjust(action.playerId, action.change);
