@@ -1081,7 +1081,8 @@ export default class CardEvaluator{
 
       //don't highlight pieces with the default playMinion action
       //ones with other args should be shown though
-      let otherEvent = piece.events.find(e => e.event !== 'playMinion' || e.args);
+      let ignoredEvents = ['playMinion', 'death'];
+      let otherEvent = piece.events.find(e => !ignoredEvents.includes(e.event) || e.args);
       if(otherEvent != null){
         eventedPieces.push({pieceId: piece.id, event: 'e'});
       }

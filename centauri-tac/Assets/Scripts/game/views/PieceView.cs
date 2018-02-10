@@ -816,7 +816,7 @@ namespace ctac {
                 {
                     foreach (var statusIcon in pieceView.statusIcons)
                     {
-                        if (FlagsHelper.IsSet(pieceStatusChange.add.Value, statusIcon.Key))
+                        if ((pieceStatusChange.add.Value & statusIcon.Key) != 0)
                         {
                             AnimInStatus(statusIcon.Value);
                         }
@@ -845,7 +845,7 @@ namespace ctac {
                 {
                     foreach (var statusIcon in pieceView.statusIcons)
                     {
-                        if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, statusIcon.Key))
+                        if ((pieceStatusChange.remove.Value & statusIcon.Key) != 0)
                         {
                             AnimOutStatus(statusIcon.Value);
                         }

@@ -33,7 +33,7 @@ namespace ctac
                         piece.hasDeathEvent = true;
                         adding = Statuses.hasDeathEvent;
                     }
-                    else if (!piece.hasEvent)
+                    else if (eventedPiece.@event != "d" && !piece.hasEvent)
                     {
                         piece.hasEvent = true;
                         adding = Statuses.hasEvent;
@@ -58,13 +58,16 @@ namespace ctac
                 FlagsHelper.Unset(ref newStatuses, removing);
                 piece.statuses = newStatuses;
 
-                animationQueue.Add(
-                   new PieceView.ChangeStatusAnim()
-                   {
-                       pieceView = piece.pieceView,
-                       pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
-                   }
-                );
+                if (adding != Statuses.None || removing != Statuses.None)
+                {
+                    animationQueue.Add(
+                       new PieceView.ChangeStatusAnim()
+                       {
+                           pieceView = piece.pieceView,
+                           pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
+                       }
+                    );
+                }
             }
 
             //update met condition cards
