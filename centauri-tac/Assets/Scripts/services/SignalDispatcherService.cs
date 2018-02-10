@@ -17,7 +17,7 @@ namespace ctac
 
     /// <summary>
     /// This service takes signals that have been generated from the socket service on a different thread
-    /// and then dispatches on the main unity thread so that anyone listening them can use them as normal 
+    /// and then dispatches on the main unity thread so that anyone listening them can use them as normal
     /// </summary>
     public class SignalDispatcherService : View
     {
@@ -84,7 +84,19 @@ namespace ctac
                     return;
                 }
                 var signalDataType = signalDataTypes[0];
-                var deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
+                object deserializedData = null;
+                try{
+                    deserializedData = JsonConvert.DeserializeObject(messageData, signalDataType);
+                }catch(Exception e){
+                    var msg = e.ToString();
+                    //just get the first line since the rest is noise
+                    msg = msg.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                    debug.LogError(
+                        string.Format("Error deserializing message {0}\n{1}", signalDataType.Name, msg)
+                        , key
+                    );
+                    throw e;
+                }
 
                 if (deserializedData == null)
                 {
