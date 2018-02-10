@@ -10,5 +10,5 @@
   "race": 0,
   "rarity": 3,
   "tags": ["Minion"],
-	"eventcode": "death{ Hit(Area(Square, 1, SELF), 2) }"
+	"eventcode": "death{ Hit(Area(Square, 1, SELF) - SELF, 2) }"
 }

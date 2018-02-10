@@ -11,7 +11,7 @@
   "rarity": 4,
   "tags": ["Minion"],
   "eventcode": "attacks{
-    Hit(Area(Square, 1, TARGET) - TARGET, SelectAttribute(SELF, Attack) )
+    Hit(Area(Square, 1, TARGET) - TARGET, SelectAttribute(SELF, attack) )
   }
   "
 }

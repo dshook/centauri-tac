@@ -12,6 +12,6 @@
   "statuses": 2048,
   "tags": ["Minion","Interloper"],
 	"eventcode": "ability(1, 1, 'Void Rupture'){
-    Hit(Area(Square, 1, SELF), 4)
+    Hit(Area(Square, 1, SELF) - SELF, 4)
   }"
 }

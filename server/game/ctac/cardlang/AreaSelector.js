@@ -66,6 +66,10 @@ export default class AreaSelector{
       //   , pieceSelectorParams.position ? 'center ' + pieceSelectorParams.position : '',
       //   pieceSelectorParams.pivotPosition ? 'pivot ' + pieceSelectorParams.pivotPosition : '');
 
+      if(!centerSelector){
+        throw 'Center selector missing ' + pieceSelectorParams.activatingPiece;
+      }
+
       //first find the centering piece then all the pieces in the area
       if(centerSelector.left && centerSelector.left === 'CURSOR'){
         isCursor = true;

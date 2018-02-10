@@ -381,11 +381,9 @@ export default class CardEvaluator{
               if(pieceSelectorParams.isSpell && times === 1){
                 spellDamageBonus = totalSpellDamage;
               }
-              //TODO: maybe this should be calculated at exec time?
-              let damage = -(this.selector.eventualNumber(hitDamage, pieceSelectorParams) + spellDamageBonus);
 
               this.selector.selectPieces(pieceSelector, pieceSelectorParams);
-              queue.push(new PieceAction(pieceSelector, pieceSelectorParams, PieceHealthChange, {change: damage}));
+              queue.push(new PieceAction(pieceSelector, pieceSelectorParams, PieceHealthChange, {changeENumber: hitDamage, pieceSelectorParams, isHit: true, spellDamageBonus}));
 
               //Find any tiles that might be made passable by an AOE
               let clearedTiles = this.selector.selectClearableTiles(pieceSelector, pieceSelectorParams);
@@ -402,8 +400,7 @@ export default class CardEvaluator{
               if(pieceSelectorParams.isSpell && times === 1){
                 spellDamageBonus = totalSpellDamage;
               }
-              let heal = this.selector.eventualNumber(action.args[1]) + spellDamageBonus;
-              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceHealthChange, {change: heal}));
+              queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceHealthChange, {changeENumber: action.args[1], pieceSelectorParams, isHit: false, spellDamageBonus}));
               break;
             }
             //SetAttribute(pieceSelector, attribute, value)

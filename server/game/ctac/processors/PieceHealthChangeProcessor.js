@@ -9,10 +9,11 @@ import loglevel from 'loglevel-decorator';
 @loglevel
 export default class PieceHealthChangeProcessor
 {
-  constructor(pieceState, cardEvaluator)
+  constructor(pieceState, cardEvaluator, selector)
   {
     this.pieceState = pieceState;
     this.cardEvaluator = cardEvaluator;
+    this.selector = selector;
   }
 
   async handleAction(action, queue)
@@ -26,6 +27,17 @@ export default class PieceHealthChangeProcessor
     if(!piece){
       this.log.warn('Cannot find piece to change health on for id %s', action.pieceId);
       return queue.cancel(action);
+    }
+    if(!action.change && action.changeENumber){
+      //calculate heal or hit based on evaluating the eNum
+      action.change = this.selector.eventualNumber(action.changeENumber, action.pieceSelectorParams) + action.spellDamageBonus;
+      if(action.isHit){ action.change *= -1; }
+
+      //cleanup server action stuff
+      delete action.changeENumber;
+      delete action.pieceSelectorParams;
+      delete action.isHit;
+      delete action.spellDamageBonus;
     }
     if(action.change == 0){
       this.log.warn('No health to change for piece %s', action.pieceId);
