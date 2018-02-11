@@ -375,7 +375,12 @@ namespace ctac {
             }
         }
 
-        public class SpawnAnim : IAnimate
+        public interface IPieceAnimate : IAnimate
+        {
+            PieceView piece { get; }
+        }
+
+        public class SpawnAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get; set; }
@@ -453,7 +458,7 @@ namespace ctac {
         }
 
 
-        public class RotateAnim : IAnimate
+        public class RotateAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
@@ -472,13 +477,13 @@ namespace ctac {
             }
         }
 
-        public class MoveAnim : IAnimate
+        public class MoveAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return isTeleport; } }
             public float? postDelay { get { return null; } }
 
-            public PieceModel piece { get; set; }
+            public PieceView piece { get; set; }
             public Animator anim { get; set; }
             public PieceFinishedMovingSignal finishedMoving { get; set; }
             public Vector3 destination { get; set; }
@@ -494,7 +499,7 @@ namespace ctac {
             {
                 moveSpline = GameObject.Find("PieceMoveSpline").GetComponent<BezierSpline>();
 
-                piece.isMoving = true;
+                piece.piece.isMoving = true;
                 var start = piece.gameObject.transform.position;
                 var diffVector = destination - start;
 
@@ -527,15 +532,15 @@ namespace ctac {
                 if(walker.progress > 0.99 && !Complete)
                 {
                     piece.gameObject.transform.position = destination;
-                    piece.isMoving = false;
+                    piece.piece.isMoving = false;
                     Complete = true;
                     Destroy(walker);
-                    finishedMoving.Dispatch(piece);
+                    finishedMoving.Dispatch(piece.piece);
                 }
             }
         }
 
-        public class EventTriggerAnim : IAnimate
+        public class EventTriggerAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
@@ -584,14 +589,14 @@ namespace ctac {
             }
         }
 
-        public class UpdateTextAnim : IAnimate
+        public class UpdateTextAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
             public float? postDelay { get { return null; } }
 
             public PieceTextAnimationFinishedSignal animFinished { get; set; }
-            public PieceModel piece { get; set; }
+            public PieceView piece { get; set; }
             public GameObject textGO { get; set; }
             public TextMeshPro text { get; set; }
             public int current { get; set; }
@@ -623,17 +628,17 @@ namespace ctac {
             public void Update()
             {
                 Complete = true;
-                animFinished.Dispatch(piece);
+                animFinished.Dispatch(piece.piece);
             }
         }
 
-        public class UpdateArmorAnim : IAnimate
+        public class UpdateArmorAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
             public float? postDelay { get { return null; } }
 
-            public PieceModel piece { get; set; }
+            public PieceView piece { get; set; }
             public GameObject textGO { get; set; }
             public GameObject textBG { get; set; }
             public TextMeshPro text { get; set; }
@@ -671,7 +676,7 @@ namespace ctac {
             }
         }
 
-        public class UpdateHpBarAnim : IAnimate
+        public class UpdateHpBarAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
@@ -687,7 +692,7 @@ namespace ctac {
             }
         }
 
-        public class CharmAnim : IAnimate
+        public class CharmAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
@@ -709,14 +714,14 @@ namespace ctac {
             }
         }
 
-        public class DieAnim : IAnimate
+        public class DieAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
             public float? postDelay { get { return null; } }
 
             public PieceDiedSignal pieceDied { get; set; }
-            public PieceModel piece { get; set; }
+            public PieceView piece { get; set; }
             public Animator anim { get; set; }
 
             //different animations
@@ -747,12 +752,12 @@ namespace ctac {
                 {
                     piece.gameObject.transform.localScale = Vector3.zero;
                     Complete = true;
-                    pieceDied.Dispatch(piece);
+                    pieceDied.Dispatch(piece.piece);
                 }
             }
         }
 
-        public class UnsummonAnim : IAnimate
+        public class UnsummonAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return false; } }
@@ -783,14 +788,14 @@ namespace ctac {
             }
         }
 
-        public class ChangeStatusAnim : IAnimate
+        public class ChangeStatusAnim : IPieceAnimate
         {
             public bool Complete { get; set; }
             public bool Async { get { return true; } }
             public float? postDelay { get { return null; } }
 
             public PieceStatusChangeModel pieceStatusChange { get; set; }
-            public PieceView pieceView { get; set; }
+            public PieceView piece { get; set; }
 
             private float transitionTime = 1f;
             private float timeAccum = 0f;
@@ -814,7 +819,7 @@ namespace ctac {
                 //add
                 if (pieceStatusChange.add.HasValue && (pieceStatusChange.add.Value != Statuses.None))
                 {
-                    foreach (var statusIcon in pieceView.statusIcons)
+                    foreach (var statusIcon in piece.statusIcons)
                     {
                         if ((pieceStatusChange.add.Value & statusIcon.Key) != 0)
                         {
@@ -825,25 +830,25 @@ namespace ctac {
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Shield))
                     {
                         //TODO: animate shield coming up with scale tween
-                        pieceView.shield.SetActive(true);
+                        piece.shield.SetActive(true);
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Paralyze))
                     {
-                        pieceView.paralyze.transform.localScale = Vector3.one;
+                        piece.paralyze.transform.localScale = Vector3.one;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Cloak))
                     {
-                        pieceView.cloak.transform.localScale = Vector3.one;
+                        piece.cloak.transform.localScale = Vector3.one;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Root))
                     {
-                        pieceView.root.SetActive(true);
+                        piece.root.SetActive(true);
                     }
                 }
                 //remove
                 if (pieceStatusChange.remove.HasValue && (pieceStatusChange.remove.Value != Statuses.None))
                 {
-                    foreach (var statusIcon in pieceView.statusIcons)
+                    foreach (var statusIcon in piece.statusIcons)
                     {
                         if ((pieceStatusChange.remove.Value & statusIcon.Key) != 0)
                         {
@@ -853,19 +858,19 @@ namespace ctac {
 
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Shield))
                     {
-                        pieceView.shield.SetActive(false);
+                        piece.shield.SetActive(false);
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Paralyze))
                     {
-                        pieceView.paralyze.transform.localScale = Vector3.zero;
+                        piece.paralyze.transform.localScale = Vector3.zero;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Cloak))
                     {
-                        pieceView.cloak.transform.localScale = Vector3.zero;
+                        piece.cloak.transform.localScale = Vector3.zero;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Root))
                     {
-                        pieceView.root.SetActive(false);
+                        piece.root.SetActive(false);
                     }
                 }
             }
@@ -878,7 +883,7 @@ namespace ctac {
                     //disable any icons that were removed
                     if (pieceStatusChange.remove.HasValue && !FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.None))
                     {
-                        foreach (var statusIcon in pieceView.statusIcons)
+                        foreach (var statusIcon in piece.statusIcons)
                         {
                             if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, statusIcon.Key))
                             {

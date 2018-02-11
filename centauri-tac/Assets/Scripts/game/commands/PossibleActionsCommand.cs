@@ -63,7 +63,7 @@ namespace ctac
                     animationQueue.Add(
                        new PieceView.ChangeStatusAnim()
                        {
-                           pieceView = piece.pieceView,
+                           piece = piece.pieceView,
                            pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
                        }
                     );
@@ -75,7 +75,7 @@ namespace ctac
             {
                 card.metCondition = false;
             }
-            if (possibleActions.metConditions.ContainsKey(players.Me.id) 
+            if (possibleActions.metConditions.ContainsKey(players.Me.id)
                 && possibleActions.metConditions[players.Me.id] != null)
             {
                 foreach (var metCondition in possibleActions.metConditions[players.Me.id])

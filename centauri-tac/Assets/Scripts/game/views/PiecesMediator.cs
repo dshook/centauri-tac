@@ -35,7 +35,7 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.ChangeStatusAnim()
                 {
-                    pieceView = piece.piece.pieceView,
+                    piece = piece.piece.pieceView,
                     pieceStatusChange = new PieceStatusChangeModel() { add = piece.piece.statuses, statuses = piece.piece.statuses }
                 }
             );
@@ -58,7 +58,7 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.MoveAnim()
                 {
-                    piece = view.piece,
+                    piece = view,
                     anim = view.anim,
                     destination = pieceMoved.to.gameObject.transform.position,
                     finishedMoving = pieceFinishedMoving,
@@ -173,7 +173,7 @@ namespace ctac
                     original = view.piece.baseHealth,
                     change = hpChange.change,
                     animFinished = pieceTextAnimFinished,
-                    piece = view.piece
+                    piece = view
                 }
             );
 
@@ -187,7 +187,7 @@ namespace ctac
                         textBG = view.armorBG,
                         current = view.piece.armor,
                         change = hpChange.armorChange,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -218,7 +218,7 @@ namespace ctac
                         textBG = view.armorBG,
                         current = view.piece.armor,
                         change = armorChange.change,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -246,7 +246,7 @@ namespace ctac
                         original = view.piece.baseAttack,
                         change = -1,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -262,7 +262,7 @@ namespace ctac
                         original = view.piece.baseHealth,
                         change = -1,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -294,7 +294,7 @@ namespace ctac
                         original = view.piece.baseAttack,
                         change = pieceBuff.attack.Value,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -310,7 +310,7 @@ namespace ctac
                         original = view.piece.baseHealth,
                         change = pieceBuff.health.Value,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -334,7 +334,7 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.ChangeStatusAnim()
                 {
-                    pieceView = view,
+                    piece = view,
                     pieceStatusChange = pieceStatusChange
                 }
             );
@@ -352,7 +352,7 @@ namespace ctac
                         original = view.piece.baseAttack,
                         change = -1,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -368,7 +368,7 @@ namespace ctac
                         original = view.piece.baseHealth,
                         change = -1,
                         animFinished = pieceTextAnimFinished,
-                        piece = view.piece
+                        piece = view
                     }
                 );
             }
@@ -398,7 +398,7 @@ namespace ctac
                     original = view.piece.baseAttack,
                     change = -1,
                     animFinished = pieceTextAnimFinished,
-                    piece = view.piece
+                    piece = view
                 }
             );
             animationQueue.Add(
@@ -410,7 +410,7 @@ namespace ctac
                     original = view.piece.baseHealth,
                     change = -1,
                     animFinished = pieceTextAnimFinished,
-                    piece = view.piece
+                    piece = view
                 }
             );
 
@@ -428,7 +428,7 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.ChangeStatusAnim()
                 {
-                    pieceView = view,
+                    piece = view,
                     pieceStatusChange = new PieceStatusChangeModel() {
                         add = add,
                         remove = remove,
@@ -446,7 +446,7 @@ namespace ctac
                 animationQueue.Add(
                     new PieceView.DieAnim()
                     {
-                        piece = pieceModel,
+                        piece = pieceModel.pieceView,
                         anim = pieceModel.pieceView.anim,
                         pieceDied = pieceDied,
                         isExact = pieceModel.health == 0,

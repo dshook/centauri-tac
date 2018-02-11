@@ -49,7 +49,7 @@ namespace ctac
         TargetModel cardTarget = null;
         ChooseModel chooseModel;
         StartAbilityTargetModel abilityTarget = null;
-        const float singleClickThreshold = 0.2f;
+        const float singleClickThreshold = 0.1f;
 
         public override void OnRegister()
         {

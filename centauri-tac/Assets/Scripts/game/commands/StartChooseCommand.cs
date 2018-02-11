@@ -84,7 +84,7 @@ namespace ctac
                 animationQueue.Add(
                     new PieceView.ChangeStatusAnim()
                     {
-                        pieceView = pieceView,
+                        piece = pieceView,
                         pieceStatusChange = new PieceStatusChangeModel() { add = pieceModel.statuses, statuses = pieceModel.statuses }
                     }
                 );

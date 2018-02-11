@@ -36,7 +36,7 @@ namespace ctac
             animationQueue.Add(
                 new PieceView.DieAnim()
                 {
-                    piece = piece,
+                    piece = piece.pieceView,
                     anim = piece.pieceView.anim,
                     pieceDied = pieceDied,
                     isBig = true
