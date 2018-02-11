@@ -49,7 +49,7 @@ namespace ctac
         TargetModel cardTarget = null;
         ChooseModel chooseModel;
         StartAbilityTargetModel abilityTarget = null;
-        const float singleClickThreshold = 0.5f;
+        const float singleClickThreshold = 0.2f;
 
         public override void OnRegister()
         {
@@ -156,6 +156,11 @@ namespace ctac
                     return;
                 }
                 if ((Time.time - draggedCardTime) < singleClickThreshold) {
+                    return;
+                }
+                //dragging map and ending up on a card
+                if (draggedCard == null && cardClick.isDrag)
+                {
                     return;
                 }
             }

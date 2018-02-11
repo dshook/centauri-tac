@@ -10,7 +10,7 @@
   "rarity": 4,
   "tags": ["Minion"],
 	"eventcode": "
-    playSpell{
+    playMinion{
       AttachCode(MINION, death{ DrawCard(PLAYER) } )
     }
 	"

@@ -18,6 +18,7 @@ namespace ctac
         public GameObject clickedCard { get; set; }
         public Vector3 position { get; set; }
         public bool isUp { get; set; }
+        public bool isDrag { get; set; }
     }
 
     public class ClickView : View
@@ -49,10 +50,10 @@ namespace ctac
             //check to see if a card in a hand has been hovered
             //also check to see if the hit object has been destroyed in the meantime
             var canvasHoverHit = raycastModel.cardCanvasHit;
-            if (canvasHoverHit.HasValue 
+            if (canvasHoverHit.HasValue
                 && canvasHoverHit.Value.collider != null
                 //make sure it's not a deck card hover
-                && canvasHoverHit.Value.collider.gameObject.transform.parent.name == "cardCanvas" 
+                && canvasHoverHit.Value.collider.gameObject.transform.parent.name == "cardCanvas"
             )
             {
                 hoverSignal.Dispatch(canvasHoverHit.Value.collider.gameObject);
@@ -79,7 +80,8 @@ namespace ctac
                     cardClickSignal.Dispatch(new CardClickModel(){
                         clickedCard = canvasHoverHit.Value.collider.gameObject,
                         position = canvasHoverHit.Value.point,
-                        isUp = false
+                        isUp = false,
+                        isDrag = false
                     });
                 }
                 else
@@ -95,7 +97,8 @@ namespace ctac
                     cardClickSignal.Dispatch(new CardClickModel(){
                         clickedCard = canvasHoverHit.Value.collider.gameObject,
                         position = canvasHoverHit.Value.point,
-                        isUp = true
+                        isUp = true,
+                        isDrag = dragAccumulator > Constants.dragDistThreshold
                     });
                 }
                 TestWorldHit(true);
