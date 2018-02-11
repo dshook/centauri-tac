@@ -68,6 +68,10 @@ class MapTools : EditorWindow
         {
             SelectBreakable();
         }
+        if (GUILayout.Button("Select Parent Objects"))
+        {
+            SelectParentObjects();
+        }
 
         if (GUILayout.Button("Fix Tile Positions"))
         {
@@ -276,7 +280,7 @@ class MapTools : EditorWindow
 
     /// <summary>
     /// when drag selecting tiles then moving them around the cube's are getting moved and not the actual tile
-    /// which is ultimately the fault of the drag select not selecting the right thing. 
+    /// which is ultimately the fault of the drag select not selecting the right thing.
     /// This function grabs all the cubes and makes sure their local position is 0 and the tile is in the right position
     /// </summary>
     void FixTilePositions()
@@ -314,6 +318,20 @@ class MapTools : EditorWindow
             {
                 selected.Add(tile.gameObject);
             }
+        }
+
+        Selection.objects = selected.ToArray();
+    }
+
+    void SelectParentObjects()
+    {
+
+        var selected = new List<GameObject>();
+        for (int t = 0; t < Selection.objects.Length; t++)
+        {
+            var go = Selection.objects[t] as GameObject;
+            if(go == null) continue;
+            selected.Add(go.transform.parent.gameObject);
         }
 
         Selection.objects = selected.ToArray();
