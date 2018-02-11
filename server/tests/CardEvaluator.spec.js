@@ -171,7 +171,7 @@ test('Heal on damaged', t => {
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is health change');
-  t.ok(queue._actions[0].actionParams.change > 0, 'Healing not hitting');
+  t.equal(queue._actions[0].actionParams.isHit, false, 'Healing not hitting');
 });
 
 test('Attacks event', t => {
@@ -196,7 +196,7 @@ test('Attacks event', t => {
 
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
+  t.equal(queue._actions[0].actionParams.isHit, true, 'Hit action');
 });
 
 test('Card drawn player event', t => {
@@ -223,7 +223,7 @@ test('Card drawn player event', t => {
   cardEval.evaluatePlayerEvent('cardDrawn', 2);
   t.equal(queue._actions.length, 1, '1 Action in the queue');
   queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].actionParams.change > 0, 'Heal action');
+  t.equal(queue._actions[0].actionParams.isHit, false, 'Heal action');
 });
 
 test('Spell played event', t => {
@@ -244,7 +244,7 @@ test('Spell played event', t => {
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
+  t.equal(queue._actions[0].actionParams.isHit, true, 'Hit action');
   t.ok(queue._actions[0].selector, 'Has Piece Selector');
 });
 
@@ -266,7 +266,7 @@ test('Targeting minions', t => {
 
   t.equal(queue._actions.length, 1, '1 Actions in the queue');
   queueTypeCheck(t, queue, 0, PieceHealthChange, 'First action is Health change');
-  t.ok(queue._actions[0].actionParams.change < 0, 'Hit action');
+  t.equal(queue._actions[0].actionParams.isHit, true, 'Hit action');
   t.equal(queue._actions[0].pieceSelectorParams.targetPieceId, 4, 'Targeted the right piece');
 });
 

@@ -50,7 +50,7 @@ export default class UpdateBuffsProcessor
         }
 
         if(buffChange){
-          let clientAction = new PieceBuff({pieceId: piece.id, name: buff.name, removed: !buff.enabed});
+          let clientAction = new PieceBuff({pieceId: piece.id, name: buff.name});
           for(let buffKey in buffChange){
             clientAction[buffKey] = buffChange[buffKey];
           }

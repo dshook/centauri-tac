@@ -115,6 +115,7 @@ export default class GamePiece
       Object.assign(action, statusAction);
     }
     action.statuses = this.statuses;
+    action.removed = false;
 
     return action
   }
@@ -156,6 +157,7 @@ export default class GamePiece
       Object.assign(action, statusAction);
     }
     action.statuses = this.statuses;
+    action.removed = true;
 
     return action;
   }
