@@ -10,34 +10,21 @@ namespace ctac
         public GameObject contextView { get; set; }
 
         [Inject] public SocketKey socketKey { get; set; }
-
         [Inject] public UnsummonPieceModel unsummonedPiece { get; set; }
 
         [Inject] public PieceUnsummonedSignal pieceUnsummoned { get; set; }
+        [Inject] public CardDrawnSignal cardDrawn { get; set; }
+        [Inject] public PieceDiedSignal pieceDied { get; set; }
 
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public GameTurnModel gameTurns { get; set; }
-
         [Inject] public ActionsProcessedModel processedActions { get; set; }
+        [Inject] public CardDirectory cardDirectory { get; set; }
+        [Inject] public AnimationQueueModel animationQueue { get; set; }
 
-        [Inject]
-        public CardDrawnSignal cardDrawn { get; set; }
-
-        [Inject]
-        public CardDirectory cardDirectory { get; set; }
-
-
-        [Inject]
-        public PieceDiedSignal pieceDied { get; set; }
-        [Inject]
-        public AnimationQueueModel animationQueue { get; set; }
-
-        [Inject]
-        public IDebugService debug { get; set; }
-        [Inject]
-        public IPieceService pieceService { get; set; }
-        [Inject]
-        public ICardService cardService { get; set; }
+        [Inject] public IDebugService debug { get; set; }
+        [Inject] public IPieceService pieceService { get; set; }
+        [Inject] public ICardService cardService { get; set; }
 
         public override void Execute()
         {

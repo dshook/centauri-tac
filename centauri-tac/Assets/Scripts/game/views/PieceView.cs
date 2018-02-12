@@ -767,7 +767,7 @@ namespace ctac {
             public PieceDiedSignal pieceDied { get; set; }
 
             private Vector3 destPosition { get; set; }
-            private Vector3 endOffset = new Vector3(0, 5f, 0);
+            private Vector3 endOffset = new Vector3(0, 8f, 0);
             private float dropTime = 0.7f;
 
             public void Init()

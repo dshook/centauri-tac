@@ -2,6 +2,7 @@ using strange.extensions.mediation.impl;
 using ctac.signals;
 using System.Linq;
 using UnityEngine;
+using System.Collections;
 
 namespace ctac
 {
@@ -528,6 +529,21 @@ namespace ctac
         public void onPieceDied(PieceModel p)
         {
             checkEnemiesInRange();
+            StartCoroutine(CleanupPiece(p));
+        }
+
+
+        private IEnumerator CleanupPiece(PieceModel pieceDied)
+        {
+            while(true){
+                var remainingAnimations = animationQueue.PieceHasAnimation(pieceDied.pieceView);
+                if(!remainingAnimations){
+                    pieces.Pieces.Remove(pieceDied);
+                    GameObject.Destroy(pieceDied.gameObject, 0.1f);
+                    break;
+                }
+                yield return new WaitForSeconds(0.08f);
+            }
         }
 
         [ListensTo(typeof(GameFinishedSignal))]
