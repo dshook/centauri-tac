@@ -83,8 +83,9 @@ export default class GamePiece
   disableBuff(buff, cardEvaluator){
     if(!buff.enabled) return;
 
+    let buffAction = this.removeBuffStats(buff, cardEvaluator);
     buff.enabled = false;
-    return this.removeBuffStats(buff, cardEvaluator);
+    return buffAction;
   }
 
   addBuffStats(buff, cardEvaluator){
@@ -122,6 +123,11 @@ export default class GamePiece
 
   removeBuffStats(buff, cardEvaluator){
     let action = {};
+
+    //Only back out stats if they're actually applied
+    if(!buff.enabled){
+      return action;
+    }
     for(let attrib of attributes){
       if(buff[attrib] == null) continue;
 
