@@ -257,7 +257,7 @@ namespace ctac {
 
             if (targetCandidate)
             {
-                hpBarTargetColor = Colors.targetOutlineColor;
+                hpBarTargetColor = piece.currentPlayerHasControl ? Colors.friendlyTargetOutlineColor : Colors.enemyTargetOutlineColor;
                 outlineColorTo = hpBarTargetColor;
             }
             else if (piece.isSelected)

@@ -16,7 +16,7 @@ namespace ctac.util
             //Only use alpha if the string has enough characters
             if (hex.Length == 8)
             {
-                a = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+                a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
             }
             return new Color32(r, g, b, a);
         }
@@ -50,10 +50,10 @@ namespace ctac.util
         }
     }
 
-    public class HSVColor 
+    public class HSVColor
     {
         float h;
-        public float H 
+        public float H
         {
            get{ return h; }
            set{
@@ -66,7 +66,7 @@ namespace ctac.util
         }
 
         float s;
-        public float S 
+        public float S
         {
            get{ return s; }
            set{
@@ -75,7 +75,7 @@ namespace ctac.util
         }
 
         float v;
-        public float V 
+        public float V
         {
            get{ return v; }
            set{

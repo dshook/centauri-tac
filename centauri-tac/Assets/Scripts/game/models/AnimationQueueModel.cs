@@ -69,8 +69,8 @@ namespace ctac
 
         public bool PieceHasAnimation(PieceView view)
         {
-            return runningAnimations.Any(a => { var pieceAnim = a as PieceView.IPieceAnimate; return a != null && pieceAnim.piece == view; } )
-                || animations       .Any(a => { var pieceAnim = a as PieceView.IPieceAnimate; return a != null && pieceAnim.piece == view; } )
+            return runningAnimations.Any(a => { var pieceAnim = a as PieceView.IPieceAnimate; return pieceAnim != null && pieceAnim.piece == view; } )
+                || animations       .Any(a => { var pieceAnim = a as PieceView.IPieceAnimate; return pieceAnim != null && pieceAnim.piece == view; } )
             ;
         }
     }
