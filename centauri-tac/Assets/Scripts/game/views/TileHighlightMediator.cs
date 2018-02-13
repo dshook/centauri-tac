@@ -28,6 +28,7 @@ namespace ctac
         [Inject] public IDebugService debug { get; set; }
 
         private PieceModel selectedPiece = null;
+        private PieceModel hoveredPiece = null;
         private TargetModel selectingArea = null;
         private MovePathFoundModel movePath = null;
         private bool isDeployingPiece = false;
@@ -199,10 +200,17 @@ namespace ctac
             onPieceHover(null);
         }
 
-        private PieceModel hoveredPiece = null;
         [ListensTo(typeof(PieceHoverSignal))]
         public void onPieceHover(PieceModel piece)
         {
+            if(hoveredPiece != null){
+                //Probably should go somewhere else but I want it to be synced up with the tile highlight delay
+                hoveredPiece.pieceView.hovered = false;
+            }
+            if(piece != null){
+                piece.pieceView.hovered = true;
+            }
+
             hoveredPiece = piece;
             //whenever we get a null piece hover we'll clear right away, but with a real piece, put in a delay before running logic
             if (piece == null)
@@ -528,9 +536,9 @@ namespace ctac
         private void updateSelectHighlights(TargetModel model)
         {
             view.toggleTileFlags(null, TileHighlightStatus.TargetTile, true);
-            if (model != null && model.area != null)
+            if (model != null )
             {
-                if (model.selectedPosition.HasValue)
+                if (model.area != null && model.selectedPosition.HasValue)
                 {
                     List<Tile> tiles = null;
                     switch (model.area.areaType)
@@ -563,6 +571,21 @@ namespace ctac
                 {
                     view.toggleTileFlags(map.tileList, TileHighlightStatus.TargetTile, true);
                 }
+
+                if(model.targets != null){
+                    //update piece target candidates
+                    var friendlyTargets = pieces.Pieces
+                        .Where(p => p.currentPlayerHasControl && model.targets.targetPieceIds.Contains(p.id))
+                        .Select(p => map.tiles[p.tilePosition]).ToList();
+                    var enemyTargets = pieces.Pieces
+                        .Where(p => !p.currentPlayerHasControl && model.targets.targetPieceIds.Contains(p.id))
+                        .Select(p => map.tiles[p.tilePosition]).ToList();
+                    view.toggleTileFlags(friendlyTargets, TileHighlightStatus.FriendlyTargetTile);
+                    view.toggleTileFlags(enemyTargets, TileHighlightStatus.EnemyTargetTile);
+                }
+            }else{
+                view.toggleTileFlags(null, TileHighlightStatus.FriendlyTargetTile);
+                view.toggleTileFlags(null, TileHighlightStatus.EnemyTargetTile);
             }
         }
 

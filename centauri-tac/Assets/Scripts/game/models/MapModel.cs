@@ -25,7 +25,7 @@ namespace ctac
 
         public List<Tile> getTilesByPosition(List<Vector2> positions)
         {
-            return tiles.Where((k) => positions.Contains(k.Key)).Select(a => a.Value).ToList(); 
+            return tiles.Where((k) => positions.Contains(k.Key)).Select(a => a.Value).ToList();
         }
     }
 
@@ -57,16 +57,18 @@ namespace ctac
     public enum TileHighlightStatus
     {
         //None              = (1 << 0),
-        Highlighted       = (1 << 0), //hovering over the tile
-        Selected          = (1 << 1), //deploying a piece to the tile
-        MoveRange         = (1 << 2), //we can move to this tile
-        MoveRangeTotal    = (1 << 3), //with our total move range we can move range to this tile, regardless of how much we've already moved
-        PathFind          = (1 << 4), //tiles part of the found move path
-        Attack            = (1 << 5), //there's an enemy piece we can actually attack
-        AttackRange       = (1 << 6), //we can attack this tile
-        AttackRangeTotal  = (1 << 7), //we can attack this tile regardless of if we've already attacked or not
-        TargetTile        = (1 << 8), //tiles part of a targeting area
-        Dimmed            = (1 << 9)
+        Highlighted        = (1 << 0), //hovering over the tile
+        Selected           = (1 << 1), //deploying a piece to the tile
+        MoveRange          = (1 << 2), //we can move to this tile
+        MoveRangeTotal     = (1 << 3), //with our total move range we can move range to this tile, regardless of how much we've already moved
+        PathFind           = (1 << 4), //tiles part of the found move path
+        Attack             = (1 << 5), //there's an enemy piece we can actually attack
+        AttackRange        = (1 << 6), //we can attack this tile
+        AttackRangeTotal   = (1 << 7), //we can attack this tile regardless of if we've already attacked or not
+        TargetTile         = (1 << 8), //tiles part of a targeting area
+        FriendlyTargetTile = (1 << 9), //A friendly piece that's a target candidate is on this tile
+        EnemyTargetTile    = (1 << 10), //An enemy piece that's a target candidate is on this tile
+        Dimmed             = (1 << 11)
 
     }
 }

@@ -20,7 +20,6 @@ namespace ctac {
         public bool clearable = false;
         public bool isStartTile = false;
 
-        Color hoverTint = new Color(.2f, .2f, .2f, .2f);
         Color selectColor = new Color(.4f, .9f, .4f);
         //Color moveColor = new Color(.4f, .4f, .9f);
         Color moveRangeColor = ColorExtensions.HexToColor("D2D2FF");
@@ -59,7 +58,7 @@ namespace ctac {
         void Update()
         {
             if (tile == null) return;
-            
+
             //tileFlags = tile.highlightStatus;
             tint = Colors.invisible;
             desiredColor = Colors.invisible;
@@ -71,13 +70,21 @@ namespace ctac {
             }
             if ((tile.highlightStatus & TileHighlightStatus.Highlighted) != 0)
             {
-                tint += hoverTint;
+                tint += Colors.hoverTintWAlpha;
             }
 
             if ((tile.highlightStatus & TileHighlightStatus.Selected) != 0
                 || (tile.highlightStatus & TileHighlightStatus.TargetTile) != 0)
             {
                 desiredColor = selectColor;
+            }
+            if((tile.highlightStatus & TileHighlightStatus.FriendlyTargetTile) != 0)
+            {
+                desiredColor = Colors.friendlyTargetOutlineColor;
+            }
+            if((tile.highlightStatus & TileHighlightStatus.EnemyTargetTile) != 0)
+            {
+                desiredColor = Colors.enemyTargetOutlineColor;
             }
 
             if((tile.highlightStatus & TileHighlightStatus.MoveRangeTotal) != 0)

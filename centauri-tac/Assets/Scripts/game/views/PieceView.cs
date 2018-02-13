@@ -59,6 +59,7 @@ namespace ctac {
         private GameObject textContainer;
         public bool targetCandidate = false;
         public bool enemiesInRange = false;
+        public bool hovered = false;
 
         public List<Material> meshMaterials = new List<Material>();
         private Dictionary<Statuses, GameObject> statusIcons;
@@ -267,6 +268,10 @@ namespace ctac {
             else if(piece.tags.Contains(Constants.targetPieceTag))
             {
                 hpBarTargetColor = Colors.ghostPieceColor;
+            }
+
+            if(hovered){
+                hpBarTargetColor -= Colors.hoverTint;
             }
 
             if(hpBarTargetColor != Colors.invisible){

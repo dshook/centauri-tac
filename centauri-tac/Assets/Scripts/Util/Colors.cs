@@ -44,6 +44,8 @@ namespace ctac
         public static Color32 attackOutlineColor = ColorExtensions.HexToColor("EA2200");
         public static Color32 selectedOutlineColor = ColorExtensions.HexToColor("DBFF00");
 
+        public static Color32 hoverTint = new Color(.2f, .2f, .2f, 0f);
+        public static Color32 hoverTintWAlpha = new Color(.2f, .2f, .2f, 0.2f);
         public static Color32 tauntEnemyColor = ColorExtensions.HexToColor("#E52600");
         public static Color32 tauntFriendlyColor = ColorExtensions.HexToColor("#0057E5");
 
