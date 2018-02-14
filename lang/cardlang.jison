@@ -122,13 +122,15 @@
 ','    return ','
 '{'    return '{'
 '}'    return '}'
-'*'    return '*'
 '=='   return '=='
 '='    return '='
 '|'    return '|'
 '&&'   return '&&'
 '&'    return '&'
 '-'    return '-'
+'+'    return '+'
+'*'    return '*'
+'/'    return '/'
 '<='   return '<='
 '>='   return '>='
 '>'    return '>'
@@ -148,6 +150,10 @@
 %left '&'
 %left '-'
 %left '&&'
+
+%left '+' '-'
+%left '*' '/'
+%left UMINUS
 
 %start events
 
@@ -300,17 +306,36 @@ pieceIdsExpression
       { pieceIds: $3 }
     }}
   ;
+
 //eventually a number, could be random
 eNumber
+    : eValue
+        {$$ = $1 }
+    | '(' eNumber')'
+        {$$ = $2 }
+    | eNumber '+' eNumber
+        {$$ = {eNumber: true, op: '+', left: $1, right: $3}; }
+    | eNumber '-' eNumber
+        {$$ = {eNumber: true, op: '-', left: $1, right: $3}; }
+    | eNumber '*' eNumber
+        {$$ = {eNumber: true, op: '*', left: $1, right: $3}; }
+    | eNumber '/' eNumber
+        {$$ = {eNumber: true, op: '/', left: $1, right: $3}; }
+    | '-' eNumber %prec UMINUS
+        {$$ = {eNumber: true, op: 'negate', left: $2 }; }
+    ;
+
+//The things that actually will resolve to an integer value
+eValue
   : pNumber -> $1
   | random'('numberList')'
-     { $$ = { eNumber: true, randList: $3 }; }
+     { $$ = { eValue: true, randList: $3 }; }
   | selectAttr'('possibleRandSelector','attribute')'
-     { $$ = { eNumber: true, attributeSelector: $3, attribute: $5 }; }
+     { $$ = { eValue: true, attributeSelector: $3, attribute: $5 }; }
   | count'('possibleRandSelector')'
-     { $$ = { eNumber: true, count: true, selector: $3 }; }
+     { $$ = { eValue: true, count: true, selector: $3 }; }
   | cardCount'('possibleRandSelector')'
-     { $$ = { eNumber: true, cardCount: true, selector: $3 }; }
+     { $$ = { eValue: true, cardCount: true, selector: $3 }; }
   | stat
      { $$ = { stat: true, path: $1 }; }
   | resource'('possibleRandSelector')'

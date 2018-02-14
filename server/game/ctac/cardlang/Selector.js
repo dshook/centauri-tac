@@ -174,8 +174,36 @@ export default class Selector{
     return null;
   }
 
-  //can either be an ordinary number, or something that evaluates to a number
   eventualNumber(input, pieceSelectorParams){
+    //must be value if the eNumber flag isn't set
+    if(!input.eNumber){
+      return this.eventualValue(input, pieceSelectorParams);
+    }
+
+    switch(input.op){
+      case '+':
+        return this.eventualNumber(input.left, pieceSelectorParams) + this.eventualNumber(input.right, pieceSelectorParams);
+        break;
+      case '-':
+        return this.eventualNumber(input.left, pieceSelectorParams) - this.eventualNumber(input.right, pieceSelectorParams);
+        break;
+      case '*':
+        return this.eventualNumber(input.left, pieceSelectorParams) * this.eventualNumber(input.right, pieceSelectorParams);
+        break;
+      case '/':
+        return this.eventualNumber(input.left, pieceSelectorParams) / this.eventualNumber(input.right, pieceSelectorParams);
+        break;
+      case 'negate':
+        return -this.eventualNumber(input.left, pieceSelectorParams);
+        break;
+      default:
+        throw 'Invalid eNumber operator ' + input.op;
+    }
+
+  }
+
+  //can either be an ordinary number, or something that evaluates to a number
+  eventualValue(input, pieceSelectorParams){
     if(input.randList){
       return _.sample(input.randList);
     }else if(input.attributeSelector){

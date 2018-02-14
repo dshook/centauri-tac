@@ -9,9 +9,13 @@
   "race": 0,
   "rarity": 3,
   "tags": ["Minion"],
-  "eventcode": "
-    playMinion{
-      Buff(SELF, 'Pumped Up', SelectAttribute(SELF, health) < SelectAttribute(SELF, maxBuffedHealth), attack(3))
-    }
-  "
+  "eventcode": "playMinion{
+    Aura(
+      SELF,
+      SELF,
+      'Trapped',
+      attack(-Count(Area(Square, 1, SELF) - SELF)),
+      health(-Count(Area(Square, 1, SELF) - SELF))
+    )
+  }"
 }

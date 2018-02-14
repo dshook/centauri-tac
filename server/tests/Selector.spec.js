@@ -335,7 +335,7 @@ test('Selector with comparison expression', t => {
         right: {
           compareExpression: true,
           left: {
-            eNumber: true,
+            eValue: true,
             attributeSelector: {
               left: "ENEMY",
               op: "&",
@@ -381,7 +381,7 @@ test('Raw Comparison expression', t => {
     {
       compareExpression: true,
       left: {
-        eNumber: true,
+        eValue: true,
         attributeSelector: {
           left: "ENEMY",
           op: "&",
@@ -391,7 +391,7 @@ test('Raw Comparison expression', t => {
       },
       op: "<",
       right: {
-        eNumber: true,
+        eValue: true,
         attributeSelector: {
           left: "ENEMY",
           op: "&",
@@ -410,7 +410,7 @@ test('Raw Comparison expression', t => {
     {
       compareExpression: true,
       left: {
-        eNumber: true,
+        eValue: true,
         attributeSelector: {
           left: "ENEMY",
           op: "&",
@@ -420,7 +420,7 @@ test('Raw Comparison expression', t => {
       },
       op: "<",
       right: {
-        eNumber: true,
+        eValue: true,
         attributeSelector: {
           left: "ENEMY",
           op: "&",
@@ -633,7 +633,7 @@ test('Piece Id selection', t => {
 test('Eventual numbers', t => {
   t.plan(3);
   let randomList = {
-    eNumber: true,
+    eValue: true,
     randList: [1, 2, 3]
   };
 
@@ -643,7 +643,7 @@ test('Eventual numbers', t => {
   t.ok(randomList.randList.includes(randNumber), 'Got back a random number in array ' + randNumber);
 
   let attributeSelector = {
-    eNumber: true,
+    eValue: true,
     attributeSelector: {
       left: "ENEMY",
       op: "&",
@@ -655,7 +655,7 @@ test('Eventual numbers', t => {
   t.equal(heroHp, 30, 'Got back the hero hp');
 
   let countSelector = {
-    eNumber: true,
+    eValue: true,
     count: true,
     selector: {
       left: "ENEMY",
@@ -665,6 +665,46 @@ test('Eventual numbers', t => {
   };
   let enemyCount = selector.eventualNumber(countSelector, {selfPiece, controllingPlayerId: 1});
   t.equal(enemyCount, 2, 'Got right number of enemies');
+
+});
+
+test('Eventual number Expressions', t => {
+  t.plan(2);
+  let expression = {
+    "eNumber": true,
+    "op": "*",
+    "left": {
+      "eNumber": true,
+      "op": "+",
+      "left": 1,
+      "right": 2
+    },
+    "right": 3
+  };
+
+  let selector = new Selector(players, pieceStateMix, mapState);
+
+  let evaledNumber = selector.eventualNumber(expression, {selfPiece, controllingPlayerId: 1});
+  t.equal(evaledNumber, 9, 'We can do Math');
+
+  let complicatedExpression = {
+    "eNumber": true,
+    "op": "+",
+    "left": {
+      "eNumber": true,
+      "op": "negate",
+      "left": {
+        "eValue": true,
+        "count": true,
+        "selector": {
+          "left": "MINION"
+        }
+      }
+    },
+    "right": 1
+  };
+  let complicatedAnswer = selector.eventualNumber(complicatedExpression, {selfPiece, controllingPlayerId: 1});
+  t.equal(complicatedAnswer, -3, 'We can do arithmetic');
 
 });
 
@@ -779,7 +819,7 @@ test('Card Directory Random Selection with attribute', t => {
       "right": {
         "compareExpression": true,
         "left": {
-          "eNumber": true,
+          "eValue": true,
           "attributeSelector": {
             "left": "DIRECTORY",
             "op": "&",

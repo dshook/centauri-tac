@@ -349,7 +349,7 @@ test('Random number list', t => {
             }
           ],
           times: {
-            eNumber: true,
+            eValue: true,
             randList: [1, 2, 3]
           }
         }
@@ -474,7 +474,7 @@ test('Eventual Number with Attribute selector', t => {
             },
             "attack",
             {
-              eNumber: true,
+              eValue: true,
               attributeSelector: {
                 left: "TARGET"
               },
@@ -514,7 +514,7 @@ test('Selector with comparison expression', t => {
                 right: {
                   compareExpression: true,
                   left: {
-                    eNumber: true,
+                    eValue: true,
                     attributeSelector: {
                       left: "TARGET"
                     },
@@ -660,7 +660,7 @@ test('Count eNum selector', t => {
             }
           ],
           "times": {
-            "eNumber": true,
+            "eValue": true,
             "count": true,
             "selector": {
               "left": "ENEMY",
@@ -693,7 +693,7 @@ test('Conditional action', t => {
           "condition": {
             "compareExpression": true,
             "left": {
-              "eNumber": true,
+              "eValue": true,
               "count": true,
               "selector": {
                 "left": "FRIENDLY",
@@ -796,7 +796,7 @@ test('Conditional expression as arg', t => {
             {
               "compareExpression": true,
               "left": {
-                "eNumber": true,
+                "eValue": true,
                 "attributeSelector": {
                   "left": "SELF"
                 },
@@ -1005,7 +1005,7 @@ test('Adv Select Card Template Id', t => {
                   "right": {
                     "compareExpression": true,
                     "left": {
-                      "eNumber": true,
+                      "eValue": true,
                       "attributeSelector": {
                         "left": "DIRECTORY",
                         "op": "&",
@@ -1028,4 +1028,138 @@ test('Adv Select Card Template Id', t => {
 
   t.deepEqual(d, expectedPlay);
 
+});
+
+test('eNumber Expressions', {objectPrintDepth: 10}, t => {
+  t.plan(1);
+
+  let input = `
+  playMinion{
+    Hit(
+       MINION,
+      (1 + 2) * 3
+     )
+   }
+  `;
+
+  let d = parser.parse(input);
+
+  let expected = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "action": "Hit",
+          "args": [
+            {
+              "left": "MINION"
+            },
+            {
+              "eNumber": true,
+              "op": "*",
+              "left": {
+                "eNumber": true,
+                "op": "+",
+                "left": 1,
+                "right": 2
+              },
+              "right": 3
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expected);
+});
+
+test('Negate complicated eNumber expressions', {objectPrintDepth: 10}, t => {
+  t.plan(1);
+
+  let input = `
+  playMinion{
+    Aura(
+      SELF,
+      SELF,
+      'Trapped',
+      attack(-Count(Area(Square, 1, SELF) - SELF)),
+      health(-Count(Area(Square, 1, SELF) - SELF))
+    )
+  }
+  `;
+
+  let d = parser.parse(input);
+
+  let expected = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "action": "Aura",
+          "args": [
+            {
+              "left": "SELF"
+            },
+            {
+              "left": "SELF"
+            },
+            "Trapped",
+            {
+              "attribute": "attack",
+              "amount": {
+                "eNumber": true,
+                "op": "negate",
+                "left": {
+                  "eValue": true,
+                  "count": true,
+                  "selector": {
+                    "left": {
+                      "area": true,
+                      "args": [
+                        "Square",
+                        1,
+                        {
+                          "left": "SELF"
+                        }
+                      ]
+                    },
+                    "op": "-",
+                    "right": "SELF"
+                  }
+                }
+              }
+            },
+            {
+              "attribute": "health",
+              "amount": {
+                "eNumber": true,
+                "op": "negate",
+                "left": {
+                  "eValue": true,
+                  "count": true,
+                  "selector": {
+                    "left": {
+                      "area": true,
+                      "args": [
+                        "Square",
+                        1,
+                        {
+                          "left": "SELF"
+                        }
+                      ]
+                    },
+                    "op": "-",
+                    "right": "SELF"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expected);
 });
