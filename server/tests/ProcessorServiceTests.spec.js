@@ -742,10 +742,10 @@ export default class ProcessorServiceTests
       t.equal(postSpawnBuffActions.length, 1, 'Found an update buff');
       let updateBuff = postSpawnBuffActions[0];
       t.ok(updateBuff.alreadyComplete, 'Buff is already completed');
-      t.equal(updateBuff.attack, 1, 'Buff added 1 attack');
+      t.equal(updateBuff.attack, 2, 'Buff has added 2 attack');
       t.equal(updateBuff.newAttack, 3, 'For a total of 3 attack');
       t.equal(piece.attack, 3, 'Piece attack was set');
-      t.equal(updateBuff.health, 1, 'Buff added 1 health');
+      t.equal(updateBuff.health, 2, 'Buff has added 2 health');
       t.equal(updateBuff.newHealth, 3, 'For a total of 3 health');
       t.equal(piece.health, 3, 'Piece health was set');
 
@@ -758,10 +758,10 @@ export default class ProcessorServiceTests
       t.equal(postSecondSpawnBuffs.length, 1, 'Found an update buff');
       let secondUpdateBuff = postSecondSpawnBuffs[0];
       t.ok(secondUpdateBuff.alreadyComplete, 'Buff is already completed');
-      t.equal(secondUpdateBuff.attack, 1, 'Buff added 1 attack');
+      t.equal(secondUpdateBuff.attack, 3, 'Buff has added 3 attack');
       t.equal(secondUpdateBuff.newAttack, 4, 'For a total of 4 attack');
       t.equal(piece.attack, 4, 'Piece attack was set');
-      t.equal(secondUpdateBuff.health, 1, 'Buff added 1 health');
+      t.equal(secondUpdateBuff.health, 3, 'Buff has added 3 health');
       t.equal(secondUpdateBuff.newHealth, 4, 'For a total of 4 health');
       t.equal(piece.health, 4, 'Piece health was set');
 
@@ -775,10 +775,10 @@ export default class ProcessorServiceTests
       t.equal(postMoveBuffActions.length, 1, 'Found an update buff');
       let moveBuff = postMoveBuffActions[0];
       t.ok(moveBuff.alreadyComplete, 'Buff is already completed');
-      t.equal(moveBuff.attack, -1, 'Buff lost 1 attack');
+      t.equal(moveBuff.attack, 2, 'Buff has 2 attack now');
       t.equal(moveBuff.newAttack, 3, 'For a total of 3 attack');
       t.equal(piece.attack, 3, 'Piece attack was set');
-      t.equal(moveBuff.health, -1, 'Buff lost 1 health');
+      t.equal(moveBuff.health, 2, 'Buff has 2 health now');
       t.equal(moveBuff.newHealth, 3, 'For a total of 3 health');
       t.equal(piece.health, 3, 'Piece health was set');
     });

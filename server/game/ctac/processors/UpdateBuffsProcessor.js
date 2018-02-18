@@ -51,12 +51,14 @@ export default class UpdateBuffsProcessor
           // this.log.info('buff change after apply %j', buffChange);
 
           //save total buff changes in the buff so if they get updated again they'll be accurate to find a new diff off of
+          //also change the buff change to show the same numbers
           for(let attrib of attributes){
             if(buffChange[attrib] === undefined) continue;
 
             let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
             buff[attrib] = buff[attrib] + buffChange[attrib];
             buff[newAttrib] = buffChange[newAttrib];
+            buffChange[attrib] = buff[attrib];
           }
           buffChange.statuses = piece.statuses;
 
