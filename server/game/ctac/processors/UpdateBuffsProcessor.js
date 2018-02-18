@@ -58,6 +58,7 @@ export default class UpdateBuffsProcessor
             buff[attrib] = buff[attrib] + buffChange[attrib];
             buff[newAttrib] = buffChange[newAttrib];
           }
+          buffChange.statuses = piece.statuses;
 
           // this.log.info('buff apply %j', buff);
         }

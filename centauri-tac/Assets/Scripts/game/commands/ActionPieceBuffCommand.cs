@@ -25,14 +25,23 @@ namespace ctac
 
             var piece = pieces.Piece(pieceBuff.pieceId);
 
+            var existingBuff = piece.buffs.FirstOrDefault(x => x.buffId == pieceBuff.buffId);
             if (pieceBuff.removed)
             {
-                var buff = piece.buffs.FirstOrDefault(x => x.name == pieceBuff.name);
-                piece.buffs.Remove(buff);
+                if(existingBuff == null){
+                    debug.LogWarning("Buff not found to remove " + pieceBuff.buffId);
+                }else{
+                    piece.buffs.Remove(existingBuff);
+                }
             }
             else
             {
-                piece.buffs.Add(pieceBuff);
+                if(existingBuff == null){
+                    piece.buffs.Add(pieceBuff);
+                }else{
+                    //must be a buff update
+                    existingBuff.CopyBuff(pieceBuff);
+                }
             }
 
             piece.health = pieceBuff.newHealth ?? piece.health;
