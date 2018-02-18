@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import loglevel from 'loglevel-decorator';
+import uniqueId from 'unique-id';
 import EvalError from './EvalError.js';
 import Statuses from '../models/Statuses.js';
 import PieceAction from '../actions/PieceAction.js';
@@ -444,9 +445,11 @@ export default class CardEvaluator{
                   this.log.error('Unrecognized buff attribute %j', buffAttribute);
                 }
               }
+              buffParams.buffId = uniqueId();
               buffParams.condition = condition;
               buffParams.name = buffName;
               buffParams.removed = false;
+              buffParams.buffAttributes = buffAttributes;
 
               queue.push(new PieceAction(action.args[0], pieceSelectorParams, PieceBuff, buffParams));
 

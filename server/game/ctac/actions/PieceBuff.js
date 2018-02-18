@@ -4,6 +4,7 @@ import BaseAction from './BaseAction.js';
 export default class PieceBuff extends BaseAction
 {
   constructor({
+    buffId,
     pieceId,
     name,
     removed,
@@ -15,11 +16,12 @@ export default class PieceBuff extends BaseAction
     range,
     spellDamage,
     addStatus,
-    removeStatus
+    removeStatus,
+    buffAttributes
   })
   {
     super();
-    this.id = null;
+    this.buffId = buffId;
     this.pieceId = pieceId;
     this.name = name;
     this.removed = removed || false;
@@ -49,5 +51,8 @@ export default class PieceBuff extends BaseAction
     this.newMovement    = null;
     this.newRange       = null;
     this.newSpellDamage = null;
+
+    //The raw array of buff attributes that can be re-evaluated if they're eNumbers
+    this.buffAttributes = buffAttributes || [];
   }
 }

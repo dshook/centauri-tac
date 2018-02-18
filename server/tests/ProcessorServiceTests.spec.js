@@ -704,5 +704,83 @@ export default class ProcessorServiceTests
 
       t.equal(piece.statuses, Statuses.Silence, 'Only status is silence');
     });
+
+    test('Buff with changing eNum attributes', async (t) => {
+      t.plan(34);
+      this.setupTest();
+      this.spawnCards();
+
+      //spawn a hero for a piece on the board
+      var hero = this.spawnPiece(this.pieceState, 1, 1);
+      hero.position = new Position(1, 0, 1);
+
+      this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 114, position: new Position(2,0,1)}));
+      await this.queue.processUntilDone();
+
+      let piece = this.pieceState.fromTemplateId(114)[0];
+
+      let preActions = [... this.queue.iterateCompletedSince()];
+      let preBuffActions = preActions.filter(a => a instanceof PieceBuff);
+      t.ok(piece, 'Got a piece');
+      t.equal(preBuffActions.length, 1, 'Found a buff');
+      let originalBuff = preBuffActions[0];
+      t.ok(!originalBuff.alreadyComplete, 'Buff was not already completed');
+      t.equal(originalBuff.attack, 1, 'Buff added 1 attack');
+      t.equal(originalBuff.newAttack, 2, 'For a total of 2 attack');
+      t.equal(piece.attack, 2, 'Piece attack was set');
+      t.equal(originalBuff.health, 1, 'Buff added 1 health');
+      t.equal(originalBuff.newHealth, 2, 'For a total of 2 health');
+      t.equal(piece.health, 2, 'Piece health was set');
+      t.ok(originalBuff.buffAttributes.find(ba => ba.attribute === 'attack'), 'Buff has an attack attribute');
+
+      this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 7, position: new Position(2,0,2)}));
+      await this.queue.processUntilDone();
+
+      let postSpawnActions = [... this.queue.iterateCompletedSince(preActions[preActions.length - 1].id)];
+      let postSpawnBuffActions = postSpawnActions.filter(a => a instanceof PieceBuff);
+
+      t.equal(postSpawnBuffActions.length, 1, 'Found an update buff');
+      let updateBuff = postSpawnBuffActions[0];
+      t.ok(updateBuff.alreadyComplete, 'Buff is already completed');
+      t.equal(updateBuff.attack, 1, 'Buff added 1 attack');
+      t.equal(updateBuff.newAttack, 3, 'For a total of 3 attack');
+      t.equal(piece.attack, 3, 'Piece attack was set');
+      t.equal(updateBuff.health, 1, 'Buff added 1 health');
+      t.equal(updateBuff.newHealth, 3, 'For a total of 3 health');
+      t.equal(piece.health, 3, 'Piece health was set');
+
+      this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 8, position: new Position(1,0,2)}));
+      await this.queue.processUntilDone();
+
+      let postSecondSpawnActions = [... this.queue.iterateCompletedSince(postSpawnActions[postSpawnActions.length - 1].id)];
+      let postSecondSpawnBuffs = postSecondSpawnActions.filter(a => a instanceof PieceBuff);
+
+      t.equal(postSecondSpawnBuffs.length, 1, 'Found an update buff');
+      let secondUpdateBuff = postSecondSpawnBuffs[0];
+      t.ok(secondUpdateBuff.alreadyComplete, 'Buff is already completed');
+      t.equal(secondUpdateBuff.attack, 1, 'Buff added 1 attack');
+      t.equal(secondUpdateBuff.newAttack, 4, 'For a total of 4 attack');
+      t.equal(piece.attack, 4, 'Piece attack was set');
+      t.equal(secondUpdateBuff.health, 1, 'Buff added 1 health');
+      t.equal(secondUpdateBuff.newHealth, 4, 'For a total of 4 health');
+      t.equal(piece.health, 4, 'Piece health was set');
+
+      let stupidPiece = this.pieceState.fromTemplateId(8)[0];
+      this.queue.push(new MovePiece({pieceId: stupidPiece.id, isJump: true, isTeleport: true, to: new Position(10,0,10)}));
+      await this.queue.processUntilDone();
+
+      let postMoveActions = [... this.queue.iterateCompletedSince(postSecondSpawnActions[postSecondSpawnActions.length - 1].id)];
+      let postMoveBuffActions = postMoveActions.filter(a => a instanceof PieceBuff);
+
+      t.equal(postMoveBuffActions.length, 1, 'Found an update buff');
+      let moveBuff = postMoveBuffActions[0];
+      t.ok(moveBuff.alreadyComplete, 'Buff is already completed');
+      t.equal(moveBuff.attack, -1, 'Buff lost 1 attack');
+      t.equal(moveBuff.newAttack, 3, 'For a total of 3 attack');
+      t.equal(piece.attack, 3, 'Piece attack was set');
+      t.equal(moveBuff.health, -1, 'Buff lost 1 health');
+      t.equal(moveBuff.newHealth, 3, 'For a total of 3 health');
+      t.equal(piece.health, 3, 'Piece health was set');
+    });
   }
 }

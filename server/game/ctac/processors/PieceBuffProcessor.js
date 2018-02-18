@@ -45,6 +45,9 @@ export default class PieceBuffProcessor
     }
 
     //if we're removing a buff, find it by name, pop it off, and then reverse its stat changes
+    //We find it by name here because that's how you specify to find it in the language.
+    //All buffs with the same name should be doing the exact same thing so even if a piece has multiple buffs
+    //with the same name, it shouldn't matter which of them we remove
     if(action.removed){
       let buff = piece.buffs.find(b => b.name === action.name);
       if(!buff){

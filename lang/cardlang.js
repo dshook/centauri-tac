@@ -202,13 +202,13 @@ case 64:
  this.$ = { eValue: true, cardCount: true, selector: $$[$0-1] }; 
 break;
 case 65:
- this.$ = { stat: true, path: $$[$0] }; 
+ this.$ = { eValue: true, stat: true, path: $$[$0] }; 
 break;
 case 66:
- this.$ = { resource: $$[$0-3], selector: $$[$0-1] }; 
+ this.$ = { eValue: true, resource: $$[$0-3], selector: $$[$0-1] }; 
 break;
 case 67:
- this.$ = { selectCardTemplateId: true, cardSelector: $$[$0-1] }; 
+ this.$ = { eValue: true, selectCardTemplateId: true, cardSelector: $$[$0-1] }; 
 break;
 case 70:
 this.$ = parseInt($$[$0]);

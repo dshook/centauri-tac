@@ -1,5 +1,6 @@
 import PieceBuff from '../actions/PieceBuff.js';
 import loglevel from 'loglevel-decorator';
+import attributes from '../util/Attributes.js';
 
 /**
  * Update all buffs with a condition
@@ -24,33 +25,71 @@ export default class UpdateBuffsProcessor
       if(piece.buffs.length === 0) continue;
 
       for(let buff of piece.buffs){
-        if(!buff.condition) continue;
-
-        let result = this.selector.compareExpression(
-          buff.condition,
-          this.pieceState.pieces,
-          {
-            selfPiece: piece,
-            controllingPlayerId: piece.playerId
-          },
-          this.selector.selectPieces
-        );
-
         let buffChange = null;
-        if(result.length > 0){
-          if(!buff.enabled){
-            //switch to enabled
-            buffChange = piece.enableBuff(buff, this.cardEvaluator);
+
+        //check to see if the buff has any eNumber attributes and if they've changed
+        // this.log.info('Updating buff attributes %j', buff);
+        for(let buffAttribute of buff.buffAttributes){
+          if(!buffAttribute.attribute || (!buffAttribute.amount.eNumber && !buffAttribute.amount.eValue)) continue;
+
+          let pieceSelectorParams = {
+            selfPiece: piece,
+            controllingPlayerId: piece.playerId,
+            isSpell: false
+          };
+          let attr = buffAttribute.attribute;
+
+          let newAmount = this.selector.eventualNumber(buffAttribute.amount, pieceSelectorParams);
+          if(newAmount != buff[attr]){
+            buffChange = buffChange || {};
+            buffChange[attr] = newAmount - buff[attr];
+            // this.log.info('buff change attr %s newAmt %s buffAmt %s', attr, newAmount, buff[attr]);
           }
-        }else{
-          if(buff.enabled){
-            //switch to disabled
-            buffChange = piece.disableBuff(buff, this.cardEvaluator);
+        }
+        if(buffChange){
+          buffChange = piece.changeBuffStats(buffChange, {}, true);
+          // this.log.info('buff change after apply %j', buffChange);
+
+          //save total buff changes in the buff so if they get updated again they'll be accurate to find a new diff off of
+          for(let attrib of attributes){
+            if(buffChange[attrib] === undefined) continue;
+
+            let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+            buff[attrib] = buff[attrib] + buffChange[attrib];
+            buff[newAttrib] = buffChange[newAttrib];
           }
+
+          // this.log.info('buff apply %j', buff);
+        }
+
+        //Update any conditional buffs enabling or disabling them if neccessary
+        if(buff.condition){
+          let result = this.selector.compareExpression(
+            buff.condition,
+            this.pieceState.pieces,
+            {
+              selfPiece: piece,
+              controllingPlayerId: piece.playerId
+            },
+            this.selector.selectPieces
+          );
+
+          if(result.length > 0){
+            if(!buff.enabled){
+              //switch to enabled
+              buffChange = piece.enableBuff(buff, this.cardEvaluator);
+            }
+          }else{
+            if(buff.enabled){
+              //switch to disabled
+              buffChange = piece.disableBuff(buff, this.cardEvaluator);
+            }
+          }
+
         }
 
         if(buffChange){
-          let clientAction = new PieceBuff({pieceId: piece.id, name: buff.name});
+          let clientAction = new PieceBuff({buffId: buff.buffId, pieceId: piece.id, name: buff.name});
           for(let buffKey in buffChange){
             clientAction[buffKey] = buffChange[buffKey];
           }

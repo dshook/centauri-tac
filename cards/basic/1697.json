@@ -10,8 +10,7 @@
   "rarity": 3,
   "tags": ["Minion"],
   "eventcode": "playMinion{
-    Aura(
-      SELF,
+    Buff(
       SELF,
       'Trapped',
       attack(-Count(Area(Square, 1, SELF) - SELF)),

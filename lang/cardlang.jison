@@ -337,11 +337,11 @@ eValue
   | cardCount'('possibleRandSelector')'
      { $$ = { eValue: true, cardCount: true, selector: $3 }; }
   | stat
-     { $$ = { stat: true, path: $1 }; }
+     { $$ = { eValue: true, stat: true, path: $1 }; }
   | resource'('possibleRandSelector')'
-     { $$ = { resource: $1, selector: $3 }; }
+     { $$ = { eValue: true, resource: $1, selector: $3 }; }
   | selectCardTemplateId'('possibleRandSelector')'
-     { $$ = { selectCardTemplateId: true, cardSelector: $3 }; }
+     { $$ = { eValue: true, selectCardTemplateId: true, cardSelector: $3 }; }
   ;
 
 numberList

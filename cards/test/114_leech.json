@@ -1,0 +1,20 @@
+{
+	"cardTemplateId": 114,
+  "name": "Leech",
+  "description": "Has +1/+1 for every adjacent minion",
+  "cost": 2,
+  "attack": 1,
+  "health": 1,
+  "movement": 4,
+  "race": 0,
+  "rarity": 2,
+  "tags": ["Minion"],
+  "eventcode": "playMinion{
+    Buff(
+      SELF,
+      'Blood Suck',
+      attack(Count(Area(Square, 1, SELF) - SELF)),
+      health(Count(Area(Square, 1, SELF) - SELF))
+    )
+  }"
+}

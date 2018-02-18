@@ -57,6 +57,7 @@ export default class GamePiece
 
   addBuff(buff, cardEvaluator){
     let action = this.addBuffStats(buff, cardEvaluator);
+
     this.buffs.push(buff);
 
     return action;
@@ -90,22 +91,9 @@ export default class GamePiece
 
   addBuffStats(buff, cardEvaluator){
     let action = {};
-    for(let attrib of attributes){
-      if(buff[attrib] == null) continue;
 
-      let capAttr = attrib.charAt(0).toUpperCase() + attrib.slice(1);
+    action = this.changeBuffStats(buff, action, true);
 
-      let origStat = this[attrib];
-      this[attrib] += buff[attrib];
-
-      //cap at min of 0 to prevent negative attack/movement
-      this[attrib] = Math.max(0, this[attrib]);
-
-      //update action with new values
-      let newAttrib = 'new' + capAttr;
-      action[newAttrib] = this[attrib];
-      action[attrib] = action[newAttrib] - origStat;
-    }
     if(buff.addStatus){
       let statusAction = this.addStatuses(buff.addStatus, cardEvaluator);
       //merge the status action into the buff action, the attribute changes from status should be the most up to date
@@ -128,29 +116,7 @@ export default class GamePiece
     if(!buff.enabled){
       return action;
     }
-    for(let attrib of attributes){
-      if(buff[attrib] == null) continue;
-
-      let capAttr = attrib.charAt(0).toUpperCase() + attrib.slice(1);
-      let baseAttr = 'base' + capAttr;
-
-      let origStat = this[attrib];
-      this[attrib] -= buff[attrib];
-
-      //cap at min of 0 to prevent negative attack/movement
-      this[attrib] = Math.max(0, this[attrib]);
-
-      //but for health, only lower to min of 1 so you can't kill off a piece by debuff
-      if(attrib === 'health'){
-        this[attrib] = Math.max(1, this[attrib]);
-      }
-
-      //update action with new values
-      let newAttrib = 'new' + capAttr;
-      action[newAttrib] = this[attrib];
-      action[attrib] = action[newAttrib] - origStat;
-      action[baseAttr] = this[baseAttr];
-    }
+    action = this.changeBuffStats(buff, action, false);
 
     //now for statuses, if one was added, remove it, and vice versa
     if(buff.addStatus){
@@ -165,6 +131,37 @@ export default class GamePiece
     action.statuses = this.statuses;
     action.removed = true;
 
+    return action;
+  }
+
+  changeBuffStats(buff, action, isAdd){
+    for(let attrib of attributes){
+      if(buff[attrib] == null) continue;
+
+
+      let origStat = this[attrib];
+
+      if(isAdd){
+        this[attrib] += buff[attrib];
+      }else{
+        this[attrib] -= buff[attrib];
+      }
+
+      //cap at min of 0 to prevent negative attack/movement
+      this[attrib] = Math.max(0, this[attrib]);
+
+      //but for health, only lower to min of 1 so you can't kill off a piece by adding or removing a buff
+      if(attrib === 'health'){
+        this[attrib] = Math.max(1, this[attrib]);
+      }
+
+      //update action with new values
+      let newAttrib = 'new' + attrib.charAt(0).toUpperCase() + attrib.slice(1);
+      action[newAttrib] = this[attrib];
+      action[attrib] = action[newAttrib] - origStat;
+      // let baseAttr = 'base' + capAttr;
+      // action[baseAttr] = this[baseAttr];
+    }
     return action;
   }
 

@@ -838,6 +838,7 @@ test('Double Conditional expression', t => {
           "condition": {
             "compareExpression": true,
             "left": {
+              "eValue": true,
               "stat": true,
               "path": "COMBOCOUNT"
             },
@@ -858,6 +859,7 @@ test('Double Conditional expression', t => {
           "condition": {
             "compareExpression": true,
             "left": {
+              "eValue": true,
               "stat": true,
               "path": "COMBOCOUNT"
             },
@@ -925,6 +927,7 @@ test('Conditional event', t => {
       "condition": {
         "compareExpression": true,
         "left": {
+          "eValue": true,
           "resource": "Charges",
           "selector": {
             "left": "PLAYER"
@@ -992,6 +995,7 @@ test('Adv Select Card Template Id', t => {
           "action": "Spawn",
           "args": [
             {
+              "eValue": true,
               "selectCardTemplateId": true,
               "cardSelector": {
                 "random": true,
