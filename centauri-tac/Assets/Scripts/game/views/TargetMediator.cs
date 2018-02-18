@@ -253,8 +253,9 @@ namespace ctac
                     cardTarget.selectedPosition = piece.piece.tilePosition;
                 }
             }
-            else if (!FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile))
+            else if ((tile.highlightStatus & (TileHighlightStatus.TargetTile | TileHighlightStatus.FriendlyTargetTile | TileHighlightStatus.EnemyTargetTile)) == 0)
             {
+                //cancel the target if we clicked on a non target
                 cancelSelectTarget.Dispatch(cardTarget.targetingCard);
                 return false;
             }

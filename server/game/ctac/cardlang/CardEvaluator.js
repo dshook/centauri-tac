@@ -973,12 +973,16 @@ export default class CardEvaluator{
 
         let areaSelector = null;
         let alsoNeedsTarget = false;
+        let moveRestricted = false; //Does the area represent somewhere where a piece needs to move to?
         //try to find areas in any of the actions
         for(let cardEventAction of event.actions){
           if(!this.targetableActions.includes(cardEventAction.action)) continue;
 
           //hacky way to see if the action needs a main target for its selection
           alsoNeedsTarget = this.selector.doesSelectorUse(cardEventAction.args[0], 'TARGET');
+
+          //For now only a move in area command uses an area that is move restricted
+          moveRestricted = cardEventAction.action === 'Move';
 
           for(let arg of cardEventAction.args){
             //Area selectors will always have a left
@@ -1012,7 +1016,8 @@ export default class CardEvaluator{
             stationaryArea: areaDescrip.stationaryArea,
             centerPosition: areaDescrip.centerPosition,
             pivotPosition: areaDescrip.pivotPosition,
-            areaTiles: areaDescrip.areaTiles
+            areaTiles: areaDescrip.areaTiles,
+            moveRestricted
           });
         }
       }

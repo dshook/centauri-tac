@@ -562,6 +562,10 @@ namespace ctac
                             tiles = mapService.GetDiagonalTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
                             break;
                     }
+                    if(model.area.moveRestricted){
+                        //take out tiles we can't move to
+                        tiles = tiles.Where(t => !t.unpassable && pieces.PieceAt(t.position) == null ).ToList();
+                    }
                     view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile, true);
                 }
                 else if (model.targets != null && model.targets.targetPieceIds.Count > 0)

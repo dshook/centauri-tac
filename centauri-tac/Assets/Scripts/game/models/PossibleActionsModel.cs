@@ -64,7 +64,7 @@ namespace ctac
         public int GetSpellDamage(int playerId)
         {
             if(!spellDamage.ContainsKey(playerId)) return 0;
-            
+
             return spellDamage[playerId];
         }
     }
@@ -102,7 +102,7 @@ namespace ctac
     {
         public int cardId { get; set; }
         public string @event { get; set; }
-        public AreaType areaType { get; set; } 
+        public AreaType areaType { get; set; }
         public int size { get; set; }
         public bool isCursor { get; set; }
         public bool isDoubleCursor { get; set; }
@@ -112,6 +112,7 @@ namespace ctac
         public PositionModel centerPosition { get; set; }
         public PositionModel pivotPosition { get; set; }
         public List<PositionModel> areaTiles { get; set; }
+        public bool moveRestricted { get; set; }
     }
 
     public class EventedPiece
