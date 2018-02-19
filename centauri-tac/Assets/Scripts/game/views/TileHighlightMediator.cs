@@ -325,7 +325,7 @@ namespace ctac
             }
             else if (piece.isRanged)
             {
-                var attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value).Values.ToList();
+                var attackRangeTiles = piece.pieceView.attackRangeTiles;
 
                 view.toggleTileFlags(attackRangeTiles, TileHighlightStatus.AttackRangeTotal);
                 if(piece.canAttack){
@@ -336,19 +336,12 @@ namespace ctac
             {
                 //melee units
 
-                var movePositions = mapService.GetMovementTilesInRadius(piece, false);
-                var movePositionsTotal = mapService.GetMovementTilesInRadius(piece, true);
+                var movePositionsTotal = mapService.GetMovementTilesInRadius(piece, true, false);
 
                 List<Tile> attackTiles = null;
                 if (piece.canAttack)
                 {
-                    var movePositionList = movePositions != null ? movePositions.Keys.ToList() : new List<Vector2>(){ piece.tilePosition };
-                    var attackPositions = mapService.Expand(movePositionList, 1);
-                    attackTiles = attackPositions.Values.ToList();
-
-                    attackTiles = attackTiles
-                        .Where(t => canAttackTile(piece, t))
-                        .ToList();
+                    attackTiles = piece.pieceView.attackRangeTiles;
                 }
 
                 setAttackRangeTiles(attackTiles, !piece.currentPlayerHasControl);
@@ -359,25 +352,10 @@ namespace ctac
                 var attackTilesTotal = attackPositionsTotal.Values.ToList();
 
                 attackTilesTotal = attackTilesTotal
-                    .Where(t => canAttackTile(piece, t))
+                    .Where(t => piece.canAttackTile(pieces, t))
                     .ToList();
                 view.toggleTileFlags(attackTilesTotal, TileHighlightStatus.AttackRangeTotal);
             }
-        }
-
-        //find if a piece can attack this tile
-        //taking out friendly units and untargetable enemies like Cloak
-        private bool canAttackTile(PieceModel piece, Tile t)
-        {
-            var occupyingPiece = pieces.Pieces.FirstOrDefault(m => m.tilePosition == t.position);
-            return !t.unpassable
-                && (
-                    occupyingPiece == null
-                    || (
-                        occupyingPiece.playerId != piece.playerId
-                        && (occupyingPiece.statuses & Statuses.Cloak) == 0
-                        )
-                );
         }
 
         private void updatePieceMoveRange(PieceModel piece)
@@ -391,8 +369,8 @@ namespace ctac
             var gameTile = map.tiles.Get(piece.tilePosition);
 
             //find movement
-            var moveTiles = mapService.GetMovementTilesInRadius(piece, false);
-            var totalMoveTiles = mapService.GetMovementTilesInRadius(piece, true);
+            var moveTiles = mapService.GetMovementTilesInRadius(piece, false, false);
+            var totalMoveTiles = mapService.GetMovementTilesInRadius(piece, true, false);
             //take out the central one
             if(moveTiles != null){
                 moveTiles.Remove(gameTile.position);

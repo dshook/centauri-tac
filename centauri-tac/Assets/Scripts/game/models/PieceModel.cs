@@ -176,6 +176,21 @@ namespace ctac
             statuses = newStatuses;
         }
 
+        //find if a piece can attack a tile
+        //taking out friendly units and untargetable enemies like Cloak
+        public bool canAttackTile(PiecesModel pieces, Tile t)
+        {
+            var occupyingPiece = pieces.Pieces.FirstOrDefault(m => m.tilePosition == t.position);
+            return !t.unpassable
+                && (
+                    occupyingPiece == null
+                    || (
+                        occupyingPiece.playerId != this.playerId
+                        && (occupyingPiece.statuses & Statuses.Cloak) == 0
+                        )
+                );
+        }
+
     }
 
 }

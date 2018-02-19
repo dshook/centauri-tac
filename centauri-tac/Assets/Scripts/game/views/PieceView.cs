@@ -58,6 +58,7 @@ namespace ctac {
         public GameObject model;
         private GameObject textContainer;
         public bool targetCandidate = false;
+        public List<Tile> attackRangeTiles = null; //Should be able to attack any enemy piece within these tiles
         public bool enemiesInRange = false;
         public bool hovered = false;
 

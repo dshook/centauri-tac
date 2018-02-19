@@ -11,14 +11,14 @@ namespace ctac
         Dictionary<Vector2, Tile> GetKingTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> GetDiagonalTilesInRadius(Vector2 center, int distance);
         Dictionary<Vector2, Tile> Expand(List<Vector2> selection, int distance);
-        Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece, bool totalMovement);
+        Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece, bool totalMovement, bool includeOccupied = false, int bonusMovement = 0);
         Dictionary<Vector2, Tile> GetLineTiles(Vector2 center, Vector2 secondPoint, int distance, bool bothDirections);
         Dictionary<Vector2, Tile> GetCrossTiles(Vector2 center, int distance);
         int TileDistance(Vector2 a, Vector2 b);
         int KingDistance(Vector2 a, Vector2 b);
         List<Tile> FindMovePath(PieceModel piece, PieceModel attackingPiece, Tile end);
         Dictionary<Vector2, Tile> GetNeighbors(Vector2 center);
-        Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null);
+        Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest, bool includeOccupied);
         List<Tile> CleavePositions(Vector2 position, Direction direction);
         List<Tile> PiercePositions(Vector2 position, Direction direction);
         bool isHeightPassable(Tile start, Tile end);
@@ -74,7 +74,7 @@ namespace ctac
                 var neighbors = neighborsFunc(current);
                 foreach (var neighbor in neighbors)
                 {
-                    //add the neighbor to explore if it's not already being returned 
+                    //add the neighbor to explore if it's not already being returned
                     //or in the queue or too far away
                     if (
                         !ret.ContainsKey(neighbor.Key)
@@ -184,32 +184,35 @@ namespace ctac
         /// <summary>
         /// Find all the tiles a piece can move to, if totalMovement is true this will be based on their base movement
         /// Otherwise, it'll be based on how many tiles left they can move
+        /// Include occupied signals whether or not to return tiles that are blocked by minions. With it set to true
+        /// this will include tiles the piece could move to on an empty board
         /// </summary>
-        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece, bool totalMovement)
+        public Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece, bool totalMovement, bool includeOccupied = false, int bonusMovement = 0)
         {
             if (!piece.canMove && !totalMovement)
             {
                 return null;
             }
 
-            var movementRange = totalMovement ? piece.movement : piece.movement - piece.moveCount;
+            var movementRange = (totalMovement ? piece.movement : piece.movement - piece.moveCount) + bonusMovement;
             if ((piece.statuses & Statuses.Flying) != 0)
             {
                 var tiles = GetTilesInRadius(piece.tilePosition, movementRange);
                 //filter out all the unsuitable tile positions
-                return tiles.Where(t => 
-                    !t.Value.unpassable 
-                    && !pieces.Pieces.Any(m => m.tilePosition == t.Key)
+                return tiles.Where(t =>
+                    !t.Value.unpassable
+                    && (includeOccupied || !pieces.Pieces.Any(m => m.tilePosition == t.Key))
                 ).ToDictionary(k => k.Key, v => v.Value);
             }
-            var ret = GetMovementTilesInRadius(piece.tilePosition, movementRange, piece);
+            var ret = GetMovementTilesInRadius(piece.tilePosition, movementRange, piece, includeOccupied);
             //filter out friendly pieces from the mix finally. These are still in up until now since you can pass through them
-            ret = ret.Where(t => !pieces.Pieces.Any(m => m.tilePosition == t.Key)
-            ).ToDictionary(k => k.Key, v => v.Value);
+            if(!includeOccupied){
+                ret = ret.Where(t => !pieces.Pieces.Any(m => m.tilePosition == t.Key)).ToDictionary(k => k.Key, v => v.Value);
+            }
             return ret;
         }
 
-        private Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece)
+        private Dictionary<Vector2, Tile> GetMovementTilesInRadius(Vector2 center, int distance, PieceModel piece, bool includeOccupied)
         {
             var ret = new Dictionary<Vector2, Tile>();
             if (distance <= 0) return ret;
@@ -236,13 +239,13 @@ namespace ctac
                     ret.Add(current, currentTile);
                 }
 
-                var neighbors = GetMovableNeighbors(currentTile, piece);
+                var neighbors = GetMovableNeighbors(currentTile, piece, null, includeOccupied);
                 foreach (var neighbor in neighbors)
                 {
-                    //add the neighbor to explore if it's not already being returned 
+                    //add the neighbor to explore if it's not already being returned
                     //or in the queue or too far away
                     if (
-                        !ret.ContainsKey(neighbor.Key) 
+                        !ret.ContainsKey(neighbor.Key)
                         && !frontier.Contains(neighbor.Key)
                         && TileDistance(neighbor.Key, center) <= distance
                     )
@@ -288,8 +291,8 @@ namespace ctac
 
             //For ranged units attacking within their range the move path is just the enemy position
             if(
-                piece.isRanged 
-                && pieceAttacking != null 
+                piece.isRanged
+                && pieceAttacking != null
                 && KingDistance(piece.tilePosition, pieceAttacking.tilePosition) <= piece.range
             )
             {
@@ -302,7 +305,7 @@ namespace ctac
                 if (pieceAttacking != null)
                 {
                     //for attacking a piece with a flying unit we just need to get to an adjacent open tile that's within range
-                    var adjacent = GetMovableNeighbors(mapModel.tiles[pieceAttacking.tilePosition], piece);
+                    var adjacent = GetMovableNeighbors(mapModel.tiles[pieceAttacking.tilePosition], piece, null, false);
                     if (adjacent == null || adjacent.Count == 0)
                     {
                         return null;
@@ -362,7 +365,7 @@ namespace ctac
                 openset.Remove(current);
                 closedset.Add(current);
 
-                var neighbors = GetMovableNeighbors(current, piece, end);
+                var neighbors = GetMovableNeighbors(current, piece, end, false);
                 foreach (var neighborDict in neighbors) {
                     var neighbor = neighborDict.Value;
                     if(closedset.Contains(neighbor)){
@@ -487,32 +490,34 @@ namespace ctac
         /// but always include the dest tile for attacking if it's passed
         /// but also make sure not to land on a tile with an occupant if attacking
         /// </summary>
-        public Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest = null)
+        public Dictionary<Vector2, Tile> GetMovableNeighbors(Tile center, PieceModel piece, Tile dest, bool includeOccupied)
         {
             var ret = GetNeighbors(center.position);
 
             //filter tiles that are too high/low to move to & are passable
-            ret = ret.Where(t => 
-                !t.Value.unpassable 
+            ret = ret.Where(t =>
+                !t.Value.unpassable
                 && (isHeightPassable(t.Value, center) || (piece.statuses & Statuses.Flying) != 0)
             ).ToDictionary(k => k.Key, v => v.Value);
 
-            //filter out tiles with enemies on them that aren't the destination
-            ret = ret.Where(t => 
-                (dest != null && t.Key == dest.position) ||
-                !pieces.Pieces.Any(m => m.tilePosition == t.Key && m.playerId != piece.playerId)
-            ).ToDictionary(k => k.Key, v => v.Value);
+            if(!includeOccupied){
+                //filter out tiles with enemies on them that aren't the destination
+                ret = ret.Where(t =>
+                    (dest != null && t.Key == dest.position) ||
+                    !pieces.Pieces.Any(m => m.tilePosition == t.Key && m.playerId != piece.playerId)
+                ).ToDictionary(k => k.Key, v => v.Value);
 
-            bool destinationOccupied = dest != null && pieces.Pieces.Any(p => p.tilePosition == dest.position);
-            
-            //make sure not to consider tiles that would be where the moving pieces lands when it attacks
-            ret = ret.Where(t => 
-                dest == null
-                || dest.position == t.Key
-                || !destinationOccupied
-                || TileDistance(t.Key, dest.position) > 1
-                || !pieces.Pieces.Any(p => p.tilePosition == t.Key)
-            ).ToDictionary(k => k.Key, v => v.Value);
+                bool destinationOccupied = dest != null && pieces.Pieces.Any(p => p.tilePosition == dest.position);
+
+                //make sure not to consider tiles that would be where the moving pieces lands when it attacks
+                ret = ret.Where(t =>
+                    dest == null
+                    || dest.position == t.Key
+                    || !destinationOccupied
+                    || TileDistance(t.Key, dest.position) > 1
+                    || !pieces.Pieces.Any(p => p.tilePosition == t.Key)
+                ).ToDictionary(k => k.Key, v => v.Value);
+            }
 
             return ret;
         }

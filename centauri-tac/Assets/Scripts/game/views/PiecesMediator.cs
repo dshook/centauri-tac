@@ -3,6 +3,7 @@ using ctac.signals;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace ctac
 {
@@ -40,6 +41,7 @@ namespace ctac
                     pieceStatusChange = new PieceStatusChangeModel() { add = piece.piece.statuses, statuses = piece.piece.statuses }
                 }
             );
+            checkEnemiesInRange();
         }
 
         [ListensTo(typeof(PieceMovedSignal))]
@@ -514,6 +516,8 @@ namespace ctac
         [ListensTo(typeof(TurnEndedSignal))]
         public void onTurnEnded(GameTurnModel turns)
         {
+            checkEnemiesInRange();
+
             if(!turns.isClientSwitch) return;
 
             var meId = players.Me.id;
@@ -528,6 +532,7 @@ namespace ctac
         [ListensTo(typeof(PieceDiedSignal))]
         public void onPieceDied(PieceModel p)
         {
+            pieces.Pieces.Remove(p);
             checkEnemiesInRange();
             StartCoroutine(CleanupPiece(p));
         }
@@ -538,7 +543,6 @@ namespace ctac
             while(true){
                 var remainingAnimations = animationQueue.PieceHasAnimation(pieceDied.pieceView);
                 if(!remainingAnimations){
-                    pieces.Pieces.Remove(pieceDied);
                     GameObject.Destroy(pieceDied.gameObject, 0.1f);
                     break;
                 }
@@ -569,15 +573,25 @@ namespace ctac
             {
                 var view = piece.pieceView;
 
-                var pieceLocation = view.piece.tilePosition;
-                var neighbors = mapService.GetNeighbors(pieceLocation);
-                neighbors = neighbors.Where(t => mapService.isHeightPassable(t.Value, mapService.Tile(pieceLocation)))
-                    .ToDictionary(k => k.Key, v => v.Value);
+                Dictionary<Vector2, Tile> attackRangeTiles = null;
+                if (piece.isRanged)
+                {
+                    attackRangeTiles = mapService.GetKingTilesInRadius(piece.tilePosition, piece.range.Value);
+                }else{
+                    //find where the piece can move regardless of enemies, with a bonus movement of 1 so it includes
+                    //spots where enemies are
+                    attackRangeTiles = mapService.GetMovementTilesInRadius(piece, false, true, 1);
+                }
 
-                view.enemiesInRange = pieces.Pieces.Any(p =>
-                    p.playerId != view.piece.playerId
-                    && neighbors.ContainsKey(p.tilePosition)
-                );
+                view.attackRangeTiles = attackRangeTiles == null ? null : attackRangeTiles
+                    .Where(t => piece.canAttackTile(pieces, t.Value))
+                    .Select(t => t.Value)
+                    .ToList();
+
+                view.enemiesInRange = attackRangeTiles == null ? false : attackRangeTiles.Any(t => {
+                    var occupyingPiece = pieces.Pieces.FirstOrDefault(m => m.tilePosition == t.Key);
+                    return occupyingPiece != null && piece.canAttackTile(pieces, t.Value);
+                });
             }
         }
     }
