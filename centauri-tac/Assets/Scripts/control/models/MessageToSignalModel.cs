@@ -25,6 +25,7 @@ namespace ctac
                 {"socket:alreadysignedin", typeof(SocketAlreadySignedInSignal) },
 
                 {"login", typeof(ComponentLoggedInSignal) },
+                {"register", typeof(RegisteredSignal) },
                 {"me", typeof(PlayerFetchedSignal) },
                 {"token", typeof(TokenSignal) },
                 {"_ping", typeof(PingSignal) },
@@ -47,7 +48,7 @@ namespace ctac
                 {"decks:saveSuccess", typeof(DeckSavedSignal) },
 
                 {"status", typeof(MatchmakerStatusSignal) },
-            }; 
+            };
 
             //auto add action bindings so action:name -> ActionNameSignal
             var assemblyTypes = Assembly.GetExecutingAssembly().GetTypes()

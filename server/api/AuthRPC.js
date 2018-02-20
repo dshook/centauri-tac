@@ -18,6 +18,32 @@ export default class AuthRPC
   /**
    * Post creds and get back a token if it works
    */
+  @rpc.command('register')
+  async register(client, {email, password})
+  {
+    try {
+      await this.players.register(email, password);
+    }
+    catch (err) {
+      if (!(err instanceof PlayerStoreError)) {
+        throw err;
+      }
+
+      // Bad email or password
+      client.send('register', {status: false, message: err.message});
+      client.token = null;
+      return;
+    }
+
+    this.log.info('registered new player %s', email);
+
+    const message = 'Registration Successful';
+    client.send('register', {status: true, message});
+  }
+
+  /**
+   * Post creds and get back a token if it works
+   */
   @rpc.command('login')
   async login(client, {email, password})
   {

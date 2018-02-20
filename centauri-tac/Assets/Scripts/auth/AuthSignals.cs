@@ -15,6 +15,9 @@ namespace ctac.signals
     public class TokenSignal : Signal<string, SocketKey> { }
 
     [Singleton]
+    public class TryRegisterSignal : Signal<Credentials> { }
+
+    [Singleton]
     [ManualMapSignal]
     public class PlayerFetchedSignal : Signal<PlayerModel, SocketKey> { }
 
@@ -26,6 +29,9 @@ namespace ctac.signals
 
     [Singleton]
     public class ComponentLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
+
+    [Singleton]
+    public class RegisteredSignal : Signal<LoginStatusModel, SocketKey> { }
 
     [Singleton]
     public class AuthLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }

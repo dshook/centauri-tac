@@ -10,12 +10,23 @@ namespace ctac
 {
     public class LoginView : View
     {
-        public Signal clickSignal = new Signal();
+        public Signal loginClickSignal = new Signal();
+        public Signal registerClickSignal = new Signal();
 
         public GameObject holder;
-        public TMP_InputField email;
-        public TMP_InputField password;
+        public GameObject loginPanel;
+        public GameObject registerPanel;
+
+        public TMP_InputField loginEmail;
+        public TMP_InputField loginPassword;
+        public Button openRegisterationButton;
         public Button loginButton;
+
+        public TMP_InputField registerEmail;
+        public TMP_InputField registerPassword;
+        public TMP_InputField registerPasswordConfirm;
+        public Button cancelRegistrationButton;
+        public Button registerButton;
         public TextMeshProUGUI message;
 
         //char[] passwordChars = new char[]{'$', '%', '!', '@', '#', '^', '&', '*', '(', ')', '-', '_', '+', '='};
@@ -30,7 +41,12 @@ namespace ctac
 
         internal void init()
         {
-            loginButton.onClick.AddListener(() => onClick());
+            loginButton.onClick.AddListener(() => loginClickSignal.Dispatch());
+            registerButton.onClick.AddListener(() => registerClickSignal.Dispatch());
+
+            openRegisterationButton.onClick.AddListener(onOpenRegisterClick);
+            cancelRegistrationButton.onClick.AddListener(onCancelRegisterClick);
+
             buttonText = loginButton.GetComponentInChildren<TextMeshProUGUI>();
             //passwordPlaceholderText = password.placeholder.GetComponent<TextMeshProUGUI>();
             buttonTextColor = buttonText.color;
@@ -41,7 +57,11 @@ namespace ctac
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                onClick();
+                if(registerPanel.activeSelf){
+                    registerClickSignal.Dispatch();
+                }else if(loginPanel.activeSelf){
+                    loginClickSignal.Dispatch();
+                }
             }
 
             //updateTimer += Time.deltaTime;
@@ -69,9 +89,14 @@ namespace ctac
             iTween.ColorTo(message.gameObject, Color.clear, 6f);
         }
 
-        void onClick()
-        {
-            clickSignal.Dispatch();
+        public void onOpenRegisterClick(){
+            registerPanel.SetActive(true);
+            loginPanel.SetActive(false);
+        }
+
+        public void onCancelRegisterClick(){
+            registerPanel.SetActive(false);
+            loginPanel.SetActive(true);
         }
     }
 }

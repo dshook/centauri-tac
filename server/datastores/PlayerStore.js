@@ -56,8 +56,14 @@ export default class PlayerStore
    */
   async register(email, password)
   {
+    if (!email || !email.includes('@')) {
+      throw new PlayerStoreError('Valid Email required');
+    }
+    if (!password) {
+      throw new PlayerStoreError('Password required');
+    }
     if (await this.getPlayerByEmail(email)) {
-      throw new PlayerStoreError('email already registered');
+      throw new PlayerStoreError('Email already registered');
     }
 
     const hash = await this.chash.hash(password);
