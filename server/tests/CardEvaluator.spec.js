@@ -561,6 +561,7 @@ test('Find Possible areas', t => {
       stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
+      moveRestricted: false,
       areaTiles: []
     },
     {
@@ -575,6 +576,7 @@ test('Find Possible areas', t => {
       stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
+      moveRestricted: false,
       areaTiles: []
     },
     {
@@ -589,6 +591,7 @@ test('Find Possible areas', t => {
       stationaryArea: false,
       centerPosition: null,
       pivotPosition: null,
+      moveRestricted: false,
       areaTiles: []
     }
   ];
@@ -611,6 +614,7 @@ test('Find Possible areas', t => {
       stationaryArea: true,
       centerPosition: null,
       pivotPosition: null,
+      moveRestricted: true,
       areaTiles: []
     }
   ];

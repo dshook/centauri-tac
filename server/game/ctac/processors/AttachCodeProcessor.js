@@ -33,15 +33,11 @@ export default class AttachCodeProcessor
     if(piece.events === null){
       piece.events = [];
     }
-    //merge all events in action onto already set up piece
-    //noting that we can only append to actions when there aren't any event args since they won't be compatible
+
+    //Add the code to the piece events. It should be fine for the piece to have duplicated events, each will get evaluated and
+    //run when the event happens
     for(let event of action.eventList){
-      let existingEvent = piece.events.find(e => e.event === event.event);
-      if(existingEvent && !existingEvent.args){
-        existingEvent.actions = existingEvent.actions.concat(event.actions);
-      }else{
-        piece.events.push(event);
-      }
+      piece.events.push(event);
     }
 
     this.log.info('piece %s got new code for event(s) [%s]',

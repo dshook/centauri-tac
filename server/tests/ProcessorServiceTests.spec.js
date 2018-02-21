@@ -342,8 +342,8 @@ export default class ProcessorServiceTests
       t.deepEqual(pieceNothing.events, newCode
         , 'Piece with nothing gained new code');
 
-      t.equal(pieceWithDamagedEvent.events[0].actions.length, 2
-        , 'Piece with damaged event got new action');
+      t.equal(pieceWithDamagedEvent.events.length, 2
+        , 'Piece with damaged event got new event');
 
       t.deepEqual(pieceWithIncompatableDamagedEvent.events[1], newCode[0]
         , 'Piece with incompatable event got added as another event')
