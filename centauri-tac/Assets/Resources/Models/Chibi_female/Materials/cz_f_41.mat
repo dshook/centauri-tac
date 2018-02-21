@@ -32,7 +32,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Atten: 0.5
+    - _IsParalyzed: 0
     - _Outline: 0.005
     m_Colors:
     - _Color: {r: 0.7058823, g: 0.7058823, b: 0.7058823, a: 1}
     - _OutlineColor: {r: 0.0934256, g: 0.31292218, b: 0.5294118, a: 1}
+    - _ParalyzeColor: {r: 0.49264705, g: 0.49264705, b: 0.49264705, a: 1}

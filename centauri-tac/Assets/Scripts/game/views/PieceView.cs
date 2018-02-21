@@ -822,6 +822,7 @@ namespace ctac {
 
             public void Init()
             {
+                var anim = piece.anim;
                 //add
                 if (pieceStatusChange.add.HasValue && (pieceStatusChange.add.Value != Statuses.None))
                 {
@@ -840,7 +841,11 @@ namespace ctac {
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Paralyze))
                     {
-                        piece.paralyze.transform.localScale = Vector3.one;
+                        // piece.paralyze.transform.localScale = Vector3.one;
+                        foreach(var mat in piece.meshMaterials){
+                            mat.SetFloat("_IsParalyzed", 1f);
+                        }
+                        anim.speed = 0;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Cloak))
                     {
@@ -868,7 +873,11 @@ namespace ctac {
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Paralyze))
                     {
-                        piece.paralyze.transform.localScale = Vector3.zero;
+                        // piece.paralyze.transform.localScale = Vector3.zero;
+                        foreach(var mat in piece.meshMaterials){
+                            mat.SetFloat("_IsParalyzed", 0f);
+                        }
+                        anim.speed = 1;
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Cloak))
                     {

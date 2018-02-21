@@ -5,6 +5,7 @@ Shader "Custom/Piece" {
     _MainTex ("Base (RGB)", 2D) = "white" { }
     _Ramp ("Toon Ramp (RGB)", 2D) = "gray" {}
     _Atten ("Atten", Range(0.0, 1.0)) = 0.5
+    _IsParalyzed("Is Paralyzed?", Float) = 0
   }
 
   CGINCLUDE
@@ -69,12 +70,17 @@ Shader "Custom/Piece" {
 
       sampler2D _Ramp;
       float _Atten;
+      float _IsParalyzed;
 
       // custom lighting function that uses a texture ramp based
       // on angle between light direction and normal
       #pragma lighting ToonRamp exclude_path:prepass
       inline half4 LightingToonRamp (SurfaceOutput s, half3 lightDir, half atten)
       {
+        if(_IsParalyzed > 0){
+          s.Albedo = float4(0.5, 0.5, 0.5, 1);
+        }
+
         #ifndef USING_DIRECTIONAL_LIGHT
         lightDir = normalize(lightDir);
         #endif
@@ -83,7 +89,7 @@ Shader "Custom/Piece" {
         half3 ramp = tex2D (_Ramp, float2(d,d)).rgb;
 
         half4 c;
-        c.rgb = s.Albedo  * _LightColor0.rgb * (ramp * _Atten) * (atten * 2);
+        c.rgb = s.Albedo * _LightColor0.rgb * (ramp * _Atten) * (atten * 2);
         c.a = 0;
         return c;
       }
