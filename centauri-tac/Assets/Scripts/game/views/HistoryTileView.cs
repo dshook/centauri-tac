@@ -89,14 +89,15 @@ namespace ctac
 
                 //show all damage/heal events
                 var xOffset = 180f;
+                var numShownCards = 1;
                 var numberSplat = loader.Load<GameObject>("NumberSplat");
                 var deathOverlay = loader.Load<GameObject>("DeathOverlay");
                 for (int i = 0; i < item.pieceChanges.Count; i++)
                 {
                     var pieceChange = item.pieceChanges[i];
-                    changeCounts[pieceChange.originalPiece.id] = 
-                        changeCounts.ContainsKey(pieceChange.originalPiece.id) 
-                        ? changeCounts[pieceChange.originalPiece.id] + 1 
+                    changeCounts[pieceChange.originalPiece.id] =
+                        changeCounts.ContainsKey(pieceChange.originalPiece.id)
+                        ? changeCounts[pieceChange.originalPiece.id] + 1
                         : 1;
                     var pieceChangeCount = changeCounts[pieceChange.originalPiece.id];
                     var totalPieceChangeCount = item.pieceChanges.Where(p => p.originalPiece.id == pieceChange.originalPiece.id).Count();
@@ -118,7 +119,8 @@ namespace ctac
                         var pieceCard = new CardModel();
                         pieceService.CopyPieceToCard(pieceChange.originalPiece, pieceCard, true);
                         //stack cards to the right, and set them back a bit so the main card overlaps if scrolled
-                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * (i + 1), 0, 2), 0);
+                        healthChangeCard = showCard(pieceCard, new Vector3(xOffset * numShownCards, 0, 2), 0);
+                        numShownCards++;
 
                         hoveringCards[-pieceChange.originalPiece.id] = healthChangeCard;
                     }
@@ -157,7 +159,7 @@ namespace ctac
             hovering = false;
             if (hoveringCards.Count > 0)
             {
-                foreach(var key in hoveringCards) 
+                foreach(var key in hoveringCards)
                 {
                     Destroy(hoveringCards[key.Key].card.gameObject);
                 }
@@ -195,7 +197,7 @@ namespace ctac
 
             hoverCardView.rectTransform.SetAnchor(Vector2.zero);
             hoverCardView.rectTransform.anchoredPosition3D = displayPosition;
-            
+
             return hoverCardView;
         }
 
@@ -221,7 +223,7 @@ namespace ctac
 
             var hoverCardView = hoverCardGO.AddComponent<CardView>();
             hoverCardView.card = hoverCardModel;
-            
+
             return hoverCardView;
         }
     }
