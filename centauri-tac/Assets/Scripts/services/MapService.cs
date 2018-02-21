@@ -189,7 +189,7 @@ namespace ctac
         /// </summary>
         public Dictionary<Vector2, Tile> GetMovementTilesInRadius(PieceModel piece, bool totalMovement, bool includeOccupied = false, int bonusMovement = 0)
         {
-            if (!piece.canMove && !totalMovement)
+            if (!piece.canMove && !totalMovement && bonusMovement == 0)
             {
                 return null;
             }
