@@ -23,8 +23,6 @@ namespace ctac {
         public TextMeshPro healthText;
         public TextMeshPro armorText;
         public GameObject shield;
-        public GameObject cloak;
-        public GameObject paralyze;
         public GameObject root;
         public GameObject armorBG;
 
@@ -93,8 +91,6 @@ namespace ctac {
             healthText = healthGO.GetComponent<TextMeshPro>();
             armorText = armorGO.GetComponent<TextMeshPro>();
             shield = faceCameraContainer.transform.Find("Shield").gameObject;
-            cloak = faceCameraContainer.transform.Find("Cloak").gameObject;
-            paralyze = faceCameraContainer.transform.Find("Paralyze").gameObject;
             root = faceCameraContainer.transform.Find("Root").gameObject;
             armorBG = faceCameraContainer.transform.Find("Armor").gameObject;
 
@@ -802,6 +798,7 @@ namespace ctac {
 
             public PieceStatusChangeModel pieceStatusChange { get; set; }
             public PieceView piece { get; set; }
+            public IResourceLoaderService loader { get; set; }
 
             private float transitionTime = 1f;
             private float timeAccum = 0f;
@@ -841,7 +838,6 @@ namespace ctac {
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Paralyze))
                     {
-                        // piece.paralyze.transform.localScale = Vector3.one;
                         foreach(var mat in piece.meshMaterials){
                             mat.SetFloat("_IsParalyzed", 1f);
                         }
@@ -849,7 +845,10 @@ namespace ctac {
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Cloak))
                     {
-                        piece.cloak.transform.localScale = Vector3.one;
+                        var cloakParticle = loader.Load<GameObject>("Particles/Cloak Status");
+                        var newCloak = GameObject.Instantiate(cloakParticle, new Vector3(0f, 0.0f, 0f), Quaternion.Euler(-90f, 0, 45f));
+                        newCloak.transform.SetParent(piece.faceCameraContainer.transform, false);
+                        newCloak.name = "Cloak Status";
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Root))
                     {
@@ -881,7 +880,15 @@ namespace ctac {
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Cloak))
                     {
-                        piece.cloak.transform.localScale = Vector3.zero;
+                        var cloakStatus = piece.faceCameraContainer.transform.Find("Cloak Status");
+                        if(cloakStatus != null){
+                            var particle = cloakStatus.GetComponent<ParticleSystem>();
+                            if(particle != null){
+                                particle.Stop();
+                            }
+                            GameObject.Destroy(particle.gameObject, 3f);
+                        }
+
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Root))
                     {

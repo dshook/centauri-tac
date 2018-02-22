@@ -52,6 +52,7 @@ namespace ctac
                 new PieceView.ChangeStatusAnim()
                 {
                     piece = pieceView,
+                    loader = loader,
                     pieceStatusChange = new PieceStatusChangeModel() { add = pieceModel.statuses, statuses = pieceModel.statuses }
                 }
             );

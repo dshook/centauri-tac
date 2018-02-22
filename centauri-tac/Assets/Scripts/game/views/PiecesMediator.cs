@@ -38,6 +38,7 @@ namespace ctac
                 new PieceView.ChangeStatusAnim()
                 {
                     piece = piece.piece.pieceView,
+                    loader = loader,
                     pieceStatusChange = new PieceStatusChangeModel() { add = piece.piece.statuses, statuses = piece.piece.statuses }
                 }
             );
@@ -338,6 +339,7 @@ namespace ctac
                 new PieceView.ChangeStatusAnim()
                 {
                     piece = view,
+                    loader = loader,
                     pieceStatusChange = pieceStatusChange
                 }
             );
@@ -432,6 +434,7 @@ namespace ctac
                 new PieceView.ChangeStatusAnim()
                 {
                     piece = view,
+                    loader = loader,
                     pieceStatusChange = new PieceStatusChangeModel() {
                         add = add,
                         remove = remove,

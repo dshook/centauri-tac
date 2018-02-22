@@ -13,6 +13,7 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public CardsModel cards { get; set; }
+        [Inject] public IResourceLoaderService loader { get; set; }
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
@@ -61,11 +62,12 @@ namespace ctac
                 if (adding != Statuses.None || removing != Statuses.None)
                 {
                     animationQueue.Add(
-                       new PieceView.ChangeStatusAnim()
-                       {
-                           piece = piece.pieceView,
-                           pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
-                       }
+                        new PieceView.ChangeStatusAnim()
+                        {
+                            piece = piece.pieceView,
+                            loader = loader,
+                            pieceStatusChange = new PieceStatusChangeModel() { add = adding, remove = removing, statuses = piece.statuses }
+                        }
                     );
                 }
             }

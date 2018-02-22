@@ -9,6 +9,7 @@
   "range": 2,
   "race": 0,
   "rarity": 3,
+  "statuses": 16,
   "tags": ["Minion","Mercenary"],
 	"eventcode": "ability(5, 1, 'Bribe Ordo Stalker', OPPONENT){
     Charm(SELF)
