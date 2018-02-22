@@ -367,16 +367,6 @@ namespace ctac {
             UpdateHpBar();
         }
 
-        public void CreateSleepingStatus(GameObject sleepingStatusParticle){
-
-            //Add in the sleeping sickness particles if the piece can't attack which should be everyone except charge
-            if(!piece.canAttack){
-                var newZs = GameObject.Instantiate(sleepingStatusParticle, new Vector3(0f, 0.3f, -0.15f), Quaternion.Euler(-90f, 0, 45f));
-                newZs.transform.SetParent(faceCameraContainer.transform, false);
-                newZs.name = "Sleeping Status";
-            }
-        }
-
         public interface IPieceAnimate : IAnimate
         {
             PieceView piece { get; }
@@ -831,28 +821,29 @@ namespace ctac {
                         }
                     }
 
-                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Shield))
+                    if ((pieceStatusChange.add.Value & Statuses.Shield) != 0)
                     {
                         //TODO: animate shield coming up with scale tween
                         piece.shield.SetActive(true);
                     }
-                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Paralyze))
+                    if ((pieceStatusChange.add.Value & Statuses.Paralyze) != 0)
                     {
                         foreach(var mat in piece.meshMaterials){
                             mat.SetFloat("_IsParalyzed", 1f);
                         }
                         anim.speed = 0;
                     }
-                    if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Cloak))
+                    if ((pieceStatusChange.add.Value & Statuses.Cloak) != 0)
                     {
-                        var cloakParticle = loader.Load<GameObject>("Particles/Cloak Status");
-                        var newCloak = GameObject.Instantiate(cloakParticle, new Vector3(0f, 0.0f, 0f), Quaternion.Euler(-90f, 0, 45f));
-                        newCloak.transform.SetParent(piece.faceCameraContainer.transform, false);
-                        newCloak.name = "Cloak Status";
+                        piece.CreatePieceParticle(loader, Constants.StatusParticleResources[Statuses.Cloak], Vector3.zero);
                     }
                     if (FlagsHelper.IsSet(pieceStatusChange.add.Value, Statuses.Root))
                     {
                         piece.root.SetActive(true);
+                    }
+                    if ((pieceStatusChange.add.Value & Statuses.hasAura) != 0)
+                    {
+                        piece.CreatePieceParticle(loader, Constants.StatusParticleResources[Statuses.hasAura], Vector3.zero);
                     }
                 }
                 //remove
@@ -866,7 +857,7 @@ namespace ctac {
                         }
                     }
 
-                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Shield))
+                    if ((pieceStatusChange.remove.Value & Statuses.Shield) != 0)
                     {
                         piece.shield.SetActive(false);
                     }
@@ -878,21 +869,17 @@ namespace ctac {
                         }
                         anim.speed = 1;
                     }
-                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Cloak))
+                    if ((pieceStatusChange.remove.Value & Statuses.Cloak) != 0)
                     {
-                        var cloakStatus = piece.faceCameraContainer.transform.Find("Cloak Status");
-                        if(cloakStatus != null){
-                            var particle = cloakStatus.GetComponent<ParticleSystem>();
-                            if(particle != null){
-                                particle.Stop();
-                            }
-                            GameObject.Destroy(particle.gameObject, 3f);
-                        }
-
+                        piece.DestroyPieceParticle(Constants.StatusParticleResources[Statuses.Cloak]);
                     }
-                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Root))
+                    if ((pieceStatusChange.remove.Value & Statuses.Root) != 0)
                     {
                         piece.root.SetActive(false);
+                    }
+                    if ((pieceStatusChange.remove.Value & Statuses.hasAura) != 0)
+                    {
+                        piece.DestroyPieceParticle(Constants.StatusParticleResources[Statuses.hasAura]);
                     }
                 }
             }
@@ -918,5 +905,34 @@ namespace ctac {
                 }
             }
         }
+
+        public void CreateSleepingStatus(GameObject sleepingStatusParticle){
+
+            //Add in the sleeping sickness particles if the piece can't attack which should be everyone except charge
+            if(!piece.canAttack){
+                var newZs = GameObject.Instantiate(sleepingStatusParticle, new Vector3(0f, 0.3f, -0.15f), Quaternion.Euler(-90f, 0, 45f));
+                newZs.transform.SetParent(faceCameraContainer.transform, false);
+                newZs.name = "Sleeping Status";
+            }
+        }
+
+        public void CreatePieceParticle(IResourceLoaderService loaderService, string particleResource, Vector3 localPosition){
+            var loadedParticleResource = loader.Load<GameObject>(particleResource);
+            var newCloak = GameObject.Instantiate(loadedParticleResource, localPosition, Quaternion.Euler(-90f, 0, 45f));
+            newCloak.transform.SetParent(faceCameraContainer.transform, false);
+            newCloak.name = particleResource;
+        }
+
+        public void DestroyPieceParticle(string particleResource){
+            var statusParticle = faceCameraContainer.transform.Find(particleResource);
+            if(statusParticle != null){
+                var particle = statusParticle.GetComponent<ParticleSystem>();
+                if(particle != null){
+                    particle.Stop();
+                }
+                GameObject.Destroy(particle.gameObject, 3f);
+            }
+        }
+
     }
 }

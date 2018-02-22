@@ -76,6 +76,12 @@ namespace ctac
             {"Piercing",           "This minion's attacks also hit the two characters behind its target" },
             {"Cleave",             "This minion's attacks also hit the two characters on either side of its target" },
         };
+
+        public static Dictionary<Statuses, string> StatusParticleResources = new Dictionary<Statuses, string>()
+        {
+            { Statuses.Cloak, "Particles/Cloak Status"},
+            { Statuses.hasAura, "Particles/Aura Status"},
+        };
     }
 
     public enum InjectionKeys
