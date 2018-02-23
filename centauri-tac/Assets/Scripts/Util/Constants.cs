@@ -67,7 +67,7 @@ namespace ctac
             {"Paralyze",           "Character cannot move or attack" },
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
-            {"Tech Resist",        "Can't be targeted by spells, abilities, or hero powers" },
+            {"Elusive",            "Cannot be targeted by spells, abilities, or hero powers" },
             {"Root",               "Cannot move" },
             {"Charge",             "Minion can move and attack immediately" },
             {"Dyad Strike",        "Minion can attack twice per turn" },

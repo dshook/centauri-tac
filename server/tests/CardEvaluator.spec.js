@@ -359,7 +359,7 @@ test('Find Possible targets for timer', t => {
   t.deepEqual(targets, expectedTargets, 'Got targets for timer action');
 });
 
-test('Find Possible spell targets with TechResist', t => {
+test('Find Possible spell targets with Elusive', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1); //id 1
   spawnPiece(pieceStateMix, 2, 1); //id 2

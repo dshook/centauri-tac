@@ -61,17 +61,19 @@ namespace ctac
             if (card.linkedPiece != null)
             {
                 var statuses = card.linkedPiece.statuses;
-                if (FlagsHelper.IsSet(statuses, Statuses.Silence)) { descriptionWords.Add("Silence"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Shield)) { descriptionWords.Add("Holtz Shield"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Paralyze)) { descriptionWords.Add("Paralyze"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Taunt)) { descriptionWords.Add("Taunt"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Cloak)) { descriptionWords.Add("Cloak"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.TechResist)) { descriptionWords.Add("Tech Resist"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Root)) { descriptionWords.Add("Root"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Charge)) { descriptionWords.Add("Charge"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.DyadStrike)) { descriptionWords.Add("Dyad Strike"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Flying)) { descriptionWords.Add("Flying"); }
-                if (FlagsHelper.IsSet(statuses, Statuses.Airdrop)) { descriptionWords.Add("Airdrop"); }
+                if ((statuses & Statuses.Silence) != 0) { descriptionWords.Add("Silence"); }
+                if ((statuses & Statuses.Shield) != 0) { descriptionWords.Add("Holtz Shield"); }
+                if ((statuses & Statuses.Paralyze) != 0) { descriptionWords.Add("Paralyze"); }
+                if ((statuses & Statuses.Taunt) != 0) { descriptionWords.Add("Taunt"); }
+                if ((statuses & Statuses.Cloak) != 0) { descriptionWords.Add("Cloak"); }
+                if ((statuses & Statuses.Elusive) != 0) { descriptionWords.Add("Elusive"); }
+                if ((statuses & Statuses.Root) != 0) { descriptionWords.Add("Root"); }
+                if ((statuses & Statuses.Charge) != 0) { descriptionWords.Add("Charge"); }
+                if ((statuses & Statuses.DyadStrike) != 0) { descriptionWords.Add("Dyad Strike"); }
+                if ((statuses & Statuses.Flying) != 0) { descriptionWords.Add("Flying"); }
+                if ((statuses & Statuses.Airdrop) != 0) { descriptionWords.Add("Airdrop"); }
+                if ((statuses & Statuses.Cleave) != 0) { descriptionWords.Add("Cleave"); }
+                if ((statuses & Statuses.Piercing) != 0) { descriptionWords.Add("Piercing"); }
             }
 
             descriptionWords = descriptionWords.Distinct().ToList();

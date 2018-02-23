@@ -11,7 +11,7 @@ namespace ctac
         Paralyze   = 1 << 2,
         Taunt      = 1 << 3,
         Cloak      = 1 << 4,
-        TechResist = 1 << 5,
+        Elusive    = 1 << 5,
         Root       = 1 << 6,
         Charge     = 1 << 7,
         CantAttack = 1 << 8,

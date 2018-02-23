@@ -91,7 +91,7 @@ export default class PieceSelector{
           return this.allPieces.filter(p =>
             (!this.pieceSelectorParams.targetPieceId || p.id === this.pieceSelectorParams.targetPieceId)
             && !(p.statuses & Statuses.Cloak)
-            && (!this.pieceSelectorParams.isSpell || !(p.statuses & Statuses.TechResist))
+            && (!this.pieceSelectorParams.isSpell || !(p.statuses & Statuses.Elusive))
             && (!this.pieceSelectorParams.selfPiece || p.id !== this.pieceSelectorParams.selfPiece.id) //can't target yourself
           );
           break;
@@ -115,8 +115,8 @@ export default class PieceSelector{
         case 'CLOAK':
           return this.allPieces.filter(p => p.statuses & Statuses.Cloak);
           break;
-        case 'TECHRESIST':
-          return this.allPieces.filter(p => p.statuses & Statuses.TechResist);
+        case 'ELUSIVE':
+          return this.allPieces.filter(p => p.statuses & Statuses.Elusive);
           break;
         case 'ROOT':
           return this.allPieces.filter(p => p.statuses & Statuses.Rooted);

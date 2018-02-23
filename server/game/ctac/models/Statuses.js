@@ -9,7 +9,7 @@ var Statuses = Enum({
   Paralyze   : 4,
   Taunt      : 8,
   Cloak      : 16,
-  TechResist : 32,
+  Elusive    : 32,
   Root       : 64,
   Charge     : 128,
   CantAttack : 256,
