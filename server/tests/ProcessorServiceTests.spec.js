@@ -705,6 +705,89 @@ export default class ProcessorServiceTests
       t.equal(piece.statuses, Statuses.Silence, 'Only status is silence');
     });
 
+    test('More Complicated Buff With Condition and Status', async (t) => {
+      t.plan(35);
+      this.setupTest();
+      this.spawnCards();
+
+      this.spawnPiece(this.pieceState, 8, 1); //add another piece on the board to make sure select attribute is working correctly
+      let piece = this.spawnPiece(this.pieceState, 115, 1);
+
+      //make sure the buff gets applied
+      this.cardEvaluator.evaluatePieceEvent('playMinion', piece);
+
+      await this.queue.processUntilDone();
+
+      let preActions = [... this.queue.iterateCompletedSince()];
+
+      t.equal(piece.statuses, 0, 'Piece has no statuses to start');
+      t.equal(piece.buffs.length, 3, 'Piece got all 3 buffs');
+      t.equal(piece.buffs[0].enabled, false, 'Buff 1 is not enabled');
+      t.equal(piece.buffs[1].enabled, false, 'Buff 2 is not enabled');
+      t.equal(piece.buffs[2].enabled, false, 'Buff 3 is not enabled');
+
+      //now for the damage to activate the buff
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: -1}));
+
+      await this.queue.processUntilDone();
+
+      let postDamageActions = [... this.queue.iterateCompletedSince(preActions[preActions.length - 1].id)];
+      let postDamageBuff = postDamageActions.filter(a => a instanceof PieceBuff)[0];
+
+      t.equal(piece.statuses, Statuses.Taunt, 'Taunt status added');
+      t.equal(piece.health, 9, 'Health Damage');
+      t.equal(piece.buffs[0].enabled, true,  'Buff 1 is enabled');
+      t.equal(piece.buffs[1].enabled, false, 'Buff 2 is disabled');
+      t.equal(piece.buffs[2].enabled, false, 'Buff 3 is disabled');
+
+      t.ok(postDamageBuff, 'Got Buff after damage action');
+      t.equal(postDamageBuff.statuses, Statuses.Taunt, 'Buff action has taunt status');
+      t.equal(postDamageBuff.addStatus, Statuses.Taunt, 'Buff action has taunt as added');
+      t.equal(postDamageBuff.removeStatus, 0, 'Buff action has no status removed');
+      t.equal(postDamageBuff.enabled, true, 'Buff action is marked as enabled');
+
+      //some more damage for the next buff
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: -4}));
+
+      await this.queue.processUntilDone();
+
+      let postSecondDamageActions = [... this.queue.iterateCompletedSince(postDamageActions[postDamageActions.length - 1].id)];
+      let postSecondDamageBuff = postSecondDamageActions.filter(a => a instanceof PieceBuff)[0];
+
+      t.equal(piece.statuses, Statuses.DyadStrike, 'Piece now only has dyad strike');
+      t.equal(piece.health, 5, 'Health Damage');
+      t.equal(piece.buffs[0].enabled, true,  'Buff 1 is enabled');
+      t.equal(piece.buffs[1].enabled, true, 'Buff 2 is enabled');
+      t.equal(piece.buffs[2].enabled, false, 'Buff 3 is disabled');
+
+      t.ok(postSecondDamageBuff, 'Got Buff after damage action');
+      t.equal(postSecondDamageBuff.statuses, Statuses.DyadStrike, 'Buff action has dyad status');
+      t.equal(postSecondDamageBuff.addStatus, Statuses.DyadStrike, 'Buff action has dyad as added');
+      t.equal(postSecondDamageBuff.removeStatus, Statuses.Taunt, 'Buff action has taunt status removed');
+      t.equal(postSecondDamageBuff.enabled, true, 'Buff action is marked as enabled');
+
+      //and for the last one...
+      this.queue.push(new PieceHealthChange({pieceId: piece.id, change: -3}));
+
+      await this.queue.processUntilDone();
+
+      let lastDamageActions = [... this.queue.iterateCompletedSince(postSecondDamageActions[postSecondDamageActions.length - 1].id)];
+      let lastDamageBuff = lastDamageActions.filter(a => a instanceof PieceBuff)[0];
+
+      t.equal(piece.statuses, Statuses.Cloak, 'Piece now only has cloak');
+      t.equal(piece.health, 2, 'Health Damage');
+      t.equal(piece.buffs[0].enabled, true,  'Buff 1 is enabled');
+      t.equal(piece.buffs[1].enabled, true, 'Buff 2 is enabled');
+      t.equal(piece.buffs[2].enabled, true, 'Buff 3 is enabled');
+
+      t.ok(lastDamageBuff, 'Got Buff after damage action');
+      t.equal(lastDamageBuff.statuses, Statuses.Cloak, 'Buff action has cloak status');
+      t.equal(lastDamageBuff.addStatus, Statuses.Cloak, 'Buff action has cloak as added');
+      t.equal(lastDamageBuff.removeStatus, Statuses.DyadStrike | Statuses.Taunt, 'Buff action has dyad and taunt status removed');
+      t.equal(lastDamageBuff.enabled, true, 'Buff action is marked as enabled');
+
+    });
+
     test('Buff with changing eNum attributes', async (t) => {
       t.plan(34);
       this.setupTest();

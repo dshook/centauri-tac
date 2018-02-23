@@ -56,7 +56,10 @@ export default class GamePiece
   }
 
   addBuff(buff, cardEvaluator){
-    let action = this.addBuffStats(buff, cardEvaluator);
+    let action = {};
+    if(buff.enabled){
+      action = this.addBuffStats(buff, cardEvaluator);
+    }
 
     this.buffs.push(buff);
 
@@ -123,11 +126,11 @@ export default class GamePiece
       let statusAction = this.removeStatuses(buff.addStatus, cardEvaluator);
       Object.assign(action, statusAction);
     }
-    if(buff.removeStatus){
-      let statusAction = this.addStatuses(buff.removeStatus, cardEvaluator);
-      //merge the status action into the buff action, the attribute changes from status should be the most up to date
-      Object.assign(action, statusAction);
-    }
+
+    //If a buff is removing a status, when that buff gets disable we don't add back the status to the piece
+    //Just a game rule I suppose and it makes more sense this way
+    // if(buff.removeStatus){
+    // }
     action.statuses = this.statuses;
     action.removed = true;
 
@@ -212,6 +215,8 @@ export default class GamePiece
       //remove timers for this piece
       cardEvaluator.cleanupTimers(this);
     }
+    action.addStatus = add || 0;
+    action.removeStatus =  action.removeStatus || 0;
     action.statuses = this.statuses;
 
     return action;

@@ -69,7 +69,6 @@ export default class PieceBuffProcessor
 
     }else{
 
-      let buffChange = piece.addBuff(action, this.cardEvaluator);
 
       //if the buff has a condition and the condition is not met then disable it immediately
       //and don't send it to the client
@@ -84,11 +83,14 @@ export default class PieceBuffProcessor
           , this.selector.selectPieces
         );
         if(buffConditionResult.length === 0){
-          this.log.info("piece %s didn't meet buff condition", piece.id, buffChange);
-          piece.disableBuff(action);
+          this.log.info("piece %s didn't meet buff %s condition", piece.id, action.name);
+          //piece.disableBuff(action);
+          action.enabled = false;
           action.serverOnly = true;
         }
       }
+
+      let buffChange = piece.addBuff(action, this.cardEvaluator);
 
       for(let buffKey in buffChange){
         action[buffKey] = buffChange[buffKey];

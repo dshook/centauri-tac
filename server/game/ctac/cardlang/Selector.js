@@ -281,10 +281,10 @@ export default class Selector{
       }
     }else{
       //one number, one piece array case.  Iterate and compare attributes
-      //let array = leftIsArray ? leftResult : rightResult;
+      let array = leftIsArray ? leftResult : rightResult;
       let number = leftIsArray ? rightResult : leftResult;
       let attribute = leftIsArray ? selector.left.attribute : selector.right.attribute;
-      return objs.filter(p => this.CompareFromString(p[attribute], number, selector.op));
+      return array.filter(p => this.CompareFromString(p[attribute], number, selector.op));
     }
   }
 

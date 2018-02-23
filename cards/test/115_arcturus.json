@@ -1,0 +1,18 @@
+{
+	"cardTemplateId": 115,
+  "name": "Arcturus",
+  "description": "<b>Taunt</b> at 7-9 Health<br><b>Dyad Strike<b> at 4-6 health<br><b>Cloak</b> at 1-3 health",
+  "cost": 1,
+  "attack": 7,
+  "health": 10,
+  "movement": 3,
+  "race": 0,
+  "rarity": 4,
+  "tags": ["Minion"],
+	"eventcode": "playMinion{
+		Buff(SELF, 'Mad', SelectAttribute(SELF, health) <= 9, Taunt(true))
+		Buff(SELF, 'As', SelectAttribute(SELF, health) <= 6, DyadStrike(true), Taunt(false))
+		Buff(SELF, 'Fuck', SelectAttribute(SELF, health) <= 3, Cloak(true), DyadStrike(false), Taunt(false))
+	}
+	"
+}

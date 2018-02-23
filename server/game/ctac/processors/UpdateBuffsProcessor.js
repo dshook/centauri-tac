@@ -77,10 +77,12 @@ export default class UpdateBuffsProcessor
             this.selector.selectPieces
           );
 
+          // this.log.info('Buff %s which is %s, condition result %j', buff.name, buff.enabled ? 'enabled' : 'disabled', result);
           if(result.length > 0){
             if(!buff.enabled){
               //switch to enabled
               buffChange = piece.enableBuff(buff, this.cardEvaluator);
+              // this.log.info('Enabling Buff %j, change %j', buff, buffChange);
             }
           }else{
             if(buff.enabled){
