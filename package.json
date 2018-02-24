@@ -69,8 +69,10 @@
     "nodemon": "^1.9.2",
     "pg": "^5.1.0",
     "present": "0.0.6",
-    "request": "^2.61.0",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
     "require-dir": "^0.3.2",
+    "sha1": "^1.1.1",
     "sql-params": "^1.0.1",
     "tape": "^4.2.0",
     "ws": "^1.1.0"

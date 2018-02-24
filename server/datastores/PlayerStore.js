@@ -20,11 +20,12 @@ export class PlayerStoreError extends Error
 @loglevel
 export default class PlayerStore
 {
-  constructor(sql, chash, auth)
+  constructor(sql, chash, auth, httpTransport)
   {
     this.sql = sql;
     this.chash = chash;
     this.auth = auth;
+    this.httpTransport = httpTransport;
   }
 
   /**
@@ -62,8 +63,15 @@ export default class PlayerStore
     if (!password) {
       throw new PlayerStoreError('Password required');
     }
+    if (password.length < 8) {
+      throw new PlayerStoreError('Password must be at lease 8 characters long');
+    }
     if (await this.getPlayerByEmail(email)) {
       throw new PlayerStoreError('Email already registered');
+    }
+
+    if(await this.checkPwnedPassword(password)){
+      throw new PlayerStoreError('This password has appeard in a data breech. Please use a more secure password.');
     }
 
     const hash = await this.chash.hash(password);
@@ -110,5 +118,32 @@ export default class PlayerStore
     }
 
     return this.auth.generateToken(player, roles);
+  }
+
+  //Check if it's a bad pwned password
+  async checkPwnedPassword(password){
+    const sha1 = this.chash.sha1Hash(password);
+    let firstFive = sha1.substring(0, 5).toUpperCase();
+    let remaining = sha1.substring(5).toUpperCase();
+
+    this.log.info('Password hashes', {sha1, firstFive, remaining});
+
+    try{
+      let httpResponse = await this.httpTransport.request('https://api.pwnedpasswords.com/range/' + firstFive);
+
+      //split into lines, then the hash and count pairs
+      let allHashSuffixes = httpResponse.split('\n');
+      allHashSuffixes = allHashSuffixes.map(h => h.split(':'));
+
+      let foundHash = allHashSuffixes.find(h => h[0] === remaining);
+
+      //magic number for how many comprimises we tolerate
+      return foundHash && parseInt(foundHash[1]) >= 5;
+    }catch(e){
+      this.log.error('Pwned password API problem %s', e.message);
+      //don't return true here so we can still register accounts if the api is down
+    }
+
+    return false;
   }
 }

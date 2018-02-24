@@ -82,6 +82,8 @@ namespace ctac
             {
                 view.setMessage(status.message);
                 view.loginEmail.text = view.registerEmail.text;
+                view.registerPassword.text = "";
+                view.registerPasswordConfirm.text = "";
                 view.onCancelRegisterClick();
             }
             else
