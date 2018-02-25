@@ -32,6 +32,7 @@ namespace ctac
             "Minion", "Ranged", "Melee"
         };
 
+        public static Vector3 halfVector = new Vector3(0.5f, 0.5f, 0.5f);
         public static Vector3 cardCircleCenter = new Vector3(0, -590, 332);
         public static Vector3 opponentCardCircleCenter = new Vector3(0, 750, 332);
         public static float cardCircleRadius = 480f;
