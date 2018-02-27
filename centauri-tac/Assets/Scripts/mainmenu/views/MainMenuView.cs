@@ -10,6 +10,7 @@ namespace ctac
     {
         public Signal clickPlaySignal = new Signal();
         public Signal clickCardsSignal = new Signal();
+        public Signal clickExchangeSignal = new Signal();
         public Signal clickOptionsSignal = new Signal();
         public Signal clickAboutSignal = new Signal();
         public Signal clickLeaveSignal = new Signal();
@@ -17,6 +18,7 @@ namespace ctac
 
         public Button playButton;
         public Button cardsButton;
+        public Button exchangeButton;
         public Button optionsButton;
         public Button aboutButton;
         public Button leaveButton;
@@ -33,6 +35,7 @@ namespace ctac
         {
             playButton.onClick.AddListener(() => clickPlaySignal.Dispatch());
             cardsButton.onClick.AddListener(() => clickCardsSignal.Dispatch());
+            exchangeButton.onClick.AddListener(() => clickExchangeSignal.Dispatch());
             optionsButton.onClick.AddListener(() => clickOptionsSignal.Dispatch());
             aboutButton.onClick.AddListener(() => clickAboutSignal.Dispatch());
             leaveButton.onClick.AddListener(() => clickLeaveSignal.Dispatch());
@@ -54,6 +57,7 @@ namespace ctac
         {
             playButton.gameObject.SetActive(active);
             cardsButton.gameObject.SetActive(active);
+            exchangeButton.gameObject.SetActive(active);
             optionsButton.gameObject.SetActive(active);
             aboutButton.gameObject.SetActive(active);
             leaveButton.gameObject.SetActive(active);
@@ -69,12 +73,14 @@ namespace ctac
         {
             playButton.interactable = true;
             cardsButton.interactable = true;
+            exchangeButton.interactable = true;
             //optionsButton.interactable = true;
         }
         internal void disableButtons()
         {
             playButton.interactable = false;
             cardsButton.interactable = false;
+            exchangeButton.interactable = false;
             optionsButton.interactable = false;
             aboutButton.interactable = false;
         }

@@ -39,6 +39,7 @@ namespace ctac
 
             view.clickPlaySignal.AddListener(onPlayClicked);
             view.clickCardsSignal.AddListener(onCardsClicked);
+            view.clickExchangeSignal.AddListener(onExchangeClicked);
             view.clickOptionsSignal.AddListener(onOptionsClicked);
             view.clickAboutSignal.AddListener(onAboutClicked);
             view.clickLeaveSignal.AddListener(onLeaveClicked);
@@ -51,6 +52,7 @@ namespace ctac
         {
             view.clickPlaySignal.RemoveListener(onPlayClicked);
             view.clickCardsSignal.RemoveListener(onCardsClicked);
+            view.clickExchangeSignal.RemoveListener(onExchangeClicked);
             view.clickOptionsSignal.RemoveListener(onOptionsClicked);
             view.clickAboutSignal.RemoveListener(onAboutClicked);
             view.clickLeaveSignal.RemoveListener(onLeaveClicked);
@@ -70,6 +72,12 @@ namespace ctac
         {
             moveLobbyView.Dispatch(LobbyScreens.cards);
         }
+
+        private void onExchangeClicked()
+        {
+            moveLobbyView.Dispatch(LobbyScreens.exchange);
+        }
+
 
         private void onOptionsClicked()
         {
