@@ -47,7 +47,7 @@ namespace ctac
             var minZ = map.tileList.Min(t => t.position.y);
             var maxZ = map.tileList.Max(t => t.position.y);
 
-            float camMargin = 10f;
+            float camMargin = 16f;
 
             view.camBounds = new Vector4(
                 minX - camMargin,

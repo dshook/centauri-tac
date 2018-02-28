@@ -13,6 +13,8 @@ namespace ctac
         {
             return players.Where(x => x.clientId == clientId).FirstOrDefault();
         }
+
+        public Guid newPlayerGuid = Guid.NewGuid();
     }
 }
 

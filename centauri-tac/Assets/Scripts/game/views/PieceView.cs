@@ -210,7 +210,7 @@ namespace ctac {
             hpBarContainer.transform.rotation = cameraRot;
 
             //As the camera zooms out, increase the size of the hpbar and faceCamera stuff so they're still ledgible
-            var cameraScale = Vector3.one * Mathf.Clamp(Camera.main.orthographicSize * 0.4f , 1, 3f);
+            var cameraScale = Vector3.one * Mathf.Clamp(Camera.main.orthographicSize * 0.25f , 1, 3f);
             faceCameraContainer.transform.localScale = cameraScale;
             hpBarContainer.transform.localScale = cameraScale;
             //slightly bump up the position of the hp bar as you zoom out so it doesn't overlap

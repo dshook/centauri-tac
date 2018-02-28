@@ -12,6 +12,9 @@ namespace ctac
         [Inject]
         public Credentials creds { get; set; }
 
+        [Inject]
+        public PlayersModel players{ get; set; }
+
         public override void Execute()
         {
             register(creds.username, creds.password);
@@ -19,7 +22,7 @@ namespace ctac
 
         private void register(string user, string password)
         {
-            socket.Request(Guid.NewGuid(), "auth", "register",
+            socket.Request(players.newPlayerGuid, "auth", "register",
                 new
                 {
                     email = user,
