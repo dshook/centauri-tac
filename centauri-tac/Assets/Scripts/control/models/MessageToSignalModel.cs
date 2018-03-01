@@ -31,8 +31,8 @@ namespace ctac
                 {"_ping", typeof(PingSignal) },
                 {"_latency", typeof(LatencySignal) },
 
-                {"qps", typeof(ServerQueueProcessStart) },
-                {"qpc", typeof(ServerQueueProcessEnd) },
+                {"qps", typeof(ServerQueueProcessStartSignal) },
+                {"qpc", typeof(ServerQueueProcessEndSignal) },
                 {"game", typeof(GamelistGameSignal) },
                 {"game:finished", typeof(ActionGameFinishedSignal) },
                 {"game:current", typeof(CurrentGameSignal) },

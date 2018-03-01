@@ -75,8 +75,8 @@ namespace ctac.signals
 
     [Singleton] public class PieceHoverSignal : Signal<PieceModel> { }
 
-    [Singleton] public class ServerQueueProcessStart : Signal<int> { }
-    [Singleton] public class ServerQueueProcessEnd : Signal<int> { }
+    [Singleton] public class ServerQueueProcessStartSignal : Signal<int> { }
+    [Singleton] public class ServerQueueProcessEndSignal : Signal<int> { }
 
     [Singleton] public class EndTurnSignal : Signal { }
     [Singleton] public class ActionPassTurnSignal : Signal<PassTurnModel> { }

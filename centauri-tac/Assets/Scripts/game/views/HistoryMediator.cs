@@ -31,7 +31,7 @@ namespace ctac
         //If they're the first in the queue process then they'll make a new current item, otherwise they'll
         //attach themselves to the current one.  Then when the queue processing is complete we'll push the
         //built up item
-        [ListensTo(typeof(ServerQueueProcessEnd))]
+        [ListensTo(typeof(ServerQueueProcessEndSignal))]
         public void onQpc(int t)
         {
             if (currentItems.Count > 0)
@@ -73,12 +73,12 @@ namespace ctac
             if(pieceSpawned.piece.isHero) return;
 
             var currentItem = GetCurrent(
-                pieceSpawned.spawnPieceAction.activatingPieceId, 
-                HistoryItemType.MinionPlayed, 
+                pieceSpawned.spawnPieceAction.activatingPieceId,
+                HistoryItemType.MinionPlayed,
                 pieceSpawned.piece.playerId
             );
 
-            if (pieceSpawned.spawnPieceAction.activatingPieceId.HasValue 
+            if (pieceSpawned.spawnPieceAction.activatingPieceId.HasValue
                 && pieceSpawned.spawnPieceAction.activatingPieceId != pieceSpawned.spawnPieceAction.pieceId)
             {
                 currentItem.triggeringPiece = CopyPiece(pieces.Piece(pieceSpawned.spawnPieceAction.activatingPieceId.Value));
@@ -98,8 +98,8 @@ namespace ctac
         public void onSpellPlayed(SpellPlayedModel spellPlayed)
         {
             var currentItem = GetCurrent(
-                spellPlayed.playSpellAction.activatingPieceId, 
-                HistoryItemType.CardPlayed, 
+                spellPlayed.playSpellAction.activatingPieceId,
+                HistoryItemType.CardPlayed,
                 spellPlayed.playSpellAction.playerId
             );
             var card = cards.Card(spellPlayed.playSpellAction.cardInstanceId);

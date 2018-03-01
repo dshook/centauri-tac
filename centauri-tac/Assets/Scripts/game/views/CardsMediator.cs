@@ -190,7 +190,7 @@ namespace ctac
             UpdateCardsPlayableStatus(cards.Cards);
         }
 
-        [ListensTo(typeof(ServerQueueProcessEnd))]
+        [ListensTo(typeof(ServerQueueProcessEndSignal))]
         public void onQueueProcessComplete(int t)
         {
             //update text on all cards when the queue completes to catch updates
