@@ -111,23 +111,20 @@ export default class AttackPieceProcessor
 
     let bonus = 0;
     let bonusMsg = null;
-    // let facingDirection = directionOf(attackerNewDirection, target.direction);
-    // if(facingDirection == 'behind' && !rangedAttack){
-    //   this.log.info('Backstab triggered, attackerDirection: %s attackerNewDirection: %s, target.direction: %s'
-    //     , action.direction, attackerNewDirection, target.direction);
-    //   bonus = -1;
-    //   bonusMsg = 'Backstab';
-    // }
+
     if(rangedAttack && (attackerTile.position.y - targetTile.position.y) >= Constants.heightDeltaThreshold ){
       bonus = -1;
       bonusMsg = 'High Ground';
+    }
+    if(rangedAttack && (targetTile.position.y - attackerTile.position.y) >= Constants.heightDeltaThreshold ){
+      bonus = 1;
+      bonusMsg = 'Low Ground';
     }
 
     queue.push(new PieceHealthChange({pieceId: action.targetPieceId, change: -attacker.attack, bonus, bonusMsg}));
 
     //counter attack if in range
     if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
-      //if(!action.isTauntAttack || !(target.statuses & Statuses.CantAttack || target.statuses & Statuses.Paralyze)){
       if(!(target.statuses & Statuses.Paralyze)){
         queue.push(new PieceHealthChange({pieceId: action.attackingPieceId, change: -target.attack}));
       }

@@ -24,7 +24,7 @@ namespace ctac
 
             debug.Log("Action Cancelled Spawn Piece Command");
             //find and cleanup the phantom piece start target spawned
-            var phantomPiece = pieces.Pieces.FirstOrDefault(p =>  p.tags.Contains(Constants.targetPieceTag));
+            var phantomPiece = pieces.Pieces.FirstOrDefault(p => p.tags.Contains(Constants.targetPieceTag));
 
             if (phantomPiece != null)
             {

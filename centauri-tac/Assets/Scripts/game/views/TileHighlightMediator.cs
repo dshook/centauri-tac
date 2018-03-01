@@ -269,9 +269,14 @@ namespace ctac
 
                     var attackingFromTile = map.tiles.Get(selectedPiece.tilePosition);
                     //b-b-b-bonus
-                    if(tileDistance > 1 && attackingFromTile.fullPosition.y - gameTile.fullPosition.y >= Constants.heightDeltaThreshold)
+                    if(attackingFromTile.fullPosition.y - gameTile.fullPosition.y >= Constants.heightDeltaThreshold)
                     {
                         cursorMessage = "+1 High Ground";
+                    }
+                    //s-s-s-suck it
+                    if(gameTile.fullPosition.y - attackingFromTile.fullPosition.y  >= Constants.heightDeltaThreshold)
+                    {
+                        cursorMessage = "-1 Low Ground";
                     }
                 }
                 else if(selectedPiece.isMelee && movePath != null)
