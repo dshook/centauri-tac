@@ -43,6 +43,7 @@ namespace ctac
 
         CardModel draggedCard = null;
         float draggedCardTime = 0f;
+        bool clickUpCardInHand = false;
 
         PieceModel selectedPiece = null;
         MovePathFoundModel movePath = null;
@@ -143,6 +144,8 @@ namespace ctac
 
             if (cardClick.isUp)
             {
+                clickUpCardInHand = draggedCard != null;
+
                 //if we get an up click on an already activated card this should mean that we just single clicked on it to activate
                 //and we don't need to do anything else
                 if (cardView.card.activated)
@@ -331,8 +334,10 @@ namespace ctac
                 return;
             }
 
-            //If deploying a minion ignore drags around the map
-            if(clickModel.isDrag && (draggedCard != null && draggedCard.isMinion)){
+            //If deploying a minion ignore drags around the map,
+            //but only for when you clicked on the card in your hand then tried to drag around the map
+            //not for when you click and drag from your hand to the spot on the board
+            if(clickModel.isDrag && (draggedCard != null && draggedCard.isMinion) && clickUpCardInHand){
                 return;
             }
 
@@ -573,6 +578,7 @@ namespace ctac
             {
                 draggedCard = cardSelected.card;
                 draggedCardTime = Time.time;
+                clickUpCardInHand = false;
             }
             else
             {

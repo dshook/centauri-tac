@@ -115,7 +115,8 @@ export default class GameManager
     }
 
     if (!(await host.canPlayerJoin(client, playerId))) {
-      throw new Error('cannot join when allowJoin is false');
+      this.log.error('cannot join when allowJoin is false');
+      return false;
     }
 
     this.log.info('player %s joining game %s', playerId, gameId);
