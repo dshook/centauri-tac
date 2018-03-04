@@ -1,5 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
+import Player from 'models/player';
+import {MockClient} from 'socket-client';
 
 const WAITING = 1;
 const READY = 2;
@@ -10,10 +12,11 @@ const READY = 2;
 @loglevel
 export default class Matchmaker
 {
-  constructor(emitter, gameManager)
+  constructor(emitter, gameManager, componentsConfig)
   {
     this.emitter = emitter;
     this.gameManager = gameManager;
+    this.componentsConfig = componentsConfig;
 
     setInterval(() => this._processQueue(), 500);
 
@@ -72,14 +75,21 @@ export default class Matchmaker
    */
   async _processQueue()
   {
-    if (this.queue.length < 2) {
-      return;
-    }
-
     const ready = this.queue.filter(x => x.status === READY);
 
     if (ready.length < 2) {
-      this.log.info('not enough ready players to process queue yet');
+      if(this.componentsConfig.dev && this.queue.length === 1){
+        //Create AI and use deck in DB for them to use
+        this.log.info('Adding AI player for match');
+        let ai = this.createAIPlayer();
+        await this.queuePlayer(ai.id, -1);
+      }else if(this.queue.length === 1){
+        this.log.info('not enough ready players to process queue yet');
+      }
+      return;
+    }
+
+    if (this.queue.length < 2) {
       return;
     }
 
@@ -108,5 +118,14 @@ export default class Matchmaker
     await this.emitter.emit('matchmaker:status', {
       playerId, inQueue, beingMatched
     });
+  }
+
+  createAIPlayer(){
+    var p = new Player(-1);
+    p.email = 'AI@internet.com';
+    p.client = new MockClient();
+    p.connected = true;
+
+    return p;
   }
 }

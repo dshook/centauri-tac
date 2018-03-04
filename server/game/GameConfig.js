@@ -5,9 +5,6 @@ export default class GameConfig
 {
   constructor()
   {
-    /**
-     * How frequently clients are pinged to update latency
-     */
     this.dev = process.env.DEV || false;
 
     //dev hack, set one card you're working on to be most of your deck

@@ -54,8 +54,10 @@ export default class CardManager
       this.cardDirectory.directory[c.cardTemplateId].rarity === Rarities.Ascendant
       && c.quantity > 1)
     ){
-      throw new DeckStoreError('Only 1 of each Mythical card is allowed in your deck');
+      throw new DeckStoreError('Only 1 of each Ascendant card is allowed in your deck');
     }
+
+    deck.isValid = deck.cardCount() === 30;
 
     return await this.decks.upsertDeck(deck);
   }

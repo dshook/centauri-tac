@@ -10,6 +10,8 @@ export default class ComponentsConfig
      */
     this.serverPingInterval = 0 | process.env.PING_INTERVAL || 2000;
 
+    this.dev = process.env.DEV || false;
+
     //Game stuff here for now since the gamelist needs them in the process of creating a game
     //length of the first turn
     this.turnLengthMs = process.env.TURN_LENGTH_MS || 40000;
