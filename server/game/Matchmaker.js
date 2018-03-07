@@ -1,7 +1,6 @@
 import loglevel from 'loglevel-decorator';
 import _ from 'lodash';
-import Player from 'models/player';
-import {MockClient} from 'socket-client';
+import AiPlayer from './ctac/ai/AiPlayer';
 
 const WAITING = 1;
 const READY = 2;
@@ -12,11 +11,12 @@ const READY = 2;
 @loglevel
 export default class Matchmaker
 {
-  constructor(emitter, gameManager, componentsConfig)
+  constructor(emitter, gameManager, componentsConfig, auth)
   {
     this.emitter = emitter;
     this.gameManager = gameManager;
     this.componentsConfig = componentsConfig;
+    this.auth = auth;
 
     setInterval(() => this._processQueue(), 500);
 
@@ -75,26 +75,24 @@ export default class Matchmaker
    */
   async _processQueue()
   {
+    if(this.componentsConfig.dev && this.queue.length === 1 && this.queue[0].playerId !== -1){
+      //Create AI and use deck in DB for them to use
+      this.log.info('Adding AI player for match');
+      let ai = new AiPlayer(-1, this.auth);
+      await this.emitter.emit('ai:add', ai.client);
+      await this.queuePlayer(ai.id, -1);
+    }
+
     const ready = this.queue.filter(x => x.status === READY);
-
-    if (ready.length < 2) {
-      if(this.componentsConfig.dev && this.queue.length === 1){
-        //Create AI and use deck in DB for them to use
-        this.log.info('Adding AI player for match');
-        let ai = this.createAIPlayer();
-        await this.queuePlayer(ai.id, -1);
-      }else if(this.queue.length === 1){
-        this.log.info('not enough ready players to process queue yet');
-      }
+    if (this.queue.length < 2 || ready.length < 2) {
+      //this.log.info('not enough ready players to process queue yet');
       return;
     }
 
-    if (this.queue.length < 2) {
-      return;
-    }
 
     const matchedPlayers = ready.slice(0, 2);
     const playerIds = matchedPlayers.map(m => m.playerId);
+    this.log.info('Matching players %j ', playerIds);
 
     // remove from original queue
     _.remove(this.queue, x => playerIds.some(id => id === x.playerId));
@@ -118,14 +116,5 @@ export default class Matchmaker
     await this.emitter.emit('matchmaker:status', {
       playerId, inQueue, beingMatched
     });
-  }
-
-  createAIPlayer(){
-    var p = new Player(-1);
-    p.email = 'AI@internet.com';
-    p.client = new MockClient();
-    p.connected = true;
-
-    return p;
   }
 }

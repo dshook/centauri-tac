@@ -92,6 +92,27 @@ export default class GameRPC
   }
 
   /**
+   * When an AI connects
+   */
+  @on('ai:add')
+  async aiAdd(client, params, auth)
+  {
+    let playerId = client.auth.sub.id || null;
+
+    if(!playerId){
+      this.log.warn('Connecting AI missing auth creds');
+      return;
+    }
+
+    if(this.clients[playerId]){
+      this.bye(this.clients[playerId], 'reconnect')
+    }
+    this.clients[playerId] = client;
+    this.log.info('AI %s connected', playerId);
+  }
+
+
+  /**
    * For now, a disconnect is going to be the same as an intentional part
    */
   @rpc.disconnected()
