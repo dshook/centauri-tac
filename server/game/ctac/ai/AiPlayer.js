@@ -7,7 +7,7 @@ import {on} from 'emitter-binder';
 @loglevel
 export default class AiPlayer extends Player
 {
-  constructor(id = null, auth)
+  constructor(id = null, auth, sockHarness)
   {
     super(id);
     this.email = 'AI@internet.com';
@@ -18,14 +18,23 @@ export default class AiPlayer extends Player
     const roles = ['player'];
     this.client.token = auth.generateToken(this, roles);
 
+    //Bind server events that are directed to this client to be picked up by the @on handler
     this.binder = new EmitterBinder(this.client);
     this.binder.bindInstance(this);
+
+    this.currentGame = null;
   }
 
   @on('received')
   onServerCommand({command, data})
   {
-    this.log.info('Ai received command %j data %j', command, data);
+    this.log.info('Ai received command %j', command);
+    switch(command){
+      case 'game:current':
+        this.currentGame = data;
+        this.client.sendToServer({data: 'join ' + data.id});
+        break;
+    }
   }
 
 }

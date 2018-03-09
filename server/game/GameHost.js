@@ -193,6 +193,7 @@ export default class GameHost extends EventEmitter
     this.emit('shutdown');
   }
 
+  //TODO: need to cache this in an object or something so this doesn't have to be run for every command
   playerByClient(client){
     return this.players.find(x => x.client === client);
   }

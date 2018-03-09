@@ -6,10 +6,11 @@ import {on} from 'emitter-binder';
 @loglevel
 export default class GameRPC
 {
-  constructor(games, gameManager)
+  constructor(games, gameManager, gameSocketServer)
   {
     this.games = games;
-    this.manager = gameManager;
+    this.gameManager = gameManager;
+    this.gameSocketServer = gameSocketServer;
 
     this.clients = {};
   }
@@ -20,7 +21,7 @@ export default class GameRPC
   @on('update:allowJoin')
   async updateAllowJoin({gameId, allowJoin})
   {
-    await this.manager.setAllowJoin(gameId, allowJoin);
+    await this.gameManager.setAllowJoin(gameId, allowJoin);
   }
 
   /**
@@ -29,7 +30,7 @@ export default class GameRPC
   @on('game:completed')
   async completed({gameId, winningPlayerId, message})
   {
-    await this.manager.completeGame(gameId, winningPlayerId, message);
+    await this.gameManager.completeGame(gameId, winningPlayerId, message);
   }
 
   /**
@@ -39,8 +40,8 @@ export default class GameRPC
   async createGame({name}, auth)
   {
     const playerId = auth.sub.id;
-    const game = await this.manager.create(name);
-    await this.manager.playerJoin(playerId, game.id, null);
+    const game = await this.gameManager.create(name);
+    await this.gameManager.playerJoin(playerId, game.id, null);
   }
 
   /**
@@ -49,12 +50,12 @@ export default class GameRPC
   @on('gamelist:createFor')
   async createGameFor({name, matchedPlayers})
   {
-    const game = await this.manager.create(name, matchedPlayers);
+    const game = await this.gameManager.create(name, matchedPlayers);
 
     if(!game) return;
 
     for (const matchedPlayer of matchedPlayers) {
-      await this.manager.playerJoin(matchedPlayer.playerId, game.id, matchedPlayer.deckId);
+      await this.gameManager.playerJoin(matchedPlayer.playerId, game.id, matchedPlayer.deckId);
     }
   }
 
@@ -108,6 +109,10 @@ export default class GameRPC
       this.bye(this.clients[playerId], 'reconnect')
     }
     this.clients[playerId] = client;
+
+    //We also have to manually bind the AI's client to the game since ordinarily this would happen on the ws connect
+    this.gameSocketServer.bindClient(client);
+
     this.log.info('AI %s connected', playerId);
   }
 
@@ -120,7 +125,7 @@ export default class GameRPC
   {
     let playerId = client && client.auth ? client.auth.sub.id : null;
     this.log.info('Closing connection for %s for player %s', reason || 'dc', playerId);
-    this.manager.playerPart(client);
+    this.gameManager.playerPart(client);
     if(playerId){
       delete this.clients[playerId];
     }
@@ -134,7 +139,8 @@ export default class GameRPC
   playerJoin(client, gameId, auth)
   {
     const playerId = auth.sub.id;
-    this.manager.playerJoinGame(client, playerId, gameId);
+    this.log.info('Player %s attempting to join game %s', playerId, gameId);
+    this.gameManager.playerJoinGame(client, playerId, gameId);
   }
 
   /**

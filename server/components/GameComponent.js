@@ -10,7 +10,10 @@ export default class GameComponent
 {
   async start(component)
   {
-    const {sockServer, restServer} = component;
+    const {sockServer, restServer, container} = component;
+
+    //Kind of a hack.
+    container.registerValue('gameSocketServer', sockServer);
 
     sockServer.addHandler(GameRPC);
     restServer.mountController('/cards', CardsAPI);

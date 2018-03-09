@@ -97,6 +97,7 @@ export default class ComponentManager
       entry.server = this.server;
       entry.restServer = rest;
       entry.sockServer = sockServer;
+      entry.container = this.container;
 
       entry.type = {name};
       entry.typeName = name;
