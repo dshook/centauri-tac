@@ -19,7 +19,7 @@ namespace ctac
         [Inject] public MatchmakerQueueSignal matchmakerQueue { get; set; }
 
         [Inject] public GameLoggedInSignal gameLoggedInSignal { get; set; }
-        [Inject] public CurrentGameSignal currentGameSignal { get; set; }
+        [Inject] public CurrentGameRegisteredSignal currentGameSignal { get; set; }
         [Inject] public LobbyLoggedInSignal lobbyLoggedInSignal { get; set; }
 
         [Inject] public PiecesModel piecesModel { get; set; }
@@ -78,7 +78,7 @@ namespace ctac
             LoadGame();
         }
 
-        public void onCurrentGame(GameMetaModel game, SocketKey key)
+        public void onCurrentGame(CurrentGameModel game)
         {
             Cleanup();
             LoadGame();

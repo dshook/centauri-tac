@@ -1,32 +1,21 @@
+using ctac.signals;
 using strange.extensions.command.impl;
 
 namespace ctac
 {
     public class AuthGameCommand : Command
     {
-        [Inject]
-        public ISocketService socket { get; set; }
+        [Inject] public ISocketService socket { get; set; }
+        [Inject] public IDebugService debug { get; set; }
 
-        [Inject]
-        public IDebugService debug { get; set; }
+        [Inject] public ComponentModel components { get; set; }
+        [Inject] public PlayersModel playersModel { get; set; }
+        [Inject] public GamelistModel gamelist { get; set; }
+        [Inject] public GameMetaModel game { get; set; }
+        [Inject] public CurrentGameModel currentGame { get; set; }
+        [Inject] public SocketKey socketKey { get; set; }
 
-        [Inject]
-        public ComponentModel components { get; set; }
-
-        [Inject]
-        public PlayersModel playersModel { get; set; }
-
-        [Inject]
-        public GamelistModel gamelist { get; set; }
-
-        [Inject]
-        public GameMetaModel game { get; set; }
-
-        [Inject]
-        public CurrentGameModel currentGame { get; set; }
-
-        [Inject]
-        public SocketKey socketKey { get; set; }
+        [Inject] public CurrentGameRegisteredSignal cgrs { get; set; }
 
         public override void Execute()
         {
@@ -44,6 +33,8 @@ namespace ctac
 
             var player = playersModel.GetByClientId(socketKey.clientId);
             socket.Request(socketKey.clientId, "game", "token", player.token);
+
+            cgrs.Dispatch(currentGame);
         }
     }
 }

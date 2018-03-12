@@ -4,6 +4,7 @@ using UnityEngine;
 namespace ctac.signals
 {
     [Singleton] public class CurrentGameSignal : Signal<GameMetaModel, SocketKey> { }
+    [Singleton] public class CurrentGameRegisteredSignal : Signal<CurrentGameModel> { }
 
     [Singleton] public class GameLoggedInSignal : Signal<LoginStatusModel, SocketKey> { }
     [Singleton] public class GameAuthedSignal : Signal { }

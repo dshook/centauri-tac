@@ -69,7 +69,7 @@ namespace ctac
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
             {"Elusive",            "Cannot be targeted by spells, abilities, or hero powers" },
-            {"Empower",            "Use your hero power to trigger this effect" },
+            {"Empower",            "If you have a charge, consume it and gain the effect" },
             {"Root",               "Cannot move" },
             {"Charge",             "Minion can move and attack immediately" },
             {"Dyad Strike",        "Minion can attack twice per turn" },

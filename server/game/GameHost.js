@@ -39,6 +39,7 @@ export default class GameHost extends EventEmitter
     this.binder.addEmitter(this);
 
     this.players = [];
+    this.app = null;
   }
 
   /**
@@ -46,7 +47,7 @@ export default class GameHost extends EventEmitter
    */
   async startInstance()
   {
-    const app = new Application();
+    let app = this.app = new Application();
 
     this.log.info('booting up game stack for game %s', this.game.id);
 
@@ -116,6 +117,11 @@ export default class GameHost extends EventEmitter
 
     // hello
     client.send('join');
+
+    // Hack to give AI the game instance
+    if(playerId === -1){
+      client.send('gameInstance', this.app);
+    }
 
     // send all current players to the client
     for (const p of this.players) {
