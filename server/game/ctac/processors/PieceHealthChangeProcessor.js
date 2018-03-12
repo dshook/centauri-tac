@@ -40,7 +40,7 @@ export default class PieceHealthChangeProcessor
       delete action.spellDamageBonus;
     }
     if(action.change == 0){
-      this.log.warn('No health to change for piece %s', action.pieceId);
+      this.log.info('No health to change for piece %s', action.pieceId);
       return queue.cancel(action);
     }
 

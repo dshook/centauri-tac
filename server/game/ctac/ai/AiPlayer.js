@@ -93,7 +93,7 @@ export default class AiPlayer extends Player
       }
 
       this.log.info('Ai Moving Hero');
-      this.send('move', {pieceId: hero.id, route: path});
+      this.send('move', {pieceId: hero.id, route: path.map(p => {return {x: p.x, z: p.z}; })});
     }
   }
 

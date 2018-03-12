@@ -33,9 +33,13 @@ export default class MovePieceProcessor
     //check to make sure that the piece isn't moving on top of another piece
     //unless it's a friendly piece and not the final destination
     //or if it's a teleport swip swap
-    let occupyingPieces = this.pieceState.pieces.filter(p => p.position.equals(action.to));
+    let occupyingPieces = this.pieceState.pieces.filter(p => p.position.tileEquals(action.to));
     if(occupyingPieces.length > 0){
-      if(occupyingPieces.length > 1) throw 'Multiple pieces already occupying position';
+      if(occupyingPieces.length > 1){
+        this.log.warn('Cannot move piece %j on top of %j', piece, occupyingPieces[0]);
+        return queue.cancel(action);
+      }
+
       let otherPiece = occupyingPieces[0];
       //peek two because the current action hasn't been completed yet
       let upcomingQueue = queue.peek(2);
