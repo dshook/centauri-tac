@@ -253,25 +253,19 @@ export default class MapState
     var openset = [ start ];
 
     // The map of navigated nodes.
-    var came_from = {};
+    var came_from = new WeakMap();
 
-    var g_score = {};
-    g_score[start] = 0;    // Cost from start along best known path.
+    var g_score = new WeakMap();
+    g_score.set(start, 0);    // Cost from start along best known path.
 
     // Estimated total cost from start to goal through y.
-    var f_score = {};
-    f_score[start] = g_score[start] + this.tileDistance(start.position, end.position);
+    var f_score = new WeakMap();
+    f_score.set(start, g_score.get(start) + this.tileDistance(start.position, end.position));
 
-    let itr = 0;
     while (openset.length > 0) {
-      itr++;
       // the node in openset having the lowest f_score[] value
       var current = _.sortBy(openset, x => this.getValueOrMax(f_score,x))[0];
-      console.log(`${itr} current`, current);
-      console.log(`${itr} open`, openset);
-      console.log(`${itr} closed`, closedset);
       if (current.position.equals(end.position)) {
-        console.log(`found path`, came_from);
         return this.reconstructPath(came_from, end);
       }
 
@@ -294,9 +288,9 @@ export default class MapState
             continue;
           }
 
-          came_from[neighbor] = current;
-          g_score[neighbor] = tentative_g_score;
-          f_score[neighbor] = this.getValueOrMax(g_score,neighbor) + this.tileDistance(neighbor.position, end.position);
+          came_from.set(neighbor, current);
+          g_score.set(neighbor, tentative_g_score);
+          f_score.set(neighbor, this.getValueOrMax(g_score,neighbor) + this.tileDistance(neighbor.position, end.position));
           if (!openset.includes(neighbor)) {
             openset.push(neighbor);
           }
@@ -309,8 +303,8 @@ export default class MapState
 
   reconstructPath(came_from, current) {
     var total_path = [ current ];
-    while(came_from[current] !== undefined){
-      current = came_from[current];
+    while(came_from.has(current)){
+      current = came_from.get(current);
       total_path.push(current);
     }
     _.reverse(total_path);
@@ -319,10 +313,10 @@ export default class MapState
     return total_path;
   }
 
-  getValueOrMax(dict, key)
+  getValueOrMax(weakMap, key)
   {
-    if(dict[key] !== undefined) return dict[key];
-    return 9999999;
+    if(weakMap.has(key)) return weakMap.get(key);
+    return 99999990;
   }
 
   /// <summary>
@@ -349,7 +343,7 @@ export default class MapState
       if(!includeOccupied){
           //filter out tiles with enemies on them that aren't the destination
           ret = ret.filter(t =>
-              (dest != null && t.key.equals(dest)) ||
+              (dest != null && t.key.tileEquals(dest.position)) ||
               !this.pieceState.pieces.some(m => m.position.tileEquals(t.key) && m.playerId != piece.playerId)
           );
 
@@ -361,7 +355,7 @@ export default class MapState
               || dest.position.tileEquals(t.key)
               || !destinationOccupied
               || this.tileDistance(t.key, dest.position) > 1
-              || !this.pieceState.pieces.some(p => p.position.tileEquals(t.Key))
+              || !this.pieceState.pieces.some(p => p.position.tileEquals(t.key))
           );
       }
 

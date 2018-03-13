@@ -173,7 +173,7 @@ test('Map state handles stacked tiles', t => {
 });
 
 
-test.only('Find Path', t => {
+test('Find Path', t => {
 
   let pieceStateMix = new PieceState();
   mockPiece(pieceStateMix, new Position(1, 0, 2), false),
@@ -193,6 +193,15 @@ test.only('Find Path', t => {
   var movingPiece = spawnPiece(pieceStateMix, 105, 1, false, new Position(2,0,2));
   var start = mapState.getTile(new Position(2,0,2));
 
+  //test to walk through friendly
+  var end = mapState.getTile(new Position(2,0,4));
+  var tilePath = mapState.findPath(start, end, 2, movingPiece);
+  var expectedTiles = [
+    mapState.getTile(new Position(2, 0, 3)).position,
+    mapState.getTile(new Position(2, 0, 4)).position
+  ];
+  t.ok(positionArrayEquals(tilePath.map(t => t.position), expectedTiles), 'Got expected path');
+
   //test to walk around enemy
   var enemyEnd = mapState.getTile(new Position(0,0,2));
 
@@ -204,16 +213,6 @@ test.only('Find Path', t => {
     mapState.getTile(new Position(0, 0, 2)).position,
   ];
   t.ok(positionArrayEquals(enemyPath.map(t => t.position), expectedEnemyPath), 'Got expected enemy path');
-
-
-  //test to walk through friendly
-  var end = mapState.getTile(new Position(2,0,4));
-  var tilePath = mapState.findPath(start, end, 2, movingPiece);
-  var expectedTiles = [
-    mapState.getTile(new Position(2, 0, 3)).position,
-    mapState.getTile(new Position(2, 0, 4)).position
-  ];
-  t.ok(positionArrayEquals(tilePath.map(t => t.position), expectedTiles), 'Got expected path');
 
   //test to attack enemy but not land on a friendly
   var passThroughEnd = mapState.getTile(new Position(5,0,2));
