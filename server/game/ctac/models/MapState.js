@@ -308,6 +308,7 @@ export default class MapState
   }
 
   //Pathfinding copied from client
+  //start and end are tiles
   findPath(start, end, maxDist, piece)
   {
     var ret = [];

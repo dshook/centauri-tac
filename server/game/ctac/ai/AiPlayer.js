@@ -88,6 +88,9 @@ export default class AiPlayer extends Player
       return;
     }
 
+    let heroTile = this.mapState.getTile(hero.position);
+    let opponentTile = this.mapState.getTile(opponent.position);
+
     let heroMovementLeft = hero.movement - hero.moveCount;
     if(heroMovementLeft > 0 && this.mapState.tileDistance(hero.position, opponent.position) !== 2){
       //try to find the closest tile 2 distance away from the enemy hero
@@ -99,6 +102,14 @@ export default class AiPlayer extends Player
         var dest = _.sortBy(radiusTiles, k => this.mapState.tileDistance(hero.position, k.position));
 
         let path = this.mapState.findMovePath(hero, null, dest[0]);
+
+        if(path === null || !path.length){
+          //hero is out of range of our movement this turn so do a full path find and grab the first bit of the path
+          path = this.mapState.findPath(heroTile, opponentTile, 25, hero);
+          if(path != null){
+            path = path.slice(0, heroMovementLeft);
+          }
+        }
 
         if(path != null && path.length > 0){
           this.log.info('Ai Moving Hero');
