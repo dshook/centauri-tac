@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Player from 'models/player';
 import {MockClient} from 'socket-client';
 import EmitterBinder from 'emitter-binder';
@@ -78,22 +79,36 @@ export default class AiPlayer extends Player
     var hero = this.pieceState.hero(this.id);
     var opponent = this.pieceState.hero(this.opponent.id);
 
+    if(!opponent){
+      this.log.info('AI Won!');
+      return;
+    }
+    if(!hero){
+      this.log.info('AI Lost :(');
+      return;
+    }
+
     let heroMovementLeft = hero.movement - hero.moveCount;
-    if(heroMovementLeft > 0){
-      //need pathfinding lol
-      let path = [];
-      if(hero.position.z > opponent.position.z){
-        for(let i = 1; i <= heroMovementLeft; i++){
-          path.push(hero.position.addZ(-1 * i));
+    if(heroMovementLeft > 0 && this.mapState.tileDistance(hero.position, opponent.position) !== 2){
+      //try to find the closest tile 2 distance away from the enemy hero
+      let radiusTiles = this.mapState.getTilesInRadius(opponent.position, 2)
+        .map(p => this.mapState.getTile(p))
+        .filter(p => !p.unpassable && this.mapState.tileDistance(p.position, opponent.position) === 2);
+
+      if(radiusTiles.length){
+        var dest = _.sortBy(radiusTiles, k => this.mapState.tileDistance(hero.position, k.position));
+
+        let path = this.mapState.findMovePath(hero, null, dest[0]);
+
+        if(path != null && path.length > 0){
+          this.log.info('Ai Moving Hero');
+          this.send('move', {pieceId: hero.id, route: path.map(p => p.position)});
+        }else{
+          this.log.info('Path Not Found');
         }
       }else{
-        for(let i = 1; i <= heroMovementLeft; i++){
-          path.push(hero.position.addZ(1 * i));
-        }
+        this.log.info('No Radius Tiles');
       }
-
-      this.log.info('Ai Moving Hero');
-      this.send('move', {pieceId: hero.id, route: path.map(p => {return {x: p.x, z: p.z}; })});
     }
   }
 

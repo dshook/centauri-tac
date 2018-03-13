@@ -240,6 +240,73 @@ export default class MapState
     return ret;
   }
 
+  /// <summary>
+  /// Find a path from piece to either the attacking piece or end tile
+  /// If attacking piece is passed the path will include the tile they're standing on
+  /// </summary>
+  findMovePath(piece = null, pieceAttacking = null, end = null)
+  {
+    if (piece == null || (end != null && end.unpassable) || (pieceAttacking == null && end == null))
+    {
+      return null;
+    }
+
+    //use pieceAttacking if you want to attack a piece on a tile
+    if (end != null && pieceAttacking == null && this.pieceState.pieces.some(m => m.position.tileEquals(end.position)))
+    {
+      return null;
+    }
+
+    var pieceAttackingTile = null;
+    if(pieceAttacking != null){
+      pieceAttackingTile = this.getTile(pieceAttacking.position);
+    }
+
+    //For ranged units attacking within their range the move path is just the enemy position
+    if(
+      piece.isRanged
+      && pieceAttacking != null
+      && this.kingDistance(piece.position, pieceAttacking.position) <= piece.range
+    )
+    {
+      return [pieceAttackingTile];
+    }
+
+    //Flying pieces can be a bit trickier
+    if ((piece.statuses & Statuses.Flying) != 0)
+    {
+      if (pieceAttacking != null)
+      {
+        //for attacking a piece with a flying unit we just need to get to an adjacent open tile that's within range
+        var adjacent = this.getMovableNeighbors(pieceAttackingTile, piece, null, false);
+        if (adjacent == null || adjacent.length === 0)
+        {
+          return null;
+        }
+        var moveTo = _.sortBy(adjacent, k => this.tileDistance(piece.position, k.key))[0];
+        //don't need originating if they're already adjacent though
+        if (moveTo.value.position.tileEquals(piece.position))
+        {
+          return [pieceAttackingTile];
+        }
+        else
+        {
+          return [moveTo.value, pieceAttackingTile];
+        }
+      }
+      else if (end != null && this.tileDistance(piece.position, end.position) <= piece.movement - piece.moveCount)
+      {
+        return [end];
+      }
+    }
+
+    //default cases where the piece is melee or a ranged unit that's just moving to a tile
+    //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
+    var boost = pieceAttacking != null ? 1 : 0;
+    var dest = pieceAttacking != null ? pieceAttackingTile: end;
+    return this.findPath(this.getTile(piece.position), dest, (piece.movement - piece.moveCount) + boost, piece);
+  }
+
   //Pathfinding copied from client
   findPath(start, end, maxDist, piece)
   {

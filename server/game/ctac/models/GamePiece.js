@@ -55,6 +55,14 @@ export default class GamePiece
     return this.tags.includes('Minion');
   }
 
+  get isRanged(){
+    return this.range > 0;
+  }
+
+  get isMelee(){
+    return !this.range;
+  }
+
   addBuff(buff, cardEvaluator){
     let action = {};
     if(buff.enabled){

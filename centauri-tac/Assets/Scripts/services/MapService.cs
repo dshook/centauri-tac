@@ -289,6 +289,11 @@ namespace ctac
                 return null;
             }
 
+            Tile pieceAttackingTile = null;
+            if(pieceAttacking != null){
+                pieceAttackingTile = mapModel.tiles[pieceAttacking.tilePosition];
+            }
+
             //For ranged units attacking within their range the move path is just the enemy position
             if(
                 piece.isRanged
@@ -296,7 +301,7 @@ namespace ctac
                 && KingDistance(piece.tilePosition, pieceAttacking.tilePosition) <= piece.range
             )
             {
-                return new List<Tile>() { mapModel.tiles[pieceAttacking.tilePosition] };
+                return new List<Tile>() { pieceAttackingTile };
             }
 
             //Flying pieces can be a bit trickier
@@ -305,7 +310,7 @@ namespace ctac
                 if (pieceAttacking != null)
                 {
                     //for attacking a piece with a flying unit we just need to get to an adjacent open tile that's within range
-                    var adjacent = GetMovableNeighbors(mapModel.tiles[pieceAttacking.tilePosition], piece, null, false);
+                    var adjacent = GetMovableNeighbors(pieceAttackingTile, piece, null, false);
                     if (adjacent == null || adjacent.Count == 0)
                     {
                         return null;
@@ -314,11 +319,11 @@ namespace ctac
                     //don't need originating if they're already adjacent though
                     if (moveTo.Value.position == piece.tilePosition)
                     {
-                        return new List<Tile>() { mapModel.tiles[pieceAttacking.tilePosition] };
+                        return new List<Tile>() { pieceAttackingTile };
                     }
                     else
                     {
-                        return new List<Tile>() { moveTo.Value, mapModel.tiles[pieceAttacking.tilePosition] };
+                        return new List<Tile>() { moveTo.Value, pieceAttackingTile};
                     }
                 }
                 else if (end != null && TileDistance(piece.tilePosition, end.position) <= piece.movement - piece.moveCount)
@@ -330,7 +335,7 @@ namespace ctac
             //default cases where the piece is melee or a ranged unit that's just moving to a tile
             //add an extra tile of movement if the destination is an enemy to attack since you don't have to go all the way to them
             var boost = pieceAttacking != null ? 1 : 0;
-            var dest = pieceAttacking != null ? mapModel.tiles[pieceAttacking.tilePosition] : end;
+            var dest = pieceAttacking != null ? pieceAttackingTile : end;
             return FindPath(mapModel.tiles[piece.tilePosition], dest, (piece.movement - piece.moveCount) + boost, piece);
         }
 
