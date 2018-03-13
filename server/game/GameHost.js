@@ -62,8 +62,8 @@ export default class GameHost extends EventEmitter
     app.container.registerValue('hostManager', hostManager);
 
     app.service(ActionQueueService);
-    app.service(MapService);
     app.service(GameDataService);
+    app.service(MapService);
     app.service(CardService);
     app.service(GameEventService);
     app.service(ProcessorsService);

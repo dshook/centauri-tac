@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Position from './Position.js';
 import Tile from './Tile.js';
 import MapModel from './MapModel.js';
+import Statuses from './Statuses.js';
 import loglevel from 'loglevel-decorator';
 import Constants from '../util/Constants.js';
 
@@ -11,10 +12,11 @@ import Constants from '../util/Constants.js';
  @loglevel
 export default class MapState
 {
-  constructor()
+  constructor(pieceState)
   {
     this.maps = {};
     this.currentMap = null;
+    this.pieceState = pieceState;
   }
 
   add(map, setCurrent){
@@ -195,8 +197,6 @@ export default class MapState
 
   getNeighbors(center)
   {
-    let ret = [];
-    let neighborTile = null;
     let toCheck = [
       center.addX(1),
       center.addX(-1),
@@ -204,22 +204,11 @@ export default class MapState
       center.addZ(-1)
     ];
 
-    for(let currentDirection of toCheck)
-    {
-      //check it's not off the map
-      neighborTile = this.getTile(currentDirection);
-      if (neighborTile != null)
-      {
-        ret.push(neighborTile.position);
-      }
-    }
-    return ret;
+    return this.checkNeighbors(toCheck);
   }
 
   getKingNeighbors(center)
   {
-    let ret = [];
-    let neighborTile = null;
     let toCheck = [
       center.addX(1),
       center.addX(-1),
@@ -232,6 +221,13 @@ export default class MapState
       center.addXYZ(1, 0, 1),
     ];
 
+    return this.checkNeighbors(toCheck);
+  }
+
+  checkNeighbors(toCheck)
+  {
+    let ret = [];
+    let neighborTile = null;
     for(let currentDirection of toCheck)
     {
       //check it's not off the map
@@ -244,4 +240,131 @@ export default class MapState
     return ret;
   }
 
+  //Pathfinding copied from client
+  findPath(start, end, maxDist, piece)
+  {
+    var ret = [];
+    if(start === end) return ret;
+
+    // The set of nodes already evaluated.
+    var closedset = [];
+
+    // The set of tentative nodes to be evaluated, initially containing the start node
+    var openset = [ start ];
+
+    // The map of navigated nodes.
+    var came_from = {};
+
+    var g_score = {};
+    g_score[start] = 0;    // Cost from start along best known path.
+
+    // Estimated total cost from start to goal through y.
+    var f_score = {};
+    f_score[start] = g_score[start] + this.tileDistance(start.position, end.position);
+
+    let itr = 0;
+    while (openset.length > 0) {
+      itr++;
+      // the node in openset having the lowest f_score[] value
+      var current = _.sortBy(openset, x => this.getValueOrMax(f_score,x))[0];
+      console.log(`${itr} current`, current);
+      console.log(`${itr} open`, openset);
+      console.log(`${itr} closed`, closedset);
+      if (current.position.equals(end.position)) {
+        console.log(`found path`, came_from);
+        return this.reconstructPath(came_from, end);
+      }
+
+      _.remove(openset, o => o.position.equals(current.position));
+      closedset.push(current);
+
+      var neighbors = this.getMovableNeighbors(current, piece, end, false);
+      for (let neighborDict of neighbors) {
+        var neighbor = neighborDict.value;
+        if(closedset.includes(neighbor)){
+          continue;
+        }
+
+        var tentative_g_score = this.getValueOrMax(g_score,current) + this.tileDistance(current.position, neighbor.position);
+
+        if (!openset.includes(neighbor) || tentative_g_score < this.getValueOrMax(g_score,neighbor)) {
+          //check for max dist along path
+          if (tentative_g_score > maxDist)
+          {
+            continue;
+          }
+
+          came_from[neighbor] = current;
+          g_score[neighbor] = tentative_g_score;
+          f_score[neighbor] = this.getValueOrMax(g_score,neighbor) + this.tileDistance(neighbor.position, end.position);
+          if (!openset.includes(neighbor)) {
+            openset.push(neighbor);
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  reconstructPath(came_from, current) {
+    var total_path = [ current ];
+    while(came_from[current] !== undefined){
+      current = came_from[current];
+      total_path.push(current);
+    }
+    _.reverse(total_path);
+    //remove starting tile
+    total_path.shift();
+    return total_path;
+  }
+
+  getValueOrMax(dict, key)
+  {
+    if(dict[key] !== undefined) return dict[key];
+    return 9999999;
+  }
+
+  /// <summary>
+  /// Find neighboring tiles that aren't occupied by enemies,
+  /// but always include the dest tile for attacking if it's passed
+  /// but also make sure not to land on a tile with an occupant if attacking
+  /// </summary>
+  getMovableNeighbors(center, piece, dest, includeOccupied)
+  {
+      var ret = this.getNeighbors(center.position)
+        .map(n => {
+          return {
+            key: n,
+            value: this.getTile(n)
+          }
+        });
+
+      //filter tiles that are too high/low to move to & are passable
+      ret = ret.filter(t =>
+          !t.value.unpassable
+          && (this.isHeightPassable(t.value, center) || (piece.statuses & Statuses.Flying) != 0)
+      );
+
+      if(!includeOccupied){
+          //filter out tiles with enemies on them that aren't the destination
+          ret = ret.filter(t =>
+              (dest != null && t.key.equals(dest)) ||
+              !this.pieceState.pieces.some(m => m.position.tileEquals(t.key) && m.playerId != piece.playerId)
+          );
+
+          let destinationOccupied = dest != null && this.pieceState.pieces.some(p => p.position.tileEquals(dest.position));
+
+          //make sure not to consider tiles that would be where the moving pieces lands when it attacks
+          ret = ret.filter(t =>
+              dest == null
+              || dest.position.tileEquals(t.key)
+              || !destinationOccupied
+              || this.tileDistance(t.key, dest.position) > 1
+              || !this.pieceState.pieces.some(p => p.position.tileEquals(t.Key))
+          );
+      }
+
+      return ret;
+  }
 }

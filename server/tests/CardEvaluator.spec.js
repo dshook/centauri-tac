@@ -23,12 +23,12 @@ import CardDirectory from '../game/ctac/models/CardDirectory.js';
 var cardDirectory = new CardDirectory({cardSets: ['test']});
 
 function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
-    var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
+  var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
 
-    if(addToState){
-      pieceState.add(newPiece);
-    }
-    return newPiece;
+  if(addToState){
+    pieceState.add(newPiece);
+  }
+  return newPiece;
 }
 
 function spawnCard(cardState, playerId, cardTemplateId){

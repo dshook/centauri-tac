@@ -11,13 +11,13 @@ export default class MapService
   constructor(container, queue)
   {
     var mapRequires = requireDir('../../../../maps/');
-    var mapState = new MapState();
+    var mapState = container.new(MapState);
 
     for(let mapName in mapRequires){
       let map = mapRequires[mapName];
       mapState.add(map);
       this.log.info('Registered map %s', mapName);
     }
-    container.registerValue('mapState', mapState);
+    var mapState = container.registerValue('mapState', mapState);
   }
 }
