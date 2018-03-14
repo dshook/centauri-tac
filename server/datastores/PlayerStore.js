@@ -138,7 +138,7 @@ export default class PlayerStore
       let foundHash = allHashSuffixes.find(h => h[0] === remaining);
 
       //magic number for how many comprimises we tolerate
-      return foundHash && parseInt(foundHash[1]) >= 5;
+      return foundHash && parseInt(foundHash[1]) >= 8;
     }catch(e){
       this.log.error('Pwned password API problem %s', e.message);
       //don't return true here so we can still register accounts if the api is down
