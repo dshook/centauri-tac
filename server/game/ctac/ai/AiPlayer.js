@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Player from 'models/player';
+import Player from 'models/Player';
 import {MockClient} from 'socket-client';
 import EmitterBinder from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
