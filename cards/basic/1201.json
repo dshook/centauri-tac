@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1201,
+  "name": "",
+  "description": "<b>Cleave</b>",
+  "cost": 1,
+  "attack": 1,
+  "health": 3,
+  "movement": 3,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1507,
+  "name": "Doublethink",
+  "description": "Add 2 copies of the last card played to your hand",
+  "cost": 5,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

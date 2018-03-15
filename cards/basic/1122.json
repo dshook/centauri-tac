@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1122,
+  "name": "yoshi",
+  "description": "<b>Synthesis</b>: Pull an enemy character to an adjacent tile",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 3,
+  "tags": ["Minion"]
+}

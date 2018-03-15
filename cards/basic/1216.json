@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1216,
+  "name": "",
+  "description": "<b>Synthesis</b>: Give all friendly minions +1/+1, if they are a Mercenary give them +2/+2 instead",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 3,
+  "tags": [
+    "Minion"
+  ]
+}

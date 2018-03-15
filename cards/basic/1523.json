@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1523,
+  "name": "Entangled Pair",
+  "description": "Shuffle a pair of a friendly minion into your deck",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

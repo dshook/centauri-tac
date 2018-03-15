@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1215,
+  "name": "Marauder",
+  "description": "<b>Synthesis</b>: Deal 1 damage to ALL minions and set this minions health to the damage dealt",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

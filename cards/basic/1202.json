@@ -1,0 +1,15 @@
+{
+  "cardTemplateId": 1202,
+  "name": "",
+  "description": "<b>Holtz Shield</b>",
+  "cost": 2,
+  "attack": 2,
+  "health": 2,
+  "movement": 2,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Minion",
+    "XK"
+  ]
+}

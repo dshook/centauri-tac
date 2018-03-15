@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1526,
+  "name": "Pseudomatter Harvest",
+  "description": "Summon two random 2 cost minions",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

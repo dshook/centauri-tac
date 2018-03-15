@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1510,
+  "name": "Mind Warp",
+  "description": "Take control of an enemy minion",
+  "cost": 9,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "cardTemplateId": 1502,
+  "name": "Tevatron",
+  "description": "Attack target becomes immobilized with 0 movement",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "range": 4,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

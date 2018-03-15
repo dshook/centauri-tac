@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1209,
+  "name": "Pacify",
+  "description": "Set a minions attack to 0 and give it +5 health",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

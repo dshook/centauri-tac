@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1210,
+  "name": "Cull the Weak",
+  "description": "Destroy all enemy minions with 2 or less attack and gain 1 energy this turn for each of them",
+  "cost": 5,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

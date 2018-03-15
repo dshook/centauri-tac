@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1506,
+  "name": "Zenith Arc",
+  "description": "Give all friendly ranged minions +2 range and +1 attack",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1527,
+  "name": "Entangling Bolt",
+  "description": "Deal 2 damage to an enemy minion.  If it dies, add a copy of it to your hand",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 3,
+  "tags": [
+    "Spell"
+  ]
+}

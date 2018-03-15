@@ -1,0 +1,15 @@
+{
+  "cardTemplateId": 1513,
+  "name": "Medusian Resimulant",
+  "description": "Ability(1) Paralyze all minions in a medium ray",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 3,
+  "tags": [
+    "Minion",
+    "Archon"
+  ]
+}

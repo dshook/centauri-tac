@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1211,
+  "name": "Trogon APC",
+  "description": "<b>Cloak</b><br><b>Demise</b>: Summon 2 3/3 Covert Ops",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

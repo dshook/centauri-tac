@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1500,
+  "name": "",
+  "description": "<b>Ability(2)</b>: Deal 1 damage to a character in a large square",
+  "cost": 0,
+  "attack": 0,
+  "health": 30,
+  "movement": 2,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Hero"
+  ]
+}

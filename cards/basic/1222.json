@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1222,
+  "name": "The Hegemon",
+  "description": "<b>Holtz Shield</b><br><b>Cleave</b><br><b>Elusive</b>",
+  "cost": 9,
+  "attack": 5,
+  "health": 8,
+  "movement": 4,
+  "race": 3,
+  "rarity": 4,
+  "tags": [
+    "Minion"
+  ]
+}

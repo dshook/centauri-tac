@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1224,
+  "name": "",
+  "description": "Draw a card for each friendly minion that has 3 or more attack",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 1,
+  "tags": [
+    "Spell"
+  ]
+}

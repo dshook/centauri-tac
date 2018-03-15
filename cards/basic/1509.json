@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1509,
+  "name": "Torpid Meditation",
+  "description": "Paralyze a minion. At the end of your next turn give it +4/+4",
+  "cost": 3,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

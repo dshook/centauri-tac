@@ -1,0 +1,13 @@
+{
+  "cardTemplateId": 1120,
+  "name": "Psi Synth",
+  "description": "This minion deals +2 damaged to ranged minions",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "range": 4,
+  "race": 2,
+  "rarity": 3,
+  "tags": ["Minion"]
+}

@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1218,
+  "name": "Shocktrooper",
+  "description": "<b>Charge</b><b>Flying</b>",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

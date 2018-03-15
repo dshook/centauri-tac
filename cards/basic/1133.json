@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1133,
+  "name": "Vitruvian Prime",
+  "description": "",
+  "cost": 4,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 4,
+  "tags": ["Minion","Mutation"]
+}

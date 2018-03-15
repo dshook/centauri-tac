@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1228,
+  "name": "",
+  "description": "",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 3,
+  "tags": [
+    "Spell"
+  ]
+}

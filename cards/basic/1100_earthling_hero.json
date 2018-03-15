@@ -1,13 +1,14 @@
 {
 	"cardTemplateId": 1100,
-	"name": "Earthling Hero",
-	"description": "<b>Ability(2)</b>: Summon a 2/2 Pollux",
-	"cost": 0,
-	"attack": 0,
-	"health": 30,
-	"movement": 2,
+  "name": "",
+  "description": "<b>Ability(2)</b>: Summon a 1/1 Borganism with 4 movement",
+  "cost": 0,
+  "attack": 0,
+  "health": 30,
+  "movement": 2,
   "race": 2,
-	"tags": ["Hero"],
+  "rarity": 0,
+  "tags": ["Hero"],
 	"eventcode": "ability(2, 1, 'Summon Underling'){
     Spawn(1131, 1)
   }"

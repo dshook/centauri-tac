@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1230,
+  "name": "The Chosen One",
+  "description": "Give a friendly minion \"Aura: all friendly characters have +3/+3\" and cleave",
+  "cost": 6,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 4,
+  "tags": [
+    "Spell"
+  ]
+}

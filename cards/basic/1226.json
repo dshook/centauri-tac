@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1226,
+  "name": "Civilian Army",
+  "description": "Give all friendly minions without card text a holtzman shield",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

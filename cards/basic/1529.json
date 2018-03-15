@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1529,
+  "name": "Simultaneity Splice",
+  "description": "Teleport your hero on top of an enemy minion and destroy it",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 3,
+  "tags": [
+    "Spell"
+  ]
+}

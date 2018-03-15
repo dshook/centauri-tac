@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1123,
+  "name": "Siphoning Essense",
+  "description": "Take -1/-1 from all enemy minions and give it to your friendly minions without card text",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 1,
+  "tags": ["Spell"]
+}

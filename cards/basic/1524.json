@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1524,
+  "name": "Baryon Rain",
+  "description": "Deal 1 damage to all enemies and reduce all minions movement by 1",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1103,
+  "name": "",
+  "description": "<b>Piercing</b>",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 0,
+  "tags": ["Minion"]
+}

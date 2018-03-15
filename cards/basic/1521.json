@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1521,
+  "name": "Infernal Combustion",
+  "description": "Deal 4 damage to all enemy minions in a medium diamond",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 1,
+  "tags": [
+    "Spell"
+  ]
+}

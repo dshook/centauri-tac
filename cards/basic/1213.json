@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1213,
+  "name": "",
+  "description": "Give a friendly minion with less than 3 attack +2/2",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

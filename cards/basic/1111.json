@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1111,
+  "name": "Primogeniture",
+  "description": "Growth chain.  Ability(1) Morph into a 6/7 Progeny",
+  "cost": 4,
+  "attack": 4,
+  "health": 5,
+  "movement": 3,
+  "race": 2,
+  "rarity": 4,
+  "tags": ["Minion"]
+}

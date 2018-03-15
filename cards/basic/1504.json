@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1504,
+  "name": "Arithmetician",
+  "description": "<b>Synthesis</b>: Deal 3 damage to all enemies who's health or attack is a multiple of 3",
+  "cost": 6,
+  "attack": 3,
+  "health": 6,
+  "movement": 3,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

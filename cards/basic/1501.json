@@ -1,0 +1,15 @@
+{
+  "cardTemplateId": 1501,
+  "name": "Zevatron",
+  "description": "Attack target loses 1 movement",
+  "cost": 0,
+  "attack": 2,
+  "health": 0,
+  "movement": 0,
+  "range": 3,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

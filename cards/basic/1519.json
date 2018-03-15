@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1519,
+  "name": "Deflection Strategos",
+  "description": "Give friendly minions without card text +1/+1 and Elusive",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 1,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "cardTemplateId": 1102,
+  "name": "Dilophosaurus",
+  "description": "Venomous",
+  "cost": 2,
+  "attack": 2,
+  "health": 2,
+  "movement": 0,
+  "range": 2,
+  "race": 2,
+  "rarity": 0,
+  "tags": ["Minion"]
+}

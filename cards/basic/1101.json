@@ -1,0 +1,13 @@
+{
+  "cardTemplateId": 1101,
+  "name": "",
+  "description": "<b>Demise</b>: Summon a 1/1 Borganism",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "range": null,
+  "race": 2,
+  "rarity": 0,
+  "tags": ["Minion"]
+}

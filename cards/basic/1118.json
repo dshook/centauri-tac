@@ -1,0 +1,13 @@
+{
+  "cardTemplateId": 1118,
+  "name": "Cambrian Carapace",
+  "description": "Whenever this minion is attacked, deal the attackers damage back at them",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "range": null,
+  "race": 2,
+  "rarity": 2,
+  "tags": ["Minion"]
+}

@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1203,
+  "name": "Tachyon Orb",
+  "description": "<b>Ability(0)</b>: Deal 1 damage to ALL surrounding minions",
+  "cost": 3,
+  "attack": 2,
+  "health": 3,
+  "movement": 3,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

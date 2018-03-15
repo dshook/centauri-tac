@@ -1,0 +1,16 @@
+{
+  "cardTemplateId": 1220,
+  "name": "Static Generator",
+  "description": "Your opponents spells cost 1 more",
+  "cost": 3,
+  "attack": 1,
+  "health": 4,
+  "movement": 0,
+  "range": 3,
+  "race": 3,
+  "rarity": 1,
+  "tags": [
+    "Minion",
+    "Artifact"
+  ]
+}

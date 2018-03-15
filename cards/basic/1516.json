@@ -1,0 +1,15 @@
+{
+  "cardTemplateId": 1516,
+  "name": "COM-SYS Probe",
+  "description": "If you have another minion, gain +1 attack and +1 movement",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "range": null,
+  "race": 6,
+  "rarity": 2,
+  "tags": [
+    "Minion"
+  ]
+}

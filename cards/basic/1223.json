@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1223,
+  "name": "",
+  "description": "<b>Ability(0)</b>: Return this to your hand",
+  "cost": 3,
+  "attack": 2,
+  "health": 6,
+  "movement": 4,
+  "race": 3,
+  "rarity": 1,
+  "tags": [
+    "Spell"
+  ]
+}

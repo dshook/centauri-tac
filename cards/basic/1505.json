@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1505,
+  "name": "Blink",
+  "description": "Teleport your hero to a space in a medium square",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1112,
+  "name": "Broodling",
+  "description": "<b>Demise</b>: summon a 1/1 parasite for each enemy minion",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 1,
+  "tags": ["Minion"]
+}

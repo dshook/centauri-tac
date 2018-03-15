@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1108,
+  "name": "Sacrificial Goat",
+  "description": "Sacrifice a friendly minion and give double its attack and health to a random friendly minion",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 0,
+  "tags": ["Spell"]
+}

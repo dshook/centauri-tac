@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1511,
+  "name": "Oort",
+  "description": "Gain +1/+1 every time you cast a spell",
+  "cost": 3,
+  "attack": 2,
+  "health": 2,
+  "movement": 3,
+  "race": 6,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

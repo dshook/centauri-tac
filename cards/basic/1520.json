@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1520,
+  "name": "Entropic Shatter",
+  "description": "Destroy a minion with root, paralyze, or silence",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 1,
+  "tags": [
+    "Spell"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1126,
+  "name": "Acid Bomb",
+  "description": "Liquify enemy minion and deal 1 damage to all surrounding minions",
+  "cost": 5,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 2,
+  "tags": ["Spell"]
+}

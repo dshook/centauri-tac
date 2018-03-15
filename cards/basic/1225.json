@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1225,
+  "name": "Bussard Ramjet",
+  "description": "Give all friendly minions flying and +1 Movement",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

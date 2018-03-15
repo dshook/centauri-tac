@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1512,
+  "name": "Magnetar Martyr",
+  "description": "Ability(0) Sacrifice this minion and teleport the enemy hero onto it",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 1,
+  "tags": [
+    "Minion"
+  ]
+}

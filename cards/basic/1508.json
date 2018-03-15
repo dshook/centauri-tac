@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1508,
+  "name": "Gamma Ray Burst",
+  "description": "Deal 5 damage",
+  "cost": 4,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

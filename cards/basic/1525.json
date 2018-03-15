@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1525,
+  "name": "Edrich Portal",
+  "description": "Teleport a friendly character 3 spaces",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 2,
+  "tags": [
+    "Spell"
+  ]
+}

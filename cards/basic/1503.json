@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1503,
+  "name": "Electric Catalyst",
+  "description": "Your spells cost 1 less",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 0,
+  "tags": [
+    "Minion"
+  ]
+}

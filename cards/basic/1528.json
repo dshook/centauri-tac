@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1528,
+  "name": "Sigma Strike",
+  "description": "Deal damage to a character equal to the number of enemy minions",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 6,
+  "rarity": 3,
+  "tags": [
+    "Spell"
+  ]
+}

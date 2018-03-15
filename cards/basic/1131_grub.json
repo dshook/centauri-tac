@@ -1,13 +1,14 @@
 {
 	"cardTemplateId": 1131,
-	"name": "Grub",
-	"description": "",
-	"cost": 1,
-	"attack": 2,
-	"health": 2,
-	"movement": 2,
+  "name": "Borganism",
+  "description": "",
+  "cost": 1,
+  "attack": 1,
+  "health": 1,
+  "movement": 4,
   "race": 2,
-	"tags": ["Minion"],
+  "rarity": 0,
+  "tags": ["Minion"],
   "uncollectible": true,
 	"eventcode": ""
 }

@@ -1,0 +1,14 @@
+{
+  "cardTemplateId": 1208,
+  "name": "... Quorum",
+  "description": "If you have 3 or more minions, give them +2/+2 and +2 Movement",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 3,
+  "rarity": 0,
+  "tags": [
+    "Spell"
+  ]
+}

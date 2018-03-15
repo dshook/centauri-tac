@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1127,
+  "name": "Survival of the Fittest",
+  "description": "Destroy all enemy minions that have taken damage",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 3,
+  "tags": ["Spell"]
+}

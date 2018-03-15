@@ -1,0 +1,12 @@
+{
+  "cardTemplateId": 1107,
+  "name": "DNA Hardening",
+  "description": "Give your Mutations +1/+3",
+  "cost": 0,
+  "attack": 0,
+  "health": 0,
+  "movement": 0,
+  "race": 2,
+  "rarity": 0,
+  "tags": ["Spell"]
+}
