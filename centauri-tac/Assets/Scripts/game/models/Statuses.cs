@@ -8,7 +8,7 @@ namespace ctac
         None       = 0,
         Silence    = 1 << 0,
         Shield     = 1 << 1,
-        Paralyze   = 1 << 2,
+        Petrify   = 1 << 2,
         Taunt      = 1 << 3,
         Cloak      = 1 << 4,
         Elusive    = 1 << 5,

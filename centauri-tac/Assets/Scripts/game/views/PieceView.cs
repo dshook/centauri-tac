@@ -826,7 +826,7 @@ namespace ctac {
                         //TODO: animate shield coming up with scale tween
                         piece.shield.SetActive(true);
                     }
-                    if ((pieceStatusChange.add.Value & Statuses.Paralyze) != 0)
+                    if ((pieceStatusChange.add.Value & Statuses.Petrify) != 0)
                     {
                         foreach(var mat in piece.meshMaterials){
                             mat.SetFloat("_IsParalyzed", 1f);
@@ -861,9 +861,8 @@ namespace ctac {
                     {
                         piece.shield.SetActive(false);
                     }
-                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Paralyze))
+                    if (FlagsHelper.IsSet(pieceStatusChange.remove.Value, Statuses.Petrify))
                     {
-                        // piece.paralyze.transform.localScale = Vector3.zero;
                         foreach(var mat in piece.meshMaterials){
                             mat.SetFloat("_IsParalyzed", 0f);
                         }

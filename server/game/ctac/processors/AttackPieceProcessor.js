@@ -72,8 +72,8 @@ export default class AttackPieceProcessor
       return queue.cancel(action);
     }
 
-    if(attacker.statuses & Statuses.Paralyze){
-      this.log.info('Cannot attack with piece %s when paralyzed', attacker.id);
+    if(attacker.statuses & Statuses.Petrify){
+      this.log.info('Cannot attack with piece %s when petrified', attacker.id);
       return queue.cancel(action);
     }
 
@@ -125,7 +125,7 @@ export default class AttackPieceProcessor
 
     //counter attack if in range
     if(!rangedAttack || (target.range != null && target.range >= targetDistance)){
-      if(!(target.statuses & Statuses.Paralyze)){
+      if(!(target.statuses & Statuses.Petrify)){
         queue.push(new PieceHealthChange({pieceId: action.attackingPieceId, change: -target.attack}));
       }
     }

@@ -620,27 +620,27 @@ export default class ProcessorServiceTests
       this.spawnCard(this.cardState, 31, 1);
       let card = this.cardState.drawCard(1);
 
-      //paralyze
+      //petrify
       this.queue.push(new ActivateCard(1, card.id, null, null, null, null));
 
       await this.queue.processUntilDone();
 
-      let paralyzed = this.pieceState.withStatus(Statuses.Paralyze);
-      t.equal(paralyzed.length, 2, 'Two pieces paralyzed');
-      t.equal(paralyzed[0].playerId, 2, 'Enemy Piece is paralyzed');
+      let petrified = this.pieceState.withStatus(Statuses.Petrify);
+      t.equal(petrified.length, 2, 'Two pieces petrified');
+      t.equal(petrified[0].playerId, 2, 'Enemy Piece is petrified');
       t.equal(this.cardEvaluator.startTurnTimers.length, 1, '1 start turn timer saved');
 
       this.queue.push(new PassTurn());
       await this.queue.processUntilDone();
 
-      let secondPar = this.pieceState.withStatus(Statuses.Paralyze);
-      t.equal(secondPar.length, 2, 'Two pieces still paralyzed');
+      let secondPar = this.pieceState.withStatus(Statuses.Petrify);
+      t.equal(secondPar.length, 2, 'Two pieces still petrified');
       t.equal(this.cardEvaluator.startTurnTimers.length, 1, 'Still 1 timer saved');
 
       this.queue.push(new PassTurn());
       await this.queue.processUntilDone();
 
-      let thirdPar = this.pieceState.withStatus(Statuses.Paralyze);
+      let thirdPar = this.pieceState.withStatus(Statuses.Petrify);
       t.equal(thirdPar.length, 0, 'Paralysis wore off');
       t.equal(this.cardEvaluator.startTurnTimers.length, 0, 'No timers left');
     });

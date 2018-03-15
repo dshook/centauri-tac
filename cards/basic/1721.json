@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1721,
   "name": "",
-  "description": "Heal friendly characters 5 health, then <b>Paralyze</b> all enemy minions.",
+  "description": "Heal friendly characters 5 health, then <b>Petrify</b> all enemy minions.",
   "cost": 5,
   "attack": 0,
   "health": 0,

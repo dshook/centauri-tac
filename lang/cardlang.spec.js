@@ -404,8 +404,8 @@ test('Turn timers', t => {
 
   let input = `
     playSpell{
-      GiveStatus(ENEMY & MINION, Paralyze)
-      startTurnTimer(2, false, RemoveStatus(SAVED, Paralyze) )
+      GiveStatus(ENEMY & MINION, Petrify)
+      startTurnTimer(2, false, RemoveStatus(SAVED, Petrify) )
     }
   `;
 
@@ -423,7 +423,7 @@ test('Turn timers', t => {
               op: "&",
               right: "MINION"
             },
-            "Paralyze"
+            "Petrify"
           ]
         },
         {
@@ -437,7 +437,7 @@ test('Turn timers', t => {
                 {
                   left: "SAVED"
                 },
-                "Paralyze"
+                "Petrify"
               ]
             }
           ]

@@ -6,7 +6,7 @@ var Statuses = Enum({
   None       : 0,
   Silence    : 1,
   Shield     : 2,
-  Paralyze   : 4,
+  Petrify    : 4,
   Taunt      : 8,
   Cloak      : 16,
   Elusive    : 32,

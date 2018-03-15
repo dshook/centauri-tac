@@ -1,11 +1,11 @@
 {
 	"cardTemplateId": 31,
 	"name": "Neophytes Venom",
-	"description": "Paralyze all enemy minions",
+	"description": "Petrify all enemy minions",
 	"cost": 2,
 	"tags": ["Spell"],
 	"eventcode": "playSpell{
-		GiveStatus(ENEMY & MINION, Paralyze)
-		startTurnTimer(2, false, RemoveStatus(SAVED, Paralyze) )
+		GiveStatus(ENEMY & MINION, Petrify)
+		startTurnTimer(2, false, RemoveStatus(SAVED, Petrify) )
 	}"
 }

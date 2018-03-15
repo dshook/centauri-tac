@@ -65,7 +65,7 @@ namespace ctac
 
             {"Silence",            "Negates a minions card text, abilities, and status effects" },
             {"Holtz Shield",       "Absorbes all damage a minion takes on the first hit" },
-            {"Paralyze",           "Character cannot move or attack" },
+            {"Petrify",            "Character cannot move or attack" },
             {"Taunt",              "Minions entering the area of influence must attack this minion." },
             {"Cloak",              "Cannot be targeted until minion deals or takes damage" },
             {"Elusive",            "Cannot be targeted by spells, abilities, or hero powers" },

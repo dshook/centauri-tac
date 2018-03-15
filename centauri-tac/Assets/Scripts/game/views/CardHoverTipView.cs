@@ -63,7 +63,7 @@ namespace ctac
                 var statuses = card.linkedPiece.statuses;
                 if ((statuses & Statuses.Silence) != 0) { descriptionWords.Add("Silence"); }
                 if ((statuses & Statuses.Shield) != 0) { descriptionWords.Add("Holtz Shield"); }
-                if ((statuses & Statuses.Paralyze) != 0) { descriptionWords.Add("Paralyze"); }
+                if ((statuses & Statuses.Petrify) != 0) { descriptionWords.Add("Petrify"); }
                 if ((statuses & Statuses.Taunt) != 0) { descriptionWords.Add("Taunt"); }
                 if ((statuses & Statuses.Cloak) != 0) { descriptionWords.Add("Cloak"); }
                 if ((statuses & Statuses.Elusive) != 0) { descriptionWords.Add("Elusive"); }

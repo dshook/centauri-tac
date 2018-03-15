@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1724,
   "name": "",
-  "description": "<b>Paralyze</b> all characters with 5 or greater health. Heal all characters with 10 or less health for 10.",
+  "description": "<b>Petrify</b> all characters with 5 or greater health. Heal all characters with 10 or less health for 10.",
   "cost": 5,
   "attack": 0,
   "health": 0,

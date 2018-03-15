@@ -264,7 +264,7 @@ namespace ctac
                         {
                             errorMessage = "Minion Can't Attack";
                         }
-                        else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Paralyze))
+                        else if (FlagsHelper.IsSet(selectedPiece.statuses, Statuses.Petrify))
                         {
                             errorMessage = "Minion is Paralyzed!";
                         }

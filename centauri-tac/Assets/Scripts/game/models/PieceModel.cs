@@ -114,7 +114,7 @@ namespace ctac
                 return attack > 0
                     && attackCount < maxAttacks
                     && !FlagsHelper.IsSet(statuses, Statuses.CantAttack)
-                    && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
+                    && !FlagsHelper.IsSet(statuses, Statuses.Petrify);
             }
         }
 
@@ -126,7 +126,7 @@ namespace ctac
                 return movement > 0
                     && moveCount < movement
                     && !FlagsHelper.IsSet(statuses, Statuses.Root)
-                    && !FlagsHelper.IsSet(statuses, Statuses.Paralyze);
+                    && !FlagsHelper.IsSet(statuses, Statuses.Petrify);
             }
         }
 

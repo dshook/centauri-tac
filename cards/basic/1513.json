@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1513,
   "name": "Medusian Resimulant",
-  "description": "Ability(1) Paralyze all minions in a medium ray",
+  "description": "Ability(1) Petrify all minions in a medium ray",
   "cost": 0,
   "attack": 0,
   "health": 0,

@@ -106,8 +106,8 @@ export default class PieceSelector{
         case 'SHIELD':
           return this.allPieces.filter(p => p.statuses & Statuses.Shield);
           break;
-        case 'PARALYZE':
-          return this.allPieces.filter(p => p.statuses & Statuses.Paralyze);
+        case 'PETRIFY':
+          return this.allPieces.filter(p => p.statuses & Statuses.Petrify);
           break;
         case 'TAUNT':
           return this.allPieces.filter(p => p.statuses & Statuses.Taunt);

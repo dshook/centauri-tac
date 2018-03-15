@@ -57,7 +57,7 @@ export default class MovePieceProcessor
       }
     }
     let isFlying = !!(piece.statuses & Statuses.Flying);
-    if(!action.isJump && (piece.statuses & Statuses.Paralyze) || (piece.statuses & Statuses.Root)){
+    if(!action.isJump && (piece.statuses & Statuses.Petrify) || (piece.statuses & Statuses.Root)){
       this.log.warn('Cannot move piece %s with status %s', piece.id, piece.statuses);
       return queue.cancel(action);
     }
