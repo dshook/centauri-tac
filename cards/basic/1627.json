@@ -1,7 +1,7 @@
 {
 	"cardTemplateId": 1627,
   "name": "",
-  "description": "<b>Empower</b>: Gain a <b>Holtz Shield</b>",
+  "description": "Whenever you use your hero power gain a <b>Holtz Shield</b>",
   "cost": 6,
   "attack": 5,
   "health": 5,

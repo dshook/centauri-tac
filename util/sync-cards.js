@@ -24,8 +24,8 @@ var rarities = {
   Ascendant: 4,
 };
 
-const minSyncRow = 68;
-const maxSyncRow = 99;
+const minSyncRow = 193;
+const maxSyncRow = 318;
 
 const rowOffset = -2; //I think because starting from row 0 plus the header row?
 const cardSet = 'basic';

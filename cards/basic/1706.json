@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1706,
   "name": "",
-  "description": "<b>Ability(2)</b>: Deal damage to enemy minions equal to their attack in a medium diamond",
+  "description": "<b>Ability(2)</b>: Deal damage to enemy minions equal to their attack in a surrounding medium diamond",
   "cost": 7,
   "attack": 3,
   "health": 7,

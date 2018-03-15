@@ -1,6 +1,6 @@
 {
 	"cardTemplateId": 1609,
-  "name": "",
+  "name": "Med Bot",
   "description": "<b>Synthesis</b>: Heal a character for 2 health",
   "cost": 2,
   "attack": 1,

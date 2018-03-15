@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 1663,
   "name": "Calculating Deadeye",
-  "description": "<b>Empower</b>: Gain +1 Range",
+  "description": "Whenever you use your hero power, gain +1 Range",
   "cost": 3,
   "attack": 3,
   "health": 2,
