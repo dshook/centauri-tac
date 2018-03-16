@@ -15,6 +15,7 @@ namespace ctac
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public TraumaModel trauma { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
 
         public override void Execute()
@@ -45,6 +46,7 @@ namespace ctac
             animationQueue.Add(new PieceView.SpawnAnim() {
                 piece = pieceView,
                 map = map,
+                trauma = trauma,
                 mapService = mapService,
                 loader = loader
             });

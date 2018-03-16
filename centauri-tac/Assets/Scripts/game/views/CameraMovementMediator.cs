@@ -9,13 +9,12 @@ namespace ctac
     {
         [Inject] public CameraMovementView view { get; set; }
 
-        [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public MapModel map { get; set; }
 
         public override void OnRegister()
         {
-            view.Init(raycastModel);
+            view.Init();
         }
 
         [ListensTo(typeof(HistoryHoverSignal))]

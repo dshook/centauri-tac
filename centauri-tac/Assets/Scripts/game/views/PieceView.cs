@@ -380,6 +380,7 @@ namespace ctac {
 
             public PieceView piece { get; set; }
             public MapModel map { get; set; }
+            public TraumaModel trauma { get; set; }
             public IMapService mapService { get; set; }
             public IResourceLoaderService loader { get; set; }
 
@@ -422,6 +423,7 @@ namespace ctac {
                 if (Vector3.Distance(piece.gameObject.transform.position, destPosition) < 0.01)
                 {
                     piece.gameObject.transform.position = destPosition;
+                    trauma.trauma += pieceMagnitude * 2;
 
                     foreach (var tile in oneRing)
                     {

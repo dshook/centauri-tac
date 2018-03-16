@@ -18,6 +18,7 @@ namespace ctac
         [Inject] public GamePlayersModel players { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public TraumaModel trauma { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
@@ -30,6 +31,7 @@ namespace ctac
             animationQueue.Add(new PieceView.SpawnAnim() {
                 piece = piece.piece.pieceView,
                 map = map,
+                trauma = trauma,
                 mapService = mapService,
                 loader = loader,
                 Async = piece.runAsync

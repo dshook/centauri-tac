@@ -22,6 +22,7 @@ namespace ctac
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public MapModel map { get; set; }
+        [Inject] public TraumaModel trauma { get; set; }
         [Inject] public AnimationQueueModel animationQueue { get; set; }
 
         private Vector2 anchorPosition = new Vector2(0.5f, 0.5f);
@@ -78,6 +79,7 @@ namespace ctac
                 {
                     piece = pieceView,
                     map = map,
+                    trauma = trauma,
                     mapService = mapService,
                     loader = loader
                 });

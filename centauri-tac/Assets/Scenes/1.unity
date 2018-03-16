@@ -338,7 +338,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4898616588227956, guid: 6fb06a41ae3179049bba231d41ceb00b, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 23406170456760964, guid: 6fb06a41ae3179049bba231d41ceb00b,
         type: 2}
@@ -2208,7 +2208,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 414184, guid: b2076f680ccc99d4a95eb1b13dda5a86, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 33000010120723748, guid: b2076f680ccc99d4a95eb1b13dda5a86,
         type: 2}
@@ -2553,8 +2553,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1729519790}
-  m_Father: {fileID: 1197005253}
-  m_RootOrder: 1
+  m_Father: {fileID: 741280846}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 45.000004, z: 0}
 --- !u!114 &611969544
 MonoBehaviour:
@@ -3227,6 +3227,35 @@ MonoBehaviour:
   - {x: 4, y: 0, z: 0}
   modes: 0000000000000000
   loop: 0
+--- !u!1 &741280845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 741280846}
+  m_Layer: 0
+  m_Name: Shaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &741280846
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 741280845}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 611969542}
+  m_Father: {fileID: 1197005253}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &759768858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,7 +3619,7 @@ Transform:
   m_Children:
   - {fileID: 609510224}
   m_Father: {fileID: 1197005253}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &844775313
 MonoBehaviour:
@@ -4700,15 +4729,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 841349456}
-  - {fileID: 611969542}
-  - {fileID: 1369866643}
+  - {fileID: 741280846}
   - {fileID: 844775312}
+  - {fileID: 1369866643}
   - {fileID: 1842734667}
   - {fileID: 1084421058}
   - {fileID: 2006314274}
   - {fileID: 1468249736}
-  - {fileID: 1049081186}
   - {fileID: 1632602875}
+  - {fileID: 1049081186}
   - {fileID: 1815598318}
   - {fileID: 91561939}
   - {fileID: 1479129814}
@@ -5086,7 +5115,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400604, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11435744, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
       propertyPath: cardCanvas
@@ -5096,6 +5125,14 @@ Prefab:
       propertyPath: tileCursor
       value: 
       objectReference: {fileID: 1049081185}
+    - target: {fileID: 11402336, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
+      propertyPath: traumaDamping
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11402336, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
+      propertyPath: noiseFrequency
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4958b8d6f15d4ee439a7f154ddcfb36a, type: 2}
   m_IsPrefabParent: 0
@@ -6079,7 +6116,7 @@ Transform:
   m_Children:
   - {fileID: 245404649}
   m_Father: {fileID: 1197005253}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673092298
 GameObject:

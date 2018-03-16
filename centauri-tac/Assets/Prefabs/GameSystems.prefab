@@ -58,6 +58,11 @@ MonoBehaviour:
   dragEnabled: 1
   zoomEnabled: 1
   camBounds: {x: 0, y: 0, z: 0, w: 0}
+  traumaDamping: 0.4
+  noiseFrequency: 10
+  maxShakeYaw: 4
+  maxShakePitch: 4
+  maxShakeRoll: 4
 --- !u!114 &11423890
 MonoBehaviour:
   m_ObjectHideFlags: 1

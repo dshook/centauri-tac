@@ -13,8 +13,16 @@ namespace ctac
         public bool zoomEnabled = true;
         public Vector4 camBounds = Vector4.zero;
 
-        RaycastModel raycastModel;
+        public float traumaDamping = 0.4f;
+        public float noiseFrequency = 10f;
+        public float maxShakeYaw = 4f;
+        public float maxShakePitch = 4f;
+        public float maxShakeRoll = 4f;
+
+        [Inject] public RaycastModel raycastModel { get; set; }
+        [Inject] public TraumaModel trauma { get; set; }
         Camera cam;
+        GameObject shakerHolder;
 
         Vector3 dragOrigin;
         Vector3 mouseDiff;
@@ -31,11 +39,11 @@ namespace ctac
         bool rotateDragging = false;
         float rotateTimer = 0f;
 
-        public void Init(RaycastModel rm)
+        public void Init()
         {
             cam = Camera.main;
-            raycastModel = rm;
             cam.orthographicSize = CameraOrthoSize();
+            shakerHolder = GameObject.Find("Shaker");
         }
 
         void Update()
@@ -49,6 +57,8 @@ namespace ctac
             UpdateZoom();
 
             UpdateDragging();
+
+            UpdateShake();
         }
 
         void UpdateRotation()
@@ -91,7 +101,7 @@ namespace ctac
         float snapThreshold = 8f;
 
         //Returns whether or not the camera snapped
-        bool RotateCamera(float amount) 
+        bool RotateCamera(float amount)
         {
             //find the point the camera is looking at on an imaginary plane at 0f height
             LinePlaneIntersection(out rotateWorldPosition, cam.transform.position, cam.transform.forward, Vector3.up, Vector3.zero);
@@ -251,6 +261,22 @@ namespace ctac
             }
         }
 
+        void UpdateShake()
+        {
+            if (Input.GetKeyDown(KeyCode.H)) {
+                trauma.trauma += 0.2f;
+            }
+
+            trauma.trauma -= traumaDamping * Time.deltaTime;
+            var shake = Mathf.Pow(trauma.trauma, 3);
+
+            var destYaw   = maxShakeYaw   * shake * (Mathf.PerlinNoise(0f, Time.time * noiseFrequency) - 0.5f);
+            var destPitch = maxShakePitch * shake * (Mathf.PerlinNoise(1f, Time.time * noiseFrequency) - 0.5f);
+            var destRoll  = maxShakeRoll  * shake * (Mathf.PerlinNoise(2f, Time.time * noiseFrequency) - 0.5f);
+
+            shakerHolder.transform.rotation = Quaternion.Euler(destYaw, destPitch, destRoll);
+        }
+
         //move the camera so it's focused on a world point
         public void MoveToTile(Vector2 tilePos, float transitionTime = 0.5f)
         {
@@ -264,7 +290,7 @@ namespace ctac
             iTweenExtensions.MoveTo(cam.gameObject, finalPosition, transitionTime, 0f);
         }
 
-        //Get the intersection between a line and a plane. 
+        //Get the intersection between a line and a plane.
         //If the line and plane are not parallel, the function outputs true, otherwise false.
         public bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint)
         {
