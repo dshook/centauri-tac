@@ -19,6 +19,7 @@ namespace ctac
         [Inject] public IMapService mapService { get; set; }
         [Inject] public ICardService cardService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
 
         [Inject] public CardDirectory cardDirectory { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -80,6 +81,7 @@ namespace ctac
                     piece = pieceView,
                     map = map,
                     trauma = trauma,
+                    sounds = sounds,
                     mapService = mapService,
                     loader = loader
                 });

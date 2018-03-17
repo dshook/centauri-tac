@@ -21,6 +21,7 @@ namespace ctac
         [Inject] public TraumaModel trauma { get; set; }
 
         [Inject] public IMapService mapService { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
 
         [ListensTo(typeof(PieceSpawnedSignal))]
@@ -33,6 +34,7 @@ namespace ctac
                 map = map,
                 trauma = trauma,
                 mapService = mapService,
+                sounds = sounds,
                 loader = loader,
                 Async = piece.runAsync
             });

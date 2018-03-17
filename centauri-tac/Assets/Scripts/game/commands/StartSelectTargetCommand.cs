@@ -12,6 +12,7 @@ namespace ctac
         [Inject] public IPieceService pieceService { get; set; }
         [Inject] public IMapService mapService { get; set; }
         [Inject] public IResourceLoaderService loader { get; set; }
+        [Inject] public ISoundService sounds { get; set; }
 
         [Inject] public AnimationQueueModel animationQueue { get; set; }
         [Inject] public MapModel map { get; set; }
@@ -47,6 +48,7 @@ namespace ctac
                 piece = pieceView,
                 map = map,
                 trauma = trauma,
+                sounds = sounds,
                 mapService = mapService,
                 loader = loader
             });

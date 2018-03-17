@@ -383,6 +383,7 @@ namespace ctac {
             public TraumaModel trauma { get; set; }
             public IMapService mapService { get; set; }
             public IResourceLoaderService loader { get; set; }
+            public ISoundService sounds { get; set; }
 
             private Vector3 destPosition { get; set; }
             private Vector3 startOffset = new Vector3(0, 8f, 0);
@@ -410,6 +411,7 @@ namespace ctac {
                 twoRing = mapService.GetKingTilesInRadius(piece.piece.tilePosition, 2).Values.Except(oneRing).ToList();
 
                 iTweenExtensions.MoveTo(piece.gameObject, destPosition, dropTime, 0, EaseType.easeInQuart);
+                sounds.PlaySound("SpawnStart");
             }
             public void Update()
             {
@@ -424,6 +426,7 @@ namespace ctac {
                 {
                     piece.gameObject.transform.position = destPosition;
                     trauma.trauma += pieceMagnitude * 2;
+                    sounds.PlaySound("SpawnEnd");
                     piece.CreatePieceParticle(loader, "Particles/Spawn Smoke", Vector3.zero);
 
                     foreach (var tile in oneRing)
