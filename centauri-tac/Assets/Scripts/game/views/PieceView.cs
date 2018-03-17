@@ -424,6 +424,7 @@ namespace ctac {
                 {
                     piece.gameObject.transform.position = destPosition;
                     trauma.trauma += pieceMagnitude * 2;
+                    piece.CreatePieceParticle(loader, "Particles/Spawn Smoke", Vector3.zero);
 
                     foreach (var tile in oneRing)
                     {
