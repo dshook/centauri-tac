@@ -161,6 +161,7 @@ export default class MovePieceProcessor
   }
 
   cancelUpcomingMoves(queue, piece){
+    piece.moveCount = 99;
     let upcomingQueue = queue.peek();
     this.log.info('Queue Peek %j', upcomingQueue);
     for(let upcomingAction of upcomingQueue){
