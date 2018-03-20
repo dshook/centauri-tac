@@ -614,7 +614,7 @@ export default class CardEvaluator{
 
               //preemptively check for colliding piece so the action can be scrubbed early
               let ignoreCollisionCheck = action.args[3] || false;
-              if(!ignoreCollisionCheck && this.pieceState.pieceAt(moveTo.resolvedPosition.x, moveTo.resolvedPosition.z)){
+              if(!ignoreCollisionCheck && this.pieceState.pieceAt(moveTo.resolvedPosition)){
                 throw new EvalError("You can't move on top of another piece!");
               }
 

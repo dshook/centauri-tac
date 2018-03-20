@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Player from 'models/Player';
+import Statuses from '../models/Statuses.js';
 import {MockClient} from 'socket-client';
 import EmitterBinder from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
@@ -32,6 +33,8 @@ export default class AiPlayer extends Player
     this.pieceState = null;
     this.mapState = null;
     this.cardState = null;
+    this.possibleActions = null;
+
   }
 
   @on('received')
@@ -61,6 +64,10 @@ export default class AiPlayer extends Player
           this.log.info('Ai got an opponent %j', data);
         }
         break;
+      case 'possibleActions':
+        this.possibleActions = data;
+        this.log.info('Ai got possible actions');
+        break;
       case 'qpc':
         this.makeAPlan();
         break;
@@ -72,6 +79,7 @@ export default class AiPlayer extends Player
     this.client.sendToServer({data: message});
   }
 
+  //More like find something to do right now
   makeAPlan(){
     if(!this.opponent) return;
 
@@ -88,6 +96,7 @@ export default class AiPlayer extends Player
       return;
     }
 
+    let playerId = hero.playerId;
     let heroTile = this.mapState.getTile(hero.position);
     let opponentTile = this.mapState.getTile(opponent.position);
 
@@ -114,11 +123,46 @@ export default class AiPlayer extends Player
         if(path != null && path.length > 0){
           this.log.info('Ai Moving Hero');
           this.send('move', {pieceId: hero.id, route: path.map(p => p.position)});
+          return;
         }else{
           this.log.info('Path Not Found');
         }
       }else{
         this.log.info('No Radius Tiles');
+      }
+    }
+
+    //figure out what cards to play this turn.
+    let currentEnergy = this.playerResourceState.get(playerId);
+    let playableCards = this.cardState.hands[playerId].filter(c => c.cost <= currentEnergy);
+
+    if(playableCards.length){
+      let cardToPlay = playableCards[0];
+
+      if(cardToPlay.isMinion){
+        this.log.info('Found Playable minions');
+        //find closest tile to opponent that's playable
+        let isAirdrop = (cardToPlay.statuses & Statuses.Airdrop) != 0;
+        let allowableDistance = isAirdrop ? 4 : 1;
+        let availablePositions = this.mapState.getKingTilesInRadius(hero.position, allowableDistance)
+          .map(p => this.mapState.getTile(p))
+          .filter(t => !t.unpassable && !this.pieceState.pieceAt(t.position));
+        let sortedAvailable = _.sortBy(availablePositions, k => this.mapState.tileDistance(opponent.position, k.position));
+
+        if(sortedAvailable.length){
+          this.log.info('Found a spot to deploy');
+          let playingPosition = sortedAvailable[0].position;
+          this.send('activatecard', {
+            playerId: playerId,
+            cardInstanceId: cardToPlay.id,
+            position: playingPosition,
+            pivotPosition: null,
+            targetPieceId: null,
+            chooseCardTemplateId: null
+          });
+          return;
+        }
+
       }
     }
   }

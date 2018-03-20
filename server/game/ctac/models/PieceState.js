@@ -116,8 +116,8 @@ export default class PieceState
     return this.pieces.find(x => x.id == id);
   }
 
-  pieceAt(x, z){
-    return this.pieces.find(p => p.position.x === x && p.position.z === z);
+  pieceAt(position){
+    return this.pieces.find(p => p.position.x === position.x && p.position.z === position.z);
   }
 
   withStatus(status){

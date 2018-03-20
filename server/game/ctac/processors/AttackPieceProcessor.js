@@ -139,7 +139,7 @@ export default class AttackPieceProcessor
       extraHitPositions = piercePositions(attacker.position, attacker.direction);
     }
     if(extraHitPositions && extraHitPositions.length){
-      var extraHitPieces = extraHitPositions.map(p => this.pieceState.pieceAt(p.x, p.z)).filter(p => p);
+      var extraHitPieces = extraHitPositions.map(p => this.pieceState.pieceAt(p)).filter(p => p);
       for (const extraHitPiece of extraHitPieces) {
         if(extraHitPiece.playerId === attacker.playerId) continue;
 

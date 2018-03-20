@@ -31,7 +31,7 @@ export default class SpawnPieceProcessor
     if(action.spawnKingRadius){
       let possiblePositions = this.mapState.getKingTilesInRadius(action.position, action.spawnKingRadius);
       possiblePositions = possiblePositions.filter(p =>
-        !this.pieceState.pieceAt(p.x, p.z) && !this.mapState.getTile(p).unpassable
+        !this.pieceState.pieceAt(p) && !this.mapState.getTile(p).unpassable
       );
       if(possiblePositions.length > 0){
         action.position = _.sample(possiblePositions);
@@ -49,7 +49,7 @@ export default class SpawnPieceProcessor
     }
 
     //check if played in an unoccupied spot
-    let occupyingPiece = this.pieceState.pieceAt(action.position.x, action.position.z);
+    let occupyingPiece = this.pieceState.pieceAt(action.position);
     if(occupyingPiece){
       //be sure to emit the cancel event so the client can respond
       this.log.warn('Can\'t spawn piece %s at position %s because %j is occupying it',

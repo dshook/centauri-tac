@@ -263,7 +263,7 @@ export default class ProcessorServiceTests
       this.queue.push(new SpawnPiece({playerId: 1, cardTemplateId: 28, position: new Position(0,0,0)}));
       await this.queue.processUntilDone();
 
-      var piece = this.pieceState.pieceAt(0,0);
+      var piece = this.pieceState.pieceAt(new Position(0,0,0));
       t.ok(piece, 'Spawned a piece');
       t.ok(piece.statuses & Statuses.Shield, 'Piece has Shield');
 
@@ -289,7 +289,7 @@ export default class ProcessorServiceTests
       this.queue.push(new SpawnPiece({playerId: 2, cardTemplateId: 38, position: new Position(1,0,1)}));
       await this.queue.processUntilDone();
 
-      var piece = this.pieceState.pieceAt(0,0);
+      var piece = this.pieceState.pieceAt(new Position(0,0,0));
       t.ok(piece, 'Spawned a piece');
 
       this.queue.push(new TransformPiece({pieceId: piece.id, transformPieceId: 2}));
