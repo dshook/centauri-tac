@@ -56,11 +56,11 @@ namespace ctac
         public static Dictionary<string, string> keywordDescrips = new Dictionary<string, string>()
         {
             {"Aura",               "Keep this minion alive to gain the Aura effect" },
-            {"Ability",            "Active ability to use with energy cost in parenthesis" },
+            {"Ability",            "Ability(X) Do something for X energy once per turn" },
             {"Bribe",              "Your opponent can pay the Bribe energy cost to charm this minion" },
-            {"Synthesis",          "Does something when played" },
-            {"Demise",             "Does something when the minion dies" },
-            {"Volatile",           "Does something when damaged" },
+            {"Synthesis",          "Effect activates when played" },
+            {"Demise",             "Effect activates when the minion dies" },
+            {"Volatile",           "Effect is active while the minion is damaged" },
             {"Spell Damage",       "Spells do one more damage for each spell damage point" },
 
             {"Silence",            "Negates a minions card text, abilities, and status effects" },
