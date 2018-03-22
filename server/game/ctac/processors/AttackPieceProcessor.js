@@ -95,8 +95,7 @@ export default class AttackPieceProcessor
       return queue.cancel(action);
     }
 
-    let maxAttacks = (attacker.statuses & Statuses.DyadStrike) ? 2 : 1;
-    if(!action.isTauntAttack && attacker.attackCount >= maxAttacks){
+    if(!action.isTauntAttack && !attacker.canAttack){
       this.log.warn('Piece %s has already attacked', attacker.id);
       queue.push(new Message('Piece has already attacked!', action.playerId));
       return queue.cancel(action);

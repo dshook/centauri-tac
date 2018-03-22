@@ -4,6 +4,7 @@ import Statuses from '../models/Statuses.js';
 import {MockClient} from 'socket-client';
 import EmitterBinder from 'emitter-binder';
 import loglevel from 'loglevel-decorator';
+import moment from 'moment';
 import {on} from 'emitter-binder';
 
 @loglevel
@@ -34,6 +35,9 @@ export default class AiPlayer extends Player
     this.mapState = null;
     this.cardState = null;
     this.possibleActions = null;
+
+    //limit how fast to do things
+    this.lastActionTime = null;
 
   }
 
@@ -81,6 +85,16 @@ export default class AiPlayer extends Player
 
   //More like find something to do right now
   makeAPlan(){
+    //throttle finding something to do to every 2 seconds or so if we keep getting qpc's
+    if(this.lastActionTime == null){
+      this.lastActionTime = moment();
+      return;
+    }
+    if(moment().diff(this.lastActionTime, 'seconds') < 2){
+      return;
+    }
+    this.lastActionTime = moment();
+
     if(!this.opponent) return;
 
     this.log.info('Ai Planning');
@@ -162,8 +176,26 @@ export default class AiPlayer extends Player
           });
           return;
         }
-
       }
+    }
+
+    //Find out if there's a minion that can attack (highest attack first)
+    let piecesThatCanAttack = this.pieceState.pieces
+      .filter(p => p.playerId === playerId && p.canAttack)
+      .sort((a, b) => b.attack - a.attack);
+    for (const piece of piecesThatCanAttack) {
+        let pathToHero = this.mapState.findMovePath(piece, opponent, null);
+
+        if(pathToHero != null && pathToHero.length > 0){
+          this.log.info('Ai attacking enemy hero with %s:%s', piece.cardTemplateId, piece.name);
+          pathToHero.splice(-1, 1); //splice off the last move tile since it'll be the enemy
+          this.send('moveattack', {
+            attackingPieceId: piece.id,
+            targetPieceId: opponent.id,
+            route: pathToHero.map(p => p.position)
+          });
+          return;
+        }
     }
   }
 

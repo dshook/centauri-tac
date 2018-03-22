@@ -63,6 +63,11 @@ export default class GamePiece
     return !this.range;
   }
 
+  get canAttack(){
+    let maxAttacks = (this.statuses & Statuses.DyadStrike) ? 2 : 1;
+    return this.attackCount < maxAttacks;
+  }
+
   addBuff(buff, cardEvaluator){
     let action = {};
     if(buff.enabled){
