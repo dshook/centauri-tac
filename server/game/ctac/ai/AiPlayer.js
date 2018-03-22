@@ -183,20 +183,77 @@ export default class AiPlayer extends Player
     let piecesThatCanAttack = this.pieceState.pieces
       .filter(p => p.playerId === playerId && p.canAttack)
       .sort((a, b) => b.attack - a.attack);
-    for (const piece of piecesThatCanAttack) {
-        let pathToHero = this.mapState.findMovePath(piece, opponent, null);
+    let enemyPieces = this.pieceState.pieces
+      .filter(p => p.playerId !== playerId)
+      .sort((a, b) => b.attack - a.attack);
 
-        if(pathToHero != null && pathToHero.length > 0){
-          this.log.info('Ai attacking enemy hero with %s:%s', piece.cardTemplateId, piece.name);
-          pathToHero.splice(-1, 1); //splice off the last move tile since it'll be the enemy
-          this.send('moveattack', {
-            attackingPieceId: piece.id,
-            targetPieceId: opponent.id,
-            route: pathToHero.map(p => p.position)
-          });
+    for (const piece of piecesThatCanAttack) {
+      let pathToHero = this.mapState.findMovePath(piece, opponent, null);
+
+      //try to attack their hero first
+      if(pathToHero != null && pathToHero.length > 0){
+        this.log.info('Ai attacking enemy hero with %s:%s', piece.id, piece.name);
+        this.pieceAttack(piece, opponent, pathToHero);
+        return;
+      }
+
+      let piecesWeCanKill = [];
+      //next see if there are any pieces we can kill without dying
+      //or at the very least kill taking us down with it
+      //TODO: see if we should avoid taunt areas
+      for (const enemyPiece of enemyPieces) {
+
+        let pathToPiece = this.mapState.findMovePath(piece, enemyPiece, null);
+        if(pathToPiece == null || pathToPiece.length === 0){
+          continue;
+        }
+        let tileDist = this.mapState.tileDistance(piece.position, enemyPiece.position);
+        let kingDist = this.mapState.kingDistance(piece.position, enemyPiece.position);
+
+        let canKillIt = piece.attack >= enemyPiece.health && (enemyPiece.statuses & Statuses.Shield) == 0;
+        let canSurviveIt = (enemyPiece.statuses & Statuses.Shield) == 1
+          || piece.health > enemyPiece.attack
+          || (piece.range && !enemyPiece.range && tileDist > 1)
+          || (piece.range && enemyPiece.range && kingDist > enemyPiece.range);
+
+        if(canKillIt && canSurviveIt){
+          this.log.info('Ai attacking with %s to kill %s without dying', piece.id, enemyPiece.id);
+          this.pieceAttack(piece, enemyPiece, pathToPiece);
           return;
         }
+
+        if(canKillIt){
+          piecesWeCanKill.push({piece: enemyPiece, path: pathToPiece});
+        }
+      }
+
+      //if there weren't any minions we could kill and survive we're left with trading
+      if(piecesWeCanKill.length){
+        this.log.info('Ai attacking with %s to trade with %s', piece.id, piecesWeCanKill[0].piece.id);
+        this.pieceAttack(piece, piecesWeCanKill[0].piece, piecesWeCanKill[0].path);
+        return;
+      }
+
+      //and if we made it this far we have to resort to trying to get close to the enemy hero
+      let fullPathToEnemyHero = this.mapState.findPath( this.mapState.getTile(piece.position), opponentTile, 10, piece);
+      if(fullPathToEnemyHero != null){
+        fullPathToEnemyHero = fullPathToEnemyHero.slice(0, piece.movement - piece.moveCount);
+        if(fullPathToEnemyHero.length > 0){
+          this.log.info('Ai moving piece %s closer to the enemy hero', piece.id);
+          this.send('move', {pieceId: piece.id, route: fullPathToEnemyHero.map(p => p.position)});
+          return;
+        }
+      }
     }
+  }
+
+  pieceAttack(piece, enemyPiece, movePath){
+    movePath.splice(-1, 1); //splice off the last move tile since it'll be the enemy
+    this.send('moveattack', {
+      attackingPieceId: piece.id,
+      targetPieceId: enemyPiece.id,
+      route: movePath.map(p => p.position)
+    });
   }
 
 }
