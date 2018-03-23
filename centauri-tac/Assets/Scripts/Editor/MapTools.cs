@@ -28,6 +28,7 @@ class MapTools : EditorWindow
 
     float randomMin = 0;
     float randomMax = 1;
+    string materialName;
 
     void OnGUI()
     {
@@ -93,6 +94,16 @@ class MapTools : EditorWindow
 
         if(GUILayout.Button("Randomize")){
             RandomizeHeights(randomMin, randomMax);
+        }
+
+        GUILayout.Label("Set or Select Tile Materials");
+        materialName = EditorGUILayout.TextField("Material", materialName);
+
+        if(GUILayout.Button("Set Material")){
+            SetMaterials(materialName);
+        }
+        if(GUILayout.Button("Select by Material")){
+            SelectMaterials(materialName);
         }
     }
 
@@ -214,18 +225,10 @@ class MapTools : EditorWindow
 
     void SelectUnpassable()
     {
-        var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.Find("Tiles");
-
+        var tiles = GetSelectedTiles();
         var selected = new List<GameObject>();
-        for (int t = 0; t < tileGO.childCount; t++)
-        {
-            var tile = tileGO.transform.GetChild(t);
-
-            var tileView = tile.GetComponent<TileView>();
-            if (tileView == null) continue;
-
-            if (tileView.unpassable)
+        foreach(var tile in tiles){
+            if (tile.unpassable)
             {
                 selected.Add(tile.gameObject);
             }
@@ -236,18 +239,11 @@ class MapTools : EditorWindow
 
     void SelectClearable()
     {
-        var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.Find("Tiles");
+        var tiles = GetSelectedTiles();
 
         var selected = new List<GameObject>();
-        for (int t = 0; t < tileGO.childCount; t++)
-        {
-            var tile = tileGO.transform.GetChild(t);
-
-            var tileView = tile.GetComponent<TileView>();
-            if (tileView == null) continue;
-
-            if (tileView.clearable)
+        foreach(var tile in tiles){
+            if (tile.clearable)
             {
                 selected.Add(tile.gameObject);
             }
@@ -258,15 +254,10 @@ class MapTools : EditorWindow
 
     void SelectBreakable()
     {
-        var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.Find("Props");
-
         var selected = new List<GameObject>();
-        for (int t = 0; t < tileGO.childCount; t++)
-        {
-            var tile = tileGO.transform.GetChild(t);
-
-            var propView = tile.GetComponent<PropView>();
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
+            var propView = tile.gameObject.GetComponent<PropView>();
             if (propView == null) continue;
 
             if (propView.breakable)
@@ -285,35 +276,24 @@ class MapTools : EditorWindow
     /// </summary>
     void FixTilePositions()
     {
-        var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.Find("Tiles");
-
-        for (int t = 0; t < tileGO.childCount; t++)
-        {
-            var tile = tileGO.transform.GetChild(t);
-
-            var cube = tile.Find("cube");
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
+            var cube = tile.transform.Find("cube");
 
             tile.transform.position = cube.transform.position + new Vector3(0, 0.5f, 0);
             cube.localPosition = new Vector3(0, -0.5f, 0);
 
             var collider = tile.GetComponent<BoxCollider>();
             collider.center = new Vector3(0, -0.5f, 0);
-
         }
     }
 
     void FindTileByPos(int x, int z)
     {
 
-        var mapGO = GameObject.Find("Map");
-        var tileGO = mapGO.transform.Find("Tiles");
-
         var selected = new List<GameObject>();
-        for (int t = 0; t < tileGO.childCount; t++)
-        {
-            var tile = tileGO.transform.GetChild(t);
-
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
             if ((int)tile.transform.position.x == x && (int)tile.transform.position.z == z)
             {
                 selected.Add(tile.gameObject);
@@ -325,12 +305,16 @@ class MapTools : EditorWindow
 
     void SelectParentObjects()
     {
-
         var selected = new List<GameObject>();
         for (int t = 0; t < Selection.objects.Length; t++)
         {
             var go = Selection.objects[t] as GameObject;
             if(go == null) continue;
+
+            //don't select parent if we're already on the tile
+            var tileView = go.GetComponent<TileView>();
+            if(tileView != null) continue;
+
             selected.Add(go.transform.parent.gameObject);
         }
 
@@ -339,14 +323,69 @@ class MapTools : EditorWindow
 
     void RandomizeHeights(float min, float max)
     {
-        for(int i = 0; i < Selection.gameObjects.Length; i++){
-            var selected = Selection.gameObjects[i];
-            var tv  = selected.GetComponent<TileView>();
-            if(tv == null) continue;
-
-            var pos = selected.transform.position;
-            selected.transform.position = new Vector3(pos.x, UnityEngine.Random.Range(min, max), pos.z);
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
+            var pos = tile.transform.position;
+            tile.transform.position = new Vector3(pos.x, UnityEngine.Random.Range(min, max), pos.z);
         }
+    }
+
+    void SetMaterials(string mat)
+    {
+        var loader = new ResourceLoaderService();
+        var loadedMat = loader.Load<Material>("Maps/Tiles/Materials/" + mat);
+        if(loadedMat == null){
+            Debug.LogWarning("Material Not found");
+            return;
+        }
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
+            var meshRenderer = tile.GetComponentInChildren<MeshRenderer>();
+            meshRenderer.sharedMaterial = loadedMat;
+        }
+    }
+
+    void SelectMaterials(string mat)
+    {
+        var selected = new List<GameObject>();
+        var tiles = GetSelectedTiles();
+        foreach(var tile in tiles){
+            var meshRenderer = tile.GetComponentInChildren<MeshRenderer>();
+
+            if(meshRenderer.sharedMaterial.name == mat){
+                selected.Add(tile.gameObject);
+            }
+        }
+        Selection.objects = selected.ToArray();
+    }
+
+    //If stuff is selected use that, otherwise get all tiles
+    List<TileView> GetSelectedTiles(){
+        var tiles = new List<TileView>();
+        if(Selection.gameObjects.Length > 0){
+            for(int i = 0; i < Selection.gameObjects.Length; i++){
+                var selected = Selection.gameObjects[i];
+                var tv  = selected.GetComponent<TileView>();
+                if(tv == null) continue;
+
+                tiles.Add(tv);
+            }
+        }else{
+            var mapGO = GameObject.Find("Map");
+            var tileGO = mapGO.transform.Find("Tiles");
+
+            for (int t = 0; t < tileGO.childCount; t++)
+            {
+                var tile = tileGO.transform.GetChild(t);
+
+                var tv = tile.GetComponent<TileView>();
+                if (tv == null) continue;
+
+                tiles.Add(tv);
+            }
+        }
+
+        return tiles;
     }
 
 }

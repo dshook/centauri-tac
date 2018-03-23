@@ -29,13 +29,6 @@ namespace ctac
         {
             mapTilePrefab = loader.Load<GameObject>("Maps/Tiles/Tile");
 
-            mapMaterials["clay"] = loader.Load<Material>("Maps/Tiles/Materials/tile_clay");
-            mapMaterials["grass"] = loader.Load<Material>("Maps/Tiles/Materials/tile_grass");
-            mapMaterials["rock"] = loader.Load<Material>("Maps/Tiles/Materials/tile_rock");
-            mapMaterials["sand"] = loader.Load<Material>("Maps/Tiles/Materials/tile_sand");
-            mapMaterials["water"] = loader.Load<Material>("Maps/Tiles/Materials/tile_water");
-            mapMaterials["invisible"] = loader.Load<Material>("Maps/Tiles/Materials/tile_invisible");
-
             tileModels = new List<MeshFilter>(){
                 loader.Load<GameObject>("Maps/Tiles/Models/tile1").GetComponent<MeshFilter>(),
                 loader.Load<GameObject>("Maps/Tiles/Models/tile2").GetComponent<MeshFilter>(),
@@ -126,8 +119,7 @@ namespace ctac
                 t.material = string.IsNullOrEmpty(t.material) ? "rock" : t.material;
                 if (!mapMaterials.ContainsKey(t.material))
                 {
-                    Debug.LogError("Material " + t.material + " not loaded");
-                    return;
+                    mapMaterials[t.material] = loader.Load<Material>("Maps/Tiles/Materials/tile_" + t.material);
                 }
                 tileRenderer.material = mapMaterials[t.material];
                 //var tileVarietyColor = Random.Range(0.85f, 1);

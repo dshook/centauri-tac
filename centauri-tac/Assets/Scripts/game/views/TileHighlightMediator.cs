@@ -260,7 +260,7 @@ namespace ctac
                 && piece.playerId != selectedPiece.playerId
                 )
             {
-                var tileDistance = mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition);
+                // var tileDistance = mapService.TileDistance(selectedPiece.tilePosition, piece.tilePosition);
                 var kingDistance = mapService.KingDistance(selectedPiece.tilePosition, piece.tilePosition);
 
                 if (selectedPiece.isRanged && kingDistance <= selectedPiece.range.Value)
