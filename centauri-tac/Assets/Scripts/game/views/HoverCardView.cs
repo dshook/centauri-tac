@@ -82,6 +82,7 @@ namespace ctac
         {
             hoverCardView.UpdateText(spellDamage);
             cardService.UpdateCardArt(hoverCardView.card);
+            hoverCardView.UpdateBuffsDisplay();
 
             hoverCardView.rectTransform.anchoredPosition3D = position;
 
@@ -146,9 +147,9 @@ namespace ctac
         {
             var r1 = Camera.main.pixelRect;
             var r2 = new Rect(position - (hWidth / 2), hWidth);
-            return r1.xMin < r2.xMin 
-                && r1.xMax > r2.xMax 
-                && r1.yMin < r2.yMin 
+            return r1.xMin < r2.xMin
+                && r1.xMax > r2.xMax
+                && r1.yMin < r2.yMin
                 && r1.yMax > r2.yMax;
         }
     }
