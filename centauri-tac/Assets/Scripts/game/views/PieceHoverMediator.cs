@@ -7,7 +7,7 @@ namespace ctac
     {
         [Inject]
         public PieceHoverView view { get; set; }
-        
+
         [Inject] public PieceHoverSignal pieceHoveredSignal { get; set; }
         [Inject] public RaycastModel raycastModel { get; set; }
         [Inject] public PiecesModel pieces { get; set; }
@@ -41,8 +41,17 @@ namespace ctac
         {
             if (pieceHovered != lastHoveredPiece)
             {
+                if(lastHoveredPiece != null)
+                {
+                    lastHoveredPiece.pieceView.FocusHpBar(false, 1);
+                }
                 lastHoveredPiece = pieceHovered;
                 pieceHoveredSignal.Dispatch(pieceHovered);
+
+                if(pieceHovered != null)
+                {
+                    lastHoveredPiece.pieceView.FocusHpBar(true, 1);
+                }
             }
         }
     }

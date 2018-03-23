@@ -341,9 +341,9 @@ namespace ctac {
 
         //Brute force changing all the sorting orders for things that need to appear in front of the other hp bar shiet
         //Reset everything back to normal once this piece isn't selected anymore
-        public void UpdateSelection(bool isSelected)
+        public void FocusHpBar(bool isSelected, int extraBoost = 0)
         {
-            int sortChange = isSelected ? 10 : -10;
+            int sortChange = isSelected ? 10 + extraBoost : -10 - extraBoost;
 
             attackText.sortingOrder += sortChange;
             healthText.sortingOrder += sortChange;
