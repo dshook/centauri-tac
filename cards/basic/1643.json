@@ -5,7 +5,7 @@
   "cost": 1,
   "attack": 1,
   "health": 1,
-  "movement": 1,
+  "movement": 2,
   "range": 2,
   "statuses": 1024,
   "race": 0,

@@ -3,13 +3,8 @@
   "name": "Neutralizer",
   "description": "Deal 5 damage to enemy minions in a large cross and X. Heal friendly characters in the area for 5.",
   "cost": 5,
-  "attack": 0,
-  "health": 0,
-  "movement": 0,
   "race": 0,
   "rarity": 4,
   "uncollectible": true,
-  "tags": [
-    "Spell"
-  ]
+  "tags": ["Spell"]
 }

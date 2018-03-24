@@ -1,10 +1,14 @@
 // syncs google sheet to local cards
 // NOTE: there seems to be a bug with the sheets library that stops it reading rows when it gets to a blank row
 
+
+require('dotenv').load();
 var promise = require('bluebird');
 var fs = promise.promisifyAll(require('fs'));
-var creds = require('./stac-card-sync.json');
-var GoogleSpreadsheet = require("google-sheets-node-api");
+var Airtable = require('airtable');
+Airtable.configure({
+    apiKey: process.env.AIRTABLE_KEY
+});
 
 //These should obviously mirror what's in the files, just don't want to deal with the import problem or transpilation right now
 var races = {
@@ -14,7 +18,7 @@ var races = {
   Martians: 3,
   Grex: 4,
   Phaenon: 5,
-  Lost: 6,
+  'The Lost': 6,
 };
 var rarities = {
   Free: 0,
@@ -24,28 +28,23 @@ var rarities = {
   Ascendant: 4,
 };
 
-const minSyncRow = 193;
-const maxSyncRow = 318;
+var base = Airtable.base('appxDqhyk0tSwop0y');
 
-const rowOffset = -2; //I think because starting from row 0 plus the header row?
+const minSyncId = 1600;
+const maxSyncId = 1725;
+
 const cardSet = 'basic';
 const directoryPath = __dirname + '/../cards/' + cardSet;
 
 async function run() {
   var cards = await loadCards();
 
-  var mySheet = new GoogleSpreadsheet('1bp_H1VVDDzAd5J4rktRTFm88r8h9n7LT0uxg5wGggY4');
-  await mySheet.useServiceAccountAuth(creds);
+  let cardsTable = await fetchTable(base, 'Card List', {view: 'Grid view'});
+  let filteredCardRows = cardsTable.filter(t => t.fields.id >= minSyncId && t.fields.id <= maxSyncId).map(t => t.fields);
 
-  var sheetInfo = await mySheet.getSpreadsheet();
+  console.log(`Fetched ${cardsTable.length} rows and ${filteredCardRows.length} filtered rows`);
 
-  var cardList = sheetInfo.worksheets.find(w => w.title === 'cardlist');
-  var rows = await cardList.getRows({});
-
-  console.log(`Fetched ${rows.length} rows`);
-
-  for (let i = minSyncRow; i <= maxSyncRow; i++) {
-    var sheetRow = rows[i + rowOffset];
+  for (const sheetRow of filteredCardRows) {
     let cardTemplateId = parseInt(sheetRow.id);
 
 
@@ -61,18 +60,28 @@ async function run() {
     console.log('Found Card ' + foundKey);
 
     let updateData = {
-      "name": sheetRow.name,
-      "description": sheetRow.description,
+      "name": sheetRow.name || '',
+      "description": sheetRow.description || '',
       "cost": +sheetRow.cost,
-      "attack": +sheetRow.attack,
-      "health": +sheetRow.health,
-      "movement": +sheetRow.move,
-      "range": sheetRow.range == '' ? null : +sheetRow.range,
-      "spellDamage": sheetRow.spdmg == '' ? null : +sheetRow.spdmg,
-      "race": races[sheetRow.race] !== undefined ? races[sheetRow.race] : null,
+      "attack": +sheetRow.atk,
+      "health": +sheetRow.hp,
+      "movement": +sheetRow.mv,
+      "range":  (sheetRow.rng === undefined || sheetRow.rng == '') ? null : +sheetRow.rng,
+      "spellDamage": (sheetRow.sd === undefined || sheetRow.sd == '') ? null : +sheetRow.sd,
+      "race": races[sheetRow.race_name] !== undefined ? races[sheetRow.race_name] : null,
       "rarity": rarities[sheetRow.rarity] !== undefined ? rarities[sheetRow.rarity] : null,
-      "tags": [sheetRow.cardtype, sheetRow.tribe].filter(t => t)
+      "tags": [sheetRow.type, sheetRow.tribe_name].filter(t => t)
     };
+
+    //set all the minion only crap for spells to null so it gets removed
+    if(updateData.tags.includes('Spell')){
+      updateData.attack = null;
+      updateData.health = null;
+      updateData.movement = null;
+      updateData.range = null;
+      updateData.spellDamage = null;
+    }
+
     if (foundCard) {
       foundCard = replaceVal(foundCard, updateData);
 
@@ -167,6 +176,20 @@ function getVal(contents, propName) {
     } catch (e) { }
   }
   return null;
+}
+
+function fetchTable(base, tableName, options){
+  return new Promise(function(resolve, reject){
+    let allRecords = [];
+    base(tableName).select(options)
+    .eachPage(function page(records, fetchNextPage) {
+      allRecords = allRecords.concat(records);
+      fetchNextPage();
+    }, function done(err) {
+        if (err) { reject(err); return; }
+        resolve(allRecords);
+    });
+  });
 }
 
 run();

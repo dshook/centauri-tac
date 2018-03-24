@@ -1,15 +1,10 @@
 {
   "cardTemplateId": 1725,
   "name": "",
-  "description": "<b>Petrify</b> all enemy characters. Deal 8 damage to already paralyzed characters.",
+  "description": "<b>Petrify</b> all enemy characters. Deal 8 damage to already petrified characters.",
   "cost": 5,
-  "attack": 0,
-  "health": 0,
-  "movement": 0,
   "race": 0,
   "rarity": 4,
   "uncollectible": true,
-  "tags": [
-    "Spell"
-  ]
+  "tags": ["Spell"]
 }

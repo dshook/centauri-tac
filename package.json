@@ -78,7 +78,7 @@
     "ws": "^1.1.0"
   },
   "devDependencies": {
-    "google-sheets-node-api": "^0.3.0",
+    "airtable": "^0.5.2",
     "jison": "^0.4.17",
     "tap-spec": "^4.1.1"
   }
