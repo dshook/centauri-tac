@@ -33,7 +33,7 @@ jobs:
           name: Save Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar app
+            docker save -o /caches/app.tar stac
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
@@ -48,6 +48,6 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               login="$(aws ecr get-login)"
               ${login}
-              docker tag app "${ECR_ENDPOINT}/stac:latest"
+              docker tag stac "${ECR_ENDPOINT}/stac:latest"
               docker push "${ECR_ENDPOINT}/stac:latest"
             fi
