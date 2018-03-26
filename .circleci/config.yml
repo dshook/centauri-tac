@@ -48,6 +48,6 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               login="$(aws ecr get-login)"
               ${login}
-              docker tag stac "${ECR_ENDPOINT}/stac:latest"
-              docker push "${ECR_ENDPOINT}/stac:latest"
+              docker tag stac "${ECR_ENDPOINT}:latest"
+              docker push "${ECR_ENDPOINT}:latest"
             fi
