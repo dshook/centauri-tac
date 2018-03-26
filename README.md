@@ -111,3 +111,17 @@ Variable | Notes | Example
 `DISCONNECT_TIMEOUT` | How long clients have to reconnect before the boot | `5000`
 `DEV` | Allows some developer commands to be sent to the server | `true`
 `CARD_SETS` | Which card sets are enabled and going to be loaded | `test,basic`
+
+
+## Ops
+
+To do DB operations on the server, exec into the db:
+`docker exec -it stac_db_1 bash`
+
+Run the psql cmd line tool:
+`psql -h localhost -U postgres`
+
+Then you can run your commands
+`select * from players;` <-- Must end with semicolon
+
+`\q` to quit
