@@ -60,6 +60,8 @@ export default class PlayerStore
     if (!email || !email.includes('@')) {
       throw new PlayerStoreError('Valid Email required');
     }
+    email = email.toLowerCase();
+
     if (!password) {
       throw new PlayerStoreError('Password required');
     }
@@ -78,7 +80,7 @@ export default class PlayerStore
 
     const resp = await this.sql.tquery(Player)(`
         insert into players (email, password)
-        values (@email, @hash)
+        values (LOWER(@email), @hash)
         returning *`, {email, hash});
 
     const player = resp.firstOrNull();
@@ -93,6 +95,11 @@ export default class PlayerStore
    */
   async verify(email, password)
   {
+    if(!email){
+      throw new PlayerStoreError('Email Required');
+    }
+    email = email.toLowerCase();
+
     const player = await this.getPlayerByEmail(email);
 
     if (!player) {
