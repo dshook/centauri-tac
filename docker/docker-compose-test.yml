@@ -1,0 +1,10 @@
+version: '2.1'
+services:
+  server:
+    command: yarn run test
+    image: stac:latest
+    environment:
+      - COMPONENTS=game
+      - DEBUG=*,-express*,-send,-body-parser*,-compression,-billy*,-babel*,-SocketClient*,-ComponentManager,-SocketServer,-SockHarness,-WrappedEmitter,-ActionQueue
+      - DEBUG_COLORS=true
+      - PORT=10124
