@@ -20,7 +20,12 @@ down:
 	docker-compose -p stac -f ./docker/docker-compose.yml kill
 	docker-compose -p stac -f ./docker/docker-compose.yml rm -f -v
 
-up: build down
+up: down
+	@eval $$(aws ecr get-login)
+	docker pull 423867126755.dkr.ecr.us-east-2.amazonaws.com/solaria:latest
+	docker-compose -p stac -f ./docker/docker-compose.yml up --force-recreate -d
+
+old-up: build down
 	docker-compose -p stac -f ./docker/docker-compose.yml up --force-recreate -d
 
 logs:

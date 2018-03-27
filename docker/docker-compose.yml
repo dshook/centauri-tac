@@ -9,7 +9,7 @@ services:
       PGDATA: "/var/lib/postgresql/data/pgdata"
 
   server:
-    image: stac:latest
+    image: 423867126755.dkr.ecr.us-east-2.amazonaws.com/solaria:latest
     ports:
       - "10123:10123"
     links:

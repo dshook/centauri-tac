@@ -51,3 +51,7 @@ jobs:
               docker tag stac "${ECR_ENDPOINT}:latest"
               docker push "${ECR_ENDPOINT}:latest"
             fi
+      - run:
+          name: Deploy to dev
+          command: |
+            ssh dockeruser@li214-6.members.linode.com 'cd ~/stac && make up'
