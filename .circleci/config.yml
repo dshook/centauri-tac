@@ -54,4 +54,4 @@ jobs:
       - run:
           name: Deploy to dev
           command: |
-            ssh -o StrictHostKeyChecking=accept-new -p 1234 dockeruser@li214-6.members.linode.com 'cd ~/stac && make up'
+            ssh -o StrictHostKeyChecking=no -p 1234 dockeruser@li214-6.members.linode.com 'cd ~/stac && make up'
