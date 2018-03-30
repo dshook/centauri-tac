@@ -234,13 +234,22 @@ argument_item
 
 possibleRandSelector
   : selector
-  | targetExpr
-     { $$ = { left: $1}; }
-  | random'('targetExpr')'
-     { $$ = { random: true, selector: { left: $3} }; }
   | random'('selector')'
      { $$ = { random: true, selector: $3 }; }
 ;
+
+selector
+  : targetExpr
+     { $$ = { left: $1}; }
+  | selector operator '(' selector ')'
+     { $$ = {left: $1, op: $2, right: $4}; }
+  | '(' selector ')' operator '(' selector ')'
+     { $$ = {left: $2, op: $4, right: $6}; }
+  | '(' selector ')' operator targetExpr
+     { $$ = {left: $2, op: $4, right: $5}; }
+  | selector operator targetExpr
+     { $$ = { left: $1, op: $2, right: $3 }; }
+  ;
 
 targetExpr
   : target -> $1
@@ -250,13 +259,6 @@ targetExpr
   | pieceIdsExpression -> $1
   | '('comparisonExpression')' -> $2
 ;
-
-selector
-  : selector operator targetExpr
-     { $$ = { left: $1, op: $2, right: $3 }; }
-  | targetExpr operator targetExpr
-     { $$ = { left: $1, op: $2, right: $3 }; }
-  ;
 
 operator
   : '&'

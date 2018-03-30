@@ -1,5 +1,5 @@
 import Card from './Card.js';
-import CardLang from '../../../../lang/cardlang.js';
+import parse from '../../../../lang';
 import loglevel from 'loglevel-decorator';
 import deepFreeze from 'deep-freeze';
 import fs from 'fs';
@@ -15,7 +15,6 @@ export default class CardDirectory
   {
     this.directory = {};
     this.rawDirectory = []; //un-cardified and un-indexed
-    this.parser = CardLang.parser;
 
     var cardRequires = {};
 
@@ -69,7 +68,7 @@ export default class CardDirectory
 
     if(card.eventcode){
       try{
-        let cardEvents = this.parser.parse(card.eventcode);
+        let cardEvents = parse(card.eventcode);
         c.events = cardEvents;
       }catch(e){
         let message = `Unable to parse card ${card.cardTemplateId} ${card.name} : ${e.message}`;

@@ -1,6 +1,7 @@
 import loglevel from 'loglevel-decorator';
 import EvalError from './EvalError.js';
-import {Direction, adjacentPosition} from '../models/Direction';
+import Direction from '../models/Direction';
+import {adjacentPosition} from '../models/Direction';
 
  @loglevel
 export default class AreaSelector{

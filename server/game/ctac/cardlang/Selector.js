@@ -168,10 +168,16 @@ export default class Selector{
     if(comparison(selector) || comparison(selector.right)){
       return selector;
     }
+
+    let leftResult = false;
+    let rightResult = false;
     if(selector.left){
-      return this.findSelector(selector.left, comparison);
+      leftResult = this.findSelector(selector.left, comparison);
     }
-    return null;
+    if(selector.right){
+      rightResult = this.findSelector(selector.right, comparison);
+    }
+    return leftResult || rightResult;
   }
 
   eventualNumber(input, pieceSelectorParams){

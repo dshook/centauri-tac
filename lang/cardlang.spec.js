@@ -1,9 +1,9 @@
 import test from 'tape';
-import lang from './cardlang.js';
+import parse from './index.js';
 
-var parser = lang.parser;
+var opts = {objectPrintDepth: 8};
 
-test('basic play event', t => {
+test('basic play event', opts, t => {
   t.plan(1);
 
   let input = `
@@ -11,7 +11,7 @@ test('basic play event', t => {
     DrawCard(PLAYER)
   }`;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -32,7 +32,7 @@ test('basic play event', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Two actions on event', t => {
+test('Two actions on event', opts, t => {
   t.plan(1);
 
   let input = `
@@ -42,7 +42,7 @@ test('Two actions on event', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -71,7 +71,7 @@ test('Two actions on event', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Two Events', t => {
+test('Two Events', opts, t => {
   t.plan(1);
 
   let input = `
@@ -83,7 +83,7 @@ test('Two Events', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expected = [
     {
@@ -120,7 +120,7 @@ test('Two Events', t => {
   t.deepEqual(d, expected);
 });
 
-test('Repeating action', t => {
+test('Repeating action', opts, t => {
   t.plan(1);
 
   let input = `
@@ -129,7 +129,7 @@ test('Repeating action', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -149,7 +149,7 @@ test('Repeating action', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Hit action', t => {
+test('Hit action', opts, t => {
   t.plan(1);
 
   let input = `
@@ -158,7 +158,7 @@ test('Hit action', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -178,7 +178,82 @@ test('Hit action', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Selector input', t => {
+test('Grouping selectors', opts, t => {
+
+  let input = `
+  playMinion{
+    DrawCard(ENEMY & (MINION - HERO) - FRIENDLY)
+  }
+  `;
+
+  let d = parse(input);
+
+  let expectedPlay = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "action": "DrawCard",
+          "args": [
+            {
+              "left": {
+                "left": "ENEMY",
+                "op": "&",
+                "right": {
+                  "left": "MINION",
+                  "op": "-",
+                  "right": "HERO"
+                }
+              },
+              "op": "-",
+              "right": "FRIENDLY"
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d, expectedPlay);
+
+  let input2 = `
+  playMinion{
+    DrawCard(ENEMY & (MINION - (HERO - FRIENDLY)))
+  }
+  `
+  let d2 = parse(input2);
+
+  let expectedPlay2 = [
+    {
+      "event": "playMinion",
+      "actions": [
+        {
+          "action": "DrawCard",
+          "args": [
+            {
+              "left": "ENEMY",
+              "op": "&",
+              "right": {
+                "left": "MINION",
+                "op": "-",
+                "right": {
+                  "left": "HERO",
+                  "op": "-",
+                  "right": "FRIENDLY"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ];
+
+  t.deepEqual(d2, expectedPlay2);
+  t.end();
+});
+
+test('Selector input', opts, t => {
   t.plan(1);
 
   let input = `
@@ -187,7 +262,7 @@ test('Selector input', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -197,12 +272,11 @@ test('Selector input', t => {
           action: 'DrawCard',
           args: [
             {
-              left :
-                {
-                  left: 'ENEMY',
-                  op: '&',
-                  right: 'CHARACTER'
-                },
+              left: {
+                left: 'ENEMY',
+                op: '&',
+                right: 'CHARACTER'
+              },
               op: '&',
               right: 'HERO'
             }
@@ -215,7 +289,7 @@ test('Selector input', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Selector input with random', t => {
+test('Selector input with random', opts, t => {
   t.plan(1);
 
   let input = `
@@ -224,26 +298,25 @@ test('Selector input with random', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
-      event: 'playMinion',
-      actions: [
+      "event": "playMinion",
+      "actions": [
         {
-          action: 'Hit',
-          args: [
+          "action": "Hit",
+          "args": [
             {
-              random: true,
-              selector:{
-                left :
-                  {
-                    left: 'FRIENDLY',
-                    op: '&',
-                    right: 'MINION'
-                  },
-                op: '-',
-                right: 'HERO'
+              "random": true,
+              "selector": {
+                "left": {
+                  "left": "FRIENDLY",
+                  "op": "&",
+                  "right": "MINION"
+                },
+                "op": "-",
+                "right": "HERO"
               }
             },
             1
@@ -256,7 +329,7 @@ test('Selector input with random', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Heal action on damaged', t => {
+test('Heal action on damaged', opts, t => {
   t.plan(1);
 
   let input = `
@@ -265,7 +338,7 @@ test('Heal action on damaged', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -289,7 +362,7 @@ test('Heal action on damaged', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Event Selector', t => {
+test('Event Selector', opts, t => {
   t.plan(1);
 
   let input = `
@@ -298,7 +371,7 @@ test('Event Selector', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -327,7 +400,7 @@ test('Event Selector', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Random number list', t => {
+test('Random number list', opts, t => {
   t.plan(1);
 
   let input = `
@@ -335,7 +408,7 @@ test('Random number list', t => {
     DrawCard(PLAYER) * Random(1,2,3)
   }`;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expected = [
     {
@@ -360,7 +433,7 @@ test('Random number list', t => {
   t.deepEqual(d, expected);
 });
 
-test('Buff', t => {
+test('Buff', opts, t => {
   t.plan(1);
 
   let input = `
@@ -369,7 +442,7 @@ test('Buff', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -399,7 +472,7 @@ test('Buff', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Turn timers', t => {
+test('Turn timers', opts, t => {
   t.plan(1);
 
   let input = `
@@ -409,7 +482,7 @@ test('Turn timers', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -449,7 +522,7 @@ test('Turn timers', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Eventual Number with Attribute selector', t => {
+test('Eventual Number with Attribute selector', opts, t => {
   t.plan(1);
 
   let input = `
@@ -458,7 +531,7 @@ test('Eventual Number with Attribute selector', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -489,7 +562,7 @@ test('Eventual Number with Attribute selector', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Selector with comparison expression', t => {
+test('Selector with comparison expression', opts, t => {
   t.plan(1);
 
   let input = `
@@ -498,34 +571,34 @@ test('Selector with comparison expression', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
-      event: "playMinion",
-      actions: [
+      "event": "playMinion",
+      "actions": [
         {
-          action: "Hit",
-          args: [
+          "action": "Hit",
+          "args": [
             {
-              left: {
-                left: "TARGET",
-                op: "&",
-                right: {
-                  compareExpression: true,
-                  left: {
-                    eValue: true,
-                    attributeSelector: {
-                      left: "TARGET"
+              "left": {
+                "left": "TARGET",
+                "op": "&",
+                "right": {
+                  "compareExpression": true,
+                  "left": {
+                    "eValue": true,
+                    "attributeSelector": {
+                      "left": "TARGET"
                     },
-                    attribute: "health"
+                    "attribute": "health"
                   },
-                  op: ">",
-                  right: 4
+                  "op": ">",
+                  "right": 4
                 }
               },
-              op: "&",
-              right: "MINION"
+              "op": "&",
+              "right": "MINION"
             },
             1
           ]
@@ -537,14 +610,14 @@ test('Selector with comparison expression', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Event with number and text', t => {
+test('Event with number and text', opts, t => {
   t.plan(1);
 
   let input = `
     ability(2, 'Test'){ Hit(TARGET, 1)  }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -570,14 +643,14 @@ test('Event with number and text', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Hit area', t => {
+test('Hit area', opts, t => {
   t.plan(1);
 
   let input = `
     death{ Hit(Area(SELF, Square, 1), 2) }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -608,14 +681,14 @@ test('Hit area', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Tag selection', t => {
+test('Tag selection', opts, t => {
   t.plan(1);
 
   let input = `
     death{ Hit(Tagged('test'), 2) }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -639,14 +712,14 @@ test('Tag selection', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Count eNum selector', t => {
+test('Count eNum selector', opts, t => {
   t.plan(1);
 
   let input = `
     playSpell{DrawCard(PLAYER) * Count(ENEMY & MINION) }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -676,14 +749,14 @@ test('Count eNum selector', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Conditional action', t => {
+test('Conditional action', opts, t => {
   t.plan(1);
 
   let input = `
     playSpell{ Count(FRIENDLY & MINION) > 1 && DrawCard(PLAYER) Discard(OPPONENT)}
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -726,7 +799,7 @@ test('Conditional action', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Attach code', t => {
+test('Attach code', opts, t => {
   t.plan(1);
 
   let input = `
@@ -735,7 +808,7 @@ test('Attach code', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -772,7 +845,7 @@ test('Attach code', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Conditional expression as arg', t => {
+test('Conditional expression as arg', opts, t => {
   t.plan(1);
 
   let input = `
@@ -781,7 +854,7 @@ test('Conditional expression as arg', t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -818,7 +891,7 @@ test('Conditional expression as arg', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Double Conditional expression', t => {
+test('Double Conditional expression', opts, t => {
   t.plan(1);
 
   let input = `
@@ -828,7 +901,7 @@ test('Double Conditional expression', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -883,7 +956,7 @@ test('Double Conditional expression', t => {
   t.deepEqual(d, expectedPlay);
 });
 
-test('Conditional event', t => {
+test('Conditional event', opts, t => {
   t.plan(1);
 
   let input = `
@@ -894,7 +967,7 @@ test('Conditional event', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -974,7 +1047,7 @@ test('Conditional event', t => {
 
 });
 
-test('Adv Select Card Template Id', t => {
+test('Adv Select Card Template Id', opts, t => {
   t.plan(1);
 
   let input = `
@@ -985,7 +1058,7 @@ test('Adv Select Card Template Id', t => {
     }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expectedPlay = [
     {
@@ -1034,7 +1107,7 @@ test('Adv Select Card Template Id', t => {
 
 });
 
-test('eNumber Expressions', {objectPrintDepth: 10}, t => {
+test('eNumber Expressions', {objectPrintDepth: 10}, opts, t => {
   t.plan(1);
 
   let input = `
@@ -1046,7 +1119,7 @@ test('eNumber Expressions', {objectPrintDepth: 10}, t => {
    }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expected = [
     {
@@ -1078,7 +1151,7 @@ test('eNumber Expressions', {objectPrintDepth: 10}, t => {
   t.deepEqual(d, expected);
 });
 
-test('Negate complicated eNumber expressions', {objectPrintDepth: 10}, t => {
+test('Negate complicated eNumber expressions', {objectPrintDepth: 10}, opts, t => {
   t.plan(1);
 
   let input = `
@@ -1093,7 +1166,7 @@ test('Negate complicated eNumber expressions', {objectPrintDepth: 10}, t => {
   }
   `;
 
-  let d = parser.parse(input);
+  let d = parse(input);
 
   let expected = [
     {

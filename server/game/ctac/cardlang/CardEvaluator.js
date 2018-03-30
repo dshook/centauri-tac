@@ -989,37 +989,31 @@ export default class CardEvaluator{
             if(!arg.left) continue;
 
             areaSelector = this.selector.findSelector(arg, s => s && s.area);
-            if(!areaSelector) continue;
 
-            //only allow max of 1 area action per event
-            break;
+            if(areaSelector){
+              let areaDescrip = this.selector.selectArea(
+                areaSelector,
+                {isSpell: card.isSpell, controllingPlayerId: playerId}
+              );
+              areas.push({
+                cardId: card.id,
+                event: event.event,
+                areaType: areaDescrip.areaType,
+                size: areaDescrip.size,
+                isCursor: areaDescrip.isCursor,
+                isDoubleCursor: areaDescrip.isDoubleCursor || alsoNeedsTarget,
+                bothDirections: areaDescrip.bothDirections,
+                selfCentered: areaDescrip.selfCentered,
+                stationaryArea: areaDescrip.stationaryArea,
+                centerPosition: areaDescrip.centerPosition,
+                pivotPosition: areaDescrip.pivotPosition,
+                areaTiles: areaDescrip.areaTiles,
+                moveRestricted
+              });
+            }
           }
-
-          //only allow max of 1 area action per event
-          if(areaSelector) break;
         }
 
-        if(areaSelector){
-          let areaDescrip = this.selector.selectArea(
-            areaSelector,
-            {isSpell: card.isSpell, controllingPlayerId: playerId}
-          );
-          areas.push({
-            cardId: card.id,
-            event: event.event,
-            areaType: areaDescrip.areaType,
-            size: areaDescrip.size,
-            isCursor: areaDescrip.isCursor,
-            isDoubleCursor: areaDescrip.isDoubleCursor || alsoNeedsTarget,
-            bothDirections: areaDescrip.bothDirections,
-            selfCentered: areaDescrip.selfCentered,
-            stationaryArea: areaDescrip.stationaryArea,
-            centerPosition: areaDescrip.centerPosition,
-            pivotPosition: areaDescrip.pivotPosition,
-            areaTiles: areaDescrip.areaTiles,
-            moveRestricted
-          });
-        }
       }
     }
 
