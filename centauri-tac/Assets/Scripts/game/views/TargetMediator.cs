@@ -70,7 +70,7 @@ namespace ctac
                         targetingCard = card,
                         cardDeployPosition = null,
                         targets = possibleActions.GetActionsForCard(card.playerId, card.id),
-                        area = possibleActions.GetAreasForCard(card.playerId, card.id) 
+                        areas = possibleActions.GetAreasForCard(card.playerId, card.id)
                     });
                     return;
                 }
@@ -81,22 +81,23 @@ namespace ctac
         public void onNeedsTarget(CardModel card, Tile activatedTile)
         {
             var targets = possibleActions.GetActionsForCard(players.Me.id, card.id);
-            var area = possibleActions.GetAreasForCard(players.Me.id, card.id);
+            var areas = possibleActions.GetAreasForCard(players.Me.id, card.id);
 
+            var primaryArea = areas == null ? null : areas.FirstOrDefault();
             //Setup for area targeting positions
-            var selectedPosition = (area != null && area.centerPosition != null) ? area.centerPosition.Vector2 : (Vector2?)null;
-            if (area != null && area.selfCentered)
+            var selectedPosition = (primaryArea != null && primaryArea.centerPosition != null) ? primaryArea.centerPosition.Vector2 : (Vector2?)null;
+            if (primaryArea != null && primaryArea.selfCentered)
             {
                 selectedPosition = activatedTile.position;
             }
-            var pivotPosition = (area != null && area.pivotPosition != null) ? area.pivotPosition.Vector2 : (Vector2?)null;
+            var pivotPosition = (primaryArea != null && primaryArea.pivotPosition != null) ? primaryArea.pivotPosition.Vector2 : (Vector2?)null;
 
             debug.Log("Starting targeting from activation");
             startSelectTarget.Dispatch(new TargetModel() {
                 targetingCard = card,
                 cardDeployPosition = activatedTile,
                 targets = targets,
-                area = area,
+                areas = areas,
                 selectedPosition = selectedPosition,
                 selectedPivotPosition = pivotPosition
             });
@@ -115,7 +116,7 @@ namespace ctac
                 targetingCard = cModel.choosingCard,
                 cardDeployPosition = cModel.cardDeployPosition,
                 targets = selected.targets,
-                area = null // not supported yet
+                areas = null // not supported yet
             });
         }
 
@@ -180,7 +181,7 @@ namespace ctac
                     debug.Log("Cancelling targeting for clicking off tile");
                     cancelSelectTarget.Dispatch(cardTarget.targetingCard);
                 }
-                
+
                 if (abilityTarget != null)
                 {
                     debug.Log("Cancelling ability targeting");
@@ -189,12 +190,13 @@ namespace ctac
                 }
             }
 
-            if (cardTarget != null && cardTarget.area != null)
+            if (cardTarget != null && cardTarget.areas != null)
             {
-                if (cardTarget.area.areaTiles != null && cardTarget.area.areaTiles.Count > 0)
+                var primaryArea = cardTarget.areas.FirstOrDefault();
+                if (primaryArea.areaTiles != null && primaryArea.areaTiles.Count > 0)
                 {
                     //verify tile selected is in area
-                    if (!cardTarget.area.areaTiles.Contains(tile.position.ToPositionModel()))
+                    if (!primaryArea.areaTiles.Contains(tile.position.ToPositionModel()))
                     {
                         debug.Log("Cancelling target for outside area");
                         cancelSelectTarget.Dispatch(cardTarget.targetingCard);
@@ -226,8 +228,8 @@ namespace ctac
         {
             activateCard.Dispatch(new ActivateModel() {
                 cardActivated = targetModel.targetingCard,
-                position = targetModel.cardDeployPosition != null ? 
-                    targetModel.cardDeployPosition.position : 
+                position = targetModel.cardDeployPosition != null ?
+                    targetModel.cardDeployPosition.position :
                     targetModel.selectedPosition,
                 pivotPosition = targetModel.selectedPivotPosition,
                 optionalTarget = targetModel.selectedPiece,
@@ -243,7 +245,7 @@ namespace ctac
         {
             if (cardTarget == null) return false;
 
-            if (cardTarget.area == null) return true;
+            if (cardTarget.areas == null) return true;
 
             if (cardTarget.targets != null && cardTarget.targets.targetPieceIds.Count > 0 && piece != null)
             {

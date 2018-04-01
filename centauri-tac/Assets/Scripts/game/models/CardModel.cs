@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ctac
@@ -75,8 +76,8 @@ namespace ctac
         public bool needsTargeting(PossibleActionsModel possibleActions)
         {
             var targets = possibleActions.GetActionsForCard(playerId, id);
-            var area = possibleActions.GetAreasForCard(playerId, id);
-            var needsAreaTarget = area != null && area.isCursor;
+            var areas = possibleActions.GetAreasForCard(playerId, id);
+            var needsAreaTarget = areas != null && areas.Any(a => a.isCursor);
             var needsTarget = targets != null && (isSpell || targets.targetPieceIds.Count >= 1);
             return needsTarget || needsAreaTarget;
         }
@@ -88,7 +89,7 @@ namespace ctac
 
         //have enough mana?
         public bool playable { get; set; }
-        
+
         //when the card has been activated and should be going through animation
         public bool activated { get; set; }
 

@@ -34,8 +34,12 @@ class PossibleActions
       this.pieceState.pieces,
       playerId
     );
-    let areas = this.cardEvaluator.findPossibleAreas(
+    let cardAreas = this.cardEvaluator.findPossibleAreas(
       this.cardState.hands[playerId],
+      playerId
+    );
+    let pieceAreas = this.cardEvaluator.findPieceAreas(
+      this.pieceState.pieces.filter(p => p.playerId === playerId),
       playerId
     );
     let metConditions = this.cardEvaluator.findMetConditionCards(
@@ -52,7 +56,8 @@ class PossibleActions
       playerId: playerId,
       spellDamage: this.pieceState.totalSpellDamage(playerId),
       targets,
-      areas,
+      cardAreas,
+      pieceAreas,
       abilities,
       eventedPieces,
       metConditions,

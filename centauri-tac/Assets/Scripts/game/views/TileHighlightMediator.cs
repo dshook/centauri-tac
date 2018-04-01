@@ -91,37 +91,39 @@ namespace ctac
             //display area preview on area targeting
             if (
                 selectingArea != null
-                && selectingArea.area != null
-                && selectingArea.area.isCursor
-                && !selectingArea.area.stationaryArea
+                && selectingArea.areas != null
+                && selectingArea.areas.All(a => a.isCursor)
+                && !selectingArea.areas.All(a => a.stationaryArea)
                 && tile != null
                 && FlagsHelper.IsSet(tile.highlightStatus, TileHighlightStatus.TargetTile)
                 )
             {
-                List<Tile> tiles = null;
-                switch (selectingArea.area.areaType) {
-                    case AreaType.Square:
-                        tiles = mapService.GetKingTilesInRadius(tile.position, selectingArea.area.size).Values.ToList();
-                        break;
-                    case AreaType.Diamond:
-                        tiles = mapService.GetTilesInRadius(tile.position, selectingArea.area.size).Values.ToList();
-                        break;
-                    case AreaType.Cross:
-                        tiles = mapService.GetCrossTiles(tile.position, selectingArea.area.size).Values.ToList();
-                        break;
-                    case AreaType.Line:
-                    case AreaType.Row:
-                    case AreaType.Diagonal:
-                        if (selectingArea.selectedPosition != null)
-                        {
-                            tiles = mapService.GetLineTiles(
-                                selectingArea.selectedPosition.Value,
-                                tile.position,
-                                selectingArea.area.size,
-                                selectingArea.area.bothDirections ?? false
-                             ).Values.ToList();
-                        }
-                        break;
+                List<Tile> tiles = new List<Tile>();
+                foreach(var area in selectingArea.areas){
+                    switch (area.areaType) {
+                        case AreaType.Square:
+                            tiles.AddRange(mapService.GetKingTilesInRadius(tile.position, area.size).Values.ToList());
+                            break;
+                        case AreaType.Diamond:
+                            tiles.AddRange(mapService.GetTilesInRadius(tile.position, area.size).Values.ToList());
+                            break;
+                        case AreaType.Cross:
+                            tiles.AddRange(mapService.GetCrossTiles(tile.position, area.size).Values.ToList());
+                            break;
+                        case AreaType.Line:
+                        case AreaType.Row:
+                        case AreaType.Diagonal:
+                            if (selectingArea.selectedPosition != null)
+                            {
+                                tiles.AddRange(mapService.GetLineTiles(
+                                    selectingArea.selectedPosition.Value,
+                                    tile.position,
+                                    area.size,
+                                    area.bothDirections ?? false
+                                ).Values.ToList());
+                            }
+                            break;
+                    }
                 }
                 if (tiles != null)
                 {
@@ -473,12 +475,13 @@ namespace ctac
         public void onStartTarget(TargetModel model)
         {
             //see if there are any areas to show
-            var area = model.area;
-            if (model.area != null)
+            var areas = model.areas;
+            if (model.areas != null)
             {
                 selectingArea = model;
-                if(area.areaTiles.Count > 0){
-                    var tiles = map.getTilesByPosition(area.areaTiles.Select(t => t.Vector2).ToList());
+                if(areas.Any(a => a.areaTiles.Count > 0)){
+                    var tiles = areas.SelectMany(a => map.getTilesByPosition( a.areaTiles.Select(t => t.Vector2).ToList() ) ).ToList();
+                    // var tiles = map.getTilesByPosition(areas.areaTiles.Select(t => t.Vector2).ToList());
                     setAttackRangeTiles(tiles, true);
                 }
             }
@@ -521,35 +524,40 @@ namespace ctac
             view.toggleTileFlags(null, TileHighlightStatus.TargetTile, true);
             if (model != null )
             {
-                if (model.area != null && model.selectedPosition.HasValue)
+                if (model.areas != null && model.selectedPosition.HasValue)
                 {
-                    List<Tile> tiles = null;
-                    switch (model.area.areaType)
-                    {
-                        case AreaType.Square:
-                            tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
-                            break;
-                        case AreaType.Diamond:
-                            tiles = mapService.GetTilesInRadius(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
-                            break;
-                        case AreaType.Cross:
-                            tiles = mapService.GetCrossTiles(model.selectedPosition.Value, selectingArea.area.size).Values.ToList();
-                            break;
-                        case AreaType.Line:
-                            tiles = mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
-                            break;
-                        case AreaType.Row:
-                            tiles = mapService.GetCrossTiles(model.selectedPosition.Value, 1).Values.ToList();
-                            break;
-                        case AreaType.Diagonal:
-                            tiles = mapService.GetDiagonalTilesInRadius(model.selectedPosition.Value, 1).Values.ToList();
-                            break;
+                    List<Tile> tiles = new List<Tile>();
+                    foreach(var area in model.areas){
+                        switch (area.areaType)
+                        {
+                            case AreaType.Square:
+                                tiles.AddRange(mapService.GetKingTilesInRadius(model.selectedPosition.Value, area.size).Values.ToList());
+                                break;
+                            case AreaType.Diamond:
+                                tiles.AddRange(mapService.GetTilesInRadius(model.selectedPosition.Value, area.size).Values.ToList());
+                                break;
+                            case AreaType.Cross:
+                                tiles.AddRange(mapService.GetCrossTiles(model.selectedPosition.Value, area.size).Values.ToList());
+                                break;
+                            case AreaType.Line:
+                                tiles.AddRange(mapService.GetKingTilesInRadius(model.selectedPosition.Value, 1).Values.ToList());
+                                break;
+                            case AreaType.Row:
+                                tiles.AddRange(mapService.GetCrossTiles(model.selectedPosition.Value, 1).Values.ToList());
+                                break;
+                            case AreaType.Diagonal:
+                                tiles.AddRange(mapService.GetDiagonalTilesInRadius(model.selectedPosition.Value, 1).Values.ToList());
+                                break;
+                        }
+
+                        //This might be a subtle bug here if you have multiple areas one with move restriction and the others without
+                        //But for now there shouldn't be any cards like that
+                        if(area.moveRestricted){
+                            //take out tiles we can't move to
+                            tiles = tiles.Where(t => !t.unpassable && pieces.PieceAt(t.position) == null ).ToList();
+                        }
                     }
-                    if(model.area.moveRestricted){
-                        //take out tiles we can't move to
-                        tiles = tiles.Where(t => !t.unpassable && pieces.PieceAt(t.position) == null ).ToList();
-                    }
-                    view.toggleTileFlags(tiles, TileHighlightStatus.TargetTile, true);
+                    view.toggleTileFlags(tiles.Distinct().ToList(), TileHighlightStatus.TargetTile, true);
                 }
                 else if (model.targets != null && model.targets.targetPieceIds.Count > 0)
                 {

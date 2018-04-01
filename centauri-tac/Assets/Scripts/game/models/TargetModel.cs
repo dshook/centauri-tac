@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace ctac
 {
@@ -7,7 +9,7 @@ namespace ctac
         public CardModel targetingCard { get; set; }
         public Tile cardDeployPosition { get; set; }
         public ActionTarget targets { get; set; }
-        public AreaTarget area { get; set; }
+        public IEnumerable<CardAreaTarget> areas { get; set; }
 
         public PieceModel selectedPiece { get; set; }
         public Vector2? selectedPosition { get; set; }
@@ -20,9 +22,9 @@ namespace ctac
         {
             get
             {
-                if (area != null)
+                if (areas != null)
                 {
-                    if (area.isDoubleCursor)
+                    if (areas.Any(a => a.isDoubleCursor))
                     {
                         return selectedPosition.HasValue && selectedPivotPosition.HasValue;
                     }

@@ -9,7 +9,8 @@ namespace ctac
     {
         public Dictionary<int, List<ActionTarget>> possibleActions = new Dictionary<int, List<ActionTarget>>();
         public Dictionary<int, List<AbilityTarget>> possibleAbilities = new Dictionary<int, List<AbilityTarget>>();
-        public Dictionary<int, List<AreaTarget>> possibleAreas = new Dictionary<int, List<AreaTarget>>();
+        public Dictionary<int, List<CardAreaTarget>> possibleCardAreas = new Dictionary<int, List<CardAreaTarget>>();
+        public Dictionary<int, List<PieceAreaTarget>> possiblePieceAreas = new Dictionary<int, List<PieceAreaTarget>>();
         public Dictionary<int, List<MetCondition>> metConditions = new Dictionary<int, List<MetCondition>>();
         public List<EventedPiece> eventedPieces = new List<EventedPiece>();
         public Dictionary<int, List<ChoiceCard>> chooseCards = new Dictionary<int, List<ChoiceCard>>();
@@ -19,7 +20,8 @@ namespace ctac
         {
             possibleActions[newActions.playerId] = newActions.targets;
             possibleAbilities[newActions.playerId] = newActions.abilities;
-            possibleAreas[newActions.playerId] = newActions.areas;
+            possibleCardAreas[newActions.playerId] = newActions.cardAreas;
+            possiblePieceAreas[newActions.playerId] = newActions.pieceAreas;
             eventedPieces = newActions.eventedPieces;
             metConditions[newActions.playerId] = newActions.metConditions;
             chooseCards[newActions.playerId] = newActions.chooseCards;
@@ -47,11 +49,18 @@ namespace ctac
             return possibleAbilities[playerId].FirstOrDefault(x => x.pieceId == pieceId);
         }
 
-        public AreaTarget GetAreasForCard(int playerId, int cardId)
+        public IEnumerable<CardAreaTarget> GetAreasForCard(int playerId, int cardId)
         {
-            if (!possibleAreas.ContainsKey(playerId)){ return null; }
+            if (!possibleCardAreas.ContainsKey(playerId)){ return null; }
 
-            return possibleAreas[playerId].FirstOrDefault(x => x.cardId == cardId);
+            return possibleCardAreas[playerId].Where(x => x.cardId == cardId);
+        }
+
+        public IEnumerable<PieceAreaTarget> GetAreasForPiece(int playerId, int pieceId)
+        {
+            if (!possiblePieceAreas.ContainsKey(playerId)){ return null; }
+
+            return possiblePieceAreas[playerId].Where(x => x.pieceId == pieceId);
         }
 
         public ChoiceCard GetChoiceCards(int playerId, int cardId)
@@ -75,7 +84,8 @@ namespace ctac
         public int spellDamage { get; set; }
         public List<ActionTarget> targets { get; set; }
         public List<AbilityTarget> abilities { get; set; }
-        public List<AreaTarget> areas { get; set; }
+        public List<CardAreaTarget> cardAreas { get; set; }
+        public List<PieceAreaTarget> pieceAreas { get; set; }
         public List<EventedPiece> eventedPieces { get; set; }
         public List<MetCondition> metConditions { get; set; }
         public List<ChoiceCard> chooseCards { get; set; }
@@ -100,7 +110,6 @@ namespace ctac
 
     public class AreaTarget
     {
-        public int cardId { get; set; }
         public string @event { get; set; }
         public AreaType areaType { get; set; }
         public int size { get; set; }
@@ -113,6 +122,16 @@ namespace ctac
         public PositionModel pivotPosition { get; set; }
         public List<PositionModel> areaTiles { get; set; }
         public bool moveRestricted { get; set; }
+    }
+
+    public class CardAreaTarget : AreaTarget
+    {
+        public int cardId { get; set; }
+    }
+
+    public class PieceAreaTarget : AreaTarget
+    {
+        public int pieceId { get; set; }
     }
 
     public class EventedPiece

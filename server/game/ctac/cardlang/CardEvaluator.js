@@ -1020,6 +1020,63 @@ export default class CardEvaluator{
     return areas;
   }
 
+  //look through pieces for non synthesis events that have areas to show the player
+  //Very similar to cards above
+  findPieceAreas(pieces, playerId){
+    let areas = [];
+
+    for(let piece of pieces){
+      if(!piece.events) continue;
+
+      for(let event of piece.events){
+        if(this.targetableEvents.includes(event)){ continue; } //Skip events for things that happened when the piece was played
+
+        let areaSelector = null;
+        let moveRestricted = false; //Does the area represent somewhere where a piece needs to move to?
+        //try to find areas in any of the actions
+        for(let cardEventAction of event.actions){
+          //Don't think this needs to be restricted to any particular actions
+          //if(!this.targetableActions.includes(cardEventAction.action)) continue;
+
+          //For now only a move in area command uses an area that is move restricted
+          moveRestricted = cardEventAction.action === 'Move';
+
+          for(let arg of cardEventAction.args){
+            //Area selectors will always have a left
+            if(!arg.left) continue;
+
+            areaSelector = this.selector.findSelector(arg, s => s && s.area);
+
+            if(areaSelector){
+              let areaDescrip = this.selector.selectArea(
+                areaSelector,
+                {isSpell: false, controllingPlayerId: playerId}
+              );
+              areas.push({
+                pieceId: piece.id,
+                event: event.event,
+                areaType: areaDescrip.areaType,
+                size: areaDescrip.size,
+                isCursor: areaDescrip.isCursor,
+                isDoubleCursor: areaDescrip.isDoubleCursor,
+                bothDirections: areaDescrip.bothDirections,
+                selfCentered: areaDescrip.selfCentered,
+                stationaryArea: areaDescrip.stationaryArea,
+                centerPosition: areaDescrip.centerPosition,
+                pivotPosition: areaDescrip.pivotPosition,
+                areaTiles: areaDescrip.areaTiles,
+                moveRestricted
+              });
+            }
+          }
+        }
+
+      }
+    }
+
+    return areas;
+  }
+
   //Find cards that have a choice, and tell the client what the choices are, as well as possible targets
   //for each of the choices
   //TODO: in the future add possibility to do different areas

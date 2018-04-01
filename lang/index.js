@@ -10,6 +10,21 @@ function isObject(input){
   return input instanceof Object;
 }
 
+/*
+  //Collapses unnecessary layers like
+
+  left : {
+    left: {
+      'MINION'
+    }
+  }
+
+  into:
+
+  left: {
+    'MINION'
+  }
+*/
 function collapseLayer(obj){
   if(Array.isArray(obj)){
     for (const item of obj) {
