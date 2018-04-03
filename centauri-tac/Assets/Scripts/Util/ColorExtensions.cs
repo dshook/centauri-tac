@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ctac.util
 {
-    static class ColorExtensions
+    public static class ColorExtensions
     {
         public static Color HexToColor(string hex)
         {
