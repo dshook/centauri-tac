@@ -13,12 +13,15 @@ class SaveRender : EditorWindow
         window.Show();
     }
 
-    string pieceId;
+    int pieceId;
+    bool inc;
     int resWidth = 500;
     int resHeight = 500;
     void OnGUI()
     {
-        pieceId = EditorGUILayout.TextField("Piece Id: ", pieceId);
+        pieceId = EditorGUILayout.IntField("Piece Id: ", pieceId);
+        EditorGUILayout.LabelField("Incriment?");
+        inc = EditorGUILayout.Toggle(inc);
 
         if (GUILayout.Button("Save"))
         {
@@ -41,6 +44,10 @@ class SaveRender : EditorWindow
 
             template.SetActive(true);
             Debug.Log(string.Format("Took screenshot to: {0}", filename));
+
+            if(inc){
+                pieceId++;
+            }
         }
     }
 
