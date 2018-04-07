@@ -89,7 +89,7 @@
   return 'status'
 
 //areas
-(Cross|Square|Line|Diagonal|Row|Diamond)
+(Cross|Square|Line|Diagonal|Row|Diamond|Star)
   return 'area'
 
 (North|East|South|West)

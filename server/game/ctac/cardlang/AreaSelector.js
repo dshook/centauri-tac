@@ -25,6 +25,7 @@ export default class AreaSelector{
   //Line can go any direction diagonal or not
   //Diagonal is limited to diagonal, not horizontal or vertical
   //Row is the opposite of diagonal
+  //Star is a cross and both diagonals combined
   Select(selector, pieceSelectorParams){
     let areaType = null;
     let size = null;
@@ -91,6 +92,9 @@ export default class AreaSelector{
       //special case to tell the client that the center is around the piece
       if(centerSelector.left && centerSelector.left === 'SELF'){
         selfCentered = true;
+        if(pieceSelectorParams.activatingPiece){
+          centerPosition = pieceSelectorParams.activatingPiece.position;
+        }
       }
 
       //check for double cursor (like to select two points for a line)
@@ -162,6 +166,14 @@ export default class AreaSelector{
               throw new EvalError('Invalid neighbor for diagonal.');
             }
             areaTiles = this.mapState.getLineTiles(centerPosition, pivotPosition, size, bothDirections);
+            break;
+          case 'Star':
+            let crossTiles = this.mapState.getCrossTiles(centerPosition, size);
+            let onePivotPosition = adjacentPosition(centerPosition, Direction.North, true);
+            let oneDiagonal = this.mapState.getLineTiles(centerPosition, onePivotPosition, size, true);
+            let secondPivotPosition = adjacentPosition(centerPosition, Direction.East, true);
+            let secondDiagonal = this.mapState.getLineTiles(centerPosition, secondPivotPosition, size, true);
+            areaTiles = [].concat(crossTiles,oneDiagonal, secondDiagonal);
             break;
           default:
             throw 'Invalid Area selection type ' + areaType;

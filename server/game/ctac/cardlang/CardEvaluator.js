@@ -996,7 +996,7 @@ export default class CardEvaluator{
                 {isSpell: card.isSpell, controllingPlayerId: playerId}
               );
               areas.push({
-                cardId: card.id,
+                cardOrPieceId: card.id,
                 event: event.event,
                 areaType: areaDescrip.areaType,
                 size: areaDescrip.size,
@@ -1026,34 +1026,45 @@ export default class CardEvaluator{
     let areas = [];
 
     for(let piece of pieces){
+      if(piece.cardTemplateId !== 116) continue; ///////haaaack
+      this.log.info('Evaluating areas for piece %j', piece);
       if(!piece.events) continue;
 
       for(let event of piece.events){
+        this.log.info('Evaluating event %j for piece %s', event, piece.id);
         if(this.targetableEvents.includes(event)){ continue; } //Skip events for things that happened when the piece was played
 
         let areaSelector = null;
         let moveRestricted = false; //Does the area represent somewhere where a piece needs to move to?
         //try to find areas in any of the actions
-        for(let cardEventAction of event.actions){
+        for(let pieceEventAction of event.actions){
+          this.log.info('Evaluating action %j for piece %s', pieceEventAction, piece.id);
           //Don't think this needs to be restricted to any particular actions
           //if(!this.targetableActions.includes(cardEventAction.action)) continue;
 
           //For now only a move in area command uses an area that is move restricted
-          moveRestricted = cardEventAction.action === 'Move';
+          moveRestricted = pieceEventAction.action === 'Move';
 
-          for(let arg of cardEventAction.args){
-            //Area selectors will always have a left
-            if(!arg.left) continue;
+          for(let arg of pieceEventAction.args){
+            this.log.info('Evaluating arg %j for piece %s', arg, piece.id);
 
-            areaSelector = this.selector.findSelector(arg, s => s && s.area);
+            //Area selectors will always have a left unless they're an another action for a timer or attach code
+            if(!arg.left && !arg.action) continue;
 
+            if(arg.action){
+              areaSelector = arg.args.find(newArg => newArg.left && this.selector.findSelector(newArg, s => s && s.area));
+            }else{
+              areaSelector = this.selector.findSelector(arg, s => s && s.area);
+            }
+
+            this.log.info('Evaluating areaselector %j for piece %s', areaSelector, piece.id);
             if(areaSelector){
               let areaDescrip = this.selector.selectArea(
                 areaSelector,
-                {isSpell: false, controllingPlayerId: playerId}
+                {isSpell: false, controllingPlayerId: playerId, activatingPiece: piece}
               );
               areas.push({
-                pieceId: piece.id,
+                cardOrPieceId: piece.id,
                 event: event.event,
                 areaType: areaDescrip.areaType,
                 size: areaDescrip.size,

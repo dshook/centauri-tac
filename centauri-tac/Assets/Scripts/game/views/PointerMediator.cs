@@ -49,9 +49,9 @@ namespace ctac
             }
             else if (model.targetingCard.isSpell)
             {
-                var areas = possibleActions.GetAreasForCard(players.Me.id, model.targetingCard.id);
+                var area = possibleActions.GetAreasForCard(players.Me.id, model.targetingCard.id);
                 //don't point for untargeted spells
-                if (model.targets == null && areas == null) { return; }
+                if (model.targets == null && area == null) { return; }
 
                 view.rectTransform(model.targetingCard.gameObject);
             }

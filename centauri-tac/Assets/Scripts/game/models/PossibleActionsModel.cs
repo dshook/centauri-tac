@@ -9,8 +9,8 @@ namespace ctac
     {
         public Dictionary<int, List<ActionTarget>> possibleActions = new Dictionary<int, List<ActionTarget>>();
         public Dictionary<int, List<AbilityTarget>> possibleAbilities = new Dictionary<int, List<AbilityTarget>>();
-        public Dictionary<int, List<CardAreaTarget>> possibleCardAreas = new Dictionary<int, List<CardAreaTarget>>();
-        public Dictionary<int, List<PieceAreaTarget>> possiblePieceAreas = new Dictionary<int, List<PieceAreaTarget>>();
+        public Dictionary<int, List<AreaTarget>> possibleCardAreas = new Dictionary<int, List<AreaTarget>>();
+        public Dictionary<int, List<AreaTarget>> possiblePieceAreas = new Dictionary<int, List<AreaTarget>>();
         public Dictionary<int, List<MetCondition>> metConditions = new Dictionary<int, List<MetCondition>>();
         public List<EventedPiece> eventedPieces = new List<EventedPiece>();
         public Dictionary<int, List<ChoiceCard>> chooseCards = new Dictionary<int, List<ChoiceCard>>();
@@ -49,18 +49,18 @@ namespace ctac
             return possibleAbilities[playerId].FirstOrDefault(x => x.pieceId == pieceId);
         }
 
-        public IEnumerable<CardAreaTarget> GetAreasForCard(int playerId, int cardId)
+        public AreaTarget GetAreasForCard(int playerId, int cardId)
         {
             if (!possibleCardAreas.ContainsKey(playerId)){ return null; }
 
-            return possibleCardAreas[playerId].Where(x => x.cardId == cardId);
+            return possibleCardAreas[playerId].FirstOrDefault(x => x.cardOrPieceId == cardId);
         }
 
-        public IEnumerable<PieceAreaTarget> GetAreasForPiece(int playerId, int pieceId)
+        public AreaTarget GetAreasForPiece(int playerId, int pieceId)
         {
             if (!possiblePieceAreas.ContainsKey(playerId)){ return null; }
 
-            return possiblePieceAreas[playerId].Where(x => x.pieceId == pieceId);
+            return possiblePieceAreas[playerId].FirstOrDefault(x => x.cardOrPieceId == pieceId);
         }
 
         public ChoiceCard GetChoiceCards(int playerId, int cardId)
@@ -84,8 +84,8 @@ namespace ctac
         public int spellDamage { get; set; }
         public List<ActionTarget> targets { get; set; }
         public List<AbilityTarget> abilities { get; set; }
-        public List<CardAreaTarget> cardAreas { get; set; }
-        public List<PieceAreaTarget> pieceAreas { get; set; }
+        public List<AreaTarget> cardAreas { get; set; }
+        public List<AreaTarget> pieceAreas { get; set; }
         public List<EventedPiece> eventedPieces { get; set; }
         public List<MetCondition> metConditions { get; set; }
         public List<ChoiceCard> chooseCards { get; set; }
@@ -110,6 +110,7 @@ namespace ctac
 
     public class AreaTarget
     {
+        public int cardOrPieceId { get; set; }
         public string @event { get; set; }
         public AreaType areaType { get; set; }
         public int size { get; set; }
@@ -122,16 +123,6 @@ namespace ctac
         public PositionModel pivotPosition { get; set; }
         public List<PositionModel> areaTiles { get; set; }
         public bool moveRestricted { get; set; }
-    }
-
-    public class CardAreaTarget : AreaTarget
-    {
-        public int cardId { get; set; }
-    }
-
-    public class PieceAreaTarget : AreaTarget
-    {
-        public int pieceId { get; set; }
     }
 
     public class EventedPiece

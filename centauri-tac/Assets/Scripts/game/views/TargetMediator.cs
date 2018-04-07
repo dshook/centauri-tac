@@ -70,7 +70,7 @@ namespace ctac
                         targetingCard = card,
                         cardDeployPosition = null,
                         targets = possibleActions.GetActionsForCard(card.playerId, card.id),
-                        areas = possibleActions.GetAreasForCard(card.playerId, card.id)
+                        cardArea = possibleActions.GetAreasForCard(card.playerId, card.id)
                     });
                     return;
                 }
@@ -81,9 +81,8 @@ namespace ctac
         public void onNeedsTarget(CardModel card, Tile activatedTile)
         {
             var targets = possibleActions.GetActionsForCard(players.Me.id, card.id);
-            var areas = possibleActions.GetAreasForCard(players.Me.id, card.id);
+            var primaryArea = possibleActions.GetAreasForCard(players.Me.id, card.id);
 
-            var primaryArea = areas == null ? null : areas.FirstOrDefault();
             //Setup for area targeting positions
             var selectedPosition = (primaryArea != null && primaryArea.centerPosition != null) ? primaryArea.centerPosition.Vector2 : (Vector2?)null;
             if (primaryArea != null && primaryArea.selfCentered)
@@ -97,7 +96,7 @@ namespace ctac
                 targetingCard = card,
                 cardDeployPosition = activatedTile,
                 targets = targets,
-                areas = areas,
+                cardArea = primaryArea,
                 selectedPosition = selectedPosition,
                 selectedPivotPosition = pivotPosition
             });
@@ -116,7 +115,7 @@ namespace ctac
                 targetingCard = cModel.choosingCard,
                 cardDeployPosition = cModel.cardDeployPosition,
                 targets = selected.targets,
-                areas = null // not supported yet
+                cardArea = null // not supported yet
             });
         }
 
@@ -190,9 +189,9 @@ namespace ctac
                 }
             }
 
-            if (cardTarget != null && cardTarget.areas != null)
+            if (cardTarget != null && cardTarget.cardArea != null)
             {
-                var primaryArea = cardTarget.areas.FirstOrDefault();
+                var primaryArea = cardTarget.cardArea;
                 if (primaryArea.areaTiles != null && primaryArea.areaTiles.Count > 0)
                 {
                     //verify tile selected is in area
@@ -245,7 +244,7 @@ namespace ctac
         {
             if (cardTarget == null) return false;
 
-            if (cardTarget.areas == null) return true;
+            if (cardTarget.cardArea == null) return true;
 
             if (cardTarget.targets != null && cardTarget.targets.targetPieceIds.Count > 0 && piece != null)
             {

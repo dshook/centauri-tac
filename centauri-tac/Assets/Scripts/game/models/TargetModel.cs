@@ -9,7 +9,7 @@ namespace ctac
         public CardModel targetingCard { get; set; }
         public Tile cardDeployPosition { get; set; }
         public ActionTarget targets { get; set; }
-        public IEnumerable<CardAreaTarget> areas { get; set; }
+        public AreaTarget cardArea { get; set; }
 
         public PieceModel selectedPiece { get; set; }
         public Vector2? selectedPosition { get; set; }
@@ -22,9 +22,9 @@ namespace ctac
         {
             get
             {
-                if (areas != null)
+                if (cardArea != null)
                 {
-                    if (areas.Any(a => a.isDoubleCursor))
+                    if (cardArea.isDoubleCursor)
                     {
                         return selectedPosition.HasValue && selectedPivotPosition.HasValue;
                     }

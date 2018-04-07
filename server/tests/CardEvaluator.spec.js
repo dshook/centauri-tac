@@ -22,11 +22,14 @@ import CardDirectory from '../game/ctac/models/CardDirectory.js';
 //manually init the dependencies for the evaluator and selector
 var cardDirectory = new CardDirectory({cardSets: ['test']});
 
-function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true){
+function spawnPiece(pieceState, cardTemplateId, playerId, addToState = true, position = null){
   var newPiece = pieceState.newFromCard(cardDirectory, cardTemplateId, playerId, null);
 
   if(addToState){
     pieceState.add(newPiece);
+  }
+  if(position){
+    newPiece.position = position;
   }
   return newPiece;
 }
@@ -525,7 +528,7 @@ test('Find Possible abilities', t => {
   t.deepEqual(targets, expectedTargets, 'Player 1 ability targets is everyone');
 });
 
-test('Find Possible areas', t => {
+test('Find Possible Card areas', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1); //id 1
   spawnPiece(pieceStateMix, 2, 1); //id 2
@@ -550,7 +553,7 @@ test('Find Possible areas', t => {
 
   let expectedAreas = [
     {
-      cardId: 1,
+      cardOrPieceId: 1,
       event: 'playSpell',
       areaType: 'Cross',
       size: 99,
@@ -565,7 +568,7 @@ test('Find Possible areas', t => {
       areaTiles: []
     },
     {
-      cardId: 2,
+      cardOrPieceId: 2,
       event: 'playSpell',
       areaType: 'Line',
       size: 7,
@@ -580,7 +583,7 @@ test('Find Possible areas', t => {
       areaTiles: []
     },
     {
-      cardId: 3,
+      cardOrPieceId: 3,
       event: 'playMinion',
       areaType: 'Row',
       size: 3,
@@ -603,7 +606,7 @@ test('Find Possible areas', t => {
   //expecting area for move
   let otherExpectedTargets = [
     {
-      cardId: 4,
+      cardOrPieceId: 4,
       event: 'playMinion',
       areaType: 'Square',
       size: 3,
@@ -619,6 +622,76 @@ test('Find Possible areas', t => {
     }
   ];
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Got back expected areas for move');
+});
+
+test.only('Find Possible Piece Areas', t => {
+  let pieceStateMix = new PieceState();
+  spawnPiece(pieceStateMix, 1, 1, true, new Position(0, 0, 0));
+  spawnPiece(pieceStateMix, 2, 1, true, new Position(0, 0, 1));
+  spawnPiece(pieceStateMix, 1, 2, true, new Position(2, 0, 2));
+  spawnPiece(pieceStateMix, 2, 2, true, new Position(2, 0, 1));
+
+  t.plan(1);
+  let queue = new ActionQueue();
+  let selector = new Selector(players, pieceStateMix, mapState);
+  let cardEval = new CardEvaluator(queue, selector, pieceStateMix, mapState);
+
+  let testBot = spawnPiece(pieceStateMix, 116, 1);
+  testBot.position = new Position(1, 0, 1);
+
+  cardEval.evaluatePieceEvent('playMinion', testBot);
+
+  let targets = cardEval.findPieceAreas(pieceStateMix.pieces.filter(p => p.playerId === 1), 1);
+
+  let expectedAreas = [
+    {
+      cardOrPieceId: testBot.id,
+      event: 'endTurnTimer',
+      areaType: 'Cross',
+      size: 4,
+      isCursor: false,
+      isDoubleCursor: false,
+      bothDirections: true,
+      selfCentered: true,
+      stationaryArea: false,
+      centerPosition: null,
+      pivotPosition: null,
+      moveRestricted: false,
+      areaTiles: []
+    },
+    {
+      cardOrPieceId: testBot.id,
+      event: 'endTurnTimer',
+      areaType: 'Diagonal',
+      size: 4,
+      isCursor: false,
+      isDoubleCursor: false,
+      bothDirections: true,
+      selfCentered: true,
+      stationaryArea: false,
+      centerPosition: null,
+      pivotPosition: null,
+      moveRestricted: false,
+      areaTiles: []
+    },
+    {
+      cardOrPieceId: testBot.id,
+      event: 'endTurnTimer',
+      areaType: 'Diagonal',
+      size: 4,
+      isCursor: false,
+      isDoubleCursor: false,
+      bothDirections: true,
+      selfCentered: true,
+      stationaryArea: false,
+      centerPosition: null,
+      pivotPosition: null,
+      moveRestricted: false,
+      areaTiles: []
+    }
+  ];
+
+  t.deepEqual(targets, expectedAreas, 'Got back expected areas');
 });
 
 test('Conditional Action', t => {

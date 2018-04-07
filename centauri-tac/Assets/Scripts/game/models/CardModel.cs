@@ -77,7 +77,7 @@ namespace ctac
         {
             var targets = possibleActions.GetActionsForCard(playerId, id);
             var areas = possibleActions.GetAreasForCard(playerId, id);
-            var needsAreaTarget = areas != null && areas.Any(a => a.isCursor);
+            var needsAreaTarget = areas != null && areas.isCursor;
             var needsTarget = targets != null && (isSpell || targets.targetPieceIds.Count >= 1);
             return needsTarget || needsAreaTarget;
         }
