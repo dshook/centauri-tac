@@ -156,6 +156,7 @@ namespace ctac
         Row = 4,
         Diagonal = 5,
         PiecePosition = 6,
-        Diamond = 7
+        Diamond = 7,
+        Star = 8
     }
 }

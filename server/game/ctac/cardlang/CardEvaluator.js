@@ -992,7 +992,10 @@ export default class CardEvaluator{
 
             if(areaSelector){
               let areaDescrip = this.selector.selectArea(
-                areaSelector,
+                //note: pass the whole arg in here not just the area selector so it can determine if it's a
+                //cursor selection or not. But if it's just an area selection in the left node pass that.
+                //Hacky, I know but works for now.
+                (arg.left && arg.left.area) ? arg.left : arg,
                 {isSpell: card.isSpell, controllingPlayerId: playerId}
               );
               areas.push({
@@ -1052,7 +1055,8 @@ export default class CardEvaluator{
             if(!arg.left && !arg.action) continue;
 
             if(arg.action){
-              areaSelector = arg.args.find(newArg => newArg.left && this.selector.findSelector(newArg, s => s && s.area));
+              let matchingArg = arg.args.find(newArg => newArg.left && this.selector.findSelector(newArg, s => s && s.area));
+              areaSelector = this.selector.findSelector(matchingArg, s => s && s.area);
             }else{
               areaSelector = this.selector.findSelector(arg, s => s && s.area);
             }

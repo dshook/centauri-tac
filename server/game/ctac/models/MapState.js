@@ -429,4 +429,8 @@ export default class MapState
 
       return ret;
   }
+
+  uniqPositions(positions){
+    return _.uniqBy(positions, pos => [pos.x, pos.y, pos.z].join(','));
+  }
 }

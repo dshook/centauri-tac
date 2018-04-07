@@ -150,7 +150,7 @@ namespace ctac {
             healthText.text = piece.health.ToString();
 
             //rotate to model direction
-            model.gameObject.transform.rotation = Quaternion.Euler(DirectionAngle.angle[piece.direction]);
+            model.gameObject.transform.rotation = Quaternion.Euler(DirectionHelpers.directionAngle[piece.direction]);
 
             var colliders = model.GetComponentsInChildren<MeshCollider>();
             if (colliders == null || colliders.Length == 0)

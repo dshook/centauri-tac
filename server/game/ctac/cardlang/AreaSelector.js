@@ -173,7 +173,7 @@ export default class AreaSelector{
             let oneDiagonal = this.mapState.getLineTiles(centerPosition, onePivotPosition, size, true);
             let secondPivotPosition = adjacentPosition(centerPosition, Direction.East, true);
             let secondDiagonal = this.mapState.getLineTiles(centerPosition, secondPivotPosition, size, true);
-            areaTiles = [].concat(crossTiles,oneDiagonal, secondDiagonal);
+            areaTiles = this.mapState.uniqPositions([].concat(crossTiles, oneDiagonal, secondDiagonal));
             break;
           default:
             throw 'Invalid Area selection type ' + areaType;

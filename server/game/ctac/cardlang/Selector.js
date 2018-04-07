@@ -165,7 +165,7 @@ export default class Selector{
       return this.findSelector(selector.selector, comparison);
     }
 
-    if(comparison(selector) || comparison(selector.right)){
+    if(comparison(selector)){
       return selector;
     }
 

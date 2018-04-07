@@ -59,7 +59,7 @@ namespace ctac
                 new PieceView.RotateAnim()
                 {
                     piece = view,
-                    destAngle = DirectionAngle.angle[pieceMoved.direction]
+                    destAngle = DirectionHelpers.directionAngle[pieceMoved.direction]
                 }
             );
 
@@ -86,7 +86,7 @@ namespace ctac
                 new PieceView.RotateAnim()
                 {
                     piece = attacker.pieceView,
-                    destAngle = DirectionAngle.angle[attackPiece.direction]
+                    destAngle = DirectionHelpers.directionAngle[attackPiece.direction]
                 }
             );
             animationQueue.Add(
@@ -104,7 +104,7 @@ namespace ctac
                     new PieceView.RotateAnim()
                     {
                         piece = target.pieceView,
-                        destAngle = DirectionAngle.angle[attackPiece.targetDirection]
+                        destAngle = DirectionHelpers.directionAngle[attackPiece.targetDirection]
                     }
                 );
             }
@@ -120,7 +120,7 @@ namespace ctac
                 new PieceView.RotateAnim()
                 {
                     piece = piece.pieceView,
-                    destAngle = DirectionAngle.angle[rotatePiece.direction]
+                    destAngle = DirectionHelpers.directionAngle[rotatePiece.direction]
                 }
             );
         }

@@ -624,7 +624,7 @@ test('Find Possible Card areas', t => {
   t.deepEqual(otherPlayerTargets, otherExpectedTargets, 'Got back expected areas for move');
 });
 
-test.only('Find Possible Piece Areas', t => {
+test('Find Possible Piece Areas', t => {
   let pieceStateMix = new PieceState();
   spawnPiece(pieceStateMix, 1, 1, true, new Position(0, 0, 0));
   spawnPiece(pieceStateMix, 2, 1, true, new Position(0, 0, 1));
@@ -646,48 +646,24 @@ test.only('Find Possible Piece Areas', t => {
   let expectedAreas = [
     {
       cardOrPieceId: testBot.id,
-      event: 'endTurnTimer',
-      areaType: 'Cross',
+      event: 'playMinion',
+      areaType: 'Star',
       size: 4,
       isCursor: false,
       isDoubleCursor: false,
-      bothDirections: true,
+      bothDirections: null,
       selfCentered: true,
       stationaryArea: false,
-      centerPosition: null,
+      centerPosition: testBot.position,
       pivotPosition: null,
       moveRestricted: false,
-      areaTiles: []
-    },
-    {
-      cardOrPieceId: testBot.id,
-      event: 'endTurnTimer',
-      areaType: 'Diagonal',
-      size: 4,
-      isCursor: false,
-      isDoubleCursor: false,
-      bothDirections: true,
-      selfCentered: true,
-      stationaryArea: false,
-      centerPosition: null,
-      pivotPosition: null,
-      moveRestricted: false,
-      areaTiles: []
-    },
-    {
-      cardOrPieceId: testBot.id,
-      event: 'endTurnTimer',
-      areaType: 'Diagonal',
-      size: 4,
-      isCursor: false,
-      isDoubleCursor: false,
-      bothDirections: true,
-      selfCentered: true,
-      stationaryArea: false,
-      centerPosition: null,
-      pivotPosition: null,
-      moveRestricted: false,
-      areaTiles: []
+      areaTiles: [
+        { x: 1, y: 0.64, z: 1 }, { x: 2, y: 0.49, z: 1 }, { x: 0, y: 0.81, z: 1 }, { x: 1, y: 0.49, z: 2 },
+        { x: 1, y: 0.81, z: 0 }, { x: 3, y: 0.36, z: 1 }, { x: 1, y: 0.36, z: 3 }, { x: 4, y: 0.25, z: 1 },
+        { x: 1, y: 0.25, z: 4 }, { x: 5, y: 0.16, z: 1 }, { x: 1, y: 0.16, z: 5 }, { x: 2, y: 0.36, z: 2 },
+        { x: 0, y: 1, z: 0 }, { x: 3, y: 0.16, z: 3 }, { x: 4, y: 0.04, z: 4 }, { x: 5, y: 0, z: 5 },
+        { x: 2, y: 0.64, z: 0 }, { x: 0, y: 0.64, z: 2 }
+      ]
     }
   ];
 

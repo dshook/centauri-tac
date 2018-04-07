@@ -592,6 +592,9 @@ namespace ctac
         }
 
         private List<Tile> GetAreaTiles(AreaTarget area, Vector2 centerPosition){
+            if(area.areaTiles != null){
+                return area.areaTiles.Select(p => mapService.Tile(p.Vector2)).ToList();
+            }
             List<Tile> tiles = new List<Tile>();
             switch (area.areaType) {
                 case AreaType.Square:
@@ -615,6 +618,17 @@ namespace ctac
                             area.bothDirections ?? false
                         ).Values.ToList());
                     }
+                    break;
+                case AreaType.Star:
+                    var crossTiles = mapService.GetCrossTiles(centerPosition, area.size).Values.ToList();
+                    var onePivotPosition = DirectionHelpers.adjacentPosition(centerPosition, Direction.North, true);
+                    var oneDiagonal = mapService.GetLineTiles(centerPosition, onePivotPosition, area.size, true);
+                    var secondPivotPosition = DirectionHelpers.adjacentPosition(centerPosition, Direction.East, true);
+                    var secondDiagonal = mapService.GetLineTiles(centerPosition, secondPivotPosition, area.size, true);
+                    tiles.AddRange(crossTiles);
+                    tiles.AddRange(oneDiagonal.Values.ToList());
+                    tiles.AddRange(secondDiagonal.Values.ToList());
+                    tiles = tiles.Distinct().ToList();
                     break;
             }
 
