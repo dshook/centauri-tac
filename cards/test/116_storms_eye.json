@@ -1,7 +1,7 @@
 {
   "cardTemplateId": 116,
   "name": "Storm's Eye",
-  "description": "At the end of each turn deal 4 damage to all enemy minions in a large cross and X",
+  "description": "At the end of each turn deal 4 damage to all enemy minions in a large Star",
   "cost": 1,
   "attack": 5,
   "health": 5,
@@ -13,7 +13,7 @@
 	"eventcode": "playMinion{
     endTurnTimer(1, 1,
       Hit(
-        ENEMY & MINION & (Area(Cross, 4, SELF) | Area(Diagonal, 4, SELF, North, true) | Area(Diagonal, 4, SELF, East, true))
+        ENEMY & MINION & Area(Star, 4, SELF)
         , 4
       )
     )
