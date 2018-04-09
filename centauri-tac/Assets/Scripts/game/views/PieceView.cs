@@ -29,6 +29,7 @@ namespace ctac {
         public GameObject hpBarContainer;
         public GameObject hpBar;
         public GameObject hpBarfill;
+        public GameObject heroHpBar;
         public SVGRenderer hpBarRenderer;
         public SVGRenderer hpBarOutlineRenderer;
         public SpriteRenderer hpBarFillRenderer;
@@ -78,6 +79,7 @@ namespace ctac {
             hpBarFillRenderer = hpBarfill.GetComponent<SpriteRenderer>();
             hpBarRenderer = hpBar.GetComponent<SVGRenderer>();
             hpBarOutlineRenderer = hpBarContainer.transform.Find("hpbar outline").gameObject.GetComponent<SVGRenderer>();
+            heroHpBar = hpBarContainer.transform.Find("hero hpbar").gameObject;
             canAttackIndicator = hpBarContainer.transform.Find("canAttack").gameObject;
             canMoveIndicator = hpBarContainer.transform.Find("canMove").gameObject;
             canAttackRenderer = canAttackIndicator.GetComponent<SVGRenderer>();
@@ -197,6 +199,10 @@ namespace ctac {
             );
             idealHpBarYPos = hpBarContainer.transform.localPosition.y;
             //Debug.Log(string.Format("{0} top vert y {1} hpbar pos {2}", piece.cardTemplateId, topVertex.y, hpBarContainer.transform.localPosition.y));
+
+            if(piece.isHero){
+                heroHpBar.SetActive(true);
+            }
 
             UpdateHpBar();
         }
