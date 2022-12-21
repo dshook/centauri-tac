@@ -39,6 +39,13 @@ Install dependencies:
 $ yarn
 ```
 
+Set up a docker volume for windows
+
+https://forums.docker.com/t/trying-to-get-postgres-to-work-on-persistent-windows-mount-two-issues/12456/4?u=friism
+```
+docker volume create --name postgres-volume -d local
+```
+
 ### Running
 
 Start a server instance and run all migrations:

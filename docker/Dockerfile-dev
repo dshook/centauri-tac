@@ -1,4 +1,4 @@
-FROM node:8.1.4-alpine
+FROM node:18.12-alpine
 MAINTAINER Dillon Shook "dshook@alumni.nmt.edu"
 
 # location layout
