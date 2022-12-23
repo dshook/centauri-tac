@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.VR;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -28,51 +27,21 @@ public class ScreenSpaceCanvas : MonoBehaviour
 	private float _width = -1f;
 	private float _height = -1f;
 
-	private bool _vr = false;
 	private float _scaleFactor = 1f;
 	#endregion
 
 	#region MonoBehaviour
-	// 
+	//
 	void Awake()
 	{
 		canvas = GetComponent<Canvas>();
 		rt = GetComponent<RectTransform>();
 	}
 
-	// 
-	void LateUpdate()
-	{
-		bool vr = !string.IsNullOrEmpty(VRSettings.loadedDeviceName);
-		if (_vr != vr)
-		{
-			_vr = vr;
-			
-			if (_vr)
-			{
-				canvas.renderMode = RenderMode.WorldSpace;
-			}
-			else
-			{
-				canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-				_scaleX = -1f;
-				_scaleY = -1f;
-				_width = -1f;
-				_height = -1f;
-			}
-		}
-		
-		if (_vr)
-		{
-			Rect pixelRect = canvas.pixelRect;
-			referenceResolution = new Vector2(pixelRect.width, pixelRect.height);
-			UpdateTransform(Camera.main);
-		}
-	}
 	#endregion
 
 	#region Private Methods
-	// 
+	//
 	void UpdateTransform(Camera cam)
 	{
 		if (cam == null) { return; }

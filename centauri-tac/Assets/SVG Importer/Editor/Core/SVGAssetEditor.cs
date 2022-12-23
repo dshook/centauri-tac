@@ -294,7 +294,7 @@ namespace SVGImporter
             if (this.m_PreviewUtility == null)
             {
                 this.m_PreviewUtility = new PreviewRenderUtility();
-                this.m_PreviewUtility.m_CameraFieldOfView = 30f;
+                this.m_PreviewUtility.cameraFieldOfView = 30f;
             }
         }
 

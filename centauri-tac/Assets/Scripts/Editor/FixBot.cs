@@ -14,7 +14,7 @@ class FixBot : EditorWindow
     void OnGUI()
     {
         //GameObject thisObject = Selection.activeObject as GameObject;
-        var selected = Selection.GetFiltered<GameObject>(SelectionMode.TopLevel | SelectionMode.Editable | SelectionMode.OnlyUserModifiable);
+        var selected = Selection.GetFiltered<GameObject>(SelectionMode.TopLevel | SelectionMode.Editable);
         EditorGUILayout.LabelField("Objects to fix: "+ selected.Length);
         //if (thisObject == null)
         //{
@@ -50,7 +50,7 @@ class FixBot : EditorWindow
             {
                 ProcessTransform(child);
             }
-            
+
             //shouldn't have a collider already
             var existingCollider = child.gameObject.GetComponent<MeshCollider>();
             if (existingCollider != null) continue;

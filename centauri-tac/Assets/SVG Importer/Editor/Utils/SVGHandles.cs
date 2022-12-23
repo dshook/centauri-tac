@@ -68,7 +68,7 @@ namespace SVGImporter.Rendering
             {
                 return _p0_rotate;
             }
-        }    
+        }
         // p1
         static bool _p1_scale;
 
@@ -108,7 +108,7 @@ namespace SVGImporter.Rendering
             {
                 return _p2_rotate;
             }
-        }    
+        }
         // p3
         static bool _p3_scale;
 
@@ -128,7 +128,7 @@ namespace SVGImporter.Rendering
             {
                 return _p3_rotate;
             }
-        }    
+        }
         // p0-p1
         static bool _p0p1_scale;
 
@@ -188,7 +188,7 @@ namespace SVGImporter.Rendering
             {
                 return _p3p2_rotate;
             }
-        }    
+        }
         // p1-p3
         static bool _p1p3_scale;
 
@@ -267,7 +267,7 @@ namespace SVGImporter.Rendering
                     }
                 }
 
-                if (type == EventType.mouseDrag)
+                if (type == EventType.MouseDrag)
                 {
                     OnMouseDrag(vrTrs);
                     GUI.changed = true;
@@ -275,7 +275,7 @@ namespace SVGImporter.Rendering
                 }
 
                 // Cancel Operation
-                if (Event.current.type == EventType.keyDown && Event.current.keyCode == KeyCode.Escape)
+                if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Escape)
                 {
                     vrTrs.SetTransform(origVrTransform);
                     Reset();
@@ -285,7 +285,7 @@ namespace SVGImporter.Rendering
                 }
             }
 
-            if (type == EventType.repaint)
+            if (type == EventType.Repaint)
             {
                 RenderTransformationGizmos(vrTrs);
             }
@@ -316,7 +316,7 @@ namespace SVGImporter.Rendering
             p1p3 = Vector2.Lerp(p1, p3, 0.5f);
             p3p2 = Vector2.Lerp(p3, p2, 0.5f);
             p2p0 = Vector2.Lerp(p2, p0, 0.5f);
-            
+
             Vector2 diagonalA = (p0 - p3).normalized;
             Vector2 diagonalB = (p1 - p2).normalized;
             Vector2 horizontal = (p2p0 - p1p3).normalized;
@@ -326,40 +326,40 @@ namespace SVGImporter.Rendering
 
             _startScale.x = Vector2.Distance(p2p0, p1p3);
             _startScale.y = Vector2.Distance(p0p1, p3p2);
-            
+
             // p0
             _p0_scale = SVGGizmos.MouseTestScreenRect(p0, transformCursorRadius);
             _p0_rotate = SVGGizmos.MouseTestScreenRect(p0 + diagonalA * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p1
             _p1_scale = SVGGizmos.MouseTestScreenRect(p1, transformCursorRadius);
             _p1_rotate = SVGGizmos.MouseTestScreenRect(p1 + diagonalB * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p2
             _p2_scale = SVGGizmos.MouseTestScreenRect(p2, transformCursorRadius);
             _p2_rotate = SVGGizmos.MouseTestScreenRect(p2 - diagonalB * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p3
             _p3_scale = SVGGizmos.MouseTestScreenRect(p3, transformCursorRadius);
             _p3_rotate = SVGGizmos.MouseTestScreenRect(p3 - diagonalA * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p0-p1
             _p0p1_scale = SVGGizmos.MouseTestScreenRect(p0p1, transformCursorRadius);
             _p0p1_rotate = SVGGizmos.MouseTestScreenRect(p0p1 - vertical * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p2-p0
             _p2p0_scale = SVGGizmos.MouseTestScreenRect(p2p0, transformCursorRadius);
             _p2p0_rotate = SVGGizmos.MouseTestScreenRect(p2p0 + horizontal * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p3-p2
             _p3p2_scale = SVGGizmos.MouseTestScreenRect(p3p2, transformCursorRadius);
             _p3p2_rotate = SVGGizmos.MouseTestScreenRect(p3p2 + vertical * transformRotationOffset, transformRotationHandleSize);
-            
+
             // p1-p3
             _p1p3_scale = SVGGizmos.MouseTestScreenRect(p1p3, transformCursorRadius);
             _p1p3_rotate = SVGGizmos.MouseTestScreenRect(p1p3 - horizontal * transformRotationOffset, transformRotationHandleSize);
 
-            _editorHoldingTransform = _p0_scale || _p0_rotate || _p1_scale || _p1_rotate || _p2_scale || _p2_rotate || _p3_scale || _p3_rotate || 
+            _editorHoldingTransform = _p0_scale || _p0_rotate || _p1_scale || _p1_rotate || _p2_scale || _p2_rotate || _p3_scale || _p3_rotate ||
                 _p0p1_scale || _p0p1_rotate || _p2p0_scale || _p2p0_rotate || _p3p2_scale || _p3p2_rotate || _p1p3_scale || _p1p3_rotate;
 
             _scaling = _p0_scale || _p1_scale || _p2_scale || _p3_scale || _p0p1_scale || _p2p0_scale || _p3p2_scale || _p1p3_scale;
@@ -428,7 +428,7 @@ namespace SVGImporter.Rendering
                             destinationScale.y = destinationScale.x;
                     }
                 } else if (_p2p0_scale || _p1p3_scale)
-                {                   
+                {
                     if (minDistance.x != 0f)
                     {
                         destinationScale.x = mouseLocalDifference.x / minDistance.x;
@@ -453,7 +453,7 @@ namespace SVGImporter.Rendering
                     selectionTransform.position = origVrTransform.position - tempAnchor;
                     selectionTransform.scale = Vector2.Scale(origVrTransform.scale, Vector2.one + destinationScale * 0.5f);
                 } else
-                {            
+                {
                     selectionTransform.position = origVrTransform.position;
                     selectionTransform.scale = Vector2.Scale(origVrTransform.scale, Vector2.one + destinationScale);
                 }
@@ -475,7 +475,7 @@ namespace SVGImporter.Rendering
                     float tempAngle = Mathf.Atan2(localPositionDifference.y, localPositionDifference.x);
                     if(tempAngle != 0f)
                         tempAngle = Mathf.Round(tempAngle / PI_025) * PI_025;
-                    
+
                     float tempDistance = localPositionDifference.magnitude;
                     localPositionDifference.x = Mathf.Cos(tempAngle) * tempDistance;
                     localPositionDifference.y = Mathf.Sin(tempAngle) * tempDistance;
@@ -486,9 +486,9 @@ namespace SVGImporter.Rendering
         }
 
         protected static void UpdateAnchor()
-        {        
+        {
             _anchor = Vector2.zero;
-            
+
             if (_scaling)
             {
                 if (p0_scale)
@@ -524,7 +524,7 @@ namespace SVGImporter.Rendering
             Handles.color = COLOR_SELECTED;
             Quaternion capRotation = Quaternion.identity;
     //        Vector2 transformAnchor = Vector2.zero;
-                    
+
             Quaternion rotation = Quaternion.Euler(0f, 0f, selectionTransform.rotation + gizmoRotation);
 //            Matrix4x4 rotationMatrix = Matrix4x4.TRS(Vector3.zero, rotation, Vector3.one);
             /*
@@ -545,14 +545,14 @@ namespace SVGImporter.Rendering
                 {
                     offset = rotationMatrix.MultiplyVector(Vector2.Scale(-_startExtents, Vector2.one - selectionTransform.scale));
                 } else  if (!Event.current.shift && selectionTransform.scale.x != selectionTransform.scale.y)
-                { 
+                {
                     if (_p0p1_scale || _p2p0_scale)
                     {
                         offset = rotationMatrix.MultiplyVector(Vector2.Scale(_startExtents, Vector2.one - selectionTransform.scale));
                     } else if (_p1p3_scale || _p3p2_scale)
                     {
                         offset = rotationMatrix.MultiplyVector(Vector2.Scale(-_startExtents, Vector2.one - selectionTransform.scale));
-                    } 
+                    }
                 } else
                 {
                     if (_p0p1_scale)
@@ -571,7 +571,7 @@ namespace SVGImporter.Rendering
                 }
             }
             */
-                   
+
 //            Debug.Log(offset);
             Matrix4x4 transMatrix = Matrix4x4.TRS(selectionTransform.position, rotation, selectionTransform.scale);
             Matrix4x4 selectionTransformMatrix = transMatrix;
@@ -589,15 +589,15 @@ namespace SVGImporter.Rendering
             Vector2 p1p3 = Vector2.Lerp(p1, p3, 0.5f);
             Vector2 p3p2 = Vector2.Lerp(p3, p2, 0.5f);
             Vector2 p2p0 = Vector2.Lerp(p2, p0, 0.5f);
-            
+
             Vector2 diagonalA = (p0 - p3).normalized;
             Vector2 diagonalB = (p1 - p2).normalized;
             Vector2 horizontal = (p2p0 - p1p3).normalized;
             Vector2 vertical = (p3p2 - p0p1).normalized;
-            
+
 #pragma warning disable
-            Handles.DotCap(0, Vector2.Lerp(p2p0, p1p3, 0.5f), capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, Vector2.Lerp(p2p0, p1p3, 0.5f), capRotation, transformCapSize, EventType.Repaint);
+
             // p0
             SVGGizmos.ShowScaleCursor(p0, p3 - p0, transformCursorRadius);
             SVGGizmos.ShowCursor(p0 + diagonalA * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -605,7 +605,7 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p0, capRotation, transformCapSize);
+            Handles.DotHandleCap(0, p0, capRotation, transformCapSize, EventType.Repaint);
 
             // p1
             SVGGizmos.ShowScaleCursor(p1, p2 - p1, transformCursorRadius);
@@ -614,8 +614,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p1, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p1, capRotation, transformCapSize, EventType.Repaint);
+
             // p2
             SVGGizmos.ShowScaleCursor(p2, p1 - p2, transformCursorRadius);
             SVGGizmos.ShowCursor(p2 - diagonalB * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -623,8 +623,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p2, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p2, capRotation, transformCapSize, EventType.Repaint);
+
             // p3
             SVGGizmos.ShowScaleCursor(p3, p0 - p3, transformCursorRadius);
             SVGGizmos.ShowCursor(p3 - diagonalA * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -632,8 +632,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p3, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p3, capRotation, transformCapSize, EventType.Repaint);
+
             // p0-p1
             SVGGizmos.ShowScaleCursor(p0p1, p3p2 - p0p1, transformCursorRadius);
             SVGGizmos.ShowCursor(p0p1 - vertical * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -641,8 +641,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p0p1, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p0p1, capRotation, transformCapSize, EventType.Repaint);
+
             // p2-p0
             SVGGizmos.ShowScaleCursor(p2p0, p1p3 - p2p0, transformCursorRadius);
             SVGGizmos.ShowCursor(p2p0 + horizontal * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -650,8 +650,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p2p0, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p2p0, capRotation, transformCapSize, EventType.Repaint);
+
             // p3-p2
             SVGGizmos.ShowScaleCursor(p3p2, p0p1 - p3p2, transformCursorRadius);
             SVGGizmos.ShowCursor(p3p2 + vertical * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -659,8 +659,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p3p2, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p3p2, capRotation, transformCapSize, EventType.Repaint);
+
             // p1-p3
             SVGGizmos.ShowScaleCursor(p1p3, p2p0 - p1p3, transformCursorRadius);
             SVGGizmos.ShowCursor(p1p3 - horizontal * transformRotationOffset, transformRotationHandleSize, MouseCursor.RotateArrow);
@@ -668,8 +668,8 @@ namespace SVGImporter.Rendering
                 Handles.color = COLOR_HIGHLIGHTED;
             else
                 Handles.color = COLOR_SELECTED;
-            Handles.DotCap(0, p1p3, capRotation, transformCapSize);
-            
+            Handles.DotHandleCap(0, p1p3, capRotation, transformCapSize, EventType.Repaint);
+
             Handles.color = COLOR_SELECTED;
             SVGGizmos.Line(new Vector2[]{p0, p1, p3, p2, p0});
             /*
