@@ -11,6 +11,6 @@ export default class GameConfig
     this.testingCards = (process.env.TESTING_CARDS || '').split(',').filter(x => x);
 
     //card sets that are enabled.
-    this.cardSets = (process.env.CARD_SETS || '').split(',').filter(x => x);
+    this.cardSets = (process.env.CARD_SETS || 'test,basic').split(',').filter(x => x);
   }
 }
