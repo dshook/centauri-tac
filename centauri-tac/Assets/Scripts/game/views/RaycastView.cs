@@ -30,6 +30,8 @@ namespace ctac
 
         void Update()
         {
+            if(model == null){ return; }
+
             //Reset everything
             model.tile = null;
             model.piece = null;
@@ -37,7 +39,7 @@ namespace ctac
             model.cardCanvasHit = null;
 
             //Ignore any raycasts if we're over a UI object
-            //Have to do this wrangling to see if we're actually over a UI layer object and not something else the 
+            //Have to do this wrangling to see if we're actually over a UI layer object and not something else the
             //event system thinks it controls
             if (eventSystem.IsPointerOverGameObject() && !enableUICasts)
             {
@@ -56,7 +58,7 @@ namespace ctac
             Ray camRay = Camera.main.ScreenPointToRay(CrossPlatformInputManager.mousePosition);
 
             RaycastHit tileHit;
-            if (Physics.Raycast(camRay, out tileHit, Constants.cameraRaycastDist, tileLayer))
+            if (map != null && Physics.Raycast(camRay, out tileHit, Constants.cameraRaycastDist, tileLayer))
             {
                 model.tile = map.tiles.Get(tileHit.collider.gameObject.transform.position.ToTileCoordinates());
             }

@@ -35,7 +35,7 @@ namespace ctac
         bool loading = false;
 
         /// <summary>
-        /// Bootstrap the game up. This command and its state persists between launches though so make sure to 
+        /// Bootstrap the game up. This command and its state persists between launches though so make sure to
         /// clean up and reset between launches
         /// </summary>
         public override void Execute()
@@ -52,7 +52,9 @@ namespace ctac
             {
                 isStandaloneLaunch = true;
                 //override config from settings on disk if needed
-                string configContents = File.ReadAllText("./config.json");
+                var configFilePath = Path.Combine(".", "config.json");
+                debug.Log("Trying to read config at " + configFilePath);
+                string configContents = File.ReadAllText(configFilePath);
                 if (!string.IsNullOrEmpty(configContents))
                 {
                     debug.Log("Reading Config File");
@@ -162,7 +164,7 @@ namespace ctac
         {
             if (isStandaloneLaunch)
             {
-                //Auto queue to matchmaker in dev 
+                //Auto queue to matchmaker in dev
                 matchmakerQueue.Dispatch(new QueueModel(), key);
             }
         }

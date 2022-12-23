@@ -5,7 +5,7 @@ namespace ctac
     [Singleton]
     public class ConfigModel
     {
-        public string baseUrl { get; set; }
+        public string baseUrl = "http://localhost:10123/";
 
         public List<Credentials> players { get; set; }
     }
