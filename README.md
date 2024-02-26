@@ -9,6 +9,8 @@ https://dillonshook.com/introducing-card-lang/
 
 https://dillonshook.com/actions-and-selections-with-card-lang/
 
+https://dillonshook.com/planned-app-solescence/
+
 
 ## Some Interesting Files
 
